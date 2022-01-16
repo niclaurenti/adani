@@ -34,6 +34,15 @@ double C2m_g2_asymptotic(double x, double mQ, double mMu) {
 
 //__________________________________________________________
 
+
+double C2m_ps2_asymptotic(double x, double mQ, double mMu) {
+	
+	return C2m_ps2_highscale(x,mQ,mMu) + C2m_ps2_power_terms(x,mQ,mMu);
+	
+}
+
+//__________________________________________________________
+
 double CLm_g2_asymptotic(double x, double mQ, double mMu) {
 	
 	return CLm_g2_highscale(x,mQ,mMu) + CLm_g2_power_terms(x,mQ,mMu);

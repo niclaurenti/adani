@@ -3,6 +3,7 @@
 
 double C2m_g1_asymptotic(double x, double mQ);
 double C2m_g2_asymptotic(double x, double mQ, double mMu);
+double C2m_ps2_asymptotic(double x, double mQ, double mMu);
 //double C2m_g2_asymptoticV2(double x, double mQ, double mMu);
 
 double CLm_g1_asymptotic(double x, double mQ);
