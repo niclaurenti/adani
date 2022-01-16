@@ -10,9 +10,12 @@ double CLm_g1_approximation(double x, double mQ);
 
 //approximated coefficient funtions O(alpha_s^2)
 
+double C2m_g2_approximation(double x, double mQ, double mMu);
 double C2m_g2_approximation(double x, double mQ, double mMu, double A, double B, double C, double D, double a, double b);
 double C2m_g2_approximation_BAND(double x, double mQ, double mMu, double var, double fact, int v);
 
+double C2m_ps2_approximation(double x, double mQ, double mMu);
+double C2m_ps2_approximation(double x, double mQ, double mMu, double A, double B, double C, double D, double a, double b);
 
 //approximated coefficient funtions O(alpha_s^3)
 
