@@ -41,10 +41,6 @@ double C2m_g3_power_terms(double x, double mQ , double mMu);
 double C2m_g3_highenergyNLL(double x, double mQ, double mMu, int nf, int v);
 double C2m_g3_highenergy_highscaleNLL(double x, double mQ, double mMu, int nf, int v);
 
-double C2m_g3_highenergyNLL_NEW(double x, double mQ, double mMu, int nf);
-double C2m_g3_highenergyNLL_ERR_NEW(double x, double mQ, double mMu, int nf);
 
-double C2m_g3_highenergy_highscaleNLL_NEW(double x, double mQ, double mMu, int nf);
-double C2m_g3_highenergy_highscaleNLL_ERR_NEW(double x, double mQ, double mMu, int nf);
 
 #endif
