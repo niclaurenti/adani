@@ -49,5 +49,8 @@ double CLm_ps3_highscale(double x, double mQ, double mMu, int nf); //TODO: check
 
 //double D2m0_g3(double x, double mQ, int nf);
 //double C2m0_g3(double x, double mQ, int nf);
+//////////////////////////////////////
+double D2m_ps3_highscaleVogt(double x, double mQ, double mMu, int nf, int v);
+double C2m_ps3_highscaleVogt(double x, double mQ, double mMu, int nf, int v);
 
 #endif

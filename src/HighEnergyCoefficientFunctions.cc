@@ -626,7 +626,7 @@ double C2m_ps3_power_termsNLL(double x, double mQ , double mMu, int nf) {
 
 //__________________________________________________________
 
-double C2m_ps3_highenergy(double x, double mQ, double mMu, int nf) {
+double C2m_ps3_highenergy(double x, double mQ, double mMu) {
 	
 	return CF/CA*C2m_g3_highenergy(x,mQ,mMu);
 	
@@ -635,7 +635,7 @@ double C2m_ps3_highenergy(double x, double mQ, double mMu, int nf) {
 //______________________________________________________________
 
 
-double C2m_ps3_power_terms(double x, double mQ , double mMu, int nf) {		
+double C2m_ps3_power_terms(double x, double mQ , double mMu) {		
 	
 	return CF/CA*C2m_g3_power_terms(x,mQ,mMu);
 	
@@ -643,7 +643,7 @@ double C2m_ps3_power_terms(double x, double mQ , double mMu, int nf) {
 
 //__________________________________________________________
 
-double C2m_ps3_highenergy_highscale(double x, double mQ, double mMu, int nf) {
+double C2m_ps3_highenergy_highscale(double x, double mQ, double mMu) {
 	
 	return CF/CA*C2m_g3_highenergy_highscale(x,mQ,mMu);
 	
