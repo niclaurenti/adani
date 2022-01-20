@@ -53,7 +53,7 @@ double CLm_g2_asymptotic(double x, double mQ, double mMu) {
 
 double C2m_g3_asymptotic(double x, double mQ, double mMu, int nf, int v) {
 	
-	return C2m_g3_highscale(x,mQ,mMu,nf,v) + C2m_g3_power_terms(x,mQ,mMu);
+	return C2m_g3_highscale(x,mQ,mMu,nf,v) + C2m_g3_power_termsLL(x,mQ,mMu);
 	
 }
 

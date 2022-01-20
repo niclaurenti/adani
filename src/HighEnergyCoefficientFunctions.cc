@@ -198,7 +198,7 @@ double CLm_ps2_power_terms(double x, double mQ , double mMu) {
 
 //______________________________________________________________
 
-double C2m_g3_highenergy(double x, double mQ, double mMu) {
+double C2m_g3_highenergyLL(double x, double mQ, double mMu) {
 
   if(x>1 || x<0) return 0; 
 
@@ -237,7 +237,7 @@ double C2m_g3_highenergy(double x, double mQ, double mMu) {
 
 //___________________________________________________________
 
-double C2m_g3_highenergy_highscale(double x, double mQ , double mMu) {
+double C2m_g3_highenergy_highscaleLL(double x, double mQ , double mMu) {
 	
 	if(x>1 || x<0) return 0; 
 		
@@ -276,12 +276,12 @@ double C2m_g3_highenergy_highscale(double x, double mQ , double mMu) {
 //_________________________________________________________
 	
 
-double C2m_g3_power_terms(double x, double mQ , double mMu) {	
+double C2m_g3_power_termsLL(double x, double mQ , double mMu) {	
 	
 	if (x<0 || x>1) return 0;
 	
-	return C2m_g3_highenergy(x,mQ ,mMu) -
-				 C2m_g3_highenergy_highscale(x,mQ ,mMu);
+	return C2m_g3_highenergyLL(x,mQ ,mMu) -
+				 C2m_g3_highenergy_highscaleLL(x,mQ ,mMu);
 	
 }
 
@@ -626,26 +626,26 @@ double C2m_ps3_power_termsNLL(double x, double mQ , double mMu, int nf) {
 
 //__________________________________________________________
 
-double C2m_ps3_highenergy(double x, double mQ, double mMu) {
+double C2m_ps3_highenergyLL(double x, double mQ, double mMu) {
 	
-	return CF/CA*C2m_g3_highenergy(x,mQ,mMu);
+	return CF/CA*C2m_g3_highenergyLL(x,mQ,mMu);
 	
 }
 
 //______________________________________________________________
 
 
-double C2m_ps3_power_terms(double x, double mQ , double mMu) {		
+double C2m_ps3_power_termsLL(double x, double mQ , double mMu) {		
 	
-	return CF/CA*C2m_g3_power_terms(x,mQ,mMu);
+	return CF/CA*C2m_g3_power_termsLL(x,mQ,mMu);
 	
 }
 
 //__________________________________________________________
 
-double C2m_ps3_highenergy_highscale(double x, double mQ, double mMu) {
+double C2m_ps3_highenergy_highscaleLL(double x, double mQ, double mMu) {
 	
-	return CF/CA*C2m_g3_highenergy_highscale(x,mQ,mMu);
+	return CF/CA*C2m_g3_highenergy_highscaleLL(x,mQ,mMu);
 	
 }
 

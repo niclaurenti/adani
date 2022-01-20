@@ -440,7 +440,7 @@ double C2m_g30_approximationA_vogt(double x, double mQ, double mMu, int nf) {
 	c_const *= C2m_g1(x,mQ)/pi2/16.;
 	
 	return (C2m_g3_threshold(x,mQ,1,nf)-c_const) + (1. - f)*beta*C2m_g3_highscale(x,mQ,1,nf,1)
-	       + f*beta3*(-log(eta)/log(x)*C2m_g3_highenergy(x,mQ,1) + D2m_g3_highenergyNLLA*eta_gamma/(C+eta_gamma));
+	       + f*beta3*(-log(eta)/log(x)*C2m_g3_highenergyLL(x,mQ,1) + D2m_g3_highenergyNLLA*eta_gamma/(C+eta_gamma));
 
 }
 
@@ -477,7 +477,7 @@ double C2m_g30_approximationB_vogt(double x, double mQ, double mMu, int nf) {
 	double D2m_g3_highenergyNLLB=(0.055*pow(log(1./mQ)/log(5),2) - 0.423)*4/mQ/x;
 	
 	return (C2m_g3_threshold(x,mQ,1,nf)-c_const)  +f*2.*c_const  +(1-f)*beta3*C2m_g3_highscale(x,mQ,1,nf,4)
-	       +f*beta3*(-log(eta)/log(x)*C2m_g3_highenergy(x,mQ,1) + D2m_g3_highenergyNLLB*eta_delta/(D+eta_delta));
+	       +f*beta3*(-log(eta)/log(x)*C2m_g3_highenergyLL(x,mQ,1) + D2m_g3_highenergyNLLB*eta_delta/(D+eta_delta));
 
 
 }
@@ -515,7 +515,7 @@ double C2m_g30_approximationBlowxi_vogt(double x, double mQ, double mMu, int nf)
 	double D2m_g3_highenergyNLLB=CA/CF*(0.0245*pow(log(1./mQ)/log(5),2) - 0.17)*4/mQ/x;
 	
 	return (C2m_g3_threshold(x,mQ,1,nf)-c_const)  +f*2.*c_const  +(1-f)*beta3*C2m_g3_highscale(x,mQ,1,nf,4)
-	       +f*beta3*(-log(eta)/log(x)*C2m_g3_highenergy(x,mQ,1) + D2m_g3_highenergyNLLB*eta_delta/(D+eta_delta));
+	       +f*beta3*(-log(eta)/log(x)*C2m_g3_highenergyLL(x,mQ,1) + D2m_g3_highenergyNLLB*eta_delta/(D+eta_delta));
 
 
 }
@@ -680,7 +680,7 @@ double C2m_ps30_approximationA_vogt(double x, double mQ, double mMu, int nf) {
 	double C2m_ps3_highenergyNLLA=(0.004*pow(log(1./mQ)/log(5), 4) - 0.125)*4/mQ/x;
 	
 	return  (1. - f)*beta*C2m_ps3_highscale(x,mQ,1,nf)
-	       + f*beta3*(-log(eta)/log(x)*C2m_ps3_highenergy(x,mQ,1) + C2m_ps3_highenergyNLLA*eta_gamma/(C+eta_gamma));
+	       + f*beta3*(-log(eta)/log(x)*C2m_ps3_highenergyLL(x,mQ,1) + C2m_ps3_highenergyNLLA*eta_gamma/(C+eta_gamma));
 
 }
 
@@ -709,7 +709,7 @@ double C2m_ps30_approximationB_vogt(double x, double mQ, double mMu, int nf) {
 	double C2m_ps3_highenergyNLLB=(0.0245*pow(log(1./mQ)/log(5),2) - 0.17)*4/mQ/x;
 	
 	return (1-f)*beta3*C2m_ps3_highscale(x,mQ,1,nf)
-	       +f*beta3*(-log(eta)/log(x)*C2m_ps3_highenergy(x,mQ,1) + C2m_ps3_highenergyNLLB*eta_delta/(D+eta_delta));
+	       +f*beta3*(-log(eta)/log(x)*C2m_ps3_highenergyLL(x,mQ,1) + C2m_ps3_highenergyNLLB*eta_delta/(D+eta_delta));
 
 
 }
