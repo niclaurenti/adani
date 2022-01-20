@@ -393,8 +393,8 @@ double C2m_ps2_approximationB_vogt(double x, double mQ, double mMu) {
 	double beta3=beta*beta*beta;
 	
 	double C_const =
-		 (1-f)*beta3*C2m_g2_highscale(x,mQ,1)
-		 +f*beta3*C2m_g2_highenergy(x,mQ,1)*eta_delta/(D+eta_delta);
+		 (1-f)*beta3*C2m_ps2_highscale(x,mQ,1)
+		 +f*beta3*C2m_ps2_highenergy(x,mQ,1)*eta_delta/(D+eta_delta);
 	
   Cm22bargNC cm_log(1./(1+4*mQ));
   
