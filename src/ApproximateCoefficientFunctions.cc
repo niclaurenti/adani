@@ -1,4 +1,4 @@
-#include "../include/Combination.h"
+#include "../include/ApproximateCoefficientFunctions.h"
 #include "../include/HighScaleCoefficientFunctions.h"
 #include "../include/MassiveCoefficientFunctions.h"
 #include "../include/HighEnergyCoefficientFunctions.h"

@@ -7,5 +7,5 @@
 #include "MasslessCoefficientFunctions.h"
 #include "MatchingConditions.h"
 #include "ThresholdCoefficientFunctions.h"
-#include "Combination.h"
+#include "ApproximateCoefficientFunctions.h"
 #include "AsymptoticCoefficientFunctions.h"
