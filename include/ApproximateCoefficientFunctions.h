@@ -1,5 +1,5 @@
-#ifndef Combination_h
-#define Combination_h
+#ifndef Approximate_h
+#define Approximate_h
 
 //approximated coefficient funtions O(alpha_s)
 
