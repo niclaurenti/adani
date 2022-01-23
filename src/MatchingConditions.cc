@@ -8,7 +8,7 @@
 using namespace apfel;
 using namespace std;
 
-double K_bg1(double x, double mMu) {
+double K_Qg1(double x, double mMu) {
 
   return 2*TR*(x*x+(x-1)*(x-1))*log(1./mMu)/4./M_PI;
 }
@@ -16,7 +16,7 @@ double K_bg1(double x, double mMu) {
 
 //___________________________________________________________
 
-double K_bg2(double x, double mMu) {
+double K_Qg2(double x, double mMu) {
 	
 	double x2=x*x;
 	
@@ -98,18 +98,18 @@ double K_bg2(double x, double mMu) {
 
 //_________________________________________________________
 
-double K_bg2_apfel(double x, double mMu) {
+double K_Qg2_apfel(double x, double mMu) {
 
   double pi2=M_PI*M_PI;
   
-  AS2Hg_0 K_bg2_const;
-  AS2Hg_L K_bg2_log;
-  AS2Hg_L2 K_bg2_log2;
+  AS2Hg_0 K_Qg2_const;
+  AS2Hg_L K_Qg2_log;
+  AS2Hg_L2 K_Qg2_log2;
   
   return 
-  	0.5*(K_bg2_const.Regular(x) + 
-  			 K_bg2_log.Regular(x)*log(1./mMu) + 
-  			 K_bg2_log2.Regular(x)*log(1./mMu)*log(1./mMu))/16./pi2;
+  	0.5*(K_Qg2_const.Regular(x) + 
+  			 K_Qg2_log.Regular(x)*log(1./mMu) + 
+  			 K_Qg2_log2.Regular(x)*log(1./mMu)*log(1./mMu))/16./pi2;
 
 }
 
@@ -121,7 +121,7 @@ double K_gg1_local(double mMu) {
 
 //___________________________________________________________
 
-double K_bg3(double x, double mMu, int nf) {
+double K_Qg3(double x, double mMu, int nf) {
 
 cout<< "K_bg3 is not implemented yet!!\nExiting..."<<endl;
 	exit(-1);
@@ -130,7 +130,7 @@ cout<< "K_bg3 is not implemented yet!!\nExiting..."<<endl;
 
 //____________________________________________________________
 
-double a_bg_30(double x, int v) {
+double a_Qg_30(double x, int v) {
 	
 	double L=log(x);
 	double L2=L*L;
@@ -142,7 +142,7 @@ double a_bg_30(double x, int v) {
 	double L13=L12*L1;
 	
 	if(v==0) {
-		return 0.5*( a_bg_30(x,1) + a_bg_30(x,2));
+		return 0.5*( a_Qg_30(x,1) + a_Qg_30(x,2));
 	}
 	
 	if(v==1) {		
@@ -150,7 +150,6 @@ double a_bg_30(double x, int v) {
 	}
 	
 	if(v==2) {		
-		//return -2658.323*L12 - 7449.948*L1 - 7460.002*(2-x) + 3178.819*L2 + 4710.725/x + 1548.891/x*L;	
 		return 226.3840*L13 - 652.2045*L12 - 2686.387*L1 - 7714.786*(2-x) - 2841.851*L2 + 7721.120/x + 1548.891/x*L ;
 	}
 	

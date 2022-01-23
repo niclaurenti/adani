@@ -15,7 +15,7 @@ double C2m_g1_highscale(double x, double mQ) {
 	
 	if(x>1 || x<0) return 0;	
 		
-	return 4*TR*(-8*x*x + 8*x - 1 + log((1-x)/x)*(2*x*x-2*x+1))/4./M_PI + 2*K_bg1(x, mQ); 
+	return 4*TR*(-8*x*x + 8*x - 1 + log((1-x)/x)*(2*x*x-2*x+1))/4./M_PI + 2*K_Qg1(x, mQ); 
 
 }
 
@@ -1623,7 +1623,7 @@ double D2m_g3_highscale(double x, double mQ, double mMu, int nf, int v) {
        
        + CF*nf*(1 - 2*x + 2*x2)*(69 - 28*z2)//from erratum 
 
-       + a_bg_30(x,v) + 8./9*z3 - 16./9*z3*x + 16./9*z3*x2
+       + a_Qg_30(x,v) + 8./9*z3 - 16./9*z3*x + 16./9*z3*x2
         )/(64*pi3)
        
        + C2_g3(x, nf+1)/(nf + 1);	
@@ -3582,6 +3582,7 @@ double CLm_ps3_highscale(double x, double mQ, double mMu, int nf) {
     * z - 1))/(9 * z) - 128./3 * z * H0) * L_Q2 + ( 256./3 * 
     z * H0 * H0 - 256./9 * (4 * z2 - 8 * z - 3) * H0 - (256 
     * (z - 1) * (3 * z2 + 6 * z - 2))/(9 * z)) * L_Q) 
+    
     + CF * TR * TR * (((128 * (z - 1) * (2 * z2 + 2 * z - 1
     ))/(9 * z) - 128./3 * z * H0) * L_Q2 + ( 256./3 * z * H0
     * H0 - 256./9 * (4 * z2 - 8 * z - 3) * H0 - (256 * (z - 
@@ -3825,7 +3826,7 @@ double CLm_g3_highscale(double x, double mQ, double mMu, int nf) {
     H01 + 128./45 * (12 * z3 + 60 * z2 + 35 * z - 45) * zeta2
     + z * (-128 * H0 * H0 * H0 + 256 * zeta2 * H0 - 256 * H001
     + 256 * zeta3))) 
-    
+
     + CF * nf * TR * TR * (( -64 * z * H0 * H0 - 64./3 * (z 
     + 1) * (4 * z - 3) * H0 + (64 * (z - 1) * (28 * z2 - 23
     * z - 2))/(9 * z)) * L_Q2 + ( -(128 * (25 * z + 2) * H1
@@ -3921,4 +3922,61 @@ double CLm_g3_highscale(double x, double mQ, double mMu, int nf) {
 }
 
 
+//____________________________________________________________
 
+double C2m_ps2_highscaleNEW(double x, double mQ, double mMu) {
+	
+	double z = x ;
+	double z2 = z * z ;
+	double z3 = z2 * z ;
+	
+	double L_M = log(mMu) ;
+	double L_M2 = L_M * L_M ;
+	double L_Q = log(1./mQ) + L_M ;
+	double L_Q2 = L_Q * L_Q ;
+	
+	double pi2 = M_PI * M_PI ;
+	
+	double H0 = H(z,0) ;
+	double H1 = H(z,1) ;
+	double Hm1 = H(z,-1);
+	double H01 = H(z,0,1) ;
+	double H0m1 = H(z,0,-1);
+	double H001 = H(z,0,0,1);
+	double H011 = H(z,0,1,1);
+	
+	double zeta_2 = zeta(2) ;
+	double zeta_3 = zeta(3) ;
+	
+	
+	return
+		CF*TR *( ( (32./3* H0m1
+-32./3*Hm1* H0)* (z+1)*(z+1)*(z+1))/z+(16./3* H0*H0*H0
++32 * H01* H0 -32* zeta_2* H0 - 32* H001
+
++16* H011 + 16* zeta_3)* (z+1)- 8* z* (2* z-5)* H0*H0
++((4 *(z-1)* (4* z2+7* z+4))/(3* z)-8* (z+1)* H0)* L_M2
+
++(16* (z-1)* (52* z2-24* z-5))/(9* z)
++32./3* (3* z3-3* z2-1)* zeta_2/z
+-8./9* (88* z2+99* z-105)* H0
+
++L_Q2 *(8* (z+1)* H0
+-(4* (z-1) *(4* z2+7* z+4))/(3* z))
++(16* (z-1)* (4* z2-26* z+13)* H1)/(9* z)
+
++((z-1) *(4* z2+7* z+4) )/z *(
+-4./3* H1*H1
+-16./3* H0* H1)
+-(16 *(2 *z3-3* z2+3* z+4)* H01)/(3* z)
+
++(8* (z+1)* H0*H0
+-8./3* (8* z2+15* z+3)* H0
++(16* (z-1)* (28* z2+z+10))/(9* z))* L_M
+
++L_Q* (32* H0* z2+(z+1)* (-16* H0*H0-16* H01+16* zeta_2)
+-(16* (z-1)* (4* z2-26* z+13))/(9* z)
+
++(8* (z-1)* (4* z2+7* z+4)* H1)/(3* z)) )/(16*pi2) ;
+	
+}

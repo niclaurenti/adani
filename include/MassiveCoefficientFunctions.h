@@ -17,7 +17,7 @@ double DLm_g1_4(double x, double mQ);
 double DLm_g1_5(double x, double mQ);
 
 //NNLO => O(\alpha_s^2)
-double C2m_g2(double x, double mQ, double mMu);//mMU=m^2/mu^2
+double C2m_g2(double x, double mQ, double mMu);//mMu=m^2/mu^2
 double CLm_g2(double x, double mQ, double mMu);
 
 double C2m_ps2(double x, double mQ, double mMu);

@@ -64,7 +64,7 @@ double DLm_g1_4(double x, double mQ) {
 
 double D2m_g1_5(double x, double mQ) {
 
-  return D2m_g1_4(x,mQ)-2*K_bg1(x,mQ);
+  return D2m_g1_4(x,mQ)-2*K_Qg1(x,mQ);
 
 }
 
@@ -198,7 +198,7 @@ double D2m_g2_5(double x, double mQ, double mMu) {
   return 
   	 D2m_g2_4(x, mQ, mMu) 
   	-D2m_g1_4(x,mQ)*K_gg1_local(mMu)
-    -2*(K_bg2(x,mMu)-K_bg1(x,mMu)*K_gg1_local(mMu))
+    -2*(K_Qg2(x,mMu)-K_Qg1(x,mMu)*K_gg1_local(mMu))
     -2*C2_b1_x_K_bg1(x,mQ);
   
 }
