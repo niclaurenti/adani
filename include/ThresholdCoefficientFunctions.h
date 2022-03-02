@@ -10,5 +10,6 @@ double CLm_g2_threshold(double x, double mQ, double mMu);
 
 //N3LO => O(\alpha_s^3)
 double C2m_g3_threshold(double x, double mQ, double mMu, int nf);
+double CLm_g3_threshold(double x, double mQ, double mMu, int nf);
 
 #endif
