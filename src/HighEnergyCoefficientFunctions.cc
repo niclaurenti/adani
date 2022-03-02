@@ -363,6 +363,74 @@ double C2m_ps3_highenergyNLL(double x, double mQ, double mMu, int nf) {
 
 //______________________________________________________________
 
+double CLm_g3_highenergyNLL(double x, double mQ, double mMu, int nf) {
+
+  if(x>1 || x<0) return 0; 
+  
+  double pi2 = M_PI*M_PI ;
+  
+  double xi=1./mQ;   
+
+  double z=sqrt(xi/(xi+4));
+
+  //double L=log((1+z)/(1-z));
+  
+	double Hmp=H(-z,1,1) + H(-z,1,-1) - H(-z,-1,1) - H(-z,-1,-1);
+	
+  double Hmpm= H(-z,1,1,1)- H(-z,1,1,-1) + H(-z,1,-1,1) - H(-z,1,-1,-1) - H(-z,-1,1,1) + H(-z,-1,1,-1) - H(-z,-1,-1,1) + H(-z,-1,-1,-1);
+
+  double II=4*mQ*z*Hmp;
+  double J=4*mQ*z*log( sqrt(xi) / 2 + sqrt(xi/4 + 1. )); //=4*mQ*z*acsch(2/sqrt(xi))
+  double K=4*mQ*z*Hmpm;
+  
+  double a11=CA/M_PI;
+  double a21=nf*(26*CF - 23*CA)/36/pi2;
+  double a10= -(11*CA + 2*nf*(1-2*CF/CA))/12/M_PI;
+  
+  double beta0=(11*CA - 4*nf*TR)/12/M_PI;
+  
+  double Lmu=log(mMu);
+  double Lmu2=Lmu*Lmu;
+  
+  double Logxi = log(1 + 1./(4*mQ));
+  
+  
+  double tmp =
+      a21 * (-II * (-108./9 * mQ - 36./9) - (-144./9 * mQ + 12./9) - J * (144./9 * mQ - 24./9 - 18./9 * xi) )+ 
+      a10 * a11 * (-(-1920./9 * mQ - 272./9) - K * (108./9 * mQ + 36./9) - J * (1920./9 * mQ + 544./9 + 12./9 * xi) + 
+        II * (-(-144./9 * mQ + 24./9 + 18./9 * xi) + (108./9 * mQ + 36./9) * Logxi)) + 
+
+      (log(x) + Logxi) * ( a11 * a11 * (- K * (-54./9 * mQ - 18./9) - (960./9 * mQ + 136./9) - J * (-960./9 * mQ - 272./9 - 6./9 * xi) + 
+        II * (-(72./9 * mQ - 12./9 - xi) + (-54./9 * mQ - 18./9) * Logxi))) +
+
+      a11 * a11 * (-(144./9 * mQ - 12./9) - II * (108./9 * mQ + 36./9) - J * (-144./9 * mQ + 24./9 + 18./9 * xi) ) * Lmu + 
+      a11 * a11 * (-J * (-108./9 * mQ - 36./9) - (108./9 * mQ + 18./9)) * Lmu2 + 
+      a11 * beta0 * ( - K * (-54./9 * mQ - 18./9) - (960./9 * mQ + 136./9) - J * (-960./9 * mQ - 272./9 - 6./9 * xi) + 
+        II * (-(72./9 * mQ - 12./9 - xi) + (-54./9 * mQ - 18./9) * Logxi)) + 
+ 
+      Lmu2 * (a10 * a11 * (-(-216./9 * mQ - 36./9) - J * (216./9 * mQ + 72./9)) + 
+            a11 * beta0 * (- J * (-108./9 * mQ - 36./9) - (108./9 * mQ + 18./9))) +
+
+      Lmu * ( a21 *(-(-216./9 * mQ - 36./9) - J * (216./9 * mQ + 72./9) )+ 
+              a10 * a11 * (-II * (-216./9 * mQ - 72./9) - (-288./9 * mQ + 24./9) - J * (288./9 * mQ - 48./9 - 36./9 * xi) + 
+              a11 * beta0 * ( - (144./9 * mQ - 12./9) - II * (108./9 * mQ + 36./9) - J * (-144./9 * mQ + 24./9 + 18./9 * xi)))) ;
+  	
+		
+	
+	return tmp/(12 * M_PI * mQ * (4 + xi) * x) ;
+	 
+}
+
+//____________________________________________________________
+
+double CLm_ps3_highenergyNLL(double x, double mQ, double mMu, int nf) {
+	
+	return CF/CA*CLm_g3_highenergyNLL(x,mQ,mMu,nf);
+	
+}
+
+//______________________________________________________________
+
 double C2m_g3_highenergy_highscaleNLL(double x, double mQ, double mMu, int nf) {
 	
 	if(x>1 || x<0) return 0; 

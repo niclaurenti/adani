@@ -23,6 +23,8 @@ double C2m_g3_highenergyLL(double x, double mQ, double mMu);
 double C2m_g3_highenergyNLL(double x, double mQ, double mMu,int nf);//NLL=LL+NLL TODO: change it
 double C2m_ps3_highenergyLL(double x, double mQ, double mMu);
 double C2m_ps3_highenergyNLL(double x, double mQ, double mMu,int nf);
+double CLm_g3_highenergyNLL(double x, double mQ, double mMu, int nf);
+double CLm_ps3_highenergyNLL(double x, double mQ, double mMu, int nf);
 
 
 double C2m_g3_highenergy_highscaleLL(double x, double mQ, double mMu);
