@@ -75,6 +75,22 @@ double C2m_ps3_asymptoticNLL(double x, double mQ, double mMu, int nf) {
 
 //_____________________________________________________________
 
+double CLm_g3_asymptoticNLL(double x, double mQ, double mMu, int nf) {
+	
+	return CLm_g3_highscale(x,mQ,mMu,nf) + CLm_g3_power_termsNLL(x,mQ,mMu,nf);
+	
+}
+
+//_____________________________________________________________
+
+double CLm_ps3_asymptoticNLL(double x, double mQ, double mMu, int nf) {
+	
+	return CLm_ps3_highscale(x,mQ,mMu,nf) + CLm_ps3_power_termsNLL(x,mQ,mMu,nf);
+	
+}
+
+//_____________________________________________________________
+
 
 
 

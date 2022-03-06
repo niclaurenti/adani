@@ -361,11 +361,11 @@ double D2m_g3_highscale(double x, double mQ, double mMu, int nf, int v) {
   const double H01111   = Hr5[241];
   const double H11111   = Hr5[242];
   
-  delete Hr1;
-	delete Hr2;
-	delete Hr3;
-	delete Hr4;
-	delete Hr5;
+  delete[] Hr1;
+	delete[] Hr2;
+	delete[] Hr3;
+	delete[] Hr4;
+	delete[] Hr5;
 	
 	 return
        (+ Lmmu2 * (  - 8./9 + 64./9*x - 64./9*x2 - 8./9*H0
@@ -1830,11 +1830,11 @@ double D2m_ps3_highscale(double x, double mQ, double mMu, int nf) {
   double Li_412 = Hr4[67]; //Li_4=H_{0,0,0,1}
 	double Li_512 = Hr5[202]; //Li_5=H_{0,0,0,0,1}
   
-  delete Hr1;
-	delete Hr2;
-	delete Hr3;
-	delete Hr4;
-	delete Hr5;
+  delete[] Hr1;
+	delete[] Hr2;
+	delete[] Hr3;
+	delete[] Hr4;
+	delete[] Hr5;
 
 	
 	double B_4 = -4*z2*ln2*ln2 + 2./3*ln2*ln2*ln2*ln2 - 13./2 * z4 + 16 * Li_412 ;
@@ -2885,11 +2885,11 @@ double D2m_ps3_highscaleVogt(double x, double mQ, double mMu, int nf, int v) {
   const double H00111   = Hr5[238];
   const double H01111   = Hr5[241];
   
-  delete Hr1;
-	delete Hr2;
-	delete Hr3;
-	delete Hr4;
-	delete Hr5;
+  delete[] Hr1;
+	delete[] Hr2;
+	delete[] Hr3;
+	delete[] Hr4;
+	delete[] Hr5;
 	
 	double aQqPS30 ;	
 	
@@ -3544,11 +3544,11 @@ double CLm_ps3_highscale(double x, double mQ, double mMu, int nf) {
   //weight 4
   const double H0001   = Hr4[67];	
   
-  delete Hr1;
-	delete Hr2;
-	delete Hr3;
-	delete Hr4;
-	delete Hr5;
+  delete[] Hr1;
+	delete[] Hr2;
+	delete[] Hr3;
+	delete[] Hr4;
+	delete[] Hr5;
 	
 	return 
 	 (CF * CF * TR * ( -8./3 * (5 * z + 2) * H0 * H0 * H0 - 8.
@@ -3675,11 +3675,11 @@ double CLm_g3_highscale(double x, double mQ, double mMu, int nf) {
   const double H0011   = Hr4[76];
   const double H0111   = Hr4[79];
   
-  delete Hr1;
-	delete Hr2;
-	delete Hr3;
-	delete Hr4;
-	delete Hr5;
+  delete[] Hr1;
+	delete[] Hr2;
+	delete[] Hr3;
+	delete[] Hr4;
+	delete[] Hr5;
 	
 	return
 		( -TR * TR * TR * 256./9 * (z - 1) * z * L_M2 
