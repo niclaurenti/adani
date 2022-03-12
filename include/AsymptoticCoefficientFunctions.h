@@ -8,6 +8,7 @@ double C2m_ps2_asymptotic(double x, double mQ, double mMu);
 
 double CLm_g1_asymptotic(double x, double mQ);
 double CLm_g2_asymptotic(double x, double mQ, double mMu);
+double CLm_ps2_asymptotic(double x, double mQ, double mMu);
 //double CLm_g2_asymptoticV2(double x, double mQ, double mMu);
 
 double C2m_g3_asymptoticLL(double x, double mQ, double mMu, int nf, int v);
