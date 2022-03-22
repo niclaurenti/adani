@@ -173,11 +173,11 @@ double CLm_g2_approximation(double x, double mQ, double mMu, double A, double B,
 		CLm_g2_threshold(x,mQ,1)*damp_thr;	
 	
 	double pi2=M_PI*M_PI;
-  CmL2bargNC cm_log(1./(1+4*mQ));
+  	CmL2bargNC cm_log(1./(1+4*mQ));
   
-  double C_log;
+  	double C_log;
   
-  C_log = cm_log.Regular(x*(1+4*mQ))/16/pi2;
+  	C_log = cm_log.Regular(x*(1+4*mQ))/16/pi2;
 	
 	return C_const + C_log * log(1/mMu);
 
@@ -187,48 +187,10 @@ double CLm_g2_approximation(double x, double mQ, double mMu, double A, double B,
 
 double CLm_g2_approximation(double x, double mQ, double mMu) {
 	
-	double a=2.5, b=5;	
-	double A=1.7, B=2.5, C=2.5, D=1.2;
+	double a=2.5, b=5;
+    double A=20., B=11., D=2., C=3.;
 	
 	return CLm_g2_approximation(x, mQ, mMu, A, B, C, D, a, b);
-
-}
-
-//_________________________________________________________________
-
-double CLm_ps2_approximation(double x, double mQ, double mMu) {
-	
-	double xmax=1/(1+4*mQ);	
-	
-	if(x>xmax || x<=0) return 0 ;
-
-	double a=2.5, b=5;	
-	double A=1.7, B=2.5, C=2.5, D=1.2;
-	
-	double xi=1./mQ;
-	
-	double eta;
-	
-	eta=0.25/mQ*(1-x)/x - 1;
-	
-	double h = A + (B-A)/(1+exp(a*(log(xi)-b)));
-	double k = C + (D-C)/(1+exp(a*(log(xi)-b)));
-	
-	double damp_thr=1/(1+pow(eta/h,k));
-	double damp_asy=1-damp_thr;
-	
-	double C_const= 
-		CLm_g2_asymptotic(x,mQ,1)*damp_asy + 
-		0.*damp_thr;	
-	
-	double pi2=M_PI*M_PI;
-  CmL2barpsNC cm_log(1./(1+4*mQ));
-  
-  double C_log;
-  
-  C_log = cm_log.Regular(x*(1+4*mQ))/16/pi2;
-	
-	return C_const + C_log * log(1/mMu);
 
 }
 
@@ -322,8 +284,8 @@ double C2m_ps2_approximation(double x, double mQ, double mMu, double A, double B
 
 double C2m_ps2_approximation(double x, double mQ, double mMu) {
 	
-	double a=2.5, b=5;	
-	double A=1.7, B=2.5, C=2.5, D=1.2;
+	double a=2.5, b=5;
+    double A=20., B=11., D=2., C=3.;
 	
 	return C2m_ps2_approximation(x, mQ, mMu, A, B, C, D, a, b);
 
@@ -737,7 +699,7 @@ double C2m_ps30_approximation(double x, double mQ, double mMu, int nf) {
 double CLm_g30_approximation(double x, double mQ, double mMu, int nf) {
 
 	double a=2.5, b=5;	
-	double A=0.3, B=2.5, C=2.5, D=1.2;
+	double A=20., B=11., D=2., C=3.;
 	
 	double xmax=1/(1+4*mQ);	
 	
@@ -765,7 +727,7 @@ double CLm_g30_approximation(double x, double mQ, double mMu, int nf) {
 double CLm_ps30_approximation(double x, double mQ, double mMu, int nf) {
 
 	double a=2.5, b=5;	
-	double A=0.3, B=2.5, C=2.5, D=1.2;
+	double A=20., B=11., D=2., C=3.;
 	
 	double xmax=1/(1+4*mQ);	
 	
