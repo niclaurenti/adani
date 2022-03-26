@@ -31,7 +31,6 @@ double C2m_g1_threshold(double x, double mQ) {
 
 //__________________________________________________________
 
-
 double C2m_g2_threshold(double x, double mQ, double mMu) {
 
   double xmax=1/(1+4*mQ);
@@ -58,7 +57,6 @@ double C2m_g2_threshold(double x, double mQ, double mMu) {
   return C2m_g1(x,mQ)/4/M_PI*(C_log2b*log2b + C_logb*logb + C_fracb/beta + C_const);
 
 }//in order to pass to Vogt normalization multiply mQ*M_PI*x and put mu^2=Q^2+4m^2
-
 
 //_________________________________________________________
 
@@ -88,7 +86,6 @@ double CLm_g2_threshold(double x, double mQ, double mMu) {
   return CLm_g1(x,mQ)/4/M_PI*(C_log2b*log2b + C_logb*logb + C_fracb/beta + C_const);
 
 }//in order to pass to Vogt normalization multiply mQ*M_PI*x and put mu^2=Q^2+4m^2
-
 
 //_________________________________________________________
 
@@ -153,10 +150,6 @@ double C2m_g3_threshold(double x, double mQ, double mMu, int nf) {
   return C2m_g1(x,mQ)/pi2/16.*(c_log4*l4 + c_log3*l3 + c_log2*l2 + c_log*l + c_fracbeta/beta + c_fracbeta2/beta/beta + c_const);
 
 }
-
-
-//_________________________________________________
-
 
 //_________________________________________________________
 
