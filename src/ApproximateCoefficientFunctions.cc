@@ -103,6 +103,16 @@ double CLm_g1_approximation(double x, double mQ) {
 
 //_________________________________________________________________
 
+double C2m_g2_approximation(double x, double mQ, double mMu) {
+	
+	double a=2.5, b=5;	
+	double A=1.7, B=2.5, C=2.5, D=1.2;
+	
+	return C2m_g2_approximation(x, mQ, mMu, A, B, C, D, a, b);
+
+}
+
+//_________________________________________________________________
 
 double C2m_g2_approximation(double x, double mQ, double mMu, double A, double B, double C, double D, double a, double b) {
 	
@@ -138,64 +148,6 @@ double C2m_g2_approximation(double x, double mQ, double mMu, double A, double B,
 }
 
 //_________________________________________________________________
-
-double C2m_g2_approximation(double x, double mQ, double mMu) {
-	
-	double a=2.5, b=5;	
-	double A=1.7, B=2.5, C=2.5, D=1.2;
-	
-	return C2m_g2_approximation(x, mQ, mMu, A, B, C, D, a, b);
-
-}
-
-//_________________________________________________________________
-
-double CLm_g2_approximation(double x, double mQ, double mMu, double A, double B, double C, double D, double a, double b) {
-	
-	double xmax=1/(1+4*mQ);	
-	
-	if(x>xmax || x<=0) return 0 ;
-	
-	double xi=1./mQ;
-	
-	double eta;
-	
-	eta=0.25/mQ*(1-x)/x - 1;
-	
-	double h = A + (B-A)/(1+exp(a*(log(xi)-b)));
-	double k = C + (D-C)/(1+exp(a*(log(xi)-b)));
-	
-	double damp_thr=1/(1+pow(eta/h,k));
-	double damp_asy=1-damp_thr;
-	
-	double C_const= 
-		CLm_g2_asymptotic(x,mQ,1)*damp_asy + 
-		CLm_g2_threshold(x,mQ,1)*damp_thr;	
-	
-	double pi2=M_PI*M_PI;
-  	CmL2bargNC cm_log(1./(1+4*mQ));
-  
-  	double C_log;
-  
-  	C_log = cm_log.Regular(x*(1+4*mQ))/16/pi2;
-	
-	return C_const + C_log * log(1/mMu);
-
-}
-
-//_________________________________________________________________
-
-double CLm_g2_approximation(double x, double mQ, double mMu) {
-	
-	double a=2.5, b=5;
-    double A=20., B=11., D=2., C=3.;
-	
-	return CLm_g2_approximation(x, mQ, mMu, A, B, C, D, a, b);
-
-}
-
-//_________________________________________________________________
-
 
 double C2m_g2_approximation_BAND(double x, double mQ, double mMu, double var, double fact, int v) {
 	
@@ -243,9 +195,18 @@ double C2m_g2_approximation_BAND(double x, double mQ, double mMu, double var, do
 
 }
 
-
 //_________________________________________________________________
 
+double C2m_ps2_approximation(double x, double mQ, double mMu) {
+	
+	double a=2.5, b=5;
+    double A=20., B=11., D=2., C=3.;
+	
+	return C2m_ps2_approximation(x, mQ, mMu, A, B, C, D, a, b);
+
+}
+
+//_________________________________________________________________
 
 double C2m_ps2_approximation(double x, double mQ, double mMu, double A, double B, double C, double D, double a, double b) {
 	
@@ -280,14 +241,60 @@ double C2m_ps2_approximation(double x, double mQ, double mMu, double A, double B
 
 }
 
-//_________________________________________________________________
+//_______________________________________________________________
 
-double C2m_ps2_approximation(double x, double mQ, double mMu) {
+double CLm_g2_approximation(double x, double mQ, double mMu) {
 	
 	double a=2.5, b=5;
     double A=20., B=11., D=2., C=3.;
 	
-	return C2m_ps2_approximation(x, mQ, mMu, A, B, C, D, a, b);
+	return CLm_g2_approximation(x, mQ, mMu, A, B, C, D, a, b);
+
+}
+
+//_________________________________________________________________
+
+double CLm_g2_approximation(double x, double mQ, double mMu, double A, double B, double C, double D, double a, double b) {
+	
+	double xmax=1/(1+4*mQ);	
+	
+	if(x>xmax || x<=0) return 0 ;
+	
+	double xi=1./mQ;
+	
+	double eta;
+	
+	eta=0.25/mQ*(1-x)/x - 1;
+	
+	double h = A + (B-A)/(1+exp(a*(log(xi)-b)));
+	double k = C + (D-C)/(1+exp(a*(log(xi)-b)));
+	
+	double damp_thr=1/(1+pow(eta/h,k));
+	double damp_asy=1-damp_thr;
+	
+	double C_const= 
+		CLm_g2_asymptotic(x,mQ,1)*damp_asy + 
+		CLm_g2_threshold(x,mQ,1)*damp_thr;	
+	
+	double pi2=M_PI*M_PI;
+  	CmL2bargNC cm_log(1./(1+4*mQ));
+  
+  	double C_log;
+  
+  	C_log = cm_log.Regular(x*(1+4*mQ))/16/pi2;
+	
+	return C_const + C_log * log(1/mMu);
+
+}
+
+//_________________________________________________________________
+
+double CLm_ps2_approximation(double x, double mQ, double mMu) {
+	
+	double a=2.5, b=5;	
+	double A=1.7, B=2.5, C=2.5, D=1.2;
+	
+	return CLm_ps2_approximation(x, mQ, mMu, A, B, C, D, a, b);
 
 }
 
@@ -328,14 +335,194 @@ double CLm_ps2_approximation(double x, double mQ, double mMu, double A, double B
 
 //_________________________________________________________________
 
-double CLm_ps2_approximation(double x, double mQ, double mMu) {
-	
+double C2m_g30_approximation(double x, double mQ, double mMu, int nf) {
+
 	double a=2.5, b=5;	
-	double A=1.7, B=2.5, C=2.5, D=1.2;
+	double A=0.3, B=2.5, C=2.5, D=1.2;
+	int v1=0, v2=0;
 	
-	return CLm_ps2_approximation(x, mQ, mMu, A, B, C, D, a, b);
+	double xmax=1/(1+4*mQ);	
+	
+	double xi=1./mQ;
+	
+	double eta;
+	
+	if(x<xmax && x>0) eta=0.25/mQ*(1-x)/x - 1;
+	else eta=0;
+	
+	double h=A + (B-A)/(1+exp(a*(log(xi)-b)));
+	double k=C + (D-C)/(1+exp(a*(log(xi)-b)));
+	
+	double damp_thr=1/(1+pow(eta/h,k));
+	double damp_asy=1-damp_thr;
+	
+	return C2m_g3_asymptoticNLL(x,mQ,1,nf,v1,v2)*damp_asy + 
+		     C2m_g3_threshold(x,mQ,1,nf)*damp_thr;	
+	
 
 }
+
+//_________________________________________________________________
+
+double C2m_g30_approximation(double x, double mQ, double mMu, int nf, double A, double B, double C, double D, double a, double b, int v1,int v2) {
+	
+	double xmax=1/(1+4*mQ);	
+	
+	double xi=1./mQ;
+	
+	double eta;
+	
+	if(x<xmax && x>0) eta=0.25/mQ*(1-x)/x - 1;
+	else eta=0;
+	
+	double h=A + (B-A)/(1+exp(a*(log(xi)-b)));
+	double k=C + (D-C)/(1+exp(a*(log(xi)-b)));
+	
+	double damp_thr=1/(1+pow(eta/h,k));
+	double damp_asy=1-damp_thr;
+	
+	return C2m_g3_asymptoticNLL(x,mQ,1,nf,v1,v2)*damp_asy + 
+		     C2m_g3_threshold(x,mQ,1,nf)*damp_thr;	
+	
+
+}
+
+//_________________________________________________________________
+
+double C2m_g30_approximation_BAND(double x, double mQ, double mMu, int nf, double var, double fact, int v) {
+	
+	double a=2.5, b=5;	
+	double A=0.3, B=2.5, C=2.5, D=1.2;
+	
+	double Cavg=C2m_g30_approximation(x,mQ,mMu,nf,A,B,C,D,a,b,0,0);
+	
+	if(v==0) return Cavg;
+	
+	double Amax=fact*A, Amin=A/fact, Bmax=B*fact, Bmin=B/fact;
+	double Cmax=(1+var)*C, Cmin=(1-var)*C, Dmax=(1+var)*D, Dmin=(1-var)*D;
+	
+	double Cerr[14];
+	
+	double min=Cavg,max=Cavg;
+	int i;
+	
+	Cerr[0]=C2m_g30_approximation(x,mQ,mMu,nf,Amax,B,C,D,a,b,0,0);
+	Cerr[1]=C2m_g30_approximation(x,mQ,mMu,nf,Amin,B,C,D,a,b,0,0);
+	Cerr[2]=C2m_g30_approximation(x,mQ,mMu,nf,A,Bmax,C,D,a,b,0,0);
+	Cerr[3]=C2m_g30_approximation(x,mQ,mMu,nf,A,Bmin,C,D,a,b,0,0);
+	Cerr[4]=C2m_g30_approximation(x,mQ,mMu,nf,A,B,Cmax,D,a,b,0,0);
+	Cerr[5]=C2m_g30_approximation(x,mQ,mMu,nf,A,B,Cmin,D,a,b,0,0);
+	Cerr[6]=C2m_g30_approximation(x,mQ,mMu,nf,A,B,C,Dmax,a,b,0,0);
+	Cerr[7]=C2m_g30_approximation(x,mQ,mMu,nf,A,B,C,Dmin,a,b,0,0);
+	Cerr[8]=C2m_g30_approximation(x,mQ,mMu,nf,A,B,C,D,a,b,1,0);
+	Cerr[9]=C2m_g30_approximation(x,mQ,mMu,nf,A,B,C,D,a,b,2,0);
+	Cerr[10]=C2m_g30_approximation(x,mQ,mMu,nf,A,B,C,D,a,b,0,1);
+	Cerr[11]=C2m_g30_approximation(x,mQ,mMu,nf,A,B,C,D,a,b,0,2);
+	Cerr[12]=C2m_g30_approximation(x,mQ,mMu,nf,Amax,Bmax,Cmax,Dmax,a, b,1,1);
+	Cerr[13]=C2m_g30_approximation(x,mQ,mMu,nf,Amin,Bmin, Cmin,Dmin,a,b,2,2);
+	
+	for(i=0;i<14;i++) {
+		if(Cerr[i]>max) max=Cerr[i];
+	}
+	
+	for(i=0;i<14;i++) {
+		if(Cerr[i]<min) min=Cerr[i];
+	}
+	
+	if(v==1) return max;
+	if(v==2) return min;
+	
+	else {
+	 cout<<"Choose either v=0 or v=1 or v=2!!\nExiting!!\n"<<endl;
+	 exit(-1);
+	}
+	
+}
+
+//_________________________________________________________________
+
+double C2m_ps30_approximation(double x, double mQ, double mMu, int nf) {
+
+	double a=2.5, b=5;	
+	double A=0.3, B=2.5, C=2.5, D=1.2;
+	
+	double xmax=1/(1+4*mQ);	
+	
+	double xi=1./mQ;
+	
+	double eta;
+	
+	if(x<xmax && x>0) eta=0.25/mQ*(1-x)/x - 1;
+	else eta=0;
+	
+	double h= A + (B-A)/(1+exp(a*(log(xi)-b)));
+	double k= C + (D-C)/(1+exp(a*(log(xi)-b)));
+	
+	double damp_thr=1/(1+pow(eta/h,k));
+	double damp_asy=1-damp_thr;
+	
+	return C2m_ps3_asymptoticNLL(x,mQ,1,nf)*damp_asy + 
+		     0*damp_thr ;	
+
+}
+
+
+//_________________________________________________________________
+
+double CLm_g30_approximation(double x, double mQ, double mMu, int nf) {
+
+	double a=2.5, b=5;	
+	double A=20., B=11., D=2., C=3.;
+	
+	double xmax=1/(1+4*mQ);	
+	
+	double xi=1./mQ;
+	
+	double eta;
+	
+	if(x<xmax && x>0) eta=0.25/mQ*(1-x)/x - 1;
+	else eta=0;
+	
+	double h=A + (B-A)/(1+exp(a*(log(xi)-b)));
+	double k=C + (D-C)/(1+exp(a*(log(xi)-b)));
+	
+	double damp_thr=1/(1+pow(eta/h,k));
+	double damp_asy=1-damp_thr;
+	
+	return CLm_g3_asymptoticNLL(x,mQ,1,nf)*damp_asy + 
+		     CLm_g3_threshold(x,mQ,1,nf)*damp_thr;	
+	
+
+}
+
+//_________________________________________________________________
+
+double CLm_ps30_approximation(double x, double mQ, double mMu, int nf) {
+
+	double a=2.5, b=5;	
+	double A=20., B=11., D=2., C=3.;
+	
+	double xmax=1/(1+4*mQ);	
+	
+	double xi=1./mQ;
+	
+	double eta;
+	
+	if(x<xmax && x>0) eta=0.25/mQ*(1-x)/x - 1;
+	else eta=0;
+	
+	double h= A + (B-A)/(1+exp(a*(log(xi)-b)));
+	double k= C + (D-C)/(1+exp(a*(log(xi)-b)));
+	
+	double damp_thr=1/(1+pow(eta/h,k));
+	double damp_asy=1-damp_thr;
+	
+	return CLm_ps3_asymptoticNLL(x,mQ,1,nf)*damp_asy + 
+		     0*damp_thr ;	
+
+}
+
+
 
 //_________________________________________________________________
 
@@ -614,197 +801,6 @@ double C2m_g30_approximationBlowxi_vogt(double x, double mQ, double mMu, int nf)
 
 //_________________________________________________________________
 
-double C2m_g30_approximation(double x, double mQ, double mMu, int nf, double A, double B, double C, double D, double a, double b, int v1,int v2) {
-	
-	double xmax=1/(1+4*mQ);	
-	
-	double xi=1./mQ;
-	
-	double eta;
-	
-	if(x<xmax && x>0) eta=0.25/mQ*(1-x)/x - 1;
-	else eta=0;
-	
-	double h=A + (B-A)/(1+exp(a*(log(xi)-b)));
-	double k=C + (D-C)/(1+exp(a*(log(xi)-b)));
-	
-	double damp_thr=1/(1+pow(eta/h,k));
-	double damp_asy=1-damp_thr;
-	
-	return C2m_g3_asymptoticNLL(x,mQ,1,nf,v1,v2)*damp_asy + 
-		     C2m_g3_threshold(x,mQ,1,nf)*damp_thr;	
-	
-
-}
-
-//_________________________________________________________________
-
-double C2m_g30_approximation(double x, double mQ, double mMu, int nf) {
-
-	double a=2.5, b=5;	
-	double A=0.3, B=2.5, C=2.5, D=1.2;
-	int v1=0, v2=0;
-	
-	double xmax=1/(1+4*mQ);	
-	
-	double xi=1./mQ;
-	
-	double eta;
-	
-	if(x<xmax && x>0) eta=0.25/mQ*(1-x)/x - 1;
-	else eta=0;
-	
-	double h=A + (B-A)/(1+exp(a*(log(xi)-b)));
-	double k=C + (D-C)/(1+exp(a*(log(xi)-b)));
-	
-	double damp_thr=1/(1+pow(eta/h,k));
-	double damp_asy=1-damp_thr;
-	
-	return C2m_g3_asymptoticNLL(x,mQ,1,nf,v1,v2)*damp_asy + 
-		     C2m_g3_threshold(x,mQ,1,nf)*damp_thr;	
-	
-
-}
-
-//_________________________________________________________________
-
-double C2m_ps30_approximation(double x, double mQ, double mMu, int nf) {
-
-	double a=2.5, b=5;	
-	double A=0.3, B=2.5, C=2.5, D=1.2;
-	
-	double xmax=1/(1+4*mQ);	
-	
-	double xi=1./mQ;
-	
-	double eta;
-	
-	if(x<xmax && x>0) eta=0.25/mQ*(1-x)/x - 1;
-	else eta=0;
-	
-	double h= A + (B-A)/(1+exp(a*(log(xi)-b)));
-	double k= C + (D-C)/(1+exp(a*(log(xi)-b)));
-	
-	double damp_thr=1/(1+pow(eta/h,k));
-	double damp_asy=1-damp_thr;
-	
-	return C2m_ps3_asymptoticNLL(x,mQ,1,nf)*damp_asy + 
-		     0*damp_thr ;	
-
-}
-
-
-//_________________________________________________________________
-
-double CLm_g30_approximation(double x, double mQ, double mMu, int nf) {
-
-	double a=2.5, b=5;	
-	double A=20., B=11., D=2., C=3.;
-	
-	double xmax=1/(1+4*mQ);	
-	
-	double xi=1./mQ;
-	
-	double eta;
-	
-	if(x<xmax && x>0) eta=0.25/mQ*(1-x)/x - 1;
-	else eta=0;
-	
-	double h=A + (B-A)/(1+exp(a*(log(xi)-b)));
-	double k=C + (D-C)/(1+exp(a*(log(xi)-b)));
-	
-	double damp_thr=1/(1+pow(eta/h,k));
-	double damp_asy=1-damp_thr;
-	
-	return CLm_g3_asymptoticNLL(x,mQ,1,nf)*damp_asy + 
-		     CLm_g3_threshold(x,mQ,1,nf)*damp_thr;	
-	
-
-}
-
-//_________________________________________________________________
-
-double CLm_ps30_approximation(double x, double mQ, double mMu, int nf) {
-
-	double a=2.5, b=5;	
-	double A=20., B=11., D=2., C=3.;
-	
-	double xmax=1/(1+4*mQ);	
-	
-	double xi=1./mQ;
-	
-	double eta;
-	
-	if(x<xmax && x>0) eta=0.25/mQ*(1-x)/x - 1;
-	else eta=0;
-	
-	double h= A + (B-A)/(1+exp(a*(log(xi)-b)));
-	double k= C + (D-C)/(1+exp(a*(log(xi)-b)));
-	
-	double damp_thr=1/(1+pow(eta/h,k));
-	double damp_asy=1-damp_thr;
-	
-	return CLm_ps3_asymptoticNLL(x,mQ,1,nf)*damp_asy + 
-		     0*damp_thr ;	
-
-}
-
-
-//_________________________________________________________________
-
-double C2m_g30_approximation_BAND(double x, double mQ, double mMu, int nf, double var, double fact, int v) {
-	
-	double a=2.5, b=5;	
-	double A=0.3, B=2.5, C=2.5, D=1.2;
-	
-	double Cavg=C2m_g30_approximation(x,mQ,mMu,nf,A,B,C,D,a,b,0,0);
-	
-	if(v==0) return Cavg;
-	
-	double Amax=fact*A, Amin=A/fact, Bmax=B*fact, Bmin=B/fact;
-	double Cmax=(1+var)*C, Cmin=(1-var)*C, Dmax=(1+var)*D, Dmin=(1-var)*D;
-	
-	double Cerr[14];
-	
-	double min=Cavg,max=Cavg;
-	int i;
-	
-	Cerr[0]=C2m_g30_approximation(x,mQ,mMu,nf,Amax,B,C,D,a,b,0,0);
-	Cerr[1]=C2m_g30_approximation(x,mQ,mMu,nf,Amin,B,C,D,a,b,0,0);
-	Cerr[2]=C2m_g30_approximation(x,mQ,mMu,nf,A,Bmax,C,D,a,b,0,0);
-	Cerr[3]=C2m_g30_approximation(x,mQ,mMu,nf,A,Bmin,C,D,a,b,0,0);
-	Cerr[4]=C2m_g30_approximation(x,mQ,mMu,nf,A,B,Cmax,D,a,b,0,0);
-	Cerr[5]=C2m_g30_approximation(x,mQ,mMu,nf,A,B,Cmin,D,a,b,0,0);
-	Cerr[6]=C2m_g30_approximation(x,mQ,mMu,nf,A,B,C,Dmax,a,b,0,0);
-	Cerr[7]=C2m_g30_approximation(x,mQ,mMu,nf,A,B,C,Dmin,a,b,0,0);
-	Cerr[8]=C2m_g30_approximation(x,mQ,mMu,nf,A,B,C,D,a,b,1,0);
-	Cerr[9]=C2m_g30_approximation(x,mQ,mMu,nf,A,B,C,D,a,b,2,0);
-	Cerr[10]=C2m_g30_approximation(x,mQ,mMu,nf,A,B,C,D,a,b,0,1);
-	Cerr[11]=C2m_g30_approximation(x,mQ,mMu,nf,A,B,C,D,a,b,0,2);
-	Cerr[12]=C2m_g30_approximation(x,mQ,mMu,nf,Amax,Bmax,Cmax,Dmax,a, b,1,1);
-	Cerr[13]=C2m_g30_approximation(x,mQ,mMu,nf,Amin,Bmin, Cmin,Dmin,a,b,2,2);
-	
-	for(i=0;i<14;i++) {
-		if(Cerr[i]>max) max=Cerr[i];
-	}
-	
-	for(i=0;i<14;i++) {
-		if(Cerr[i]<min) min=Cerr[i];
-	}
-	
-	if(v==1) return max;
-	if(v==2) return min;
-	
-	else {
-	 cout<<"Choose either v=0 or v=1 or v=2!!\nExiting!!\n"<<endl;
-	 exit(-1);
-	}
-	
-}
-
-//_________________________________________________________________
-
-
 double C2m_ps30_approximationA_vogt(double x, double mQ, double mMu, int nf) {
 	
 	double x_max=1/(1+4*mQ);	
@@ -861,8 +857,6 @@ double C2m_ps30_approximationB_vogt(double x, double mQ, double mMu, int nf) {
 
 
 }
-
-
 
 //_________________________________________________________________
 
