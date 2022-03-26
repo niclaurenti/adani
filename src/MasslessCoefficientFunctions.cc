@@ -47,32 +47,8 @@ double C2_g2(double x, int nf) {
   
 }
 
-//___________________________________________________________
-
-double CL_g2(double x, int nf) {
-
-	if (x>1 || x<0) return 0;
-	
-	double pi2 = M_PI * M_PI;  
-	
-	double L0 = log(x);
-	double L02 = L0 * L0;
-	
-	double x1= 1 - x ;	
-	double L1 = log(x1) ;
-	double L12 = L1 * L1 ;
-	
-	double tmp = 
-		(94.74 - 49.2 * x) * x1 * L12 + 864.8 * x1 * L1 + 1161 
-		* x * L1 * L0 + 60.06 * x * L02 + 39.66 * x1 * L0 - 5.333
-		* (1./x - 1) ;
-	
-	return nf * tmp/16./pi2;
-
-}
-	
-
 //____________________________________________________________
+
 double C2_ps2(double x, int nf) {
 
 	if (x>1 || x<0) return 0;
@@ -97,6 +73,30 @@ double C2_ps2(double x, int nf) {
 
 //___________________________________________________________
 
+double CL_g2(double x, int nf) {
+
+	if (x>1 || x<0) return 0;
+	
+	double pi2 = M_PI * M_PI;  
+	
+	double L0 = log(x);
+	double L02 = L0 * L0;
+	
+	double x1= 1 - x ;	
+	double L1 = log(x1) ;
+	double L12 = L1 * L1 ;
+	
+	double tmp = 
+		(94.74 - 49.2 * x) * x1 * L12 + 864.8 * x1 * L1 + 1161 
+		* x * L1 * L0 + 60.06 * x * L02 + 39.66 * x1 * L0 - 5.333
+		* (1./x - 1) ;
+	
+	return nf * tmp/16./pi2;
+
+}
+
+//___________________________________________________________
+
 double CL_ps2(double x, int nf) {
 
 	if (x>1 || x<0) return 0;
@@ -116,8 +116,7 @@ double CL_ps2(double x, int nf) {
 	
 	return tmp/16./pi2;
 
-}
-	
+}	
 
 //____________________________________________________________
 //N3LO => O(\alpha_s^3)
@@ -193,6 +192,58 @@ double C2_g3(double x, int nf) {//remember that there is a delta(x1) that has be
   
 }
 
+//_________________________________________________________
+
+
+double C2_ps3(double x, int nf) {//remember that there is a delta(x1) that has been omitted
+
+  if(x<0 || x>1) return 0;
+	
+	double fl_ps_11=0; //we are considering heavy-quark production
+    
+  double x2=x*x;
+    
+  double x1=1-x;
+  double L0=log(x);
+  double L1=log(x1);
+    
+  double L02=L0*L0;
+  double L03=L02*L0;
+  double L04=L03*L0;
+  double L05=L04*L0;
+    
+  double L12=L1*L1;
+  double L13=L12*L1;
+  double L14=L13*L1;
+    
+  double pi3=M_PI*M_PI*M_PI;
+
+	double c_nf =  
+		(856./81 * L14 - 6032./81 * L13 + 130.57 * L12 - 542 * 
+		L1 + 8501 - 4714 * x + 61.5 * x2) * x1 + L0 * L1 * (8831
+		* L0 + 4162 * x1) - 15.44 * x * L05 + 3333 * x * L02 + 
+		1615 * L0 + 1208 * L02 - 333.73 * L03 + 4244./81 * L04 
+		- 40./9 * L05 - 1./x * (2731.82 * x1 + 414.262 * L0) ;
+	
+	double c_nf2 = 
+		( -64./81 * L13 + 208./81 * L12 + 23.09 * L1 - 220.27 + 59.80
+		* x - 177.6 * x2) * x1 - L0 * L1 * (160.3 * L0 + 135.4 * 
+		x1) - 24.14 * x * L03 - 215.4 * x * L02 - 209.8 * L0 - 90.38
+		* L02 - 3568./243 * L03 - 184./81 * L04 + 40.2426 * x1/x ;
+	
+	double c_fl_nf = 
+		( (126.42 - 50.29 * x - 50.15 * x2) * x1 - 26.717 - 9.075
+		* x * x1 * L1 - x * L02 * (101.8 + 34.79 * L0 + 3.070 * L02) 
+		+ 59.59 * L0 - 320./81 * L02 * (5 + L0) ) * x ;
+	
+	double tmp = c_nf * nf + 
+						   c_nf2 * nf * nf + 
+						   c_fl_nf * fl_ps_11 * nf ;
+	
+	return tmp/(64*pi3) ;
+	
+}
+
 //____________________________________________________________
 
 double CL_g3(double x, int nf) {//remember that there is a delta(x1) that has been omitted
@@ -261,59 +312,7 @@ double CL_g3(double x, int nf) {//remember that there is a delta(x1) that has be
 
 }
 
-//_________________________________________________________
-
-
-double C2_ps3(double x, int nf) {//remember that there is a delta(x1) that has been omitted
-
-  if(x<0 || x>1) return 0;
-	
-	double fl_ps_11=0; //we are considering heavy-quark production
-    
-  double x2=x*x;
-    
-  double x1=1-x;
-  double L0=log(x);
-  double L1=log(x1);
-    
-  double L02=L0*L0;
-  double L03=L02*L0;
-  double L04=L03*L0;
-  double L05=L04*L0;
-    
-  double L12=L1*L1;
-  double L13=L12*L1;
-  double L14=L13*L1;
-    
-  double pi3=M_PI*M_PI*M_PI;
-
-	double c_nf =  
-		(856./81 * L14 - 6032./81 * L13 + 130.57 * L12 - 542 * 
-		L1 + 8501 - 4714 * x + 61.5 * x2) * x1 + L0 * L1 * (8831
-		* L0 + 4162 * x1) - 15.44 * x * L05 + 3333 * x * L02 + 
-		1615 * L0 + 1208 * L02 - 333.73 * L03 + 4244./81 * L04 
-		- 40./9 * L05 - 1./x * (2731.82 * x1 + 414.262 * L0) ;
-	
-	double c_nf2 = 
-		( -64./81 * L13 + 208./81 * L12 + 23.09 * L1 - 220.27 + 59.80
-		* x - 177.6 * x2) * x1 - L0 * L1 * (160.3 * L0 + 135.4 * 
-		x1) - 24.14 * x * L03 - 215.4 * x * L02 - 209.8 * L0 - 90.38
-		* L02 - 3568./243 * L03 - 184./81 * L04 + 40.2426 * x1/x ;
-	
-	double c_fl_nf = 
-		( (126.42 - 50.29 * x - 50.15 * x2) * x1 - 26.717 - 9.075
-		* x * x1 * L1 - x * L02 * (101.8 + 34.79 * L0 + 3.070 * L02) 
-		+ 59.59 * L0 - 320./81 * L02 * (5 + L0) ) * x ;
-	
-	double tmp = c_nf * nf + 
-						   c_nf2 * nf * nf + 
-						   c_fl_nf * fl_ps_11 * nf ;
-	
-	return tmp/(64*pi3) ;
-	
-}
-
-//______________________________________________________________
+//_____________________________________________________________
 
 double CL_ps3(double x, int nf) {//remember that there is a delta(x1) that has been omitted
 
