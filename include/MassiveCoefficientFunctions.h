@@ -9,18 +9,16 @@ double CLm_g1(double x, double mQ);
 
 //massive coeff func of the gluon at first order in alpha_s^[nf+1] in the nf flavor scheme
 double D2m_g1_4(double x, double mQ);
+double DLm_g1_4(double x, double mQ);
 //massive coeff func of the gluon at first order in alpha_s^[nf+1] in the nf+1 flavor scheme
 double D2m_g1_5(double x, double mQ);
-
-
-double DLm_g1_4(double x, double mQ);
 double DLm_g1_5(double x, double mQ);
 
 //NNLO => O(\alpha_s^2)
 double C2m_g2(double x, double mQ, double mMu);//mMu=m^2/mu^2
-double CLm_g2(double x, double mQ, double mMu);
-
 double C2m_ps2(double x, double mQ, double mMu);
+
+double CLm_g2(double x, double mQ, double mMu);
 double CLm_ps2(double x, double mQ, double mMu);
 
 double D2m_g2_4(double x, double mQ, double mMu);

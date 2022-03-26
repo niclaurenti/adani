@@ -103,29 +103,6 @@ double C2m_g2(double x, double mQ, double mMu) {
 
 //________________________________________________________
 
-double CLm_g2(double x, double mQ, double mMu) {
-	
-	double xi=1/mQ;
-	double eta= 0.25*xi*(1-x)/x - 1;
-	
-	double x_max=1./(1+4*mQ);
-  
-  if (x>x_max || x<0) return 0; 
-	
-	if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return __builtin_nan("");
-	
-
-  double pi2=M_PI*M_PI;
-  
-  CmL2gNC cm(1./(1+4*mQ));
-  CmL2bargNC cm_log(1./(1+4*mQ));
-  
-  return ( cm.Regular(x*(1+4*mQ)) + cm_log.Regular(x*(1+4*mQ))*log(1./mMu) )/16./pi2;
-	
-}
-
-//______________________________________________________
-
 double C2m_ps2(double x, double mQ, double mMu) {
 	
 	double xi=1/mQ;
@@ -144,6 +121,29 @@ double C2m_ps2(double x, double mQ, double mMu) {
   Cm22barpsNC cm_log(1./(1+4*mQ));
   
   return (cm.Regular(x*(1+4*mQ)) + cm_log.Regular(x*(1+4*mQ))*log(1./mMu) )/16./pi2;
+	
+}
+
+//______________________________________________________
+
+double CLm_g2(double x, double mQ, double mMu) {
+	
+	double xi=1/mQ;
+	double eta= 0.25*xi*(1-x)/x - 1;
+	
+	double x_max=1./(1+4*mQ);
+  
+  if (x>x_max || x<0) return 0; 
+	
+	if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return __builtin_nan("");
+	
+
+  double pi2=M_PI*M_PI;
+  
+  CmL2gNC cm(1./(1+4*mQ));
+  CmL2bargNC cm_log(1./(1+4*mQ));
+  
+  return ( cm.Regular(x*(1+4*mQ)) + cm_log.Regular(x*(1+4*mQ))*log(1./mMu) )/16./pi2;
 	
 }
 
@@ -171,7 +171,6 @@ double CLm_ps2(double x, double mQ, double mMu) {
 }
 
 //________________________________________________________
-
 
 double D2m_g2_4(double x, double mQ, double mMu) {
 	
