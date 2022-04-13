@@ -200,7 +200,7 @@ double C2m_g2_approximation_BAND(double x, double mQ, double mMu, double var, do
 double C2m_ps2_approximation(double x, double mQ, double mMu) {
 	
 	double a=2.5, b=5;
-    double A=20., B=11., D=2., C=3.;
+	double A=1.7, B=2.5, C=2.5, D=1.2;
 	
 	return C2m_ps2_approximation(x, mQ, mMu, A, B, C, D, a, b);
 
@@ -292,7 +292,7 @@ double CLm_g2_approximation(double x, double mQ, double mMu, double A, double B,
 double CLm_ps2_approximation(double x, double mQ, double mMu) {
 	
 	double a=2.5, b=5;	
-	double A=1.7, B=2.5, C=2.5, D=1.2;
+	double A=20., B=11., D=2., C=3.;
 	
 	return CLm_ps2_approximation(x, mQ, mMu, A, B, C, D, a, b);
 
