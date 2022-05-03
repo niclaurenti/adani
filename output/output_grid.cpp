@@ -10,7 +10,7 @@ using namespace std;
 int main(int argc, char** argv) {
 	
 	if(argc!=4) {
-		cout<< "ERROR!\nUsage: ./output_grid.exe mufrac m channel\nExiting..." <<endl;
+		cout<< "ERROR!\nUsage: ./output_grid.exe mufrac = mu/Q m channel\nExiting..." <<endl;
 		return -1;
 	}
 	

@@ -3,4 +3,4 @@ for channel in "2g" "2q" "Lg" "Lq";
 do
 ./output_grid.exe $1 $2 $channel
 done
-#./output_grid.exe mufrac= mu/Q m filename
+#./output_grid.exe mufrac= mu/Q m channel
