@@ -472,7 +472,7 @@ double C2m_ps30_approximation(double x, double mQ, double mMu, int nf) {
 double CLm_g30_approximation(double x, double mQ, double mMu, int nf) {
 
 	double a=2.5, b=5;	
-	double A=20., B=11., D=2., C=3.;
+	double A=20., B=11., C=3., D=2.;
 	
 	double xmax=1/(1+4*mQ);	
 	
@@ -500,7 +500,7 @@ double CLm_g30_approximation(double x, double mQ, double mMu, int nf) {
 double CLm_ps30_approximation(double x, double mQ, double mMu, int nf) {
 
 	double a=2.5, b=5;	
-	double A=20., B=11., D=2., C=3.;
+	double A=20., B=11., C=3., D=2.;
 	
 	double xmax=1/(1+4*mQ);	
 	
