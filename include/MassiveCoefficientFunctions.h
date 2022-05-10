@@ -27,4 +27,9 @@ double DLm_g2_4(double x, double mQ, double mMu);
 double D2m_g2_5(double x, double mQ, double mMu);
 double DLm_g2_5(double x, double mQ, double mMu);
 
+double C2m_g21(double x, double mQ);
+double CLm_g21(double x, double mQ);
+double C2m_ps21(double x, double mQ);
+double CLm_ps21(double x, double mQ);
+
 #endif

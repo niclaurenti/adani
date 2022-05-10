@@ -4,6 +4,7 @@
 #include "../include/MasslessCoefficientFunctions.h"
 #include "../include/MatchingConditions.h"
 #include "../include/SpecialFunctions.h"
+#include "../include/SplittingFunctions.h"
 #include <cmath>
 //#include <gsl/gsl_integration.h>
 
@@ -196,3 +197,93 @@ double C2_b2_x_K_bg1(double x, double mMu, int nf) {
 
 //____________________________________________________________
 
+double C2m_g1_x_Pgq0(double z, void * p) {
+
+	struct function_params * params = (struct function_params *)p;
+
+	double mQ = (params->mQ);
+	double x = (params->x);
+	//int nf = (params->nf);
+
+	return C2m_g1(z, mQ) * Pgq0(x / z) / z ;
+}
+
+//__________________________________________________________
+
+double CLm_g1_x_Pgq0(double z, void * p) {
+
+	struct function_params * params = (struct function_params *)p;
+
+	double mQ = (params->mQ);
+	double x = (params->x);
+	//int nf = (params->nf);
+
+	return CLm_g1(z, mQ) * Pgq0(x / z) / z;
+}
+
+//______________________________________________________________
+
+double C2m_g1_x_Pgg0_reg(double z, void * p) {
+
+	struct function_params * params = (struct function_params *)p;
+
+	double mQ = (params->mQ);
+	double x = (params->x);
+	//int nf = (params->nf);
+
+	return C2m_g1(z, mQ) * Pgg0reg(x / z) / z;
+}
+
+//__________________________________________________________
+
+double C2m_g1_x_Pgg0_sing(double z, void * p) {
+
+	struct function_params * params = (struct function_params *)p;
+
+	double mQ = (params->mQ);
+	double x = (params->x);
+	//int nf = (params->nf);
+
+	return Pgg0sing(z) * ( C2m_g1(x / z, mQ) / z - C2m_g1(x , mQ) ) ;
+}
+
+//__________________________________________________________
+
+double CLm_g1_x_Pgg0_reg(double z, void * p) {
+
+	struct function_params * params = (struct function_params *)p;
+
+	double mQ = (params->mQ);
+	double x = (params->x);
+	//int nf = (params->nf);
+
+	return CLm_g1(z, mQ) * Pgg0reg(x / z) / z;
+}
+
+//__________________________________________________________
+
+double CLm_g1_x_Pgg0_sing(double z, void * p) {
+
+	struct function_params * params = (struct function_params *)p;
+
+	double mQ = (params->mQ);
+	double x = (params->x);
+	//int nf = (params->nf);
+
+	return Pgg0sing(z) * ( CLm_g1(x / z, mQ) / z - CLm_g1(x , mQ) ) ;
+}
+
+//_________________________________________________________-
+
+double Pgg0sing_int(double z, void * p) {
+
+	struct function_params * params = (struct function_params *)p;
+
+	//double mQ = (params->mQ);
+	//double x = (params->x);
+	//int nf = (params->nf);
+
+	return Pgg0sing(z) ;
+}
+
+//__________________________________________________________

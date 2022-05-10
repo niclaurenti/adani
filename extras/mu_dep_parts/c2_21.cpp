@@ -34,7 +34,7 @@ int main(int argc, char** argv) {
 
     for(x=dx; x<xmax; x+=dx) {
 		//cout << x << "   " << gluon.Regular(x*(1+4*mQ))/ norm << "   " << quark.Regular(x*(1+4*mQ))/ norm << endl;
-        output << x << "   " << gluonF2.Regular(x*(1+4*mQ))/ norm << "   " << quarkF2.Regular(x*(1+4*mQ))/ norm << "   " << gluonFL.Regular(x*(1+4*mQ))/ norm << "   " << quarkFL.Regular(x*(1+4*mQ))/ norm << endl;
+        output << x << "   " << gluonF2.Regular(x*(1+4*mQ))/ norm << "   " << quarkF2.Regular(x*(1+4*mQ))/ norm << "   " << gluonFL.Regular(x*(1+4*mQ))/ norm << "   " << quarkFL.Regular(x*(1+4*mQ))/ norm << "   " << C2m_g21(x, mQ) << "   " <<C2m_ps21(x, mQ)<< "   " << CLm_g21(x, mQ) << "   " <<CLm_ps21(x, mQ) << endl;
 	}
 
     output.close();

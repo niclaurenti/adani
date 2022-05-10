@@ -7,9 +7,9 @@
 
 #clang++ -Wall -I/home/niccolo/.local/include/gsl -L/home/niccolo/.local/lib -c src/Convolutions.cc src/HighEnergyCoefficientFunctions.cc src/MassiveCoefficientFunctions.cc src/HighScaleCoefficientFunctions.cc src/MasslessCoefficientFunctions.cc src/MatchingConditions.cc src/ThresholdCoefficientFunctions.cc src/ApproximateCoefficientFunctions.cc src/AsymptoticCoefficientFunctions.cc src/SpecialFunctions.cc -lgsl -lgslcblas -lm -std=c++17 -stdlib=libc++ `apfelxx-config --cppflags --ldflags --cxxflags`
 
-clang++ -Wall -c src/Convolutions.cc src/HighEnergyCoefficientFunctions.cc src/MassiveCoefficientFunctions.cc src/HighScaleCoefficientFunctions.cc src/MasslessCoefficientFunctions.cc src/MatchingConditions.cc src/ThresholdCoefficientFunctions.cc src/ApproximateCoefficientFunctions.cc src/AsymptoticCoefficientFunctions.cc src/SpecialFunctions.cc -std=c++17 -stdlib=libc++ `apfelxx-config --cppflags --cxxflags`
+clang++ -Wall -c src/Convolutions.cc src/HighEnergyCoefficientFunctions.cc src/MassiveCoefficientFunctions.cc src/HighScaleCoefficientFunctions.cc src/MasslessCoefficientFunctions.cc src/MatchingConditions.cc src/ThresholdCoefficientFunctions.cc src/ApproximateCoefficientFunctions.cc src/AsymptoticCoefficientFunctions.cc src/SpecialFunctions.cc src/SplittingFunctions.cc -std=c++17 -stdlib=libc++ `apfelxx-config --cppflags --cxxflags`
 
 
-ar -r libMyLib.a Convolutions.o HighEnergyCoefficientFunctions.o MassiveCoefficientFunctions.o HighScaleCoefficientFunctions.o MasslessCoefficientFunctions.o MatchingConditions.o  ThresholdCoefficientFunctions.o ApproximateCoefficientFunctions.o AsymptoticCoefficientFunctions.o SpecialFunctions.o
+ar -r libMyLib.a Convolutions.o HighEnergyCoefficientFunctions.o MassiveCoefficientFunctions.o HighScaleCoefficientFunctions.o MasslessCoefficientFunctions.o MatchingConditions.o  ThresholdCoefficientFunctions.o ApproximateCoefficientFunctions.o AsymptoticCoefficientFunctions.o SpecialFunctions.o SplittingFunctions.o
 
 ar tv libMyLib.a

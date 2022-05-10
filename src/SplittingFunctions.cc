@@ -17,9 +17,7 @@ double Pgq0(double x) {
 
     if (x<0 || x>1) return 0;
 
-    double tmp = 2. * CF * pgq(x) ;
-
-    return tmp / 4 / M_PI ;
+    return 2. * CF * pgq(x) / 4 / M_PI ;
 }
 
 double Pgg0reg(double x) {

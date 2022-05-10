@@ -2,7 +2,10 @@
 #include "../include/MatchingConditions.h"
 #include "../include/Convolutions.h"
 #include "../include/ColorFactors.h"
+#include "../include/Convolutions.h"
+#include "../include/SplittingFunctions.h"
 #include "apfel/massivecoefficientfunctionsunp_sl.h"
+#include <gsl/gsl_integration.h>
 #include<cmath>
 
 using namespace apfel;
@@ -217,5 +220,108 @@ double DLm_g2_5(double x, double mQ, double mMu) {
 
 //___________________________________________________________
 
+double C2m_ps21(double x, double mQ) {
+	
+	double x_max=1./(1+4*mQ);
+  
+  if (x>x_max || x<0) return 0; 	
 
+  gsl_integration_workspace * w = gsl_integration_workspace_alloc (1000);
 
+  double result, error, relerr = 0.0001;
+  struct function_params params ={x, mQ, 1};
+
+  gsl_function F;
+  F.function = &C2m_g1_x_Pgq0;
+  F.params = &params;
+
+  gsl_integration_qag(&F, x, 1, 0, relerr, 1000, 4, w, &result, &error);
+  
+  return -result;
+	
+}
+
+//_________________________________________________________
+
+double CLm_ps21(double x, double mQ) {
+	
+	double x_max=1./(1+4*mQ);
+  
+  if (x>x_max || x<0) return 0; 	
+
+  gsl_integration_workspace * w = gsl_integration_workspace_alloc (1000);
+
+  double result, error, relerr = 0.0001;
+  struct function_params params ={x, mQ, 1};
+
+  gsl_function F;
+  F.function = &CLm_g1_x_Pgq0;
+  F.params = &params;
+
+  gsl_integration_qag(&F, x, 1, 0, relerr, 1000, 4, w, &result, &error);
+  
+  return -result;
+	
+}
+
+//__________________________________________________________
+
+double C2m_g21(double x, double mQ) {
+	
+	double x_max=1./(1+4*mQ);
+  
+  if (x>x_max || x<0) return 0; 	
+
+  gsl_integration_workspace * w = gsl_integration_workspace_alloc (1000);
+
+  double regular, singular1, singular2, error, relerr = 0.0001;
+  struct function_params params ={x, mQ, 1};
+
+  gsl_function F;
+  F.function = &C2m_g1_x_Pgg0_reg;
+  F.params = &params;
+
+  gsl_integration_qag(&F, x, 1, 0, relerr, 1000, 4, w, &regular, &error);
+
+  F.function = &C2m_g1_x_Pgg0_sing;
+  gsl_integration_qag(&F, x, 1, 0, relerr, 1000, 4, w, &singular1, &error);
+
+  F.function = &Pgg0sing_int;
+  gsl_integration_qag(&F, 0, x, 0, relerr, 1000, 4, w, &singular2, &error);
+
+  singular2 *= - C2m_g1(x, mQ) ;
+  
+  return -(regular + singular1 + singular2);
+	
+}
+
+//__________________________________________________________
+
+double CLm_g21(double x, double mQ) {
+	
+	double x_max=1./(1+4*mQ);
+  
+  if (x>x_max || x<0) return 0; 	
+
+  gsl_integration_workspace * w = gsl_integration_workspace_alloc (1000);
+
+  double regular, singular1, singular2, error, relerr = 0.0001;
+  struct function_params params ={x, mQ, 1};
+
+  gsl_function F;
+  F.function = &CLm_g1_x_Pgg0_reg;
+  F.params = &params;
+
+  gsl_integration_qag(&F, x, 1, 0, relerr, 1000, 4, w, &regular, &error);
+
+  F.function = &CLm_g1_x_Pgg0_sing;
+  gsl_integration_qag(&F, x, 1, 0, relerr, 1000, 4, w, &singular1, &error);
+
+  F.function = &Pgg0sing_int;
+  gsl_integration_qag(&F, 0, x, 0, relerr, 1000, 4, w, &singular2, &error);
+
+  singular2 *= - CLm_g1(x, mQ) ;
+  
+  return -(regular + singular1 + singular2);
+	
+}
