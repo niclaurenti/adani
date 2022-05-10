@@ -25,14 +25,16 @@ int main(int argc, char** argv) {
 
     double mQ=1/xi;
 
-    Cm22bargNC gluon(1./(1+4*mQ));
-    CmL2barpsNC quarkL(1./(1+4*mQ));
+    Cm22bargNC gluonF2(1./(1+4*mQ));
+    Cm22barpsNC quarkF2(1./(1+4*mQ));
+    CmL2bargNC gluonFL(1./(1+4*mQ));
+    CmL2barpsNC quarkFL(1./(1+4*mQ));
 
     double x, dx = 0.001, xmax = 1./(1.+4./xi);
 
     for(x=dx; x<xmax; x+=dx) {
-		cout << x << "   " << gluon.Regular(x*(1+4*mQ))/ norm << "   " << quarkL.Regular(x*(1+4*mQ))/ norm << endl;
-        output << x <<  "   " << gluon.Regular(x*(1+4*mQ)) / norm << "   " << quarkL.Regular(x*(1+4*mQ))/ norm  << endl;		
+		//cout << x << "   " << gluon.Regular(x*(1+4*mQ))/ norm << "   " << quark.Regular(x*(1+4*mQ))/ norm << endl;
+        output << x << "   " << gluonF2.Regular(x*(1+4*mQ))/ norm << "   " << quarkF2.Regular(x*(1+4*mQ))/ norm << "   " << gluonFL.Regular(x*(1+4*mQ))/ norm << "   " << quarkFL.Regular(x*(1+4*mQ))/ norm << endl;
 	}
 
     output.close();
