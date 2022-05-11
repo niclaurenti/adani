@@ -105,7 +105,7 @@ double Pqq0sing(double x) {
 //_________________________________________________________
 
 double Pgq1(double x, int nf) {
-    
+
     if (x<0 || x>1) return 0;
 
     double H0 = H(x, 0) ;
@@ -119,16 +119,20 @@ double Pgq1(double x, int nf) {
 
     double norm = (16 * M_PI * M_PI) ;
 
-    double tmp_CACF = ( 1. / x + 2. * pgq(x) * (H10 + H11 + H01 - 11. / 6 * H1) 
-                        - x*x * (8. / 3 * H0 - 44./ 9) + 4. * zeta(2) - 2. - 7. * H0 
-                        + 2. * H00 - 2. * H1 * x + (1 + x) * (2. * H00 - 5 * H0 + 37. / 9) 
-                        - 2. * pgq(-x) * Hm10 ) ;
+    double tmp_CACF = (
+        1. / x + 2. * pgq(x) * (H10 + H11 + H01 - 11. / 6 * H1) 
+        - x*x * (8. / 3 * H0 - 44./ 9) + 4. * zeta(2) - 2. - 7. * H0 
+        + 2. * H00 - 2. * H1 * x + (1 + x) * (2. * H00 - 5 * H0 + 37. / 9) 
+        - 2. * pgq(-x) * Hm10
+    ) ;
     
-    double tmp_CFnf = 2. / 3 * x - pgq(x) * (2. / 3 * H1 - 10. / 9) ;
+    double tmp_CFnf = - (
+        2. / 3 * x - pgq(x) * (2. / 3 * H1 - 10. / 9) 
+    ) ;
 
     double tmp_CFCF = (
         pgq(x) * (3. * H1 - 2. * H11) + (1 + x) * (H00 - 7. / 2 + 7. / 2 * H0) 
-        - 3. * H00 + 1 - 3. / 2* H0 + 2. * H1 * x
+        - 3. * H00 + 1 - 3. / 2 * H0 + 2. * H1 * x
     ) ; 
 
     return 4. * (CA * CF * tmp_CACF + CF * nf * tmp_CFnf + CF * CF * tmp_CFCF) / norm ;
