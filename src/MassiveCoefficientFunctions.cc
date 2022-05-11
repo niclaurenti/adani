@@ -338,7 +338,7 @@ double C2m_ps31(double x, double mQ, int nf) {
   gsl_integration_workspace * w = gsl_integration_workspace_alloc (1000);
 
   double regular1, regular2, regular3, singular1, singular2, local, error, relerr = 0.0001;
-  struct function_params params ={x, mQ, 1};
+  struct function_params params ={x, mQ, nf};
 
   gsl_function F;
   F.function = &C2m_g1_x_Pgq1;
@@ -378,7 +378,7 @@ double CLm_ps31(double x, double mQ, int nf) {
   gsl_integration_workspace * w = gsl_integration_workspace_alloc (1000);
 
   double regular1, regular2, regular3, singular1, singular2, local, error, relerr = 0.0001;
-  struct function_params params ={x, mQ, 1};
+  struct function_params params ={x, mQ, nf};
 
   gsl_function F;
   F.function = &CLm_g1_x_Pgq1;
@@ -417,7 +417,7 @@ double C2m_ps32(double x, double mQ, int nf) {
   gsl_integration_workspace * w = gsl_integration_workspace_alloc (1000);
 
   double Pgg, Pqq, Pgq, error, relerr = 0.0001;
-  struct function_params params ={x, mQ, 1};
+  struct function_params params ={x, mQ, nf};
 
   gsl_function F;
   F.function = &C2m_g1_x_Pgg0_x_Pgq0;
@@ -446,7 +446,7 @@ double CLm_ps32(double x, double mQ, int nf) {
   gsl_integration_workspace * w = gsl_integration_workspace_alloc (1000);
 
   double Pgg, Pqq, Pgq, error, relerr = 0.0001;
-  struct function_params params ={x, mQ, 1};
+  struct function_params params ={x, mQ, nf};
 
   gsl_function F;
   F.function = &CLm_g1_x_Pgg0_x_Pgq0;
