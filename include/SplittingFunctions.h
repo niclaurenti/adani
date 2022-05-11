@@ -16,7 +16,7 @@ double Pqq0reg(double x);
 double Pqq0loc();
 double Pqq0sing(double x);
 
-double Pgq1(double x);
+double Pgq1(double x, int nf);
 
 double Pgg1reg(double x, int nf);
 double Pgg1sing (double x, int nf);

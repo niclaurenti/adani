@@ -5,6 +5,7 @@
 #include "../include/MatchingConditions.h"
 #include "../include/SpecialFunctions.h"
 #include "../include/SplittingFunctions.h"
+#include <gsl/gsl_integration.h>
 #include <cmath>
 //#include <gsl/gsl_integration.h>
 
@@ -294,9 +295,9 @@ double C2m_g1_x_Pgq1(double z, void * p) {
 
 	double mQ = (params->mQ);
 	double x = (params->x);
-	//int nf = (params->nf);
+	int nf = (params->nf);
 
-	return C2m_g1(z, mQ) * Pgq1(x / z) / z ;
+	return C2m_g1(z, mQ) * Pgq1(x / z, nf) / z ;
 }
 
 //__________________________________________________________
@@ -307,9 +308,9 @@ double CLm_g1_x_Pgq1(double z, void * p) {
 
 	double mQ = (params->mQ);
 	double x = (params->x);
-	//int nf = (params->nf);
+	int nf = (params->nf);
 
-	return CLm_g1(z, mQ) * Pgq1(x / z) / z;
+	return CLm_g1(z, mQ) * Pgq1(x / z, nf) / z;
 }
 
 //____________________________________________________________
@@ -633,5 +634,119 @@ double CLm_g21_x_Pgg0_sing(double z, void * p) {
 double Pqg0_x_Pgq0(double x, int nf) {
 
 	return 4 * CF * nf * (1. + 4. / 3 / x - x - 4. * x * x / 3 + 2. * (1 + x) * log(x)) ;
+
+}
+
+//_______________________________________________________________
+
+double C2m_g1_x_Pgg0(double x, double mQ, int nf) {
+
+	struct function_params parameters ={x, mQ, 1};
+	gsl_integration_workspace * w = gsl_integration_workspace_alloc(1000);
+
+	double regular, singular1, singular2, local, error, relerr = 0.0001 ;
+
+	gsl_function F;
+	F.function = &C2m_g1_x_Pgg0_reg;
+	F.params = &parameters;
+
+	gsl_integration_qag(&F, x, 1, 0, relerr, 1000, 4, w, &regular, &error);
+
+	F.function = &C2m_g1_x_Pgg0_sing;
+	gsl_integration_qag(&F, x, 1, 0, relerr, 1000, 4, w, &singular1, &error);
+
+	F.function = &Pgg0sing_int;
+	gsl_integration_qag(&F, 0, x, 0, relerr, 1000, 4, w, &singular2, &error);
+
+	singular2 *= - C2m_g1(x, mQ) ;
+
+	local = C2m_g1(x, mQ) * Pgg0loc(nf) ;
+
+	return  (regular + singular1 + singular2 + local) ;
+}
+
+
+//__________________________________________________________
+
+double C2m_g1_x_Pgg0_Pgg0_reg(double z, void * p) {
+
+	struct function_params * params = (struct function_params *)p;
+
+	double mQ = (params->mQ);
+	double x = (params->x);
+	int nf = (params->nf);
+
+	return C2m_g1_x_Pgg0(z, mQ, nf) * Pgg0reg(x / z) / z;
+
+}
+
+//__________________________________________________________
+
+double C2m_g1_x_Pgg0_Pgg0_sing(double z, void * p) {
+
+	struct function_params * params = (struct function_params *)p;
+
+	double mQ = (params->mQ);
+	double x = (params->x);
+	int nf = (params->nf);
+
+	return Pgg0sing(z) * ( C2m_g1_x_Pgg0(x / z, mQ, nf) / z - C2m_g1_x_Pgg0(x , mQ, nf) ) ;
+
+}
+
+//_______________________________________________________________
+
+double CLm_g1_x_Pgg0(double x, double mQ, int nf) {
+
+	struct function_params parameters ={x, mQ, 1};
+	gsl_integration_workspace * w = gsl_integration_workspace_alloc(1000);
+
+	double regular, singular1, singular2, local, error, relerr = 0.0001 ;
+
+	gsl_function F;
+	F.function = &CLm_g1_x_Pgg0_reg;
+	F.params = &parameters;
+
+	gsl_integration_qag(&F, x, 1, 0, relerr, 1000, 4, w, &regular, &error);
+
+	F.function = &CLm_g1_x_Pgg0_sing;
+	gsl_integration_qag(&F, x, 1, 0, relerr, 1000, 4, w, &singular1, &error);
+
+	F.function = &Pgg0sing_int;
+	gsl_integration_qag(&F, 0, x, 0, relerr, 1000, 4, w, &singular2, &error);
+
+	singular2 *= - CLm_g1(x, mQ) ;
+
+	local = CLm_g1(x, mQ) * Pgg0loc(nf) ;
+
+	return  (regular + singular1 + singular2 + local) ;
+}
+
+
+//__________________________________________________________
+
+double CLm_g1_x_Pgg0_Pgg0_reg(double z, void * p) {
+
+	struct function_params * params = (struct function_params *)p;
+
+	double mQ = (params->mQ);
+	double x = (params->x);
+	int nf = (params->nf);
+
+	return CLm_g1_x_Pgg0(z, mQ, nf) * Pgg0reg(x / z) / z;
+
+}
+
+//__________________________________________________________
+
+double CLm_g1_x_Pgg0_Pgg0_sing(double z, void * p) {
+
+	struct function_params * params = (struct function_params *)p;
+
+	double mQ = (params->mQ);
+	double x = (params->x);
+	int nf = (params->nf);
+
+	return Pgg0sing(z) * ( CLm_g1_x_Pgg0(x / z, mQ, nf) / z - CLm_g1_x_Pgg0(x , mQ, nf) ) ;
 
 }
