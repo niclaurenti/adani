@@ -2,7 +2,9 @@
 #define Split
 
 double pgq(double x);
+double pqg(double x);
 double Pgq0(double x);
+double Pqg0(double x, int nf);
 double Pgg0reg(double x);
 double Pgg0loc(int nf);
 double Pgg0sing(double x);
