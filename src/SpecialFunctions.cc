@@ -21,6 +21,17 @@ const double ZETA5  =  1.03692775514336992633136548646;
 */
 //______________________________________________________________
 
+double beta(int ord, int nf) {
+	if(ord == 0) return (11. /3 * CA - 2. /3 * nf) / 4 / M_PI ;
+	else if(ord == 1) return 0.;
+	else {
+		cout << "beta("<<ord<<") is not implemented"<<endl;
+		exit(-1);
+	}
+}
+
+//_____________________________________________________________
+
 double zeta(int i) {
 	
 	double pi2 = M_PI*M_PI;

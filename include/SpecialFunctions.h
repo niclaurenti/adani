@@ -2,6 +2,7 @@
 #define Special_h
 
 double zeta(int i);
+double beta(int ord, int nf);
 
 double Li2(double x);
 double Li3(double x);

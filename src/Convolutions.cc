@@ -277,7 +277,7 @@ double CLm_g1_x_Pgg0_sing(double z, void * p) {
 
 double Pgg0sing_int(double z, void * p) {
 
-	struct function_params * params = (struct function_params *)p;
+	//struct function_params * params = (struct function_params *)p;
 
 	//double mQ = (params->mQ);
 	//double x = (params->x);
@@ -286,4 +286,54 @@ double Pgg0sing_int(double z, void * p) {
 	return Pgg0sing(z) ;
 }
 
+//____________________________________________________________
+
+double C2m_g1_x_Pgq1(double z, void * p) {
+
+	struct function_params * params = (struct function_params *)p;
+
+	double mQ = (params->mQ);
+	double x = (params->x);
+	//int nf = (params->nf);
+
+	return C2m_g1(z, mQ) * Pgq1(x / z) / z ;
+}
+
 //__________________________________________________________
+
+double CLm_g1_x_Pgq1(double z, void * p) {
+
+	struct function_params * params = (struct function_params *)p;
+
+	double mQ = (params->mQ);
+	double x = (params->x);
+	//int nf = (params->nf);
+
+	return CLm_g1(z, mQ) * Pgq1(x / z) / z;
+}
+
+//____________________________________________________________
+
+double C2m_g20_x_Pgq0(double z, void * p) {
+
+	struct function_params * params = (struct function_params *)p;
+
+	double mQ = (params->mQ);
+	double x = (params->x);
+	//int nf = (params->nf);
+
+	return C2m_g2(z, mQ, 1) * Pgq0(x / z) / z ;
+}
+
+//__________________________________________________________
+
+double CLm_g20_x_Pgq0(double z, void * p) {
+
+	struct function_params * params = (struct function_params *)p;
+
+	double mQ = (params->mQ);
+	double x = (params->x);
+	//int nf = (params->nf);
+
+	return CLm_g2(z, mQ, 1) * Pgq0(x / z) / z;
+}
