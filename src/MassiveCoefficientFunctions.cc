@@ -4,6 +4,7 @@
 #include "../include/ColorFactors.h"
 #include "../include/Convolutions.h"
 #include "../include/SplittingFunctions.h"
+#include "../include/SpecialFunctions.h"
 #include "apfel/massivecoefficientfunctionsunp_sl.h"
 #include <gsl/gsl_integration.h>
 #include<cmath>
@@ -327,3 +328,82 @@ double CLm_g21(double x, double mQ) {
 }
 
 //______________________________________________________________
+
+double C2m_ps31(double x, double mQ, int nf) {
+	
+	double x_max=1./(1+4*mQ);
+  
+  if (x>x_max || x<0) return 0; 	
+
+  gsl_integration_workspace * w = gsl_integration_workspace_alloc (1000);
+
+  double regular1, regular2, regular3, singular1, singular2, local, error, relerr = 0.0001;
+  struct function_params params ={x, mQ, 1};
+
+  gsl_function F;
+  F.function = &C2m_g1_x_Pgq1;
+  F.params = &params;
+
+  gsl_integration_qag(&F, x, 1, 0, relerr, 1000, 4, w, &regular1, &error);
+
+  F.function = &C2m_g20_x_Pgq0;
+  gsl_integration_qag(&F, x, 1, 0, relerr, 1000, 4, w, &regular2, &error);
+
+  F.function = &C2m_ps20_x_Pqq0_reg;
+  gsl_integration_qag(&F, x, 1, 0, relerr, 1000, 4, w, &regular3, &error);
+
+  F.function = &C2m_ps20_x_Pqq0_sing;
+  gsl_integration_qag(&F, 0, x, 0, relerr, 1000, 4, w, &singular1, &error);
+
+  F.function = &Pqq0sing_int;
+  gsl_integration_qag(&F, 0, x, 0, relerr, 1000, 4, w, &singular2, &error);
+
+  singular2 *= - C2m_ps2(x, mQ, 1) ;
+
+  local = C2m_ps2(x, mQ, 1) * (Pqq0loc() - 2 * beta(0, nf));
+  
+  return -(regular1 + regular2 + regular3 + singular1 + singular2 + local);
+	
+}
+
+//__________________________________________________________
+
+
+double CLm_ps31(double x, double mQ, int nf) {
+	
+	double x_max=1./(1+4*mQ);
+  
+  if (x>x_max || x<0) return 0; 	
+
+  gsl_integration_workspace * w = gsl_integration_workspace_alloc (1000);
+
+  double regular1, regular2, regular3, singular1, singular2, local, error, relerr = 0.0001;
+  struct function_params params ={x, mQ, 1};
+
+  gsl_function F;
+  F.function = &CLm_g1_x_Pgq1;
+  F.params = &params;
+
+  gsl_integration_qag(&F, x, 1, 0, relerr, 1000, 4, w, &regular1, &error);
+
+  F.function = &CLm_g20_x_Pgq0;
+  gsl_integration_qag(&F, x, 1, 0, relerr, 1000, 4, w, &regular2, &error);
+
+  F.function = &CLm_ps20_x_Pqq0_reg;
+  gsl_integration_qag(&F, x, 1, 0, relerr, 1000, 4, w, &regular3, &error);
+
+  F.function = &CLm_ps20_x_Pqq0_sing;
+  gsl_integration_qag(&F, 0, x, 0, relerr, 1000, 4, w, &singular1, &error);
+
+  F.function = &Pqq0sing_int;
+  gsl_integration_qag(&F, 0, x, 0, relerr, 1000, 4, w, &singular2, &error);
+
+  singular2 *= - CLm_ps2(x, mQ, 1) ;
+
+  local = CLm_ps2(x, mQ, 1) * (Pqq0loc() - 2 * beta(0, nf));
+  
+  return -(regular1 + regular2 + regular3 + singular1 + singular2 + local);
+	
+}
+
+//__________________________________________________________

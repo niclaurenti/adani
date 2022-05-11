@@ -273,7 +273,7 @@ double CLm_g1_x_Pgg0_sing(double z, void * p) {
 	return Pgg0sing(z) * ( CLm_g1(x / z, mQ) / z - CLm_g1(x , mQ) ) ;
 }
 
-//_________________________________________________________-
+//__________________________________________________________
 
 double Pgg0sing_int(double z, void * p) {
 
@@ -336,4 +336,69 @@ double CLm_g20_x_Pgq0(double z, void * p) {
 	//int nf = (params->nf);
 
 	return CLm_g2(z, mQ, 1) * Pgq0(x / z) / z;
+}
+
+//______________________________________________________________
+
+double C2m_ps20_x_Pqq0_reg(double z, void * p) {
+
+	struct function_params * params = (struct function_params *)p;
+
+	double mQ = (params->mQ);
+	double x = (params->x);
+	//int nf = (params->nf);
+
+	return C2m_ps2(z, mQ, 1) * Pqq0reg(x / z) / z;
+}
+
+//__________________________________________________________
+
+double C2m_ps20_x_Pqq0_sing(double z, void * p) {
+
+	struct function_params * params = (struct function_params *)p;
+
+	double mQ = (params->mQ);
+	double x = (params->x);
+	//int nf = (params->nf);
+
+	return Pqq0sing(z) * ( C2m_ps2(x / z, mQ, 1) / z - C2m_ps2(x , mQ, 1) ) ;
+}
+
+//______________________________________________________________
+
+double CLm_ps20_x_Pqq0_reg(double z, void * p) {
+
+	struct function_params * params = (struct function_params *)p;
+
+	double mQ = (params->mQ);
+	double x = (params->x);
+	//int nf = (params->nf);
+
+	return CLm_ps2(z, mQ, 1) * Pqq0reg(x / z) / z;
+}
+
+//__________________________________________________________
+
+double CLm_ps20_x_Pqq0_sing(double z, void * p) {
+
+	struct function_params * params = (struct function_params *)p;
+
+	double mQ = (params->mQ);
+	double x = (params->x);
+	//int nf = (params->nf);
+
+	return Pqq0sing(z) * ( CLm_ps2(x / z, mQ, 1) / z - CLm_ps2(x , mQ, 1) ) ;
+}
+
+//__________________________________________________________
+
+double Pqq0sing_int(double z, void * p) {
+
+	//struct function_params * params = (struct function_params *)p;
+
+	//double mQ = (params->mQ);
+	//double x = (params->x);
+	//int nf = (params->nf);
+
+	return Pqq0sing(z) ;
 }

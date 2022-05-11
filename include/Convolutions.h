@@ -22,4 +22,11 @@ double CLm_g1_x_Pgq1(double z, void * p);
 double C2m_g20_x_Pgq0(double z, void * p);
 double CLm_g20_x_Pgq0(double z, void * p);
 
+double C2m_ps20_x_Pqq0_reg(double z, void * p);
+double C2m_ps20_x_Pqq0_sing(double z, void * p);
+double CLm_ps20_x_Pqq0_reg(double z, void * p);
+double CLm_ps20_x_Pqq0_sing(double z, void * p);
+
+double Pqq0sing_int(double z, void * p);
+
 #endif
