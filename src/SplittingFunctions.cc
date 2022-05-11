@@ -18,25 +18,26 @@ double pgq(double x){
 
 double pqg(double x) {
 
+    if (x<0 || x>1) return 0;
+
     return 1. - 2. * x + 2. * x * x ;
+
 }
 
 //____________________________________________________
 
 double Pgq0(double x) {
 
-    if (x<0 || x>1) return 0;
-
     return 2. * CF * pgq(x) / 4 / M_PI ;
+
 }
 
 //____________________________________________________
 
 double Pqg0(double x, int nf) {
 
-    if (x<0 || x>1) return 0;
-
     return 2. * nf * pqg(x) / 4 / M_PI ;
+
 }
 
 //_________________________________________________
@@ -64,16 +65,48 @@ double Pgg0loc(int nf) {
 //_____________________________________________________________
 
 double Pgg0sing (double x) {
+
     if (x<0 || x>=1) return 0;
 
-    return CA / M_PI / (1 - x) ;
+    double tmp = 4 * CA / (1 - x) ;
+
+    return tmp / 4. / M_PI ;
+
+}
+
+//______________________________________________________________________
+
+double Pqq0reg(double x) {
+
+    if (x<0 || x>1) return 0;
+
+    return CF * 2. * (- 1 - x ) / 4 / M_PI ;
+
+}
+
+//___________________________________________________________________________
+
+double Pqq0loc() {
+
+    return CF * 3. / 4 / M_PI ;
+
+}
+
+//___________________________________________________________________________
+
+double Pqq0sing(double x) {
+
+    if (x<0 || x>=1) return 0;
+
+    return CF * 2. * 2. / ( 1 - x ) / 4. / M_PI ;
 
 }
 
 //_________________________________________________________
 
 double Pgq1(double x, int nf) {
-    if (x<0 || x>=1) return 0;
+    
+    if (x<0 || x>1) return 0;
 
     double H0 = H(x, 0) ;
     double H1 = H(x, 1) ;
@@ -99,33 +132,6 @@ double Pgq1(double x, int nf) {
     ) ; 
 
     return 4. * (CA * CF * tmp_CACF + CF * nf * tmp_CFnf + CF * CF * tmp_CFCF) / norm ;
-}
-
-
-//______________________________________________________________________
-
-double Pqq0reg(double x) {
-    if (x<0 || x>=1) return 0;
-
-    return CF * 2. * (- 1 - x )/ 4 / M_PI ;
-
-}
-
-//___________________________________________________________________________
-
-double Pqq0loc() {
-
-    return CF * 3. / 4 / M_PI ;
-
-}
-
-//___________________________________________________________________________
-
-double Pqq0sing(double x) {
-    if (x<0 || x>=1) return 0;
-
-    return CF * 2. * 2. / ( 1 - x )/ 4. / M_PI ;
-
 }
 
 //___________________________________________________________________________
