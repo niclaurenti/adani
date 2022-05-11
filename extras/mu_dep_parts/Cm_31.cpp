@@ -28,7 +28,7 @@ int main(int argc, char** argv) {
 
     for(x=dx; x<xmax; x+=dx) {
 		//cout << x << "   " << gluon.Regular(x*(1+4*mQ))/ norm << "   " << quark.Regular(x*(1+4*mQ))/ norm << endl;
-        output << x << "   "
+        cout << x << "   "
                << C2m_g31(x, mQ, nf) << "   " 
                //<< C2m_ps31(x, mQ, nf)<< "   " 
                //<< CLm_g31(x, mQ, nf) << "   " 

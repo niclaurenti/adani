@@ -552,7 +552,7 @@ double Pgg1sing_int(double z, void * p) {
 
 //____________________________________________________________
 
-double C2m_ps21_x_Pqg0(double z, void * p) {
+double C2m_ps20_x_Pqg0(double z, void * p) {
 
 	struct function_params * params = (struct function_params *)p;
 
@@ -565,7 +565,7 @@ double C2m_ps21_x_Pqg0(double z, void * p) {
 
 //__________________________________________________________
 
-double C2m_g21_x_Pgg0_reg(double z, void * p) {
+double C2m_g20_x_Pgg0_reg(double z, void * p) {
 
 	struct function_params * params = (struct function_params *)p;
 
@@ -578,7 +578,7 @@ double C2m_g21_x_Pgg0_reg(double z, void * p) {
 
 //__________________________________________________________
 
-double C2m_g21_x_Pgg0_sing(double z, void * p) {
+double C2m_g20_x_Pgg0_sing(double z, void * p) {
 
 	struct function_params * params = (struct function_params *)p;
 
@@ -591,7 +591,7 @@ double C2m_g21_x_Pgg0_sing(double z, void * p) {
 
 //____________________________________________________________
 
-double CLm_ps21_x_Pqg0(double z, void * p) {
+double CLm_ps20_x_Pqg0(double z, void * p) {
 
 	struct function_params * params = (struct function_params *)p;
 
@@ -604,7 +604,7 @@ double CLm_ps21_x_Pqg0(double z, void * p) {
 
 //__________________________________________________________
 
-double CLm_g21_x_Pgg0_reg(double z, void * p) {
+double CLm_g20_x_Pgg0_reg(double z, void * p) {
 
 	struct function_params * params = (struct function_params *)p;
 
@@ -617,7 +617,7 @@ double CLm_g21_x_Pgg0_reg(double z, void * p) {
 
 //__________________________________________________________
 
-double CLm_g21_x_Pgg0_sing(double z, void * p) {
+double CLm_g20_x_Pgg0_sing(double z, void * p) {
 
 	struct function_params * params = (struct function_params *)p;
 

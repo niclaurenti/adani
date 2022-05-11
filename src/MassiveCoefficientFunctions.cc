@@ -490,7 +490,7 @@ double C2m_g31(double x, double mQ, int nf) {
   
   if (x>x_max || x<0) return 0; 	
 
-  gsl_integration_workspace * w = gsl_integration_workspace_alloc(1000);
+  gsl_integration_workspace * w = gsl_integration_workspace_alloc(100000);
 
   double regular1, regular2, regular3, singular1, singular2, singular3, singular4, local1, local2, local3, error, relerr = 0.0001;
   struct function_params params ={x, mQ, nf};
@@ -499,31 +499,31 @@ double C2m_g31(double x, double mQ, int nf) {
   F.function = &C2m_g1_x_Pgg1_reg;
   F.params = &params;
 
-  gsl_integration_qag(&F, x, 1, 0, relerr, 1000, 4, w, &regular1, &error);
+  gsl_integration_qag(&F, x, 1, 0, relerr, 100000, 4, w, &regular1, &error);
 
   F.function = &C2m_g1_x_Pgg1_sing;
-  gsl_integration_qag(&F, x, 1, 0, relerr, 1000, 4, w, &singular1, &error);
+  gsl_integration_qag(&F, x, 1, 0, relerr, 100000, 4, w, &singular1, &error);
 
   F.function = &Pgg1sing_int;
-  gsl_integration_qag(&F, 0, x, 0, relerr, 1000, 4, w, &singular2, &error);
+  gsl_integration_qag(&F, 0, x, 0, relerr, 100000, 4, w, &singular2, &error);
 
   singular2 *= - C2m_g1(x, mQ) ;
 
   local1 = C2m_g1(x, mQ) * Pgg1loc(nf) ;
 
   local2 = C2m_g1(x, mQ) * ( - beta(1,nf) ) ;
-/*
-  F.function = &C2m_ps21_x_Pqg0;
-  gsl_integration_qag(&F, x, 1, 0, relerr, 1000, 4, w, &regular2, &error);
 
-  F.function = &C2m_g21_x_Pgg0_reg;
-  gsl_integration_qag(&F, x, 1, 0, relerr, 1000, 4, w, &regular3, &error);
+  F.function = &C2m_ps20_x_Pqg0;
+  gsl_integration_qag(&F, x, 1, 0, relerr, 100000, 4, w, &regular2, &error);
 
-  F.function = &C2m_g21_x_Pgg0_sing;
-  gsl_integration_qag(&F, x, 1, 0, relerr, 1000, 4, w, &singular3, &error);
-*/
+  F.function = &C2m_g20_x_Pgg0_reg;
+  gsl_integration_qag(&F, x, 1, 0, relerr, 100000, 4, w, &regular3, &error);
+
+  F.function = &C2m_g20_x_Pgg0_sing;
+  gsl_integration_qag(&F, x, 1, 0, relerr, 100000, 4, w, &singular3, &error);
+
   F.function = &Pgg0sing_int;
-  gsl_integration_qag(&F, 0, x, 0, relerr, 1000, 4, w, &singular4, &error);
+  gsl_integration_qag(&F, 0, x, 0, relerr, 100000, 4, w, &singular4, &error);
 
   singular4 *= - C2m_g2(x, mQ, 1) ;
 
@@ -566,13 +566,13 @@ double CLm_g31(double x, double mQ, int nf) {
 
   local2 = CLm_g1(x, mQ) * ( - beta(1,nf) ) ;
 
-  F.function = &CLm_ps21_x_Pqg0;
+  F.function = &CLm_ps20_x_Pqg0;
   gsl_integration_qag(&F, x, 1, 0, relerr, 1000, 4, w, &regular2, &error);
 
-  F.function = &CLm_g21_x_Pgg0_reg;
+  F.function = &CLm_g20_x_Pgg0_reg;
   gsl_integration_qag(&F, x, 1, 0, relerr, 1000, 4, w, &regular3, &error);
 
-  F.function = &CLm_g21_x_Pgg0_sing;
+  F.function = &CLm_g20_x_Pgg0_sing;
   gsl_integration_qag(&F, x, 1, 0, relerr, 1000, 4, w, &singular3, &error);
 
   F.function = &Pgg0sing_int;

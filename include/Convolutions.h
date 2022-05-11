@@ -46,15 +46,15 @@ double CLm_g1_x_Pgg1_sing(double z, void * p);
 
 double Pgg1sing_int(double z, void * p);
 
-double C2m_ps21_x_Pqg0(double z, void * p);
+double C2m_ps20_x_Pqg0(double z, void * p);
 
-double C2m_g21_x_Pgg0_reg(double z, void * p);
-double C2m_g21_x_Pgg0_sing(double z, void * p);
+double C2m_g20_x_Pgg0_reg(double z, void * p);
+double C2m_g20_x_Pgg0_sing(double z, void * p);
 
-double CLm_ps21_x_Pqg0(double z, void * p);
+double CLm_ps20_x_Pqg0(double z, void * p);
 
-double CLm_g21_x_Pgg0_reg(double z, void * p);
-double CLm_g21_x_Pgg0_sing(double z, void * p);
+double CLm_g20_x_Pgg0_reg(double z, void * p);
+double CLm_g20_x_Pgg0_sing(double z, void * p);
 
 double Pqg0_x_Pgq0(double x, int nf) ;
 
