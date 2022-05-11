@@ -644,19 +644,19 @@ double C2m_g1_x_Pgg0(double x, double mQ, int nf) {
 	struct function_params parameters ={x, mQ, 1};
 	gsl_integration_workspace * w = gsl_integration_workspace_alloc(1000);
 
-	double regular, singular1, singular2, local, error, relerr = 0.0001 ;
+	double regular, singular1, singular2, local, error, abserr = 0.001, relerr = 0.001 ;
 
 	gsl_function F;
 	F.function = &C2m_g1_x_Pgg0_reg;
 	F.params = &parameters;
 
-	gsl_integration_qag(&F, x, 1, 0, relerr, 1000, 4, w, &regular, &error);
+	gsl_integration_qag(&F, x, 1, abserr, relerr, 1000, 4, w, &regular, &error);
 
 	F.function = &C2m_g1_x_Pgg0_sing;
-	gsl_integration_qag(&F, x, 1, 0, relerr, 1000, 4, w, &singular1, &error);
+	gsl_integration_qag(&F, x, 1, abserr, relerr, 1000, 4, w, &singular1, &error);
 
 	F.function = &Pgg0sing_int;
-	gsl_integration_qag(&F, 0, x, 0, relerr, 1000, 4, w, &singular2, &error);
+	gsl_integration_qag(&F, 0, x, abserr, relerr, 1000, 4, w, &singular2, &error);
 
 	singular2 *= - C2m_g1(x, mQ) ;
 
@@ -701,19 +701,19 @@ double CLm_g1_x_Pgg0(double x, double mQ, int nf) {
 	struct function_params parameters ={x, mQ, 1};
 	gsl_integration_workspace * w = gsl_integration_workspace_alloc(1000);
 
-	double regular, singular1, singular2, local, error, relerr = 0.0001 ;
+	double regular, singular1, singular2, local, error, abserr = 0.001, relerr = 0.001 ;
 
 	gsl_function F;
 	F.function = &CLm_g1_x_Pgg0_reg;
 	F.params = &parameters;
 
-	gsl_integration_qag(&F, x, 1, 0, relerr, 1000, 4, w, &regular, &error);
+	gsl_integration_qag(&F, x, 1, abserr, relerr, 1000, 4, w, &regular, &error);
 
 	F.function = &CLm_g1_x_Pgg0_sing;
-	gsl_integration_qag(&F, x, 1, 0, relerr, 1000, 4, w, &singular1, &error);
+	gsl_integration_qag(&F, x, 1, abserr, relerr, 1000, 4, w, &singular1, &error);
 
 	F.function = &Pgg0sing_int;
-	gsl_integration_qag(&F, 0, x, 0, relerr, 1000, 4, w, &singular2, &error);
+	gsl_integration_qag(&F, 0, x, abserr, relerr, 1000, 4, w, &singular2, &error);
 
 	singular2 *= - CLm_g1(x, mQ) ;
 
