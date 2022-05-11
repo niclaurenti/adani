@@ -407,3 +407,61 @@ double CLm_ps31(double x, double mQ, int nf) {
 }
 
 //__________________________________________________________
+
+double C2m_ps32(double x, double mQ, int nf) {
+	
+	double x_max=1./(1+4*mQ);
+  
+  if (x>x_max || x<0) return 0; 	
+
+  gsl_integration_workspace * w = gsl_integration_workspace_alloc (1000);
+
+  double Pgg, Pqq, Pgq, error, relerr = 0.0001;
+  struct function_params params ={x, mQ, 1};
+
+  gsl_function F;
+  F.function = &C2m_g1_x_Pgg0_x_Pgq0;
+  F.params = &params;
+
+  gsl_integration_qag(&F, x, 1, 0, relerr, 1000, 4, w, &Pgg, &error);
+
+  F.function = &C2m_g1_x_Pgg0_x_Pgq0;
+  gsl_integration_qag(&F, x, 1, 0, relerr, 1000, 4, w, &Pqq, &error);
+
+  F.function = &C2m_g1_x_Pgq0;
+  gsl_integration_qag(&F, x, 1, 0, relerr, 1000, 4, w, &Pgq, &error);
+  
+  return 0.5 * (Pgg + Pqq) - 3. / 2 * beta(0, nf) * Pgq ;
+	
+}
+
+//__________________________________________________________
+
+double CLm_ps32(double x, double mQ, int nf) {
+	
+	double x_max=1./(1+4*mQ);
+  
+  if (x>x_max || x<0) return 0; 	
+
+  gsl_integration_workspace * w = gsl_integration_workspace_alloc (1000);
+
+  double Pgg, Pqq, Pgq, error, relerr = 0.0001;
+  struct function_params params ={x, mQ, 1};
+
+  gsl_function F;
+  F.function = &CLm_g1_x_Pgg0_x_Pgq0;
+  F.params = &params;
+
+  gsl_integration_qag(&F, x, 1, 0, relerr, 1000, 4, w, &Pgg, &error);
+
+  F.function = &CLm_g1_x_Pgg0_x_Pgq0;
+  gsl_integration_qag(&F, x, 1, 0, relerr, 1000, 4, w, &Pqq, &error);
+
+  F.function = &CLm_g1_x_Pgq0;
+  gsl_integration_qag(&F, x, 1, 0, relerr, 1000, 4, w, &Pgq, &error);
+  
+  return 0.5 * (Pgg + Pqq) - 3. / 2 * beta(0, nf) * Pgq ;
+	
+}
+
+//__________________________________________________________

@@ -35,4 +35,7 @@ double CLm_ps21(double x, double mQ);
 double C2m_ps31(double x, double mQ);
 double CLm_ps31(double x, double mQ);
 
+double C2m_ps32(double x, double mQ, int nf) ;
+double CLm_ps32(double x, double mQ, int nf) ;
+
 #endif

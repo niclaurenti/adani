@@ -429,4 +429,56 @@ double Pqq0_x_Pgq0(double x) {
 
 }
 
-//________________________________________________________________________
+//______________________________________________________________
+
+double C2m_g1_x_Pgg0_x_Pgq0(double z, void * p) {
+
+	struct function_params * params = (struct function_params *)p;
+
+	double mQ = (params->mQ);
+	double x = (params->x);
+	int nf = (params->nf);
+
+	return C2m_g1(z, mQ) * Pgg0_x_Pgq0(x / z, nf) / z;
+}
+
+//__________________________________________________________
+
+double C2m_g1_x_Pqq0_x_Pgq0(double z, void * p) {
+
+	struct function_params * params = (struct function_params *)p;
+
+	double mQ = (params->mQ);
+	double x = (params->x);
+	//int nf = (params->nf);
+
+	return C2m_g1(z, mQ) * Pqq0_x_Pgq0(x / z) / z;
+}
+
+//__________________________________________________________
+
+double CLm_g1_x_Pgg0_x_Pgq0(double z, void * p) {
+
+	struct function_params * params = (struct function_params *)p;
+
+	double mQ = (params->mQ);
+	double x = (params->x);
+	int nf = (params->nf);
+
+	return CLm_g1(z, mQ) * Pgg0_x_Pgq0(x / z, nf) / z;
+}
+
+//__________________________________________________________
+
+double CLm_g1_x_Pqq0_x_Pgq0(double z, void * p) {
+
+	struct function_params * params = (struct function_params *)p;
+
+	double mQ = (params->mQ);
+	double x = (params->x);
+	//int nf = (params->nf);
+
+	return CLm_g1(z, mQ) * Pqq0_x_Pgq0(x / z) / z;
+}
+
+//__________________________________________________________

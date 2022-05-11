@@ -32,4 +32,9 @@ double Pqq0sing_int(double z, void * p);
 double Pgg0_x_Pgq0(double x, int nf);
 double Pqq0_x_Pgq0(double x) ;
 
+double C2m_g1_x_Pgg0_x_Pgq0(double z, void * p);
+double C2m_g1_x_Pqq0_x_Pgq0(double z, void * p);
+double CLm_g1_x_Pgg0_x_Pgq0(double z, void * p);
+double CLm_g1_x_Pqq0_x_Pgq0(double z, void * p);
+
 #endif
