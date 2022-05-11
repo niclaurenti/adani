@@ -425,7 +425,7 @@ double C2m_ps32(double x, double mQ, int nf) {
 
   gsl_integration_qag(&F, x, 1, 0, relerr, 1000, 4, w, &Pgg, &error);
 
-  F.function = &C2m_g1_x_Pgg0_x_Pgq0;
+  F.function = &C2m_g1_x_Pqq0_x_Pgq0;
   gsl_integration_qag(&F, x, 1, 0, relerr, 1000, 4, w, &Pqq, &error);
 
   F.function = &C2m_g1_x_Pgq0;
@@ -454,7 +454,7 @@ double CLm_ps32(double x, double mQ, int nf) {
 
   gsl_integration_qag(&F, x, 1, 0, relerr, 1000, 4, w, &Pgg, &error);
 
-  F.function = &CLm_g1_x_Pgg0_x_Pgq0;
+  F.function = &CLm_g1_x_Pqq0_x_Pgq0;
   gsl_integration_qag(&F, x, 1, 0, relerr, 1000, 4, w, &Pqq, &error);
 
   F.function = &CLm_g1_x_Pgq0;
