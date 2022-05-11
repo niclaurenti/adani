@@ -1,0 +1,108 @@
+set grid
+#set key box opaque
+
+#set term qt
+
+#set logscale x
+#plottitle= sprintf("%s%d%s%d%s%0.1f"," O({/Symbol a}_s^3), {/Symbol x}=", xi, ", {/Symbol x}_{/Symbol m}=", 1," k=",k)
+#set title plottitle font ",15"
+#set ylabel "xD_{2,g}^{(2)}" font ",15"
+#set xlabel "{/Symbol h}" font ",15"
+#set key right bottom
+#plot filename2 u 1:2 w l title "exact massive" lc "orange" lw 1.3, filename2 u 1:3 w l title "asymptotic" lc "green" lw 1 dt 2, filename2 u 1:4 w l title "threshold" lc "purple" lw 1 dt 4, filename2 u 1:5 w l title sprintf("%s%0.1f", "b=",b) dt 2 lw 1 lc "red", filename2 u 1:6 w l title sprintf("%s%0.1f", "b=",b+0.2) dt 3 lc "red" lw 1, filename2 u 1:7 w l title sprintf("%s%0.1f", "b=",b+2*0.2) dt 4 lc "red" lw 1, filename2 u 1:8 w l title sprintf("%s%0.1f", "b=",b+3*0.2) dt 5 lc "red" lw 1
+
+#set term pdf size 5.5,4
+#outputtitle= sprintf("%s%s%d%s%d%s","confrontobetaV6", "_NLO_vs_eta_xi=", xi,"_ximu=",ximu,".pdf")
+#set output outputtitle
+#rep
+#set term qt
+
+################################################################
+
+set logscale x
+unset xlabel
+unset ylabel
+unset title
+
+set term pdf size 6.5,5
+outputtitle= sprintf("%s%d%s","Approx_N2LO_g_vs_eta_xi=", xi,".pdf")
+set output outputtitle
+plottitle= sprintf("%s%d","Approx, O({/Symbol a}_s^2), {/Symbol x}=", xi)
+set title plottitle
+set xlabel "{/Symbol h}" font ",15"
+set ylabel "xC_{L,g}^{(2)}" font ",15"
+set key left top
+
+set format x "10^{%T}"
+
+plot filename2 u 1:2 w l  title "asymptotic" lc "green" lw 1 dt 2 noautoscale, filename2 u 1:3 w l title "threshold" lc "purple" lw 1 dt 4, filename2 u 1:4 w l title "approximation" dt 1 lw 1 lc "red", filename2 u 1:5 w l  title "exact" lc "orange" lw 1.2 dt 1
+
+###################################################################################################
+
+outputtitle= sprintf("%s%d%s","Approx_N2LO_ps_vs_eta_xi=", xi,".pdf")
+set output outputtitle
+plottitle= sprintf("%s%d","Approx, O({/Symbol a}_s^2), {/Symbol x}=", xi)
+set title plottitle
+set xlabel "{/Symbol h}" font ",15"
+set ylabel "xC_{L,q}^{(2)}" font ",15"
+set key left top
+
+set format x "10^{%T}"
+
+plot filename2 u 1:6 w l  title "asymptotic" lc "green" lw 1 dt 2 noautoscale, filename2 u 1:7 w l title "threshold" lc "purple" lw 1 dt 4, filename2 u 1:8 w l title "approximation" dt 1 lw 1 lc "red", filename2 u 1:9 w l  title "exact" lc "orange" lw 1.2 dt 1
+
+#############################################################################################
+
+outputtitle= sprintf("%s%d%s","Approx_N2LO_g_vs_eta_xi=", xi,"F2.pdf")
+set output outputtitle
+plottitle= sprintf("%s%d","Approx, O({/Symbol a}_s^2), {/Symbol x}=", xi)
+set title plottitle
+set xlabel "{/Symbol h}" font ",15"
+set ylabel "xC_{2,g}^{(2)}" font ",15"
+set key left top
+
+set format x "10^{%T}"
+
+plot filename2 u 1:10 w l  title "asymptotic" lc "green" lw 1 dt 2 noautoscale, filename2 u 1:11 w l title "threshold" lc "purple" lw 1 dt 4, filename2 u 1:12 w l title "approximation" dt 1 lw 1 lc "red", filename2 u 1:13 w l  title "exact" lc "orange" lw 1.2 dt 1
+
+###################################################################################################
+
+outputtitle= sprintf("%s%d%s","Approx_N2LO_ps_vs_eta_xi=", xi,"F2.pdf")
+set output outputtitle
+plottitle= sprintf("%s%d","Approx, O({/Symbol a}_s^2), {/Symbol x}=", xi)
+set title plottitle
+set xlabel "{/Symbol h}" font ",15"
+set ylabel "xC_{2,q}^{(2)}" font ",15"
+set key left top
+
+set format x "10^{%T}"
+
+plot filename2 u 1:14 w l  title "asymptotic" lc "green" lw 1 dt 2 noautoscale, filename2 u 1:15 w l title "threshold" lc "purple" lw 1 dt 4, filename2 u 1:16 w l title "approximation" dt 1 lw 1 lc "red", filename2 u 1:17 w l  title "exact" lc "orange" lw 1.2 dt 1
+
+#############################################################################################
+
+outputtitle= sprintf("%s%d%s","Approx_N2LO_g_vs_eta_xi=", xi,"F2vsFL.pdf")
+set output outputtitle
+plottitle= sprintf("%s%d","Approx, O({/Symbol a}_s^2), {/Symbol x}=", xi)
+set title plottitle
+set xlabel "{/Symbol h}" font ",15"
+set ylabel "xC_{g}^{(2)}" font ",15"
+set key left top
+
+set format x "10^{%T}"
+
+plot filename2 u 1:12 w l title "F_2 approx." dt 2 lw 1 lc "red", filename2 u 1:13 w l  title "F_2 exact" lc "red" lw 1.2 dt 1, filename2 u 1:4 w l title "F_L approx." dt 2 lw 1 lc "blue", filename2 u 1:5 w l  title "F_L exact" lc "blue" lw 1.2 dt 1
+
+#############################################################################################
+
+outputtitle= sprintf("%s%d%s","Approx_N2LO_ps_vs_eta_xi=", xi,"F2vsFL.pdf")
+set output outputtitle
+plottitle= sprintf("%s%d","Approx, O({/Symbol a}_s^2), {/Symbol x}=", xi)
+set title plottitle
+set xlabel "{/Symbol h}" font ",15"
+set ylabel "xC_{ps}^{(2)}" font ",15"
+set key left top
+
+set format x "10^{%T}"
+
+plot filename2 u 1:16 w l title "F_2 approx." dt 2 lw 1 lc "red", filename2 u 1:17 w l  title "F_2 exact" lc "red" lw 1.2 dt 1, filename2 u 1:8 w l title "F_L approx." dt 2 lw 1 lc "blue", filename2 u 1:9 w l  title "F_L exact" lc "blue" lw 1.2 dt 1
