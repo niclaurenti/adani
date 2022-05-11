@@ -29,4 +29,7 @@ double CLm_ps20_x_Pqq0_sing(double z, void * p);
 
 double Pqq0sing_int(double z, void * p);
 
+double Pgg0_x_Pgq0(double x, int nf);
+double Pqq0_x_Pgq0(double x) ;
+
 #endif
