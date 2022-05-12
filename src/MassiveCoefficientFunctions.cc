@@ -6,7 +6,6 @@
 #include "../include/SplittingFunctions.h"
 #include "../include/SpecialFunctions.h"
 #include "apfel/massivecoefficientfunctionsunp_sl.h"
-#include <gsl/gsl_integration.h>
 #include<cmath>
 
 using namespace apfel;
@@ -232,6 +231,9 @@ double C2m_ps21(double x, double mQ) {
   if (x>x_max || x<0) return 0; 	
   
   return - C2m_g1_x_Pgq0(x, mQ);
+  //The minus sign comes from the fact that in arXiv:1205.5727
+  //the expansion is performed in terms of log(m^2/mu^2) but we are
+  //expanding in terms of log(mu^2/m^2)
 	
 }
 
@@ -386,8 +388,8 @@ double C2m_g32(double x, double mQ, int nf) {
   if (x>x_max || x<0) return 0; 	
   
   return (
-    C2m_g1_x_Pgg0_Pgg0(x, mQ, nf)
-    + C2m_g1_x_Pqg0_Pgq0(x, mQ, nf)
+    0.5 * C2m_g1_x_Pgg0_Pgg0(x, mQ, nf)
+    + 0.5 * C2m_g1_x_Pqg0_Pgq0(x, mQ, nf)
     - 3. / 2 * beta(0, nf) * C2m_g1_x_Pgg0(x, mQ, nf) 
     + beta(0,nf) * beta(0,nf) * C2m_g1(x,mQ)
   );
@@ -403,8 +405,8 @@ double CLm_g32(double x, double mQ, int nf) {
   if (x>x_max || x<0) return 0; 	
   
   return (
-    CLm_g1_x_Pgg0_Pgg0(x, mQ, nf)
-    + CLm_g1_x_Pqg0_Pgq0(x, mQ, nf)
+    0.5 * CLm_g1_x_Pgg0_Pgg0(x, mQ, nf)
+    + 0.5 * CLm_g1_x_Pqg0_Pgq0(x, mQ, nf)
     - 3. / 2 * beta(0, nf) * CLm_g1_x_Pgg0(x, mQ, nf) 
     + beta(0,nf) * beta(0,nf) * CLm_g1(x,mQ)
   );
