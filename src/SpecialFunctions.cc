@@ -23,7 +23,7 @@ const double ZETA5  =  1.03692775514336992633136548646;
 
 double beta(int ord, int nf) {
 	if(ord == 0) return (11. /3 * CA - 2. /3 * nf) / 4 / M_PI ;
-	else if(ord == 1) {
+	if(ord == 1) {
 		double TF = TR * nf ;
 		double b_ca2 = 34.0 / 3.0 * CA * CA ;
 		double b_ca = -20.0 / 3.0 * CA * TF ;

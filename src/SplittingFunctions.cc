@@ -48,7 +48,7 @@ double pggsing(double x) {
 
 double Pgq0(double x) {
 
-    return 2. * CF * pgq(x) / 4 / M_PI ;
+    return 2. * CF * pgq(x) / 4. / M_PI ;
 
 }
 
@@ -56,7 +56,7 @@ double Pgq0(double x) {
 
 double Pqg0(double x, int nf) {
 
-    return 2. * nf * pqg(x) / 4 / M_PI ;
+    return 2. * nf * pqg(x) / 4. / M_PI ;
 
 }
 
@@ -64,7 +64,7 @@ double Pqg0(double x, int nf) {
 
 double Pgg0reg(double x) {
 
-    return CA * 4. * pggreg(x) / 4 / M_PI ;    
+    return CA * 4. * pggreg(x) / 4. / M_PI ;    
 
 }
 
@@ -82,7 +82,7 @@ double Pgg0loc(int nf) {
 
 double Pgg0sing (double x) {
 
-    return 4 * CA * pggsing(x) / 4. / M_PI ;
+    return 4. * CA * pggsing(x) / 4. / M_PI ;
 
 }
 
@@ -170,15 +170,16 @@ double Pgg1reg(double x, int nf) {
 
     double tmp_CAnf = 1. - x - 10. / 9 * pggreg(x) - 13. / 9 * (1. / x - x * x) - 2. / 3 * (1. + x) * H0 ;
     double tmp_CACA = (
-        27. + (1 + x) * ( 11. / 3 * H0 + 8 * H00 - 27. / 2 ) 
+        27. + (1. + x) * ( 11. / 3 * H0 + 8 * H00 - 27. / 2 ) 
         + 2. * ( pggreg(-x) + pggsing(-x) ) * ( H00 - 2. * Hm10 - zeta(2)) 
-        - 67. / 9 * ( 1. / x - x * x ) - 12 * H0 - 44. / 3 * x * x * H0 
+        - 67. / 9 * ( 1. / x - x * x ) - 12. * H0 - 44. / 3 * x * x * H0 
         + 2. * pggreg(x) * (67. / 18 - zeta(2) + H00 + 2. * H10 + 2 * H01)
         + 2. * ( gx - g1 ) * pggsing(x) 
     ) ;
     //the last term comes from expanding g(z)[f(z)]_+ = g(1)[f(z)]_+ + (g(z)-g(1))f(z)
+    //where (g(z)-g(1))f(z) is regular
     double tmp_CFnf = (
-        2. * H0 + 2. / 3 / x + 10. / 3 * x * x - 12. + (1 + x) * ( 4. - 5 * H0 - 2. * H00 )
+        2. * H0 + 2. / 3 / x + 10. / 3 * x * x - 12. + (1. + x) * ( 4. - 5. * H0 - 2. * H00 )
     ) ;
 
     return  4. * (tmp_CAnf * CA * nf + tmp_CACA * CA * CA + tmp_CFnf * CF * nf) / norm ;    
@@ -192,7 +193,7 @@ double Pgg1loc(int nf) {
     double norm = (16 * M_PI * M_PI) ;
 
     double tmp_CAnf = - 2. / 3 ;
-    double tmp_CACA =  8. / 3 + 3 * zeta(3);
+    double tmp_CACA =  8. / 3 + 3. * zeta(3);
     double tmp_CFnf =  - 1. / 2;
 
     return  4. * (tmp_CAnf * CA * nf + tmp_CACA * CA * CA + tmp_CFnf * CF * nf) / norm ; 
