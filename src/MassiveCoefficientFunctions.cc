@@ -260,7 +260,7 @@ double C2m_g21(double x, double mQ) {
   int nf = 1 ;
   //Put nf to 1 since the nf contribution cancels for any value of nf	
   
-  return - ( C2m_g1_x_Pgg0(x, mQ, nf) - C2m_g1(x, mQ) * beta(0,nf)  );
+  return - ( C2m_g1_x_Pgg0(x, mQ, nf) - C2m_g1(x, mQ) * beta(0,nf) );
 	
 }
 
@@ -275,7 +275,7 @@ double CLm_g21(double x, double mQ) {
   int nf = 1 ;
   //Put nf to 1 since the nf contribution cancels for any value of nf	
   
-  return - ( CLm_g1_x_Pgg0(x, mQ, nf) - CLm_g1(x, mQ) * beta(0,nf)  );
+  return - ( CLm_g1_x_Pgg0(x, mQ, nf) - CLm_g1(x, mQ) * beta(0,nf) );
 	
 }
 
@@ -291,7 +291,7 @@ double C2m_ps31(double x, double mQ, int nf) {
     C2m_g1_x_Pgq1(x, mQ, nf)
     + C2m_g20_x_Pgq0(x, mQ)
     + C2m_ps20_x_Pqq0(x, mQ, nf) 
-    - 2 * beta(0, nf) * C2m_ps2(x, mQ, 1)
+    - 2. * beta(0, nf) * C2m_ps2(x, mQ, 1)
   ) ; 
 
 }
@@ -308,7 +308,7 @@ double CLm_ps31(double x, double mQ, int nf) {
     CLm_g1_x_Pgq1(x, mQ, nf)
     + CLm_g20_x_Pgq0(x, mQ)
     + CLm_ps20_x_Pqq0(x, mQ, nf) 
-    - 2 * beta(0, nf) * CLm_ps2(x, mQ, 1)
+    - 2. * beta(0, nf) * CLm_ps2(x, mQ, 1)
   ) ; 
 
 }
@@ -388,8 +388,8 @@ double C2m_g32(double x, double mQ, int nf) {
   if (x>x_max || x<0) return 0; 	
   
   return (
-    0.5 * C2m_g1_x_Pgg0_Pgg0(x, mQ, nf)
-    + 0.5 * C2m_g1_x_Pqg0_Pgq0(x, mQ, nf)
+    0.5 * C2m_g1_x_Pgg0_x_Pgg0(x, mQ, nf)
+    + 0.5 * C2m_g1_x_Pqg0_x_Pgq0(x, mQ, nf)
     - 3. / 2 * beta(0, nf) * C2m_g1_x_Pgg0(x, mQ, nf) 
     + beta(0,nf) * beta(0,nf) * C2m_g1(x,mQ)
   );
@@ -405,8 +405,8 @@ double CLm_g32(double x, double mQ, int nf) {
   if (x>x_max || x<0) return 0; 	
   
   return (
-    0.5 * CLm_g1_x_Pgg0_Pgg0(x, mQ, nf)
-    + 0.5 * CLm_g1_x_Pqg0_Pgq0(x, mQ, nf)
+    0.5 * CLm_g1_x_Pgg0_x_Pgg0(x, mQ, nf)
+    + 0.5 * CLm_g1_x_Pqg0_x_Pgq0(x, mQ, nf)
     - 3. / 2 * beta(0, nf) * CLm_g1_x_Pgg0(x, mQ, nf) 
     + beta(0,nf) * beta(0,nf) * CLm_g1(x,mQ)
   );

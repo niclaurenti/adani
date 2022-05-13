@@ -77,17 +77,17 @@ double CLm_g20_x_Pgg0_sing_integrand(double z, void * p);
 double CLm_g20_x_Pgg0(double x, double mQ, int nf) ;
 
 double Pqg0_x_Pgq0(double x, int nf) ;
-double C2m_g1_x_Pqg0_Pgq0_integrand(double z, void * p);
-double C2m_g1_x_Pqg0_Pgq0(double x, double mQ, int nf);
-double CLm_g1_x_Pqg0_Pgq0_integrand(double z, void * p);
-double CLm_g1_x_Pqg0_Pgq0(double x, double mQ, int nf);
+double C2m_g1_x_Pqg0_x_Pgq0_integrand(double z, void * p);
+double C2m_g1_x_Pqg0_x_Pgq0(double x, double mQ, int nf);
+double CLm_g1_x_Pqg0_x_Pgq0_integrand(double z, void * p);
+double CLm_g1_x_Pqg0_x_Pgq0(double x, double mQ, int nf);
 
-double C2m_g1_x_Pgg0_Pgg0_reg_integrand(double z, void * p);
-double C2m_g1_x_Pgg0_Pgg0_sing_integrand(double z, void * p);
-double C2m_g1_x_Pgg0_Pgg0(double x, double mQ, int nf);
+double C2m_g1_x_Pgg0_x_Pgg0_reg_integrand(double z, void * p);
+double C2m_g1_x_Pgg0_x_Pgg0_sing_integrand(double z, void * p);
+double C2m_g1_x_Pgg0_x_Pgg0(double x, double mQ, int nf);
 
-double CLm_g1_x_Pgg0_Pgg0_reg_integrand(double z, void * p);
-double CLm_g1_x_Pgg0_Pgg0_sing_integrand(double z, void * p);
-double CLm_g1_x_Pgg0_Pgg0(double x, double mQ, int nf);
+double CLm_g1_x_Pgg0_x_Pgg0_reg_integrand(double z, void * p);
+double CLm_g1_x_Pgg0_x_Pgg0_sing_integrand(double z, void * p);
+double CLm_g1_x_Pgg0_x_Pgg0(double x, double mQ, int nf);
 
 #endif

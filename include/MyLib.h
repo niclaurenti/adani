@@ -1,5 +1,6 @@
 #include "ColorFactors.h"
 #include "SpecialFunctions.h"
+#include "SplittingFunctions.h"
 #include "Convolutions.h"
 #include "HighEnergyCoefficientFunctions.h"
 #include "MassiveCoefficientFunctions.h"
