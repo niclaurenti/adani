@@ -22,14 +22,14 @@ const double ZETA5  =  1.03692775514336992633136548646;
 //______________________________________________________________
 
 double beta(int ord, int nf) {
-	if(ord == 0) return (11. /3 * CA - 2. /3 * nf) / 4 / M_PI ;
+	if(ord == 0) return (11. /3 * CA - 2. /3 * nf) / 4. / M_PI ;
 	if(ord == 1) {
 		double TF = TR * nf ;
-		double b_ca2 = 34.0 / 3.0 * CA * CA ;
-		double b_ca = -20.0 / 3.0 * CA * TF ;
-		double b_cf = -4.0 * CF * TF ;
+		double b_ca2 = 34. / 3. * CA * CA ;
+		double b_ca = -20. / 3. * CA * TF ;
+		double b_cf = -4. * CF * TF ;
 		double beta_1 = b_ca2 + b_ca + b_cf ;
-		return beta_1 / (16 * M_PI * M_PI);
+		return beta_1 / (16. * M_PI * M_PI);
 	}
 	else {
 		cout << "beta("<<ord<<") is not implemented"<<endl;

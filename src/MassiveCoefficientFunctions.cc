@@ -7,6 +7,7 @@
 #include "../include/SpecialFunctions.h"
 #include "apfel/massivecoefficientfunctionsunp_sl.h"
 #include<cmath>
+#include <iostream>
 
 using namespace apfel;
 
@@ -349,7 +350,7 @@ double C2m_g31(double x, double mQ, int nf) {
 	
 	double x_max=1./(1+4*mQ);
   
-  if (x>x_max || x<0) return 0. ; 	
+  if (x>x_max || x<0) return 0. ;
   
   return -(
     C2m_g1_x_Pgg1(x, mQ, nf)
