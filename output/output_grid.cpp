@@ -63,10 +63,11 @@ int main(int argc, char** argv) {
 			mQ = pow(m/Q_, 2) ;
 			mu = mufrac * Q_ ;
 			mMu = pow(m/mu, 2) ;
-			if(channel == "2g") output << C2m_g30_approximation(x_,mQ,mMu,nf) << "   " ;
-			if(channel == "2q") output << C2m_ps30_approximation(x_,mQ,mMu,nf) << "   " ;
-			if(channel == "Lg") output << CLm_g30_approximation(x_,mQ,mMu,nf) << "   " ;
-			if(channel == "Lq") output << CLm_ps30_approximation(x_,mQ,mMu,nf) << "   " ;	
+			cout <<"Channel = "<< channel<< "   Q = " << Q_ << "   x = " << x_ << endl ;
+			if(channel == "2g") output << C2m_g3_approximation(x_,mQ,mMu,nf) << "   " ;
+			if(channel == "2q") output << C2m_ps3_approximation(x_,mQ,mMu,nf) << "   " ;
+			if(channel == "Lg") output << CLm_g3_approximation(x_,mQ,mMu,nf) << "   " ;
+			if(channel == "Lq") output << CLm_ps3_approximation(x_,mQ,mMu,nf) << "   " ;	
 		}
 		output << endl ;	
 	}
