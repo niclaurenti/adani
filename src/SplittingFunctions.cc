@@ -210,9 +210,9 @@ double Pgg1sing(double x, int nf) {
 
     double g1 = 67. / 18 - zeta(2) ;
 
-    double tmp_CAnf =  - 10. / 9 ;
-    double tmp_CACA =  2. * g1 ;
+    double tmp_CAnf =  - 10. / 9 * pggsing(x);
+    double tmp_CACA =  2. * g1 * pggsing(x) ;
 
-    return  4. * (tmp_CAnf * CA * nf + tmp_CACA * CA * CA ) * pggsing(x) / norm ;
+    return  4. * (tmp_CAnf * CA * nf + tmp_CACA * CA * CA ) / norm ;
 
 }
