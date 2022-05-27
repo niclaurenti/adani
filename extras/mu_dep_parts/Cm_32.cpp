@@ -1,6 +1,7 @@
 #include "/Users/niccololaurenti/Master-thesis/include/MyLib.h"
 
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <cmath>
 
@@ -24,15 +25,30 @@ int main(int argc, char** argv) {
 
     double mQ=1/xi;
 
-    double x, dx = 0.001, xmax = 1./(1.+4./xi);
+    double norm = 4. * xi ;
 
-    for(x=dx; x<xmax; x+=dx) {
-		//cout << x << "   " << gluon.Regular(x*(1+4*mQ))/ norm << "   " << quark.Regular(x*(1+4*mQ))/ norm << endl;
-        output << x << "   "
-               //<< C2m_g32(x, mQ, nf) << "   " 
-               << C2m_ps32(x, mQ, nf)<< "   " 
-               //<< CLm_g32(x, mQ, nf) << "   " 
-               << CLm_ps32(x, mQ, nf) 
+    double x;
+    //double xmax = 1./(1.+4./xi);
+
+    double eta, logeta, logeta_min=-4, logeta_max=4;	
+	
+	int N=500;
+	double dlog=(logeta_max - logeta_min)/N;
+
+    for(int i=0; i<N; i++) {
+		
+		logeta=logeta_min + i*dlog;
+		
+		eta=pow(10, logeta);
+        //if (eta == 1) eta = (double)eta ;
+		
+		x=1/(1+4*mQ*(eta+1));
+
+        cout << eta << "   "
+               << x * C2m_g32(x, mQ, nf) / norm << "   " 
+               << x * C2m_ps32(x, mQ, nf) / norm << "   " 
+               << x * CLm_g32(x, mQ, nf) / norm << "   " 
+               << x * CLm_ps32(x, mQ, nf) / norm << "   "
                << endl;
 	}
 

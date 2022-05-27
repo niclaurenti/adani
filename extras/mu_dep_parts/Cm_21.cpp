@@ -32,7 +32,7 @@ int main(int argc, char** argv) {
 
     double x, dx = 0.001, xmax = 1./(1.+4./xi);
 
-    for(x=dx; x<xmax; x+=dx) {
+    for(x=dx; x<1; x+=dx) {
 		//cout << x << "   " << gluon.Regular(x*(1+4*mQ))/ norm << "   " << quark.Regular(x*(1+4*mQ))/ norm << endl;
         cout << x << "   " << gluonF2.Regular(x*(1+4*mQ))/ norm << "   " << quarkF2.Regular(x*(1+4*mQ))/ norm << "   " << gluonFL.Regular(x*(1+4*mQ))/ norm << "   " << quarkFL.Regular(x*(1+4*mQ))/ norm << "   " << C2m_g21(x, mQ) << "   " <<C2m_ps21(x, mQ)<< "   " << CLm_g21(x, mQ) << "   " <<CLm_ps21(x, mQ) << endl;
 	}
