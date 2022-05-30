@@ -337,6 +337,9 @@ double Pgg0sing_integrand(double z, void * p) {
 
 double C2m_g1_x_Pgg0(double x, double mQ, int nf) {
 
+	double x_max=1./(1+4*mQ);
+  	if (x>x_max || x<0) return 0. ;
+
 	gsl_integration_workspace * w = gsl_integration_workspace_alloc (1000);
 
 	double regular, singular1, singular2, local, error, abserr = 0.001, relerr = 0.001;
@@ -371,6 +374,9 @@ double C2m_g1_x_Pgg0(double x, double mQ, int nf) {
 //____________________________________________________________
 
 double CLm_g1_x_Pgg0(double x, double mQ, int nf) {
+
+	double x_max=1./(1+4*mQ);  
+  	if (x>x_max || x<0) return 0. ;
 
 	gsl_integration_workspace * w = gsl_integration_workspace_alloc (1000);
 
@@ -431,6 +437,8 @@ double C2m_g1_x_Pgq1(double x, double mQ, int nf) {
 
 	gsl_integration_qag(&F, x, 1, abserr, relerr, 1000, 4, w, &result, &error);
 
+	gsl_integration_workspace_free (w);
+
 	return result ;
 		
 }
@@ -463,6 +471,8 @@ double CLm_g1_x_Pgq1(double x, double mQ, int nf) {
 
 	gsl_integration_qag(&F, x, 1, abserr, relerr, 1000, 4, w, &result, &error);
 
+	gsl_integration_workspace_free (w);
+
 	return result ;
 		
 }
@@ -487,13 +497,15 @@ double C2m_g20_x_Pgq0(double x, double mQ) {
 	gsl_integration_workspace * w = gsl_integration_workspace_alloc (1000);
 
 	double result, error, abserr = 0.001, relerr = 0.001;
-	struct function_params params ={x, mQ, 1};
+	struct function_params params ={x, mQ, static_cast<int>(nan(""))};
 
 	gsl_function F;
 	F.function = &C2m_g20_x_Pgq0_integrand;
 	F.params = &params;
 
 	gsl_integration_qag(&F, x, 1, abserr, relerr, 1000, 4, w, &result, &error);
+
+	gsl_integration_workspace_free (w);
 
 	return result ;
 	
@@ -519,13 +531,15 @@ double CLm_g20_x_Pgq0(double x, double mQ) {
 	gsl_integration_workspace * w = gsl_integration_workspace_alloc (1000);
 
 	double result, error, abserr = 0.001, relerr = 0.001;
-	struct function_params params ={x, mQ, 1};
+	struct function_params params ={x, mQ, static_cast<int>(nan(""))};
 
 	gsl_function F;
 	F.function = &CLm_g20_x_Pgq0_integrand;
 	F.params = &params;
 
 	gsl_integration_qag(&F, x, 1, abserr, relerr, 1000, 4, w, &result, &error);
+
+	gsl_integration_workspace_free (w);
 
 	return result ;
 	
