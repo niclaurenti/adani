@@ -5,8 +5,6 @@
 #include "../include/MatchingConditions.h"
 #include "../include/SpecialFunctions.h"
 #include "../include/SplittingFunctions.h"
-#include <gsl/gsl_integration.h>
-#include <gsl/gsl_errno.h>
 #include <cmath>
 #include <iostream>
 //#include <gsl/gsl_integration.h>
@@ -1364,3 +1362,264 @@ double CLm_g1_x_Pgg0_x_Pgg0(double x, double mQ, int nf) {
 }
 
 //____________________________________________________________
+
+double C2m_g1_x_Pgg0_x_Pgg0_reg1_integrand(double z[], size_t dim, void * p) {
+
+   	if (dim != 2) {
+        std::cout << "error: dim != 2" << std::endl ;
+        exit(-1);
+    }
+
+	struct function_params * params = (struct function_params *)p;
+
+	double mQ = (params->mQ);
+	double x = (params->x);
+	//int nf = (params->nf);	
+
+	double z1 = z[0], z2 = z[1] ;
+
+	double int_bound = theta(z1 - x) * theta(z2 - z1) ;
+
+   	return  1. / ( z1 * z2 ) * Pgg0reg(x / z1) * Pgg0reg(z1 / z2) * C2m_g1(z2, mQ) * int_bound ;
+
+}
+
+//_________________________________________________________
+
+double C2m_g1_x_Pgg0_x_Pgg0_reg2_integrand(double z[], size_t dim, void * p) {
+
+   	if (dim != 2) {
+        std::cout << "error: dim != 2" << std::endl ;
+        exit(-1);
+    }
+
+	struct function_params * params = (struct function_params *)p;
+
+	double mQ = (params->mQ);
+	double x = (params->x);
+	//int nf = (params->nf);	
+
+	double z1 = z[0], z2 = z[1] ;
+
+	double int_bound = theta(z1 - x) * theta(z2 - z1) ;
+
+   	return  1. / ( z1 * z2 ) * Pgg0reg(x / z1) * Pgg0sing(z2) * ( C2m_g1(z1 / z2, mQ) / z2 -  C2m_g1(z1, mQ) ) * int_bound ;
+   
+}
+
+//_________________________________________________________
+
+double C2m_g1_x_Pgg0_x_Pgg0_reg3_integrand(double z[], size_t dim, void * p) {
+
+   	if (dim != 2) {
+        std::cout << "error: dim != 2" << std::endl ;
+        exit(-1);
+    }
+
+	struct function_params * params = (struct function_params *)p;
+
+	double mQ = (params->mQ);
+	double x = (params->x);
+	//int nf = (params->nf);	
+
+	double z1 = z[0], z2 = z[1] ;
+
+	double int_bound = theta(z1 - x) * theta(z1 - z2) ;
+
+   	return  - Pgg0reg(x / z1) * C2m_g1(z1, mQ) * Pgg0sing(z2) * int_bound ;
+
+}
+
+//_________________________________________________________
+
+double C2m_g1_x_Pgg0_x_Pgg0_reg(double x, double mQ, int nf) {
+
+	struct function_params params = {x, mQ, nf} ;
+	double xl[2] = {0, 0};
+	double xu[2] = {1, 1};
+
+	double err, regular1, regular2, regular3, regular4 ;
+
+	gsl_monte_vegas_state *s = gsl_monte_vegas_alloc (2);
+
+	size_t calls = 5000000;
+
+	const gsl_rng_type *T;
+  	gsl_rng *r;
+	gsl_rng_env_setup ();
+	T = gsl_rng_default;
+  	r = gsl_rng_alloc (T);
+
+	gsl_monte_function F;
+
+	F.f = &C2m_g1_x_Pgg0_x_Pgg0_reg1_integrand;
+	F.dim = 2;
+	F.params = &params;
+
+	gsl_monte_vegas_integrate(&F, xl, xu, 2, calls, r, s, &regular1, &err);
+
+	F.f = &C2m_g1_x_Pgg0_x_Pgg0_reg2_integrand;
+	gsl_monte_vegas_integrate(&F, xl, xu, 2, calls, r, s, &regular2, &err);
+
+	F.f = &C2m_g1_x_Pgg0_x_Pgg0_reg3_integrand;
+	gsl_monte_vegas_integrate(&F, xl, xu, 2, calls, r, s, &regular3, &err);
+
+	gsl_monte_vegas_free (s);
+
+	gsl_integration_workspace * w = gsl_integration_workspace_alloc (1000);
+
+	double abserr = 0.001, relerr = 0.001;
+
+	gsl_function f;
+	f.function = &C2m_g1_x_Pgg0_reg_integrand;
+	f.params = &params;
+
+	gsl_integration_qag(&f, x, 1, abserr, relerr, 1000, 4, w, &regular4, &err);
+
+	regular4 *= Pgg0loc(nf) ;
+	
+	gsl_integration_workspace_free (w);
+
+	return regular1 + regular2 + regular3 + regular4;
+
+}
+
+//_____________________________________________________________________________
+
+double C2m_g1_x_Pgg0_x_Pgg0_sing1_integrand(double z[], size_t dim, void * p) {
+
+   	if (dim != 2) {
+        std::cout << "error: dim != 2" << std::endl ;
+        exit(-1);
+    }
+
+	struct function_params * params = (struct function_params *)p;
+
+	double mQ = (params->mQ);
+	double x = (params->x);
+	//int nf = (params->nf);	
+
+	double z1 = z[0], z2 = z[1] ;
+
+   	return  1. / z2 * theta(z1 - x) * Pgg0sing(z1) * ( theta(z2 - x / z1) / z1 * Pgg0reg(x / (z1 * z2)) - theta(z2 - x) * Pgg0reg(x / z2) ) * C2m_g1(z2, mQ) ; 
+
+}
+
+//_________________________________________________________
+
+double C2m_g1_x_Pgg0_x_Pgg0_sing2_integrand(double z[], size_t dim, void * p) {
+
+   	if (dim != 2) {
+        std::cout << "error: dim != 2" << std::endl ;
+        exit(-1);
+    }
+
+	struct function_params * params = (struct function_params *)p;
+
+	double mQ = (params->mQ);
+	double x = (params->x);
+	//int nf = (params->nf);	
+
+	double z1 = z[0], z2 = z[1] ;
+
+   return  theta(z1 - x) * Pgg0sing(z1) * ( Pgg0sing(z2) * ( C2m_g1(x / (z1 * z2), mQ) / z2 - C2m_g1(x / z1, mQ)) * theta(z2 - x / z1) - Pgg0sing(z2) * ( C2m_g1(x / z2, mQ) / z2 - C2m_g1(x, mQ)) * theta(z2 - x)) ;
+   
+}
+
+//_________________________________________________________
+
+double C2m_g1_x_Pgg0_x_Pgg0_sing3_integrand(double z[], size_t dim, void * p) {
+
+   	if (dim != 2) {
+        std::cout << "error: dim != 2" << std::endl ;
+        exit(-1);
+    }
+
+	struct function_params * params = (struct function_params *)p;
+
+	double mQ = (params->mQ);
+	double x = (params->x);
+	//int nf = (params->nf);	
+
+	double z1 = z[0], z2 = z[1] ;
+
+   return  -  ( theta(z1 - x) * Pgg0sing(z2) * Pgg0sing(z1) * ( C2m_g1(x / z1 , mQ) / z1 * theta(x / z1 - z2) - C2m_g1(x , mQ) * theta(x - z2) ) );
+
+}
+
+//_________________________________________________________
+
+double C2m_g1_x_Pgg0_x_Pgg0_sing(double x, double mQ, int nf) {
+
+	struct function_params params = {x, mQ, nf} ;
+	double xl[2] = {0, 0};
+	double xu[2] = {1, 1};
+
+	double err, singular1, singular2, singular3, singular4 ;
+
+	gsl_monte_vegas_state *s = gsl_monte_vegas_alloc (2);
+
+	size_t calls = 5000000;
+
+	const gsl_rng_type *T;
+  	gsl_rng *r;
+	gsl_rng_env_setup ();
+	T = gsl_rng_default;
+  	r = gsl_rng_alloc (T);
+
+	gsl_monte_function F;
+
+	F.f = &C2m_g1_x_Pgg0_x_Pgg0_sing1_integrand;
+	F.dim = 2;
+	F.params = &params;
+
+	gsl_monte_vegas_integrate(&F, xl, xu, 2, calls, r, s, &singular1, &err);
+
+	F.f = &C2m_g1_x_Pgg0_x_Pgg0_sing2_integrand;
+	gsl_monte_vegas_integrate(&F, xl, xu, 2, calls, r, s, &singular2, &err);
+
+	F.f = &C2m_g1_x_Pgg0_x_Pgg0_sing3_integrand;
+	gsl_monte_vegas_integrate(&F, xl, xu, 2, calls, r, s, &singular3, &err);
+
+	gsl_monte_vegas_free (s);
+
+	gsl_integration_workspace * w = gsl_integration_workspace_alloc (1000);
+
+	double abserr = 0.001, relerr = 0.001;
+
+	gsl_function f;
+	f.function = &C2m_g1_x_Pgg0_sing_integrand;
+	f.params = &params;
+
+	gsl_integration_qag(&f, x, 1, abserr, relerr, 1000, 4, w, &singular4, &err);
+
+	singular4 *= Pgg0loc(nf) ;
+	
+	gsl_integration_workspace_free (w);
+
+	return singular1 + singular2 + singular3 + singular4;
+
+}
+
+//_____________________________________________________________________________
+
+double C2m_g1_x_Pgg0_x_Pgg0_MC(double x, double mQ, int nf) {
+
+	gsl_integration_workspace * w = gsl_integration_workspace_alloc(1000);
+
+	double result, error, abserr = 0.001, relerr = 0.001;
+	struct function_params params ={x, mQ, nf};
+
+	double C2m_g1xPgg0 = C2m_g1_x_Pgg0(x, mQ, nf) ;
+
+	gsl_function F;
+	F.function = &Pgg0sing_integrand;
+	F.params = &params;
+
+	gsl_integration_qag(&F, 0, x, abserr, relerr, 1000, 4, w, &result, &error);
+
+	gsl_integration_workspace_free (w);
+
+	return  C2m_g1_x_Pgg0_x_Pgg0_reg(x, mQ, nf) + C2m_g1_x_Pgg0_x_Pgg0_sing(x, mQ, nf) + C2m_g1xPgg0 * (Pgg0loc(nf) - result);
+
+}
