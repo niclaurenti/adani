@@ -335,7 +335,7 @@ double CLm_ps2_approximation(double x, double mQ, double mMu, double A, double B
 
 //_________________________________________________________________
 
-double C2m_g3_approximation(double x, double mQ, double mMu, int nf) {
+double C2m_g3_approximation(double x, double mQ, double mMu, int nf, int method_flag, int calls) {
 
 	double a=2.5, b=5;	
 	double A=0.3, B=2.5, C=2.5, D=1.2;
@@ -364,13 +364,13 @@ double C2m_g3_approximation(double x, double mQ, double mMu, int nf) {
 	double Lmu = - log(mMu) ;
 	double Lmu2 = Lmu * Lmu ;
 
-	return C30 + C2m_g31(x, mQ, nf) * Lmu + C2m_g32(x, mQ, nf) * Lmu2 ; 
+	return C30 + C2m_g31(x, mQ, nf) * Lmu + C2m_g32(x, mQ, nf, method_flag, calls) * Lmu2 ; 
 	
 }
 
 //_________________________________________________________________
 
-double C2m_g3_approximation(double x, double mQ, double mMu, int nf, double A, double B, double C, double D, double a, double b, int v1,int v2) {
+double C2m_g3_approximation(double x, double mQ, double mMu, int nf, double A, double B, double C, double D, double a, double b, int v1, int v2, int method_flag, int calls) {
 	
 	double xmax=1/(1+4*mQ);	
 	
@@ -395,13 +395,13 @@ double C2m_g3_approximation(double x, double mQ, double mMu, int nf, double A, d
 	double Lmu = - log(mMu) ;
 	double Lmu2 = Lmu * Lmu ;
 
-	return C30 + C2m_g31(x, mQ, nf) * Lmu + C2m_g32(x, mQ, nf) * Lmu2 ; 
+	return C30 + C2m_g31(x, mQ, nf) * Lmu + C2m_g32(x, mQ, nf, method_flag, calls) * Lmu2 ; 
 
 }
 
 //_________________________________________________________________
 
-double C2m_g3_approximation_BAND(double x, double mQ, double mMu, int nf, double var, double fact, int v) {
+double C2m_g3_approximation_BAND(double x, double mQ, double mMu, int nf, double var, double fact, int v, int method_flag, int calls) {
 	
 	double a=2.5, b=5;	
 	double A=0.3, B=2.5, C=2.5, D=1.2;
@@ -449,7 +449,7 @@ double C2m_g3_approximation_BAND(double x, double mQ, double mMu, int nf, double
 	if(mMu == 1.) {
 		C_mu_dep = 0. ;
 	} else {
-		C_mu_dep = C2m_g31(x, mQ, nf) * Lmu + C2m_g32(x, mQ, nf) * Lmu2 ; 
+		C_mu_dep = C2m_g31(x, mQ, nf) * Lmu + C2m_g32(x, mQ, nf, method_flag, calls) * Lmu2 ; 
 	}	
 	
 	if(v==1) return max + C_mu_dep;
@@ -499,7 +499,7 @@ double C2m_ps3_approximation(double x, double mQ, double mMu, int nf) {
 
 //_________________________________________________________________
 
-double CLm_g3_approximation(double x, double mQ, double mMu, int nf) {
+double CLm_g3_approximation(double x, double mQ, double mMu, int nf, int method_flag, int calls) {
 
 	double a=2.5, b=5;	
 	double A=20., B=11., C=3., D=2.;
@@ -527,7 +527,7 @@ double CLm_g3_approximation(double x, double mQ, double mMu, int nf) {
 	double Lmu = - log(mMu) ;
 	double Lmu2 = Lmu * Lmu ;
 
-	return C30 + CLm_g31(x, mQ, nf) * Lmu + CLm_g32(x, mQ, nf) * Lmu2 ; 	
+	return C30 + CLm_g31(x, mQ, nf) * Lmu + CLm_g32(x, mQ, nf, method_flag, calls) * Lmu2 ; 	
 
 }
 

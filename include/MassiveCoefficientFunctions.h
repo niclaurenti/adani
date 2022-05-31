@@ -44,7 +44,7 @@ double CLm_ps32(double x, double mQ, int nf) ;
 double C2m_g31(double x, double mQ, int nf) ;
 double CLm_g31(double x, double mQ, int nf) ;
 
-double C2m_g32(double x, double mQ, int nf);
-double CLm_g32(double x, double mQ, int nf) ;
+double C2m_g32(double x, double mQ, int nf, int method_flag = 0, int calls = 500000);
+double CLm_g32(double x, double mQ, int nf, int method_flag = 0, int calls = 500000) ;
 
 #endif

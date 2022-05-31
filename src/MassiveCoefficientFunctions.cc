@@ -380,14 +380,23 @@ double CLm_g31(double x, double mQ, int nf) {
 
 //__________________________________________________________
 
-double C2m_g32(double x, double mQ, int nf) {
+double C2m_g32(double x, double mQ, int nf, int method_flag, int calls) {
 	
 	double x_max=1./(1+4*mQ);
   
-  if (x>x_max || x<0) return 0; 	
+  if (x>x_max || x<0) return 0;
+
+  double C2m_g1xPgg0xPgg0 ;
+
+  if(method_flag == 0) C2m_g1xPgg0xPgg0 = C2m_g1_x_Pgg0_x_Pgg0(x, mQ, nf) ;
+  if(method_flag == 1) C2m_g1xPgg0xPgg0 = C2m_g1_x_Pgg0_x_Pgg0_MC(x, mQ, nf, calls) ;
+  else {
+    std::cout << "Choose either method_flag = 0 or method_flag = 1" << std::endl ;
+    exit(-1);
+  }
   
   return (
-    0.5 * C2m_g1_x_Pgg0_x_Pgg0(x, mQ, nf)
+    0.5 * C2m_g1xPgg0xPgg0
     + 0.5 * C2m_g1_x_Pqg0_x_Pgq0(x, mQ, nf)
     - 3. / 2 * beta(0, nf) * C2m_g1_x_Pgg0(x, mQ, nf) 
     + beta(0,nf) * beta(0,nf) * C2m_g1(x,mQ)
@@ -397,14 +406,23 @@ double C2m_g32(double x, double mQ, int nf) {
 
 //__________________________________________________________
 
-double CLm_g32(double x, double mQ, int nf) {
+double CLm_g32(double x, double mQ, int nf, int method_flag, int calls) {
 	
 	double x_max=1./(1+4*mQ);
   
-  if (x>x_max || x<0) return 0; 	
+  if (x>x_max || x<0) return 0;
+
+  double CLm_g1xPgg0xPgg0 ;
+
+  if(method_flag == 0) CLm_g1xPgg0xPgg0 = CLm_g1_x_Pgg0_x_Pgg0(x, mQ, nf) ;
+  if(method_flag == 1) CLm_g1xPgg0xPgg0 = CLm_g1_x_Pgg0_x_Pgg0_MC(x, mQ, nf, calls) ;
+  else {
+    std::cout << "Choose either method_flag = 0 or method_flag = 1" << std::endl ;
+    exit(-1);
+  }
   
   return (
-    0.5 * CLm_g1_x_Pgg0_x_Pgg0(x, mQ, nf)
+    0.5 * CLm_g1xPgg0xPgg0
     + 0.5 * CLm_g1_x_Pqg0_x_Pgq0(x, mQ, nf)
     - 3. / 2 * beta(0, nf) * CLm_g1_x_Pgg0(x, mQ, nf) 
     + beta(0,nf) * beta(0,nf) * CLm_g1(x,mQ)
