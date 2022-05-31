@@ -4,6 +4,8 @@
 double zeta(int i);
 double beta(int ord, int nf);
 
+double theta(double x) ;
+
 double Li2(double x);
 double Li3(double x);
 double Li4(double x);
