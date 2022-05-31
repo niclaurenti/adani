@@ -1403,7 +1403,7 @@ double C2m_g1_x_Pgg0_x_Pgg0_reg2_integrand(double z[], size_t dim, void * p) {
 
 	double int_bound = theta(z1 - x) * theta(z2 - z1) ;
 
-   	return  1. / ( z1 * z2 ) * Pgg0reg(x / z1) * Pgg0sing(z2) * ( C2m_g1(z1 / z2, mQ) / z2 -  C2m_g1(z1, mQ) ) * int_bound ;
+   	return  1. / z1 * Pgg0reg(x / z1) * Pgg0sing(z2) * ( C2m_g1(z1 / z2, mQ) / z2 -  C2m_g1(z1, mQ) ) * int_bound ;
    
 }
 
@@ -1426,13 +1426,13 @@ double C2m_g1_x_Pgg0_x_Pgg0_reg3_integrand(double z[], size_t dim, void * p) {
 
 	double int_bound = theta(z1 - x) * theta(z1 - z2) ;
 
-   	return  - Pgg0reg(x / z1) * C2m_g1(z1, mQ) * Pgg0sing(z2) * int_bound ;
+   	return  - 1. / z1 * Pgg0reg(x / z1) * C2m_g1(z1, mQ) * Pgg0sing(z2) * int_bound ;
 
 }
 
 //_________________________________________________________
 
-double C2m_g1_x_Pgg0_x_Pgg0_reg(double x, double mQ, int nf) {
+double C2m_g1_x_Pgg0_x_Pgg0_reg(double x, double mQ, int nf, size_t calls) {
 
 	struct function_params params = {x, mQ, nf} ;
 	double xl[2] = {0, 0};
@@ -1441,8 +1441,6 @@ double C2m_g1_x_Pgg0_x_Pgg0_reg(double x, double mQ, int nf) {
 	double err, regular1, regular2, regular3, regular4 ;
 
 	gsl_monte_vegas_state *s = gsl_monte_vegas_alloc (2);
-
-	size_t calls = 5000000;
 
 	const gsl_rng_type *T;
   	gsl_rng *r;
@@ -1456,12 +1454,15 @@ double C2m_g1_x_Pgg0_x_Pgg0_reg(double x, double mQ, int nf) {
 	F.dim = 2;
 	F.params = &params;
 
+	gsl_monte_vegas_init (s);
 	gsl_monte_vegas_integrate(&F, xl, xu, 2, calls, r, s, &regular1, &err);
 
 	F.f = &C2m_g1_x_Pgg0_x_Pgg0_reg2_integrand;
+	gsl_monte_vegas_init (s);
 	gsl_monte_vegas_integrate(&F, xl, xu, 2, calls, r, s, &regular2, &err);
 
 	F.f = &C2m_g1_x_Pgg0_x_Pgg0_reg3_integrand;
+	gsl_monte_vegas_init (s);
 	gsl_monte_vegas_integrate(&F, xl, xu, 2, calls, r, s, &regular3, &err);
 
 	gsl_monte_vegas_free (s);
@@ -1522,7 +1523,7 @@ double C2m_g1_x_Pgg0_x_Pgg0_sing2_integrand(double z[], size_t dim, void * p) {
 
 	double z1 = z[0], z2 = z[1] ;
 
-   return  theta(z1 - x) * Pgg0sing(z1) * ( Pgg0sing(z2) * ( C2m_g1(x / (z1 * z2), mQ) / z2 - C2m_g1(x / z1, mQ)) * theta(z2 - x / z1) - Pgg0sing(z2) * ( C2m_g1(x / z2, mQ) / z2 - C2m_g1(x, mQ)) * theta(z2 - x)) ;
+   return  theta(z1 - x) * Pgg0sing(z1) * ( Pgg0sing(z2) / z1 * ( C2m_g1(x / (z1 * z2), mQ) / z2 - C2m_g1(x / z1, mQ)) * theta(z2 - x / z1) - Pgg0sing(z2) * ( C2m_g1(x / z2, mQ) / z2 - C2m_g1(x, mQ)) * theta(z2 - x)) ;
    
 }
 
@@ -1543,13 +1544,13 @@ double C2m_g1_x_Pgg0_x_Pgg0_sing3_integrand(double z[], size_t dim, void * p) {
 
 	double z1 = z[0], z2 = z[1] ;
 
-   return  -  ( theta(z1 - x) * Pgg0sing(z2) * Pgg0sing(z1) * ( C2m_g1(x / z1 , mQ) / z1 * theta(x / z1 - z2) - C2m_g1(x , mQ) * theta(x - z2) ) );
+   return  -  ( theta(z1 - x) * Pgg0sing(z1) * Pgg0sing(z2) * ( C2m_g1(x / z1 , mQ) / z1 * theta(x / z1 - z2) - C2m_g1(x , mQ) * theta(x - z2) ) );
 
 }
 
 //_________________________________________________________
 
-double C2m_g1_x_Pgg0_x_Pgg0_sing(double x, double mQ, int nf) {
+double C2m_g1_x_Pgg0_x_Pgg0_sing(double x, double mQ, int nf, size_t calls) {
 
 	struct function_params params = {x, mQ, nf} ;
 	double xl[2] = {0, 0};
@@ -1558,8 +1559,6 @@ double C2m_g1_x_Pgg0_x_Pgg0_sing(double x, double mQ, int nf) {
 	double err, singular1, singular2, singular3, singular4 ;
 
 	gsl_monte_vegas_state *s = gsl_monte_vegas_alloc (2);
-
-	size_t calls = 5000000;
 
 	const gsl_rng_type *T;
   	gsl_rng *r;
@@ -1603,7 +1602,7 @@ double C2m_g1_x_Pgg0_x_Pgg0_sing(double x, double mQ, int nf) {
 
 //_____________________________________________________________________________
 
-double C2m_g1_x_Pgg0_x_Pgg0_MC(double x, double mQ, int nf) {
+double C2m_g1_x_Pgg0_x_Pgg0_MC(double x, double mQ, int nf, size_t calls) {
 
 	gsl_integration_workspace * w = gsl_integration_workspace_alloc(1000);
 
@@ -1620,6 +1619,6 @@ double C2m_g1_x_Pgg0_x_Pgg0_MC(double x, double mQ, int nf) {
 
 	gsl_integration_workspace_free (w);
 
-	return  C2m_g1_x_Pgg0_x_Pgg0_reg(x, mQ, nf) + C2m_g1_x_Pgg0_x_Pgg0_sing(x, mQ, nf) + C2m_g1xPgg0 * (Pgg0loc(nf) - result);
+	return  C2m_g1_x_Pgg0_x_Pgg0_reg(x, mQ, nf, calls) + C2m_g1_x_Pgg0_x_Pgg0_sing(x, mQ, nf, calls) + C2m_g1xPgg0 * (Pgg0loc(nf) - result);
 
 }
