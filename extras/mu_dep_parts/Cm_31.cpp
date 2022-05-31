@@ -42,17 +42,17 @@ int main(int argc, char** argv) {
 		
 		x=1/(1+4*mQ*(eta+1));
 
-        output << eta << "   "
+        output  << eta << "   "
+                << x * C2m_g31(x, mQ, nf) / norm << "   " 
+                << x * C2m_ps31(x, mQ, nf) / norm << "   " 
+                << x * CLm_g31(x, mQ, nf) / norm << "   " 
+                << x * CLm_ps31(x, mQ, nf) / norm << "   "
                 << - x * C2m_g1_x_Pgg1(x, mQ, nf) / norm<< "   "
                 << - x * (- beta(1, nf) * C2m_g1(x, mQ)) / norm<< "   "
                 << - x * C2m_ps20_x_Pqg0(x, mQ, nf) / norm<< "   "
                 << - x * C2m_g20_x_Pgg0(x, mQ, nf) / norm<< "   "
                 << - x * (- 2. * beta(0,nf) * C2m_g2(x, mQ, 1)) / norm<< "   "
-               << x * C2m_g31(x, mQ, nf) / norm << "   " 
-               << x * C2m_ps31(x, mQ, nf) / norm << "   " 
-               << x * CLm_g31(x, mQ, nf) / norm << "   " 
-               << x * CLm_ps31(x, mQ, nf) / norm << "   "
-               << endl;
+                << endl;
 	}
 
     output.close();

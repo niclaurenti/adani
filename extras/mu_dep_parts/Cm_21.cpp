@@ -30,7 +30,7 @@ int main(int argc, char** argv) {
     CmL2bargNC gluonFL(1./(1+4*mQ));
     CmL2barpsNC quarkFL(1./(1+4*mQ));
 
-    double x, dx = 0.001, xmax = 1./(1.+4./xi);
+    double x, dx = 0.001;
 
     for(x=dx; x<1; x+=dx) {
 		//cout << x << "   " << gluon.Regular(x*(1+4*mQ))/ norm << "   " << quark.Regular(x*(1+4*mQ))/ norm << endl;
