@@ -864,10 +864,17 @@ double C2m_ps30_approximationA_vogt(double x, double mQ, double mMu, int nf) {
 	
 	double beta3=beta*beta*beta;	
 	
-	double C2m_ps3_highenergyNLLA=(0.004*pow(log(1./mQ)/log(5), 4) - 0.125)*4/mQ/x;
+	double C2m_ps30_highenergyNLLA=(0.004*pow(log(1./mQ)/log(5), 4) - 0.125)*4/mQ/x;
 	
-	return  (1. - f)*beta*C2m_ps3_highscale(x,mQ,1,nf)
-	       + f*beta3*(-log(eta)/log(x)*C2m_ps3_highenergyLL(x,mQ,1) + C2m_ps3_highenergyNLLA*eta_gamma/(C+eta_gamma));
+	double C30 =  (1. - f)*beta*C2m_ps3_highscale(x,mQ,1,nf)
+	       + f*beta3*(-log(eta)/log(x)*C2m_ps3_highenergyLL(x,mQ,1) + C2m_ps30_highenergyNLLA*eta_gamma/(C+eta_gamma));
+	
+	if(mMu == 1.) return C30 ;
+
+	double Lmu = - log(mMu) ;
+	double Lmu2 = Lmu * Lmu ;
+
+	return C30 + C2m_ps31(x, mQ, nf) * Lmu + C2m_ps32(x, mQ, nf) * Lmu2 ;
 
 }
 
@@ -893,15 +900,96 @@ double C2m_ps30_approximationB_vogt(double x, double mQ, double mMu, int nf) {
 	
 	double beta3=beta*beta*beta;
 	
-	double C2m_ps3_highenergyNLLB=(0.0245*pow(log(1./mQ)/log(5),2) - 0.17)*4/mQ/x;
+	double C2m_ps30_highenergyNLLB=(0.0245*pow(log(1./mQ)/log(5),2) - 0.17)*4/mQ/x;
 	
-	return (1-f)*beta3*C2m_ps3_highscale(x,mQ,1,nf)
-	       +f*beta3*(-log(eta)/log(x)*C2m_ps3_highenergyLL(x,mQ,1) + C2m_ps3_highenergyNLLB*eta_delta/(D+eta_delta));
+	double C30 = (1-f)*beta3*C2m_ps3_highscale(x,mQ,1,nf)
+	       +f*beta3*(-log(eta)/log(x)*C2m_ps3_highenergyLL(x,mQ,1) + C2m_ps30_highenergyNLLB*eta_delta/(D+eta_delta));
+	
+	if(mMu == 1.) return C30 ;
+
+	double Lmu = - log(mMu) ;
+	double Lmu2 = Lmu * Lmu ;
+
+	return C30 + C2m_ps31(x, mQ, nf) * Lmu + C2m_ps32(x, mQ, nf) * Lmu2 ;
 
 
 }
 
 //_________________________________________________________________
+
+double C2m_ps30_approximationA_vogt_paper(double x, double mQ, double mMu, int nf) {
+	
+	double x_max=1/(1+4*mQ);	
+	
+	if(x>x_max || x<0) return 0;
+	
+	double beta=sqrt(1-4*mQ*x/(1-x));
+	
+	double eta=0.25/mQ*(1-x)/x - 1;
+	
+	double xi=1./mQ;
+	
+	double f=1./(1+exp(2*(xi-4)));
+	
+	double gamma=1.0, C=20.0;
+	
+	double eta_gamma=pow(eta,gamma);
+	
+	double beta3=beta*beta*beta;	
+	
+	double C2m_ps30_highenergyNLLA=(0.004*pow(log(1./mQ)/log(5), 4) - 0.125)*4/mQ/x;
+	
+	double C30 =  (1. - f)*beta*C2m_ps3_highscaleVogt(x,mQ,1,nf,1)
+	       + f*beta3*(-log(eta)/log(x)*C2m_ps3_highenergyLL(x,mQ,1) + C2m_ps30_highenergyNLLA*eta_gamma/(C+eta_gamma));
+	
+	if(mMu == 1.) return C30 ;
+
+	double Lmu = - log(mMu) ;
+	double Lmu2 = Lmu * Lmu ;
+
+	return C30 + C2m_ps31(x, mQ, nf) * Lmu + C2m_ps32(x, mQ, nf) * Lmu2 ;
+
+}
+
+//_________________________________________________________________
+
+double C2m_ps30_approximationB_vogt_paper(double x, double mQ, double mMu, int nf) {
+	
+	double x_max=1/(1+4*mQ);	
+	
+	if(x>x_max || x<0) return 0;
+	
+	double beta=sqrt(1-4*mQ*x/(1-x));
+	
+	double eta=0.25/mQ*(1-x)/x - 1;
+	
+	double xi=1./mQ;
+	
+	double f=1./(1+exp(2*(xi-4)));
+	
+	double delta=0.8, D=10.7;
+	
+	double eta_delta=pow(eta,delta);
+	
+	double beta3=beta*beta*beta;
+	
+	double C2m_ps30_highenergyNLLB=(0.0245*pow(log(1./mQ)/log(5),2) - 0.17)*4/mQ/x;
+	
+	double C30 = (1-f)*beta3*C2m_ps3_highscaleVogt(x,mQ,1,nf,2)
+	       +f*beta3*(-log(eta)/log(x)*C2m_ps3_highenergyLL(x,mQ,1) + C2m_ps30_highenergyNLLB*eta_delta/(D+eta_delta));
+	
+	if(mMu == 1.) return C30 ;
+
+	double Lmu = - log(mMu) ;
+	double Lmu2 = Lmu * Lmu ;
+
+	return C30 + C2m_ps31(x, mQ, nf) * Lmu + C2m_ps32(x, mQ, nf) * Lmu2 ;
+
+
+}
+
+//_________________________________________________________________
+
 
 
 
