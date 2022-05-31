@@ -47,6 +47,7 @@ double C2m_ps2_approximationB_vogt(double x, double mQ, double mMu);
 
 double C2m_g30_approximationA_vogt(double x, double mQ, double mMu, int nf);
 double C2m_g30_approximationB_vogt(double x, double mQ, double mMu, int nf);
+double C2m_g30_approximationB_vogt_paper(double x, double mQ, double mMu, int nf) ;
 double C2m_g30_approximationBlowxi_vogt(double x, double mQ, double mMu, int nf);
 
 double C2m_ps30_approximationA_vogt(double x, double mQ, double mMu, int nf);

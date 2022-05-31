@@ -145,24 +145,24 @@ double a_Qg_30(double x, int v) {
 		return 0.5*( a_Qg_30(x,1) + a_Qg_30(x,2));
 	}
 	
-	if(v==1) {		
+	if(v==1) {
 		return 354.1002*L13 + 479.3838*L12 - 7856.784*(2-x) - 6233.530*L2 + 9416.621/x + 1548.891/x*L;
 	}
 	
-	if(v==2) {		
+	if(v==2) {
 		return 226.3840*L13 - 652.2045*L12 - 2686.387*L1 - 7714.786*(2-x) - 2841.851*L2 + 7721.120/x + 1548.891/x*L ;
 	}
 	
-	if(v==3) {
+	if(v==3) {//Updated version w.r.t v==4
 		return L/x*CA*CA*(41984./243 + 160./9*zeta(2) - 224./9*zeta(3));	
 	}
 	
-	if(v==4) {
+	if(v==4) { //Version of the paper (used only for benchamrk)
 	return -2658.323*L12 - 7449.948*L1 - 7460.002*(2-x) + 3178.819*L2 + 4710.725/x + 1548.891/x*L;	
 	}
 	
 	else {
-	 cout<<"Choose either v=0 or v=1 or v=2 or v=3!!\nExiting!!\n"<<endl;
+	 cout<<"Choose either v=0, v=1, v=2, v=3 or v=4 !!\nExiting!!\n"<<endl;
 	 exit(-1);
 	}
 		

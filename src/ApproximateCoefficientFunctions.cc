@@ -803,6 +803,49 @@ double C2m_g30_approximationB_vogt(double x, double mQ, double mMu, int nf) {
 	
 	double D2m_g3_highenergyNLLB=(0.055*pow(log(1./mQ)/log(5),2) - 0.423)*4/mQ/x;
 	
+	double C30 = (C2m_g3_threshold(x,mQ,1,nf)-c_const)  +f*2.*c_const  +(1-f)*beta3*C2m_g3_highscale(x,mQ,1,nf,2)
+	       +f*beta3*(-log(eta)/log(x)*C2m_g3_highenergyLL(x,mQ,1) + D2m_g3_highenergyNLLB*eta_delta/(D+eta_delta));
+	
+	double Lmu = - log(mMu) ;
+	double Lmu2 = Lmu * Lmu ;
+
+	return C30 + C2m_g31(x, mQ, nf) * Lmu + C2m_g32(x, mQ, nf, 1, 50000) * Lmu2 ;
+
+
+}
+
+//_________________________________________________________________
+
+double C2m_g30_approximationB_vogt_paper(double x, double mQ, double mMu, int nf) {
+	
+	double x_max=1/(1+4*mQ);	
+	
+	if(x>x_max || x<0) return 0;
+	
+	double pi2=M_PI*M_PI;
+	
+	double beta=sqrt(1-4*mQ*x/(1-x));
+	
+	double eta=0.25/mQ*(1-x)/x - 1;
+	
+	double xi=1./mQ;
+	
+	double f=1./(1+exp(2*(xi-4)));
+	
+	double delta=0.8, D=10.7;
+	
+	double eta_delta=pow(eta,delta);
+	
+	double beta3=beta*beta*beta;
+	
+	double c_const_sqrt=c0(xi) + 36*CA*log(2)*log(2) - 60*CA*log(2) + log(1)*(8*CA*log(2) - c0_bar(xi));
+	
+	double c_const= c_const_sqrt*c_const_sqrt;
+	
+	c_const *= C2m_g1(x,mQ)/pi2/16.;
+	
+	double D2m_g3_highenergyNLLB=(0.055*pow(log(1./mQ)/log(5),2) - 0.423)*4/mQ/x;
+	
 	double C30 = (C2m_g3_threshold(x,mQ,1,nf)-c_const)  +f*2.*c_const  +(1-f)*beta3*C2m_g3_highscale(x,mQ,1,nf,4)
 	       +f*beta3*(-log(eta)/log(x)*C2m_g3_highenergyLL(x,mQ,1) + D2m_g3_highenergyNLLB*eta_delta/(D+eta_delta));
 	
