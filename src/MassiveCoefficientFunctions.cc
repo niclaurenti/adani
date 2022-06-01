@@ -351,11 +351,11 @@ double C2m_g31(double x, double mQ, int nf) {
   if (x>x_max || x<0) return 0. ;
   
   return -(
-    C2m_g1_x_Pgg1(x, mQ, nf) //
+    C2m_g1_x_Pgg1(x, mQ, nf) 
     - beta(1, nf) * C2m_g1(x, mQ)
     + C2m_ps20_x_Pqg0(x, mQ, nf)
-    + C2m_g20_x_Pgg0(x, mQ, nf) //
-    - 2. * beta(0,nf) * C2m_g2(x, mQ, 1) //
+    + C2m_g20_x_Pgg0(x, mQ, nf) 
+    - 2. * beta(0,nf) * C2m_g2(x, mQ, 1) 
   );
 
 }
