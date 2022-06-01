@@ -1435,7 +1435,7 @@ double C2m_g1_x_Pgg0_x_Pgg0_reg3_integrand(double z[], size_t dim, void * p) {
 double C2m_g1_x_Pgg0_x_Pgg0_reg(double x, double mQ, int nf, size_t calls) {
 
 	struct function_params params = {x, mQ, nf} ;
-	double xl[2] = {0, 0};
+	double xl[2] = {x, x};
 	double xu[2] = {1, 1};
 
 	double err, regular1, regular2, regular3, regular4 ;
@@ -1460,6 +1460,11 @@ double C2m_g1_x_Pgg0_x_Pgg0_reg(double x, double mQ, int nf, size_t calls) {
 	F.f = &C2m_g1_x_Pgg0_x_Pgg0_reg2_integrand;
 	gsl_monte_vegas_init (s);
 	gsl_monte_vegas_integrate(&F, xl, xu, 2, calls, r, s, &regular2, &err);
+
+	xl[0] =  x ;
+	xl[1] = 0 ;
+	xu[0] = 1 ;
+	xu[1] = 1 ;
 
 	F.f = &C2m_g1_x_Pgg0_x_Pgg0_reg3_integrand;
 	gsl_monte_vegas_init (s);
@@ -1553,7 +1558,7 @@ double C2m_g1_x_Pgg0_x_Pgg0_sing3_integrand(double z[], size_t dim, void * p) {
 double C2m_g1_x_Pgg0_x_Pgg0_sing(double x, double mQ, int nf, size_t calls) {
 
 	struct function_params params = {x, mQ, nf} ;
-	double xl[2] = {0, 0};
+	double xl[2] = {x, x};
 	double xu[2] = {1, 1};
 
 	double err, singular1, singular2, singular3, singular4 ;
@@ -1576,6 +1581,11 @@ double C2m_g1_x_Pgg0_x_Pgg0_sing(double x, double mQ, int nf, size_t calls) {
 
 	F.f = &C2m_g1_x_Pgg0_x_Pgg0_sing2_integrand;
 	gsl_monte_vegas_integrate(&F, xl, xu, 2, calls, r, s, &singular2, &err);
+
+	xl[0] =  x ;
+	xl[1] = 0 ;
+	xu[0] = 1 ;
+	xu[1] = 1 ;
 
 	F.f = &C2m_g1_x_Pgg0_x_Pgg0_sing3_integrand;
 	gsl_monte_vegas_integrate(&F, xl, xu, 2, calls, r, s, &singular3, &err);
@@ -1695,7 +1705,7 @@ double CLm_g1_x_Pgg0_x_Pgg0_reg3_integrand(double z[], size_t dim, void * p) {
 double CLm_g1_x_Pgg0_x_Pgg0_reg(double x, double mQ, int nf, size_t calls) {
 
 	struct function_params params = {x, mQ, nf} ;
-	double xl[2] = {0, 0};
+	double xl[2] = {x, x};
 	double xu[2] = {1, 1};
 
 	double err, regular1, regular2, regular3, regular4 ;
@@ -1720,6 +1730,11 @@ double CLm_g1_x_Pgg0_x_Pgg0_reg(double x, double mQ, int nf, size_t calls) {
 	F.f = &CLm_g1_x_Pgg0_x_Pgg0_reg2_integrand;
 	gsl_monte_vegas_init (s);
 	gsl_monte_vegas_integrate(&F, xl, xu, 2, calls, r, s, &regular2, &err);
+
+	xl[0] =  x ;
+	xl[1] = 0 ;
+	xu[0] = 1 ;
+	xu[1] = 1 ;
 
 	F.f = &CLm_g1_x_Pgg0_x_Pgg0_reg3_integrand;
 	gsl_monte_vegas_init (s);
@@ -1813,7 +1828,7 @@ double CLm_g1_x_Pgg0_x_Pgg0_sing3_integrand(double z[], size_t dim, void * p) {
 double CLm_g1_x_Pgg0_x_Pgg0_sing(double x, double mQ, int nf, size_t calls) {
 
 	struct function_params params = {x, mQ, nf} ;
-	double xl[2] = {0, 0};
+	double xl[2] = {x, x};
 	double xu[2] = {1, 1};
 
 	double err, singular1, singular2, singular3, singular4 ;
@@ -1836,6 +1851,11 @@ double CLm_g1_x_Pgg0_x_Pgg0_sing(double x, double mQ, int nf, size_t calls) {
 
 	F.f = &CLm_g1_x_Pgg0_x_Pgg0_sing2_integrand;
 	gsl_monte_vegas_integrate(&F, xl, xu, 2, calls, r, s, &singular2, &err);
+
+	xl[0] =  x ;
+	xl[1] = 0 ;
+	xu[0] = 1 ;
+	xu[1] = 1 ;
 
 	F.f = &CLm_g1_x_Pgg0_x_Pgg0_sing3_integrand;
 	gsl_monte_vegas_integrate(&F, xl, xu, 2, calls, r, s, &singular3, &err);

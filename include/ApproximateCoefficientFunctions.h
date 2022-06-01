@@ -45,16 +45,16 @@ double C2m_ps2_approximationB_vogt(double x, double mQ, double mMu);
 
 //approximate coefficient funtions O(alpha_s^3) from [arXiv:1205.5727] 
 
-double C2m_g30_approximationA_vogt(double x, double mQ, double mMu, int nf);
-double C2m_g30_approximationB_vogt(double x, double mQ, double mMu, int nf);
-double C2m_g30_approximationB_vogt_paper(double x, double mQ, double mMu, int nf) ;
-double C2m_g30_approximationBlowxi_vogt(double x, double mQ, double mMu, int nf);
+double C2m_g3_approximationA_vogt(double x, double mQ, double mMu, int nf);
+double C2m_g3_approximationB_vogt(double x, double mQ, double mMu, int nf);
+double C2m_g3_approximationB_vogt_paper(double x, double mQ, double mMu, int nf) ;
+double C2m_g3_approximationBlowxi_vogt(double x, double mQ, double mMu, int nf);
 
-double C2m_ps30_approximationA_vogt(double x, double mQ, double mMu, int nf);
-double C2m_ps30_approximationB_vogt(double x, double mQ, double mMu, int nf);
+double C2m_ps3_approximationA_vogt(double x, double mQ, double mMu, int nf);
+double C2m_ps3_approximationB_vogt(double x, double mQ, double mMu, int nf);
 
-double C2m_ps30_approximationA_vogt_paper(double x, double mQ, double mMu, int nf);
-double C2m_ps30_approximationB_vogt_paper(double x, double mQ, double mMu, int nf);
+double C2m_ps3_approximationA_vogt_paper(double x, double mQ, double mMu, int nf);
+double C2m_ps3_approximationB_vogt_paper(double x, double mQ, double mMu, int nf);
 
 #endif
 

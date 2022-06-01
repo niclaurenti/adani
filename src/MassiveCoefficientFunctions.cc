@@ -389,7 +389,7 @@ double C2m_g32(double x, double mQ, int nf, int method_flag, int calls) {
   double C2m_g1xPgg0xPgg0 ;
 
   if(method_flag == 0) C2m_g1xPgg0xPgg0 = C2m_g1_x_Pgg0_x_Pgg0(x, mQ, nf) ;
-  if(method_flag == 1) C2m_g1xPgg0xPgg0 = C2m_g1_x_Pgg0_x_Pgg0_MC(x, mQ, nf, calls) ;
+  else if(method_flag == 1) C2m_g1xPgg0xPgg0 = C2m_g1_x_Pgg0_x_Pgg0_MC(x, mQ, nf, calls) ;
   else {
     std::cout << "Choose either method_flag = 0 or method_flag = 1" << std::endl ;
     exit(-1);
@@ -415,7 +415,7 @@ double CLm_g32(double x, double mQ, int nf, int method_flag, int calls) {
   double CLm_g1xPgg0xPgg0 ;
 
   if(method_flag == 0) CLm_g1xPgg0xPgg0 = CLm_g1_x_Pgg0_x_Pgg0(x, mQ, nf) ;
-  if(method_flag == 1) CLm_g1xPgg0xPgg0 = CLm_g1_x_Pgg0_x_Pgg0_MC(x, mQ, nf, calls) ;
+  else if(method_flag == 1) CLm_g1xPgg0xPgg0 = CLm_g1_x_Pgg0_x_Pgg0_MC(x, mQ, nf, calls) ;
   else {
     std::cout << "Choose either method_flag = 0 or method_flag = 1" << std::endl ;
     exit(-1);
