@@ -12,7 +12,7 @@ using namespace apfel;
 int main(int argc, char** argv) {
 
     if(argc!=4) {
-		cout << "ERROR\nUsage: ./c2_21.exe xi nf filename\nExiting..." << endl;
+		cout << "ERROR\nUsage: ./Cm_31.exe xi nf filename\nExiting..." << endl;
 		return -1;
 	}
 
