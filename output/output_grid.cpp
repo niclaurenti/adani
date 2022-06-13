@@ -38,7 +38,7 @@ int main(int argc, char** argv) {
 	inputQ.open("Q.txt");
 
 	ifstream inputx;
-	inputx.open("x_NEW.txt");
+	inputx.open("../extras/x_NEW.txt");
 	
     double mufrac = atof(argv[1]);
     double m = atof(argv[2]);
@@ -68,6 +68,9 @@ int main(int argc, char** argv) {
 	time_t total = 0, mean;
 
 	cout << "Computation of the grid for the coefficient function C"<< channel << " for m = "<< m << " GeV and µ/Q = "<<mufrac << endl ;
+	cout << "Size of the grid (x,Q) = (" <<x.size() <<","<<Q.size()<<")"<<endl ;
+
+	int calls = 25000 ;
 	
 	time_t starting_time = time(NULL) ;
     //for(std::vector<Datum>::iterator d = data.begin(); d != data.end(); d++) {
@@ -78,10 +81,10 @@ int main(int argc, char** argv) {
 			mQ = pow(m/Q_, 2) ;
 			mu = mufrac * Q_ ;
 			mMu = pow(m/mu, 2) ;
-			if(channel == "2g") res = C2m_g3_approximation(x_,mQ,mMu,nf,1,50000) ;
+			if(channel == "2g") res = C2m_g3_approximation(x_,mQ,mMu,nf,1,calls) ;
 			//if(channel == "2g") res = C2m_g3_approximation(x_,mQ,mMu,nf) ;
 			if(channel == "2q") res = C2m_ps3_approximation(x_,mQ,mMu,nf) ;
-			if(channel == "Lg") res = CLm_g3_approximation(x_,mQ,mMu,nf,1,50000)  ;
+			if(channel == "Lg") res = CLm_g3_approximation(x_,mQ,mMu,nf,1,calls)  ;
 			//if(channel == "2g") res = CLm_g3_approximation(x_,mQ,mMu,nf) ;
 			if(channel == "Lq") res = CLm_ps3_approximation(x_,mQ,mMu,nf) ;
 			//cout <<"Channel = "<< channel<< "   Q = " << Q_ << "   x = " << x_ << " res = "<< res << endl ;
