@@ -525,7 +525,7 @@ double DLm_g3_highscale(double x, double mQ, double mMu, int nf) {
 
 //____________________________________________________________
 
-double CLm_g3_highscale(double x, double mQ, double mMu, int nf, int v) {
+double CLm_g3_highscale(double x, double mQ, double mMu, int nf) {
 	
 	double Lmu=log(mMu);
 	double L2mu =Lmu*Lmu;
