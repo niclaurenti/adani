@@ -224,7 +224,7 @@ double C2m_ps3_highscale(double x, double mQ, double mMu, int nf) {
 
 //________________________________________________________________
 
-double CLm_g3_highscale(double x, double mQ, double mMu, int nf) {
+double DLm_g3_highscale(double x, double mQ, double mMu, int nf) {
 	
 	double z = x ;
 	double z2 = z*z ;
@@ -528,7 +528,22 @@ double CLm_g3_highscale(double x, double mQ, double mMu, int nf) {
 
 //____________________________________________________________
 
-double CLm_ps3_highscale(double x, double mQ, double mMu, int nf) {
+double CLm_g3_highscale(double x, double mQ, double mMu, int nf, int v) {
+	
+	double Lmu=log(mMu);
+	double L2mu =Lmu*Lmu;
+	
+	double pi2=M_PI*M_PI;
+	
+	return + DLm_g3_highscale(x,mQ,mMu,nf) 
+				 - 1. / 3 / M_PI * Lmu * DLm_g2_highscale(x,mQ,mMu) 
+				 -( ( 16. / 9 * CA - 15. / 2 * CF ) + ( 10. / 3 * CA + 2 * CF ) * Lmu - 4. / 9 * L2mu ) / 16. / pi2 * DLm_g1_highscale(x,mQ) ;
+
+}
+
+//________________________________________________________________
+
+double DLm_ps3_highscale(double x, double mQ, double mMu, int nf) {
 	
 	double z = x ;
 	double z2 = z*z ;
@@ -648,6 +663,16 @@ double CLm_ps3_highscale(double x, double mQ, double mMu, int nf) {
      
     + CL_ps3(z,nf+1)/(nf+1) ;
 	
+}
+
+//________________________________________________________________
+
+double CLm_ps3_highscale(double x, double mQ, double mMu, int nf) {
+	
+	double Lmu=log(mMu);
+	
+	return DLm_ps3_highscale(x,mQ,mMu,nf) - 1. / 3 / M_PI * Lmu * DLm_ps2_highscale(x,mQ,mMu) ;
+
 }
 
 //________________________________________________________

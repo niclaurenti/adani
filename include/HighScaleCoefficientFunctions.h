@@ -31,6 +31,9 @@ double C2m_ps3_highscale(double x, double mQ, double mMu, int nf);
 double CLm_g3_highscale(double x, double mQ, double mMu, int nf);
 double CLm_ps3_highscale(double x, double mQ, double mMu, int nf);
 
+double DLm_g3_highscale(double x, double mQ, double mMu, int nf);
+double DLm_ps3_highscale(double x, double mQ, double mMu, int nf);
+
 double D2m_g3_highscale(double x, double mQ, double mMu, int nf, int v);
 double D2m_ps3_highscale(double x, double mQ, double mMu, int nf);
 
