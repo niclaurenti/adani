@@ -21,10 +21,10 @@ double C2m_g1(double x, double mQ) { //mQ=m^2/Q^2
   
   if (x>x_max || x<0) return 0;
 
-  double beta=sqrt(1-4*mQ*x/(1-x));
-  double x2=x*x;
-  double mQ2=mQ*mQ;
-  double L=log((1+beta)/(1-beta ));
+  double beta = sqrt( 1. - 4. * mQ * x / ( 1 - x ) ) ;
+  double x2 = x * x ;
+  double mQ2 = mQ * mQ ;
+  double L = log( ( 1. + beta ) / ( 1. - beta ) ) ;
     
   return 4 * TR * (
     L * ( -8 * x2 * mQ2 - 4 * x * mQ * (3 * x - 1) + 2 * x2 - 2 * x + 1 ) 
@@ -37,13 +37,13 @@ double C2m_g1(double x, double mQ) { //mQ=m^2/Q^2
 
 double CLm_g1(double x, double mQ) {
 	
-	double x_max=1./(1+4*mQ);
+	double x_max=1. / ( 1. + 4 * mQ ) ;
   
   if (x>x_max || x<0) return 0;
 
-  double beta=sqrt(1-4*mQ*x/(1-x));
-  double x2=x*x;
-  double L=log((1+beta)/(1-beta));
+  double beta = sqrt( 1. - 4 * mQ * x / ( 1 - x ) ) ;
+  double x2 = x * x ;
+  double L = log( ( 1. + beta ) / ( 1. - beta ) ) ;
   
   return 16 * TR * (
     x * ( 1 - x ) * beta - 2 * x2 * mQ * L 
