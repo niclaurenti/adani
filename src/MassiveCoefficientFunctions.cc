@@ -241,7 +241,7 @@ double DLm_g2_5(double x, double mQ, double mMu) {
 
 double C2m_ps21(double x, double mQ) {
 	
-	double x_max=1./(1+4*mQ);
+	double x_max = 1. / ( 1 + 4 * mQ ) ;
   
   if (x>x_max || x<0) return 0; 	
   
@@ -256,7 +256,7 @@ double C2m_ps21(double x, double mQ) {
 
 double CLm_ps21(double x, double mQ) {
 	
-	double x_max=1./(1+4*mQ);
+	double x_max = 1. / ( 1 + 4 * mQ ) ;
   
   if (x>x_max || x<0) return 0; 	
   
@@ -268,7 +268,7 @@ double CLm_ps21(double x, double mQ) {
 
 double C2m_g21(double x, double mQ) {
 	
-	double x_max=1./(1+4*mQ);
+	double x_max = 1. / ( 1 + 4 * mQ ) ;
   
   if (x>x_max || x<0) return 0; 
 
@@ -283,7 +283,7 @@ double C2m_g21(double x, double mQ) {
 
 double CLm_g21(double x, double mQ) {
 	
-	double x_max=1./(1+4*mQ);
+	double x_max = 1. / ( 1 + 4 * mQ ) ;
   
   if (x>x_max || x<0) return 0; 
 
@@ -298,7 +298,7 @@ double CLm_g21(double x, double mQ) {
 
 double C2m_ps31(double x, double mQ, int nf) {
 	
-	double x_max=1./(1+4*mQ);
+	double x_max = 1. / ( 1 + 4 * mQ ) ;
   
   if (x>x_max || x<0) return 0; 	
   
@@ -315,7 +315,7 @@ double C2m_ps31(double x, double mQ, int nf) {
 
 double CLm_ps31(double x, double mQ, int nf) {
 	
-	double x_max=1./(1+4*mQ);
+	double x_max = 1. / ( 1 + 4 * mQ ) ;
   
   if (x>x_max || x<0) return 0; 	
   
@@ -332,7 +332,7 @@ double CLm_ps31(double x, double mQ, int nf) {
 
 double C2m_ps32(double x, double mQ, int nf) {
 	
-	double x_max=1./(1+4*mQ);
+	double x_max = 1. / ( 1 + 4 * mQ ) ;
   
   if (x>x_max || x<0) return 0; 	
   
@@ -347,7 +347,7 @@ double C2m_ps32(double x, double mQ, int nf) {
 
 double CLm_ps32(double x, double mQ, int nf) {
 	
-	double x_max=1./(1+4*mQ);
+	double x_max = 1. / ( 1 + 4 * mQ ) ;
   
   if (x>x_max || x<0) return 0; 	
   
@@ -362,7 +362,7 @@ double CLm_ps32(double x, double mQ, int nf) {
 
 double C2m_g31(double x, double mQ, int nf) {
 	
-	double x_max=1./(1+4*mQ);
+	double x_max = 1. / ( 1 + 4 * mQ ) ;
   
   if (x>x_max || x<0) return 0. ;
   
@@ -380,7 +380,7 @@ double C2m_g31(double x, double mQ, int nf) {
 
 double CLm_g31(double x, double mQ, int nf) {
 
-  double x_max=1./(1+4*mQ);
+  double x_max = 1. / ( 1 + 4 * mQ ) ;
   
   if (x>x_max || x<0) return 0. ; 	
   
@@ -398,7 +398,7 @@ double CLm_g31(double x, double mQ, int nf) {
 
 double C2m_g32(double x, double mQ, int nf, int method_flag, int calls) {
 	
-	double x_max=1./(1+4*mQ);
+	double x_max = 1. / ( 1 + 4 * mQ ) ;
   
   if (x>x_max || x<0) return 0;
 
@@ -424,7 +424,7 @@ double C2m_g32(double x, double mQ, int nf, int method_flag, int calls) {
 
 double CLm_g32(double x, double mQ, int nf, int method_flag, int calls) {
 	
-	double x_max=1./(1+4*mQ);
+	double x_max = 1. / ( 1 + 4 * mQ ) ;
   
   if (x>x_max || x<0) return 0;
 
