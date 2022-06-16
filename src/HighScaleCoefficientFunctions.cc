@@ -203,9 +203,9 @@ double C2m_g3_highscale(double x, double mQ, double mMu, int nf, int v) {
 	
 	double pi2=M_PI*M_PI;
 	
-	return +D2m_g3_highscale(x,mQ,mMu,nf,v) 
-				 -1./3/M_PI*Lmu*D2m_g2_highscale(x,mQ,mMu) 
-				 -((16./9*CA - 15./2*CF) + (10./3*CA + 2*CF)*Lmu - 4./9*L2mu)/16./pi2*D2m_g1_highscale(x,mQ);
+	return + D2m_g3_highscale(x,mQ,mMu,nf,v) 
+				 - 1. / 3 / M_PI * Lmu * D2m_g2_highscale(x,mQ,mMu) 
+				 - ( ( 16. / 9 * CA - 15. / 2 * CF ) + ( 10. / 3 * CA + 2 * CF ) * Lmu - 4. / 9 * L2mu ) / 16. / pi2 * D2m_g1_highscale(x,mQ) ;
 
 }
 
@@ -213,12 +213,9 @@ double C2m_g3_highscale(double x, double mQ, double mMu, int nf, int v) {
 
 double C2m_ps3_highscale(double x, double mQ, double mMu, int nf) {
 	
-	double Lmu=log(mMu);
-	//double L2mu =Lmu*Lmu;
+	double Lmu = log(mMu) ;
 	
-	//double pi2=M_PI*M_PI;
-	
-	return D2m_ps3_highscale(x,mQ,mMu,nf) - 1./3/M_PI*Lmu*D2m_ps2_highscale(x,mQ,mMu) ;
+	return D2m_ps3_highscale(x,mQ,mMu,nf) - 1. / 3 / M_PI * Lmu * D2m_ps2_highscale(x,mQ,mMu) ;
 
 }
 
