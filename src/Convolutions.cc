@@ -15,18 +15,19 @@ double C2_b1_x_K_bg1(double x, double mMu) {
 
 	if (x<0 || x>1) return 0;
 
-  double x2=x*x;
-  double x1=1-x;
-  double L=log(x);
-  double L1=log(x1);
-  double pi2=M_PI*M_PI;
+	double x2=x*x;
+	double x1=1-x;
+	double L=log(x);
+	double L1=log(x1);
+	double pi2=M_PI*M_PI;
 
-  double res= 
-  	-5./2. +  2*(3-4*x)*x + pi2/6.*(-1+2*x-4*x2) + 
-  	L1*L1*(1-2*x1*x) - 0.5*L1*(7+4*x*(-4+3*x)+(4-8*x1*x)*L) + 
-  	0.5*L*(-1+4*x*(3*x-2)+(1-2*x+4*x2)*L) + (2*x-1)*Li2(x);
+	double res = (
+		-5./2. +  2*(3-4*x)*x + pi2/6.*(-1+2*x-4*x2) 
+		+ L1*L1*(1-2*x1*x) - 0.5*L1*(7+4*x*(-4+3*x)+(4-8*x1*x)*L) + 
+		0.5*L*(-1+4*x*(3*x-2)+(1-2*x+4*x2)*L) + (2*x-1)*Li2(x)
+	);
 
-  return 2*CF*2*TR*res*log(1./mMu)/16./pi2;
+	return 2*CF*2*TR*res*log(1./mMu)/16./pi2;
   
 }
 
