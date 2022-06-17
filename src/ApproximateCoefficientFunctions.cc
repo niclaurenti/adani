@@ -79,23 +79,23 @@ double C2m_g1_approximation(double x, double mQ) {
 
 double CLm_g1_approximation(double x, double mQ) {
 	
-	double xmax=1/(1+4*mQ);	
+	double xmax = 1. / ( 1. + 4 * mQ ) ;	
 	
-	double xi=1./mQ;
+	double xi = 1. / mQ ;
 	
-	double eta;
+	double eta ;
 	
-	if(x<xmax && x>0) eta=0.25/mQ*(1-x)/x - 1;
-	else eta=0;
+	if(x<xmax && x>0) eta = 0.25 / mQ * ( 1 - x ) / x - 1 ;
+	else eta = 0 ;
 	
-	double k=1.13086 + exp( 0.618532*log(xi) - 4.10071 );
-	double h=0.3 + 2.2/(1+exp(2.5*(log(xi)-5)));
+	double k = 1.13086 + exp( 0.618532 * log(xi) - 4.10071 ) ;
+	double h = 0.3 + 2.2 / ( 1. + exp(2.5 * ( log(xi) - 5 ) ) ) ;
 	
-	double damp_thr=1/(1+pow(eta/h,k));
-	double damp_asy=1-damp_thr;
+	double damp_thr = 1. / ( 1. + pow( eta / h, k) );
+	double damp_asy = 1. - damp_thr ;
 	
 	double C_const= 
-		CLm_g1_highscale(x,mQ)*damp_asy ; 
+		CLm_g1_highscale(x,mQ) * damp_asy ; 
 		//+ CLm_g1_threshold(x,mQ)*damp_thr;	
 		//CLm_g1_threshold=0
 	
@@ -107,8 +107,8 @@ double CLm_g1_approximation(double x, double mQ) {
 
 double C2m_g2_approximation(double x, double mQ, double mMu) {
 	
-	double a=2.5, b=5;	
-	double A=1.7, B=2.5, C=2.5, D=1.2;
+	double a = 2.5, b = 5 ;	
+	double A = 1.7, B = 2.5, C = 2.5, D = 1.2 ;
 	
 	return C2m_g2_approximation(x, mQ, mMu, A, B, C, D, a, b);
 
@@ -118,21 +118,21 @@ double C2m_g2_approximation(double x, double mQ, double mMu) {
 
 double C2m_g2_approximation(double x, double mQ, double mMu, double A, double B, double C, double D, double a, double b) {
 	
-	double xmax=1/(1+4*mQ);	
+	double xmax = 1. / ( 1. + 4 * mQ ) ;
 	
 	if(x>xmax || x<=0) return 0 ;
 	
-	double xi=1./mQ;
+	double xi = 1. / mQ ;
 	
 	double eta;
 	
-	eta=0.25/mQ*(1-x)/x - 1;
+	eta = 0.25 / mQ * ( 1 - x ) / x - 1 ;
 	
-	double h = A + (B-A)/(1+exp(a*(log(xi)-b)));
-	double k = C + (D-C)/(1+exp(a*(log(xi)-b)));
+	double h = A + ( B - A ) / ( 1. + exp( a * ( log(xi) - b ) ) ) ;
+	double k = C + ( D - C ) / ( 1. + exp( a * ( log(xi) - b ) ) ) ;
 	
-	double damp_thr=1/(1+pow(eta/h,k));
-	double damp_asy=1-damp_thr;
+	double damp_thr = 1. / ( 1. + pow( eta / h , k ) ) ;
+	double damp_asy = 1. - damp_thr ;
 	
 	double C_const= 
 		C2m_g2_asymptotic(x,mQ,1)*damp_asy + 
