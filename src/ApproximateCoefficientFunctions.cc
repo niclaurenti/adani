@@ -32,9 +32,10 @@ double C2m_g1_approximation(double x, double mQ, double k, double h) {
 	double damp_thr=1/(1+pow(eta/h,k));
 	double damp_asy=1-damp_thr;
 	
-	double C_const= 
-		C2m_g1_asymptotic(x,mQ)*damp_asy + 
-		C2m_g1_threshold(x,mQ)*damp_thr;	
+	double C_const = (
+		C2m_g1_asymptotic(x,mQ) * damp_asy
+		+ C2m_g1_threshold(x,mQ) * damp_thr
+	) ;	
 
 	
 	return C_const ;
@@ -53,18 +54,19 @@ double C2m_g1_approximation(double x, double mQ) {
 	
 	double eta;
 	
-	if(x<xmax && x>0) eta=0.25/mQ*(1-x)/x - 1;
-	else eta=0;
+	if(x<xmax && x>0) eta = 0.25 / mQ * ( 1 - x ) / x - 1.;
+	else eta = 0 ;
 	
-	double k=2.5-1.3/(1+exp(2.5*(log(xi)-5)));	
-	double h=0.2+2.3/(1+exp(2.5*(log(xi)-5)));
+	double k = 2.5 - 1.3 / ( 1. + exp( 2.5 * ( log(xi) - 5 ) ) ) ;	
+	double h = 0.2 + 2.3 / ( 1. + exp( 2.5 * ( log(xi) - 5 ) ) ) ;
 	
-	double damp_thr=1/(1+pow(eta/h,k));
-	double damp_asy=1-damp_thr;
+	double damp_thr = 1. / ( 1 + pow( eta / h, k) ) ;
+	double damp_asy = 1. - damp_thr;
 	
-	double C_const= 
-		C2m_g1_asymptotic(x,mQ)*damp_asy + 
-	  C2m_g1_threshold(x,mQ)*damp_thr;	
+	double C_const = (
+		C2m_g1_asymptotic(x,mQ) * damp_asy
+		+ C2m_g1_threshold(x,mQ)*damp_thr
+	) ;	
 
 	
 	return C_const ;
@@ -94,7 +96,7 @@ double CLm_g1_approximation(double x, double mQ) {
 	
 	double C_const= 
 		CLm_g1_highscale(x,mQ)*damp_asy ; 
-		//CLm_g1_threshold(x,mQ)*damp_thr;	
+		//+ CLm_g1_threshold(x,mQ)*damp_thr;	
 		//CLm_g1_threshold=0
 	
 	return C_const ;
