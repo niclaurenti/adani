@@ -172,8 +172,6 @@ double D2m_g2_highscale(double x, double mQ, double mMu) {
 
 double D2m_ps2_highscale(double x, double mQ, double mMu) {
 	
-	//double Lmu=log(1./mMu);
-	
 	return C2m_ps2_highscale(x,mQ,mMu) ;
 
 }
@@ -191,8 +189,6 @@ double DLm_g2_highscale(double x, double mQ, double mMu) {
 //___________________________________________________________
 
 double DLm_ps2_highscale(double x, double mQ, double mMu) {
-	
-	//double Lmu=log(1./mMu);
 	
 	return CLm_ps2_highscale(x,mQ,mMu) ;
 
