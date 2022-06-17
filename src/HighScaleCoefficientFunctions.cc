@@ -125,9 +125,11 @@ double CLm_g2_highscale(double x, double mQ, double mMu) {
 	
 	double pi2=M_PI*M_PI;
 	
-	double res= cm0L2gNC_c.Regular(x) + 
-							cm0L2gNC_l.Regular(x)*l + 
-							cm0L2gNC_f.Regular(x)*f ;
+	double res= (
+    cm0L2gNC_c.Regular(x) 
+    +	cm0L2gNC_l.Regular(x) * l 
+    +	cm0L2gNC_f.Regular(x) * f
+  ) ;
 	
 	return res/16/pi2;
 
@@ -203,9 +205,11 @@ double C2m_g3_highscale(double x, double mQ, double mMu, int nf, int v) {
 	
 	double pi2=M_PI*M_PI;
 	
-	return + D2m_g3_highscale(x,mQ,mMu,nf,v) 
-				 - 1. / 3 / M_PI * Lmu * D2m_g2_highscale(x,mQ,mMu) 
-				 - ( ( 16. / 9 * CA - 15. / 2 * CF ) + ( 10. / 3 * CA + 2 * CF ) * Lmu - 4. / 9 * L2mu ) / 16. / pi2 * D2m_g1_highscale(x,mQ) ;
+	return (
+    D2m_g3_highscale(x,mQ,mMu,nf,v)
+    - 1. / 3 / M_PI * Lmu * D2m_g2_highscale(x,mQ,mMu)
+    - ( ( 16. / 9 * CA - 15. / 2 * CF ) + ( 10. / 3 * CA + 2 * CF ) * Lmu - 4. / 9 * L2mu ) / 16. / pi2 * D2m_g1_highscale(x,mQ)
+  );
 
 }
 
@@ -235,8 +239,9 @@ double DLm_g3_highscale(double x, double mQ, double mMu, int nf) {
 	double L_M = log(mMu) ;
 	double L_M2 = L_M * L_M ;
 	double L_Q = log(1./mQ) + L_M ;
-	double L_Q2 = L_Q * L_Q ;
-	
+	//double L_Q2 = L_Q * L_Q ;
+	double L_Q2 = log(1./mQ) * log(1./mQ) + L_M2 + 2 * L_M * log(1./mQ) ;
+
 	double pi3 = M_PI * M_PI * M_PI ;
 	
 	// Allocate pointers for the harmonic polylogs
@@ -532,9 +537,11 @@ double CLm_g3_highscale(double x, double mQ, double mMu, int nf) {
 	
 	double pi2=M_PI*M_PI;
 	
-	return + DLm_g3_highscale(x,mQ,mMu,nf) 
-				 - 1. / 3 / M_PI * Lmu * DLm_g2_highscale(x,mQ,mMu) 
-				 -( ( 16. / 9 * CA - 15. / 2 * CF ) + ( 10. / 3 * CA + 2 * CF ) * Lmu - 4. / 9 * L2mu ) / 16. / pi2 * DLm_g1_highscale(x,mQ) ;
+	return (
+    DLm_g3_highscale(x,mQ,mMu,nf) 
+    - 1. / 3 / M_PI * Lmu * DLm_g2_highscale(x,mQ,mMu)
+    -( ( 16. / 9 * CA - 15. / 2 * CF ) + ( 10. / 3 * CA + 2 * CF ) * Lmu - 4. / 9 * L2mu ) / 16. / pi2 * DLm_g1_highscale(x,mQ)
+  );
 
 }
 
