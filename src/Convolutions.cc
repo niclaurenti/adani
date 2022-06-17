@@ -350,7 +350,7 @@ double C2m_g1_x_Pgg0(double x, double mQ, int nf) {
 	gsl_integration_qag(&F, x, 1, abserr, relerr, 1000, 4, w, &regular, &error);
 
 	gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
-    gsl_set_error_handler_off();
+	gsl_set_error_handler_off();
 
 	F.function = &C2m_g1_x_Pgg0_sing_integrand;
 	gsl_integration_qag(&F, x, 1, abserr, relerr, 1000, 4, w, &singular1, &error);
