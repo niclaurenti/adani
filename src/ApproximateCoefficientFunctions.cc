@@ -492,7 +492,11 @@ double C2m_ps3_approximation(double x, double mQ, double mMu, int nf) {
 	double Lmu = - log(mMu) ;
 	double Lmu2 = Lmu * Lmu ;
 
-	return C30 + C2m_ps31(x, mQ, nf) * Lmu + C2m_ps32(x, mQ, nf) * Lmu2 ; 
+	return (
+		C30 
+		+ C2m_ps31(x, mQ, nf) * Lmu 
+		+ C2m_ps32(x, mQ, nf) * Lmu2
+	); 
 
 }
 
@@ -561,7 +565,11 @@ double CLm_ps3_approximation(double x, double mQ, double mMu, int nf) {
 	double Lmu = - log(mMu) ;
 	double Lmu2 = Lmu * Lmu ;
 
-	return C30 + CLm_ps31(x, mQ, nf) * Lmu + CLm_ps32(x, mQ, nf) * Lmu2 ;
+	return (
+		C30 
+		+ CLm_ps31(x, mQ, nf) * Lmu 
+		+ CLm_ps32(x, mQ, nf) * Lmu2 
+	) ;
 
 }
 

@@ -97,11 +97,13 @@ double C2m_ps2_highscale(double x, double mQ, double mMu) {
 	
 	double pi2=M_PI*M_PI;
 	
-	double res= cm022psNC_c.Regular(x) + 
-							cm022psNC_l.Regular(x)*l + 
-							cm022psNC_l2.Regular(x)*l2 + 
-							cm022psNC_f.Regular(x)*f + 
-							cm022psNC_lf.Regular(x)*lf ;
+	double res= (
+    cm022psNC_c.Regular(x)
+		+ cm022psNC_l.Regular(x)*l
+		+ cm022psNC_l2.Regular(x)*l2
+		+ cm022psNC_f.Regular(x)*f
+		+ cm022psNC_lf.Regular(x)*lf
+  ) ;
 	
 	return res/16/pi2;
 
@@ -146,9 +148,11 @@ double CLm_ps2_highscale(double x, double mQ, double mMu) {
 	
 	double pi2=M_PI*M_PI;
 	
-	double res= cm0L2psNC_c.Regular(x) + 
-							cm0L2psNC_l.Regular(x)*l + 
-							cm0L2psNC_f.Regular(x)*f ;
+	double res= (
+    cm0L2psNC_c.Regular(x)
+		+	cm0L2psNC_l.Regular(x)*l
+		+ cm0L2psNC_f.Regular(x)*f
+  ) ;
 	
 	return res/16/pi2;
 
@@ -553,7 +557,8 @@ double DLm_ps3_highscale(double x, double mQ, double mMu, int nf) {
 	double L_M = log(mMu) ;
 	double L_M2 = L_M * L_M ;
 	double L_Q = log(1./mQ) + L_M ;
-	double L_Q2 = L_Q * L_Q ;
+	//double L_Q2 = L_Q * L_Q ;
+  double L_Q2 = log(1./mQ) * log(1./mQ) + L_M2 + 2 * L_M * log(1./mQ) ;
 	
 	double pi3 = M_PI * M_PI * M_PI ;
 	
