@@ -493,8 +493,7 @@ double C2m_ps3_approximation(double x, double mQ, double mMu, int nf) {
 	double damp_thr=1/(1+pow(eta/h,k));
 	double damp_asy=1-damp_thr;
 	
-	double C30 = C2m_ps3_asymptoticNLL(x,mQ,1,nf)*damp_asy + 
-		     0*damp_thr ;
+	double C30 = C2m_ps3_asymptoticNLL(x,mQ,1,nf) * damp_asy ;
 	
 	if(mMu == 1.) return C30 ;
 
