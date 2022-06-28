@@ -168,21 +168,52 @@ double Pgg1reg(double x, int nf) {
     double gx = ( 67. / 18 - zeta(2) + H00 + 2. * H10 + 2 * H01 ) ;
     double g1 = 67. / 18 - zeta(2) ;
 
-    double tmp_CAnf = 1. - x - 10. / 9 * pggreg(x) - 13. / 9 * (1. / x - x * x) - 2. / 3 * (1. + x) * H0 ;
-    double tmp_CACA = (
+    //double tmp_CAnf = 1. - x - 10. / 9 * pggreg(x) - 13. / 9 * (1. / x - x * x) - 2. / 3 * (1. + x) * H0 ;
+    double tmp_CAnf = (
+        116. / 9 - 92. / 9 /x - 76. / 9 * x + 92. / 9 * x * x + H0 * ( - 8. / 3 - 8. / 3 * x )
+    ) ;
+    /*double tmp_CACA = (
         27. + (1. + x) * ( 11. / 3 * H0 + 8 * H00 - 27. / 2 ) 
         + 2. * ( pggreg(-x) + pggsing(-x) ) * ( H00 - 2. * Hm10 - zeta(2)) 
         - 67. / 9 * ( 1. / x - x * x ) - 12. * H0 - 44. / 3 * x * x * H0 
-        + 2. * pggreg(x) * (67. / 18 - zeta(2) + H00 + 2. * H10 + 2 * H01)
+        + 2. * pggreg(x) * (67. / 18 - zeta(2) + H00 + 2. * H10 + 2. * H01)
         + 2. * ( gx - g1 ) * pggsing(x) 
-    ) ;
+    ) ;*/
+    double tmp_CACA = (
+        zeta(2) * ( 32. - 8. / (1. + x) + 16. * x * x)
+        - 50./9 - 218./9 * x
+        + Hm10 * (
+            + 32. - 16. / (1. + x)
+            + 16. / x + 16. * x + 16. * x * x
+        )
+        + H0 * (
+            - 100. / 3 + 44. / 3 * x - 176. / 3 * x * x
+        )
+        + H00 * (
+            8. / (1. + x) + 32. * x - 16. * x * x
+        )
+
+        + H10 * (
+            - 32. + 16. / x  + 16. * x - 16. * x * x
+        )
+
+        + H01 * (
+            - 32. + 16. / x + 16. * x - 16. * x * x
+        )
+        + 8. * ( gx - g1 ) * pggsing(x)
+    );
     //the last term comes from expanding g(z)[f(z)]_+ = g(1)[f(z)]_+ + (g(z)-g(1))f(z)
     //where (g(z)-g(1))f(z) is regular
-    double tmp_CFnf = (
+    /*double tmp_CFnf = (
         2. * H0 + 2. / 3 / x + 10. / 3 * x * x - 12. + (1. + x) * ( 4. - 5. * H0 - 2. * H00 )
-    ) ;
+    ) ;*/
+    double tmp_CFnf = (
+        - 32. + 8. / 3 * 1. / x + 16. * x + 40. / 3 * x * x
+        + H0 * ( - 12. - 20. * x )
+        + H00 * ( - 8. - 8. * x )
+    );
 
-    return  4. * (tmp_CAnf * CA * nf + tmp_CACA * CA * CA + tmp_CFnf * CF * nf) / norm ;    
+    return  (tmp_CAnf * CA * nf + tmp_CACA * CA * CA + tmp_CFnf * CF * nf) / norm ;    
 
 }
 
