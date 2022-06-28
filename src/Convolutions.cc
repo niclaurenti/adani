@@ -675,9 +675,11 @@ double Pgg0_x_Pgq0(double x, int nf) {
 
 	double tmp = (
 		- 4. * CF * nf * ( 2. + ( - 2. + x ) * x )
-		+ 2. * CA * CF * ( - 40. + x * ( 26. + x * ( 17. + 8. * x )) 
-		+ 12. * ( 2. + ( - 2. + x ) * x ) * log(1. - x) 
-		- 24. * ( 1. + x + x * x ) * log(x))
+		+ 2. * CA * CF * (
+			- 40. + x * ( 26. + x * ( 17. + 8. * x )) 
+			+ 12. * ( 2. + ( - 2. + x ) * x ) * log(1. - x) 
+			- 24. * ( 1. + x + x * x ) * log(x)
+		)
 	) / 3. / x ;
 
 	return tmp / (16. * M_PI * M_PI) ;
@@ -688,9 +690,11 @@ double Pgg0_x_Pgq0(double x, int nf) {
 
 double Pqq0_x_Pgq0(double x) {
 
-	double tmp = - (
-		2. * CF * CF * ( 4. * ( 2. + ( - 2. + x ) * x ) * log(1. - x) 
-		- x * ( - 4. + x + 2. * ( - 2. + x ) * log(x)))
+	double tmp = (
+		2. * CF * CF * (
+			4. * ( 2. + ( - 2. + x ) * x ) * log(1. - x) 
+			- x * ( - 4. + x + 2. * ( - 2. + x ) * log(x))
+		)
 	) / x ;
 
 	return tmp / (16 * M_PI * M_PI) ;
