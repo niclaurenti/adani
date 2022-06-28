@@ -23,7 +23,7 @@ int main(int argc, char** argv) {
 	ofstream output;
 	output.open(argv[3]);
 
-    double mQ=1/xi;
+    double mQ=1./xi;
 
     double norm = 4. * xi ;
 
@@ -44,7 +44,7 @@ int main(int argc, char** argv) {
 		
 		x=1/(1+4*mQ*(eta+1));
 
-        cout << eta << "   "
+        output << eta << "   "
                << x * C2m_g32(x, mQ, nf) / norm << "   " 
                << x * C2m_ps32(x, mQ, nf) / norm << "   " 
                << x * CLm_g32(x, mQ, nf) / norm << "   " 
