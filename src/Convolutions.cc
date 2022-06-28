@@ -1157,7 +1157,9 @@ double CLm_g20_x_Pgg0(double x, double mQ, int nf) {
 
 double Pqg0_x_Pgq0(double x, int nf) {
 
-	return 4 * CF * nf * (1. + 4. / 3 / x - x - 4. * x * x / 3 + 2. * (1 + x) * log(x)) ;
+	double tmp = 4. * CF * nf * (1. + 4. / 3 / x - x - 4. * x * x / 3 + 2. * (1 + x) * log(x)) ;
+
+	return tmp / (16. * M_PI * M_PI) ;
 
 }
 

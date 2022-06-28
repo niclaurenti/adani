@@ -414,7 +414,7 @@ double C2m_g32(double x, double mQ, int nf, int method_flag, int calls) {
   return (
     0.5 * C2m_g1xPgg0xPgg0
     + 0.5 * C2m_g1_x_Pqg0_x_Pgq0(x, mQ, nf)
-    - 3. / 2 * beta(0, nf) * C2m_g1_x_Pgg0(x, mQ, nf) 
+    - 3. / 2 * beta(0, nf) * C2m_g1_x_Pgg0(x, mQ, nf)
     + beta(0,nf) * beta(0,nf) * C2m_g1(x,mQ)
   );
 	
