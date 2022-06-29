@@ -15,7 +15,10 @@ double C2m_g1_highscale(double x, double mQ) {
 	
 	if(x>1 || x<0) return 0;	
 		
-	return 4*TR*(-8*x*x + 8*x - 1 + log((1-x)/x)*(2*x*x-2*x+1))/4./M_PI + 2*K_Qg1(x, mQ); 
+	return (
+    4. * TR * ( - 8. * x * x + 8. * x - 1. + log( ( 1. - x ) / x ) * ( 2 * x * x - 2 * x + 1. ) ) / 4. / M_PI
+    + 2. * K_Qg1(x, mQ)
+  ); 
 
 }
 
@@ -25,7 +28,7 @@ double CLm_g1_highscale(double x, double mQ) {
 	
 	if(x>1 || x<0) return 0;	
   
-  return TR*16*x*(1 - x)/4/M_PI;  //=CL_g1(x,nf)/nf
+  return TR * 16. * x * (1. - x) / 4. / M_PI ;  //=CL_g1(x,nf)/nf
 
   
 }
@@ -59,20 +62,22 @@ double C2m_g2_highscale(double x, double mQ, double mMu) {
 	Cm022gNC_f cm022gNC_f;
 	Cm022gNC_lf cm022gNC_lf;
 	
-	double l=log(1./mQ);
-	double l2=l*l;
-	double f=log(mMu);
-	double lf=l*f;
+	double l = log(1./mQ) ;
+	double l2 = l * l ;
+	double f = log(mMu) ;
+	double lf = l * f ;
 	
-	double pi2=M_PI*M_PI;
+	double pi2 = M_PI * M_PI ;
 	
-	double res= cm022gNC_c.Regular(x) + 
-							cm022gNC_l.Regular(x)*l + 
-							cm022gNC_l2.Regular(x)*l2 + 
-							cm022gNC_f.Regular(x)*f + 
-							cm022gNC_lf.Regular(x)*lf ;
+	double res = (
+    cm022gNC_c.Regular(x) 
+    + cm022gNC_l.Regular(x) * l 
+    +	cm022gNC_l2.Regular(x) * l2 
+    +	cm022gNC_f.Regular(x) * f 
+    +	cm022gNC_lf.Regular(x) * lf
+  ) ;
 	
-	return res/16/pi2;
+	return res / 16. / pi2 ;
 
 }
 
@@ -90,12 +95,12 @@ double C2m_ps2_highscale(double x, double mQ, double mMu) {
 	Cm022psNC_f cm022psNC_f;
 	Cm022psNC_lf cm022psNC_lf;
 	
-	double l=log(1./mQ);
-	double l2=l*l;
-	double f=log(mMu);
-	double lf=l*f;
+	double l = log(1./mQ) ;
+	double l2 = l * l ;
+	double f = log(mMu) ;
+	double lf = l * f ;
 	
-	double pi2=M_PI*M_PI;
+	double pi2 = M_PI * M_PI ;
 	
 	double res= (
     cm022psNC_c.Regular(x)
@@ -105,7 +110,7 @@ double C2m_ps2_highscale(double x, double mQ, double mMu) {
 		+ cm022psNC_lf.Regular(x)*lf
   ) ;
 	
-	return res/16/pi2;
+	return res / 16. / pi2 ;
 
 }
 
@@ -120,10 +125,10 @@ double CLm_g2_highscale(double x, double mQ, double mMu) {
 	Cm0L2gNC_l cm0L2gNC_l;
 	Cm0L2gNC_f cm0L2gNC_f;
 	
-	double l=log(1./mQ);
-	double f=log(mMu);
+	double l = log(1./mQ);
+	double f = log(mMu);
 	
-	double pi2=M_PI*M_PI;
+	double pi2 = M_PI * M_PI ;
 	
 	double res= (
     cm0L2gNC_c.Regular(x) 
@@ -131,7 +136,7 @@ double CLm_g2_highscale(double x, double mQ, double mMu) {
     +	cm0L2gNC_f.Regular(x) * f
   ) ;
 	
-	return res/16/pi2;
+	return res / 16. / pi2 ;
 
 }
 
@@ -145,10 +150,10 @@ double CLm_ps2_highscale(double x, double mQ, double mMu) {
 	Cm0L2psNC_l cm0L2psNC_l;
 	Cm0L2psNC_f cm0L2psNC_f;
 	
-	double l=log(1./mQ);
-	double f=log(mMu);
+	double l = log(1./mQ);
+	double f = log(mMu);
 	
-	double pi2=M_PI*M_PI;
+	double pi2 = M_PI * M_PI;
 	
 	double res= (
     cm0L2psNC_c.Regular(x)
@@ -156,7 +161,7 @@ double CLm_ps2_highscale(double x, double mQ, double mMu) {
 		+ cm0L2psNC_f.Regular(x)*f
   ) ;
 	
-	return res/16/pi2;
+	return res / 16. / pi2 ;
 
 }
 
