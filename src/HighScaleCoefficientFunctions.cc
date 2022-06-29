@@ -13,12 +13,12 @@ using namespace apfel;
 
 double C2m_g1_highscale(double x, double mQ) {
 	
-	if(x>1 || x<0) return 0;	
+  if(x>1 || x<0) return 0;	
 		
-	return (
+  return (
     4. * TR * ( - 8. * x * x + 8. * x - 1. + log( ( 1. - x ) / x ) * ( 2 * x * x - 2 * x + 1. ) ) / 4. / M_PI
     + 2. * K_Qg1(x, mQ)
-  ); 
+  ) ; 
 
 }
 
@@ -294,9 +294,9 @@ double DLm_g3_highscale(double x, double mQ, double mMu, int nf) {
 	delete[] Hr5;
 	
 	return
-		( -TR * TR * TR * 256./9 * (z - 1) * z * L_M2 
-		
-		+ CA * TR * TR * (( (64 * (z - 1) * (17 * z2 + 2 * z - 1
+	  ( -TR * TR * TR * 256./9 * (z - 1) * z * L_M2 
+  
+	  + CA * TR * TR * (( (64 * (z - 1) * (17 * z2 + 2 * z - 1
 		))/(9 * z) - 256./3 * z * H0 + 128./3 * (z - 1) * z * H1
 		) * L_Q2 + ( - (64 * (z - 1) * (461 * z2 + 11 * z - 25)
 		)/(27 * z) - 128./9 * z * (26 * z - 59) * H0 - (128 * (z 
