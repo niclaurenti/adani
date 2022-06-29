@@ -14,7 +14,7 @@ using namespace apfel;
 double C2m_g1_highscale(double x, double mQ) {
 	
   if(x>1 || x<0) return 0;	
-		
+	
   return (
     4. * TR * ( - 8. * x * x + 8. * x - 1. + log( ( 1. - x ) / x ) * ( 2 * x * x - 2 * x + 1. ) ) / 4. / M_PI
     + 2. * K_Qg1(x, mQ)
@@ -26,48 +26,47 @@ double C2m_g1_highscale(double x, double mQ) {
 
 double CLm_g1_highscale(double x, double mQ) {
 	
-	if(x>1 || x<0) return 0;	
-  
+  if(x>1 || x<0) return 0;	
+
   return TR * 16. * x * (1. - x) / 4. / M_PI ;  //=CL_g1(x,nf)/nf
 
-  
 }
 
 //_____________________________________________________________
 
 double D2m_g1_highscale(double x, double mQ) {
-	
-	return C2m_g1_highscale(x,mQ);
-	
+
+  return C2m_g1_highscale(x,mQ);
+
 }
 
 //____________________________________________________________
 
 double DLm_g1_highscale(double x, double mQ) {
-	
-	return CLm_g1_highscale(x,mQ);
-	
+
+  return CLm_g1_highscale(x,mQ);
+
 }
 
 //____________________________________________________________
 
 
 double C2m_g2_highscale(double x, double mQ, double mMu) {
-	
-	if(x>1 || x<0) return 0;
-    
+
+  if(x>1 || x<0) return 0;
+  
   Cm022gNC_c cm022gNC_c;
 	Cm022gNC_l cm022gNC_l;
 	Cm022gNC_l2 cm022gNC_l2;
 	Cm022gNC_f cm022gNC_f;
 	Cm022gNC_lf cm022gNC_lf;
-	
-	double l = log(1./mQ) ;
-	double l2 = l * l ;
-	double f = log(mMu) ;
-	double lf = l * f ;
-	
-	double pi2 = M_PI * M_PI ;
+
+  double l = log(1./mQ) ;
+  double l2 = l * l ;
+  double f = log(mMu) ;
+  double lf = l * f ;
+
+  double pi2 = M_PI * M_PI ;
 	
 	double res = (
     cm022gNC_c.Regular(x) 
