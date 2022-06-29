@@ -13,7 +13,7 @@ double C2_g1(double x, int nf) {
 	return 4 * nf * TR * (
 		-8 * x * x + 8 * x - 1.
 		+ log( ( 1. - x ) / x ) * ( 2 * x * x - 2 * x + 1. )
-	) /	4. / M_PI ;
+	) / 4. / M_PI ;
 
 }
 
