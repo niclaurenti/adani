@@ -14,10 +14,10 @@ using namespace apfel;
 double C2m_g1_highscale(double x, double mQ) {
 
     if(x>1 || x<0) return 0;	
-    
+
     return (
-	    4. * TR * ( - 8. * x * x + 8. * x - 1. + log( ( 1. - x ) / x ) * ( 2 * x * x - 2 * x + 1. ) ) / 4. / M_PI
-	    + 2. * K_Qg1(x, mQ)
+        4. * TR * ( - 8. * x * x + 8. * x - 1. + log( ( 1. - x ) / x ) * ( 2 * x * x - 2 * x + 1. ) ) / 4. / M_PI
+        + 2. * K_Qg1(x, mQ)
     ) ;
 
 }
