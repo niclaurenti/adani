@@ -1905,3 +1905,5 @@ double CLm_g1_x_Pgg0_x_Pgg0_MC(double x, double mQ, int nf, size_t calls) {
 	return  CLm_g1_x_Pgg0_x_Pgg0_reg(x, mQ, nf, calls) + CLm_g1_x_Pgg0_x_Pgg0_sing(x, mQ, nf, calls) + CLm_g1xPgg0 * (Pgg0loc(nf) - result);
 
 }
+
+//_______________________________________________________________________________
