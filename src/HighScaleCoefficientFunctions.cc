@@ -157,8 +157,8 @@ double CLm_ps2_highscale(double x, double mQ, double mMu) {
 	
 	double res= (
     cm0L2psNC_c.Regular(x)
-		+	cm0L2psNC_l.Regular(x)*l
-		+ cm0L2psNC_f.Regular(x)*f
+		+	cm0L2psNC_l.Regular(x) * l
+		+ cm0L2psNC_f.Regular(x) * f
   ) ;
 	
 	return res / 16. / pi2 ;
