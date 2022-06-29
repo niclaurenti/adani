@@ -131,7 +131,7 @@ double Pgq1(double x, int nf) {
 
     double norm = (16. * M_PI * M_PI) ;
 
-    /*double tmp_CACF = (
+    /*double tmp_CACF = 4 * (
         1. / x + 2. * pgq(x) * (H10 + H11 + H01 - 11. / 6 * H1) 
         - x*x * (8. / 3 * H0 - 44./ 9) + 4. * zeta(2) - 2. - 7. * H0 
         + 2. * H00 - 2. * H1 * x + (1 + x) * (2. * H00 - 5 * H0 + 37. / 9) 
@@ -148,7 +148,7 @@ double Pgq1(double x, int nf) {
        + H01 * ( - 16 + 16. / x + 8 * x )
     );
     
-    /*double tmp_CFnf = - (
+    /*double tmp_CFnf = - 4 * (
         2. / 3 * x - pgq(x) * (2. / 3 * H1 - 10. / 9) 
     ) ;*/
     double tmp_CFnf = (
@@ -156,7 +156,7 @@ double Pgq1(double x, int nf) {
         + H1 * (- 16. / 3 + 16. / 3 / x + 8./  3 * x )
     );
 
-    /*double tmp_CFCF = (
+    /*double tmp_CFCF = 4 * (
         pgq(x) * (3. * H1 - 2. * H11) + (1 + x) * (H00 - 7. / 2 + 7. / 2 * H0) 
         - 3. * H00 + 1 - 3. / 2 * H0 + 2. * H1 * x
     ) ; */
@@ -189,11 +189,11 @@ double Pgg1reg(double x, int nf) {
     double gx = ( 67. / 18 - zeta(2) + H00 + 2. * H10 + 2 * H01 ) ;
     double g1 = 67. / 18 - zeta(2) ;
 
-    //double tmp_CAnf = 1. - x - 10. / 9 * pggreg(x) - 13. / 9 * (1. / x - x * x) - 2. / 3 * (1. + x) * H0 ;
+    //double tmp_CAnf = 4 * (1. - x - 10. / 9 * pggreg(x) - 13. / 9 * (1. / x - x * x) - 2. / 3 * (1. + x) * H0) ;
     double tmp_CAnf = (
         116. / 9 - 92. / 9 /x - 76. / 9 * x + 92. / 9 * x * x + H0 * ( - 8. / 3 - 8. / 3 * x )
     ) ;
-    /*double tmp_CACA = (
+    /*double tmp_CACA = 4 * (
         27. + (1. + x) * ( 11. / 3 * H0 + 8 * H00 - 27. / 2 ) 
         + 2. * ( pggreg(-x) + pggsing(-x) ) * ( H00 - 2. * Hm10 - zeta(2)) 
         - 67. / 9 * ( 1. / x - x * x ) - 12. * H0 - 44. / 3 * x * x * H0 
@@ -225,7 +225,8 @@ double Pgg1reg(double x, int nf) {
     );
     //the last term comes from expanding g(z)[f(z)]_+ = g(1)[f(z)]_+ + (g(z)-g(1))f(z)
     //where (g(z)-g(1))f(z) is regular
-    /*double tmp_CFnf = (
+    
+    /*double tmp_CFnf = 4 * (
         2. * H0 + 2. / 3 / x + 10. / 3 * x * x - 12. + (1. + x) * ( 4. - 5. * H0 - 2. * H00 )
     ) ;*/
     double tmp_CFnf = (

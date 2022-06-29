@@ -169,9 +169,9 @@ double CLm_ps2_highscale(double x, double mQ, double mMu) {
 
 double D2m_g2_highscale(double x, double mQ, double mMu) {
 	
-	double Lmu=log(1./mMu);
+	double Lmu = log(1./mMu) ;
 	
-	return C2m_g2_highscale(x,mQ,mMu) - 1./6/M_PI*Lmu*C2m_g1_highscale(x,mQ);
+	return C2m_g2_highscale(x,mQ,mMu) - 1. / 6 / M_PI * Lmu * C2m_g1_highscale(x,mQ) ;
 
 }
 
@@ -189,7 +189,7 @@ double DLm_g2_highscale(double x, double mQ, double mMu) {
 	
 	double Lmu = log(1./mMu);
 	
-	return CLm_g2_highscale(x,mQ,mMu) - 1. / 6 / M_PI * Lmu * CLm_g1_highscale(x,mQ);
+	return CLm_g2_highscale(x,mQ,mMu) - 1. / 6 / M_PI * Lmu * CLm_g1_highscale(x,mQ) ;
 
 }
 
