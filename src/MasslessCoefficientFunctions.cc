@@ -360,10 +360,10 @@ double CL_ps3(double x, int nf) {//remember that there is a delta(x1) that has b
         /x * x1 * x1 
     );
     
-	double c_fl_nf = (
-		((107.0 + 321.05 * x - 54.62 * x2) * x1 - 26.717 + 9.773 
-		* L0 + (363.8 + 68.32 * L0) * x * L0 - 320./81 * L02 * (2
-		+ L0)) * x 
+    double c_fl_nf = (
+        ((107.0 + 321.05 * x - 54.62 * x2) * x1 - 26.717 + 9.773 
+        * L0 + (363.8 + 68.32 * L0) * x * L0 - 320./81 * L02 * (2
+        + L0)) * x 
     );
 
     double tmp = (
@@ -373,7 +373,7 @@ double CL_ps3(double x, int nf) {//remember that there is a delta(x1) that has b
     ) ;
 
     return tmp / ( 64. * pi3 ) ;
-    
+
 }
 
 //______________________________________________________________
