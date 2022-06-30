@@ -38,7 +38,7 @@ int main(int argc, char** argv) {
 	inputQ.open("Q.txt");
 
 	ifstream inputx;
-	inputx.open("../extras/x_NEW.txt");
+	inputx.open("x.txt");
 	
     double mufrac = atof(argv[1]);
     double m = atof(argv[2]);
