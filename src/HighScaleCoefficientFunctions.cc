@@ -26,9 +26,9 @@ double C2m_g1_highscale(double x, double mQ) {
 
 double CLm_g1_highscale(double x, double mQ) {
 
-	if(x>1 || x<0) return 0;	
+    if(x>1 || x<0) return 0;	
 
-	return TR * 16. * x * (1. - x) / 4. / M_PI ;  //=CL_g1(x,nf)/nf
+    return TR * 16. * x * (1. - x) / 4. / M_PI ;  //=CL_g1(x,nf)/nf
 
 }
 
@@ -36,7 +36,7 @@ double CLm_g1_highscale(double x, double mQ) {
 
 double D2m_g1_highscale(double x, double mQ) {
 
-	return C2m_g1_highscale(x,mQ);
+    return C2m_g1_highscale(x,mQ);
 
 }
 
@@ -44,39 +44,38 @@ double D2m_g1_highscale(double x, double mQ) {
 
 double DLm_g1_highscale(double x, double mQ) {
 
-	return CLm_g1_highscale(x,mQ);
+    return CLm_g1_highscale(x,mQ);
 
 }
 
 //____________________________________________________________
 
-
 double C2m_g2_highscale(double x, double mQ, double mMu) {
 
-	if(x>1 || x<0) return 0;
+    if(x>1 || x<0) return 0;
 
-	Cm022gNC_c cm022gNC_c;
-	Cm022gNC_l cm022gNC_l;
-	Cm022gNC_l2 cm022gNC_l2;
-	Cm022gNC_f cm022gNC_f;
-	Cm022gNC_lf cm022gNC_lf;
+    Cm022gNC_c cm022gNC_c;
+    Cm022gNC_l cm022gNC_l;
+    Cm022gNC_l2 cm022gNC_l2;
+    Cm022gNC_f cm022gNC_f;
+    Cm022gNC_lf cm022gNC_lf;
 
-	double l = log(1./mQ) ;
-	double l2 = l * l ;
-	double f = log(mMu) ;
-	double lf = l * f ;
+    double l = log(1./mQ) ;
+    double l2 = l * l ;
+    double f = log(mMu) ;
+    double lf = l * f ;
 
-	double pi2 = M_PI * M_PI ;
+    double pi2 = M_PI * M_PI ;
 
-	double res = (
-		cm022gNC_c.Regular(x) 
-		+ cm022gNC_l.Regular(x) * l 
-		+ cm022gNC_l2.Regular(x) * l2 
-		+ cm022gNC_f.Regular(x) * f 
-		+ cm022gNC_lf.Regular(x) * lf
-	) ;
-	
-	return res / 16. / pi2 ;
+    double res = (
+        cm022gNC_c.Regular(x) 
+        + cm022gNC_l.Regular(x) * l 
+        + cm022gNC_l2.Regular(x) * l2 
+        + cm022gNC_f.Regular(x) * f 
+        + cm022gNC_lf.Regular(x) * lf
+    ) ;
+
+    return res / 16. / pi2 ;
 
 }
 
@@ -85,31 +84,31 @@ double C2m_g2_highscale(double x, double mQ, double mMu) {
 
 
 double C2m_ps2_highscale(double x, double mQ, double mMu) {
-	
-	if(x>1 || x<0) return 0;
-    
-  Cm022psNC_c cm022psNC_c;
-	Cm022psNC_l cm022psNC_l;
-	Cm022psNC_l2 cm022psNC_l2;
-	Cm022psNC_f cm022psNC_f;
-	Cm022psNC_lf cm022psNC_lf;
-	
-	double l = log(1./mQ) ;
-	double l2 = l * l ;
-	double f = log(mMu) ;
-	double lf = l * f ;
-	
-	double pi2 = M_PI * M_PI ;
-	
-	double res= (
-    cm022psNC_c.Regular(x)
-		+ cm022psNC_l.Regular(x)*l
-		+ cm022psNC_l2.Regular(x)*l2
-		+ cm022psNC_f.Regular(x)*f
-		+ cm022psNC_lf.Regular(x)*lf
-  ) ;
-	
-	return res / 16. / pi2 ;
+
+    if(x>1 || x<0) return 0;
+
+    Cm022psNC_c cm022psNC_c;
+    Cm022psNC_l cm022psNC_l;
+    Cm022psNC_l2 cm022psNC_l2;
+    Cm022psNC_f cm022psNC_f;
+    Cm022psNC_lf cm022psNC_lf;
+
+    double l = log(1./mQ) ;
+    double l2 = l * l ;
+    double f = log(mMu) ;
+    double lf = l * f ;
+
+    double pi2 = M_PI * M_PI ;
+
+    double res= (
+        cm022psNC_c.Regular(x)
+        + cm022psNC_l.Regular(x)*l
+        + cm022psNC_l2.Regular(x)*l2
+        + cm022psNC_f.Regular(x)*f
+        + cm022psNC_lf.Regular(x)*lf
+    ) ;
+
+    return res / 16. / pi2 ;
 
 }
 
@@ -117,114 +116,114 @@ double C2m_ps2_highscale(double x, double mQ, double mMu) {
 //_______________________________________________________________
 
 double CLm_g2_highscale(double x, double mQ, double mMu) {
-	
-	if(x>1 || x<0) return 0;
-    
-  Cm0L2gNC_c cm0L2gNC_c;
-	Cm0L2gNC_l cm0L2gNC_l;
-	Cm0L2gNC_f cm0L2gNC_f;
-	
-	double l = log(1./mQ);
-	double f = log(mMu);
-	
-	double pi2 = M_PI * M_PI ;
-	
-	double res= (
-    cm0L2gNC_c.Regular(x) 
-    +	cm0L2gNC_l.Regular(x) * l 
-    +	cm0L2gNC_f.Regular(x) * f
-  ) ;
-	
-	return res / 16. / pi2 ;
+
+    if(x>1 || x<0) return 0;
+
+    Cm0L2gNC_c cm0L2gNC_c;
+    Cm0L2gNC_l cm0L2gNC_l;
+    Cm0L2gNC_f cm0L2gNC_f;
+
+    double l = log(1./mQ);
+    double f = log(mMu);
+
+    double pi2 = M_PI * M_PI ;
+
+    double res= (
+        cm0L2gNC_c.Regular(x) 
+        + cm0L2gNC_l.Regular(x) * l 
+        + cm0L2gNC_f.Regular(x) * f
+    ) ;
+
+    return res / 16. / pi2 ;
 
 }
 
 //_______________________________________________________________
 
 double CLm_ps2_highscale(double x, double mQ, double mMu) {
-	
-	if(x>1 || x<0) return 0;
-    
-  Cm0L2psNC_c cm0L2psNC_c;
-	Cm0L2psNC_l cm0L2psNC_l;
-	Cm0L2psNC_f cm0L2psNC_f;
-	
-	double l = log(1./mQ);
-	double f = log(mMu);
-	
-	double pi2 = M_PI * M_PI;
-	
-	double res= (
-    cm0L2psNC_c.Regular(x)
-		+	cm0L2psNC_l.Regular(x) * l
-		+ cm0L2psNC_f.Regular(x) * f
-  ) ;
-	
-	return res / 16. / pi2 ;
+
+    if(x>1 || x<0) return 0;
+
+    Cm0L2psNC_c cm0L2psNC_c;
+    Cm0L2psNC_l cm0L2psNC_l;
+    Cm0L2psNC_f cm0L2psNC_f;
+
+    double l = log(1./mQ);
+    double f = log(mMu);
+
+    double pi2 = M_PI * M_PI;
+
+    double res= (
+        cm0L2psNC_c.Regular(x)
+        + cm0L2psNC_l.Regular(x) * l
+        + cm0L2psNC_f.Regular(x) * f
+    ) ;
+
+    return res / 16. / pi2 ;
 
 }
 
 //_______________________________________________________________
 
 double D2m_g2_highscale(double x, double mQ, double mMu) {
-	
-	double Lmu = log(1./mMu) ;
-	
-	return C2m_g2_highscale(x,mQ,mMu) - 1. / 6 / M_PI * Lmu * C2m_g1_highscale(x,mQ) ;
+
+    double Lmu = log(1./mMu) ;
+
+    return C2m_g2_highscale(x,mQ,mMu) - 1. / 6 / M_PI * Lmu * C2m_g1_highscale(x,mQ) ;
 
 }
 
 //___________________________________________________________
 
 double D2m_ps2_highscale(double x, double mQ, double mMu) {
-	
-	return C2m_ps2_highscale(x,mQ,mMu) ;
+
+    return C2m_ps2_highscale(x,mQ,mMu) ;
 
 }
 
 //___________________________________________________________
 
 double DLm_g2_highscale(double x, double mQ, double mMu) {
-	
-	double Lmu = log(1./mMu);
-	
-	return CLm_g2_highscale(x,mQ,mMu) - 1. / 6 / M_PI * Lmu * CLm_g1_highscale(x,mQ) ;
+
+    double Lmu = log(1./mMu);
+
+    return CLm_g2_highscale(x,mQ,mMu) - 1. / 6 / M_PI * Lmu * CLm_g1_highscale(x,mQ) ;
 
 }
 
 //___________________________________________________________
 
 double DLm_ps2_highscale(double x, double mQ, double mMu) {
-	
-	return CLm_ps2_highscale(x,mQ,mMu) ;
+
+    return CLm_ps2_highscale(x,mQ,mMu) ;
 
 }
 
 //___________________________________________________________
 
 double C2m_g3_highscale(double x, double mQ, double mMu, int nf, int v) {
-	
-	double Lmu=log(mMu);
-	double L2mu =Lmu*Lmu;
-	
-	double pi2=M_PI*M_PI;
-	
-	return (
-    D2m_g3_highscale(x,mQ,mMu,nf,v)
-    - 1. / 3 / M_PI * Lmu * D2m_g2_highscale(x,mQ,mMu)
-    - ( ( 16. / 9 * CA - 15. / 2 * CF ) + ( 10. / 3 * CA + 2 * CF ) * Lmu - 4. / 9 * L2mu ) / 16. / pi2 * D2m_g1_highscale(x,mQ)
-  );
+
+    double Lmu=log(mMu);
+    double L2mu =Lmu*Lmu;
+
+    double pi2=M_PI*M_PI;
+
+    return (
+        D2m_g3_highscale(x,mQ,mMu,nf,v)
+        - 1. / 3 / M_PI * Lmu * D2m_g2_highscale(x,mQ,mMu)
+        - ( ( 16. / 9 * CA - 15. / 2 * CF ) + ( 10. / 3 * CA + 2 * CF ) * Lmu - 4. / 9 * L2mu ) / 16. / pi2 * D2m_g1_highscale(x,mQ)
+    );
 
 }
 
 //________________________________________________________________
 
 double C2m_ps3_highscale(double x, double mQ, double mMu, int nf) {
-	
-	double Lmu = log(mMu) ;
-	
-	return D2m_ps3_highscale(x,mQ,mMu,nf) - 1. / 3 / M_PI * Lmu * D2m_ps2_highscale(x,mQ,mMu) ;
 
+    double Lmu = log(mMu) ;
+
+    return D2m_ps3_highscale(x,mQ,mMu,nf) - 1. / 3 / M_PI * Lmu * D2m_ps2_highscale(x,mQ,mMu) ;
+    
 }
 
 //________________________________________________________________
@@ -454,81 +453,81 @@ double DLm_g3_highscale(double x, double mQ, double mMu, int nf) {
         25) - 64./9 * (6 * z2 - 31 * z - 3) * H0 - 64./3 * (z - 
         1) * (2 * z + 1) * H1 + z * (128./3 * H0 * H0 + 128./3 
         * H01 - (128 * zeta2)/3)))
+
+        + CA * CF * TR * ( -16./3 * (3 * z + 1) * H0 * H0 * H0
+        - 8./3 * (11 * z2 - 18 * z + 3) * H0 * H0 + 16./9 * (772
+        * z2 + 480 * z - 39) * H0 + (16 * (z - 1) * (77 * z2 - 
+        25 * z - 4) * H1 * H0)/(3 * z) - 32 * (7 * z - 2) * H01
+        * H0 - 8 * (z - 1) * (9 * z - 1) * H1 * H1 - (32 * (z - 
+        1) * (2168 * z2 - 91 * z - 28))/(27 * z) - 16 * (z - 1) * 
+        (16 * z - 1) * H1 + (z - 1) * (2 * z + 1) * (16 * H0 * 
+        H1 * H1 - 16./3 * H1 * H1 * H1) + z * (z + 1) * (192 * 
+        H0m1 - 192 * Hm1 * H0) - (16 * (68 * z3 - 117 * z2 + 21
+        * z + 4) * H01)/(3 * z) - 32 * (2 * z2 - 2 * z - 1) * H011
+        + L_M2 * ( -(16 * (z - 1) * (43 * z2 - 11 * z - 2))/(3 * 
+        z) + 32 * (3 * z - 1) * H0 - 32 * (z - 1) * (2 * z + 1) 
+        * H1 + z * (64 * H0 * H0 + 64 * H01 - 64 * zeta2)) - 16
+        * z * (3 * z + 17) * zeta2 + (z + 1) * (2 * z - 1) * (32
+        * H0 * Hm1 * Hm1 + ( -16 * H0 * H0 - 64 * H0m1) * Hm1 + 
+        32 * zeta2 * Hm1 + 32 * H0 * H0m1 + 64 * H0m1m1 - 32 * 
+        H00m1) + L_Q2 * ((16 * (z - 1) * (65 * z2 - 2))/(3 * z)
+        - 32./3 * (20 * z - 3) * H0 + 32 * (z - 1) * (2 * z + 1)
+        * H1 + z * ( -64 * H0 * H0 - 64 * H01 + 64 * zeta2)) + 
+        (15 * z - 4) * (32 * H001 - 32 * zeta3) + z * ( 8./3 * 
+        H0 * H0 * H0 * H0 - 32 * H0m1 * H0 * H0 + (128 * H0m1m1
+        + 128 * H00m1 - 256 * H001 - 64 * H011) * H0 - 448 * zeta3
+        * H0 - 64 * H0m1 * H0m1 - (1472 * zeta2 * zeta2)/5 - 192
+        * H000m1 + 768 * H0001 + 128 * H0011 + 64 * H0111 + (64 
+        * H0m1 - 32 * H0) * zeta2) + L_Q * ( 128./45 * z * (6 * 
+        z2 + 35) * H0 * H0 * H0 + (64 * (84 * z4 - 9 * z3 + 272
+        * z2 - 48 * z + 6) * H0 * H0)/(45 * z) - (32 * (z + 1) * 
+        (24 * z4 + 6 * z3 - 11 * z2 - 4 * z + 4) * Hm1 * H0 * H0)
+        /(15 * z2) - 32 * (z - 1) * (2 * z + 1) * H1 * H0 * H0 
+        - (16 * (4668 * z3 - 5233 * z2 - 130 * z - 64) * H0)/(45
+        * z) - 64 * (z - 1) * (4 * z + 1) * H1 * H0 - (64 * (30
+        * z4 - 35 * z3 - 15 * z2 - 4) * H0m1 * H0)/(15 * z2) + 
+        64 * (z + 1) * (2 * z - 1) * H01 * H0 - 256./5 * z * (4
+        * z2 + 5) * zeta2 * H0 - 32 * (z - 1) * (6 * z + 1) * H1
+        * H1 - (8 * (z - 1) * (11062 * z2 + 1335 * z - 168))/(45
+        * z) - 64./45 * (168 * z4 - 108 * z3 + 343 * z2 - 6 * z
+        + 24) * zeta2/z + 64./5 * (z + 1) * (12 * z4 - 2 * z3 - 
+        3 * z2 - 2 * z + 2) * zeta2/z2 * Hm1 - (64 * (z - 1) * 
+        (371 * z2 + 37 * z - 14) * H1)/(15 * z) - 64./15 * (z - 
+        1) * (12 * z4 - 18 * z3 - 13 * z2 + 2 * z + 2) * zeta2/
+        z2 * H1 + ((z + 1) * (42 * z4 - 69 * z3 - 35 * z2 - 4 * 
+        z + 7) * (256./45 * H0m1 - 256./45 * Hm1 * H0))/z2 + (64
+        * (24 * z3 + 208 * z2 - 17 * z + 4) * H01)/(15 * z) + (
+        (z + 1) * (12 * z4 + 18 * z3 - 13 * z2 - 2 * z + 2))/z2 
+        * (64./15 * H0 * Hm1 * Hm1 - 128./15 * H0m1 * Hm1 + 128.
+        /15 * H0m1m1) + (64 * (24 * z5 + 90 * z4 - 75 * z3 - 45
+        * z2 - 4) * H00m1)/(15 * z2) + 64./15 * (24 * z3 - 30 * 
+        z2 + 55 * z + 15) * H001 + ((z + 1) * (6 * z4 - 6 * z3 
+        + z2 - z + 1) )/z2 * ( -256./15 * Hm1 * H01 + 256./15 * 
+        H0m11 + 256./15 * H01m1) + (352./3 * z * H0 - 176./3 * 
+        (z - 1) * (2 * z + 1)) * L_M - 256./3 * z * (3 * z2 + 2)
+        * zeta3 + z * ((64 * H01 - 64 * H0m1) * H0 * H0 + (256 
+        * H0m1m1 + 256 * H00m1 - 256 * H001) * H0 - 256 * zeta3
+        * H0 - 128 * H0m1 * H0m1 + (384 * zeta2 * zeta2)/5 + 128
+        * H011 - 384 * H000m1 + 384 * H0001 + (128 * H0m1 - 128
+        * H01) * zeta2)) + L_M * ( -32./5 * (4 * z3 + 5 * z2 - 
+        10 * z - 5) * H0 * H0 + (16 * (2226 * z3 - 43 * z2 - 63
+        * z - 24) * H0)/(45 * z) - (8 * (z - 1) * (3758 * z2 - 
+        1299 * z - 152))/(45 * z) - 16./3 * (z - 1) * (2 * z - 
+        23) * H1 + ((z + 1) * (12 * z4 - 27 * z3 - 58 * z2 - 2 
+        * z + 2))/z2 * (64./15 * Hm1 * H0 - 64./15 * H0m1) - 64
+        * (6 * z2 - z - 3) * H00m1 + 32./15 * z * (24 * z2 - 85)
+        * zeta2 + (z + 1) * (2 * z - 1) * ( -64 * H0 * Hm1 * Hm1
+        + (32 * H0 * H0 + 128 * H0m1) * Hm1 - 64 * zeta2 * Hm1 
+        - 128 * H0m1m1) + (z - 1) * (2 * z + 1) * (32 * H1 * H0 
+        * H0 + (64 * H0m1 - 64 * H01) * H0 - 32 * H1 * H1 + 64 * 
+        H001 - 64 * H1 * zeta2) + z * ( -128./3 * H0 * H0 * H0 
+        + (64 * H0m1 - 64 * H01) * H0 * H0 + ( -256 * H0m1m1 - 
+        256 * H00m1 + 256 * H001) * H0 + 256 * zeta3 * H0 + 128
+        * H0m1 * H0m1 - (384 * zeta2 * zeta2)/5 - 544./3 * H01 
+        + 128 * H011 + 384 * H000m1 - 384 * H0001 + (128 * H01 
+        - 128 * H0m1) * zeta2) ) ) ) / 64. / pi3
     
-    + CA * CF * TR * ( -16./3 * (3 * z + 1) * H0 * H0 * H0
-    - 8./3 * (11 * z2 - 18 * z + 3) * H0 * H0 + 16./9 * (772
-    * z2 + 480 * z - 39) * H0 + (16 * (z - 1) * (77 * z2 - 
-    25 * z - 4) * H1 * H0)/(3 * z) - 32 * (7 * z - 2) * H01
-    * H0 - 8 * (z - 1) * (9 * z - 1) * H1 * H1 - (32 * (z - 
-    1) * (2168 * z2 - 91 * z - 28))/(27 * z) - 16 * (z - 1) * 
-    (16 * z - 1) * H1 + (z - 1) * (2 * z + 1) * (16 * H0 * 
-    H1 * H1 - 16./3 * H1 * H1 * H1) + z * (z + 1) * (192 * 
-    H0m1 - 192 * Hm1 * H0) - (16 * (68 * z3 - 117 * z2 + 21
-    * z + 4) * H01)/(3 * z) - 32 * (2 * z2 - 2 * z - 1) * H011
-    + L_M2 * ( -(16 * (z - 1) * (43 * z2 - 11 * z - 2))/(3 * 
-    z) + 32 * (3 * z - 1) * H0 - 32 * (z - 1) * (2 * z + 1) 
-    * H1 + z * (64 * H0 * H0 + 64 * H01 - 64 * zeta2)) - 16
-    * z * (3 * z + 17) * zeta2 + (z + 1) * (2 * z - 1) * (32
-    * H0 * Hm1 * Hm1 + ( -16 * H0 * H0 - 64 * H0m1) * Hm1 + 
-    32 * zeta2 * Hm1 + 32 * H0 * H0m1 + 64 * H0m1m1 - 32 * 
-    H00m1) + L_Q2 * ((16 * (z - 1) * (65 * z2 - 2))/(3 * z)
-    - 32./3 * (20 * z - 3) * H0 + 32 * (z - 1) * (2 * z + 1)
-    * H1 + z * ( -64 * H0 * H0 - 64 * H01 + 64 * zeta2)) + 
-    (15 * z - 4) * (32 * H001 - 32 * zeta3) + z * ( 8./3 * 
-    H0 * H0 * H0 * H0 - 32 * H0m1 * H0 * H0 + (128 * H0m1m1
-    + 128 * H00m1 - 256 * H001 - 64 * H011) * H0 - 448 * zeta3
-    * H0 - 64 * H0m1 * H0m1 - (1472 * zeta2 * zeta2)/5 - 192
-    * H000m1 + 768 * H0001 + 128 * H0011 + 64 * H0111 + (64 
-    * H0m1 - 32 * H0) * zeta2) + L_Q * ( 128./45 * z * (6 * 
-    z2 + 35) * H0 * H0 * H0 + (64 * (84 * z4 - 9 * z3 + 272
-    * z2 - 48 * z + 6) * H0 * H0)/(45 * z) - (32 * (z + 1) * 
-    (24 * z4 + 6 * z3 - 11 * z2 - 4 * z + 4) * Hm1 * H0 * H0)
-    /(15 * z2) - 32 * (z - 1) * (2 * z + 1) * H1 * H0 * H0 
-    - (16 * (4668 * z3 - 5233 * z2 - 130 * z - 64) * H0)/(45
-    * z) - 64 * (z - 1) * (4 * z + 1) * H1 * H0 - (64 * (30
-    * z4 - 35 * z3 - 15 * z2 - 4) * H0m1 * H0)/(15 * z2) + 
-    64 * (z + 1) * (2 * z - 1) * H01 * H0 - 256./5 * z * (4
-    * z2 + 5) * zeta2 * H0 - 32 * (z - 1) * (6 * z + 1) * H1
-    * H1 - (8 * (z - 1) * (11062 * z2 + 1335 * z - 168))/(45
-    * z) - 64./45 * (168 * z4 - 108 * z3 + 343 * z2 - 6 * z
-    + 24) * zeta2/z + 64./5 * (z + 1) * (12 * z4 - 2 * z3 - 
-    3 * z2 - 2 * z + 2) * zeta2/z2 * Hm1 - (64 * (z - 1) * 
-    (371 * z2 + 37 * z - 14) * H1)/(15 * z) - 64./15 * (z - 
-    1) * (12 * z4 - 18 * z3 - 13 * z2 + 2 * z + 2) * zeta2/
-    z2 * H1 + ((z + 1) * (42 * z4 - 69 * z3 - 35 * z2 - 4 * 
-    z + 7) * (256./45 * H0m1 - 256./45 * Hm1 * H0))/z2 + (64
-    * (24 * z3 + 208 * z2 - 17 * z + 4) * H01)/(15 * z) + (
-    (z + 1) * (12 * z4 + 18 * z3 - 13 * z2 - 2 * z + 2))/z2 
-    * (64./15 * H0 * Hm1 * Hm1 - 128./15 * H0m1 * Hm1 + 128.
-    /15 * H0m1m1) + (64 * (24 * z5 + 90 * z4 - 75 * z3 - 45
-    * z2 - 4) * H00m1)/(15 * z2) + 64./15 * (24 * z3 - 30 * 
-    z2 + 55 * z + 15) * H001 + ((z + 1) * (6 * z4 - 6 * z3 
-    + z2 - z + 1) )/z2 * ( -256./15 * Hm1 * H01 + 256./15 * 
-    H0m11 + 256./15 * H01m1) + (352./3 * z * H0 - 176./3 * 
-    (z - 1) * (2 * z + 1)) * L_M - 256./3 * z * (3 * z2 + 2)
-    * zeta3 + z * ((64 * H01 - 64 * H0m1) * H0 * H0 + (256 
-    * H0m1m1 + 256 * H00m1 - 256 * H001) * H0 - 256 * zeta3
-    * H0 - 128 * H0m1 * H0m1 + (384 * zeta2 * zeta2)/5 + 128
-    * H011 - 384 * H000m1 + 384 * H0001 + (128 * H0m1 - 128
-    * H01) * zeta2)) + L_M * ( -32./5 * (4 * z3 + 5 * z2 - 
-    10 * z - 5) * H0 * H0 + (16 * (2226 * z3 - 43 * z2 - 63
-    * z - 24) * H0)/(45 * z) - (8 * (z - 1) * (3758 * z2 - 
-    1299 * z - 152))/(45 * z) - 16./3 * (z - 1) * (2 * z - 
-    23) * H1 + ((z + 1) * (12 * z4 - 27 * z3 - 58 * z2 - 2 
-    * z + 2))/z2 * (64./15 * Hm1 * H0 - 64./15 * H0m1) - 64
-    * (6 * z2 - z - 3) * H00m1 + 32./15 * z * (24 * z2 - 85)
-    * zeta2 + (z + 1) * (2 * z - 1) * ( -64 * H0 * Hm1 * Hm1
-    + (32 * H0 * H0 + 128 * H0m1) * Hm1 - 64 * zeta2 * Hm1 
-    - 128 * H0m1m1) + (z - 1) * (2 * z + 1) * (32 * H1 * H0 
-    * H0 + (64 * H0m1 - 64 * H01) * H0 - 32 * H1 * H1 + 64 * 
-    H001 - 64 * H1 * zeta2) + z * ( -128./3 * H0 * H0 * H0 
-    + (64 * H0m1 - 64 * H01) * H0 * H0 + ( -256 * H0m1m1 - 
-    256 * H00m1 + 256 * H001) * H0 + 256 * zeta3 * H0 + 128
-    * H0m1 * H0m1 - (384 * zeta2 * zeta2)/5 - 544./3 * H01 
-    + 128 * H011 + 384 * H000m1 - 384 * H0001 + (128 * H01 
-    - 128 * H0m1) * zeta2) ) ))/64/pi3
-    
-    + CL_g3(z, nf+1)/(nf+1) ;
+        + CL_g3(z, nf + 1 ) / ( nf + 1 ) ;
 	
 }
 
