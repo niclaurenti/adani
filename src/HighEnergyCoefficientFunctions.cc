@@ -770,7 +770,7 @@ double C2m_g3_highenergyNLL(double x, double mQ, double mMu, int nf, int v) {
     else {
         cout<<"Choose either v=0 or v=1 or v=2!!\nExiting!!\n"<<endl;
         exit(-1);
-        }
+    }
         
 }
 
@@ -790,7 +790,7 @@ double C2m_g3_highenergy_highscaleNLL(double x, double mQ, double mMu, int nf, i
     else {
         cout<<"Choose either v=0 or v=1 or v=2!!\nExiting!!\n"<<endl;
         exit(-1);
-        }
+    }
         
 }
 
