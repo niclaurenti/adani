@@ -7,24 +7,24 @@
 //NLO => O(\alpha_s^1)
 
 double C2_g1(double x, int nf) {
-  
-	if (x>1 || x<0) return 0;
-  
-	return 4 * nf * TR * (
-		-8 * x * x + 8 * x - 1.
-		+ log( ( 1. - x ) / x ) * ( 2 * x * x - 2 * x + 1. )
-	) /	4. / M_PI ;
+
+    if (x>1 || x<0) return 0;
+
+    return 4 * nf * TR * (
+        -8 * x * x + 8 * x - 1.
+        + log( ( 1. - x ) / x ) * ( 2 * x * x - 2 * x + 1. )
+    ) /	4. / M_PI ;
 
 }
 
 //____________________________________________________________
 
 double CL_g1(double x, int nf) {
-	
-	if (x>1 || x<0) return 0;
-	
-	return 16 * nf * TR * x * (1. - x) / 4. / M_PI ;
-	
+
+    if (x>1 || x<0) return 0;
+
+    return 16 * nf * TR * x * (1. - x) / 4. / M_PI ;
+
 }
 
 //_____________________________________________________________
@@ -32,72 +32,72 @@ double CL_g1(double x, int nf) {
 
 double C2_g2(double x, int nf) {
 
-	if (x>1 || x<0) return 0;
-  
-	double x1 = 1 - x;
-	double L0 = log(x);
-	double L1 = log(x1);
-	double pi2 = M_PI * M_PI;  
-  
-	double tmp = nf * (
-		58./9. * L1 * L1 * L1 - 24 * L1 * L1 - 34.88 * L1
-		+ 30.586 - (25.08 + 760.3 * x + 29.65 * L1 * L1 * L1) * x1
-		+ 1204 * x * L0 * L0 + L0 * L1 * (293.8 + 711.2 * x
-		+ 1043 * L0) + 115.6 * L0 - 7.109 * L0 * L0 
-		+ 70./9. * L0 * L0 * L0 + 11.9033 * x1 / x
-	) ;
-  
-	return tmp / 16. / pi2 ;
-  
+    if (x>1 || x<0) return 0;
+
+    double x1 = 1 - x;
+    double L0 = log(x);
+    double L1 = log(x1);
+    double pi2 = M_PI * M_PI;  
+
+    double tmp = nf * (
+        58./9. * L1 * L1 * L1 - 24 * L1 * L1 - 34.88 * L1
+        + 30.586 - (25.08 + 760.3 * x + 29.65 * L1 * L1 * L1) * x1
+        + 1204 * x * L0 * L0 + L0 * L1 * (293.8 + 711.2 * x
+        + 1043 * L0) + 115.6 * L0 - 7.109 * L0 * L0 
+        + 70./9. * L0 * L0 * L0 + 11.9033 * x1 / x
+    ) ;
+
+    return tmp / 16. / pi2 ;
+
 }
 
 //____________________________________________________________
 
 double C2_ps2(double x, int nf) {
 
-	if (x>1 || x<0) return 0;
-  
-	double x1 = 1 - x ;
-	double L0 = log(x);
-	double L02 = L0 * L0 ;
-	double L03 = L02 * L0 ;
-  
-	double L1 = log(x1);
-	double L12 = L1 * L1 ;
-	double L13 = L12 * L1 ;
-	double pi2 = M_PI * M_PI;  
-  
-	return nf * (
-		( 8./3 * L12 - 32./3 * L1 + 9.8937) * x1 + ( 9.57
-		- 13.41 * x + 0.08 * L13) * x1 * x1 + 5.667 * x * L03 
-		- L02 * L1 * (20.26 - 33.93 * x) + 43.36 * x1 * L0 - 1.053 * L02
-		+ 40./9 * L03 + 5.2903/x * x1 * x1
-	) / 16. / pi2 ;
-  
+    if (x>1 || x<0) return 0;
+
+    double x1 = 1 - x ;
+    double L0 = log(x);
+    double L02 = L0 * L0 ;
+    double L03 = L02 * L0 ;
+
+    double L1 = log(x1);
+    double L12 = L1 * L1 ;
+    double L13 = L12 * L1 ;
+    double pi2 = M_PI * M_PI;  
+
+    return nf * (
+        ( 8./3 * L12 - 32./3 * L1 + 9.8937) * x1 + ( 9.57
+        - 13.41 * x + 0.08 * L13) * x1 * x1 + 5.667 * x * L03 
+        - L02 * L1 * (20.26 - 33.93 * x) + 43.36 * x1 * L0 - 1.053 * L02
+        + 40./9 * L03 + 5.2903/x * x1 * x1
+    ) / 16. / pi2 ;
+
 }
 
 //___________________________________________________________
 
 double CL_g2(double x, int nf) {
 
-	if (x>1 || x<0) return 0;
-	
-	double pi2 = M_PI * M_PI ;  
-	
-	double L0 = log(x);
-	double L02 = L0 * L0;
-	
-	double x1= 1 - x ;	
-	double L1 = log(x1) ;
-	double L12 = L1 * L1 ;
-	
-	double tmp = nf * (
-		(94.74 - 49.2 * x) * x1 * L12 + 864.8 * x1 * L1 + 1161 
-		* x * L1 * L0 + 60.06 * x * L02 + 39.66 * x1 * L0 - 5.333
-		* (1./x - 1)
-	);
-	
-	return tmp / 16. / pi2 ;
+    if (x>1 || x<0) return 0;
+
+    double pi2 = M_PI * M_PI ;  
+
+    double L0 = log(x);
+    double L02 = L0 * L0;
+
+    double x1= 1 - x ;	
+    double L1 = log(x1) ;
+    double L12 = L1 * L1 ;
+
+    double tmp = nf * (
+        (94.74 - 49.2 * x) * x1 * L12 + 864.8 * x1 * L1 + 1161 
+        * x * L1 * L0 + 60.06 * x * L02 + 39.66 * x1 * L0 - 5.333
+        * (1./x - 1)
+    );
+
+    return tmp / 16. / pi2 ;
 
 }
 
@@ -105,23 +105,23 @@ double CL_g2(double x, int nf) {
 
 double CL_ps2(double x, int nf) {
 
-	if (x>1 || x<0) return 0;
-	
-	double pi2 = M_PI * M_PI;  
-	
-	double L0 = log(x);
-	double L02 = L0 * L0;
-	
-	double x1 = 1 - x;	
-	double L1 = log(x1);
-	
-	double tmp =  nf * (
-		(15.94 - 5.212 * x) * x1 * x1 * L1 + (0.421 + 1.520
-		* x ) * L02 + 28.09 * x1 * L0 - (2.370/x - 19.27) * x1 
-		* x1 * x1
-	) ;
-	
-	return tmp / 16. / pi2 ;
+    if (x>1 || x<0) return 0;
+
+    double pi2 = M_PI * M_PI;  
+
+    double L0 = log(x);
+    double L02 = L0 * L0;
+
+    double x1 = 1 - x;	
+    double L1 = log(x1);
+
+    double tmp =  nf * (
+        (15.94 - 5.212 * x) * x1 * x1 * L1 + (0.421 + 1.520
+        * x ) * L02 + 28.09 * x1 * L0 - (2.370/x - 19.27) * x1 
+        * x1 * x1
+    ) ;
+
+    return tmp / 16. / pi2 ;
 
 }	
 
