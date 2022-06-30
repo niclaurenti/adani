@@ -223,7 +223,7 @@ double C2m_ps3_highscale(double x, double mQ, double mMu, int nf) {
     double Lmu = log(mMu) ;
 
     return D2m_ps3_highscale(x,mQ,mMu,nf) - 1. / 3 / M_PI * Lmu * D2m_ps2_highscale(x,mQ,mMu) ;
-    
+
 }
 
 //________________________________________________________________
@@ -534,153 +534,153 @@ double DLm_g3_highscale(double x, double mQ, double mMu, int nf) {
 //____________________________________________________________
 
 double CLm_g3_highscale(double x, double mQ, double mMu, int nf) {
-	
-	double Lmu = log(mMu) ;
-	double L2mu = Lmu * Lmu ;
-	
-	double pi2 = M_PI * M_PI ;
-	
-	return (
-    DLm_g3_highscale(x,mQ,mMu,nf) 
-    - 1. / 3 / M_PI * Lmu * DLm_g2_highscale(x,mQ,mMu)
-    -( ( 16. / 9 * CA - 15. / 2 * CF ) + ( 10. / 3 * CA + 2 * CF ) * Lmu - 4. / 9 * L2mu ) / 16. / pi2 * DLm_g1_highscale(x,mQ)
-  );
+
+    double Lmu = log(mMu) ;
+    double L2mu = Lmu * Lmu ;
+
+    double pi2 = M_PI * M_PI ;
+
+    return (
+        DLm_g3_highscale(x,mQ,mMu,nf) 
+        - 1. / 3 / M_PI * Lmu * DLm_g2_highscale(x,mQ,mMu)
+        -( ( 16. / 9 * CA - 15. / 2 * CF ) + ( 10. / 3 * CA + 2 * CF ) * Lmu - 4. / 9 * L2mu ) / 16. / pi2 * DLm_g1_highscale(x,mQ)
+    );
 
 }
 
 //________________________________________________________________
 
 double DLm_ps3_highscale(double x, double mQ, double mMu, int nf) {
-	
-	double z = x ;
-	double z2 = z*z ;
-	double z3 = z2*z;
-	double z4 = z3*z ;
-	
-	double zeta2 = zeta(2) ;
-	double zeta3 = zeta(3) ;
-	
-	double L_M = log(mMu) ;
-	double L_M2 = L_M * L_M ;
-	double L_Q = log(1./mQ) + L_M ;
-	//double L_Q2 = L_Q * L_Q ;
-  double L_Q2 = log(1./mQ) * log(1./mQ) + L_M2 + 2 * L_M * log(1./mQ) ;
-	
-	double pi3 = M_PI * M_PI * M_PI ;
-	
-	// Allocate pointers for the harmonic polylogs
-  double wx = x;
-  int    nw = 4;
-  int    n1 =-1;
-  int    n2 = 1;
-  int    sz = n2 - n1 + 1;
-  double *Hr1 = new double[sz];
-  double *Hr2 = new double[sz*sz];
-  double *Hr3 = new double[sz*sz*sz];
-  double *Hr4 = new double[sz*sz*sz*sz];
-  double *Hr5 = new double[sz*sz*sz*sz*sz];
 
-  // Call polylogs
-  apf_hplog_(&wx, &nw, Hr1, Hr2, Hr3, Hr4, Hr5, &n1, &n2);
-	
-	//weight 1
-  const double Hm1 = Hr1[0];
-  const double H0  = Hr1[1];
-  const double H1  = Hr1[2];
-	
-	//weight 2
-	const double H0m1 = Hr2[1];
-  const double H01  = Hr2[7];
-	
-	//weight 3	
-	const double H00m1  = Hr3[4];
-  const double H001   = Hr3[22];
-  const double H011   = Hr3[25];
-  
-  //weight 4
-  const double H0001   = Hr4[67];	
-  
-  delete[] Hr1;
-	delete[] Hr2;
-	delete[] Hr3;
-	delete[] Hr4;
-	delete[] Hr5;
-	
-	return 
-	 (CF * CF * TR * ( -8./3 * (5 * z + 2) * H0 * H0 * H0 - 8.
-		/3 * (8 * z2 + 3) * H0 * H0 + 16./9 * (160 * z2 + 93 * 
-		z - 39) * H0 + (16 * z * H0 * H0 - 16 * (z + 2) * H0 - 
-		(16 * (z - 1) * (4 * z2 - 11 * z - 2))/(3 * z)) * L_M2 
-		-(32 * (z - 1) * (440 * z2 - 91 * z - 28))/(27 * z) + (
-		(z - 1) * (4 * z2 - 11 * z - 2) * (32./3 * H0 * H1 - 32.
-		/3 * H01))/z + ( -32./3 * z * H0 * H0 * H0 + 16 * (5 * 
-		z + 2) * H0 * H0 + 32./3 * (8 * z2 + 18 * z + 3) * H0 -
-		(32 * (z - 1) * (80 * z2 + 17 * z - 10))/(9 * z)) * L_M
-    + L_Q2 * ( -64./3 * (2 * z2 - 3) * H0 + (32 * (z - 1) * 
-    (2 * z2 - 9 * z - 1))/(3 * z) - (64 * (z - 1) * (2 * z2
-    + 2 * z - 1) * H1)/(3 * z) + z * (64 * H01 - 64 * zeta2))
-    + (z + 2) * (32 * H0 * H01 - 64 * H001 + 64 * zeta3) + 
-    z * (4./3 * H0 * H0 * H0 * H0 - 64 * H001 * H0 - 128 * 
-    zeta3 * H0 - (384 * zeta2 * zeta2)/5 + 192 * H0001) + L_Q
-    * ( -(32 * (z - 1) * (86 * z2 - 33 * z + 6))/(45 * z) -
-    (32 * (56 * z3 - 813 * z2 + 142 * z + 16) * H0)/(45 * z)
-    +(64 * (z - 1) * (4 * z2 + 55 * z - 5) * H1)/(9 * z) + 
-    ((z - 1) * (2 * z2 + 2 * z - 1) * (64./3 * H1 * H1 + 128.
-    /3 * H0 * H1))/z + ((z + 1) * (6 * z4 - 6 * z3 + 11 * z2
-    + 4 * z - 4) * (128./45 * H0m1 - 128./45 * Hm1 * H0))/z2
-    + (128 * (4 * z3 - 6 * z2 - 3 * z - 1) * H01)/(3 * z) +
-    (6 * z3 + 90 * z2 - 85 * z - 90) * (64./45 * H0 * H0 -(
-    128 * zeta2)/45) + z * ( -64./9 * H0 * H0 * H0 + ( 128.
-    /3 * H0m1 - 128 * H01) * H0 + 896./3 * zeta2 * H0 - 256.
-    /3 * H00m1 - 128 * H011 + 192 * zeta3)))
-    
-    + CF * TR * TR * nf * (( ( 128 * (z - 1) * (2 * z2 + 2 
-    * z - 1))/(9 * z) - 128./3 * z * H0) * L_Q2 + ( 256./3 * 
-    z * H0 * H0 - 256./9 * (4 * z2 - 8 * z - 3) * H0 - (256 
-    * (z - 1) * (3 * z2 + 6 * z - 2))/(9 * z)) * L_Q) 
-    
-    + CF * TR * TR * (((128 * (z - 1) * (2 * z2 + 2 * z - 1
-    ))/(9 * z) - 128./3 * z * H0) * L_Q2 + ( 256./3 * z * H0
-    * H0 - 256./9 * (4 * z2 - 8 * z - 3) * H0 - (256 * (z - 
-    1) * (3 * z2 + 6 * z - 2))/(9 * z)) * L_Q + (64 * (z - 
-    1) * (2 * z2 + 2 * z - 1) * H1 * H1)/(9 * z) + ((128 * 
-    (z - 1) * (2 * z2 + 2 * z - 1))/(9 * z) - 128./3 * z * 
-    H0) * L_M2 + (256 * (z - 1) * (55 * z2 + 43 * z - 14))/
-    (81 * z) - 128./27 * z * (19 * z + 67) * H0 -( 128 * (z
-    - 1) * (19 * z2 + 16 * z - 5) * H1)/(27 * z) + L_M * ((
-    256 * (z - 1) * (19 * z2 + 16 * z - 5))/(27 * z) - 256.
-    /9 * z * (2 * z + 11) * H0 - (256 * (z - 1) * (2 * z2 +
-    2 * z - 1) * H1)/(9 * z) + z * ( 256./3 * H01 - (256 * 
-    zeta2)/3)) + z * (2 * z + 11) * ( 128./9 * H01 -(128 * 
-    zeta2)/9) + z * ((128 * zeta3)/3 - 128./3 * H011)) 
-    
-    + CF * CA * TR * (( -(16 * (z - 1) * (46 * z2 - z - 21))
-    /(3 * z) + (64 * (7 * z2 - 3 * z - 1) * H0)/(3 * z) -(64
-    * (z - 1) * (2 * z2 + 2 * z - 1) * H1)/(3 * z) + z * (64
-    * H0 * H0 + 64 * H01 - 64 * zeta2)) * L_Q2 + ( - 32./3 
-    * (19 * z - 12) * H0 * H0 + (32 * (422 * z3 - 137 * z2 
-    - 114 * z + 4) * H0)/(9 * z) - (32 * (z - 1) * (670 * z2
-    - 245 * z + 46))/(27 * z) + (32 * (z - 1) * (106 * z2 - 
-    23 * z - 65) * H1)/(9 * z) + ((z - 1) * (2 * z2 + 2 * z 
-    - 1) * (128./3 * H1 * H1 + 256./3 * H0 * H1))/z + ((z + 
-    1) * (2 * z2 - 2 * z - 1) * (256./3 * H0m1 - 256./3 * Hm1
-    * H0))/z - 64 * (z - 4) * H01 - 64./3 * z * (8 * z - 3)
-    * zeta2 + z * (-256./3 * H0 * H0 * H0 + ( -256 * H0m1 - 
-    256 * H01) * H0 + 256 * zeta2 * H0 + 512 * H00m1 - 256 
-    * H011 - 128 * zeta3)) * L_Q))/(64*pi3)
-     
-    + CL_ps3(z,nf+1)/(nf+1) ;
+    double z = x ;
+    double z2 = z*z ;
+    double z3 = z2*z;
+    double z4 = z3*z ;
+
+    double zeta2 = zeta(2) ;
+    double zeta3 = zeta(3) ;
+
+    double L_M = log(mMu) ;
+    double L_M2 = L_M * L_M ;
+    double L_Q = log(1./mQ) + L_M ;
+    //double L_Q2 = L_Q * L_Q ;
+    double L_Q2 = log(1./mQ) * log(1./mQ) + L_M2 + 2 * L_M * log(1./mQ) ;
+
+    double pi3 = M_PI * M_PI * M_PI ;
+
+    // Allocate pointers for the harmonic polylogs
+    double wx = x;
+    int    nw = 4;
+    int    n1 =-1;
+    int    n2 = 1;
+    int    sz = n2 - n1 + 1;
+    double *Hr1 = new double[sz];
+    double *Hr2 = new double[sz*sz];
+    double *Hr3 = new double[sz*sz*sz];
+    double *Hr4 = new double[sz*sz*sz*sz];
+    double *Hr5 = new double[sz*sz*sz*sz*sz];
+
+    // Call polylogs
+    apf_hplog_(&wx, &nw, Hr1, Hr2, Hr3, Hr4, Hr5, &n1, &n2);
+
+    //weight 1
+    const double Hm1 = Hr1[0];
+    const double H0  = Hr1[1];
+    const double H1  = Hr1[2];
+
+    //weight 2
+    const double H0m1 = Hr2[1];
+    const double H01  = Hr2[7];
+
+    //weight 3	
+    const double H00m1  = Hr3[4];
+    const double H001   = Hr3[22];
+    const double H011   = Hr3[25];
+
+    //weight 4
+    const double H0001   = Hr4[67];	
+
+    delete[] Hr1;
+    delete[] Hr2;
+    delete[] Hr3;
+    delete[] Hr4;
+    delete[] Hr5;
+
+    return (
+        CF * CF * TR * ( -8./3 * (5 * z + 2) * H0 * H0 * H0 - 8.
+        /3 * (8 * z2 + 3) * H0 * H0 + 16./9 * (160 * z2 + 93 * 
+        z - 39) * H0 + (16 * z * H0 * H0 - 16 * (z + 2) * H0 - 
+        (16 * (z - 1) * (4 * z2 - 11 * z - 2))/(3 * z)) * L_M2 
+        -(32 * (z - 1) * (440 * z2 - 91 * z - 28))/(27 * z) + (
+        (z - 1) * (4 * z2 - 11 * z - 2) * (32./3 * H0 * H1 - 32.
+        /3 * H01))/z + ( -32./3 * z * H0 * H0 * H0 + 16 * (5 * 
+        z + 2) * H0 * H0 + 32./3 * (8 * z2 + 18 * z + 3) * H0 -
+        (32 * (z - 1) * (80 * z2 + 17 * z - 10))/(9 * z)) * L_M
+        + L_Q2 * ( -64./3 * (2 * z2 - 3) * H0 + (32 * (z - 1) *
+        (2 * z2 - 9 * z - 1))/(3 * z) - (64 * (z - 1) * (2 * z2
+        + 2 * z - 1) * H1)/(3 * z) + z * (64 * H01 - 64 * zeta2))
+        + (z + 2) * (32 * H0 * H01 - 64 * H001 + 64 * zeta3) + 
+        z * (4./3 * H0 * H0 * H0 * H0 - 64 * H001 * H0 - 128 * 
+        zeta3 * H0 - (384 * zeta2 * zeta2)/5 + 192 * H0001) + L_Q
+        * ( -(32 * (z - 1) * (86 * z2 - 33 * z + 6))/(45 * z) -
+        (32 * (56 * z3 - 813 * z2 + 142 * z + 16) * H0)/(45 * z)
+        +(64 * (z - 1) * (4 * z2 + 55 * z - 5) * H1)/(9 * z) + 
+        ((z - 1) * (2 * z2 + 2 * z - 1) * (64./3 * H1 * H1 + 128.
+        /3 * H0 * H1))/z + ((z + 1) * (6 * z4 - 6 * z3 + 11 * z2
+        + 4 * z - 4) * (128./45 * H0m1 - 128./45 * Hm1 * H0))/z2
+        + (128 * (4 * z3 - 6 * z2 - 3 * z - 1) * H01)/(3 * z) +
+        (6 * z3 + 90 * z2 - 85 * z - 90) * (64./45 * H0 * H0 -(
+        128 * zeta2)/45) + z * ( -64./9 * H0 * H0 * H0 + ( 128.
+        /3 * H0m1 - 128 * H01) * H0 + 896./3 * zeta2 * H0 - 256.
+        /3 * H00m1 - 128 * H011 + 192 * zeta3)))
+        
+        + CF * TR * TR * nf * (( ( 128 * (z - 1) * (2 * z2 + 2 
+        * z - 1))/(9 * z) - 128./3 * z * H0) * L_Q2 + ( 256./3 * 
+        z * H0 * H0 - 256./9 * (4 * z2 - 8 * z - 3) * H0 - (256 
+        * (z - 1) * (3 * z2 + 6 * z - 2))/(9 * z)) * L_Q) 
+        
+        + CF * TR * TR * (((128 * (z - 1) * (2 * z2 + 2 * z - 1
+        ))/(9 * z) - 128./3 * z * H0) * L_Q2 + ( 256./3 * z * H0
+        * H0 - 256./9 * (4 * z2 - 8 * z - 3) * H0 - (256 * (z - 
+        1) * (3 * z2 + 6 * z - 2))/(9 * z)) * L_Q + (64 * (z - 
+        1) * (2 * z2 + 2 * z - 1) * H1 * H1)/(9 * z) + ((128 * 
+        (z - 1) * (2 * z2 + 2 * z - 1))/(9 * z) - 128./3 * z * 
+        H0) * L_M2 + (256 * (z - 1) * (55 * z2 + 43 * z - 14))/
+        (81 * z) - 128./27 * z * (19 * z + 67) * H0 -( 128 * (z
+        - 1) * (19 * z2 + 16 * z - 5) * H1)/(27 * z) + L_M * ((
+        256 * (z - 1) * (19 * z2 + 16 * z - 5))/(27 * z) - 256.
+        /9 * z * (2 * z + 11) * H0 - (256 * (z - 1) * (2 * z2 +
+        2 * z - 1) * H1)/(9 * z) + z * ( 256./3 * H01 - (256 * 
+        zeta2)/3)) + z * (2 * z + 11) * ( 128./9 * H01 -(128 * 
+        zeta2)/9) + z * ((128 * zeta3)/3 - 128./3 * H011)) 
+        
+        + CF * CA * TR * (( -(16 * (z - 1) * (46 * z2 - z - 21))
+        /(3 * z) + (64 * (7 * z2 - 3 * z - 1) * H0)/(3 * z) -(64
+        * (z - 1) * (2 * z2 + 2 * z - 1) * H1)/(3 * z) + z * (64
+        * H0 * H0 + 64 * H01 - 64 * zeta2)) * L_Q2 + ( - 32./3 
+        * (19 * z - 12) * H0 * H0 + (32 * (422 * z3 - 137 * z2 
+        - 114 * z + 4) * H0)/(9 * z) - (32 * (z - 1) * (670 * z2
+        - 245 * z + 46))/(27 * z) + (32 * (z - 1) * (106 * z2 - 
+        23 * z - 65) * H1)/(9 * z) + ((z - 1) * (2 * z2 + 2 * z 
+        - 1) * (128./3 * H1 * H1 + 256./3 * H0 * H1))/z + ((z + 
+        1) * (2 * z2 - 2 * z - 1) * (256./3 * H0m1 - 256./3 * Hm1
+        * H0))/z - 64 * (z - 4) * H01 - 64./3 * z * (8 * z - 3)
+        * zeta2 + z * (-256./3 * H0 * H0 * H0 + ( -256 * H0m1 - 
+        256 * H01) * H0 + 256 * zeta2 * H0 + 512 * H00m1 - 256 
+        * H011 - 128 * zeta3)) * L_Q))/(64*pi3)
+        
+        + CL_ps3(z,nf+1)/(nf+1) ;
 	
 }
 
 //________________________________________________________________
 
 double CLm_ps3_highscale(double x, double mQ, double mMu, int nf) {
-	
-	double Lmu=log(mMu);
-	
-	return DLm_ps3_highscale(x,mQ,mMu,nf) - 1. / 3 / M_PI * Lmu * DLm_ps2_highscale(x,mQ,mMu) ;
 
+    double Lmu=log(mMu);
+
+    return DLm_ps3_highscale(x,mQ,mMu,nf) - 1. / 3 / M_PI * Lmu * DLm_ps2_highscale(x,mQ,mMu) ;
+    
 }
 
 //________________________________________________________
