@@ -230,73 +230,73 @@ double C2m_ps3_highscale(double x, double mQ, double mMu, int nf) {
 //________________________________________________________________
 
 double DLm_g3_highscale(double x, double mQ, double mMu, int nf) {
-	
-	double z = x ;
-	double z2 = z*z ;
-	double z3 = z2*z;
-	double z4 = z3*z ;
-	double z5 = z4*z;
-	
-	double zeta2 = zeta(2) ;
-	double zeta3 = zeta(3) ;
-	
-	double L_M = log(mMu) ;
-	double L_M2 = L_M * L_M ;
-	double L_Q = log(1./mQ) + L_M ;
-	//double L_Q2 = L_Q * L_Q ;
-	double L_Q2 = log(1./mQ) * log(1./mQ) + L_M2 + 2 * L_M * log(1./mQ) ;
 
-	double pi3 = M_PI * M_PI * M_PI ;
-	
-	// Allocate pointers for the harmonic polylogs
-  double wx = x;
-  int    nw = 4;
-  int    n1 =-1;
-  int    n2 = 1;
-  int    sz = n2 - n1 + 1;
-  double *Hr1 = new double[sz];
-  double *Hr2 = new double[sz*sz];
-  double *Hr3 = new double[sz*sz*sz];
-  double *Hr4 = new double[sz*sz*sz*sz];
-  double *Hr5 = new double[sz*sz*sz*sz*sz];
+    double z = x ;
+    double z2 = z*z ;
+    double z3 = z2*z;
+    double z4 = z3*z ;
+    double z5 = z4*z;
 
-  // Call polylogs
-  apf_hplog_(&wx, &nw, Hr1, Hr2, Hr3, Hr4, Hr5, &n1, &n2);
-	
-	//weight 1
-  const double Hm1 = Hr1[0];
-  const double H0  = Hr1[1];
-  const double H1  = Hr1[2];
-	
-	//weight 2
-	const double H0m1 = Hr2[1];
-  const double H01  = Hr2[7];
-	
-	//weight 3	
-	const double H0m1m1 = Hr3[1];
-	const double H00m1  = Hr3[4];
-	const double H01m1 = Hr3[7];
-	const double H0m11  = Hr3[19];
-  const double H001   = Hr3[22];
-  const double H011   = Hr3[25];
-  
-  //weight 4
-  const double H000m1   = Hr4[13];
-  const double H0001   = Hr4[67];
-  const double H0011   = Hr4[76];
-  const double H0111   = Hr4[79];
-  
-  delete[] Hr1;
-	delete[] Hr2;
-	delete[] Hr3;
-	delete[] Hr4;
-	delete[] Hr5;
-	
-	return
-	  ( -TR * TR * TR * 256./9 * (z - 1) * z * L_M2 
-  
-	  + CA * TR * TR * (( (64 * (z - 1) * (17 * z2 + 2 * z - 1
-		))/(9 * z) - 256./3 * z * H0 + 128./3 * (z - 1) * z * H1
+    double zeta2 = zeta(2) ;
+    double zeta3 = zeta(3) ;
+
+    double L_M = log(mMu) ;
+    double L_M2 = L_M * L_M ;
+    double L_Q = log(1./mQ) + L_M ;
+    //double L_Q2 = L_Q * L_Q ;
+    double L_Q2 = log(1./mQ) * log(1./mQ) + L_M2 + 2 * L_M * log(1./mQ) ;
+
+    double pi3 = M_PI * M_PI * M_PI ;
+
+    // Allocate pointers for the harmonic polylogs
+    double wx = x;
+    int    nw = 4;
+    int    n1 =-1;
+    int    n2 = 1;
+    int    sz = n2 - n1 + 1;
+    double *Hr1 = new double[sz];
+    double *Hr2 = new double[sz*sz];
+    double *Hr3 = new double[sz*sz*sz];
+    double *Hr4 = new double[sz*sz*sz*sz];
+    double *Hr5 = new double[sz*sz*sz*sz*sz];
+
+    // Call polylogs
+    apf_hplog_(&wx, &nw, Hr1, Hr2, Hr3, Hr4, Hr5, &n1, &n2);
+
+    //weight 1
+    const double Hm1 = Hr1[0];
+    const double H0  = Hr1[1];
+    const double H1  = Hr1[2];
+
+    //weight 2
+    const double H0m1 = Hr2[1];
+    const double H01  = Hr2[7];
+
+    //weight 3	
+    const double H0m1m1 = Hr3[1];
+    const double H00m1  = Hr3[4];
+    const double H01m1 = Hr3[7];
+    const double H0m11  = Hr3[19];
+    const double H001   = Hr3[22];
+    const double H011   = Hr3[25];
+
+    //weight 4
+    const double H000m1   = Hr4[13];
+    const double H0001   = Hr4[67];
+    const double H0011   = Hr4[76];
+    const double H0111   = Hr4[79];
+
+    delete[] Hr1;
+    delete[] Hr2;
+    delete[] Hr3;
+    delete[] Hr4;
+    delete[] Hr5;
+
+    return (
+        -TR * TR * TR * 256./9 * (z - 1) * z * L_M2 
+
+        + CA * TR * TR * (( (64 * (z - 1) * (17 * z2 + 2 * z - 1
+        ))/(9 * z) - 256./3 * z * H0 + 128./3 * (z - 1) * z * H1
 		) * L_Q2 + ( - (64 * (z - 1) * (461 * z2 + 11 * z - 25)
 		)/(27 * z) - 128./9 * z * (26 * z - 59) * H0 - (128 * (z 
 		- 1) * (39 * z2 + 2 * z - 1) * H1)/(9 * z) + (z - 1) * 
