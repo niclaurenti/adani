@@ -2120,232 +2120,233 @@ double D2m_g3_highscale(double x, double mQ, double mMu, int nf, int v) {
 //_______________________________________________________________
 
 double D2m_ps3_highscale(double x, double mQ, double mMu, int nf) {
-	
-	if(x<0 || x>1) return 0;
-	
-	double x2=x*x;
-	double x3=x2*x;
-	double x4=x3*x;
-	double x5=x4*x;
-	double x6=x5*x;
-	
-	double z2=zeta(2);
-	double z3=zeta(3);
-	double z4=zeta(4);
-	double z5=zeta(5);
-	
-	double LQm=log(1./mQ);
-	double LQm2=LQm*LQm;
-	double LQm3=LQm2*LQm;
-	
-	double Lmmu=log(mMu);
-	double Lmmu2=Lmmu*Lmmu;
-	//double Lmmu3=Lmmu2*Lmmu;
-	
-	double ln2=log(2);
 
-	double pi3=M_PI*M_PI*M_PI;
-	
-	
-  // Allocate pointers for the harmonic polylogs
-  double wx = x;
-  int    nw = 5;
-  int    n1 =-1;
-  int    n2 = 1;
-  int    sz = n2 - n1 + 1;
-  double *Hr1 = new double[sz];
-  double *Hr2 = new double[sz*sz];
-  double *Hr3 = new double[sz*sz*sz];
-  double *Hr4 = new double[sz*sz*sz*sz];
-  double *Hr5 = new double[sz*sz*sz*sz*sz];
+    if(x<0 || x>1) return 0;
 
-  // Call polylogs
-  apf_hplog_(&wx, &nw, Hr1, Hr2, Hr3, Hr4, Hr5, &n1, &n2);
-	
-	//weight 1
-  const double Hm1 = Hr1[0];
-  const double H0  = Hr1[1];
-  const double H1  = Hr1[2];
-	
-	//weight 2
-	const double Hm1m1= Hr2[0];
-	const double H0m1 = Hr2[1];
-  const double Hm10 = Hr2[3];
-  const double H00  = Hr2[4];
-  const double H10  = Hr2[5];
-  const double H01  = Hr2[7];
-  const double H11  = Hr2[8];
-	
-	//weight 3	
-	const double H0m1m1 = Hr3[1];
-	const double H00m1  = Hr3[4];
-	const double H01m1 = Hr3[7];
-  const double Hm1m10 = Hr3[9];
-  const double H0m10  = Hr3[10];
-  const double Hm100  = Hr3[12];
-  const double H000   = Hr3[13];
-  const double H100   = Hr3[14];
-  const double H010   = Hr3[16];
-  const double H110   = Hr3[17];
-  const double H0m11  = Hr3[19];
-  const double Hm101  = Hr3[21];
-  const double H001   = Hr3[22];
-  const double H101   = Hr3[23];
-  const double H011   = Hr3[25];
-  const double H111   = Hr3[26];
-  
-  //weight 4
-  const double H0m1m1m1 = Hr4[1];
-  const double H00m1m1 = Hr4[4];
-  const double H01m1m1 = Hr4[7];
-  const double H000m1   = Hr4[13];
-  const double H0m11m1  = Hr4[19];
-  const double H001m1   = Hr4[22];
-  const double H011m1   = Hr4[25];
-  const double Hm1m1m10= Hr4[27];
-	const double H0m1m10 = Hr4[28];
-	const double H00m10 = Hr4[31];
-  const double Hm1m100 = Hr4[36];
-  const double H0m100  = Hr4[37];
-  const double Hm1000  = Hr4[39];
-  const double H0000   = Hr4[40];
-  const double H1000   = Hr4[41];
-  const double H0100   = Hr4[43];
-  const double H1100   = Hr4[44];
-  const double Hm1010  = Hr4[48];
-  const double H0010   = Hr4[49];
-  const double H1010   = Hr4[50];
-  const double H0110   = Hr4[52];
-  const double H1110   = Hr4[53];
-  const double H0m1m11 = Hr4[55];
-  const double H00m11 = Hr4[58];
-  const double H01m11 = Hr4[61];
-  const double H0m101  = Hr4[64];
-  const double H0001   = Hr4[67];
-  const double H1001   = Hr4[68];
-  const double H0101   = Hr4[70];
-  const double H1101   = Hr4[71];
-  const double H0m111  = Hr4[73];
-  const double H0011   = Hr4[76];
-  const double H1011   = Hr4[77];
-  const double H0111   = Hr4[79];
-  const double H1111   = Hr4[80];
+    double x2=x*x;
+    double x3=x2*x;
+    double x4=x3*x;
+    double x5=x4*x;
+    double x6=x5*x;
 
-  //  weight 5
-  const double H00m1m1m1 = Hr5[4];
-  const double H0m10m1m1  = Hr5[10];
-  const double H000m1m1   = Hr5[13];
-  const double H00m10m1 = Hr5[31];
-  const double H0000m1   = Hr5[40];
-  const double H0010m1   = Hr5[49];
-  const double H0001m1   = Hr5[67];
-	const double H0m1m1m10= Hr5[82];
-	const double H0m1m100 = Hr5[109];
-	const double H0m1000  = Hr5[118];
-  const double H00000   = Hr5[121];
-  const double H01000   = Hr5[124];
-  const double H00100   = Hr5[130];
-  const double H01100   = Hr5[133];
-  const double H0m1010  = Hr5[145];
-  const double H00010   = Hr5[148];
-  const double H01010   = Hr5[151];
-  const double H00110   = Hr5[157];
-  const double H01110   = Hr5[160]; 
-  const double H000m11   = Hr5[175]; 
-	const double H0m1m101 = Hr5[190];
-	const double H00m101 = Hr5[193];
-  const double H00001   = Hr5[202];
-  const double H01001   = Hr5[205];
-  const double H00101   = Hr5[211];
-  const double H01101   = Hr5[214];
-  const double H00011   = Hr5[229];
-  const double H01011   = Hr5[232];
-  const double H00111   = Hr5[238];
-  const double H01111   = Hr5[241];
-  
-  wx = 1 - 2 * x ;
-  apf_hplog_(&wx, &nw, Hr1, Hr2, Hr3, Hr4, Hr5, &n1, &n2);  
-  
-  const double tildeH0m1 = Hr2[1];
-  const double tildeH01  = Hr2[7];
-  
-  const double tildeH0m1m1 = Hr3[1];
-  const double tildeH01m1 = Hr3[7];
-  const double tildeH0m11  = Hr3[19];
-  const double tildeH011  = Hr3[25];
-  
-  const double tildeH0m1m1m1 = Hr4[1];
-  const double tildeH01m1m1 = Hr4[7];
-  const double tildeH0m11m1  = Hr4[19];
-  const double tildeH011m1   = Hr4[25];
-  const double tildeH0m1m11 = Hr4[55];
-  const double tildeH01m11 = Hr4[61];
-  const double tildeH0m111  = Hr4[73];
-  const double tildeH0111   = Hr4[79];
-  
-  const double tildeH0m11m1m1  = Hr5[19];
-  const double tildeH011m1m1   = Hr5[25];
-  const double tildeH0m1m11m1 = Hr5[55];
-  const double tildeH01m11m1 = Hr5[61];
-  const double tildeH0m111m1  = Hr5[73];
-  const double tildeH0111m1   = Hr5[79];
-  const double tildeH0m1m1m11 = Hr5[163];
-  const double tildeH01m1m11 = Hr5[169];
-  const double tildeH0m1m111 = Hr5[217];
-  const double tildeH01m111 = Hr5[223];
-  const double tildeH0m1111  = Hr5[235];
-  const double tildeH01111   = Hr5[241];  
-  
-  wx = 1./2;
-  apf_hplog_(&wx, &nw, Hr1, Hr2, Hr3, Hr4, Hr5, &n1, &n2);
-  
-  double Li_412 = Hr4[67]; //Li_4=H_{0,0,0,1}
-	double Li_512 = Hr5[202]; //Li_5=H_{0,0,0,0,1}
-  
-  delete[] Hr1;
-	delete[] Hr2;
-	delete[] Hr3;
-	delete[] Hr4;
-	delete[] Hr5;
+    double z2=zeta(2);
+    double z3=zeta(3);
+    double z4=zeta(4);
+    double z5=zeta(5);
 
+    double LQm=log(1./mQ);
+    double LQm2=LQm*LQm;
+    double LQm3=LQm2*LQm;
+
+    double Lmmu=log(mMu);
+    double Lmmu2=Lmmu*Lmmu;
+    //double Lmmu3=Lmmu2*Lmmu;
+
+    double ln2=log(2);
+
+    double pi3=M_PI*M_PI*M_PI;
 	
-	double B_4 = -4*z2*ln2*ln2 + 2./3*ln2*ln2*ln2*ln2 - 13./2 * z4 + 16 * Li_412 ;
-	
-	//double NF=0;
-	
-	double aQqPS30 = 
-	
-		/*CF*nf*TR*TR*(16./81 * (x-1)/x * (4 * x2 + 7 * x + 4) * 
-		H1*H1*H1 + 64./729 * (x-1)/x * (5165 * x2 - 2632 * x + 
-		1736) - 64./243 * (1350 * x2 - 569 * x - 218) * H0 + 
-		64./81 * (111 * x2 + 64 * x + 100) * H0*H0 - 128./81 * 
-		(6 * x2 + 4 * x - 5) * H0*H0*H0 + 64./27 * (x+1) * H0*
-		H0*H0*H0 + (64./9 * (x-1)/x * (4* x2+7* x+4)* H0*H0 - 
-		64./27* (x-1)/x* (74* x2-43* x+20)* H0 + 64./81 * (x-1)
-		/x* (150* x2 +103* x+60) ) * H1 + ( -32./9* (x-1)/x *(4 
-		* x2+7* x+4)* H0 + 16./81 * (x-1)/x * (74 * x2 - 43 * x
-		+ 20) ) * H1 * H1 + ( 128./9 * 1./x * (2 * x3 + x2 -2 * 
-		x + 4) * H0 + 64./81 * 1./x * (111 * x3 - 415 * x2 + 89 
-		* x - 60) - 128./3 * (x + 1) * H0 * H0 ) * H01 + ( -128.
-		/27 * ( 2 * x + 3)/x * (9 * x2 - 8 * x + 4) + 256./3 * 
-		(x + 1) * H0 ) * H001 + ( 64./27 * 1./x * (6 * x3 + 5 * 
-		x2 -4 * x - 12) + 128./3 * (x + 1)* H0 )* H011 - 256./9
-		* (x+1) * H0001 - 640./9 * ( x + 1) * H0011 - 64./9 * 
-		(x + 1) * H0111 +( 80./9 * (x - 1)/x * (4 * x2 + 7 * x 
-		+ 4) * H1 + 16./81 * 1./x * (666 * x3 - 95 * x2 + 589 * 
-		x - 60) - 224./27 * (6 * x2 + 4 * x - 5) * H0 + 224./9* 
-		(x + 1) * H0 * H0 - 160./3 * (x + 1) * H01) * z2 + ( 32.
-		/27 * 1./x * (104 * x3 + 67 * x2 - 89 * x + 28) - 320./
-		3 * (x + 1) * H0) * z3 + 560./3 * (x + 1) * z4) + */
-		
-		CF * TR * TR * ( - 32./81 * (x-1)/x * (4 * x2 + 7 * x + 
-		4) * H1 * H1 * H1 - 128./1215 * (18 * x4 - 171 * x3 + 
-		3006 * x2 + 3502 * x + 775) * H0 - 128./3645 * (x - 1)/
-		x * (108 * x4 - 918 * x3 - 13889 * x2 + 145 * x - 3035)
-    + 64./405 * (6 * x5 - 60 * x4 + 30 * x3 + 630 * x2 - 985 
-    * x + 320) * H0 * H0 - 128./81 * (6 * x2 + 4 * x - 5) * 
-    H0 * H0 * H0 + 64./27 * (x + 1)* H0 * H0 * H0 * H0 + ( 
-    64./405 * (x - 1)/x * (12 * x4 - 102 * x3 - 698 * x2 - 
+    // Allocate pointers for the harmonic polylogs
+    double wx = x;
+    int    nw = 5;
+    int    n1 =-1;
+    int    n2 = 1;
+    int    sz = n2 - n1 + 1;
+    double *Hr1 = new double[sz];
+    double *Hr2 = new double[sz*sz];
+    double *Hr3 = new double[sz*sz*sz];
+    double *Hr4 = new double[sz*sz*sz*sz];
+    double *Hr5 = new double[sz*sz*sz*sz*sz];
+
+    // Call polylogs
+    apf_hplog_(&wx, &nw, Hr1, Hr2, Hr3, Hr4, Hr5, &n1, &n2);
+
+    //weight 1
+    const double Hm1 = Hr1[0];
+    const double H0  = Hr1[1];
+    const double H1  = Hr1[2];
+
+    //weight 2
+    const double Hm1m1= Hr2[0];
+    const double H0m1 = Hr2[1];
+    const double Hm10 = Hr2[3];
+    const double H00  = Hr2[4];
+    const double H10  = Hr2[5];
+    const double H01  = Hr2[7];
+    const double H11  = Hr2[8];
+
+    //weight 3	
+    const double H0m1m1 = Hr3[1];
+    const double H00m1  = Hr3[4];
+    const double H01m1 = Hr3[7];
+    const double Hm1m10 = Hr3[9];
+    const double H0m10  = Hr3[10];
+    const double Hm100  = Hr3[12];
+    const double H000   = Hr3[13];
+    const double H100   = Hr3[14];
+    const double H010   = Hr3[16];
+    const double H110   = Hr3[17];
+    const double H0m11  = Hr3[19];
+    const double Hm101  = Hr3[21];
+    const double H001   = Hr3[22];
+    const double H101   = Hr3[23];
+    const double H011   = Hr3[25];
+    const double H111   = Hr3[26];
+
+    //weight 4
+    const double H0m1m1m1 = Hr4[1];
+    const double H00m1m1 = Hr4[4];
+    const double H01m1m1 = Hr4[7];
+    const double H000m1   = Hr4[13];
+    const double H0m11m1  = Hr4[19];
+    const double H001m1   = Hr4[22];
+    const double H011m1   = Hr4[25];
+    const double Hm1m1m10= Hr4[27];
+    const double H0m1m10 = Hr4[28];
+    const double H00m10 = Hr4[31];
+    const double Hm1m100 = Hr4[36];
+    const double H0m100  = Hr4[37];
+    const double Hm1000  = Hr4[39];
+    const double H0000   = Hr4[40];
+    const double H1000   = Hr4[41];
+    const double H0100   = Hr4[43];
+    const double H1100   = Hr4[44];
+    const double Hm1010  = Hr4[48];
+    const double H0010   = Hr4[49];
+    const double H1010   = Hr4[50];
+    const double H0110   = Hr4[52];
+    const double H1110   = Hr4[53];
+    const double H0m1m11 = Hr4[55];
+    const double H00m11 = Hr4[58];
+    const double H01m11 = Hr4[61];
+    const double H0m101  = Hr4[64];
+    const double H0001   = Hr4[67];
+    const double H1001   = Hr4[68];
+    const double H0101   = Hr4[70];
+    const double H1101   = Hr4[71];
+    const double H0m111  = Hr4[73];
+    const double H0011   = Hr4[76];
+    const double H1011   = Hr4[77];
+    const double H0111   = Hr4[79];
+    const double H1111   = Hr4[80];
+
+    //  weight 5
+    const double H00m1m1m1 = Hr5[4];
+    const double H0m10m1m1  = Hr5[10];
+    const double H000m1m1   = Hr5[13];
+    const double H00m10m1 = Hr5[31];
+    const double H0000m1   = Hr5[40];
+    const double H0010m1   = Hr5[49];
+    const double H0001m1   = Hr5[67];
+    const double H0m1m1m10= Hr5[82];
+    const double H0m1m100 = Hr5[109];
+    const double H0m1000  = Hr5[118];
+    const double H00000   = Hr5[121];
+    const double H01000   = Hr5[124];
+    const double H00100   = Hr5[130];
+    const double H01100   = Hr5[133];
+    const double H0m1010  = Hr5[145];
+    const double H00010   = Hr5[148];
+    const double H01010   = Hr5[151];
+    const double H00110   = Hr5[157];
+    const double H01110   = Hr5[160]; 
+    const double H000m11   = Hr5[175]; 
+    const double H0m1m101 = Hr5[190];
+    const double H00m101 = Hr5[193];
+    const double H00001   = Hr5[202];
+    const double H01001   = Hr5[205];
+    const double H00101   = Hr5[211];
+    const double H01101   = Hr5[214];
+    const double H00011   = Hr5[229];
+    const double H01011   = Hr5[232];
+    const double H00111   = Hr5[238];
+    const double H01111   = Hr5[241];
+    
+    wx = 1 - 2 * x ;
+    apf_hplog_(&wx, &nw, Hr1, Hr2, Hr3, Hr4, Hr5, &n1, &n2);  
+    
+    const double tildeH0m1 = Hr2[1];
+    const double tildeH01  = Hr2[7];
+    
+    const double tildeH0m1m1 = Hr3[1];
+    const double tildeH01m1 = Hr3[7];
+    const double tildeH0m11  = Hr3[19];
+    const double tildeH011  = Hr3[25];
+  
+    const double tildeH0m1m1m1 = Hr4[1];
+    const double tildeH01m1m1 = Hr4[7];
+    const double tildeH0m11m1  = Hr4[19];
+    const double tildeH011m1   = Hr4[25];
+    const double tildeH0m1m11 = Hr4[55];
+    const double tildeH01m11 = Hr4[61];
+    const double tildeH0m111  = Hr4[73];
+    const double tildeH0111   = Hr4[79];
+    
+    const double tildeH0m11m1m1  = Hr5[19];
+    const double tildeH011m1m1   = Hr5[25];
+    const double tildeH0m1m11m1 = Hr5[55];
+    const double tildeH01m11m1 = Hr5[61];
+    const double tildeH0m111m1  = Hr5[73];
+    const double tildeH0111m1   = Hr5[79];
+    const double tildeH0m1m1m11 = Hr5[163];
+    const double tildeH01m1m11 = Hr5[169];
+    const double tildeH0m1m111 = Hr5[217];
+    const double tildeH01m111 = Hr5[223];
+    const double tildeH0m1111  = Hr5[235];
+    const double tildeH01111   = Hr5[241];  
+  
+    /*
+    wx = 1./2;
+    apf_hplog_(&wx, &nw, Hr1, Hr2, Hr3, Hr4, Hr5, &n1, &n2);
+    
+    double Li_412 = Hr4[67]; //Li_4=H_{0,0,0,1}
+    double Li_512 = Hr5[202]; //Li_5=H_{0,0,0,0,1}
+    */   
+    double Li_412 = 0.517479; //Li_4=H_{0,0,0,1}
+    double Li_512 = 0.508401; //Li_5=H_{0,0,0,0,1}
+  
+    delete[] Hr1;
+    delete[] Hr2;
+    delete[] Hr3;
+    delete[] Hr4;
+    delete[] Hr5;
+
+    double B_4 = -4*z2*ln2*ln2 + 2./3*ln2*ln2*ln2*ln2 - 13./2 * z4 + 16 * Li_412 ;
+
+    //double NF=0;
+
+    double aQqPS30 =
+        /*CF*nf*TR*TR*(16./81 * (x-1)/x * (4 * x2 + 7 * x + 4) * 
+        H1*H1*H1 + 64./729 * (x-1)/x * (5165 * x2 - 2632 * x + 
+        1736) - 64./243 * (1350 * x2 - 569 * x - 218) * H0 + 
+        64./81 * (111 * x2 + 64 * x + 100) * H0*H0 - 128./81 * 
+        (6 * x2 + 4 * x - 5) * H0*H0*H0 + 64./27 * (x+1) * H0*
+        H0*H0*H0 + (64./9 * (x-1)/x * (4* x2+7* x+4)* H0*H0 - 
+        64./27* (x-1)/x* (74* x2-43* x+20)* H0 + 64./81 * (x-1)
+        /x* (150* x2 +103* x+60) ) * H1 + ( -32./9* (x-1)/x *(4 
+        * x2+7* x+4)* H0 + 16./81 * (x-1)/x * (74 * x2 - 43 * x
+        + 20) ) * H1 * H1 + ( 128./9 * 1./x * (2 * x3 + x2 -2 * 
+        x + 4) * H0 + 64./81 * 1./x * (111 * x3 - 415 * x2 + 89 
+        * x - 60) - 128./3 * (x + 1) * H0 * H0 ) * H01 + ( -128.
+        /27 * ( 2 * x + 3)/x * (9 * x2 - 8 * x + 4) + 256./3 * 
+        (x + 1) * H0 ) * H001 + ( 64./27 * 1./x * (6 * x3 + 5 * 
+        x2 -4 * x - 12) + 128./3 * (x + 1)* H0 )* H011 - 256./9
+        * (x+1) * H0001 - 640./9 * ( x + 1) * H0011 - 64./9 * 
+        (x + 1) * H0111 +( 80./9 * (x - 1)/x * (4 * x2 + 7 * x 
+        + 4) * H1 + 16./81 * 1./x * (666 * x3 - 95 * x2 + 589 * 
+        x - 60) - 224./27 * (6 * x2 + 4 * x - 5) * H0 + 224./9* 
+        (x + 1) * H0 * H0 - 160./3 * (x + 1) * H01) * z2 + ( 32.
+        /27 * 1./x * (104 * x3 + 67 * x2 - 89 * x + 28) - 320./
+        3 * (x + 1) * H0) * z3 + 560./3 * (x + 1) * z4) + */
+
+        CF * TR * TR * ( - 32./81 * (x-1)/x * (4 * x2 + 7 * x + 
+        4) * H1 * H1 * H1 - 128./1215 * (18 * x4 - 171 * x3 + 
+        3006 * x2 + 3502 * x + 775) * H0 - 128./3645 * (x - 1)/
+        x * (108 * x4 - 918 * x3 - 13889 * x2 + 145 * x - 3035)
+        + 64./405 * (6 * x5 - 60 * x4 + 30 * x3 + 630 * x2 - 985 
+        * x + 320) * H0 * H0 - 128./81 * (6 * x2 + 4 * x - 5) * 
+        H0 * H0 * H0 + 64./27 * (x + 1)* H0 * H0 * H0 * H0 + ( 
+        64./405 * (x - 1)/x * (12 * x4 - 102 * x3 - 698 * x2 - 
     255 * x - 290) + 64./135 * (x-1)/x * (4 * x5 - 36 * x4 
     - 16 * x3 - 156 * x2 - 431 * x - 100) * H0 )* H1 + ( - 
     32./9 * (x-1)/x * (4 * x2 + 7 * x + 4) * H0 - 32./405 *
