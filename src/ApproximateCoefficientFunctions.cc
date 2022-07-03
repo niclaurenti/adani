@@ -1095,7 +1095,6 @@ double C2m_ps3_approximationB_vogt_paper(double x, double mQ, double mMu, int nf
 
     return C30 + C2m_ps31(x, mQ, nf) * Lmu + C2m_ps32(x, mQ, nf) * Lmu2 ;
 
-
 }
 
 //_________________________________________________________________
