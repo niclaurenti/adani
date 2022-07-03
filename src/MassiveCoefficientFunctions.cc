@@ -36,7 +36,7 @@ double C2m_g1(double x, double mQ) { //mQ=m^2/Q^2
 //______________________________________________________
 
 double CLm_g1(double x, double mQ) {
-	
+
     double x_max=1. / ( 1. + 4 * mQ ) ;
     
     if (x>x_max || x<0) return 0;
@@ -135,13 +135,13 @@ double C2m_ps2(double x, double mQ, double mMu) {
         cm.Regular( x * ( 1 + 4 * mQ ) ) 
         + cm_log.Regular( x * ( 1 + 4 * mQ ) ) * log(1. / mMu)
     ) / 16. / pi2 ;
-	
+           
 }
 
 //______________________________________________________
 
 double CLm_g2(double x, double mQ, double mMu) {
-	
+
     double xi = 1. / mQ ;
     double eta = 0.25 * xi * (1 - x) / x - 1 ;
 
@@ -167,7 +167,7 @@ double CLm_g2(double x, double mQ, double mMu) {
 //________________________________________________________
 
 double CLm_ps2(double x, double mQ, double mMu) {
-	
+
     double xi = 1. / mQ ;
     double eta = 0.25 * xi * ( 1 - x ) / x - 1 ;
 
@@ -243,7 +243,7 @@ double C2m_ps21(double x, double mQ) {
 
     double x_max = 1. / ( 1. + 4. * mQ ) ;
 
-    if (x>x_max || x<0) return 0; 	
+    if (x>x_max || x<0) return 0;
 
     return - C2m_g1_x_Pgq0(x, mQ);
     //The minus sign comes from the fact that in arXiv:1205.5727
@@ -258,7 +258,7 @@ double CLm_ps21(double x, double mQ) {
 
     double x_max = 1. / ( 1. + 4. * mQ ) ;
 
-    if (x>x_max || x<0) return 0; 	
+    if (x>x_max || x<0) return 0;
 
     return - CLm_g1_x_Pgq0(x, mQ);
 
@@ -273,7 +273,7 @@ double C2m_g21(double x, double mQ) {
     if (x>x_max || x<0) return 0; 
 
     int nf = 1 ;
-    //Put nf to 1 since the nf contribution cancels for any value of nf	
+    //Put nf to 1 since the nf contribution cancels for any value of nf
 
     return - ( C2m_g1_x_Pgg0(x, mQ, nf) - C2m_g1(x, mQ) * beta(0,nf) );
 
@@ -288,7 +288,7 @@ double CLm_g21(double x, double mQ) {
     if (x>x_max || x<0) return 0; 
 
     int nf = 1 ;
-    //Put nf to 1 since the nf contribution cancels for any value of nf	
+    //Put nf to 1 since the nf contribution cancels for any value of nf
 
     return - ( CLm_g1_x_Pgg0(x, mQ, nf) - CLm_g1(x, mQ) * beta(0,nf) );
 
@@ -300,7 +300,7 @@ double C2m_ps31(double x, double mQ, int nf) {
 
     double x_max = 1. / ( 1. + 4. * mQ ) ;
     
-    if (x>x_max || x<0) return 0; 	
+    if (x>x_max || x<0) return 0;
     
     return - (
         C2m_g1_x_Pgq1(x, mQ, nf)
@@ -314,10 +314,10 @@ double C2m_ps31(double x, double mQ, int nf) {
 //__________________________________________________________
 
 double CLm_ps31(double x, double mQ, int nf) {
-	
+
     double x_max = 1. / ( 1. + 4. * mQ ) ;
 
-    if (x>x_max || x<0) return 0; 	
+    if (x>x_max || x<0) return 0;
     
     return - (
         CLm_g1_x_Pgq1(x, mQ, nf)
@@ -331,10 +331,10 @@ double CLm_ps31(double x, double mQ, int nf) {
 //__________________________________________________________
 
 double C2m_ps32(double x, double mQ, int nf) {
-	
+
     double x_max = 1. / ( 1. + 4. * mQ ) ;
     
-    if (x>x_max || x<0) return 0; 	
+    if (x>x_max || x<0) return 0;
     
     return (
         0.5 * (C2m_g1_x_Pgg0_x_Pgq0(x, mQ, nf) + C2m_g1_x_Pqq0_x_Pgq0(x, mQ, nf)) 
@@ -346,10 +346,10 @@ double C2m_ps32(double x, double mQ, int nf) {
 //__________________________________________________________
 
 double CLm_ps32(double x, double mQ, int nf) {
-	
+
     double x_max = 1. / ( 1. + 4. * mQ ) ;
 
-    if (x>x_max || x<0) return 0; 	
+    if (x>x_max || x<0) return 0;
     
     return (
         0.5 * (CLm_g1_x_Pgg0_x_Pgq0(x, mQ, nf) + CLm_g1_x_Pqq0_x_Pgq0(x, mQ, nf)) 
@@ -361,7 +361,7 @@ double CLm_ps32(double x, double mQ, int nf) {
 //__________________________________________________________
 
 double C2m_g31(double x, double mQ, int nf) {
-	
+
     double x_max = 1. / ( 1. + 4. * mQ ) ;
 
     if (x>x_max || x<0) return 0. ;
@@ -382,7 +382,7 @@ double CLm_g31(double x, double mQ, int nf) {
 
     double x_max = 1. / ( 1. + 4. * mQ ) ;
   
-    if (x>x_max || x<0) return 0. ; 	
+    if (x>x_max || x<0) return 0. ;
     
     return -(
         CLm_g1_x_Pgg1(x, mQ, nf)
@@ -397,7 +397,7 @@ double CLm_g31(double x, double mQ, int nf) {
 //__________________________________________________________
 
 double C2m_g32(double x, double mQ, int nf, int method_flag, int calls) {
-	
+
     double x_max = 1. / ( 1. + 4. * mQ ) ;
     
     if (x>x_max || x<0) return 0;
@@ -423,7 +423,7 @@ double C2m_g32(double x, double mQ, int nf, int method_flag, int calls) {
 //__________________________________________________________
 
 double CLm_g32(double x, double mQ, int nf, int method_flag, int calls) {
-	
+    
     double x_max = 1. / ( 1. + 4. * mQ ) ;
     
     if (x>x_max || x<0) return 0;

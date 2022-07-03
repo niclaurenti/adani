@@ -13,7 +13,7 @@ double C2_g1(double x, int nf) {
     return 4 * nf * TR * (
         -8 * x * x + 8 * x - 1.
         + log( ( 1. - x ) / x ) * ( 2 * x * x - 2 * x + 1. )
-    ) /	4. / M_PI ;
+    ) / 4. / M_PI ;
 
 }
 
@@ -87,7 +87,7 @@ double CL_g2(double x, int nf) {
     double L0 = log(x);
     double L02 = L0 * L0;
 
-    double x1= 1 - x ;	
+    double x1= 1 - x ;
     double L1 = log(x1) ;
     double L12 = L1 * L1 ;
 
@@ -112,7 +112,7 @@ double CL_ps2(double x, int nf) {
     double L0 = log(x);
     double L02 = L0 * L0;
 
-    double x1 = 1 - x;	
+    double x1 = 1 - x;
     double L1 = log(x1);
 
     double tmp =  nf * (
@@ -123,7 +123,7 @@ double CL_ps2(double x, int nf) {
 
     return tmp / 16. / pi2 ;
 
-}	
+}
 
 //____________________________________________________________
 //N3LO => O(\alpha_s^3)
@@ -140,9 +140,9 @@ double C2_g3(double x, int nf) {//remember that there is a delta(x1) that has be
     
     double tmp1=0, tmp2=0;
     
-    for(int i=0;i<nf;i++) {			
+    for(int i=0;i<nf;i++) {
         tmp1+=charges[i];
-        tmp2+=charges[i]*charges[i];		
+        tmp2+=charges[i]*charges[i];
     }
     
     double fl_g_11=tmp1*tmp1/tmp2/nf;
