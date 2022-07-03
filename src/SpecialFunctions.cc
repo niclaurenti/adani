@@ -52,8 +52,8 @@ double zeta(int i) {
     if(i==6) return pi6/945;
     
     else {
-        cout << "zeta(<<"<<i<<") is not implemented! \n Exiting..." 
-                 << endl;
+        cout    << "zeta(<<"<<i<<") is not implemented! \n Exiting..." 
+                << endl;
         exit(-1);
     }
 
