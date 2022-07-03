@@ -1538,8 +1538,8 @@ double C2m_g1_x_Pgg0_x_Pgg0_sing2_integrand(double z[], size_t dim, void * p) {
     double z1 = z[0], z2 = z[1] ;
 
     return  theta(z1 - x) * Pgg0sing(z1) * (
-       Pgg0sing(z2) / z1 * ( C2m_g1(x / (z1 * z2), mQ) / z2 - C2m_g1(x / z1, mQ)) * theta(z2 - x / z1)
-       - Pgg0sing(z2) * ( C2m_g1(x / z2, mQ) / z2 - C2m_g1(x, mQ)) * theta(z2 - x)
+        Pgg0sing(z2) / z1 * ( C2m_g1(x / (z1 * z2), mQ) / z2 - C2m_g1(x / z1, mQ)) * theta(z2 - x / z1)
+        - Pgg0sing(z2) * ( C2m_g1(x / z2, mQ) / z2 - C2m_g1(x, mQ)) * theta(z2 - x)
     ) ;
   
 }
