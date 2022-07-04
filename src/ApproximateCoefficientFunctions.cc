@@ -32,7 +32,7 @@ double C2m_g1_approximation(double x, double mQ, double k, double h) {
     double C_const = (
         C2m_g1_asymptotic(x,mQ) * damp_asy
         + C2m_g1_threshold(x,mQ) * damp_thr
-    ) ;    
+    ) ;
 
     
     return C_const ;
@@ -54,7 +54,7 @@ double C2m_g1_approximation(double x, double mQ) {
     if( x < xmax && x > 0 ) eta = 0.25 / mQ * ( 1. - x ) / x - 1. ;
     else eta = 0 ;
     
-    double k = 2.5 - 1.3 / ( 1. + exp( 2.5 * ( log(xi) - 5. ) ) ) ;    
+    double k = 2.5 - 1.3 / ( 1. + exp( 2.5 * ( log(xi) - 5. ) ) ) ;
     double h = 0.2 + 2.3 / ( 1. + exp( 2.5 * ( log(xi) - 5.) ) ) ;
     
     double damp_thr = 1. / ( 1 + pow( eta / h, k) ) ;
@@ -63,7 +63,7 @@ double C2m_g1_approximation(double x, double mQ) {
     double C_const = (
         C2m_g1_asymptotic(x,mQ) * damp_asy
         + C2m_g1_threshold(x,mQ)*damp_thr
-    ) ;    
+    ) ;
 
     
     return C_const ;
@@ -76,7 +76,7 @@ double C2m_g1_approximation(double x, double mQ) {
 
 double CLm_g1_approximation(double x, double mQ) {
     
-    double xmax = 1. / ( 1. + 4. * mQ ) ;    
+    double xmax = 1. / ( 1. + 4. * mQ ) ;
     
     double xi = 1. / mQ ;
     
@@ -91,7 +91,7 @@ double CLm_g1_approximation(double x, double mQ) {
     double damp_thr = 1. / ( 1. + pow( eta / h, k) );
     double damp_asy = 1. - damp_thr ;
     
-    double C_const = CLm_g1_highscale(x,mQ) * damp_asy ;    
+    double C_const = CLm_g1_highscale(x,mQ) * damp_asy ;
     //CLm_g1_threshold=0
     
     return C_const ;
@@ -102,7 +102,7 @@ double CLm_g1_approximation(double x, double mQ) {
 
 double C2m_g2_approximation(double x, double mQ, double mMu) {
     
-    double a = 2.5, b = 5 ;    
+    double a = 2.5, b = 5 ;
     double A = 1.7, B = 2.5, C = 2.5, D = 1.2 ;
     
     return C2m_g2_approximation(x, mQ, mMu, A, B, C, D, a, b);
@@ -132,7 +132,7 @@ double C2m_g2_approximation(double x, double mQ, double mMu, double A, double B,
     double C_const = (
         C2m_g2_asymptotic(x,mQ,1) * damp_asy 
         + C2m_g2_threshold(x,mQ,1) * damp_thr
-    );    
+    );
     
     double pi2 = M_PI * M_PI ;
     Cm22bargNC cm_log( 1. / ( 1. + 4 * mQ ) ) ;
@@ -149,12 +149,12 @@ double C2m_g2_approximation(double x, double mQ, double mMu, double A, double B,
 
 double C2m_g2_approximation_BAND(double x, double mQ, double mMu, double var, double fact, int v) {
     
-    double a=2.5, b=5;    
+    double a=2.5, b=5;
     double A=1.7, B=2.5, C=2.5, D=1.2;
     
     double Cavg=C2m_g2_approximation(x,mQ,mMu,A,B,C,D,a,b);
     
-    if(v==0) return Cavg;    
+    if(v==0) return Cavg;
     
     double Amax=fact*A, Amin=A/fact, Bmax=B*fact, Bmin=B/fact;
     double Cmax=(1+var)*C, Cmin=(1-var)*C, Dmax=(1+var)*D, Dmin=(1-var)*D;
@@ -225,7 +225,7 @@ double C2m_ps2_approximation(double x, double mQ, double mMu, double A, double B
     double damp_asy = 1. - damp_thr ;
     
     double C_const = C2m_ps2_asymptotic(x,mQ,1)*damp_asy ;
-    //threshPS = 0    
+    //threshPS = 0
     
     double pi2 = M_PI * M_PI ;
     Cm22barpsNC cm_log( 1. / ( 1. + 4. * mQ ) ) ;
@@ -272,7 +272,7 @@ double CLm_g2_approximation(double x, double mQ, double mMu, double A, double B,
     double C_const = (
         CLm_g2_asymptotic(x,mQ,1) * damp_asy 
         + CLm_g2_threshold(x,mQ,1) * damp_thr
-    ) ;    
+    ) ;
     
     double pi2 = M_PI * M_PI ;
     CmL2bargNC cm_log( 1. / ( 1. + 4. * mQ ) ) ;
@@ -289,7 +289,7 @@ double CLm_g2_approximation(double x, double mQ, double mMu, double A, double B,
 
 double CLm_ps2_approximation(double x, double mQ, double mMu) {
     
-    double a = 2.5, b = 5 ;    
+    double a = 2.5, b = 5 ;
     double A = 20., B = 11., C = 3., D = 2. ;
     
     return CLm_ps2_approximation(x, mQ, mMu, A, B, C, D, a, b);
@@ -317,7 +317,7 @@ double CLm_ps2_approximation(double x, double mQ, double mMu, double A, double B
     double damp_asy = 1. - damp_thr ;
     
     double C_const = CLm_ps2_asymptotic(x,mQ,1) * damp_asy ;
-    //threshPS = 0    
+    //threshPS = 0
     
     double pi2 = M_PI * M_PI ;
     CmL2barpsNC cm_log( 1. / ( 1. + 4. * mQ ) ) ;
@@ -334,11 +334,11 @@ double CLm_ps2_approximation(double x, double mQ, double mMu, double A, double B
 
 double C2m_g3_approximation(double x, double mQ, double mMu, int nf, int method_flag, int calls) {
 
-    double a = 2.5, b = 5. ;    
+    double a = 2.5, b = 5. ;
     double A = 0.3, B = 2.5, C = 2.5, D = 1.2 ;
     int v1 = 0, v2 = 0 ;
     
-    double xmax = 1. / (1. + 4 * mQ ) ;    
+    double xmax = 1. / (1. + 4 * mQ ) ;
     
     double xi = 1./mQ ;
     
@@ -375,7 +375,7 @@ double C2m_g3_approximation(double x, double mQ, double mMu, int nf, int method_
 
 double C2m_g3_approximation(double x, double mQ, double mMu, int nf, double A, double B, double C, double D, double a, double b, int v1, int v2, int method_flag, int calls) {
     
-    double xmax = 1. / ( 1. + 4 * mQ ) ;    
+    double xmax = 1. / ( 1. + 4 * mQ ) ;
     
     double xi = 1. / mQ ;
     
@@ -393,7 +393,7 @@ double C2m_g3_approximation(double x, double mQ, double mMu, int nf, double A, d
     double C30 = (
         C2m_g3_asymptoticNLL(x,mQ,1,nf,v1,v2) * damp_asy 
         + C2m_g3_threshold(x,mQ,1,nf) * damp_thr
-    ) ;    
+    ) ;
     
     if(mMu == 1.) return C30 ;
 
@@ -412,7 +412,7 @@ double C2m_g3_approximation(double x, double mQ, double mMu, int nf, double A, d
 
 double C2m_g3_approximation_BAND(double x, double mQ, double mMu, int nf, double var, double fact, int v, int method_flag, int calls) {
     
-    double a=2.5, b=5;    
+    double a=2.5, b=5;
     double A=0.3, B=2.5, C=2.5, D=1.2;
     
     double Cavg=C2m_g3_approximation(x,mQ,1,nf,A,B,C,D,a,b,0,0);
@@ -459,7 +459,7 @@ double C2m_g3_approximation_BAND(double x, double mQ, double mMu, int nf, double
         C_mu_dep = 0. ;
     } else {
         C_mu_dep = C2m_g31(x, mQ, nf) * Lmu + C2m_g32(x, mQ, nf, method_flag, calls) * Lmu2 ; 
-    }    
+    }
     
     if(v==1) return max + C_mu_dep;
     if(v==2) return min + C_mu_dep;
@@ -475,10 +475,10 @@ double C2m_g3_approximation_BAND(double x, double mQ, double mMu, int nf, double
 
 double C2m_ps3_approximation(double x, double mQ, double mMu, int nf) {
 
-    double a=2.5, b=5;    
+    double a=2.5, b=5;
     double A=0.3, B=2.5, C=2.5, D=1.2;
     
-    double xmax=1/(1+4*mQ);    
+    double xmax=1/(1+4*mQ);
     
     double xi=1./mQ;
     
@@ -513,10 +513,10 @@ double C2m_ps3_approximation(double x, double mQ, double mMu, int nf) {
 
 double CLm_g3_approximation(double x, double mQ, double mMu, int nf, int method_flag, int calls) {
 
-    double a = 2.5, b = 5. ;    
+    double a = 2.5, b = 5. ;
     double A = 20., B = 11., C = 3., D = 2. ;
     
-    double xmax = 1. / ( 1. + 4 * mQ ) ;    
+    double xmax = 1. / ( 1. + 4 * mQ ) ;
     
     double xi = 1. / mQ ;
     
@@ -545,7 +545,7 @@ double CLm_g3_approximation(double x, double mQ, double mMu, int nf, int method_
         C30 
         + CLm_g31(x, mQ, nf) * Lmu 
         + CLm_g32(x, mQ, nf, method_flag, calls) * Lmu2 
-    ) ;     
+    ) ;
 
 }
 
