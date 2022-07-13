@@ -14,25 +14,32 @@ std::string print_time(time_t seconds);
 
 int main(int argc, char** argv) {
     
-    if(argc!=4) {
-        cout<< "ERROR!\nUsage: ./output_grid.exe mufrac = mu/Q m channel\nExiting..." <<endl;
+    if(argc!=5) {
+        cout<< "ERROR!\nUsage: ./output_grid.exe mufrac = mu/Q m channel calls\nExiting..." <<endl;
         return -1;
     }
     
     string channel = argv[3];
-    string filename;
-    if(channel == "2g") filename = "C2g.dat";
-    else if(channel == "2q") filename = "C2q.dat";
-    else if(channel == "Lg") filename = "CLg.dat";
-    else if(channel == "Lq") filename = "CLq.dat";
+    int calls = atoi(argv[4]) ;
+    string tmp = "mkdir " + std::string(argv[4]) + "calls/" ;
+    system(tmp.c_str());
+    string filename = std::string(argv[4]) + "calls/";
+    if(channel == "2g") filename += "C2g.dat";
+    else if(channel == "2q") filename += "C2q.dat";
+    else if(channel == "Lg") filename += "CLg.dat";
+    else if(channel == "Lq") filename += "CLq.dat";
     else {
         cout<< "ERROR!\nUsage: channel = {2g, 2q, Lg, Lq}\nExiting..." <<endl;
         return -1;
     }
-
+    cout << "Saving in " << filename <<endl;
 
     ofstream output;
     output.open(filename);
+    if (! output.is_open()) {
+        cout<<"Problems in opening "<<filename<<endl ;
+        exit(-1);
+    }
 
     ifstream inputQ;
     inputQ.open("Q.txt");
@@ -69,8 +76,6 @@ int main(int argc, char** argv) {
 
     cout << "Computation of the grid for the coefficient function C"<< channel << " for m = "<< m << " GeV and µ/Q = "<<mufrac << endl ;
     cout << "Size of the grid (x,Q) = (" <<x.size() <<","<<Q.size()<<")"<<endl ;
-
-    int calls = 25000 ;
     
     time_t starting_time = time(NULL) ;
     //for(std::vector<Datum>::iterator d = data.begin(); d != data.end(); d++) {
