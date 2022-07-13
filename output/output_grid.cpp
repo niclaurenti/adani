@@ -7,6 +7,7 @@
 #include <ctime>
 #include <sstream>
 #include <string.h>
+#include <unistd.h>
 
 using namespace std;
 
@@ -21,24 +22,31 @@ int main(int argc, char** argv) {
     
     string channel = argv[3];
     int calls = atoi(argv[4]) ;
-    string tmp = "mkdir " + std::string(argv[4]) + "calls/" ;
-    system(tmp.c_str());
-    string filename = std::string(argv[4]) + "calls/";
-    if(channel == "2g") filename += "C2g.dat";
-    else if(channel == "2q") filename += "C2q.dat";
-    else if(channel == "Lg") filename += "CLg.dat";
-    else if(channel == "Lq") filename += "CLq.dat";
+    string filename ;
+    if(channel == "2g") {
+        string tmp = "mkdir Cg_" + std::string(argv[4]) + "calls/" ;
+        system(tmp.c_str());
+        filename = "Cg_" + std::string(argv[4]) + "calls/C2g.dat";
+    }
+    else if(channel == "2q") filename = "C2q.dat";
+    else if(channel == "Lg") {
+        string tmp = "mkdir Cg_" + std::string(argv[4]) + "calls/" ;
+        system(tmp.c_str());
+        filename = "Cg_" + std::string(argv[4]) + "calls/CLg.dat";
+    }
+    else if(channel == "Lq") filename = "CLq.dat";
     else {
         cout<< "ERROR!\nUsage: channel = {2g, 2q, Lg, Lq}\nExiting..." <<endl;
         return -1;
     }
-    cout << "Saving in " << filename <<endl;
 
     ofstream output;
     output.open(filename);
     if (! output.is_open()) {
         cout<<"Problems in opening "<<filename<<endl ;
         exit(-1);
+    } else {
+        cout << "Saving in " << filename << endl;
     }
 
     ifstream inputQ;
