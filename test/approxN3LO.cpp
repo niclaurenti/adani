@@ -38,7 +38,7 @@ int main(int argc, char** argv) {
 	for(x=dx; x<1; x+=dx) {
 
 		file_x << x <<"   "
-					 << CLm_g3_asymptoticNLL(x,mQ,mMu,nf) << "   "
+					 << CLm_g3_asymptotic(x,mQ,mMu,nf) << "   "
 					 << CLm_g3_threshold(x,mQ,mMu,nf) << "   "
 					 << CLm_g30_approximation(x,mQ,mMu,nf) << "   "
 					 << endl;
@@ -59,10 +59,10 @@ int main(int argc, char** argv) {
 		x=1/(1+4*mQ*(eta+1));
 
 		file_eta << eta <<"   "
-					 << x*CLm_g3_asymptoticNLL(x,mQ,mMu,nf) << "   "
+					 << x*CLm_g3_asymptotic(x,mQ,mMu,nf) << "   "
 					 << x*CLm_g3_threshold(x,mQ,mMu,nf) << "   "
 					 << x*CLm_g30_approximation(x,mQ,mMu,nf) << "   "
-					 << x*CLm_ps3_asymptoticNLL(x,mQ,mMu,nf) << "   "
+					 << x*CLm_ps3_asymptotic(x,mQ,mMu,nf) << "   "
 					 << 0 << "   "
 					 << x*CLm_ps30_approximation(x,mQ,mMu,nf) << "   "
 					 << endl;

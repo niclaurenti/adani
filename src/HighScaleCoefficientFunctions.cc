@@ -3205,21 +3205,21 @@ double D2m_ps3_highscale(double x, double mQ, double mMu, int nf) {
 
 //_______________________________________________________________
 
-double C2m_ps3_highscaleVogt(double x, double mQ, double mMu, int nf, int v) {
+double C2m_ps3_highscale_klmv(double x, double mQ, double mMu, int nf, int v) {
 
     double Lmu=log(mMu);
     //double L2mu =Lmu*Lmu;
 
     //double pi2=M_PI*M_PI;
 
-    return D2m_ps3_highscaleVogt(x,mQ,mMu,nf,v) - 1./3/M_PI*Lmu*D2m_ps2_highscale(x,mQ,mMu) ;
+    return D2m_ps3_highscale_klmv(x,mQ,mMu,nf,v) - 1./3/M_PI*Lmu*D2m_ps2_highscale(x,mQ,mMu) ;
 
 }
 
 //_______________________________________________________________
 //Function that uses the approximation for aQqPS30 (that now is exactly known)
 //only used for benchmark against the plots on the paper
-double D2m_ps3_highscaleVogt(double x, double mQ, double mMu, int nf, int v) {
+double D2m_ps3_highscale_klmv(double x, double mQ, double mMu, int nf, int v) {
 
     if(x<0 || x>1) return 0;
 

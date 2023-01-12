@@ -1,3 +1,18 @@
+/*
+ * =====================================================================================
+ *
+ *       Filename:  MassiveCoefficientFunctions.h
+ *
+ *    Description:  Header file for the MassiveCoefficientFunctions.cc file.
+ *
+ *         Author:  LeBron James
+ *   Organization:  Los Angeles Lakers (at the time of writing)
+ *
+ *  In this file there are the coefficient functions in the high scale limit, i.e. Q^2 >> m^2
+ *
+ * =====================================================================================
+ */
+
 #ifndef HighScale_h
 #define HighScale_h
 
@@ -52,10 +67,11 @@ double D2m_ps3_highscale(double x, double mQ, double mMu, int nf);
 
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) coefficient funtions at O(alpha_s^3) used in [arXiv:1205.5727]
+//  klmv = Kawamura, Lo Presti, Moch, Vogt
 //------------------------------------------------------------------------------------------//
 
-double C2m_ps3_highscaleVogt(double x, double mQ, double mMu, int nf, int v);
-double D2m_ps3_highscaleVogt(double x, double mQ, double mMu, int nf, int v);
+double C2m_ps3_highscale_klmv(double x, double mQ, double mMu, int nf, int v);
+double D2m_ps3_highscale_klmv(double x, double mQ, double mMu, int nf, int v);
 
 double C2m_ps2_highscaleNEW(double x, double mQ, double mMu);
 

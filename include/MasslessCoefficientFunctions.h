@@ -8,10 +8,13 @@
  *         Author:  LeBron James
  *   Organization:  Los Angeles Lakers (at the time of writing)
  *
- *  In this file there are the exact heavy coefficient functions
+ *  In this file there are the massless coefficient functions. Observe that for the
+ *  O(alpha_s^2) and O(alpha_s^3) it is used a parameterization of the exact result,
+ *  being the latter a very long equation.
  *
  * =====================================================================================
  */
+
 #ifndef Massless_h
 #define Massless_h
 

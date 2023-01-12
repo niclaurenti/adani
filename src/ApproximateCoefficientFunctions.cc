@@ -354,7 +354,7 @@ double C2m_g3_approximation(double x, double mQ, double mMu, int nf, int method_
     double damp_asy = 1. - damp_thr ;
 
     double C30 = (
-        C2m_g3_asymptoticNLL(x,mQ,1,nf,v1,v2) * damp_asy
+        C2m_g3_asymptotic(x,mQ,1,nf,v1,v2) * damp_asy
         + C2m_g3_threshold(x,mQ,1,nf) * damp_thr
     ) ;
 
@@ -391,7 +391,7 @@ double C2m_g3_approximation(double x, double mQ, double mMu, int nf, double A, d
     double damp_asy = 1. - damp_thr ;
 
     double C30 = (
-        C2m_g3_asymptoticNLL(x,mQ,1,nf,v1,v2) * damp_asy
+        C2m_g3_asymptotic(x,mQ,1,nf,v1,v2) * damp_asy
         + C2m_g3_threshold(x,mQ,1,nf) * damp_thr
     ) ;
 
@@ -493,7 +493,7 @@ double C2m_ps3_approximation(double x, double mQ, double mMu, int nf) {
     double damp_thr=1/(1+pow(eta/h,k));
     double damp_asy=1-damp_thr;
 
-    double C30 = C2m_ps3_asymptoticNLL(x,mQ,1,nf) * damp_asy ;
+    double C30 = C2m_ps3_asymptotic(x,mQ,1,nf) * damp_asy ;
 
     if(mMu == 1.) return C30 ;
 
@@ -532,7 +532,7 @@ double CLm_g3_approximation(double x, double mQ, double mMu, int nf, int method_
     double damp_asy = 1. - damp_thr ;
 
     double C30 = (
-        CLm_g3_asymptoticNLL(x,mQ,1,nf) * damp_asy
+        CLm_g3_asymptotic(x,mQ,1,nf) * damp_asy
         + CLm_g3_threshold(x,mQ,1,nf) * damp_thr
     ) ;
 
@@ -571,7 +571,7 @@ double CLm_ps3_approximation(double x, double mQ, double mMu, int nf) {
     double damp_thr=1/(1+pow(eta/h,k));
     double damp_asy=1-damp_thr;
 
-    double C30 = CLm_ps3_asymptoticNLL(x,mQ,1,nf)*damp_asy ;
+    double C30 = CLm_ps3_asymptotic(x,mQ,1,nf)*damp_asy ;
 
     if(mMu == 1.) return C30 ;
 
@@ -590,7 +590,7 @@ double CLm_ps3_approximation(double x, double mQ, double mMu, int nf) {
 
 //_________________________________________________________________
 
-double C2m_g2_approximationA_vogt(double x, double mQ, double mMu) {
+double C2m_g2_approximationA_klmv(double x, double mQ, double mMu) {
 
     double x_max=1/(1+4*mQ);
 
@@ -635,7 +635,7 @@ double C2m_g2_approximationA_vogt(double x, double mQ, double mMu) {
 
 //_________________________________________________________________
 
-double C2m_g2_approximationB_vogt(double x, double mQ, double mMu) {
+double C2m_g2_approximationB_klmv(double x, double mQ, double mMu) {
 
     double x_max=1/(1+4*mQ);
 
@@ -676,7 +676,7 @@ double C2m_g2_approximationB_vogt(double x, double mQ, double mMu) {
 
 //_________________________________________________________________
 
-double C2m_ps2_approximationA_vogt(double x, double mQ, double mMu) {
+double C2m_ps2_approximationA_klmv(double x, double mQ, double mMu) {
 
     double x_max=1/(1+4*mQ);
 
@@ -716,7 +716,7 @@ double C2m_ps2_approximationA_vogt(double x, double mQ, double mMu) {
 
 //_________________________________________________________________
 
-double C2m_ps2_approximationB_vogt(double x, double mQ, double mMu) {
+double C2m_ps2_approximationB_klmv(double x, double mQ, double mMu) {
 
     double x_max=1/(1+4*mQ);
 
@@ -757,7 +757,7 @@ double C2m_ps2_approximationB_vogt(double x, double mQ, double mMu) {
 //_________________________________________________________________
 
 
-double C2m_g3_approximationA_vogt(double x, double mQ, double mMu, int nf) {
+double C2m_g3_approximationA_klmv(double x, double mQ, double mMu, int nf) {
 
     double x_max=1/(1+4*mQ);
 
@@ -778,7 +778,7 @@ double C2m_g3_approximationA_vogt(double x, double mQ, double mMu, int nf) {
 
     double beta3=beta*beta*beta;
 
-    double C2m_g3_highenergyNLLA=(0.007*pow(log(1./mQ)/log(5), 4) - 0.28)*4/mQ/x;
+    double C2m_g3_highenergyA=(0.007*pow(log(1./mQ)/log(5), 4) - 0.28)*4/mQ/x;
 
     double c_const_sqrt=c0(xi) + 36*CA*log(2)*log(2) - 60*CA*log(2) + log(1)*(8*CA*log(2) - c0_bar(xi));
 
@@ -788,7 +788,7 @@ double C2m_g3_approximationA_vogt(double x, double mQ, double mMu, int nf) {
 
     double C30 = (
         (C2m_g3_threshold(x,mQ,1,nf)-c_const) + (1. - f)*beta*C2m_g3_highscale(x,mQ,1,nf,1)
-        + f*beta3*(-log(eta)/log(x)*C2m_g3_highenergyLL(x,mQ,1) + C2m_g3_highenergyNLLA*eta_gamma/(C+eta_gamma))
+        + f*beta3*(-log(eta)/log(x)*C2m_g3_highenergyLL(x,mQ,1) + C2m_g3_highenergyA*eta_gamma/(C+eta_gamma))
     );
 
     if(mMu == 1.) return C30 ;
@@ -802,7 +802,7 @@ double C2m_g3_approximationA_vogt(double x, double mQ, double mMu, int nf) {
 
 //_________________________________________________________________
 
-double C2m_g3_approximationB_vogt(double x, double mQ, double mMu, int nf) {
+double C2m_g3_approximationB_klmv(double x, double mQ, double mMu, int nf) {
 
     double x_max=1/(1+4*mQ);
 
@@ -830,11 +830,11 @@ double C2m_g3_approximationB_vogt(double x, double mQ, double mMu, int nf) {
 
     c_const *= C2m_g1(x,mQ)/pi2/16.;
 
-    double C2m_g3_highenergyNLLB=(0.055*pow(log(1./mQ)/log(5),2) - 0.423)*4/mQ/x;
+    double C2m_g3_highenergyB=(0.055*pow(log(1./mQ)/log(5),2) - 0.423)*4/mQ/x;
 
     double C30 = (
         (C2m_g3_threshold(x,mQ,1,nf)-c_const)  +f*2.*c_const  +(1-f)*beta3*C2m_g3_highscale(x,mQ,1,nf,2)
-        +f*beta3*(-log(eta)/log(x)*C2m_g3_highenergyLL(x,mQ,1) + C2m_g3_highenergyNLLB*eta_delta/(D+eta_delta))
+        +f*beta3*(-log(eta)/log(x)*C2m_g3_highenergyLL(x,mQ,1) + C2m_g3_highenergyB*eta_delta/(D+eta_delta))
     );
 
     if(mMu == 1.) return C30 ;
@@ -849,7 +849,7 @@ double C2m_g3_approximationB_vogt(double x, double mQ, double mMu, int nf) {
 
 //_________________________________________________________________
 
-double C2m_g3_approximationB_vogt_paper(double x, double mQ, double mMu, int nf) {
+double C2m_g3_approximationB_klmv_paper(double x, double mQ, double mMu, int nf) {
 
     double x_max=1/(1+4*mQ);
 
@@ -877,11 +877,11 @@ double C2m_g3_approximationB_vogt_paper(double x, double mQ, double mMu, int nf)
 
     c_const *= C2m_g1(x,mQ)/pi2/16.;
 
-    double C2m_g3_highenergyNLLB=(0.055*pow(log(1./mQ)/log(5),2) - 0.423)*4/mQ/x;
+    double C2m_g3_highenergyB=(0.055*pow(log(1./mQ)/log(5),2) - 0.423)*4/mQ/x;
 
     double C30 = (
         (C2m_g3_threshold(x,mQ,1,nf)-c_const)  +f*2.*c_const  +(1-f)*beta3*C2m_g3_highscale(x,mQ,1,nf,4)
-        +f*beta3*(-log(eta)/log(x)*C2m_g3_highenergyLL(x,mQ,1) + C2m_g3_highenergyNLLB*eta_delta/(D+eta_delta))
+        +f*beta3*(-log(eta)/log(x)*C2m_g3_highenergyLL(x,mQ,1) + C2m_g3_highenergyB*eta_delta/(D+eta_delta))
     );
 
     if(mMu == 1.) return C30 ;
@@ -896,7 +896,7 @@ double C2m_g3_approximationB_vogt_paper(double x, double mQ, double mMu, int nf)
 
 //_________________________________________________________________
 
-double C2m_g3_approximationBlowxi_vogt(double x, double mQ, double mMu, int nf) {
+double C2m_g3_approximationBlowxi_klmv(double x, double mQ, double mMu, int nf) {
 
     double x_max=1/(1+4*mQ);
 
@@ -924,11 +924,11 @@ double C2m_g3_approximationBlowxi_vogt(double x, double mQ, double mMu, int nf) 
 
     c_const *= C2m_g1(x,mQ)/pi2/16.;
 
-    double C2m_g3_highenergyNLLB=CA/CF*(0.0245*pow(log(1./mQ)/log(5),2) - 0.17)*4/mQ/x;
+    double C2m_g3_highenergyB=CA/CF*(0.0245*pow(log(1./mQ)/log(5),2) - 0.17)*4/mQ/x;
 
     double C30 = (
         (C2m_g3_threshold(x,mQ,1,nf)-c_const)  +f*2.*c_const  +(1-f)*beta3*C2m_g3_highscale(x,mQ,1,nf,4)
-        +f*beta3*(-log(eta)/log(x)*C2m_g3_highenergyLL(x,mQ,1) + C2m_g3_highenergyNLLB*eta_delta/(D+eta_delta))
+        +f*beta3*(-log(eta)/log(x)*C2m_g3_highenergyLL(x,mQ,1) + C2m_g3_highenergyB*eta_delta/(D+eta_delta))
     );
 
     if(mMu == 1.) return C30 ;
@@ -942,11 +942,11 @@ double C2m_g3_approximationBlowxi_vogt(double x, double mQ, double mMu, int nf) 
 }
 
 //_________________________________________________________________
-//C2m_ps30_approximationA_vogt and C2m_ps30_approximationB_vogt use the exact form of aQqPS30,
-//while C2m_ps30_approximationA_vogt_paper and C2m_ps30_approximationB_vogt use the form given
+//C2m_ps30_approximationA_klmv and C2m_ps30_approximationB_klmv use the exact form of aQqPS30,
+//while C2m_ps30_approximationA_klmv_paper and C2m_ps30_approximationB_klmv use the form given
 //in the paper. The last two are used only for benchamrk against the plots of the paper
 
-double C2m_ps3_approximationA_vogt(double x, double mQ, double mMu, int nf) {
+double C2m_ps3_approximationA_klmv(double x, double mQ, double mMu, int nf) {
 
     double x_max=1/(1+4*mQ);
 
@@ -984,7 +984,7 @@ double C2m_ps3_approximationA_vogt(double x, double mQ, double mMu, int nf) {
 
 //_________________________________________________________________
 
-double C2m_ps3_approximationB_vogt(double x, double mQ, double mMu, int nf) {
+double C2m_ps3_approximationB_klmv(double x, double mQ, double mMu, int nf) {
 
     double x_max=1/(1+4*mQ);
 
@@ -1023,7 +1023,7 @@ double C2m_ps3_approximationB_vogt(double x, double mQ, double mMu, int nf) {
 
 //_________________________________________________________________
 
-double C2m_ps3_approximationA_vogt_paper(double x, double mQ, double mMu, int nf) {
+double C2m_ps3_approximationA_klmv_paper(double x, double mQ, double mMu, int nf) {
 
     double x_max=1/(1+4*mQ);
 
@@ -1046,7 +1046,7 @@ double C2m_ps3_approximationA_vogt_paper(double x, double mQ, double mMu, int nf
     double C2m_ps30_highenergyNLLA=(0.004*pow(log(1./mQ)/log(5), 4) - 0.125)*4/mQ/x;
 
     double C30 = (
-        (1. - f)*beta*C2m_ps3_highscaleVogt(x,mQ,1,nf,1)
+        (1. - f)*beta*C2m_ps3_highscale_klmv(x,mQ,1,nf,1)
         + f*beta3*(-log(eta)/log(x)*C2m_ps3_highenergyLL(x,mQ,1) + C2m_ps30_highenergyNLLA*eta_gamma/(C+eta_gamma))
     );
 
@@ -1061,7 +1061,7 @@ double C2m_ps3_approximationA_vogt_paper(double x, double mQ, double mMu, int nf
 
 //_________________________________________________________________
 
-double C2m_ps3_approximationB_vogt_paper(double x, double mQ, double mMu, int nf) {
+double C2m_ps3_approximationB_klmv_paper(double x, double mQ, double mMu, int nf) {
 
     double x_max=1/(1+4*mQ);
 
@@ -1084,7 +1084,7 @@ double C2m_ps3_approximationB_vogt_paper(double x, double mQ, double mMu, int nf
     double C2m_ps30_highenergyNLLB=(0.0245*pow(log(1./mQ)/log(5),2) - 0.17)*4/mQ/x;
 
     double C30 = (
-        (1.-f)*beta3*C2m_ps3_highscaleVogt(x,mQ,1,nf,2)
+        (1.-f)*beta3*C2m_ps3_highscale_klmv(x,mQ,1,nf,2)
         +f*beta3*(-log(eta)/log(x)*C2m_ps3_highenergyLL(x,mQ,1) + C2m_ps30_highenergyNLLB*eta_delta/(D+eta_delta))
     );
 

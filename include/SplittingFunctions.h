@@ -8,10 +8,11 @@
  *         Author:  LeBron James
  *   Organization:  Los Angeles Lakers (at the time of writing)
  *
- *  In this file there are the exact heavy coefficient functions
+ *  In this file there are the splitting functions.
  *
  * =====================================================================================
  */
+
 #ifndef Split
 #define Split
 

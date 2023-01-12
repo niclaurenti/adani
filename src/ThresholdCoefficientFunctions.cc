@@ -27,7 +27,7 @@ double C2m_g1_threshold(double x, double mQ) {
 
     return overall*M_PI*TR*beta/(1+xi/4)/x;
 
-}//in order to pass to Vogt normalization multiply mQ*4*M_PI*M_PI*x
+}//in order to pass to klmv normalization multiply mQ*4*M_PI*M_PI*x
 
 //__________________________________________________________
 
@@ -58,7 +58,7 @@ double C2m_g2_threshold(double x, double mQ, double mMu) {
 
     return C2m_g1(x,mQ)/4/M_PI*(C_log2b*log2b + C_logb*logb + C_fracb/beta + C_const);
 
-}//in order to pass to Vogt normalization multiply mQ*M_PI*x and put mu^2=Q^2+4m^2
+}//in order to pass to klmv normalization multiply mQ*M_PI*x and put mu^2=Q^2+4m^2
 
 //_________________________________________________________
 
@@ -88,7 +88,7 @@ double CLm_g2_threshold(double x, double mQ, double mMu) {
 
     return CLm_g1(x,mQ)/4/M_PI*(C_log2b*log2b + C_logb*logb + C_fracb/beta + C_const);
 
-}//in order to pass to Vogt normalization multiply mQ*M_PI*x and put mu^2=Q^2+4m^2
+}//in order to pass to klmv normalization multiply mQ*M_PI*x and put mu^2=Q^2+4m^2
 
 //_________________________________________________________
 

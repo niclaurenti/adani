@@ -1,3 +1,18 @@
+/*
+ * =====================================================================================
+ *
+ *       Filename:  MassiveCoefficientFunctions.h
+ *
+ *    Description:  Header file for the MassiveCoefficientFunctions.cc file.
+ *
+ *         Author:  LeBron James
+ *   Organization:  Los Angeles Lakers (at the time of writing)
+ *
+ *  In this file there are some useful functions.
+ *
+ * =====================================================================================
+ */
+
 #ifndef Special_h
 #define Special_h
 
