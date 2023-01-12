@@ -5,8 +5,8 @@
  *
  *    Description:  Header file for the MasslessCoefficientFunctions.cc file.
  *
- *         Author:  LeBron James
- *   Organization:  Los Angeles Lakers (at the time of writing)
+ *         Author:  Tim Duncan
+ *   Organization:  retired (after an incredible carrer with the San Antonio Spurs)
  *
  *  In this file there are the massless coefficient functions. Observe that for the
  *  O(alpha_s^2) and O(alpha_s^3) it is used a parameterization of the exact result,

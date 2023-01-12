@@ -13,9 +13,9 @@
 using namespace apfel;
 using namespace std;
 
-
-//______________________________________________________
-
+//==========================================================================================//
+//  Approximate gluon coefficient function for F2 at O(alpha_s) with implicit parameters.
+//------------------------------------------------------------------------------------------//
 
 double C2m_g1_approximation(double x, double mQ, double k, double h) {
 
@@ -39,9 +39,10 @@ double C2m_g1_approximation(double x, double mQ, double k, double h) {
 
 }
 
-
-//______________________________________________________
-
+//==========================================================================================//
+//  Approximate gluon coefficient function for F2 at O(alpha_s).
+//  Used for validation of the method.
+//------------------------------------------------------------------------------------------//
 
 double C2m_g1_approximation(double x, double mQ) {
 
@@ -70,9 +71,10 @@ double C2m_g1_approximation(double x, double mQ) {
 
 }
 
-
-//_______________________________________________________________
-
+//==========================================================================================//
+//  Approximate gluon coefficient function for FL at O(alpha_s).
+//  Used for validation of the method.
+//------------------------------------------------------------------------------------------//
 
 double CLm_g1_approximation(double x, double mQ) {
 
@@ -98,7 +100,10 @@ double CLm_g1_approximation(double x, double mQ) {
 
 }
 
-//_________________________________________________________________
+//==========================================================================================//
+//  Approximate gluon coefficient function for F2 at O(alpha_s^2).
+//  Used for validation of the method.
+//------------------------------------------------------------------------------------------//
 
 double C2m_g2_approximation(double x, double mQ, double mMu) {
 
@@ -109,7 +114,9 @@ double C2m_g2_approximation(double x, double mQ, double mMu) {
 
 }
 
-//_________________________________________________________________
+//==========================================================================================//
+//  Approximate gluon coefficient function for F2 at O(alpha_s) with implicit parameters.
+//------------------------------------------------------------------------------------------//
 
 double C2m_g2_approximation(double x, double mQ, double mMu, double A, double B, double C, double D, double a, double b) {
 
@@ -145,7 +152,9 @@ double C2m_g2_approximation(double x, double mQ, double mMu, double A, double B,
 
 }
 
-//_________________________________________________________________
+//==========================================================================================//
+//  Band of the approximate gluon coefficient function for F2 at O(alpha_s^2).
+//------------------------------------------------------------------------------------------//
 
 double C2m_g2_approximation_BAND(double x, double mQ, double mMu, double var, double fact, int v) {
 
@@ -193,8 +202,10 @@ double C2m_g2_approximation_BAND(double x, double mQ, double mMu, double var, do
 
 }
 
-//_________________________________________________________________
-
+//==========================================================================================//
+//  Approximate quark coefficient function for F2 at O(alpha_s^2).
+//  Used for validation of the method.
+//------------------------------------------------------------------------------------------//
 double C2m_ps2_approximation(double x, double mQ, double mMu) {
 
     double a = 2.5, b = 5 ;
@@ -204,7 +215,9 @@ double C2m_ps2_approximation(double x, double mQ, double mMu) {
 
 }
 
-//_________________________________________________________________
+//==========================================================================================//
+//  Approximate quark coefficient function for F2 at O(alpha_s^2) with implicit parameters.
+//------------------------------------------------------------------------------------------//
 
 double C2m_ps2_approximation(double x, double mQ, double mMu, double A, double B, double C, double D, double a, double b) {
 
@@ -238,7 +251,10 @@ double C2m_ps2_approximation(double x, double mQ, double mMu, double A, double B
 
 }
 
-//_______________________________________________________________
+//==========================================================================================//
+//  Approximate gluon coefficient function for FL at O(alpha_s^2).
+//  Used for validation of the method.
+//------------------------------------------------------------------------------------------//
 
 double CLm_g2_approximation(double x, double mQ, double mMu) {
 
@@ -249,7 +265,9 @@ double CLm_g2_approximation(double x, double mQ, double mMu) {
 
 }
 
-//_________________________________________________________________
+//==========================================================================================//
+//  Approximate gluon coefficient function for FL at O(alpha_s) with implicit parameters.
+//------------------------------------------------------------------------------------------//
 
 double CLm_g2_approximation(double x, double mQ, double mMu, double A, double B, double C, double D, double a, double b) {
 
@@ -285,7 +303,10 @@ double CLm_g2_approximation(double x, double mQ, double mMu, double A, double B,
 
 }
 
-//_________________________________________________________________
+//==========================================================================================//
+//  Approximate quark coefficient function for FL at O(alpha_s^2).
+//  Used for validation of the method.
+//------------------------------------------------------------------------------------------//
 
 double CLm_ps2_approximation(double x, double mQ, double mMu) {
 
@@ -296,7 +317,9 @@ double CLm_ps2_approximation(double x, double mQ, double mMu) {
 
 }
 
-//_________________________________________________________________
+//==========================================================================================//
+//  Approximate quark coefficient function for FL at O(alpha_s) with implicit parameters.
+//------------------------------------------------------------------------------------------//
 
 double CLm_ps2_approximation(double x, double mQ, double mMu, double A, double B, double C, double D, double a, double b) {
 
@@ -330,7 +353,9 @@ double CLm_ps2_approximation(double x, double mQ, double mMu, double A, double B
 
 }
 
-//_________________________________________________________________
+//==========================================================================================//
+//  Approximate gluon coefficient function for F2 at O(alpha_s^3).
+//------------------------------------------------------------------------------------------//
 
 double C2m_g3_approximation(double x, double mQ, double mMu, int nf, int method_flag, int calls) {
 
@@ -371,7 +396,9 @@ double C2m_g3_approximation(double x, double mQ, double mMu, int nf, int method_
 
 }
 
-//_________________________________________________________________
+//==========================================================================================//
+//  Approximate gluon coefficient function for F2 at O(alpha_s^3) with implicit parameters.
+//------------------------------------------------------------------------------------------//
 
 double C2m_g3_approximation(double x, double mQ, double mMu, int nf, double A, double B, double C, double D, double a, double b, int v1, int v2, int method_flag, int calls) {
 
@@ -408,7 +435,10 @@ double C2m_g3_approximation(double x, double mQ, double mMu, int nf, double A, d
 
 }
 
-//_________________________________________________________________
+//==========================================================================================//
+//  Band of the approximate gluon coefficient function for F2 at O(alpha_s^3).
+//------------------------------------------------------------------------------------------//
+
 
 double C2m_g3_approximation_BAND(double x, double mQ, double mMu, int nf, double var, double fact, int v, int method_flag, int calls) {
 
@@ -471,7 +501,9 @@ double C2m_g3_approximation_BAND(double x, double mQ, double mMu, int nf, double
 
 }
 
-//_________________________________________________________________
+//==========================================================================================//
+//  Approximate quark coefficient function for F2 at O(alpha_s^3).
+//------------------------------------------------------------------------------------------//
 
 double C2m_ps3_approximation(double x, double mQ, double mMu, int nf) {
 
@@ -508,8 +540,9 @@ double C2m_ps3_approximation(double x, double mQ, double mMu, int nf) {
 
 }
 
-
-//_________________________________________________________________
+//==========================================================================================//
+//  Approximate gluon coefficient function for FL at O(alpha_s^3).
+//------------------------------------------------------------------------------------------//
 
 double CLm_g3_approximation(double x, double mQ, double mMu, int nf, int method_flag, int calls) {
 
@@ -549,7 +582,9 @@ double CLm_g3_approximation(double x, double mQ, double mMu, int nf, int method_
 
 }
 
-//_________________________________________________________________
+//==========================================================================================//
+//  Approximate quark coefficient funtcions for FL at O(alpha_s^3).
+//------------------------------------------------------------------------------------------//
 
 double CLm_ps3_approximation(double x, double mQ, double mMu, int nf) {
 
@@ -586,9 +621,11 @@ double CLm_ps3_approximation(double x, double mQ, double mMu, int nf) {
 
 }
 
-
-
-//_________________________________________________________________
+//==========================================================================================//
+//  Approximate gluon coefficient funtcions for F2 at O(alpha_s^2) from [arXiv:1205.5727].
+//  klmv = Kawamura, Lo Presti, Moch, Vogt.
+//  Upper band (i.e. approximation A)
+//------------------------------------------------------------------------------------------//
 
 double C2m_g2_approximationA_klmv(double x, double mQ, double mMu) {
 
@@ -633,7 +670,11 @@ double C2m_g2_approximationA_klmv(double x, double mQ, double mMu) {
 
 }
 
-//_________________________________________________________________
+//==========================================================================================//
+//  Approximate gluon coefficient funtcions for F2 at O(alpha_s^2) from [arXiv:1205.5727].
+//  klmv = Kawamura, Lo Presti, Moch, Vogt
+//  Lower band (i.e. approximation B)
+//------------------------------------------------------------------------------------------//
 
 double C2m_g2_approximationB_klmv(double x, double mQ, double mMu) {
 
@@ -674,7 +715,11 @@ double C2m_g2_approximationB_klmv(double x, double mQ, double mMu) {
 
 }
 
-//_________________________________________________________________
+//==========================================================================================//
+//  Approximate quark coefficient funtcions for F2 at O(alpha_s^2) from [arXiv:1205.5727].
+//  klmv = Kawamura, Lo Presti, Moch, Vogt.
+//  Upper band (i.e. approximation A)
+//------------------------------------------------------------------------------------------//
 
 double C2m_ps2_approximationA_klmv(double x, double mQ, double mMu) {
 
@@ -714,7 +759,11 @@ double C2m_ps2_approximationA_klmv(double x, double mQ, double mMu) {
 
 }
 
-//_________________________________________________________________
+//==========================================================================================//
+//  Approximate quark coefficient funtcions for F2 at O(alpha_s^2) from [arXiv:1205.5727].
+//  klmv = Kawamura, Lo Presti, Moch, Vogt.
+//  Lower band (i.e. approximation B)
+//------------------------------------------------------------------------------------------//
 
 double C2m_ps2_approximationB_klmv(double x, double mQ, double mMu) {
 
@@ -754,8 +803,11 @@ double C2m_ps2_approximationB_klmv(double x, double mQ, double mMu) {
 
 }
 
-//_________________________________________________________________
-
+//==========================================================================================//
+//  Approximate gluon coefficient funtcions for F2 at O(alpha_s^3) from [arXiv:1205.5727].
+//  klmv = Kawamura, Lo Presti, Moch, Vogt.
+//  Upper band (i.e. approximation A)
+//------------------------------------------------------------------------------------------//
 
 double C2m_g3_approximationA_klmv(double x, double mQ, double mMu, int nf) {
 
@@ -800,7 +852,11 @@ double C2m_g3_approximationA_klmv(double x, double mQ, double mMu, int nf) {
 
 }
 
-//_________________________________________________________________
+//==========================================================================================//
+//  Approximate gluon coefficient funtcions for F2 at O(alpha_s^3) from [arXiv:1205.5727].
+//  klmv = Kawamura, Lo Presti, Moch, Vogt.
+//  Lower band (i.e. approximation B)
+//------------------------------------------------------------------------------------------//
 
 double C2m_g3_approximationB_klmv(double x, double mQ, double mMu, int nf) {
 
@@ -847,7 +903,13 @@ double C2m_g3_approximationB_klmv(double x, double mQ, double mMu, int nf) {
 
 }
 
-//_________________________________________________________________
+//==========================================================================================//
+//  Approximate gluon coefficient funtcions for F2 at O(alpha_s^3) from [arXiv:1205.5727].
+//  klmv = Kawamura, Lo Presti, Moch, Vogt.
+//  Lower band (i.e. approximation B).
+//  This equation uses the approximate form of aQg30 given in Eq. ??? of arXiv:1205.5727 instead
+//  of the one given in ???.
+//------------------------------------------------------------------------------------------//
 
 double C2m_g3_approximationB_klmv_paper(double x, double mQ, double mMu, int nf) {
 
@@ -894,7 +956,11 @@ double C2m_g3_approximationB_klmv_paper(double x, double mQ, double mMu, int nf)
 
 }
 
-//_________________________________________________________________
+//==========================================================================================//
+//  Approximate gluon coefficient funtcions for F2 at O(alpha_s^3) from [arXiv:1205.5727].
+//  klmv = Kawamura, Lo Presti, Moch, Vogt.
+//  Lower band (i.e. approximation B) with the low xi limit.
+//------------------------------------------------------------------------------------------//
 
 double C2m_g3_approximationBlowxi_klmv(double x, double mQ, double mMu, int nf) {
 
@@ -942,9 +1008,6 @@ double C2m_g3_approximationBlowxi_klmv(double x, double mQ, double mMu, int nf) 
 }
 
 //_________________________________________________________________
-//C2m_ps30_approximationA_klmv and C2m_ps30_approximationB_klmv use the exact form of aQqPS30,
-//while C2m_ps30_approximationA_klmv_paper and C2m_ps30_approximationB_klmv use the form given
-//in the paper. The last two are used only for benchamrk against the plots of the paper
 
 double C2m_ps3_approximationA_klmv(double x, double mQ, double mMu, int nf) {
 
@@ -1021,7 +1084,12 @@ double C2m_ps3_approximationB_klmv(double x, double mQ, double mMu, int nf) {
 
 }
 
-//_________________________________________________________________
+//==========================================================================================//
+//  Approximate quark coefficient funtcions for F2 at O(alpha_s^3) from [arXiv:1205.5727].
+//  klmv = Kawamura, Lo Presti, Moch, Vogt.
+//  Upper band (i.e. approximation A).
+//  This equation uses the approximate form of aPS30 given in Eq. ??? of arXiv:1205.5727.
+//------------------------------------------------------------------------------------------//
 
 double C2m_ps3_approximationA_klmv_paper(double x, double mQ, double mMu, int nf) {
 
@@ -1059,7 +1127,12 @@ double C2m_ps3_approximationA_klmv_paper(double x, double mQ, double mMu, int nf
 
 }
 
-//_________________________________________________________________
+//==========================================================================================//
+//  Approximate quark coefficient funtcions for F2 at O(alpha_s^3) from [arXiv:1205.5727].
+//  klmv = Kawamura, Lo Presti, Moch, Vogt.
+//  Lower band (i.e. approximation B).
+//  This equation uses the approximate form of aPS30 given in Eq. ??? of arXiv:1205.5727.
+//------------------------------------------------------------------------------------------//
 
 double C2m_ps3_approximationB_klmv_paper(double x, double mQ, double mMu, int nf) {
 

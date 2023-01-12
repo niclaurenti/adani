@@ -5,13 +5,14 @@
  *
  *    Description:  Header file for the MassiveCoefficientFunctions.cc file.
  *
- *         Author:  LeBron James
- *   Organization:  Los Angeles Lakers (at the time of writing)
+ *         Author:  Stephen Curry
+ *   Organization:  Golden State Warriors (at the time of writing)
  *
  *  In this file there are the exact heavy coefficient functions
  *
  * =====================================================================================
  */
+
 #ifndef Convolutions_h
 #define Convolutions_h
 

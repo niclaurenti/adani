@@ -72,8 +72,9 @@ double C2m_ps2_approximationB_klmv(double x, double mQ, double mMu);
 //              klmv = Kawamura, Lo Presti, Moch, Vogt
 //------------------------------------------------------------------------------------------//
 
-// the functions labeled with 'paper' use some approximate results for which at
-// the time of the paper [arXiv:1205.5727] the exact result was not known.
+// the functions labeled with 'paper' use some approximate results for which at the time of
+// the paper [arXiv:1205.5727] the exact result was not known (like aQqPS30) or for which now
+// we have a better approximation (aQg30_B).
 // They are only used as a benchmark against the plots of the paper
 
 double C2m_g3_approximationA_klmv(double x, double mQ, double mMu, int nf);
