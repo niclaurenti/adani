@@ -50,4 +50,3 @@ set key left top
 set format x "10^{%T}"
 
 plot filename2 u 1:5 w l  title "asymptotic" lc "green" lw 1 dt 2 noautoscale, filename2 u 1:6 w l title "threshold" lc "purple" lw 1 dt 4, filename2 u 1:7 w l title "approximation" dt 1 lw 1 lc "red"
-

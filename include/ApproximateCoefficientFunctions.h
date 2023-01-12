@@ -1,3 +1,15 @@
+/*
+ * =====================================================================================
+ *
+ *       Filename:  ApproximateCoefficientFunctions.h
+ *
+ *    Description:  Header file for the ApproximateCoefficientFunctions.cc file.
+ *
+ *         Author:  Niccolò Laurenti
+ *   Organization:  myself
+ *
+ * =====================================================================================
+ */
 #ifndef Approximate_h
 #define Approximate_h
 
@@ -35,7 +47,7 @@ double CLm_g3_approximation(double x, double mQ, double mMu, int nf, int method_
 
 double CLm_ps3_approximation(double x, double mQ, double mMu, int nf);
 
-//approximate coefficient funtions O(alpha_s^2) from [arXiv:1205.5727] 
+//approximate coefficient funtions O(alpha_s^2) from [arXiv:1205.5727]
 
 double C2m_g2_approximationA_vogt(double x, double mQ, double mMu);
 double C2m_g2_approximationB_vogt(double x, double mQ, double mMu);
@@ -43,7 +55,7 @@ double C2m_g2_approximationB_vogt(double x, double mQ, double mMu);
 double C2m_ps2_approximationA_vogt(double x, double mQ, double mMu);
 double C2m_ps2_approximationB_vogt(double x, double mQ, double mMu);
 
-//approximate coefficient funtions O(alpha_s^3) from [arXiv:1205.5727] 
+//approximate coefficient funtions O(alpha_s^3) from [arXiv:1205.5727]
 
 double C2m_g3_approximationA_vogt(double x, double mQ, double mMu, int nf);
 double C2m_g3_approximationB_vogt(double x, double mQ, double mMu, int nf);
@@ -57,4 +69,3 @@ double C2m_ps3_approximationA_vogt_paper(double x, double mQ, double mMu, int nf
 double C2m_ps3_approximationB_vogt_paper(double x, double mQ, double mMu, int nf);
 
 #endif
-
