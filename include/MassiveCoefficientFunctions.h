@@ -18,8 +18,8 @@
 //==========================================================================================//
 //                      The notation used is the following:
 //                      C^{(k)} = k-th order expansion in terms of \alpha_s^{[nf]}
-//  D^{(k)}_4 = k-th order expansion in terms of \alpha_s^{[nf+1]} in thhe nf flavor scheme
-//  D^{(k)}_5 = k-th order expansion in terms of \alpha_s^{[nf+1]} in thhe nf+1 flavor scheme
+//  D^{(k)}_4 = k-th order expansion in terms of \alpha_s^{[nf+1]} in thhe nf flavor scheme (unused)
+//  D^{(k)}_5 = k-th order expansion in terms of \alpha_s^{[nf+1]} in thhe nf+1 flavor scheme (unused)
 //------------------------------------------------------------------------------------------//
 //==========================================================================================//
 //                      Notation:

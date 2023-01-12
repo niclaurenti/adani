@@ -16,7 +16,7 @@
 #define Massless_h
 
 //==========================================================================================//
-//                      MAssless coefficient funtions O(alpha_s)
+//                      Massless coefficient funtions O(alpha_s)
 //------------------------------------------------------------------------------------------//
 
 double C2_g1(double x, int nf);
