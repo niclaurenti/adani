@@ -11,9 +11,9 @@
 
 using namespace apfel;
 
-//NLO => O(\alpha_s^1)
-//____________________________________________________
-
+//==========================================================================================//
+//                     Exact massive gluon coefficient functions for F2 at O(alpha_s)
+//------------------------------------------------------------------------------------------//
 
 double C2m_g1(double x, double mQ) { //mQ=m^2/Q^2
 
@@ -33,7 +33,9 @@ double C2m_g1(double x, double mQ) { //mQ=m^2/Q^2
 
 }
 
-//______________________________________________________
+//==========================================================================================//
+//                     Exact massive gluon coefficient functions for FL at O(alpha_s)
+//------------------------------------------------------------------------------------------//
 
 double CLm_g1(double x, double mQ) {
 
@@ -85,8 +87,9 @@ double DLm_g1_5(double x, double mQ) {
 }
 
 
-//______________________________________________________
-//NNLO => O(\alpha_s^2)
+//==========================================================================================//
+//                     Exact massive gluon coefficient functions for F2 at O(alpha_s^2)
+//------------------------------------------------------------------------------------------//
 
 double C2m_g2(double x, double mQ, double mMu) {
 
@@ -112,7 +115,9 @@ double C2m_g2(double x, double mQ, double mMu) {
 
 }
 
-//________________________________________________________
+//==========================================================================================//
+//                     Exact massive quark coefficient functions for F2 at O(alpha_s)
+//------------------------------------------------------------------------------------------//
 
 double C2m_ps2(double x, double mQ, double mMu) {
 
@@ -138,7 +143,9 @@ double C2m_ps2(double x, double mQ, double mMu) {
 
 }
 
-//______________________________________________________
+//==========================================================================================//
+//                     Exact massive gluon coefficient functions for FL at O(alpha_s)
+//------------------------------------------------------------------------------------------//
 
 double CLm_g2(double x, double mQ, double mMu) {
 
@@ -164,8 +171,9 @@ double CLm_g2(double x, double mQ, double mMu) {
 
 }
 
-//________________________________________________________
-
+//==========================================================================================//
+//                     Exact massive quarkk coefficient functions for FL at O(alpha_s)
+//------------------------------------------------------------------------------------------//
 double CLm_ps2(double x, double mQ, double mMu) {
 
     double xi = 1. / mQ ;
@@ -237,7 +245,10 @@ double DLm_g2_5(double x, double mQ, double mMu) {
 
 }
 
-//___________________________________________________________
+//==========================================================================================//
+//  Exact massive quark coefficient functions for F2 at O(alpha_s^2):
+//  Term proportional to log(mu^2/m^2)
+//------------------------------------------------------------------------------------------//
 
 double C2m_ps21(double x, double mQ) {
 
@@ -247,12 +258,16 @@ double C2m_ps21(double x, double mQ) {
 
     return - C2m_g1_x_Pgq0(x, mQ);
     //The minus sign comes from the fact that in arXiv:1205.5727
-    //the expansion is performed in terms of log(m^2/mu^2) but we are
+    //the expansion is performed in terms of log(m^2/mu^2)
+    // (even if it says the opposite) but we are
     //expanding in terms of log(mu^2/m^2)
 
 }
 
-//_________________________________________________________
+//==========================================================================================//
+//  Exact massive quark coefficient functions for FL at O(alpha_s^2):
+//  Term proportional to log(mu^2/m^2)
+//------------------------------------------------------------------------------------------//
 
 double CLm_ps21(double x, double mQ) {
 
@@ -264,7 +279,10 @@ double CLm_ps21(double x, double mQ) {
 
 }
 
-//_________________________________________________________
+//==========================================================================================//
+//  Exact massive gluon coefficient functions for F2 at O(alpha_s^2):
+//  Term proportional to log(mu^2/m^2)
+//------------------------------------------------------------------------------------------//
 
 double C2m_g21(double x, double mQ) {
 
@@ -279,7 +297,10 @@ double C2m_g21(double x, double mQ) {
 
 }
 
-//__________________________________________________________
+//==========================================================================================//
+//  Exact massive gluon coefficient functions for FL at O(alpha_s^2):
+//  Term proportional to log(mu^2/m^2)
+//------------------------------------------------------------------------------------------//
 
 double CLm_g21(double x, double mQ) {
 
@@ -294,7 +315,10 @@ double CLm_g21(double x, double mQ) {
 
 }
 
-//__________________________________________________________
+//==========================================================================================//
+//  Exact massive quark coefficient functions for F2 at O(alpha_s^3):
+//  Term proportional to log(mu^2/m^2)
+//------------------------------------------------------------------------------------------//
 
 double C2m_ps31(double x, double mQ, int nf) {
 
@@ -311,7 +335,10 @@ double C2m_ps31(double x, double mQ, int nf) {
 
 }
 
-//__________________________________________________________
+//==========================================================================================//
+//  Exact massive quark coefficient functions for FL at O(alpha_s^3):
+//  Term proportional to log(mu^2/m^2)
+//------------------------------------------------------------------------------------------//
 
 double CLm_ps31(double x, double mQ, int nf) {
 
@@ -328,7 +355,10 @@ double CLm_ps31(double x, double mQ, int nf) {
 
 }
 
-//__________________________________________________________
+//==========================================================================================//
+//  Exact massive quark coefficient functions for F2 at O(alpha_s^3):
+//  Term proportional to log(mu^2/m^2)^2
+//------------------------------------------------------------------------------------------//
 
 double C2m_ps32(double x, double mQ, int nf) {
 
@@ -343,7 +373,10 @@ double C2m_ps32(double x, double mQ, int nf) {
 
 }
 
-//__________________________________________________________
+//==========================================================================================//
+//  Exact massive quark coefficient functions for FL at O(alpha_s^3):
+//  Term proportional to log(mu^2/m^2)^2
+//------------------------------------------------------------------------------------------//
 
 double CLm_ps32(double x, double mQ, int nf) {
 
@@ -358,7 +391,10 @@ double CLm_ps32(double x, double mQ, int nf) {
 
 }
 
-//__________________________________________________________
+//==========================================================================================//
+//  Exact massive gluon coefficient functions for F2 at O(alpha_s^3):
+//  Term proportional to log(mu^2/m^2)
+//------------------------------------------------------------------------------------------//
 
 double C2m_g31(double x, double mQ, int nf) {
 
@@ -376,7 +412,10 @@ double C2m_g31(double x, double mQ, int nf) {
 
 }
 
-//__________________________________________________________
+//==========================================================================================//
+//  Exact massive gluon coefficient functions for FL at O(alpha_s^3):
+//  Term proportional to log(mu^2/m^2)
+//------------------------------------------------------------------------------------------//
 
 double CLm_g31(double x, double mQ, int nf) {
 
@@ -394,7 +433,10 @@ double CLm_g31(double x, double mQ, int nf) {
 
 }
 
-//__________________________________________________________
+//==========================================================================================//
+//  Exact massive gluon coefficient functions for F2 at O(alpha_s^3):
+//  Term proportional to log(mu^2/m^2)^2
+//------------------------------------------------------------------------------------------//
 
 double C2m_g32(double x, double mQ, int nf, int method_flag, int calls) {
 
@@ -420,7 +462,10 @@ double C2m_g32(double x, double mQ, int nf, int method_flag, int calls) {
 
 }
 
-//__________________________________________________________
+//==========================================================================================//
+//  Exact massive gluon coefficient functions for FL at O(alpha_s^3):
+//  Term proportional to log(mu^2/m^2)^2
+//------------------------------------------------------------------------------------------//
 
 double CLm_g32(double x, double mQ, int nf, int method_flag, int calls) {
 

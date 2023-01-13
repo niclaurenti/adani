@@ -3,8 +3,9 @@
 #include<cmath>
 
 
-//____________________________________________________
-//NLO => O(\alpha_s^1)
+//==========================================================================================//
+//                    Massless gluon coefficient functions for F2 at O(alpha_s)
+//------------------------------------------------------------------------------------------//
 
 double C2_g1(double x, int nf) {
 
@@ -17,7 +18,9 @@ double C2_g1(double x, int nf) {
 
 }
 
-//____________________________________________________________
+//==========================================================================================//
+//                    Massless gluon coefficient functions for FL at O(alpha_s)
+//------------------------------------------------------------------------------------------//
 
 double CL_g1(double x, int nf) {
 
@@ -27,8 +30,10 @@ double CL_g1(double x, int nf) {
 
 }
 
-//_____________________________________________________________
-//NNLO => O(\alpha_s^2)
+//==========================================================================================//
+//                    Massless gluon coefficient functions for F2 at O(alpha_s^2)
+// Observe that this result is a parameterization of the exact (known but long) result
+//------------------------------------------------------------------------------------------//
 
 double C2_g2(double x, int nf) {
 
@@ -51,7 +56,10 @@ double C2_g2(double x, int nf) {
 
 }
 
-//____________________________________________________________
+//==========================================================================================//
+//                    Massless quark coefficient functions for F2 at O(alpha_s^2)
+// Observe that this result is a parameterization of the exact (known but long) result
+//------------------------------------------------------------------------------------------//
 
 double C2_ps2(double x, int nf) {
 
@@ -76,7 +84,10 @@ double C2_ps2(double x, int nf) {
 
 }
 
-//___________________________________________________________
+//==========================================================================================//
+//                    Massless gluon coefficient functions for FL at O(alpha_s^2)
+// Observe that this result is a parameterization of the exact (known but long) result
+//------------------------------------------------------------------------------------------//
 
 double CL_g2(double x, int nf) {
 
@@ -101,7 +112,10 @@ double CL_g2(double x, int nf) {
 
 }
 
-//___________________________________________________________
+//==========================================================================================//
+//                    Massless gluon coefficient functions for FL at O(alpha_s^2)
+// Observe that this result is a parameterization of the exact (known but long) result
+//------------------------------------------------------------------------------------------//
 
 double CL_ps2(double x, int nf) {
 
@@ -125,8 +139,11 @@ double CL_ps2(double x, int nf) {
 
 }
 
-//____________________________________________________________
-//N3LO => O(\alpha_s^3)
+//==========================================================================================//
+//                    Massless gluon coefficient functions for F2 at O(alpha_s^3)
+//  Observe that this result is a parameterization of the exact (known but long) result.
+//  The term fl_g_11 is put to zero for the reason explained in page 15 of arXiv:1205.5727
+//------------------------------------------------------------------------------------------//
 
 double C2_g3(double x, int nf) {//remember that there is a delta(x1) that has been omitted
 
@@ -175,7 +192,7 @@ double C2_g3(double x, int nf) {//remember that there is a delta(x1) that has be
         x + 331570 * x2 - 244150 * x * L02 - 253.3 * x * L05 +
         L0 * L1 * (138230 - 237010 * L0) - 11860 * L0 - 700.8 *
         L02 - 1440 * L03 + 4961./162. * L04 - 134./9. * L05 -
-        (6362.54 + 932.089 * L0 )/x
+        (6362.54 + 932.089 * L0 )/x // there's a typo in the paper: -932.089 -> +932.089
     ) ; //there is + 0.625*delta(x1)
 
     double c_nf2 = (
@@ -202,7 +219,11 @@ double C2_g3(double x, int nf) {//remember that there is a delta(x1) that has be
 
 }
 
-//_________________________________________________________
+//==========================================================================================//
+//                    Massless quark coefficient functions for F2 at O(alpha_s^3)
+//  Observe that this result is a parameterization of the exact (known but long) result.
+//  The term fl_ps_11 is put to zero for the reason explained in page 15 of arXiv:1205.5727
+//------------------------------------------------------------------------------------------//
 
 
 double C2_ps3(double x, int nf) {//remember that there is a delta(x1) that has been omitted
@@ -256,7 +277,11 @@ double C2_ps3(double x, int nf) {//remember that there is a delta(x1) that has b
 
 }
 
-//____________________________________________________________
+//==========================================================================================//
+//                    Massless gluon coefficient functions for FL at O(alpha_s^3)
+//  Observe that this result is a parameterization of the exact (known but long) result.
+//  The term fl_ps_11 is put to zero for the reason explained in page 15 of arXiv:1205.5727
+//------------------------------------------------------------------------------------------//
 
 double CL_g3(double x, int nf) {//remember that there is a delta(x1) that has been omitted
 
@@ -324,7 +349,11 @@ double CL_g3(double x, int nf) {//remember that there is a delta(x1) that has be
 
 }
 
-//_____________________________________________________________
+//==========================================================================================//
+//                    Massless gluon coefficient functions for FL at O(alpha_s^3)
+//  Observe that this result is a parameterization of the exact (known but long) result.
+//  The term fl_ps_11 is put to zero for the reason explained in page 15 of arXiv:1205.5727
+//------------------------------------------------------------------------------------------//
 
 double CL_ps3(double x, int nf) {//remember that there is a delta(x1) that has been omitted
 
@@ -375,5 +404,3 @@ double CL_ps3(double x, int nf) {//remember that there is a delta(x1) that has b
     return tmp / ( 64. * pi3 ) ;
 
 }
-
-//______________________________________________________________
