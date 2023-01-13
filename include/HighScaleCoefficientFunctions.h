@@ -68,10 +68,12 @@ double D2m_ps3_highscale(double x, double mQ, double mMu, int nf);
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) coefficient funtions at O(alpha_s^3) used in [arXiv:1205.5727]
 //  klmv = Kawamura, Lo Presti, Moch, Vogt
+//  This functions uses the approximation for aQqPS30 (that now is exactly known) from Eq. ??
+//  of [arXiv:1205.5727]. It is only used for benchmark against the plots on the paper
 //------------------------------------------------------------------------------------------//
 
-double C2m_ps3_highscale_klmv(double x, double mQ, double mMu, int nf, int v);
-double D2m_ps3_highscale_klmv(double x, double mQ, double mMu, int nf, int v);
+double C2m_ps3_highscale_klmv_paper(double x, double mQ, double mMu, int nf, int v);
+double D2m_ps3_highscale_klmv_paper(double x, double mQ, double mMu, int nf, int v);
 
 double C2m_ps2_highscaleNEW(double x, double mQ, double mMu);
 

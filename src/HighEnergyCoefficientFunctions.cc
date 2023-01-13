@@ -7,7 +7,9 @@
 
 using namespace std;
 
-//____________________________________________________________
+//==========================================================================================//
+//  High energy limit of the gluon coefficient function for F2 at O(alpha_s^2).
+//------------------------------------------------------------------------------------------//
 
 double C2m_g2_highenergy(double x, double mQ, double mMu) {
 
@@ -38,8 +40,9 @@ double C2m_g2_highenergy(double x, double mQ, double mMu) {
 
 }
 
-//______________________________________________________
-
+//==========================================================================================//
+//  High energy limit of the quark coefficient function for F2 at O(alpha_s^2).
+//------------------------------------------------------------------------------------------//
 
 double C2m_ps2_highenergy(double x, double mQ, double mMu) {
 
@@ -47,7 +50,9 @@ double C2m_ps2_highenergy(double x, double mQ, double mMu) {
 
 }
 
-//____________________________________________________________
+//==========================================================================================//
+//  High energy limit of the gluon coefficient function for FL at O(alpha_s^2).
+//------------------------------------------------------------------------------------------//
 
 double CLm_g2_highenergy(double x, double mQ, double mMu) {
 
@@ -78,7 +83,9 @@ double CLm_g2_highenergy(double x, double mQ, double mMu) {
 
 }
 
-//______________________________________________________
+//==========================================================================================//
+//  High energy limit of the quark coefficient function for FL at O(alpha_s^2).
+//------------------------------------------------------------------------------------------//
 
 double CLm_ps2_highenergy(double x, double mQ, double mMu) {
 
@@ -86,7 +93,9 @@ double CLm_ps2_highenergy(double x, double mQ, double mMu) {
 
 }
 
-//____________________________________________________________
+//==========================================================================================//
+//  Q^2>>m^2 limit of the high energy limit of the gluon coefficient function for F2 at O(alpha_s^2).
+//------------------------------------------------------------------------------------------//
 
 
 double C2m_g2_highenergy_highscale(double x, double mQ , double mMu) {
@@ -109,7 +118,9 @@ double C2m_g2_highenergy_highscale(double x, double mQ , double mMu) {
 
 }
 
-//_____________________________________________
+//==========================================================================================//
+//  Q^2>>m^2 limit of the high energy limit of the quark coefficient function for F2 at O(alpha_s^2).
+//------------------------------------------------------------------------------------------//
 
 
 double C2m_ps2_highenergy_highscale(double x, double mQ, double mMu) {
@@ -118,8 +129,9 @@ double C2m_ps2_highenergy_highscale(double x, double mQ, double mMu) {
 
 }
 
-
-//_________________________________________________________
+//==========================================================================================//
+//  Q^2>>m^2 limit of the high energy limit of the gluon coefficient function for FL at O(alpha_s^2).
+//------------------------------------------------------------------------------------------//
 
 double CLm_g2_highenergy_highscale(double x, double mQ , double mMu) {
 
@@ -143,7 +155,9 @@ double CLm_g2_highenergy_highscale(double x, double mQ , double mMu) {
 
 }
 
-//_________________________________________________________
+//==========================================================================================//
+//  Q^2>>m^2 limit of the high energy limit of the quark coefficient function for FL at O(alpha_s^2).
+//------------------------------------------------------------------------------------------//
 
 double CLm_ps2_highenergy_highscale(double x, double mQ, double mMu) {
 
@@ -151,10 +165,9 @@ double CLm_ps2_highenergy_highscale(double x, double mQ, double mMu) {
 
 }
 
-
-//_________________________________________________________
-//Power Terms:
-//Difference between C_highenergy and C_highenergy_highscale
+//==========================================================================================//
+//  Power terms in the small x limit of the gluon coefficient function for F2 at O(alpha_s^2).
+//------------------------------------------------------------------------------------------//
 
 double C2m_g2_power_terms(double x, double mQ , double mMu) {
 
@@ -167,7 +180,9 @@ double C2m_g2_power_terms(double x, double mQ , double mMu) {
 
 }
 
-//______________________________________________________________
+//==========================================================================================//
+//  Power terms in the small x limit of the quark coefficient function for F2 at O(alpha_s^2).
+//------------------------------------------------------------------------------------------//
 
 double C2m_ps2_power_terms(double x, double mQ , double mMu) {
 
@@ -175,7 +190,9 @@ double C2m_ps2_power_terms(double x, double mQ , double mMu) {
 
 }
 
-//______________________________________________________________
+//==========================================================================================//
+//  Power terms in the small x limit the gluon coefficient function for FL at O(alpha_s^2).
+//------------------------------------------------------------------------------------------//
 
 double CLm_g2_power_terms(double x, double mQ , double mMu) {
 
@@ -188,7 +205,9 @@ double CLm_g2_power_terms(double x, double mQ , double mMu) {
 
 }
 
-//______________________________________________________________
+//==========================================================================================//
+//  Power terms in the small x limit the quark coefficient function for FL at O(alpha_s^2).
+//------------------------------------------------------------------------------------------//
 
 double CLm_ps2_power_terms(double x, double mQ , double mMu) {
 
@@ -196,7 +215,9 @@ double CLm_ps2_power_terms(double x, double mQ , double mMu) {
 
 }
 
-//______________________________________________________________
+//==========================================================================================//
+//  High energy limit of the gluon coefficient function for F2 at O(alpha_s^3) at leading log.
+//------------------------------------------------------------------------------------------//
 
 double C2m_g3_highenergyLL(double x, double mQ, double mMu) {
 
@@ -234,7 +255,9 @@ double C2m_g3_highenergyLL(double x, double mQ, double mMu) {
 
 }
 
-//____________________________________________________________
+//==========================================================================================//
+//  High energy limit of the gluon coefficient function for F2 at O(alpha_s^3).
+//------------------------------------------------------------------------------------------//
 
 double C2m_g3_highenergy(double x, double mQ, double mMu, int nf) {
 
@@ -311,7 +334,9 @@ double C2m_g3_highenergy(double x, double mQ, double mMu, int nf) {
 
 }
 
-//____________________________________________________________
+//==========================================================================================//
+//  High energy limit of the quark coefficient function for F2 at O(alpha_s^3) at leading log.
+//------------------------------------------------------------------------------------------//
 
 double C2m_ps3_highenergyLL(double x, double mQ, double mMu) {
 
@@ -319,15 +344,18 @@ double C2m_ps3_highenergyLL(double x, double mQ, double mMu) {
 
 }
 
-//______________________________________________________________
+//==========================================================================================//
+//  High energy limit of the quark coefficient function for F2 at O(alpha_s^3).
+//------------------------------------------------------------------------------------------//
 
 double C2m_ps3_highenergy(double x, double mQ, double mMu, int nf) {
 
     return CF/CA*C2m_g3_highenergy(x,mQ,mMu,nf);
 
 }
-
-//______________________________________________________________
+//==========================================================================================//
+//  High energy limit of the gluon coefficient function for FL at O(alpha_s^3).
+//------------------------------------------------------------------------------------------//
 
 double CLm_g3_highenergy(double x, double mQ, double mMu, int nf) {
 
@@ -346,7 +374,7 @@ double CLm_g3_highenergy(double x, double mQ, double mMu, int nf) {
     double Hmpm= H(-z,1,1,1)- H(-z,1,1,-1) + H(-z,1,-1,1) - H(-z,1,-1,-1) - H(-z,-1,1,1) + H(-z,-1,1,-1) - H(-z,-1,-1,1) + H(-z,-1,-1,-1);
 
     double II=4*mQ*z*Hmp;
-    double J=4*mQ*z*log( sqrt(xi) / 2 + sqrt(xi/4 + 1. )); //=4*mQ*z*acsch(2/sqrt(xi))
+    double J=4*mQ*z*log( sqrt(xi) / 2 + sqrt(xi/4 + 1. )); // = 4 * mQ * z * acsch( 2. / sqrt(xi) )
     double K=4*mQ*z*Hmpm;
 
     double a11=CA/M_PI;
@@ -411,7 +439,9 @@ double CLm_g3_highenergy(double x, double mQ, double mMu, int nf) {
 
 }
 
-//____________________________________________________________
+//==========================================================================================//
+//  High energy limit of the quark coefficient function for FL at O(alpha_s^3).
+//------------------------------------------------------------------------------------------//
 
 double CLm_ps3_highenergy(double x, double mQ, double mMu, int nf) {
 
@@ -419,7 +449,10 @@ double CLm_ps3_highenergy(double x, double mQ, double mMu, int nf) {
 
 }
 
-//___________________________________________________________
+//==========================================================================================//
+//  High scale limit of the high energy limit of the gluon coefficient function for F2 at
+//  O(alpha_s^3) at leading log.
+//------------------------------------------------------------------------------------------//
 
 double C2m_g3_highenergy_highscaleLL(double x, double mQ , double mMu) {
 
@@ -458,7 +491,10 @@ double C2m_g3_highenergy_highscaleLL(double x, double mQ , double mMu) {
 }
 
 
-//______________________________________________________________
+//==========================================================================================//
+//  High scale limit of the high energy limit of the gluon coefficient function for F2 at
+//  O(alpha_s^3).
+//------------------------------------------------------------------------------------------//
 
 double C2m_g3_highenergy_highscale(double x, double mQ, double mMu, int nf) {
 
@@ -525,7 +561,10 @@ double C2m_g3_highenergy_highscale(double x, double mQ, double mMu, int nf) {
 
 }
 
-//______________________________________________________________
+//==========================================================================================//
+//  High scale limit of the high energy limit of the quark coefficient function for F2 at
+//  O(alpha_s^3) at leading log.
+//------------------------------------------------------------------------------------------//
 
 double C2m_ps3_highenergy_highscaleLL(double x, double mQ, double mMu) {
 
@@ -533,7 +572,10 @@ double C2m_ps3_highenergy_highscaleLL(double x, double mQ, double mMu) {
 
 }
 
-//____________________________________________________________
+//==========================================================================================//
+//  High scale limit of the high energy limit of the quark coefficient function for F2 at
+//  O(alpha_s^3).
+//------------------------------------------------------------------------------------------//
 
 double C2m_ps3_highenergy_highscale(double x, double mQ, double mMu, int nf) {
 
@@ -541,7 +583,10 @@ double C2m_ps3_highenergy_highscale(double x, double mQ, double mMu, int nf) {
 
 }
 
-//______________________________________________________________
+//==========================================================================================//
+//  High scale limit of the high energy limit of the gluon coefficient function for FL at
+//  O(alpha_s^3).
+//------------------------------------------------------------------------------------------//
 
 double CLm_g3_highenergy_highscale(double x, double mQ, double mMu, int nf) {
 
@@ -588,7 +633,10 @@ double CLm_g3_highenergy_highscale(double x, double mQ, double mMu, int nf) {
 
 }
 
-//______________________________________________________________
+//==========================================================================================//
+//  High scale limit of the high energy limit of the quark coefficient function for F2 at
+//  O(alpha_s^3).
+//------------------------------------------------------------------------------------------//
 
 double CLm_ps3_highenergy_highscale(double x, double mQ, double mMu, int nf) {
 
@@ -728,8 +776,9 @@ double C2m_g3_highenergy_highscale_ERR(double x, double mQ, double mMu, int nf) 
 
 }
 
-//_________________________________________________________
-
+//==========================================================================================//
+//  Power terms in the small x limit of the gluon coefficient function for F2 at O(alpha_s^3) at leading log.
+//------------------------------------------------------------------------------------------//
 
 double C2m_g3_power_termsLL(double x, double mQ , double mMu) {
 
@@ -742,7 +791,9 @@ double C2m_g3_power_termsLL(double x, double mQ , double mMu) {
 
 }
 
-//_______________________________________________________________
+//==========================================================================================//
+//  Power terms in the small x limit of the gluon coefficient function for F2 at O(alpha_s^3).
+//------------------------------------------------------------------------------------------//
 
 double C2m_g3_power_terms(double x, double mQ , double mMu, int nf, int v) {
 
@@ -755,7 +806,10 @@ double C2m_g3_power_terms(double x, double mQ , double mMu, int nf, int v) {
 
 }
 
-//____________________________________________________________
+//==========================================================================================//
+//  Power terms in the small x limit of the quark coefficient function for F2 at O(alpha_s^2)
+//  at leading log.
+//------------------------------------------------------------------------------------------//
 
 double C2m_ps3_power_termsLL(double x, double mQ , double mMu) {
 
@@ -763,7 +817,9 @@ double C2m_ps3_power_termsLL(double x, double mQ , double mMu) {
 
 }
 
-//__________________________________________________________
+//==========================================================================================//
+//  Power terms in the small x limit of the quark coefficient function for F2 at O(alpha_s^3).
+//------------------------------------------------------------------------------------------//
 
 double C2m_ps3_power_terms(double x, double mQ , double mMu, int nf) {
 
@@ -771,7 +827,9 @@ double C2m_ps3_power_terms(double x, double mQ , double mMu, int nf) {
 
 }
 
-//__________________________________________________________
+//==========================================================================================//
+//  Power terms in the small x limit of the gluon coefficient function for FL at O(alpha_s^3).
+//------------------------------------------------------------------------------------------//
 
 double CLm_g3_power_terms(double x, double mQ , double mMu, int nf) {
 
@@ -784,8 +842,9 @@ double CLm_g3_power_terms(double x, double mQ , double mMu, int nf) {
 
 }
 
-//____________________________________________________________
-
+//==========================================================================================//
+//  Power terms in the small x limit of the gluon coefficient function for FL at O(alpha_s^3).
+//------------------------------------------------------------------------------------------//
 
 double CLm_ps3_power_terms(double x, double mQ , double mMu, int nf) {
 
@@ -793,7 +852,9 @@ double CLm_ps3_power_terms(double x, double mQ , double mMu, int nf) {
 
 }
 
-//__________________________________________________________
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+
 
 double C2m_g3_highenergy(double x, double mQ, double mMu, int nf, int v) {
 

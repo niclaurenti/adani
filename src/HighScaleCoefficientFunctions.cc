@@ -11,6 +11,11 @@
 
 using namespace apfel;
 
+//==========================================================================================//
+//  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for F2 at O(alpha_s)
+//  expanded in terms of \alpha_s^{[nf]}
+//------------------------------------------------------------------------------------------//
+
 double C2m_g1_highscale(double x, double mQ) {
 
     if(x>1 || x<0) return 0;
@@ -22,7 +27,10 @@ double C2m_g1_highscale(double x, double mQ) {
 
 }
 
-//____________________________________________________________
+//==========================================================================================//
+//  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for FL at O(alpha_s)
+//  expanded in terms of \alpha_s^{[nf]}
+//------------------------------------------------------------------------------------------//
 
 double CLm_g1_highscale(double x, double mQ) {
 
@@ -32,7 +40,10 @@ double CLm_g1_highscale(double x, double mQ) {
 
 }
 
-//_____________________________________________________________
+//==========================================================================================//
+//  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for F2 at O(alpha_s)
+//  expanded in terms of \alpha_s^{[nf+1]}
+//------------------------------------------------------------------------------------------//
 
 double D2m_g1_highscale(double x, double mQ) {
 
@@ -40,7 +51,10 @@ double D2m_g1_highscale(double x, double mQ) {
 
 }
 
-//____________________________________________________________
+//==========================================================================================//
+//  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for FL at O(alpha_s)
+//  expanded in terms of \alpha_s^{[nf+1]}
+//------------------------------------------------------------------------------------------//
 
 double DLm_g1_highscale(double x, double mQ) {
 
@@ -48,7 +62,10 @@ double DLm_g1_highscale(double x, double mQ) {
 
 }
 
-//____________________________________________________________
+//==========================================================================================//
+//  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for F2 at O(alpha_s^2)
+//  expanded in terms of \alpha_s^{[nf]}
+//------------------------------------------------------------------------------------------//
 
 double C2m_g2_highscale(double x, double mQ, double mMu) {
 
@@ -79,9 +96,10 @@ double C2m_g2_highscale(double x, double mQ, double mMu) {
 
 }
 
-
-//_______________________________________________________________
-
+//==========================================================================================//
+//  High scale (Q^2 >> m^2) limit of the quark coefficient functions for F2 at O(alpha_s^2)
+//  expanded in terms of \alpha_s^{[nf]}
+//------------------------------------------------------------------------------------------//
 
 double C2m_ps2_highscale(double x, double mQ, double mMu) {
 
@@ -112,8 +130,10 @@ double C2m_ps2_highscale(double x, double mQ, double mMu) {
 
 }
 
-
-//_______________________________________________________________
+//==========================================================================================//
+//  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for FL at O(alpha_s^2)
+//  expanded in terms of \alpha_s^{[nf]}
+//------------------------------------------------------------------------------------------//
 
 double CLm_g2_highscale(double x, double mQ, double mMu) {
 
@@ -138,7 +158,10 @@ double CLm_g2_highscale(double x, double mQ, double mMu) {
 
 }
 
-//_______________________________________________________________
+//==========================================================================================//
+//  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for FL at O(alpha_s^2)
+//  expanded in terms of \alpha_s^{[nf]}
+//------------------------------------------------------------------------------------------//
 
 double CLm_ps2_highscale(double x, double mQ, double mMu) {
 
@@ -163,7 +186,10 @@ double CLm_ps2_highscale(double x, double mQ, double mMu) {
 
 }
 
-//_______________________________________________________________
+//==========================================================================================//
+//  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for F2 at O(alpha_s^2)
+//  expanded in terms of \alpha_s^{[nf+1]}
+//------------------------------------------------------------------------------------------//
 
 double D2m_g2_highscale(double x, double mQ, double mMu) {
 
@@ -173,7 +199,10 @@ double D2m_g2_highscale(double x, double mQ, double mMu) {
 
 }
 
-//___________________________________________________________
+//==========================================================================================//
+//  High scale (Q^2 >> m^2) limit of the quark coefficient functions for F2 at O(alpha_s^2)
+//  expanded in terms of \alpha_s^{[nf+1]}
+//------------------------------------------------------------------------------------------//
 
 double D2m_ps2_highscale(double x, double mQ, double mMu) {
 
@@ -181,7 +210,10 @@ double D2m_ps2_highscale(double x, double mQ, double mMu) {
 
 }
 
-//___________________________________________________________
+//==========================================================================================//
+//  High scale (Q^2 >> m^2) limit of the quark coefficient functions for FL at O(alpha_s^2)
+//  expanded in terms of \alpha_s^{[nf+1]}
+//------------------------------------------------------------------------------------------//
 
 double DLm_g2_highscale(double x, double mQ, double mMu) {
 
@@ -191,7 +223,10 @@ double DLm_g2_highscale(double x, double mQ, double mMu) {
 
 }
 
-//___________________________________________________________
+//==========================================================================================//
+//  High scale (Q^2 >> m^2) limit of the quark coefficient functions for FL at O(alpha_s^2)
+//  expanded in terms of \alpha_s^{[nf+1]}
+//------------------------------------------------------------------------------------------//
 
 double DLm_ps2_highscale(double x, double mQ, double mMu) {
 
@@ -199,7 +234,10 @@ double DLm_ps2_highscale(double x, double mQ, double mMu) {
 
 }
 
-//___________________________________________________________
+//==========================================================================================//
+//  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for F2 at O(alpha_s^3)
+//  expanded in terms of \alpha_s^{[nf]}
+//------------------------------------------------------------------------------------------//
 
 double C2m_g3_highscale(double x, double mQ, double mMu, int nf, int v) {
 
@@ -216,7 +254,10 @@ double C2m_g3_highscale(double x, double mQ, double mMu, int nf, int v) {
 
 }
 
-//________________________________________________________________
+//==========================================================================================//
+//  High scale (Q^2 >> m^2) limit of the quark coefficient functions for F2 at O(alpha_s^3)
+//  expanded in terms of \alpha_s^{[nf]}
+//------------------------------------------------------------------------------------------//
 
 double C2m_ps3_highscale(double x, double mQ, double mMu, int nf) {
 
@@ -226,7 +267,10 @@ double C2m_ps3_highscale(double x, double mQ, double mMu, int nf) {
 
 }
 
-//________________________________________________________________
+//==========================================================================================//
+//  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for FL at O(alpha_s^3)
+//  expanded in terms of \alpha_s^{[nf+1]}
+//------------------------------------------------------------------------------------------//
 
 double DLm_g3_highscale(double x, double mQ, double mMu, int nf) {
 
@@ -531,7 +575,10 @@ double DLm_g3_highscale(double x, double mQ, double mMu, int nf) {
 
 }
 
-//____________________________________________________________
+//==========================================================================================//
+//  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for FL at O(alpha_s^3)
+//  expanded in terms of \alpha_s^{[nf]}
+//------------------------------------------------------------------------------------------//
 
 double CLm_g3_highscale(double x, double mQ, double mMu, int nf) {
 
@@ -548,7 +595,10 @@ double CLm_g3_highscale(double x, double mQ, double mMu, int nf) {
 
 }
 
-//________________________________________________________________
+//==========================================================================================//
+//  High scale (Q^2 >> m^2) limit of the quark coefficient functions for FL at O(alpha_s^3)
+//  expanded in terms of \alpha_s^{[nf+1]}
+//------------------------------------------------------------------------------------------//
 
 double DLm_ps3_highscale(double x, double mQ, double mMu, int nf) {
 
@@ -673,7 +723,10 @@ double DLm_ps3_highscale(double x, double mQ, double mMu, int nf) {
 
 }
 
-//________________________________________________________________
+//==========================================================================================//
+//  High scale (Q^2 >> m^2) limit of the quark coefficient functions for FL at O(alpha_s^3)
+//  expanded in terms of \alpha_s^{[nf]}
+//------------------------------------------------------------------------------------------//
 
 double CLm_ps3_highscale(double x, double mQ, double mMu, int nf) {
 
@@ -683,7 +736,10 @@ double CLm_ps3_highscale(double x, double mQ, double mMu, int nf) {
 
 }
 
-//________________________________________________________
+//==========================================================================================//
+//  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for F2 at O(alpha_s^3)
+//  expanded in terms of \alpha_s^{[nf+1]}
+//------------------------------------------------------------------------------------------//
 
 double D2m_g3_highscale(double x, double mQ, double mMu, int nf, int v) {
 
@@ -2117,7 +2173,10 @@ double D2m_g3_highscale(double x, double mQ, double mMu, int nf, int v) {
 
 }
 
-//_______________________________________________________________
+//==========================================================================================//
+//  High scale (Q^2 >> m^2) limit of the quark coefficient functions for F2 at O(alpha_s^3)
+//  expanded in terms of \alpha_s^{[nf+1]}
+//------------------------------------------------------------------------------------------//
 
 double D2m_ps3_highscale(double x, double mQ, double mMu, int nf) {
 
@@ -3203,23 +3262,32 @@ double D2m_ps3_highscale(double x, double mQ, double mMu, int nf) {
 
 }
 
-//_______________________________________________________________
+//==========================================================================================//
+//  High scale (Q^2 >> m^2) limit of the quark coefficient functions for F2 at O(alpha_s^3)
+//  expanded in terms of \alpha_s^{[nf]}.
+//  This function uses the approximation for aQqPS30 (that now is exactly known) from Eq. ??
+//  of [arXiv:1205.5727]. It is only used for benchmark against the plots on the paper
+//------------------------------------------------------------------------------------------//
 
-double C2m_ps3_highscale_klmv(double x, double mQ, double mMu, int nf, int v) {
+double C2m_ps3_highscale_klmv_paper(double x, double mQ, double mMu, int nf, int v) {
 
     double Lmu=log(mMu);
     //double L2mu =Lmu*Lmu;
 
     //double pi2=M_PI*M_PI;
 
-    return D2m_ps3_highscale_klmv(x,mQ,mMu,nf,v) - 1./3/M_PI*Lmu*D2m_ps2_highscale(x,mQ,mMu) ;
+    return D2m_ps3_highscale_klmv_paper(x,mQ,mMu,nf,v) - 1./3/M_PI*Lmu*D2m_ps2_highscale(x,mQ,mMu) ;
 
 }
 
-//_______________________________________________________________
-//Function that uses the approximation for aQqPS30 (that now is exactly known)
-//only used for benchmark against the plots on the paper
-double D2m_ps3_highscale_klmv(double x, double mQ, double mMu, int nf, int v) {
+//==========================================================================================//
+//  High scale (Q^2 >> m^2) limit of the quark coefficient functions for F2 at O(alpha_s^3)
+//  expanded in terms of \alpha_s^{[nf+1]}.
+//  This function uses the approximation for aQqPS30 (that now is exactly known) from Eq. ??
+//  of [arXiv:1205.5727]. It is only used for benchmark against the plots on the paper
+//------------------------------------------------------------------------------------------//
+
+double D2m_ps3_highscale_klmv_paper(double x, double mQ, double mMu, int nf, int v) {
 
     if(x<0 || x>1) return 0;
 

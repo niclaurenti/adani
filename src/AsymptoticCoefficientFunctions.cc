@@ -16,8 +16,9 @@ double C2m_g1_asymptotic(double x, double mQ) {
 
 }
 
-//____________________________________________________________
-
+//==========================================================================================//
+//  Asymptotic limit of the gluon coefficient function for FL at O(alpha_s).
+//------------------------------------------------------------------------------------------//
 
 double CLm_g1_asymptotic(double x, double mQ) {
 
@@ -25,8 +26,9 @@ double CLm_g1_asymptotic(double x, double mQ) {
 
 }
 
-//____________________________________________________________
-
+//==========================================================================================//
+//  Asymptotic limit of the gluon coefficient function for F2 at O(alpha_s^2).
+//------------------------------------------------------------------------------------------//
 
 double C2m_g2_asymptotic(double x, double mQ, double mMu) {
 
@@ -34,8 +36,9 @@ double C2m_g2_asymptotic(double x, double mQ, double mMu) {
 
 }
 
-//__________________________________________________________
-
+//==========================================================================================//
+//  Asymptotic limit of the quark coefficient function for F2 at O(alpha_s^2).
+//------------------------------------------------------------------------------------------//
 
 double C2m_ps2_asymptotic(double x, double mQ, double mMu) {
 
@@ -43,7 +46,9 @@ double C2m_ps2_asymptotic(double x, double mQ, double mMu) {
 
 }
 
-//__________________________________________________________
+//==========================================================================================//
+//  Asymptotic limit of the gluon coefficient function for FL at O(alpha_s^2).
+//------------------------------------------------------------------------------------------//
 
 double CLm_g2_asymptotic(double x, double mQ, double mMu) {
 
@@ -51,7 +56,9 @@ double CLm_g2_asymptotic(double x, double mQ, double mMu) {
 
 }
 
-//____________________________________________________________
+//==========================================================================================//
+//  Asymptotic limit of the quark coefficient function for FL at O(alpha_s^2).
+//------------------------------------------------------------------------------------------//
 
 double CLm_ps2_asymptotic(double x, double mQ, double mMu) {
 
@@ -59,8 +66,9 @@ double CLm_ps2_asymptotic(double x, double mQ, double mMu) {
 
 }
 
-//____________________________________________________________
-
+//==========================================================================================//
+//  Asymptotic limit of the gluon coefficient function for F2 at O(alpha_s^3) at leading logarithm.
+//------------------------------------------------------------------------------------------//
 
 double C2m_g3_asymptoticLL(double x, double mQ, double mMu, int nf, int v) {
 
@@ -68,7 +76,9 @@ double C2m_g3_asymptoticLL(double x, double mQ, double mMu, int nf, int v) {
 
 }
 
-//_____________________________________________________________
+//==========================================================================================//
+//  Asymptotic limit of the gluon coefficient function for F2 at O(alpha_s^3).
+//------------------------------------------------------------------------------------------//
 
 double C2m_g3_asymptotic(double x, double mQ, double mMu, int nf, int v1, int v2) {
 
@@ -76,7 +86,9 @@ double C2m_g3_asymptotic(double x, double mQ, double mMu, int nf, int v1, int v2
 
 }
 
-//_____________________________________________________________
+//==========================================================================================//
+//  Asymptotic limit of the quark coefficient function for F2 at O(alpha_s^3).
+//------------------------------------------------------------------------------------------//
 
 double C2m_ps3_asymptotic(double x, double mQ, double mMu, int nf) {
 
@@ -84,7 +96,9 @@ double C2m_ps3_asymptotic(double x, double mQ, double mMu, int nf) {
 
 }
 
-//_____________________________________________________________
+//==========================================================================================//
+//  Asymptotic limit of the gluon coefficient function for FL at O(alpha_s^3).
+//------------------------------------------------------------------------------------------//
 
 double CLm_g3_asymptotic(double x, double mQ, double mMu, int nf) {
 
@@ -92,12 +106,12 @@ double CLm_g3_asymptotic(double x, double mQ, double mMu, int nf) {
 
 }
 
-//_____________________________________________________________
+//==========================================================================================//
+//  Asymptotic limit of the quark coefficient function for FL at O(alpha_s^3).
+//------------------------------------------------------------------------------------------//
 
 double CLm_ps3_asymptotic(double x, double mQ, double mMu, int nf) {
 
     return CLm_ps3_highscale(x,mQ,mMu,nf) + CLm_ps3_power_terms(x,mQ,mMu,nf);
 
 }
-
-//_____________________________________________________________

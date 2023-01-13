@@ -1114,7 +1114,7 @@ double C2m_ps3_approximationA_klmv_paper(double x, double mQ, double mMu, int nf
     double C2m_ps30_highenergyNLLA=(0.004*pow(log(1./mQ)/log(5), 4) - 0.125)*4/mQ/x;
 
     double C30 = (
-        (1. - f)*beta*C2m_ps3_highscale_klmv(x,mQ,1,nf,1)
+        (1. - f)*beta*C2m_ps3_highscale_klmv_paper(x,mQ,1,nf,1)
         + f*beta3*(-log(eta)/log(x)*C2m_ps3_highenergyLL(x,mQ,1) + C2m_ps30_highenergyNLLA*eta_gamma/(C+eta_gamma))
     );
 
@@ -1157,7 +1157,7 @@ double C2m_ps3_approximationB_klmv_paper(double x, double mQ, double mMu, int nf
     double C2m_ps30_highenergyNLLB=(0.0245*pow(log(1./mQ)/log(5),2) - 0.17)*4/mQ/x;
 
     double C30 = (
-        (1.-f)*beta3*C2m_ps3_highscale_klmv(x,mQ,1,nf,2)
+        (1.-f)*beta3*C2m_ps3_highscale_klmv_paper(x,mQ,1,nf,2)
         +f*beta3*(-log(eta)/log(x)*C2m_ps3_highenergyLL(x,mQ,1) + C2m_ps30_highenergyNLLB*eta_delta/(D+eta_delta))
     );
 
