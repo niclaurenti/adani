@@ -807,6 +807,9 @@ double C2m_ps2_approximationB_klmv(double x, double mQ, double mMu) {
 //  Approximate gluon coefficient funtcions for F2 at O(alpha_s^3) from [arXiv:1205.5727].
 //  klmv = Kawamura, Lo Presti, Moch, Vogt.
 //  Upper band (i.e. approximation A)
+//
+//  Eq. (4.17) of Ref. [arXiv:1205.5727].
+//  This equation uses the approximate form of aQg30 given in Eq. (3.49) of [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
 double C2m_g3_approximationA_klmv(double x, double mQ, double mMu, int nf) {
@@ -856,6 +859,9 @@ double C2m_g3_approximationA_klmv(double x, double mQ, double mMu, int nf) {
 //  Approximate gluon coefficient funtcions for F2 at O(alpha_s^3) from [arXiv:1205.5727].
 //  klmv = Kawamura, Lo Presti, Moch, Vogt.
 //  Lower band (i.e. approximation B)
+//
+//  Eq. (4.18) of Ref. [arXiv:1205.5727].
+//  This equation uses the approximate form of aQg30 given in Eq. (16) of Ref. [arXiv:1701.05838].
 //------------------------------------------------------------------------------------------//
 
 double C2m_g3_approximationB_klmv(double x, double mQ, double mMu, int nf) {
@@ -907,8 +913,10 @@ double C2m_g3_approximationB_klmv(double x, double mQ, double mMu, int nf) {
 //  Approximate gluon coefficient funtcions for F2 at O(alpha_s^3) from [arXiv:1205.5727].
 //  klmv = Kawamura, Lo Presti, Moch, Vogt.
 //  Lower band (i.e. approximation B).
-//  This equation uses the approximate form of aQg30 given in Eq. ??? of arXiv:1205.5727 instead
-//  of the one given in ???.
+//
+//  Eq. (4.18) of Ref. [arXiv:1205.5727].
+//  This equation uses the approximate form of aQg30 given in Eq. (3.50) of [arXiv:1205.5727] instead
+//  of the one given in Eq. (16) of Ref. [arXiv:1701.05838].
 //------------------------------------------------------------------------------------------//
 
 double C2m_g3_approximationB_klmv_paper(double x, double mQ, double mMu, int nf) {
@@ -960,6 +968,9 @@ double C2m_g3_approximationB_klmv_paper(double x, double mQ, double mMu, int nf)
 //  Approximate gluon coefficient funtcions for F2 at O(alpha_s^3) from [arXiv:1205.5727].
 //  klmv = Kawamura, Lo Presti, Moch, Vogt.
 //  Lower band (i.e. approximation B) with the low xi limit.
+//
+//  Eq. (4.21) of Ref. [arXiv:1205.5727].
+//  This equation uses the exact expression of aQqPS30 given in Eq. (5.41, 5.42, 5.45) of Ref. [arXiv:1409.1135]
 //------------------------------------------------------------------------------------------//
 
 double C2m_g3_approximationBlowxi_klmv(double x, double mQ, double mMu, int nf) {
@@ -1007,7 +1018,14 @@ double C2m_g3_approximationBlowxi_klmv(double x, double mQ, double mMu, int nf) 
 
 }
 
-//_________________________________________________________________
+//==========================================================================================//
+//  Approximate quark coefficient funtcions for F2 at O(alpha_s^3) from [arXiv:1205.5727].
+//  klmv = Kawamura, Lo Presti, Moch, Vogt.
+//  Upper band (i.e. approximation A).
+//
+//  Eq. (4.21) of Ref. [arXiv:1205.5727].
+//  This equation uses the exact expression of aQqPS30 given in Eq. (5.41, 5.42, 5.45) of Ref. [arXiv:1409.1135]
+//------------------------------------------------------------------------------------------//
 
 double C2m_ps3_approximationA_klmv(double x, double mQ, double mMu, int nf) {
 
@@ -1045,7 +1063,14 @@ double C2m_ps3_approximationA_klmv(double x, double mQ, double mMu, int nf) {
 
 }
 
-//_________________________________________________________________
+//==========================================================================================//
+//  Approximate quark coefficient funtcions for F2 at O(alpha_s^3) from [arXiv:1205.5727].
+//  klmv = Kawamura, Lo Presti, Moch, Vogt.
+//  Lower band (i.e. approximation B).
+//
+//  Eq. (4.22) of Ref. [arXiv:1205.5727].
+//  This equation uses the exact expression of aQqPS30 given in Eq. (5.41, 5.42, 5.45) of Ref. [arXiv:1409.1135]
+//------------------------------------------------------------------------------------------//
 
 double C2m_ps3_approximationB_klmv(double x, double mQ, double mMu, int nf) {
 
@@ -1088,7 +1113,11 @@ double C2m_ps3_approximationB_klmv(double x, double mQ, double mMu, int nf) {
 //  Approximate quark coefficient funtcions for F2 at O(alpha_s^3) from [arXiv:1205.5727].
 //  klmv = Kawamura, Lo Presti, Moch, Vogt.
 //  Upper band (i.e. approximation A).
-//  This equation uses the approximate form of aPS30 given in Eq. ??? of arXiv:1205.5727.
+//
+//  Eq. (4.21) of Ref. [arXiv:1205.5727].
+//  This equation uses the approximate form of aQqPS30 given in Eq. (3.52) of [arXiv:1205.5727]
+//  instead of the exact expression given in Eq. (5.41, 5.42, 5.45) of Ref. [arXiv:1409.1135]
+//  Used only as a benchmark against the plots of the paper [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
 double C2m_ps3_approximationA_klmv_paper(double x, double mQ, double mMu, int nf) {
@@ -1131,7 +1160,11 @@ double C2m_ps3_approximationA_klmv_paper(double x, double mQ, double mMu, int nf
 //  Approximate quark coefficient funtcions for F2 at O(alpha_s^3) from [arXiv:1205.5727].
 //  klmv = Kawamura, Lo Presti, Moch, Vogt.
 //  Lower band (i.e. approximation B).
-//  This equation uses the approximate form of aPS30 given in Eq. ??? of arXiv:1205.5727.
+//
+//  Eq. (4.22) of Ref. [arXiv:1205.5727].
+//  This equation uses the approximate form of aQqPS30 given in Eq. (3.53) of [arXiv:1205.5727]
+//  instead of the exact expression given in Eq. (5.41, 5.42, 5.45) of Ref. [arXiv:1409.1135]
+//  Used only as a benchmark against the plots of the paper [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
 double C2m_ps3_approximationB_klmv_paper(double x, double mQ, double mMu, int nf) {
@@ -1169,5 +1202,3 @@ double C2m_ps3_approximationB_klmv_paper(double x, double mQ, double mMu, int nf
     return C30 + C2m_ps31(x, mQ, nf) * Lmu + C2m_ps32(x, mQ, nf) * Lmu2 ;
 
 }
-
-//_________________________________________________________________

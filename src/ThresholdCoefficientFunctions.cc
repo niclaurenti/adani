@@ -3,124 +3,136 @@
 #include "../include/SpecialFunctions.h"
 #include "../include/ColorFactors.h"
 #include <cmath>
-//#include<gsl/gsl_sf.h>
 #include "../include/SpecialFunctions.h"
 #include "apfel/massivecoefficientfunctionsunp_sl.h"
 
-//#include <iostream>
-
-//using namespace std;
-
 using namespace apfel;
 
-//_____________________________________________________________
+//==========================================================================================//
+//  Threshold limit (x->xmax) of the gluon coefficient function for F2 at O(alpha_s).
+//  In order to pass to klmv normalization multiply mQ*4*M_PI*M_PI*x
+//
+//  Eq. (3.15) of Ref. [arXiv:1205.5727]
+//------------------------------------------------------------------------------------------//
 
 double C2m_g1_threshold(double x, double mQ) {
 
-    double xmax=1/(1+4*mQ);
+    double xmax = 1. / ( 1. + 4 * mQ ) ;
 
-    if(x>xmax || x<0) return 0;
+    if ( x>xmax || x<0 ) return 0;
 
-    double beta=sqrt(1-4*mQ*x/(1-x));
-    double xi=1./mQ;
-    double overall=xi/(4*M_PI*M_PI);
+    double beta = sqrt( 1. - 4. * mQ * x / ( 1. - x ) ) ;
+    double xi = 1. / mQ ;
 
-    return overall*M_PI*TR*beta/(1+xi/4)/x;
+    return xi / ( 4 * M_PI ) * TR * beta / ( 1. + xi / 4 ) / x ;
 
-}//in order to pass to klmv normalization multiply mQ*4*M_PI*M_PI*x
+}
 
-//__________________________________________________________
+//==========================================================================================//
+//  Threshold limit (x->xmax) of the gluon coefficient function for F2 at O(alpha_s^2).
+//  In order to pass to klmv normalization multiply mQ*M_PI*x and put mu^2=Q^2+4m^2
+//
+//  Eq. (3.16-17) of Ref. [arXiv:1205.5727]
+//------------------------------------------------------------------------------------------//
 
 double C2m_g2_threshold(double x, double mQ, double mMu) {
 
-    double xmax=1/(1+4*mQ);
+    double xmax = 1. / ( 1. + 4 * mQ ) ;
 
     if(x>xmax || x<0) return 0;
 
-    double beta=sqrt(1-4*mQ*x/(1-x));
-    double xi=1./mQ;
-        //double overall=xi/(4*M_PI*M_PI);
+    double beta = sqrt( 1. - 4 * mQ * x / (1. - x));
+    double xi = 1. / mQ;
 
-    double logb=log(beta);
-    double log2b=logb*logb;
+    double logb = log(beta) ;
+    double log2b = logb * logb ;
 
-    double C_log2b=16*CA;
+    double C_log2b = 16 * CA ;
 
-    double C_logb=48*CA*log(2) - 40*CA
-        + 8*CA*log(mMu);
+    double C_logb = 48 * CA * log(2) - 40 * CA + 8 * CA * log(mMu) ;
 
-    double C_fracb=(2*CF-CA)*M_PI*M_PI;
+    double C_fracb = ( 2 * CF - CA ) * M_PI * M_PI ;
 
     double C_const = (
-        c0(xi)+36*CA*log(2)*log(2)-60*CA*log(2)
-        +log(mMu)*(8*CA*log(2)-c0_bar(xi))
+        c0(xi) + 36 * CA * log(2) * log(2) - 60 * CA * log(2)
+        + log(mMu) * ( 8 * CA * log(2) - c0_bar(xi) )
     );
 
-    return C2m_g1(x,mQ)/4/M_PI*(C_log2b*log2b + C_logb*logb + C_fracb/beta + C_const);
+    return C2m_g1(x,mQ) * (
+        C_log2b * log2b + C_logb * logb + C_fracb / beta + C_const
+    ) / 4. / M_PI ;
 
-}//in order to pass to klmv normalization multiply mQ*M_PI*x and put mu^2=Q^2+4m^2
+}
 
-//_________________________________________________________
+//==========================================================================================//
+//  Threshold limit (x->xmax) of the gluon coefficient function for FL at O(alpha_s^2).
+//  In order to pass to klmv normalization multiply mQ*M_PI*x and put mu^2=Q^2+4m^2
+//
+//  Eq. (3.16-17) of Ref. [arXiv:1205.5727] with C20 -> CL0
+//------------------------------------------------------------------------------------------//
 
 double CLm_g2_threshold(double x, double mQ, double mMu) {
 
-    double xmax=1/(1+4*mQ);
+    double xmax = 1. / (1. + 4 * mQ) ;
 
     if(x>xmax || x<0) return 0;
 
-    double beta=sqrt(1-4*mQ*x/(1-x));
-    double xi=1./mQ;
-        //double overall=xi/(4*M_PI*M_PI);
+    double beta = sqrt(1. - 4 * mQ * x / (1. - x) );
+    double xi = 1. / mQ ;
 
-    double logb=log(beta);
-    double log2b=logb*logb;
+    double logb = log(beta);
+    double log2b = logb * logb ;
 
-    double C_log2b=16*CA;
+    double C_log2b = 16 * CA ;
 
-    double C_logb = 48*CA*log(2) - 40*CA + 8*CA*log(mMu);
+    double C_logb = 48 * CA * log(2) - 40 * CA + 8 * CA * log(mMu);
 
-    double C_fracb=(2*CF-CA)*M_PI*M_PI;
+    double C_fracb = ( 2 * CF - CA) * M_PI * M_PI ;
 
     double C_const = (
-        c0(xi)+36*CA*log(2)*log(2)-60*CA*log(2)
-        + log(mMu)*(8*CA*log(2)-c0_bar(xi))
+        c0(xi) + 36 * CA * log(2) * log(2) - 60 * CA * log(2)
+        + log(mMu) * (8 * CA * log(2) - c0_bar(xi))
     ) ;
 
-    return CLm_g1(x,mQ)/4/M_PI*(C_log2b*log2b + C_logb*logb + C_fracb/beta + C_const);
+    return CLm_g1(x,mQ) * (
+        C_log2b * log2b + C_logb * logb + C_fracb / beta + C_const
+    ) / 4. / M_PI ;
 
-}//in order to pass to klmv normalization multiply mQ*M_PI*x and put mu^2=Q^2+4m^2
+}
 
-//_________________________________________________________
+//==========================================================================================//
+//  Threshold limit (x->xmax) of the gluon coefficient function for F2 at O(alpha_s^3).
+//
+//  Eq. (3.18-19) of Ref. [arXiv:1205.5727]
+//------------------------------------------------------------------------------------------//
 
 double C2m_g3_threshold(double x, double mQ, double mMu, int nf) {
 
-    double x_max=1./(1+4*mQ);
+    double x_max = 1. / (1. + 4 * mQ);
 
     if(x>x_max || x<0) return 0;
 
-    double xi=1/mQ;
-    double beta=sqrt(1-4*mQ*x/(1-x));
+    double xi = 1. / mQ ;
+    double beta = sqrt(1. - 4. * mQ * x / (1. - x));
     //double eta=1./4.*xi*(1-x)/x - 1;
     //double rho=4*mQ*x/(1-x);
 
     // double L=log(mQ);
-    double Lm=log(mMu);
+    double Lm = log(mMu);
     //double L2=L*L;
-    double Lm2=Lm*Lm;
-    double l=log(beta);
-    double l2=l*l;
-    double l3=l2*l;
-    double l4=l3*l;
+    double Lm2 = Lm * Lm;
+    double l = log(beta);
+    double l2 = l * l;
+    double l3 = l2 * l;
+    double l4 = l3 * l;
 
-    double log2=log(2);
+    double log2 = log(2);
 
-    double z3=zeta(3);
-    double pi2=M_PI*M_PI;
-    double pi4=pi2*pi2;
+    double z3 = zeta(3);
+    double pi2 = M_PI * M_PI ;
+    double pi4 = pi2 * pi2 ;
 
-    //double overall=xi/(4*pi2);
-
-    double c_log4= 128.*CA*CA;
+    double c_log4= 128. * CA * CA ;
 
     double c_log3=(768.*log2 - 6464./9.)*CA*CA + 128./9.*CA*nf + 128.*CA*CA*Lm;
 
@@ -156,14 +168,18 @@ double C2m_g3_threshold(double x, double mQ, double mMu, int nf) {
 
     double c_const= c_const_sqrt*c_const_sqrt;
 
-    return C2m_g1(x,mQ)/pi2/16.*(
-        c_log4*l4 + c_log3*l3 + c_log2*l2 + c_log*l
-        + c_fracbeta/beta + c_fracbeta2/beta/beta + c_const
+    return C2m_g1(x,mQ) / pi2 / 16. * (
+        c_log4 * l4 + c_log3 * l3 + c_log2 * l2 + c_log * l
+        + c_fracbeta / beta + c_fracbeta2 / beta / beta + c_const
     );
 
 }
 
-//_________________________________________________________
+//==========================================================================================//
+//  Threshold limit (x->xmax) of the gluon coefficient function for FL at O(alpha_s^3).
+//
+//  Eq. (3.18-19) of Ref. [arXiv:1205.5727] with C20 -> CL0
+//------------------------------------------------------------------------------------------//
 
 double CLm_g3_threshold(double x, double mQ, double mMu, int nf) {
 
@@ -190,8 +206,6 @@ double CLm_g3_threshold(double x, double mQ, double mMu, int nf) {
     double z3=zeta(3);
     double pi2=M_PI*M_PI;
     double pi4=pi2*pi2;
-
-    //double overall=xi/(4*pi2);
 
     double c_log4= 128.*CA*CA;
 

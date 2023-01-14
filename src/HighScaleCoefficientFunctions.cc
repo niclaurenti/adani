@@ -14,6 +14,8 @@ using namespace apfel;
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for F2 at O(alpha_s)
 //  expanded in terms of \alpha_s^{[nf]}
+//
+//  Eq. (B.4) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
 double C2m_g1_highscale(double x, double mQ) {
@@ -21,7 +23,9 @@ double C2m_g1_highscale(double x, double mQ) {
     if(x>1 || x<0) return 0;
 
     return (
-        4. * TR * ( - 8. * x * x + 8. * x - 1. + log( ( 1. - x ) / x ) * ( 2 * x * x - 2 * x + 1. ) ) / 4. / M_PI
+        4. * TR * (
+            - 8. * x * x + 8. * x - 1. + log((1. - x) / x) * (2 * x * x - 2 * x + 1.)
+        ) / 4. / M_PI
         + 2. * K_Qg1(x, mQ)
     ) ;
 
@@ -43,6 +47,8 @@ double CLm_g1_highscale(double x, double mQ) {
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for F2 at O(alpha_s)
 //  expanded in terms of \alpha_s^{[nf+1]}
+//
+//  Eq. (B.4) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
 double D2m_g1_highscale(double x, double mQ) {
@@ -65,6 +71,8 @@ double DLm_g1_highscale(double x, double mQ) {
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for F2 at O(alpha_s^2)
 //  expanded in terms of \alpha_s^{[nf]}
+//
+//  Eq. (B.6) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
 double C2m_g2_highscale(double x, double mQ, double mMu) {
@@ -189,6 +197,8 @@ double CLm_ps2_highscale(double x, double mQ, double mMu) {
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for F2 at O(alpha_s^2)
 //  expanded in terms of \alpha_s^{[nf+1]}
+//
+//  Eq. (B.5) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
 double D2m_g2_highscale(double x, double mQ, double mMu) {

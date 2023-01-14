@@ -103,8 +103,8 @@ double CLm_g3_power_terms(double x, double mQ , double mMu, int nf);
 double CLm_ps3_power_terms(double x, double mQ , double mMu, int nf);
 
 //term with band
-// double C2m_g3_highenergy(double x, double mQ, double mMu, int nf, int v);
-// double C2m_g3_highenergy_highscale(double x, double mQ, double mMu, int nf, int v);
+double C2m_g3_highenergy(double x, double mQ, double mMu, int nf, int v);
+double C2m_g3_highenergy_highscale(double x, double mQ, double mMu, int nf, int v);
 
 
 

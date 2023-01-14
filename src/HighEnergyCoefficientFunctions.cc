@@ -9,6 +9,8 @@ using namespace std;
 
 //==========================================================================================//
 //  High energy limit of the gluon coefficient function for F2 at O(alpha_s^2).
+//
+//  Eq. (3.38) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
 double C2m_g2_highenergy(double x, double mQ, double mMu) {
@@ -46,23 +48,21 @@ double C2m_g2_highenergy(double x, double mQ, double mMu) {
 
 double C2m_ps2_highenergy(double x, double mQ, double mMu) {
 
-    return CF/CA*C2m_g2_highenergy(x,mQ,mMu) ;
+    return CF / CA * C2m_g2_highenergy(x, mQ, mMu) ;
 
 }
 
 //==========================================================================================//
 //  High energy limit of the gluon coefficient function for FL at O(alpha_s^2).
+//
+//  Eq. (16, 21) of Ref. [arXiv:hep-ph/9411431]
 //------------------------------------------------------------------------------------------//
 
 double CLm_g2_highenergy(double x, double mQ, double mMu) {
 
     if(x>1 || x<0) return 0;
 
-    double pi2=M_PI*M_PI;
-
     double xi=1./mQ;
-
-    double overall=xi/(4*pi2);
 
     double z=sqrt(xi/(xi+4));
 
@@ -79,7 +79,7 @@ double CLm_g2_highenergy(double x, double mQ, double mMu) {
 
     double c_LMu= (-6*mQ + 1./2./(1+xi/4) + (3*mQ+ 1./4./(1+xi/4))*J)/6/M_PI;
 
-    return overall*4*M_PI*CA*TR*( c_const + c_LMu*LMu )/x;
+    return xi / M_PI * CA * TR * ( c_const + c_LMu * LMu ) / x ;
 
 }
 
@@ -89,12 +89,14 @@ double CLm_g2_highenergy(double x, double mQ, double mMu) {
 
 double CLm_ps2_highenergy(double x, double mQ, double mMu) {
 
-    return CF/CA*CLm_g2_highenergy(x,mQ,mMu) ;
+    return CF / CA * CLm_g2_highenergy(x, mQ, mMu) ;
 
 }
 
 //==========================================================================================//
 //  Q^2>>m^2 limit of the high energy limit of the gluon coefficient function for F2 at O(alpha_s^2).
+//
+//  Eq. (3.40) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
 
@@ -114,7 +116,9 @@ double C2m_g2_highenergy_highscale(double x, double mQ , double mMu) {
 
     double Lm=log(mMu);
 
-    return CA*overall*4*M_PI/xi/16/M_PI*(8./3.*L2Q + 104./9.*LQ + 40./9. - 16./3.*z2 + (16./3.*LQ + 8./3.)*Lm)/x;
+    return CA*overall*4*M_PI/xi/16/M_PI*(
+        8./3.*L2Q + 104./9.*LQ + 40./9. - 16./3.*z2 + (16./3.*LQ + 8./3.)*Lm
+    ) / x ;
 
 }
 
@@ -125,12 +129,14 @@ double C2m_g2_highenergy_highscale(double x, double mQ , double mMu) {
 
 double C2m_ps2_highenergy_highscale(double x, double mQ, double mMu) {
 
-    return CF/CA*C2m_g2_highenergy_highscale(x,mQ,mMu) ;
+    return CF / CA * C2m_g2_highenergy_highscale(x, mQ, mMu) ;
 
 }
 
 //==========================================================================================//
 //  Q^2>>m^2 limit of the high energy limit of the gluon coefficient function for FL at O(alpha_s^2).
+//
+//  Q^2>>m^2 limit of Eq. (16, 21) of Ref. [arXiv:hep-ph/9411431]
 //------------------------------------------------------------------------------------------//
 
 double CLm_g2_highenergy_highscale(double x, double mQ , double mMu) {
@@ -161,7 +167,7 @@ double CLm_g2_highenergy_highscale(double x, double mQ , double mMu) {
 
 double CLm_ps2_highenergy_highscale(double x, double mQ, double mMu) {
 
-    return CF/CA*CLm_g2_highenergy_highscale(x,mQ,mMu) ;
+    return CF / CA * CLm_g2_highenergy_highscale(x, mQ, mMu) ;
 
 }
 
@@ -186,7 +192,7 @@ double C2m_g2_power_terms(double x, double mQ , double mMu) {
 
 double C2m_ps2_power_terms(double x, double mQ , double mMu) {
 
-    return CF/CA*C2m_g2_power_terms(x,mQ,mMu);
+    return CF / CA * C2m_g2_power_terms(x,mQ,mMu);
 
 }
 
@@ -217,6 +223,8 @@ double CLm_ps2_power_terms(double x, double mQ , double mMu) {
 
 //==========================================================================================//
 //  High energy limit of the gluon coefficient function for F2 at O(alpha_s^3) at leading log.
+//
+//  Eq. (3.39) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
 double C2m_g3_highenergyLL(double x, double mQ, double mMu) {
@@ -251,12 +259,14 @@ double C2m_g3_highenergyLL(double x, double mQ, double mMu) {
 
     double c_L2Mu = -2./3.*mQ -1./3.*(1-mQ)*J;
 
-    return overall*(16*pi2)*CA*CA*log(x)/(32*pi3)*( c_const + c_LMu*LMu + c_L2Mu*L2Mu )/x;
+    return overall * (16 * pi2) * CA * CA * log(x) / (32 * pi3) * ( c_const + c_LMu*LMu + c_L2Mu*L2Mu )/x;
 
 }
 
 //==========================================================================================//
 //  High energy limit of the gluon coefficient function for F2 at O(alpha_s^3).
+//
+//  Eq. (3.39) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
 double C2m_g3_highenergy(double x, double mQ, double mMu, int nf) {
@@ -452,6 +462,8 @@ double CLm_ps3_highenergy(double x, double mQ, double mMu, int nf) {
 //==========================================================================================//
 //  High scale limit of the high energy limit of the gluon coefficient function for F2 at
 //  O(alpha_s^3) at leading log.
+//
+//  Eq. (3.41) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
 double C2m_g3_highenergy_highscaleLL(double x, double mQ , double mMu) {
