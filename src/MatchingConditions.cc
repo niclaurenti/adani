@@ -10,7 +10,9 @@ using namespace std;
 
 double K_Qg1(double x, double mMu) {
 
-    return 2*TR*(x*x+(x-1)*(x-1))*log(1./mMu)/4./M_PI;
+    return 2 * TR * (
+        x * x + (x - 1) * (x - 1)
+    ) * log(1./mMu) / 4. / M_PI ;
 }
 
 
@@ -102,37 +104,12 @@ double K_Qg2(double x, double mMu) {
 
 //_________________________________________________________
 
-double K_Qg2_apfel(double x, double mMu) {
-
-    double pi2=M_PI*M_PI;
-    
-    AS2Hg_0 K_Qg2_const;
-    AS2Hg_L K_Qg2_log;
-    AS2Hg_L2 K_Qg2_log2;
-    
-    return 0.5*(
-        K_Qg2_const.Regular(x) + K_Qg2_log.Regular(x)*log(1./mMu) + 
-        K_Qg2_log2.Regular(x)*log(1./mMu)*log(1./mMu)
-    )/16./pi2;
-
-}
-
-//__________________________________________________________
 
 double K_gg1_local(double mMu) {
     return -4./3.*TR*log(1./mMu)/4./M_PI;
 }
 
 //___________________________________________________________
-
-double K_Qg3(double x, double mMu, int nf) {
-
-    cout<< "K_bg3 is not implemented yet!!\nExiting..."<<endl;
-    exit(-1);
-
-}
-
-//____________________________________________________________
 
 double a_Qg_30(double x, int v) {
     

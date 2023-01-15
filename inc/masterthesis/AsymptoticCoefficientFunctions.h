@@ -4,7 +4,7 @@
 //asymptotic coefficient funtions O(alpha_s)
 
 double C2m_g1_asymptotic(double x, double mQ);
-double CLm_g1_asymptotic(double x, double mQ);
+double CLm_g1_asymptotic(double x);
 
 //asymptotic coefficient funtions O(alpha_s^2)
 

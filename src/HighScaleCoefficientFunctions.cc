@@ -24,7 +24,7 @@ double C2m_g1_highscale(double x, double mQ) {
 
 //____________________________________________________________
 
-double CLm_g1_highscale(double x, double mQ) {
+double CLm_g1_highscale(double x) {
 
     if(x>1 || x<0) return 0;
 
@@ -42,9 +42,9 @@ double D2m_g1_highscale(double x, double mQ) {
 
 //____________________________________________________________
 
-double DLm_g1_highscale(double x, double mQ) {
+double DLm_g1_highscale(double x) {
 
-    return CLm_g1_highscale(x,mQ);
+    return CLm_g1_highscale(x);
 
 }
 
@@ -187,7 +187,7 @@ double DLm_g2_highscale(double x, double mQ, double mMu) {
 
     double Lmu = log(1./mMu);
 
-    return CLm_g2_highscale(x,mQ,mMu) - 1. / 6 / M_PI * Lmu * CLm_g1_highscale(x,mQ) ;
+    return CLm_g2_highscale(x,mQ,mMu) - 1. / 6 / M_PI * Lmu * CLm_g1_highscale(x) ;
 
 }
 
@@ -543,7 +543,7 @@ double CLm_g3_highscale(double x, double mQ, double mMu, int nf) {
     return (
         DLm_g3_highscale(x,mQ,mMu,nf) 
         - 1. / 3 / M_PI * Lmu * DLm_g2_highscale(x,mQ,mMu)
-        -( ( 16. / 9 * CA - 15. / 2 * CF ) + ( 10. / 3 * CA + 2 * CF ) * Lmu - 4. / 9 * L2mu ) / 16. / pi2 * DLm_g1_highscale(x,mQ)
+        -( ( 16. / 9 * CA - 15. / 2 * CF ) + ( 10. / 3 * CA + 2 * CF ) * Lmu - 4. / 9 * L2mu ) / 16. / pi2 * DLm_g1_highscale(x)
     );
 
 }

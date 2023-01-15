@@ -6,10 +6,10 @@
 
 //NLO => O(\alpha_s^1)
 double C2m_g1_highscale(double x, double mQ);
-double CLm_g1_highscale(double x, double mQ);
+double CLm_g1_highscale(double x);
 
 double D2m_g1_highscale(double x, double mQ);
-double DLm_g1_highscale(double x, double mQ);
+double DLm_g1_highscale(double x);
 
 //NNLO => O(\alpha_s^2)
 double C2m_g2_highscale(double x, double mQ, double mMu);

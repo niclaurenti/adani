@@ -91,7 +91,7 @@ double CLm_g1_approximation(double x, double mQ) {
     double damp_thr = 1. / ( 1. + pow( eta / h, k) );
     double damp_asy = 1. - damp_thr ;
     
-    double C_const = CLm_g1_highscale(x,mQ) * damp_asy ;
+    double C_const = CLm_g1_highscale(x) * damp_asy ;
     //CLm_g1_threshold=0
     
     return C_const ;
