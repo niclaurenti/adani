@@ -98,9 +98,12 @@ else (pybind11_FOUND)
 endif (pybind11_FOUND)
 
 # install
-install(TARGETS masterthesis
-           RUNTIME DESTINATION bin
-           LIBRARY DESTINATION lib)
-install(DIRECTORY inc/masterthesis DESTINATION include)
-install(FILES ${PROJECT_BINARY_DIR}/bin/masterthesis-config DESTINATION bin
-PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+option(PYTHON_ONLY "Compiles only for python." OFF)
+if (NOT PYTHON_ONLY)
+   install(TARGETS masterthesis
+            RUNTIME DESTINATION bin
+            LIBRARY DESTINATION lib)
+   install(DIRECTORY inc/masterthesis DESTINATION include)
+   install(FILES ${PROJECT_BINARY_DIR}/bin/masterthesis-config DESTINATION bin
+   PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+endif (NOT PYTHON_ONLY)
