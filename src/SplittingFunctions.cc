@@ -1,11 +1,9 @@
 #include "../include/SplittingFunctions.h"
 #include "../include/ColorFactors.h"
 #include "../include/SpecialFunctions.h"
-#include "apfel/specialfunctions.h"
 #include <cmath>
 
 using namespace std;
-using namespace apfel;
 
 double pgq(double x){
 

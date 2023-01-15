@@ -2,16 +2,10 @@
 #include "../include/MassiveCoefficientFunctions.h"
 #include "../include/SpecialFunctions.h"
 #include "../include/ColorFactors.h"
-#include <cmath>
-//#include<gsl/gsl_sf.h>
 #include "../include/SpecialFunctions.h"
-#include "apfel/massivecoefficientfunctionsunp_sl.h"
 
-//#include <iostream>
+#include <cmath>
 
-//using namespace std;
-
-using namespace apfel;
 
 //_____________________________________________________________
 

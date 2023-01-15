@@ -97,7 +97,7 @@ double Li2(double x) {
     
     else if (x < x_2) return - Li2(-x) + Li2(x*x)/2.0 ;
   
-    else {return ZETA2 - Li2(1.0-x) - log(fabs(x))*log(fabs(1.0-x)) } ; 
+    else {return ZETA2 - Li2(1.0-x) - log(fabs(x))*log(fabs(1.0-x)) ;} ; 
 }
 
 //___________________________________________________________
