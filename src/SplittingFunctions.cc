@@ -1,6 +1,6 @@
-#include "../include/SplittingFunctions.h"
-#include "../include/ColorFactors.h"
-#include "../include/SpecialFunctions.h"
+#include "masterthesis/SplittingFunctions.h"
+#include "masterthesis/ColorFactors.h"
+#include "masterthesis/SpecialFunctions.h"
 #include <cmath>
 
 using namespace std;

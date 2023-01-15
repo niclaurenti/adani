@@ -1,8 +1,8 @@
-#include "../include/ThresholdCoefficientFunctions.h"
-#include "../include/MassiveCoefficientFunctions.h"
-#include "../include/SpecialFunctions.h"
-#include "../include/ColorFactors.h"
-#include "../include/SpecialFunctions.h"
+#include "masterthesis/ThresholdCoefficientFunctions.h"
+#include "masterthesis/MassiveCoefficientFunctions.h"
+#include "masterthesis/SpecialFunctions.h"
+#include "masterthesis/ColorFactors.h"
+#include "masterthesis/SpecialFunctions.h"
 
 #include <cmath>
 

@@ -1,11 +1,11 @@
-#include "../include/ApproximateCoefficientFunctions.h"
-#include "../include/HighScaleCoefficientFunctions.h"
-#include "../include/MassiveCoefficientFunctions.h"
-#include "../include/HighEnergyCoefficientFunctions.h"
-#include "../include/ThresholdCoefficientFunctions.h"
-#include "../include/AsymptoticCoefficientFunctions.h"
-#include "../include/SpecialFunctions.h"
-#include "../include/ColorFactors.h"
+#include "masterthesis/ApproximateCoefficientFunctions.h"
+#include "masterthesis/HighScaleCoefficientFunctions.h"
+#include "masterthesis/MassiveCoefficientFunctions.h"
+#include "masterthesis/HighEnergyCoefficientFunctions.h"
+#include "masterthesis/ThresholdCoefficientFunctions.h"
+#include "masterthesis/AsymptoticCoefficientFunctions.h"
+#include "masterthesis/SpecialFunctions.h"
+#include "masterthesis/ColorFactors.h"
 #include "apfel/massivecoefficientfunctionsunp_sl.h"
 #include <cmath>
 #include <iostream>
@@ -373,7 +373,7 @@ double C2m_g3_approximation(double x, double mQ, double mMu, int nf, int method_
 
 //_________________________________________________________________
 
-double C2m_g3_approximation(double x, double mQ, double mMu, int nf, double A, double B, double C, double D, double a, double b, int v1, int v2, int method_flag, int calls) {
+double C2m_g3_approximation_implicit(double x, double mQ, double mMu, int nf, double A, double B, double C, double D, double a, double b, int v1, int v2, int method_flag, int calls) {
     
     double xmax = 1. / ( 1. + 4 * mQ ) ;
     
@@ -415,7 +415,7 @@ double C2m_g3_approximation_BAND(double x, double mQ, double mMu, int nf, double
     double a=2.5, b=5;
     double A=0.3, B=2.5, C=2.5, D=1.2;
     
-    double Cavg=C2m_g3_approximation(x,mQ,1,nf,A,B,C,D,a,b,0,0);
+    double Cavg=C2m_g3_approximation_implicit(x,mQ,1,nf,A,B,C,D,a,b,0,0);
     
     if(v==0) return Cavg;
     
@@ -427,20 +427,20 @@ double C2m_g3_approximation_BAND(double x, double mQ, double mMu, int nf, double
     double min=Cavg,max=Cavg;
     int i;
     
-    Cerr[0]=C2m_g3_approximation(x,mQ,1,nf,Amax,B,C,D,a,b,0,0);
-    Cerr[1]=C2m_g3_approximation(x,mQ,1,nf,Amin,B,C,D,a,b,0,0);
-    Cerr[2]=C2m_g3_approximation(x,mQ,1,nf,A,Bmax,C,D,a,b,0,0);
-    Cerr[3]=C2m_g3_approximation(x,mQ,1,nf,A,Bmin,C,D,a,b,0,0);
-    Cerr[4]=C2m_g3_approximation(x,mQ,1,nf,A,B,Cmax,D,a,b,0,0);
-    Cerr[5]=C2m_g3_approximation(x,mQ,1,nf,A,B,Cmin,D,a,b,0,0);
-    Cerr[6]=C2m_g3_approximation(x,mQ,1,nf,A,B,C,Dmax,a,b,0,0);
-    Cerr[7]=C2m_g3_approximation(x,mQ,1,nf,A,B,C,Dmin,a,b,0,0);
-    Cerr[8]=C2m_g3_approximation(x,mQ,1,nf,A,B,C,D,a,b,1,0);
-    Cerr[9]=C2m_g3_approximation(x,mQ,1,nf,A,B,C,D,a,b,2,0);
-    Cerr[10]=C2m_g3_approximation(x,mQ,1,nf,A,B,C,D,a,b,0,1);
-    Cerr[11]=C2m_g3_approximation(x,mQ,1,nf,A,B,C,D,a,b,0,2);
-    Cerr[12]=C2m_g3_approximation(x,mQ,1,nf,Amax,Bmax,Cmax,Dmax,a, b,1,1);
-    Cerr[13]=C2m_g3_approximation(x,mQ,1,nf,Amin,Bmin, Cmin,Dmin,a,b,2,2);
+    Cerr[0]=C2m_g3_approximation_implicit(x,mQ,1,nf,Amax,B,C,D,a,b,0,0);
+    Cerr[1]=C2m_g3_approximation_implicit(x,mQ,1,nf,Amin,B,C,D,a,b,0,0);
+    Cerr[2]=C2m_g3_approximation_implicit(x,mQ,1,nf,A,Bmax,C,D,a,b,0,0);
+    Cerr[3]=C2m_g3_approximation_implicit(x,mQ,1,nf,A,Bmin,C,D,a,b,0,0);
+    Cerr[4]=C2m_g3_approximation_implicit(x,mQ,1,nf,A,B,Cmax,D,a,b,0,0);
+    Cerr[5]=C2m_g3_approximation_implicit(x,mQ,1,nf,A,B,Cmin,D,a,b,0,0);
+    Cerr[6]=C2m_g3_approximation_implicit(x,mQ,1,nf,A,B,C,Dmax,a,b,0,0);
+    Cerr[7]=C2m_g3_approximation_implicit(x,mQ,1,nf,A,B,C,Dmin,a,b,0,0);
+    Cerr[8]=C2m_g3_approximation_implicit(x,mQ,1,nf,A,B,C,D,a,b,1,0);
+    Cerr[9]=C2m_g3_approximation_implicit(x,mQ,1,nf,A,B,C,D,a,b,2,0);
+    Cerr[10]=C2m_g3_approximation_implicit(x,mQ,1,nf,A,B,C,D,a,b,0,1);
+    Cerr[11]=C2m_g3_approximation_implicit(x,mQ,1,nf,A,B,C,D,a,b,0,2);
+    Cerr[12]=C2m_g3_approximation_implicit(x,mQ,1,nf,Amax,Bmax,Cmax,Dmax,a, b,1,1);
+    Cerr[13]=C2m_g3_approximation_implicit(x,mQ,1,nf,Amin,Bmin, Cmin,Dmin,a,b,2,2);
     
     for(i=0;i<14;i++) {
         if(Cerr[i]>max) max=Cerr[i];

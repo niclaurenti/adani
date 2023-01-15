@@ -1,8 +1,8 @@
-#include "../include/HighEnergyCoefficientFunctions.h"
-#include "../include/SpecialFunctions.h"
-#include "../include/ColorFactors.h"
+#include "masterthesis/HighEnergyCoefficientFunctions.h"
+#include "masterthesis/SpecialFunctions.h"
+#include "masterthesis/ColorFactors.h"
 //#include<gsl/gsl_sf.h>
-#include "../include/SpecialFunctions.h"
+#include "masterthesis/SpecialFunctions.h"
 #include <cmath>
 #include <iostream>
 
