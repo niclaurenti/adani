@@ -1,8 +1,8 @@
-#include "masterthesis/HighEnergyCoefficientFunctions.h"
-#include "masterthesis/SpecialFunctions.h"
-#include "masterthesis/ColorFactors.h"
+#include "adani/HighEnergyCoefficientFunctions.h"
+#include "adani/SpecialFunctions.h"
+#include "adani/ColorFactors.h"
 //#include<gsl/gsl_sf.h>
-#include "masterthesis/SpecialFunctions.h"
+#include "adani/SpecialFunctions.h"
 #include <cmath>
 #include <iostream>
 

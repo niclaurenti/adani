@@ -1,6 +1,6 @@
-#include "masterthesis/SplittingFunctions.h"
-#include "masterthesis/ColorFactors.h"
-#include "masterthesis/SpecialFunctions.h"
+#include "adani/SplittingFunctions.h"
+#include "adani/ColorFactors.h"
+#include "adani/SpecialFunctions.h"
 #include <cmath>
 
 using namespace std;

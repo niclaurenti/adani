@@ -3,13 +3,13 @@
 #include <pybind11/operators.h>
 #include <pybind11/functional.h>
 
-#include <masterthesis/masterthesis.h>
+#include <adani/adani.h>
 
 namespace py = pybind11;
 
-PYBIND11_MODULE(masterthesispy, m) {
+PYBIND11_MODULE(adanipy, m) {
     // Documentation
-    m.doc() = "Python wrapper of libmasterthesis";
+    m.doc() = "Python wrapper of libadani";
     m.def("C2m_g3_approximation", &C2m_g3_approximation, "prova", py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"), py::arg("method_flag")=0, py::arg("calls")=500000);
     m.def("CLm_g3_approximation", &CLm_g3_approximation, "prova", py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"), py::arg("method_flag")=0, py::arg("calls")=500000);
     m.def("C2m_ps3_approximation", &C2m_ps3_approximation, "prova", py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"));

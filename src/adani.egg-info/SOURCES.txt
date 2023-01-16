@@ -1,0 +1,7 @@
+README.md
+pyproject.toml
+setup.py
+src/adani.egg-info/PKG-INFO
+src/adani.egg-info/SOURCES.txt
+src/adani.egg-info/dependency_links.txt
+src/adani.egg-info/top_level.txt

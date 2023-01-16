@@ -1,6 +1,6 @@
-#include "masterthesis/AsymptoticCoefficientFunctions.h"
-#include "masterthesis/HighScaleCoefficientFunctions.h"
-#include "masterthesis/HighEnergyCoefficientFunctions.h"
+#include "adani/AsymptoticCoefficientFunctions.h"
+#include "adani/HighScaleCoefficientFunctions.h"
+#include "adani/HighEnergyCoefficientFunctions.h"
 #include "apfel/massivecoefficientfunctionsunp_sl.h"
 #include <cmath>
 

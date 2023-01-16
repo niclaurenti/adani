@@ -1,8 +1,8 @@
-#include "masterthesis/ThresholdCoefficientFunctions.h"
-#include "masterthesis/MassiveCoefficientFunctions.h"
-#include "masterthesis/SpecialFunctions.h"
-#include "masterthesis/ColorFactors.h"
-#include "masterthesis/SpecialFunctions.h"
+#include "adani/ThresholdCoefficientFunctions.h"
+#include "adani/MassiveCoefficientFunctions.h"
+#include "adani/SpecialFunctions.h"
+#include "adani/ColorFactors.h"
+#include "adani/SpecialFunctions.h"
 
 #include <cmath>
 

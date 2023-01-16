@@ -5,10 +5,10 @@
 
 # if [[ $# -eq 0 || -n $( echo $* | egrep -- "--help|-h" ) ]]; then
 #     echo
-#     echo "masterthesis-config: configuration tool for Master-thesis"
+#     echo "adani-config: configuration tool for Master-thesis"
 #     echo "                webpages: ???"
 #     echo
-#     echo "Usage: masterthesis-config [[--help|-h] | [--prefix] | [--ldflags]]"
+#     echo "Usage: adani-config [[--help|-h] | [--prefix] | [--ldflags]]"
 #     echo "Options:"
 #     echo "  --help | -h    : show this help message"
 #     echo "  --version      : show the code version"
@@ -38,11 +38,11 @@
 # test -n "$tmp" && OUT="$OUT @libdir@"
 
 # tmp=$( echo "$*" | egrep -- '--\<ldflags\>')
-# test -n "$tmp" && OUT="$OUT -L@libdir@ -lmasterthesis"
+# test -n "$tmp" && OUT="$OUT -L@libdir@ -ladani"
 
 # ## Version
 # tmp=$( echo "$*" | egrep -- '--\<version\>')
-# test -n "$tmp" && OUT="$OUT @masterthesis_VERSION@"
+# test -n "$tmp" && OUT="$OUT @adani_VERSION@"
 
 # echo $OUT
 

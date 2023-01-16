@@ -1,5 +1,5 @@
-#include "masterthesis/SpecialFunctions.h"
-#include "masterthesis/ColorFactors.h"
+#include "adani/SpecialFunctions.h"
+#include "adani/ColorFactors.h"
 
 //#include<gsl/gsl_sf.h>
 

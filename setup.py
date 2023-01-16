@@ -11,7 +11,7 @@ except ImportError:
     raise
 from setuptools import find_packages
 setup(
-    name="masterthesis",
+    name="adani",
     version="0.1",
     description="Un codice scritto a cazzo di cane",
     author="Chittesencula",
