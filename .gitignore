@@ -11,3 +11,4 @@ output/output_grid.exe
 build/
 _skbuild/
 adani.egg-info/
+examples/test.exe
