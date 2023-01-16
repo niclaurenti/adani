@@ -5,8 +5,7 @@
  *
  *    Description:  Header file for the ApproximateCoefficientFunctions.cc file.
  *
- *         Author:  Dwyane Wade
- *   Organization:  retired (after a glorious carrer with the Miami Heat)
+ *         Author:  L'artiglio che graffia 
  *
  *  In this file there is the approximation for the unknown O(alpha_s^3) DIS massive
  *  coefficient functions.

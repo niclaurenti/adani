@@ -1,6 +1,6 @@
-#include "../include/SplittingFunctions.h"
-#include "../include/ColorFactors.h"
-#include "../include/SpecialFunctions.h"
+#include "../inc/masterthesis/SplittingFunctions.h"
+#include "../inc/masterthesis/ColorFactors.h"
+#include "../inc/masterthesis/SpecialFunctions.h"
 #include "apfel/specialfunctions.h"
 #include <cmath>
 

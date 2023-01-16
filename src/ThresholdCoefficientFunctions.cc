@@ -1,9 +1,9 @@
-#include "../include/ThresholdCoefficientFunctions.h"
-#include "../include/MassiveCoefficientFunctions.h"
-#include "../include/SpecialFunctions.h"
-#include "../include/ColorFactors.h"
+#include "../inc/masterthesis/ThresholdCoefficientFunctions.h"
+#include "../inc/masterthesis/MassiveCoefficientFunctions.h"
+#include "../inc/masterthesis/SpecialFunctions.h"
+#include "../inc/masterthesis/ColorFactors.h"
 #include <cmath>
-#include "../include/SpecialFunctions.h"
+#include "../inc/masterthesis/SpecialFunctions.h"
 #include "apfel/massivecoefficientfunctionsunp_sl.h"
 
 using namespace apfel;

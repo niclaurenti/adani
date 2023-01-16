@@ -1,5 +1,5 @@
-#include "../include/MasslessCoefficientFunctions.h"
-#include "../include/ColorFactors.h"
+#include "../inc/masterthesis/MasslessCoefficientFunctions.h"
+#include "../inc/masterthesis/ColorFactors.h"
 #include<cmath>
 
 

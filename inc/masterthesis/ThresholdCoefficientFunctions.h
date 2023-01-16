@@ -5,8 +5,7 @@
  *
  *    Description:  Header file for the ThresholdCoefficientFunctions.cc file.
  *
- *         Author:  LeBron James
- *   Organization:  Los Angeles Lakers (at the time of writing)
+ *         Author:  La garra charruaaaaaaa
  *
  *  In this file there are the coefficient functions in the threshold limit, i.e. s->4m^2
  *  (where s is the partonic conter of mass energy), or x -> xmax

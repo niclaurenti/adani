@@ -1,10 +1,10 @@
-#include "../include/MassiveCoefficientFunctions.h"
-#include "../include/MatchingConditions.h"
-#include "../include/Convolutions.h"
-#include "../include/ColorFactors.h"
-#include "../include/Convolutions.h"
-#include "../include/SplittingFunctions.h"
-#include "../include/SpecialFunctions.h"
+#include "../inc/masterthesis/MassiveCoefficientFunctions.h"
+#include "../inc/masterthesis/MatchingConditions.h"
+#include "../inc/masterthesis/Convolutions.h"
+#include "../inc/masterthesis/ColorFactors.h"
+#include "../inc/masterthesis/Convolutions.h"
+#include "../inc/masterthesis/SplittingFunctions.h"
+#include "../inc/masterthesis/SpecialFunctions.h"
 #include "apfel/massivecoefficientfunctionsunp_sl.h"
 #include<cmath>
 #include <iostream>

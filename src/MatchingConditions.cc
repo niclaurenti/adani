@@ -1,6 +1,6 @@
-#include "../include/MatchingConditions.h"
-#include "../include/ColorFactors.h"
-#include "../include/SpecialFunctions.h"
+#include "../inc/masterthesis/MatchingConditions.h"
+#include "../inc/masterthesis/ColorFactors.h"
+#include "../inc/masterthesis/SpecialFunctions.h"
 #include "apfel/matchingconditions_sl.h"
 #include<cmath>
 #include <iostream>

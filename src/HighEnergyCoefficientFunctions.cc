@@ -1,7 +1,7 @@
-#include "../include/HighEnergyCoefficientFunctions.h"
-#include "../include/SpecialFunctions.h"
-#include "../include/ColorFactors.h"
-#include "../include/SpecialFunctions.h"
+#include "../inc/masterthesis/HighEnergyCoefficientFunctions.h"
+#include "../inc/masterthesis/SpecialFunctions.h"
+#include "../inc/masterthesis/ColorFactors.h"
+#include "../inc/masterthesis/SpecialFunctions.h"
 #include <cmath>
 #include <iostream>
 

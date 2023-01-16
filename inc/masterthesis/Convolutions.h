@@ -5,8 +5,7 @@
  *
  *    Description:  Header file for the MassiveCoefficientFunctions.cc file.
  *
- *         Author:  Stephen Curry
- *   Organization:  Golden State Warriors (at the time of writing)
+ *         Author:  Dribbla pure i cammelli
  *
  *  In this file there are the exact heavy coefficient functions
  *

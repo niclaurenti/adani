@@ -5,8 +5,7 @@
  *
  *    Description:  Header file for the AsymptoticCoefficientFunctions.cc file.
  *
- *         Author:  Shaquille O'Neal
- *   Organization:  retired (after four NBA titles)
+ *         Author:  Sei un teorico
  *
  *  In this file there are the coefficient functions in the asymptotic limit, i.e. x -> 0
  *  and/or Q^2 >> m^2

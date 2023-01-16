@@ -1,11 +1,11 @@
-#include "../include/ApproximateCoefficientFunctions.h"
-#include "../include/HighScaleCoefficientFunctions.h"
-#include "../include/MassiveCoefficientFunctions.h"
-#include "../include/HighEnergyCoefficientFunctions.h"
-#include "../include/ThresholdCoefficientFunctions.h"
-#include "../include/AsymptoticCoefficientFunctions.h"
-#include "../include/SpecialFunctions.h"
-#include "../include/ColorFactors.h"
+#include "../inc/masterthesis/ApproximateCoefficientFunctions.h"
+#include "../inc/masterthesis/HighScaleCoefficientFunctions.h"
+#include "../inc/masterthesis/MassiveCoefficientFunctions.h"
+#include "../inc/masterthesis/HighEnergyCoefficientFunctions.h"
+#include "../inc/masterthesis/ThresholdCoefficientFunctions.h"
+#include "../inc/masterthesis/AsymptoticCoefficientFunctions.h"
+#include "../inc/masterthesis/SpecialFunctions.h"
+#include "../inc/masterthesis/ColorFactors.h"
 #include "apfel/massivecoefficientfunctionsunp_sl.h"
 #include <cmath>
 #include <iostream>
@@ -625,6 +625,8 @@ double CLm_ps3_approximation(double x, double mQ, double mMu, int nf) {
 //  Approximate gluon coefficient funtcions for F2 at O(alpha_s^2) from [arXiv:1205.5727].
 //  klmv = Kawamura, Lo Presti, Moch, Vogt.
 //  Upper band (i.e. approximation A)
+//
+//  Eq. (4.10) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
 double C2m_g2_approximationA_klmv(double x, double mQ, double mMu) {
@@ -674,6 +676,8 @@ double C2m_g2_approximationA_klmv(double x, double mQ, double mMu) {
 //  Approximate gluon coefficient funtcions for F2 at O(alpha_s^2) from [arXiv:1205.5727].
 //  klmv = Kawamura, Lo Presti, Moch, Vogt
 //  Lower band (i.e. approximation B)
+//
+//  Eq. (4.11) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
 double C2m_g2_approximationB_klmv(double x, double mQ, double mMu) {
@@ -719,6 +723,8 @@ double C2m_g2_approximationB_klmv(double x, double mQ, double mMu) {
 //  Approximate quark coefficient funtcions for F2 at O(alpha_s^2) from [arXiv:1205.5727].
 //  klmv = Kawamura, Lo Presti, Moch, Vogt.
 //  Upper band (i.e. approximation A)
+//
+//  Eq. (4.10) of Ref. [arXiv:1205.5727] but for the quark coefficient function.
 //------------------------------------------------------------------------------------------//
 
 double C2m_ps2_approximationA_klmv(double x, double mQ, double mMu) {
@@ -763,6 +769,8 @@ double C2m_ps2_approximationA_klmv(double x, double mQ, double mMu) {
 //  Approximate quark coefficient funtcions for F2 at O(alpha_s^2) from [arXiv:1205.5727].
 //  klmv = Kawamura, Lo Presti, Moch, Vogt.
 //  Lower band (i.e. approximation B)
+//
+//  Eq. (4.11) of Ref. [arXiv:1205.5727] but for the quark coefficient function.
 //------------------------------------------------------------------------------------------//
 
 double C2m_ps2_approximationB_klmv(double x, double mQ, double mMu) {
@@ -970,7 +978,9 @@ double C2m_g3_approximationB_klmv_paper(double x, double mQ, double mMu, int nf)
 //  Lower band (i.e. approximation B) with the low xi limit.
 //
 //  Eq. (4.21) of Ref. [arXiv:1205.5727].
-//  This equation uses the exact expression of aQqPS30 given in Eq. (5.41, 5.42, 5.45) of Ref. [arXiv:1409.1135]
+//  This equation uses the exact expression of aQqPS30 given in Eq. (5.41, 5.42, 5.45) of Ref. [arXiv:1409.1135],
+//  and as approximation B for the small x limit at NLL it uses Eq. (4.25) of [arXiv:1205.5727] 
+//  instead of Eq. (4.20)
 //------------------------------------------------------------------------------------------//
 
 double C2m_g3_approximationBlowxi_klmv(double x, double mQ, double mMu, int nf) {

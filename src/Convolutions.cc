@@ -1,10 +1,10 @@
-#include "../include/Convolutions.h"
-#include "../include/ColorFactors.h"
-#include "../include/MassiveCoefficientFunctions.h"
-#include "../include/MasslessCoefficientFunctions.h"
-#include "../include/MatchingConditions.h"
-#include "../include/SpecialFunctions.h"
-#include "../include/SplittingFunctions.h"
+#include "../inc/masterthesis/Convolutions.h"
+#include "../inc/masterthesis/ColorFactors.h"
+#include "../inc/masterthesis/MassiveCoefficientFunctions.h"
+#include "../inc/masterthesis/MasslessCoefficientFunctions.h"
+#include "../inc/masterthesis/MatchingConditions.h"
+#include "../inc/masterthesis/SpecialFunctions.h"
+#include "../inc/masterthesis/SplittingFunctions.h"
 #include <cmath>
 #include <iostream>
 //#include <gsl/gsl_integration.h>
