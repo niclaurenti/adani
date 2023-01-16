@@ -21,7 +21,7 @@ double C2m_g1_asymptotic(double x, double mQ) {
 //------------------------------------------------------------------------------------------//
 
 double CLm_g1_asymptotic(double x) {
-    
+
     return CLm_g1_highscale(x);
 
 }

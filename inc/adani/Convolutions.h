@@ -34,7 +34,7 @@ double K_Qg1_x_K_gg2(double x, double mMu);
 double C2_b2_x_K_bg1(double x, double mMu, int nf);
 
 //==========================================================================================//
-//  Convolution between first order massive gluon coefficient functions and splitting 
+//  Convolution between first order massive gluon coefficient functions and splitting
 //  function Pgq0
 //------------------------------------------------------------------------------------------//
 

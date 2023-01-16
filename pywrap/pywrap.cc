@@ -19,7 +19,7 @@ PYBIND11_MODULE(adanipy, m) {
     m.def("C2m_g3_approximationA_klmv", &C2m_g3_approximationA_klmv, "", py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"));
     m.def("C2m_g3_approximationB_klmv", &C2m_g3_approximationB_klmv, "", py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"));
     m.def("C2m_g3_approximationBlowxi_klmv", &C2m_g3_approximationBlowxi_klmv, "", py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"));
-    
+
     m.def("C2m_ps3_approximationA_klmv", &C2m_ps3_approximationA_klmv, "", py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"));
     m.def("C2m_ps3_approximationB_klmv", &C2m_ps3_approximationB_klmv, "", py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"));
 

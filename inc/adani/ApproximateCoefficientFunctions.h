@@ -5,7 +5,7 @@
  *
  *    Description:  Header file for the ApproximateCoefficientFunctions.cc file.
  *
- *         Author:  L'artiglio che graffia 
+ *         Author:  L'artiglio che graffia
  *
  *  In this file there is the approximation for the unknown O(alpha_s^3) DIS massive
  *  coefficient functions.

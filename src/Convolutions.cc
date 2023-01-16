@@ -203,7 +203,7 @@ double K_Qg1_x_K_gg2(double x, double mMu) {
 // }
 
 //==========================================================================================//
-//  Convolution between first order massive gluon coefficient functions for F2 and splitting 
+//  Convolution between first order massive gluon coefficient functions for F2 and splitting
 //  function Pgq0
 //------------------------------------------------------------------------------------------//
 
@@ -241,7 +241,7 @@ double C2m_g1_x_Pgq0(double x, double mQ) {
 }
 
 //==========================================================================================//
-//  Convolution between first order massive gluon coefficient functions for FL and splitting 
+//  Convolution between first order massive gluon coefficient functions for FL and splitting
 //  function Pgq0
 //------------------------------------------------------------------------------------------//
 
@@ -759,7 +759,7 @@ double Pqq0_x_Pgq0(double x) {
 }
 
 //==========================================================================================//
-//  Convolution between the first order massive gluon coefficient functions for F2 and the 
+//  Convolution between the first order massive gluon coefficient functions for F2 and the
 //  convolution between the splitting functions Pgg0 and Pgq0
 //------------------------------------------------------------------------------------------//
 
@@ -798,7 +798,7 @@ double C2m_g1_x_Pgg0_x_Pgq0(double x, double mQ, int nf) {
 }
 
 //==========================================================================================//
-//  Convolution between the first order massive gluon coefficient functions for FL and the 
+//  Convolution between the first order massive gluon coefficient functions for FL and the
 //  convolution between the splitting functions Pgg0 and Pgq0
 //------------------------------------------------------------------------------------------//
 
@@ -837,7 +837,7 @@ double CLm_g1_x_Pgg0_x_Pgq0(double x, double mQ, int nf) {
 }
 
 //==========================================================================================//
-//  Convolution between the first order massive gluon coefficient functions for F2 and the 
+//  Convolution between the first order massive gluon coefficient functions for F2 and the
 //  convolution between the splitting functions Pqq0 and Pgq0
 //------------------------------------------------------------------------------------------//
 
@@ -876,7 +876,7 @@ double C2m_g1_x_Pqq0_x_Pgq0(double x, double mQ, int nf) {
 }
 
 //==========================================================================================//
-//  Convolution between the first order massive gluon coefficient functions for FL and the 
+//  Convolution between the first order massive gluon coefficient functions for FL and the
 //  convolution between the splitting functions Pqq0 and Pgq0
 //------------------------------------------------------------------------------------------//
 

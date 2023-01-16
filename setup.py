@@ -1,4 +1,4 @@
-import sys, os
+import sys
 
 try:
     from skbuild import setup
@@ -14,8 +14,8 @@ setup(
     name="adani",
     version="0.1",
     description="Un codice scritto a cazzo di cane",
-    author="Chittesencula",
-    license="Fateci il cazzo che vi pare, non me ne frega un cazzo",
+    author="Niccolò Laurenti",
+    license="Fateci il cazzo che vi pare, basta che non mi rompete i coglioni",
     packages=find_packages(where="src"),
     package_dir={"": "src"},
     cmake_args=['-DPYTHON_ONLY:BOOL=ON'],

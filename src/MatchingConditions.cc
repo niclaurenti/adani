@@ -10,7 +10,7 @@ using namespace std;
 
 //==========================================================================================//
 //  Matching condition Qg O(alpha_s)
-// 
+//
 //  Eq. (B.2) from Ref. [arXiv:hep-ph/9612398v1]
 //------------------------------------------------------------------------------------------//
 
@@ -23,7 +23,7 @@ double K_Qg1(double x, double mMu) {
 
 //==========================================================================================//
 //  Local part of the matching condition gg O(alpha_s)
-// 
+//
 //  Eq. (B.6) from Ref. [arXiv:hep-ph/9612398v1]
 //------------------------------------------------------------------------------------------//
 
@@ -33,7 +33,7 @@ double K_gg1_local(double mMu) {
 
 //==========================================================================================//
 //  Matching condition Qg O(alpha_s^2)
-// 
+//
 //  Eq. (B.3) from Ref. [arXiv:hep-ph/9612398v1]
 //------------------------------------------------------------------------------------------//
 
@@ -122,9 +122,9 @@ double K_Qg2(double x, double mMu) {
 }
 
 //==========================================================================================//
-//  Approximation of the nf-independent part of the mu-independent part of the 
+//  Approximation of the nf-independent part of the mu-independent part of the
 //  unrenormalized matching condition Qg at O(alpha_s^3).
-// 
+//
 //  v = 0 : center of the band given by v = 1 and v = 2
 //  v = 1 : Eq. (3.49) of Ref. [arXiv:1205.5727]
 //  v = 2 : Eq. (16) Ref. of [arXiv:1701.05838]

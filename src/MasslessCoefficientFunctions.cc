@@ -5,7 +5,7 @@
 
 //==========================================================================================//
 //  Massless gluon coefficient functions for F2 at O(alpha_s)
-// 
+//
 //  Eq. (4.4) of Ref. [hep-ph/0504242v1]
 //------------------------------------------------------------------------------------------//
 
@@ -22,7 +22,7 @@ double C2_g1(double x, int nf) {
 
 //==========================================================================================//
 //  Massless gluon coefficient functions for FL at O(alpha_s)
-// 
+//
 // Eq. (3) of Ref. [arXiv:hep-ph/0411112v2]
 //------------------------------------------------------------------------------------------//
 
@@ -37,7 +37,7 @@ double CL_g1(double x, int nf) {
 //==========================================================================================//
 //  Massless gluon coefficient functions for F2 at O(alpha_s^2)
 //  Observe that this result is a parameterization of the exact (known but long) result
-// 
+//
 //  Eq. (4.10) of Ref. [hep-ph/0504242v1]
 //------------------------------------------------------------------------------------------//
 
@@ -65,7 +65,7 @@ double C2_g2(double x, int nf) {
 //==========================================================================================//
 //  Massless quark coefficient functions for F2 at O(alpha_s^2)
 //  Observe that this result is a parameterization of the exact (known but long) result
-// 
+//
 //  Eq. (4.9) of Ref. [hep-ph/0504242v1]
 //------------------------------------------------------------------------------------------//
 
@@ -95,7 +95,7 @@ double C2_ps2(double x, int nf) {
 //==========================================================================================//
 //  Massless gluon coefficient functions for FL at O(alpha_s^2)
 //  Observe that this result is a parameterization of the exact (known but long) result
-// 
+//
 //  Eq. (6) of Ref. [arXiv:hep-ph/0411112v2]
 //------------------------------------------------------------------------------------------//
 
@@ -125,7 +125,7 @@ double CL_g2(double x, int nf) {
 //==========================================================================================//
 //  Massless gluon coefficient functions for FL at O(alpha_s^2)
 //  Observe that this result is a parameterization of the exact (known but long) result
-// 
+//
 //  Eq. (5) of Ref. [arXiv:hep-ph/0411112v2]
 //------------------------------------------------------------------------------------------//
 
@@ -155,7 +155,7 @@ double CL_ps2(double x, int nf) {
 //  Massless gluon coefficient functions for F2 at O(alpha_s^3)
 //  Observe that this result is a parameterization of the exact (known but long) result.
 //  The term fl_g_11 is put to zero for the reason explained in page 15 of arXiv:1205.5727
-// 
+//
 //  Eq. (4.13) of Ref. [hep-ph/0504242v1]
 //------------------------------------------------------------------------------------------//
 
@@ -237,7 +237,7 @@ double C2_g3(double x, int nf) {//remember that there is a delta(x1) that has be
 //  Massless quark coefficient functions for F2 at O(alpha_s^3)
 //  Observe that this result is a parameterization of the exact (known but long) result.
 //  The term fl_ps_11 is put to zero for the reason explained in page 15 of arXiv:1205.5727
-// 
+//
 //  Eq. (4.12) of Ref. [hep-ph/0504242v1]
 //------------------------------------------------------------------------------------------//
 
@@ -297,7 +297,7 @@ double C2_ps3(double x, int nf) {//remember that there is a delta(x1) that has b
 //  Massless gluon coefficient functions for FL at O(alpha_s^3)
 //  Observe that this result is a parameterization of the exact (known but long) result.
 //  The term fl_ps_11 is put to zero for the reason explained in page 15 of arXiv:1205.5727
-// 
+//
 //  Eq. (10) of Ref. [arXiv:hep-ph/0411112v2]
 //------------------------------------------------------------------------------------------//
 
@@ -371,7 +371,7 @@ double CL_g3(double x, int nf) {//remember that there is a delta(x1) that has be
 //  Massless gluon coefficient functions for FL at O(alpha_s^3)
 //  Observe that this result is a parameterization of the exact (known but long) result.
 //  The term fl_ps_11 is put to zero for the reason explained in page 15 of arXiv:1205.5727
-// 
+//
 //  Eq. (9) of Ref. [arXiv:hep-ph/0411112v2]
 //------------------------------------------------------------------------------------------//
 
