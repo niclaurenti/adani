@@ -3,15 +3,20 @@
 ADANI (Approximate DIS At N3LO Implementation) is a C++ code that computes an approximation for the DIS coefficient functions at N3LO in heavy quark production, that are not fully known yet.
 
 ## Dependencies
-The codes depend on ```apfelxx``` and ```gsl```. In order to build also the Python bindings, also ```pybind11``` and the python module ```scikit-build``` are required.
+
+The codes depend on the public libraries ```apfelxx``` and ```gsl```.
+
+Optional dependencies are the library ```pybind11``` and the Python module ```scikit-build``` (both public), that are required in for building the Pyhton bindings.
 
 ## Installation
+
 In order to install both the C++ libary and the Python bindings run
 ```bash
 mkdir build && cd build
 cmake -DCMAKE_INSTALL_PREFIX=/your/installation/path/ ..
 make && make install
 ```
+(I tested it with ```apfelxx``` and ```gsl``` installed in the ```/usr/local/```)
 In order to build just the Python bindings run
 ```bash
 pip install .
