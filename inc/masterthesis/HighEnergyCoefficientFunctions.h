@@ -5,8 +5,7 @@
  *
  *    Description:  Header file for the MassiveCoefficientFunctions.cc file.
  *
- *         Author:  Chris Paul
- *   Organization:  Phoenix suns (at the time of writing)
+ *         Author:  L'allenamento si fa!
  *
  *  In this file there are the coefficient functions in the high energy limit, i.e. x -> 0
  *

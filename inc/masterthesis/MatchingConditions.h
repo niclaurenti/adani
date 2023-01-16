@@ -5,8 +5,7 @@
  *
  *    Description:  Header file for the MassiveCoefficientFunctions.cc file.
  *
- *         Author:  LeBron James
- *   Organization:  Los Angeles Lakers (at the time of writing)
+ *         Author:  
  *
  *  In this file there are the matching conditions.
  *

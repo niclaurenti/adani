@@ -5,8 +5,7 @@
  *
  *    Description:  Header file for the MassiveCoefficientFunctions.cc file.
  *
- *         Author:  Ja Morant
- *   Organization:  Memphis Grizzlies (at the time of writing)
+ *         Author:  Hanno un cuore differente
  *
  *  In this file there are the exact heavy coefficient functions (when known)
  *

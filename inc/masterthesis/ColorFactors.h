@@ -5,7 +5,7 @@
  *
  *    Description:  File containing color factors.
  *
- *         Author:  Sei un teorico
+ *         Author:  
  *
  * =====================================================================================
  */

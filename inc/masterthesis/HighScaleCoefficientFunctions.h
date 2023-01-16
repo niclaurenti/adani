@@ -5,8 +5,7 @@
  *
  *    Description:  Header file for the MassiveCoefficientFunctions.cc file.
  *
- *         Author:  LeBron James
- *   Organization:  Los Angeles Lakers (at the time of writing)
+ *         Author:  Da quella posizione trasforma l'acqua in vino
  *
  *  In this file there are the coefficient functions in the high scale limit, i.e. Q^2 >> m^2
  *

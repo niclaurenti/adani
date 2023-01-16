@@ -5,8 +5,7 @@
  *
  *    Description:  Header file for the SplittingFunctions.cc file.
  *
- *         Author:  LeBron James
- *   Organization:  Los Angeles Lakers (at the time of writing)
+ *         Author:  Al livello di servilismo come siamo messi?
  *
  *  In this file there are the splitting functions.
  *

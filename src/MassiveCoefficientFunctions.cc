@@ -232,7 +232,7 @@ double CLm_ps2(double x, double mQ, double mMu) {
 //         D2m_g2_4(x, mQ, mMu)
 //         -D2m_g1_4(x,mQ)*K_gg1_local(mMu)
 //         -2*(K_Qg2(x,mMu)-K_Qg1(x,mMu)*K_gg1_local(mMu))
-//         -2*C2_b1_x_K_bg1(x,mQ)
+//         -2*C2_b1_x_K_Qg1(x,mQ)
 //    ) ;
 
 // }
@@ -243,7 +243,7 @@ double CLm_ps2(double x, double mQ, double mMu) {
 //     return (
 //         DLm_g2_4(x, mQ, mMu)
 //         -DLm_g1_4(x,mQ)*K_gg1_local(mMu)
-//         -2*CL_b1_x_K_bg1(x,mQ)
+//         -2*CL_b1_x_K_Qg1(x,mQ)
 //    ) ;
 
 // }
