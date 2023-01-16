@@ -14,12 +14,12 @@ using namespace std;
 std::string print_time(time_t seconds);
 
 int main(int argc, char** argv) {
-    
+
     if(argc!=5) {
         cout<< "ERROR!\nUsage: ./output_grid.exe mufrac = mu/Q m channel calls\nExiting..." <<endl;
         return -1;
     }
-    
+
     string channel = argv[3];
     int calls = atoi(argv[4]) ;
     string filename ;
@@ -54,15 +54,15 @@ int main(int argc, char** argv) {
 
     ifstream inputx;
     inputx.open("x.txt");
-    
+
     double mufrac = atof(argv[1]);
     double m = atof(argv[2]);
 
     double res ;
-    
+
     int nf=4;
 
-    std::vector<double> Q, x ; 
+    std::vector<double> Q, x ;
 
     double xtmp ;
     inputx >> xtmp ;
@@ -70,7 +70,7 @@ int main(int argc, char** argv) {
         x.push_back(xtmp) ;
         inputx >> xtmp ;
     }
-    
+
     double Qtmp ;
     inputQ >> Qtmp ;
     while(!inputQ.eof()) {
@@ -84,7 +84,7 @@ int main(int argc, char** argv) {
 
     cout << "Computation of the grid for the coefficient function C"<< channel << " for m = "<< m << " GeV and µ/Q = "<<mufrac << endl ;
     cout << "Size of the grid (x,Q) = (" <<x.size() <<","<<Q.size()<<")"<<endl ;
-    
+
     time_t starting_time = time(NULL) ;
     //for(std::vector<Datum>::iterator d = data.begin(); d != data.end(); d++) {
     for(double Q_ : Q) {
@@ -108,7 +108,7 @@ int main(int argc, char** argv) {
         cout << "Time for evaluating Q = "<< Q_ <<" is " << print_time(t2 - t1) << endl ;
         total += t2 - t1 ;
         mean = total / k ;
-        cout << "Expected remaining time is " << print_time((Q.size() - k) * mean ) << endl ;
+        cout << "Expected remaining time is " << print_time((Q.size() - k) * mean) << endl ;
         k++ ;
     }
 
@@ -119,7 +119,7 @@ int main(int argc, char** argv) {
     output.close();
     inputQ.close() ;
     inputx.close() ;
-    
+
     return 0;
 
 }

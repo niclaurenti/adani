@@ -18,7 +18,7 @@ int main(int argc, char** argv) {
 
     double xi = atof(argv[1]);
     int nf = atoi(argv[2]);
- 
+
 	ofstream output;
 	output.open(argv[3]);
 
@@ -29,23 +29,23 @@ int main(int argc, char** argv) {
     double x;
     //double xmax = 1./(1.+4./xi);
 
-    double eta, logeta, logeta_min=-4, logeta_max=4;	
-	
+    double eta, logeta, logeta_min=-4, logeta_max=4;
+
 	int N=500;
 	double dlog=(logeta_max - logeta_min)/N;
 
     for(int i=0; i<N; i++) {
-		
+
 		logeta=logeta_min + i*dlog;
-		
+
 		eta=pow(10, logeta);
-		
+
 		x=1/(1+4*mQ*(eta+1));
 
         output  << eta << "   "
-                << x * C2m_g31(x, mQ, nf) / norm << "   " 
-                << x * C2m_ps31(x, mQ, nf) / norm << "   " 
-                << x * CLm_g31(x, mQ, nf) / norm << "   " 
+                << x * C2m_g31(x, mQ, nf) / norm << "   "
+                << x * C2m_ps31(x, mQ, nf) / norm << "   "
+                << x * CLm_g31(x, mQ, nf) / norm << "   "
                 << x * CLm_ps31(x, mQ, nf) / norm << "   "
                 << endl;
 	}
