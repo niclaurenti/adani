@@ -1,8 +1,6 @@
 #include "../inc/masterthesis/SpecialFunctions.h"
 #include "../inc/masterthesis/ColorFactors.h"
 
-//#include<gsl/gsl_sf.h>
-
 #include <iostream>
 #include <cmath>
 
