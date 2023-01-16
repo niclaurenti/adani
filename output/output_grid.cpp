@@ -108,7 +108,7 @@ int main(int argc, char** argv) {
         cout << "Time for evaluating Q = "<< Q_ <<" is " << print_time(t2 - t1) << endl ;
         total += t2 - t1 ;
         mean = total / k ;
-        cout << "Expected remaining time is " << print_time((Q.size() - k) * mean ) << endl ;
+        cout << "Expected remaining time is " << print_time((Q.size() - k) * mean) << endl ;
         k++ ;
     }
 

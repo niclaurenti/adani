@@ -58,14 +58,14 @@ double K_Qg2(double x, double mMu) {
         (8 - 16*x + 16*x2)*(2*L*Lm - Lm2 + 2*z2) -
         (4 - 8*x + 16*x2)*L2 - 32*x*(1-x)*Lm -
         (12 - 16*x + 32*x2)*L - 56 + 116*x - 80*x2
-    );
+   );
 
     double logmu_CATR = (
         (16 + 32*x + 32*x2)*(Li2minus + L*Lp) +
         (8 - 16*x + 16*x2)*Lm2 + (8 + 16*x)*L2 + 32*x*z2 +
         32*x*(1-x)*Lm - (8 + 64*x + 352./3.*x2)*L -
         160./9./x + 16 -200*x + 1744./9.*x2
-    );
+   );
 
     double logmu = CF*TR*logmu_CFTR + CA*TR*logmu_CATR;
 
@@ -76,20 +76,20 @@ double K_Qg2(double x, double mMu) {
         (8 + 48*x - 24*x2)*L*Lm + (4 + 8*x - 12*x2)*Lm2 -
         (1 + 12*x - 20*x2)*L2 - (52*x - 48*x2)*Lm -
         (16 + 18*x + 48*x2)*L + 26 - 82*x + 80*x2
-    );
+   );
 
     double const_CATR = (
         (1 - 2*x + 2*x2)*(-4./3.*Lm3 + 8*Lm*Li2xm- 8*Li3xm) +
         (1 + 2*x + 2*x2)*(-8*z2*Lp - 16*Lp*Li2minus - 8*L*Lp2 + 4*L2*Lp + 8*L*Li2minus - 8*Li3minus - 16*S12minus) +
         (16 + 64*x)*(2*S12xm + L*Li2xm) -
         (4./3. + 8./3.*x)*L3 + (8 - 32*x + 16*x2)*z3 -
-        (16 + 64*x)*z2*L + (16*x + 16*x2)*(Li2minus + L*Lp) +//there is a typo here in the e-Print ( 16+16*x2 -> 16*x+16*x2 )
+        (16 + 64*x)*z2*L + (16*x + 16*x2)*(Li2minus + L*Lp) +//there is a typo here in the e-Print (16+16*x2 -> 16*x+16*x2)
         (32./3./x + 12 + 64*x - 272./3.*x2)*Li2xm -
         (12 + 48*x - 260./3.*x2 + 32./3./x)*z2 - 4*x2*L*Lm -
         (2 + 8*x - 10*x2)*Lm2 + (2 + 8*x + 46./3.*x2)*L2 +
         (4 + 16*x - 16*x2)*Lm - (56./3. + 172./3.*x + 1600./9.*x2)*L -
         448./27./x -4./3. - 628./3.*x + 6352./27.*x2
-    );
+   );
 
     double const_tot = CF*TR*const_CFTR + CA*TR*const_CATR;
 
@@ -113,7 +113,7 @@ double K_Qg2_apfel(double x, double mMu) {
     return 0.5*(
         K_Qg2_const.Regular(x) + K_Qg2_log.Regular(x)*log(1./mMu) +
         K_Qg2_log2.Regular(x)*log(1./mMu)*log(1./mMu)
-    )/16./pi2;
+   )/16./pi2;
 
 }
 
@@ -146,7 +146,7 @@ double a_Qg_30(double x, int v) {
     double L13=L12*L1;
 
     if(v==0) {
-        return 0.5*( a_Qg_30(x,1) + a_Qg_30(x,2));
+        return 0.5*(a_Qg_30(x,1) + a_Qg_30(x,2));
     }
 
     if(v==1) {

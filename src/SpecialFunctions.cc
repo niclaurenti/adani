@@ -90,8 +90,8 @@ double Li2(double x) {
             *(1.0-5.0*z*z/294.0*(1.0-7.0*z*z/360.0
             *(1.0-5.0*z*z/242.0*(1.0-7601.0*z*z/354900.0
             *(1.0-91.0*z*z/4146.0*(1.0-3617.0*z*z/161840.0)
-            ))))))))
-        ) ;
+           ))))))))
+       ) ;
         return temp;
     }
 
@@ -133,8 +133,8 @@ double Li3(double x) {
             *(1.0-26104.0*z/307461.0*(1.0+1925.0*z/8023.0
             *(1.0-53598548.0*z/524808375.0
             *(1.0+22232925.0*z/107197096.0
-            )))))))))))))
-        ) ;
+           )))))))))))))
+       ) ;
         return temp;
     }
 
@@ -147,7 +147,7 @@ double Li3(double x) {
         return (
             -Li3(1.0-x) - Li3(-x/(1.0-x)) + ZETA3 + ZETA2*ln1x
             - log(x)*ln1x*ln1x/2.0 + ln1x*ln1x*ln1x/6.0
-        ) ;
+       ) ;
     }
 
     else {
@@ -175,8 +175,8 @@ double S12(double x){
     if (x > 1) {
         return (
             - Li3(1.-x) + ZETA3 + log(x-1.) * Li2(1.-x)
-            + 0.5 * log(x) * ( log(x-1.)*log(x-1.) - M_PI*M_PI )
-        ) ;
+            + 0.5 * log(x) * (log(x-1.)*log(x-1.) - M_PI*M_PI)
+       ) ;
     }
 
     else if (x==1){ return ZETA3; }
@@ -185,7 +185,7 @@ double S12(double x){
         return (
             - Li3(1.-x) + ZETA3 + log(1.-x) * Li2(1.-x)
             + 0.5 * log(x) * log(1.-x)*log(1.-x)
-        );
+       );
     }
 
     else if (x==0){ return 0.; }
@@ -196,7 +196,7 @@ double S12(double x){
             - Li3(c) + ZETA3 + log(c) * Li2(c)
             + 0.5 * log(c)*log(c) * log(1.-c)
             - 1./6. * log(c)*log(c)*log(c)
-        );
+       );
     }
 
     else { return 0.; }
@@ -225,7 +225,7 @@ double c0(double xi) {
         4*L2*L2 + 2*Li_2 + 48/xp2 - 4*L2/xp2 + 64*L2/xp2/xp2 -
         128*L2/(xp2*xp2*xp4) - 160/xp2/xp4 - 64*L2/xp2/xp4 +
         128/(xp2*xp4*xp4) - 12*(4+z2)/xp4 - 8*L3*L3/xp4 + 64/xp4/xp4
-    );
+   );
 
     double c_CF= (
         -18 - 2./3.*pi2 - 24*L3/y - 8*L3*L3 + 2*L1*L1 - 6*L2 +
@@ -233,7 +233,7 @@ double c0(double xi) {
         544/(xp2*xp4*xp4) + 48*L3*L3/xp4 - 8*L1*L1/xp4 +
         (44+40*z2)/xp4 - 120*L2/xp2/xp2 + 256*L2/(xp2*xp2*xp4) -
         16*Li_2/xp4 - 272/xp4/xp4
-    ) ;
+   ) ;
 
   return CA*c_CA + CF*c_CF ;
 

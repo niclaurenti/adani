@@ -17,14 +17,14 @@ using namespace apfel;
 
 double C2m_g1_threshold(double x, double mQ) {
 
-    double xmax = 1. / ( 1. + 4 * mQ ) ;
+    double xmax = 1. / (1. + 4 * mQ) ;
 
-    if ( x>xmax || x<0 ) return 0;
+    if (x>xmax || x<0) return 0;
 
-    double beta = sqrt( 1. - 4. * mQ * x / ( 1. - x ) ) ;
+    double beta = sqrt(1. - 4. * mQ * x / (1. - x)) ;
     double xi = 1. / mQ ;
 
-    return xi / ( 4 * M_PI ) * TR * beta / ( 1. + xi / 4 ) / x ;
+    return xi / (4 * M_PI) * TR * beta / (1. + xi / 4) / x ;
 
 }
 
@@ -37,11 +37,11 @@ double C2m_g1_threshold(double x, double mQ) {
 
 double C2m_g2_threshold(double x, double mQ, double mMu) {
 
-    double xmax = 1. / ( 1. + 4 * mQ ) ;
+    double xmax = 1. / (1. + 4 * mQ) ;
 
     if(x>xmax || x<0) return 0;
 
-    double beta = sqrt( 1. - 4 * mQ * x / (1. - x));
+    double beta = sqrt(1. - 4 * mQ * x / (1. - x));
     double xi = 1. / mQ;
 
     double logb = log(beta) ;
@@ -51,16 +51,16 @@ double C2m_g2_threshold(double x, double mQ, double mMu) {
 
     double C_logb = 48 * CA * log(2) - 40 * CA + 8 * CA * log(mMu) ;
 
-    double C_fracb = ( 2 * CF - CA ) * M_PI * M_PI ;
+    double C_fracb = (2 * CF - CA) * M_PI * M_PI ;
 
     double C_const = (
         c0(xi) + 36 * CA * log(2) * log(2) - 60 * CA * log(2)
-        + log(mMu) * ( 8 * CA * log(2) - c0_bar(xi) )
-    );
+        + log(mMu) * (8 * CA * log(2) - c0_bar(xi))
+   );
 
     return C2m_g1(x,mQ) * (
         C_log2b * log2b + C_logb * logb + C_fracb / beta + C_const
-    ) / 4. / M_PI ;
+   ) / 4. / M_PI ;
 
 }
 
@@ -77,7 +77,7 @@ double CLm_g2_threshold(double x, double mQ, double mMu) {
 
     if(x>xmax || x<0) return 0;
 
-    double beta = sqrt(1. - 4 * mQ * x / (1. - x) );
+    double beta = sqrt(1. - 4 * mQ * x / (1. - x));
     double xi = 1. / mQ ;
 
     double logb = log(beta);
@@ -87,16 +87,16 @@ double CLm_g2_threshold(double x, double mQ, double mMu) {
 
     double C_logb = 48 * CA * log(2) - 40 * CA + 8 * CA * log(mMu);
 
-    double C_fracb = ( 2 * CF - CA) * M_PI * M_PI ;
+    double C_fracb = (2 * CF - CA) * M_PI * M_PI ;
 
     double C_const = (
         c0(xi) + 36 * CA * log(2) * log(2) - 60 * CA * log(2)
         + log(mMu) * (8 * CA * log(2) - c0_bar(xi))
-    ) ;
+   ) ;
 
     return CLm_g1(x,mQ) * (
         C_log2b * log2b + C_logb * logb + C_fracb / beta + C_const
-    ) / 4. / M_PI ;
+   ) / 4. / M_PI ;
 
 }
 
@@ -114,12 +114,8 @@ double C2m_g3_threshold(double x, double mQ, double mMu, int nf) {
 
     double xi = 1. / mQ ;
     double beta = sqrt(1. - 4. * mQ * x / (1. - x));
-    //double eta=1./4.*xi*(1-x)/x - 1;
-    //double rho=4*mQ*x/(1-x);
-
-    // double L=log(mQ);
+ 
     double Lm = log(mMu);
-    //double L2=L*L;
     double Lm2 = Lm * Lm;
     double l = log(beta);
     double l2 = l * l;
@@ -134,24 +130,34 @@ double C2m_g3_threshold(double x, double mQ, double mMu, int nf) {
 
     double c_log4= 128. * CA * CA ;
 
-    double c_log3=(768.*log2 - 6464./9.)*CA*CA + 128./9.*CA*nf + 128.*CA*CA*Lm;
+    double c_log3 = (
+        (768. * log2 - 6464. / 9.) * CA * CA 
+        + 128. / 9. * CA * nf
+        + 128. * CA * CA * Lm
+    ) ;
 
     double c_log2 = (
-        (1728.*log2*log2 - 3232.*log2 - 208./3.*pi2 + 15520./9.)*CA*CA + (64.*log2 - 640./9.)*CA*nf + 16.*CA*c0(xi)
-        + 32.*CA*(CF - CA/2)*pi2/beta - ((-512*log2 + 1136./3.)*CA*CA - 32./3.*CA*nf + 16*CA*c0_bar(xi))*Lm + 32*CA*CA*Lm2
+        (1728. * log2 * log2 - 3232. * log2 - 208./3. * pi2 + 15520./9.)*CA*CA 
+        + (64. * log2 - 640. / 9.) * CA * nf
+        + 16. * CA * c0(xi)
+        + 32. * CA * (CF - CA / 2) * pi2 / beta 
+        - (
+            (-512 * log2 + 1136./3.) * CA * CA - 32./3. * CA * nf
+            + 16*CA*c0_bar(xi)
+        ) * Lm + 32 * CA * CA * Lm2
     ) ;
 
     double c_log_const = (
         (1728.*log2*log2*log2 - 4848*log2*log2 + 15520./3.*log2 - 208*pi2*log2 + 936*z3 + 608./3.*pi2 - 88856./27.)*CA*CA
         + (96*log2*log2 - 640./3.*log2 - 16./3.*pi2 + 4592./27.)*CA*nf - 32*CF*(CF - CA/2)*pi2 + (48*log2 - 40)*CA*c0(xi)
-    );
+   );
 
     double c_log_fracbeta = ((-92./3. + 32*log2)*CA + 8./3.*nf)*(CF - CA/2)*pi2 ;
 
     double c_log_Lm = (
         - ((-672*log2*log2 + 976*log2 + 104./3.*pi2 - 4160./9.)*CA*CA
         + (-32*log2 + 320./9.)*CA*nf + (48*log2 - 40)*CA*c0_bar(xi) - 8*CA*c0(xi) - 16*CA*(CF - CA/2)*pi2/beta)
-    ) ;
+   ) ;
 
     double c_log_Lm2 = ((64*log2 - 44./3.)*CA*CA + 8./3.*CA*nf - 8*CA*c0_bar(xi));
 
@@ -160,7 +166,7 @@ double C2m_g3_threshold(double x, double mQ, double mMu, int nf) {
     double c_fracbeta = (
         ((8*log2*log2 - 68./3.*log2 + 8./3.*pi2 - 658./9.)*CA
         + (8./3.*log2 - 20./9.)*nf + 2*c0(xi) + (26./3.*CA + 4./3.*nf - 2*c0_bar(xi))*Lm)*(CF - CA/2)*pi2
-    ) ;
+   ) ;
 
     double c_fracbeta2= 4./3.*(CF - CA/2)*(CF - CA/2)*pi4;
 
@@ -171,7 +177,7 @@ double C2m_g3_threshold(double x, double mQ, double mMu, int nf) {
     return C2m_g1(x,mQ) / pi2 / 16. * (
         c_log4 * l4 + c_log3 * l3 + c_log2 * l2 + c_log * l
         + c_fracbeta / beta + c_fracbeta2 / beta / beta + c_const
-    );
+   );
 
 }
 
@@ -189,12 +195,8 @@ double CLm_g3_threshold(double x, double mQ, double mMu, int nf) {
 
     double xi=1/mQ;
     double beta=sqrt(1-4*mQ*x/(1-x));
-    //double eta=1./4.*xi*(1-x)/x - 1;
-    //double rho=4*mQ*x/(1-x);
 
-    // double L=log(mQ);
     double Lm=log(mMu);
-    //double L2=L*L;
     double Lm2=Lm*Lm;
     double l=log(beta);
     double l2=l*l;
@@ -214,19 +216,19 @@ double CLm_g3_threshold(double x, double mQ, double mMu, int nf) {
     double c_log2 = (
         (1728.*log2*log2 - 3232.*log2 - 208./3.*pi2 + 15520./9.)*CA*CA + (64.*log2 - 640./9.)*CA*nf + 16.*CA*c0(xi)
         + 32.*CA*(CF - CA/2)*pi2/beta - ((-512*log2 + 1136./3.)*CA*CA - 32./3.*CA*nf + 16*CA*c0_bar(xi))*Lm+ 32*CA*CA*Lm2
-    ) ;
+   ) ;
 
     double c_log_const = (
         (1728.*log2*log2*log2 - 4848*log2*log2 + 15520./3.*log2 - 208*pi2*log2 + 936*z3 + 608./3.*pi2 - 88856./27.)*CA*CA
         + (96*log2*log2 - 640./3.*log2 - 16./3.*pi2 + 4592./27.)*CA*nf - 32*CF*(CF - CA/2)*pi2 + (48*log2 - 40)*CA*c0(xi)
-    );
+   );
 
     double c_log_fracbeta=((-92./3. + 32*log2)*CA + 8./3.*nf)*(CF - CA/2)*pi2;
 
     double c_log_Lm= (
         - ((-672*log2*log2 + 976*log2 + 104./3.*pi2 - 4160./9.)*CA*CA + (-32*log2 + 320./9.)*CA*nf
         + (48*log2 - 40)*CA*c0_bar(xi) - 8*CA*c0(xi) - 16*CA*(CF - CA/2)*pi2/beta)
-    );
+   );
 
     double c_log_Lm2 = ((64*log2 - 44./3.)*CA*CA + 8./3.*CA*nf - 8*CA*c0_bar(xi));
 
@@ -234,7 +236,7 @@ double CLm_g3_threshold(double x, double mQ, double mMu, int nf) {
 
     double c_fracbeta = (
         (8*log2*log2 - 68./3.*log2 + 8./3.*pi2 - 658./9.)*CA + (8./3.*log2 - 20./9.)*nf + 2*c0(xi) + (26./3.*CA + 4./3.*nf - 2*c0_bar(xi))*Lm
-    )*(CF - CA/2)*pi2;
+   )*(CF - CA/2)*pi2;
 
     double c_fracbeta2= 4./3.*(CF - CA/2)*(CF - CA/2)*pi4;
 
@@ -245,6 +247,6 @@ double CLm_g3_threshold(double x, double mQ, double mMu, int nf) {
     return CLm_g1(x,mQ)/pi2/16.*(
         c_log4*l4 + c_log3*l3 + c_log2*l2 + c_log*l
         + c_fracbeta/beta + c_fracbeta2/beta/beta + c_const
-    );
+   );
 
 }

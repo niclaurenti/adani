@@ -35,10 +35,10 @@
 double C2m_g1(double x, double mQ);
 double CLm_g1(double x, double mQ);
 
-double D2m_g1_4(double x, double mQ);
-double DLm_g1_4(double x, double mQ);
-double D2m_g1_5(double x, double mQ);
-double DLm_g1_5(double x, double mQ);
+// double D2m_g1_4(double x, double mQ);
+// double DLm_g1_4(double x, double mQ);
+// double D2m_g1_5(double x, double mQ);
+// double DLm_g1_5(double x, double mQ);
 
 //==========================================================================================//
 //                      Exact massive coefficient funtions O(alpha_s^2)
@@ -50,11 +50,11 @@ double C2m_ps2(double x, double mQ, double mMu);
 double CLm_g2(double x, double mQ, double mMu);
 double CLm_ps2(double x, double mQ, double mMu);
 
-double D2m_g2_4(double x, double mQ, double mMu);
-double DLm_g2_4(double x, double mQ, double mMu);
+// double D2m_g2_4(double x, double mQ, double mMu);
+// double DLm_g2_4(double x, double mQ, double mMu);
 
-double D2m_g2_5(double x, double mQ, double mMu);
-double DLm_g2_5(double x, double mQ, double mMu);
+// double D2m_g2_5(double x, double mQ, double mMu);
+// double DLm_g2_5(double x, double mQ, double mMu);
 
 //==========================================================================================//
 //  Exact massive coefficient funtions O(alpha_s^2): terms proportional to log(mu^2/m^2)

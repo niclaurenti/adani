@@ -1,3 +1,15 @@
+/*
+ * =====================================================================================
+ *
+ *       Filename:  ColorFactors.h
+ *
+ *    Description:  File containing color factors.
+ *
+ *         Author:  Sei un teorico
+ *
+ * =====================================================================================
+ */
+
 #ifndef Color_h
 #define Color_h
 
