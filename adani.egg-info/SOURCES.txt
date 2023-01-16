@@ -1,9 +1,0 @@
-README.md
-pyproject.toml
-setup.py
-_skbuild/macosx-13.0-arm64-3.10/cmake-install/lib/python3.10/site-packages/adanipy.cpython-310-darwin.so
-adani.egg-info/PKG-INFO
-adani.egg-info/SOURCES.txt
-adani.egg-info/dependency_links.txt
-adani.egg-info/not-zip-safe
-adani.egg-info/top_level.txt
