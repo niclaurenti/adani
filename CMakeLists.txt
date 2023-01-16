@@ -11,7 +11,7 @@ endif()
 project(adani)
 
 # define c++ standard and issue all the warning demanded by this standard
-# set(CMAKE_BUILD_TYPE Release)
+set(CMAKE_BUILD_TYPE Release)
 set(adani_VERSION 0.1)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
