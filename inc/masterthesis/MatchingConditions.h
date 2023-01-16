@@ -5,7 +5,7 @@
  *
  *    Description:  Header file for the MassiveCoefficientFunctions.cc file.
  *
- *         Author:  
+ *         Author:  Vamo!!
  *
  *  In this file there are the matching conditions.
  *
