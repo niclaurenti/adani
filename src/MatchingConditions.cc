@@ -1,6 +1,6 @@
-#include "../inc/masterthesis/MatchingConditions.h"
-#include "../inc/masterthesis/ColorFactors.h"
-#include "../inc/masterthesis/SpecialFunctions.h"
+#include "adani/MatchingConditions.h"
+#include "adani/ColorFactors.h"
+#include "adani/SpecialFunctions.h"
 #include "apfel/matchingconditions_sl.h"
 #include<cmath>
 #include <iostream>
@@ -10,7 +10,7 @@ using namespace std;
 
 //==========================================================================================//
 //  Matching condition Qg O(alpha_s)
-// 
+//
 //  Eq. (B.2) from Ref. [arXiv:hep-ph/9612398v1]
 //------------------------------------------------------------------------------------------//
 
@@ -23,7 +23,7 @@ double K_Qg1(double x, double mMu) {
 
 //==========================================================================================//
 //  Local part of the matching condition gg O(alpha_s)
-// 
+//
 //  Eq. (B.6) from Ref. [arXiv:hep-ph/9612398v1]
 //------------------------------------------------------------------------------------------//
 
@@ -33,7 +33,7 @@ double K_gg1_local(double mMu) {
 
 //==========================================================================================//
 //  Matching condition Qg O(alpha_s^2)
-// 
+//
 //  Eq. (B.3) from Ref. [arXiv:hep-ph/9612398v1]
 //------------------------------------------------------------------------------------------//
 
@@ -122,31 +122,9 @@ double K_Qg2(double x, double mMu) {
 }
 
 //==========================================================================================//
-//  Matching condition Qg O(alpha_s^2)
-//  From APFEL++
-// 
-//  Eq. (B.3) from Ref. [arXiv:hep-ph/9612398v1]
-//------------------------------------------------------------------------------------------//
-
-double K_Qg2_apfel(double x, double mMu) {
-
-    double pi2=M_PI*M_PI;
-
-    AS2Hg_0 K_Qg2_const;
-    AS2Hg_L K_Qg2_log;
-    AS2Hg_L2 K_Qg2_log2;
-
-    return 0.5*(
-        K_Qg2_const.Regular(x) + K_Qg2_log.Regular(x)*log(1./mMu) +
-        K_Qg2_log2.Regular(x)*log(1./mMu)*log(1./mMu)
-   )/16./pi2;
-
-}
-
-//==========================================================================================//
-//  Approximation of the nf-independent part of the mu-independent part of the 
+//  Approximation of the nf-independent part of the mu-independent part of the
 //  unrenormalized matching condition Qg at O(alpha_s^3).
-// 
+//
 //  v = 0 : center of the band given by v = 1 and v = 2
 //  v = 1 : Eq. (3.49) of Ref. [arXiv:1205.5727]
 //  v = 2 : Eq. (16) Ref. of [arXiv:1701.05838]

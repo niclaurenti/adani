@@ -1,11 +1,11 @@
-#include "../inc/masterthesis/ApproximateCoefficientFunctions.h"
-#include "../inc/masterthesis/HighScaleCoefficientFunctions.h"
-#include "../inc/masterthesis/MassiveCoefficientFunctions.h"
-#include "../inc/masterthesis/HighEnergyCoefficientFunctions.h"
-#include "../inc/masterthesis/ThresholdCoefficientFunctions.h"
-#include "../inc/masterthesis/AsymptoticCoefficientFunctions.h"
-#include "../inc/masterthesis/SpecialFunctions.h"
-#include "../inc/masterthesis/ColorFactors.h"
+#include "adani/ApproximateCoefficientFunctions.h"
+#include "adani/HighScaleCoefficientFunctions.h"
+#include "adani/MassiveCoefficientFunctions.h"
+#include "adani/HighEnergyCoefficientFunctions.h"
+#include "adani/ThresholdCoefficientFunctions.h"
+#include "adani/AsymptoticCoefficientFunctions.h"
+#include "adani/SpecialFunctions.h"
+#include "adani/ColorFactors.h"
 #include "apfel/massivecoefficientfunctionsunp_sl.h"
 #include <cmath>
 #include <iostream>
@@ -93,7 +93,7 @@ double CLm_g1_approximation(double x, double mQ) {
     double damp_thr = 1. / (1. + pow(eta / h, k));
     double damp_asy = 1. - damp_thr ;
 
-    double C_const = CLm_g1_highscale(x,mQ) * damp_asy ;
+    double C_const = CLm_g1_highscale(x) * damp_asy ;
     //CLm_g1_threshold=0
 
     return C_const ;
@@ -400,9 +400,9 @@ double C2m_g3_approximation(double x, double mQ, double mMu, int nf, int method_
 //  Approximate gluon coefficient function for F2 at O(alpha_s^3) with implicit parameters.
 //------------------------------------------------------------------------------------------//
 
-double C2m_g3_approximation(double x, double mQ, double mMu, int nf, double A, double B, double C, double D, double a, double b, int v1, int v2, int method_flag, int calls) {
+double C2m_g3_approximation_implicit(double x, double mQ, double mMu, int nf, double A, double B, double C, double D, double a, double b, int v1, int v2, int method_flag, int calls) {
 
-    double xmax = 1. / (1. + 4 * mQ) ;
+    double xmax = 1. / ( 1. + 4 * mQ ) ;
 
     double xi = 1. / mQ ;
 
@@ -445,7 +445,7 @@ double C2m_g3_approximation_BAND(double x, double mQ, double mMu, int nf, double
     double a=2.5, b=5;
     double A=0.3, B=2.5, C=2.5, D=1.2;
 
-    double Cavg=C2m_g3_approximation(x,mQ,1,nf,A,B,C,D,a,b,0,0);
+    double Cavg=C2m_g3_approximation_implicit(x,mQ,1,nf,A,B,C,D,a,b,0,0);
 
     if(v==0) return Cavg;
 
@@ -457,20 +457,20 @@ double C2m_g3_approximation_BAND(double x, double mQ, double mMu, int nf, double
     double min=Cavg,max=Cavg;
     int i;
 
-    Cerr[0]=C2m_g3_approximation(x,mQ,1,nf,Amax,B,C,D,a,b,0,0);
-    Cerr[1]=C2m_g3_approximation(x,mQ,1,nf,Amin,B,C,D,a,b,0,0);
-    Cerr[2]=C2m_g3_approximation(x,mQ,1,nf,A,Bmax,C,D,a,b,0,0);
-    Cerr[3]=C2m_g3_approximation(x,mQ,1,nf,A,Bmin,C,D,a,b,0,0);
-    Cerr[4]=C2m_g3_approximation(x,mQ,1,nf,A,B,Cmax,D,a,b,0,0);
-    Cerr[5]=C2m_g3_approximation(x,mQ,1,nf,A,B,Cmin,D,a,b,0,0);
-    Cerr[6]=C2m_g3_approximation(x,mQ,1,nf,A,B,C,Dmax,a,b,0,0);
-    Cerr[7]=C2m_g3_approximation(x,mQ,1,nf,A,B,C,Dmin,a,b,0,0);
-    Cerr[8]=C2m_g3_approximation(x,mQ,1,nf,A,B,C,D,a,b,1,0);
-    Cerr[9]=C2m_g3_approximation(x,mQ,1,nf,A,B,C,D,a,b,2,0);
-    Cerr[10]=C2m_g3_approximation(x,mQ,1,nf,A,B,C,D,a,b,0,1);
-    Cerr[11]=C2m_g3_approximation(x,mQ,1,nf,A,B,C,D,a,b,0,2);
-    Cerr[12]=C2m_g3_approximation(x,mQ,1,nf,Amax,Bmax,Cmax,Dmax,a, b,1,1);
-    Cerr[13]=C2m_g3_approximation(x,mQ,1,nf,Amin,Bmin, Cmin,Dmin,a,b,2,2);
+    Cerr[0]=C2m_g3_approximation_implicit(x,mQ,1,nf,Amax,B,C,D,a,b,0,0);
+    Cerr[1]=C2m_g3_approximation_implicit(x,mQ,1,nf,Amin,B,C,D,a,b,0,0);
+    Cerr[2]=C2m_g3_approximation_implicit(x,mQ,1,nf,A,Bmax,C,D,a,b,0,0);
+    Cerr[3]=C2m_g3_approximation_implicit(x,mQ,1,nf,A,Bmin,C,D,a,b,0,0);
+    Cerr[4]=C2m_g3_approximation_implicit(x,mQ,1,nf,A,B,Cmax,D,a,b,0,0);
+    Cerr[5]=C2m_g3_approximation_implicit(x,mQ,1,nf,A,B,Cmin,D,a,b,0,0);
+    Cerr[6]=C2m_g3_approximation_implicit(x,mQ,1,nf,A,B,C,Dmax,a,b,0,0);
+    Cerr[7]=C2m_g3_approximation_implicit(x,mQ,1,nf,A,B,C,Dmin,a,b,0,0);
+    Cerr[8]=C2m_g3_approximation_implicit(x,mQ,1,nf,A,B,C,D,a,b,1,0);
+    Cerr[9]=C2m_g3_approximation_implicit(x,mQ,1,nf,A,B,C,D,a,b,2,0);
+    Cerr[10]=C2m_g3_approximation_implicit(x,mQ,1,nf,A,B,C,D,a,b,0,1);
+    Cerr[11]=C2m_g3_approximation_implicit(x,mQ,1,nf,A,B,C,D,a,b,0,2);
+    Cerr[12]=C2m_g3_approximation_implicit(x,mQ,1,nf,Amax,Bmax,Cmax,Dmax,a, b,1,1);
+    Cerr[13]=C2m_g3_approximation_implicit(x,mQ,1,nf,Amin,Bmin, Cmin,Dmin,a,b,2,2);
 
     for(i=0;i<14;i++) {
         if(Cerr[i]>max) max=Cerr[i];
@@ -979,7 +979,7 @@ double C2m_g3_approximationB_klmv_paper(double x, double mQ, double mMu, int nf)
 //
 //  Eq. (4.21) of Ref. [arXiv:1205.5727].
 //  This equation uses the exact expression of aQqPS30 given in Eq. (5.41, 5.42, 5.45) of Ref. [arXiv:1409.1135],
-//  and as approximation B for the small x limit at NLL it uses Eq. (4.25) of [arXiv:1205.5727] 
+//  and as approximation B for the small x limit at NLL it uses Eq. (4.25) of [arXiv:1205.5727]
 //  instead of Eq. (4.20)
 //------------------------------------------------------------------------------------------//
 

@@ -1,10 +1,10 @@
-#include "../inc/masterthesis/Convolutions.h"
-#include "../inc/masterthesis/ColorFactors.h"
-#include "../inc/masterthesis/MassiveCoefficientFunctions.h"
-#include "../inc/masterthesis/MasslessCoefficientFunctions.h"
-#include "../inc/masterthesis/MatchingConditions.h"
-#include "../inc/masterthesis/SpecialFunctions.h"
-#include "../inc/masterthesis/SplittingFunctions.h"
+#include "adani/Convolutions.h"
+#include "adani/ColorFactors.h"
+#include "adani/MassiveCoefficientFunctions.h"
+#include "adani/MasslessCoefficientFunctions.h"
+#include "adani/MatchingConditions.h"
+#include "adani/SpecialFunctions.h"
+#include "adani/SplittingFunctions.h"
 #include <cmath>
 #include <iostream>
 
@@ -99,112 +99,111 @@ double K_Qg1_x_K_gg2(double x, double mMu) {
 
 }
 
-//_____________________________________________________________
+// Requires Li4 that is not implemented
 
+// double C2_b2_x_K_bg1(double x, double mMu, int nf) {
 
-double C2_b2_x_K_bg1(double x, double mMu, int nf) {
+//     if (x<0 || x>1) return 0;
 
-    if (x<0 || x>1) return 0;
+//     double Lmu = log(1./mMu) ;
+//     double pi3 = M_PI * M_PI * M_PI ;
 
-    double Lmu = log(1./mMu) ;
-    double pi3 = M_PI * M_PI * M_PI ;
+//     double x2 = x * x ;
+//     //double x3=x2*x;
+//     //double x4=x3*x;
 
-    double x2 = x * x ;
-    //double x3=x2*x;
-    //double x4=x3*x;
+//     double L = log(x) ;
+//     double L2 = L * L ;
+//     double L3 = L2 * L ;
+//     double L4 = L3 * L ;
+//     double L5 = L4 * L ;
 
-    double L = log(x) ;
-    double L2 = L * L ;
-    double L3 = L2 * L ;
-    double L4 = L3 * L ;
-    double L5 = L4 * L ;
+//     double xm = 1 - x ;
+//     double xm2 = xm * xm ;
 
-    double xm = 1 - x ;
-    double xm2 = xm * xm ;
+//     double Lm = log(xm) ;
+//     double Lm2 = Lm * Lm ;
+//     double Lm3 = Lm2 * Lm ;
+//     double Lm4 = Lm3 * Lm ;
 
-    double Lm = log(xm) ;
-    double Lm2 = Lm * Lm ;
-    double Lm3 = Lm2 * Lm ;
-    double Lm4 = Lm3 * Lm ;
+//     double Li2x = Li2(x) ;
+//     double Li2xm = Li2(xm) ;
+//     double Li2x_xm = Li2(-x / xm) ;
 
-    double Li2x = Li2(x) ;
-    double Li2xm = Li2(xm) ;
-    double Li2x_xm = Li2(-x / xm) ;
+//     double Li3x = Li3(x) ;
+//     double Li3xm = Li3(xm) ;
+//     double Li3x_xm = Li3(-x / xm) ;
 
-    double Li3x = Li3(x) ;
-    double Li3xm = Li3(xm) ;
-    double Li3x_xm = Li3(-x / xm) ;
+//     double Li4x = Li4(x) ;
+//     double Li4xm = Li4(xm) ;
+//     double Li4x_xm = Li4(-x / xm) ;
 
-    double Li4x = Li4(x) ;
-    double Li4xm = Li4(xm) ;
-    double Li4x_xm = Li4(-x / xm) ;
+//     double c_const = -222.268 - 67.072 * x + 357.041 * x2 + 288.96 * x2 * atanh(1 - 2 * x);
 
-    double c_const = -222.268 - 67.072 * x + 357.041 * x2 + 288.96 * x2 * atanh(1 - 2 * x);
+//     double c_Lm3 = -16.9267 + 62.2978 * x - 65.8156 * x2 ;
 
-    double c_Lm3 = -16.9267 + 62.2978 * x - 65.8156 * x2 ;
+//     double c_Lm4 = 7.11111 * (-4.67148 - x + x2) ;
 
-    double c_Lm4 = 7.11111 * (-4.67148 - x + x2) ;
+//     double c_L3 = 9.86296 - 16.5387 * x + 12.5833 * x2 ;
 
-    double c_L3 = 9.86296 - 16.5387 * x + 12.5833 * x2 ;
+//     double c_L4 = 0.740741 + 0.719 * x ;
 
-    double c_L4 = 0.740741 + 0.719 * x ;
+//     double c_L5 = 0.2876 * x ;
 
-    double c_L5 = 0.2876 * x ;
+//     double c_Li2xm = x * (437.4 - 2.91 * x) ;
 
-    double c_Li2xm = x * (437.4 - 2.91 * x) ;
+//     double c_Li2x = - 659.905 + 105.837 * x - 47.5571 * x2 ;
 
-    double c_Li2x = - 659.905 + 105.837 * x - 47.5571 * x2 ;
+//     double c_Lm2 = 194.191 - 353.395 * x + 143.651 * x2 - 85.3333 * (- 1.8475 -  x + x2) * Li2xm - 147.1 * Li2x_xm ;
 
-    double c_Lm2 = 194.191 - 353.395 * x + 143.651 * x2 - 85.3333 * (- 1.8475 -  x + x2) * Li2xm - 147.1 * Li2x_xm ;
+//     double c_L2 = 48.2253 - 104.622 * x + 165.975 * x2 - 37.75 * xm2 * Lm - 73.55 * Lm2 - 109.35 * Li2x - 147.1 * Li2x_xm ;
 
-    double c_L2 = 48.2253 - 104.622 * x + 165.975 * x2 - 37.75 * xm2 * Lm - 73.55 * Lm2 - 109.35 * Li2x - 147.1 * Li2x_xm ;
+//     double c_Li3xm = 21.8133 - 385.28 * x - 100.693 * x2 ;
 
-    double c_Li3xm = 21.8133 - 385.28 * x - 100.693 * x2 ;
+//     double c_Li3x = (437.4 - 218.7 * x) * x ;
 
-    double c_Li3x = (437.4 - 218.7 * x) * x ;
+//     double c_Lm = 716.421 - 1188.82 * x + 656.924 * x2 + (- 21.8133 + 385.28 * x + 15.36 * x2) * Li2xm - 256. / 3. * x2 * Li2x + 170.667 * (- 1.8475 - x + x2) * Li3xm - 294.2 * Li3x_xm ;
 
-    double c_Lm = 716.421 - 1188.82 * x + 656.924 * x2 + (- 21.8133 + 385.28 * x + 15.36 * x2) * Li2xm - 256. / 3. * x2 * Li2x + 170.667 * (- 1.8475 - x + x2) * Li3xm - 294.2 * Li3x_xm ;
+//     double c_L = 113.954 - 128.79 * x - 516.556 * x2 + (136.193 - 101.56 * x + 112.113 * x2) * Lm2 - 28.4444 * (- 5.29516 - x + x2) * Lm3 + 218.7 * (- 2. + x) * x * Li2x + Lm * (- 113.25 + 882.6 * x - 334.86 * x2 + 294.2 * Li2x_xm) + 218.7 * Li3x + 294.2 * Li3x_xm ;
 
-    double c_L = 113.954 - 128.79 * x - 516.556 * x2 + (136.193 - 101.56 * x + 112.113 * x2) * Lm2 - 28.4444 * (- 5.29516 - x + x2) * Lm3 + 218.7 * (- 2. + x) * x * Li2x + Lm * (- 113.25 + 882.6 * x - 334.86 * x2 + 294.2 * Li2x_xm) + 218.7 * Li3x + 294.2 * Li3x_xm ;
+//     double c_Li4xm = 315.307 + 170.667 * x - 170.667 * x2 ;
 
-    double c_Li4xm = 315.307 + 170.667 * x - 170.667 * x2 ;
+//     double c_Li4x = 218.7 ;
 
-    double c_Li4x = 218.7 ;
+//     double c_Li4x_xm = 294.2 ;
 
-    double c_Li4x_xm = 294.2 ;
+//     double c = c_const + c_Lm3 * Lm3 + c_Lm4 * Lm4 + c_L3 * L3 + c_L4 * L4 + c_L5 * L5 + c_Li2xm * Li2xm + c_Li2x * Li2x + c_Lm2 * Lm2 + c_L2 * L2 + c_Li3xm * Li3xm + c_Li3x * Li3x + c_Lm * Lm + c_L * L + c_Li4xm * Li4xm + c_Li4x * Li4x + c_Li4x_xm * Li4x_xm ;
 
-    double c = c_const + c_Lm3 * Lm3 + c_Lm4 * Lm4 + c_L3 * L3 + c_L4 * L4 + c_L5 * L5 + c_Li2xm * Li2xm + c_Li2x * Li2x + c_Lm2 * Lm2 + c_L2 * L2 + c_Li3xm * Li3xm + c_Li3x * Li3x + c_Lm * Lm + c_L * L + c_Li4xm * Li4xm + c_Li4x * Li4x + c_Li4x_xm * Li4x_xm ;
+//     double c_nf_const = - 7.68063 - 144.821 * x + 179.77 * x2 - 6 * x2 * atanh(1 - 2 * x) ;
 
-    double c_nf_const = - 7.68063 - 144.821 * x + 179.77 * x2 - 6 * x2 * atanh(1 - 2 * x) ;
+//     double c_nf_Lm2 = - 4.57407 + 12.7037 * x - 12.4259 * x2 ;
 
-    double c_nf_Lm2 = - 4.57407 + 12.7037 * x - 12.4259 * x2 ;
+//     double c_nf_Lm3 = 16./27. * (1 - 2 * x + 2 * x2) ;
 
-    double c_nf_Lm3 = 16./27. * (1 - 2 * x + 2 * x2) ;
+//     double c_nf_L2 = - 4.88889 - 9.778 * x + 4.0565 * x2 ;
 
-    double c_nf_L2 = - 4.88889 - 9.778 * x + 4.0565 * x2 ;
+//     double c_nf_L3 = - 0.740741 - 0.185 * x ;
 
-    double c_nf_L3 = - 0.740741 - 0.185 * x ;
+//     double c_nf_L4 = 0.0925 * x ;
 
-    double c_nf_L4 = 0.0925 * x ;
+//     double c_nf_Lm = - 22.098 + 18.3423 * x + 13.1046 * x2 -7.11111 * (0.078125 - x + x2) * Li2xm ;
 
-    double c_nf_Lm = - 22.098 + 18.3423 * x + 13.1046 * x2 -7.11111 * (0.078125 - x + x2) * Li2xm ;
+//     double c_nf_Li2x = 16.2774 + 34.5223 * x - 32.9649 * x2 ;
 
-    double c_nf_Li2x = 16.2774 + 34.5223 * x - 32.9649 * x2 ;
+//     double c_nf_L = - 10.538 - 80.9461 * x + 12.8354 * x2 - 8.113 * xm2 * Lm - 3.55556 * (0.078125 - x + x2) * Lm2 + 8.113 * Li2x ;
 
-    double c_nf_L = - 10.538 - 80.9461 * x + 12.8354 * x2 - 8.113 * xm2 * Lm - 3.55556 * (0.078125 - x + x2) * Lm2 + 8.113 * Li2x ;
+//     double c_nf_Li3xm = 7.11111 * (0.078125 - x + x2);
 
-    double c_nf_Li3xm = 7.11111 * (0.078125 - x + x2);
+//     double c_nf_Li3x = 8.113;
 
-    double c_nf_Li3x = 8.113;
+//     double c_nf = c_nf_const + c_nf_Lm2 * Lm2 + c_nf_Lm3 * Lm3 + c_nf_L2 * L2 + c_nf_L3 * L3 + c_nf_L4 * L4 + c_nf_Lm * Lm + c_nf_Li2x * Li2x + c_nf_L * L + c_nf_Li3xm * Li3xm + c_nf_Li3x * Li3x ;
 
-    double c_nf = c_nf_const + c_nf_Lm2 * Lm2 + c_nf_Lm3 * Lm3 + c_nf_L2 * L2 + c_nf_L3 * L3 + c_nf_L4 * L4 + c_nf_Lm * Lm + c_nf_Li2x * Li2x + c_nf_L * L + c_nf_Li3xm * Li3xm + c_nf_Li3x * Li3x ;
+//     return 2 * TR * Lmu * (c + nf * c_nf) / 64. / pi3 ;
 
-    return 2 * TR * Lmu * (c + nf * c_nf) / 64. / pi3 ;
-
-}
+// }
 
 //==========================================================================================//
-//  Convolution between first order massive gluon coefficient functions for F2 and splitting 
+//  Convolution between first order massive gluon coefficient functions for F2 and splitting
 //  function Pgq0
 //------------------------------------------------------------------------------------------//
 
@@ -242,7 +241,7 @@ double C2m_g1_x_Pgq0(double x, double mQ) {
 }
 
 //==========================================================================================//
-//  Convolution between first order massive gluon coefficient functions for FL and splitting 
+//  Convolution between first order massive gluon coefficient functions for FL and splitting
 //  function Pgq0
 //------------------------------------------------------------------------------------------//
 
@@ -760,7 +759,7 @@ double Pqq0_x_Pgq0(double x) {
 }
 
 //==========================================================================================//
-//  Convolution between the first order massive gluon coefficient functions for F2 and the 
+//  Convolution between the first order massive gluon coefficient functions for F2 and the
 //  convolution between the splitting functions Pgg0 and Pgq0
 //------------------------------------------------------------------------------------------//
 
@@ -799,7 +798,7 @@ double C2m_g1_x_Pgg0_x_Pgq0(double x, double mQ, int nf) {
 }
 
 //==========================================================================================//
-//  Convolution between the first order massive gluon coefficient functions for FL and the 
+//  Convolution between the first order massive gluon coefficient functions for FL and the
 //  convolution between the splitting functions Pgg0 and Pgq0
 //------------------------------------------------------------------------------------------//
 
@@ -838,7 +837,7 @@ double CLm_g1_x_Pgg0_x_Pgq0(double x, double mQ, int nf) {
 }
 
 //==========================================================================================//
-//  Convolution between the first order massive gluon coefficient functions for F2 and the 
+//  Convolution between the first order massive gluon coefficient functions for F2 and the
 //  convolution between the splitting functions Pqq0 and Pgq0
 //------------------------------------------------------------------------------------------//
 
@@ -877,7 +876,7 @@ double C2m_g1_x_Pqq0_x_Pgq0(double x, double mQ, int nf) {
 }
 
 //==========================================================================================//
-//  Convolution between the first order massive gluon coefficient functions for FL and the 
+//  Convolution between the first order massive gluon coefficient functions for FL and the
 //  convolution between the splitting functions Pqq0 and Pgq0
 //------------------------------------------------------------------------------------------//
 

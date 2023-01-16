@@ -1,6 +1,6 @@
-#include "../inc/masterthesis/AsymptoticCoefficientFunctions.h"
-#include "../inc/masterthesis/HighScaleCoefficientFunctions.h"
-#include "../inc/masterthesis/HighEnergyCoefficientFunctions.h"
+#include "adani/AsymptoticCoefficientFunctions.h"
+#include "adani/HighScaleCoefficientFunctions.h"
+#include "adani/HighEnergyCoefficientFunctions.h"
 #include "apfel/massivecoefficientfunctionsunp_sl.h"
 #include <cmath>
 
@@ -20,9 +20,9 @@ double C2m_g1_asymptotic(double x, double mQ) {
 //  Asymptotic limit of the gluon coefficient function for FL at O(alpha_s).
 //------------------------------------------------------------------------------------------//
 
-double CLm_g1_asymptotic(double x, double mQ) {
+double CLm_g1_asymptotic(double x) {
 
-    return CLm_g1_highscale(x,mQ);
+    return CLm_g1_highscale(x);
 
 }
 

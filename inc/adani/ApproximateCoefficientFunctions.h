@@ -5,7 +5,7 @@
  *
  *    Description:  Header file for the ApproximateCoefficientFunctions.cc file.
  *
- *         Author:  L'artiglio che graffia 
+ *         Author:  L'artiglio che graffia
  *
  *  In this file there is the approximation for the unknown O(alpha_s^3) DIS massive
  *  coefficient functions.
@@ -46,7 +46,7 @@ double CLm_ps2_approximation(double x, double mQ, double mMu, double A, double B
 //------------------------------------------------------------------------------------------//
 
 double C2m_g3_approximation(double x, double mQ, double mMu, int nf, int method_flag = 1, int calls = 500000);
-double C2m_g3_approximation(double x, double mQ, double mMu, int nf, double A, double B, double C, double D, double a, double b, int v1,int v2, int method_flag = 1, int calls = 500000);
+double C2m_g3_approximation_implicit(double x, double mQ, double mMu, int nf, double A, double B, double C, double D, double a, double b, int v1,int v2, int method_flag = 1, int calls = 500000);
 double C2m_g3_approximation_BAND(double x, double mQ, double mMu, int nf, double var, double fact, int v, int method_flag = 1, int calls = 500000);
 
 double C2m_ps3_approximation(double x, double mQ, double mMu, int nf);

@@ -26,7 +26,7 @@
 //------------------------------------------------------------------------------------------//
 
 double C2m_g1_highscale(double x, double mQ);
-double CLm_g1_highscale(double x, double mQ);
+double CLm_g1_highscale(double x);
 
 double D2m_g1_highscale(double x, double mQ);
 double DLm_g1_highscale(double x, double mQ);

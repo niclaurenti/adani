@@ -1,12 +1,11 @@
-#include "../inc/masterthesis/ThresholdCoefficientFunctions.h"
-#include "../inc/masterthesis/MassiveCoefficientFunctions.h"
-#include "../inc/masterthesis/SpecialFunctions.h"
-#include "../inc/masterthesis/ColorFactors.h"
-#include <cmath>
-#include "../inc/masterthesis/SpecialFunctions.h"
-#include "apfel/massivecoefficientfunctionsunp_sl.h"
+#include "adani/ThresholdCoefficientFunctions.h"
+#include "adani/MassiveCoefficientFunctions.h"
+#include "adani/SpecialFunctions.h"
+#include "adani/ColorFactors.h"
+#include "adani/SpecialFunctions.h"
 
-using namespace apfel;
+#include <cmath>
+
 
 //==========================================================================================//
 //  Threshold limit (x->xmax) of the gluon coefficient function for F2 at O(alpha_s).
@@ -114,7 +113,7 @@ double C2m_g3_threshold(double x, double mQ, double mMu, int nf) {
 
     double xi = 1. / mQ ;
     double beta = sqrt(1. - 4. * mQ * x / (1. - x));
- 
+
     double Lm = log(mMu);
     double Lm2 = Lm * Lm;
     double l = log(beta);
@@ -131,16 +130,16 @@ double C2m_g3_threshold(double x, double mQ, double mMu, int nf) {
     double c_log4= 128. * CA * CA ;
 
     double c_log3 = (
-        (768. * log2 - 6464. / 9.) * CA * CA 
+        (768. * log2 - 6464. / 9.) * CA * CA
         + 128. / 9. * CA * nf
         + 128. * CA * CA * Lm
     ) ;
 
     double c_log2 = (
-        (1728. * log2 * log2 - 3232. * log2 - 208./3. * pi2 + 15520./9.)*CA*CA 
+        (1728. * log2 * log2 - 3232. * log2 - 208./3. * pi2 + 15520./9.)*CA*CA
         + (64. * log2 - 640. / 9.) * CA * nf
         + 16. * CA * c0(xi)
-        + 32. * CA * (CF - CA / 2) * pi2 / beta 
+        + 32. * CA * (CF - CA / 2) * pi2 / beta
         - (
             (-512 * log2 + 1136./3.) * CA * CA - 32./3. * CA * nf
             + 16*CA*c0_bar(xi)
