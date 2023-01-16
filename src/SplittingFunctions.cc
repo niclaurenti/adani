@@ -8,7 +8,7 @@ using namespace std;
 using namespace apfel;
 
 //==========================================================================================//
-//  Gluon-quark splitting funtions O(alpha_s) without color factors
+//  Gluon-quark splitting functions O(alpha_s) without color factors
 // 
 //  Eq. (4.11) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
@@ -21,7 +21,7 @@ double pgq(double x){
 }
 
 //==========================================================================================//
-//  Quark-gluon splitting funtions O(alpha_s) without color factors
+//  Quark-gluon splitting functions O(alpha_s) without color factors
 // 
 //  Eq. (4.11) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
@@ -35,7 +35,7 @@ double pqg(double x) {
 }
 
 //==========================================================================================//
-//  Regular part of the gluon-gluon splitting funtions O(alpha_s) without color factors
+//  Regular part of the gluon-gluon splitting functions O(alpha_s) without color factors
 // 
 //  Eq. (4.11) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
@@ -49,7 +49,7 @@ double pggreg(double x) {
 }
 
 //==========================================================================================//
-//  Singular part of the gluon-gluon splitting funtions O(alpha_s) without color factors
+//  Singular part of the gluon-gluon splitting functions O(alpha_s) without color factors
 // 
 //  Eq. (4.11) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
@@ -63,7 +63,7 @@ double pggsing(double x) {
 }
 
 //==========================================================================================//
-//  Gluon-quark splitting funtions O(alpha_s)
+//  Gluon-quark splitting functions O(alpha_s)
 // 
 //  Eq. (4.6) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
@@ -75,7 +75,7 @@ double Pgq0(double x) {
 }
 
 //==========================================================================================//
-//  Quark-gluon splitting funtions O(alpha_s)
+//  Quark-gluon splitting functions O(alpha_s)
 // 
 //  Eq. (4.6) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
@@ -88,7 +88,7 @@ double Pqg0(double x, int nf) {
 }
 
 //==========================================================================================//
-//  Regular part of the gluon-gluon splitting funtions O(alpha_s)
+//  Regular part of the gluon-gluon splitting functions O(alpha_s)
 // 
 //  Eq. (4.6) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
@@ -100,7 +100,7 @@ double Pgg0reg(double x) {
 }
 
 //==========================================================================================//
-//  Local part of the gluon-gluon splitting funtions O(alpha_s)
+//  Local part of the gluon-gluon splitting functions O(alpha_s)
 // 
 //  Eq. (4.6) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
@@ -114,7 +114,7 @@ double Pgg0loc(int nf) {
 }
 
 //==========================================================================================//
-//  Singular part of the gluon-gluon splitting funtions O(alpha_s)
+//  Singular part of the gluon-gluon splitting functions O(alpha_s)
 // 
 //  Eq. (4.6) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
@@ -126,7 +126,7 @@ double Pgg0sing (double x) {
 }
 
 //==========================================================================================//
-//  Regular part of the quark-quark splitting funtions O(alpha_s)
+//  Regular part of the quark-quark splitting functions O(alpha_s)
 // 
 //  Eq. (4.6) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
@@ -140,7 +140,7 @@ double Pqq0reg(double x) {
 }
 
 //==========================================================================================//
-//  Local part of the quark-quark splitting funtions O(alpha_s)
+//  Local part of the quark-quark splitting functions O(alpha_s)
 //------------------------------------------------------------------------------------------//
 
 double Pqq0loc() {
@@ -150,7 +150,7 @@ double Pqq0loc() {
 }
 
 //==========================================================================================//
-//  Singular part of the quark-quark splitting funtions O(alpha_s)
+//  Singular part of the quark-quark splitting functions O(alpha_s)
 // 
 //  Eq. (4.6) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
@@ -164,7 +164,7 @@ double Pqq0sing(double x) {
 }
 
 //==========================================================================================//
-//  Gluon-quark splitting funtions O(alpha_s^2)
+//  Gluon-quark splitting functions O(alpha_s^2)
 // 
 //  Eq. (4.9) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
@@ -225,7 +225,7 @@ double Pgq1(double x, int nf) {
 }
 
 //==========================================================================================//
-//  Regular part of the gluon-gluon splitting funtions O(alpha_s^2)
+//  Regular part of the gluon-gluon splitting functions O(alpha_s^2)
 // 
 //  Eq. (4.10) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
@@ -297,7 +297,7 @@ double Pgg1reg(double x, int nf) {
 }
 
 //==========================================================================================//
-//  Local part of the gluon-gluon splitting funtions O(alpha_s^2)
+//  Local part of the gluon-gluon splitting functions O(alpha_s^2)
 // 
 //  Eq. (4.10) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
@@ -315,7 +315,7 @@ double Pgg1loc(int nf) {
 }
 
 //==========================================================================================//
-//  Singular part of the gluon-gluon splitting funtions O(alpha_s^2)
+//  Singular part of the gluon-gluon splitting functions O(alpha_s^2)
 // 
 //  Eq. (4.10) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//

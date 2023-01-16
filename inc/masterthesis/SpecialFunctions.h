@@ -5,7 +5,7 @@
  *
  *    Description:  Header file for the MassiveCoefficientFunctions.cc file.
  *
- *         Author:  
+ *         Author:  Allison? No, Franco Armani
  *
  *  In this file there are some useful functions.
  *

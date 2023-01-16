@@ -5,7 +5,7 @@
  *
  *    Description:  Header file for the AsymptoticCoefficientFunctions.cc file.
  *
- *         Author:  Sei un teorico
+ *         Author:  Tu sei un teorico Max
  *
  *  In this file there are the coefficient functions in the asymptotic limit, i.e. x -> 0
  *  and/or Q^2 >> m^2
@@ -17,14 +17,14 @@
 #define Asymptotic_h
 
 //==========================================================================================//
-//                      Asymptotic coefficient funtions O(alpha_s)
+//                      Asymptotic coefficient functions O(alpha_s)
 //------------------------------------------------------------------------------------------//
 
 double C2m_g1_asymptotic(double x, double mQ);
 double CLm_g1_asymptotic(double x, double mQ);
 
 //==========================================================================================//
-//                      Asymptotic coefficient funtions O(alpha_s^2)
+//                      Asymptotic coefficient functions O(alpha_s^2)
 //------------------------------------------------------------------------------------------//
 
 double C2m_g2_asymptotic(double x, double mQ, double mMu);
@@ -34,13 +34,13 @@ double CLm_g2_asymptotic(double x, double mQ, double mMu);
 double CLm_ps2_asymptotic(double x, double mQ, double mMu);
 
 //==========================================================================================//
-//                      Asymptotic coefficient funtions O(alpha_s^3) at leading log
+//                      Asymptotic coefficient functions O(alpha_s^3) at leading log
 //------------------------------------------------------------------------------------------//
 
 double C2m_g3_asymptoticLL(double x, double mQ, double mMu, int nf, int v);
 
 //==========================================================================================//
-//                      Asymptotic coefficient funtions O(alpha_s^3) at leading log
+//                      Asymptotic coefficient functions O(alpha_s^3) at leading log
 //------------------------------------------------------------------------------------------//
 
 double C2m_g3_asymptotic(double x, double mQ, double mMu, int nf, int v1=0, int v2=0);

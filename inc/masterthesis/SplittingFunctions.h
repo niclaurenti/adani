@@ -16,7 +16,7 @@
 #define Split
 
 //==========================================================================================//
-//                      Splitting funtions O(alpha_s) without color factors
+//                      Splitting functions O(alpha_s) without color factors
 //------------------------------------------------------------------------------------------//
 
 double pgq(double x);
@@ -25,7 +25,7 @@ double pggreg(double x);
 double pggsing(double x);
 
 //==========================================================================================//
-//                      Splitting funtions O(alpha_s)
+//                      Splitting functions O(alpha_s)
 //------------------------------------------------------------------------------------------//
 
 double Pgq0(double x);
@@ -40,7 +40,7 @@ double Pqq0loc();
 double Pqq0sing(double x);
 
 //==========================================================================================//
-//                      Splitting funtions O(alpha_s^2)
+//                      Splitting functions O(alpha_s^2)
 //------------------------------------------------------------------------------------------//
 
 double Pgq1(double x, int nf);

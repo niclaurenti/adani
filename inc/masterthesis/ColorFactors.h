@@ -5,7 +5,7 @@
  *
  *    Description:  File containing color factors.
  *
- *         Author:  
+ *         Author:  Padre tempo opera in silenzio
  *
  * =====================================================================================
  */

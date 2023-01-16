@@ -8,13 +8,34 @@
 using namespace apfel;
 using namespace std;
 
+//==========================================================================================//
+//  Matching condition Qg O(alpha_s)
+// 
+//  Eq. (B.2) from Ref. [arXiv:hep-ph/9612398v1]
+//------------------------------------------------------------------------------------------//
+
 double K_Qg1(double x, double mMu) {
 
-    return 2*TR*(x*x+(x-1)*(x-1))*log(1./mMu)/4./M_PI;
+    return 2 * TR * (
+        x * x + (x - 1) * (x - 1)
+    ) * log(1. / mMu) / 4. / M_PI ;
 }
 
+//==========================================================================================//
+//  Local part of the matching condition gg O(alpha_s)
+// 
+//  Eq. (B.6) from Ref. [arXiv:hep-ph/9612398v1]
+//------------------------------------------------------------------------------------------//
 
-//___________________________________________________________
+double K_gg1_local(double mMu) {
+    return - 4. / 3. * TR * log(1. / mMu) / 4. / M_PI ;
+}
+
+//==========================================================================================//
+//  Matching condition Qg O(alpha_s^2)
+// 
+//  Eq. (B.3) from Ref. [arXiv:hep-ph/9612398v1]
+//------------------------------------------------------------------------------------------//
 
 double K_Qg2(double x, double mMu) {
 
@@ -96,11 +117,16 @@ double K_Qg2(double x, double mMu) {
 
     double tmp = const_tot + logmu*Lmu + logmu2*Lmu2;
 
-    return 0.5*tmp/16/pi2;
+    return 0.5 * tmp / 16. / pi2 ;
 
 }
 
-//_________________________________________________________
+//==========================================================================================//
+//  Matching condition Qg O(alpha_s^2)
+//  From APFEL++
+// 
+//  Eq. (B.3) from Ref. [arXiv:hep-ph/9612398v1]
+//------------------------------------------------------------------------------------------//
 
 double K_Qg2_apfel(double x, double mMu) {
 
@@ -117,22 +143,16 @@ double K_Qg2_apfel(double x, double mMu) {
 
 }
 
-//__________________________________________________________
-
-double K_gg1_local(double mMu) {
-    return -4./3.*TR*log(1./mMu)/4./M_PI;
-}
-
-//___________________________________________________________
-
-double K_Qg3(double x, double mMu, int nf) {
-
-    cout<< "K_bg3 is not implemented yet!!\nExiting..."<<endl;
-    exit(-1);
-
-}
-
-//____________________________________________________________
+//==========================================================================================//
+//  Approximation of the nf-independent part of the mu-independent part of the 
+//  unrenormalized matching condition Qg at O(alpha_s^3).
+// 
+//  v = 0 : center of the band given by v = 1 and v = 2
+//  v = 1 : Eq. (3.49) of Ref. [arXiv:1205.5727]
+//  v = 2 : Eq. (16) Ref. of [arXiv:1701.05838]
+//  v = 3 : Eq. ??? (obsolete)
+//  v = 4 : Eq. (3.50) of Ref. [arXiv:1205.5727]
+//------------------------------------------------------------------------------------------//
 
 double a_Qg_30(double x, int v) {
 
@@ -148,23 +168,18 @@ double a_Qg_30(double x, int v) {
     if(v==0) {
         return 0.5*(a_Qg_30(x,1) + a_Qg_30(x,2));
     }
-
     if(v==1) {
         return 354.1002*L13 + 479.3838*L12 - 7856.784*(2-x) - 6233.530*L2 + 9416.621/x + 1548.891/x*L;
     }
-
     if(v==2) {//Updated version w.r.t v==4
         return 226.3840*L13 - 652.2045*L12 - 2686.387*L1 - 7714.786*(2-x) - 2841.851*L2 + 7721.120/x + 1548.891/x*L ;
     }
-
     if(v==3) {
         return L/x*CA*CA*(41984./243 + 160./9*zeta(2) - 224./9*zeta(3));
     }
-
     if(v==4) { //Version of the paper (used only for benchamrk)
         return -2658.323*L12 - 7449.948*L1 - 7460.002*(2-x) + 3178.819*L2 + 4710.725/x + 1548.891/x*L;
     }
-
     else {
         cout<<"Choose either v=0, v=1, v=2, v=3 or v=4 !!\nExiting!!\n"<<endl;
         exit(-1);
