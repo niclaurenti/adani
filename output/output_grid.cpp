@@ -1,4 +1,4 @@
-#include "/Users/niccololaurenti/Master-thesis/include/MyLib.h"
+#include "adani/adani.h"
 
 #include <iostream>
 #include <fstream>
@@ -95,12 +95,9 @@ int main(int argc, char** argv) {
             mu = mufrac * Q_ ;
             mMu = pow(m/mu, 2) ;
             if(channel == "2g") res = C2m_g3_approximation(x_,mQ,mMu,nf,1,calls) ;
-            //if(channel == "2g") res = C2m_g3_approximation(x_,mQ,mMu,nf) ;
             if(channel == "2q") res = C2m_ps3_approximation(x_,mQ,mMu,nf) ;
             if(channel == "Lg") res = CLm_g3_approximation(x_,mQ,mMu,nf,1,calls)  ;
-            //if(channel == "2g") res = CLm_g3_approximation(x_,mQ,mMu,nf) ;
             if(channel == "Lq") res = CLm_ps3_approximation(x_,mQ,mMu,nf) ;
-            //cout <<"Channel = "<< channel<< "   Q = " << Q_ << "   x = " << x_ << " res = "<< res << endl ;
             output << res << "   ";
         }
         output << endl ;
