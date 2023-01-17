@@ -85,7 +85,7 @@ double CLm_g31(double x, double mQ, int nf) ;
 
 // These two expressions are integrated with montcarlo methods
 
-double C2m_g32(double x, double mQ, int nf, int method_flag = 1, int calls = 500000);
-double CLm_g32(double x, double mQ, int nf, int method_flag = 1, int calls = 500000) ;
+double C2m_g32(double x, double mQ, int nf, int method_flag = 1, int calls = 25000);
+double CLm_g32(double x, double mQ, int nf, int method_flag = 1, int calls = 25000) ;
 
 #endif

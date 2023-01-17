@@ -5,7 +5,7 @@
  *
  *    Description:  Header file for the AsymptoticCoefficientFunctions.cc file.
  *
- *         Author:  Tu sei un teorico Max
+ *         Author:  Anche tu sei un teorico Max
  *
  *  In this file there are the coefficient functions in the asymptotic limit, i.e. x -> 0
  *  and/or Q^2 >> m^2
