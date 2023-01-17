@@ -100,7 +100,7 @@ double Pgg0_x_Pgq0(double x, int nf);
 double Pqq0_x_Pgq0(double x) ;
 
 //==========================================================================================//
-//  Convolution between thefirst order massive gluon coefficient functions and the convolution
+//  Convolution between the first order massive gluon coefficient functions and the convolution
 //  between the splitting functions Pgg0/Pqq0 and Pgq0
 //------------------------------------------------------------------------------------------//
 
@@ -160,7 +160,7 @@ double CLm_g1_x_Pqg0_x_Pgq0_integrand(double z, void * p);
 double CLm_g1_x_Pqg0_x_Pgq0(double x, double mQ, int nf);
 
 //==========================================================================================//
-//  Convolution between thefirst order massive gluon coefficient functions and the convolution
+//  Convolution between the first order massive gluon coefficient functions and the convolution
 //  between the splitting functions Pgg0 and Pgg0
 //------------------------------------------------------------------------------------------//
 

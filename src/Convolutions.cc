@@ -1358,7 +1358,7 @@ double CLm_g1_x_Pqg0_x_Pgq0(double x, double mQ, int nf) {
 }
 
 //==========================================================================================//
-//  Convolution between thefirst order massive gluon coefficient functions for F2 and the convolution
+//  Convolution between the first order massive gluon coefficient functions for F2 and the convolution
 //  between the splitting functions Pgg0 and Pgg0
 //------------------------------------------------------------------------------------------//
 
@@ -1428,7 +1428,7 @@ double C2m_g1_x_Pgg0_x_Pgg0(double x, double mQ, int nf) {
 }
 
 //==========================================================================================//
-//  Convolution between thefirst order massive gluon coefficient functions for FL and the convolution
+//  Convolution between the first order massive gluon coefficient functions for FL and the convolution
 //  between the splitting functions Pgg0 and Pgg0
 //------------------------------------------------------------------------------------------//
 
@@ -1498,7 +1498,7 @@ double CLm_g1_x_Pgg0_x_Pgg0(double x, double mQ, int nf) {
 }
 
 //==========================================================================================//
-//  Convolution between thefirst order massive gluon coefficient functions for F2 and the convolution
+//  Convolution between the first order massive gluon coefficient functions for F2 and the convolution
 //  between the splitting functions Pgg0 and Pgg0 using monte carlo mathods
 //------------------------------------------------------------------------------------------//
 
@@ -1774,7 +1774,7 @@ double C2m_g1_x_Pgg0_x_Pgg0_MC(double x, double mQ, int nf, size_t calls) {
 }
 
 //==========================================================================================//
-//  Convolution between thefirst order massive gluon coefficient functions for FL and the convolution
+//  Convolution between the first order massive gluon coefficient functions for FL and the convolution
 //  between the splitting functions Pgg0 and Pgg0 using monte carlo mathods
 //------------------------------------------------------------------------------------------//
 
