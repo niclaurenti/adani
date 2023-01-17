@@ -1,9 +1,9 @@
 /*
  * =====================================================================================
  *
- *       Filename:  MassiveCoefficientFunctions.h
+ *       Filename:  HighEnergyCoefficientFunctions.h
  *
- *    Description:  Header file for the MassiveCoefficientFunctions.cc file.
+ *    Description:  Header file for the HighEnergyCoefficientFunctions.cc file.
  *
  *         Author:  L'allenamento si fa!
  *

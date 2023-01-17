@@ -1,9 +1,9 @@
 /*
  * =====================================================================================
  *
- *       Filename:  MassiveCoefficientFunctions.h
+ *       Filename:  HighScaleCoefficientFunctions.h
  *
- *    Description:  Header file for the MassiveCoefficientFunctions.cc file.
+ *    Description:  Header file for the HighScaleCoefficientFunctions.cc file.
  *
  *         Author:  Da quella posizione trasforma l'acqua in vino
  *
