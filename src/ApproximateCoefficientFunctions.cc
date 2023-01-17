@@ -17,7 +17,7 @@ using namespace std;
 //  Approximate gluon coefficient function for F2 at O(alpha_s) with implicit parameters.
 //------------------------------------------------------------------------------------------//
 
-double C2m_g1_approximation(double x, double mQ, double k, double h) {
+double C2m_g1_approximation_implicit(double x, double mQ, double k, double h) {
 
     double xmax = 1. / (1. + 4. * mQ) ;
 
@@ -110,7 +110,7 @@ double C2m_g2_approximation(double x, double mQ, double mMu) {
     double a = 2.5, b = 5 ;
     double A = 1.7, B = 2.5, C = 2.5, D = 1.2 ;
 
-    return C2m_g2_approximation(x, mQ, mMu, A, B, C, D, a, b);
+    return C2m_g2_approximation_implicit(x, mQ, mMu, A, B, C, D, a, b);
 
 }
 
@@ -118,7 +118,7 @@ double C2m_g2_approximation(double x, double mQ, double mMu) {
 //  Approximate gluon coefficient function for F2 at O(alpha_s) with implicit parameters.
 //------------------------------------------------------------------------------------------//
 
-double C2m_g2_approximation(double x, double mQ, double mMu, double A, double B, double C, double D, double a, double b) {
+double C2m_g2_approximation_implicit(double x, double mQ, double mMu, double A, double B, double C, double D, double a, double b) {
 
     double xmax = 1. / (1. + 4. * mQ) ;
 
@@ -161,7 +161,7 @@ double C2m_g2_approximation_BAND(double x, double mQ, double mMu, double var, do
     double a=2.5, b=5;
     double A=1.7, B=2.5, C=2.5, D=1.2;
 
-    double Cavg=C2m_g2_approximation(x,mQ,mMu,A,B,C,D,a,b);
+    double Cavg=C2m_g2_approximation_implicit(x,mQ,mMu,A,B,C,D,a,b);
 
     if(v==0) return Cavg;
 
@@ -170,16 +170,16 @@ double C2m_g2_approximation_BAND(double x, double mQ, double mMu, double var, do
 
     double Cerr[10];
 
-    Cerr[0]=C2m_g2_approximation(x,mQ,mMu,Amax,B,C,D,a,b);
-    Cerr[1]=C2m_g2_approximation(x,mQ,mMu,Amin,B,C,D,a,b);
-    Cerr[2]=C2m_g2_approximation(x,mQ,mMu,A,Bmax,C,D,a,b);
-    Cerr[3]=C2m_g2_approximation(x,mQ,mMu,A,Bmin,C,D,a,b);
-    Cerr[4]=C2m_g2_approximation(x,mQ,mMu,A,B,Cmax,D,a,b);
-    Cerr[5]=C2m_g2_approximation(x,mQ,mMu,A,B,Cmin,D,a,b);
-    Cerr[6]=C2m_g2_approximation(x,mQ,mMu,A,B,C,Dmax,a,b);
-    Cerr[7]=C2m_g2_approximation(x,mQ,mMu,A,B,C,Dmin,a,b);
-    Cerr[8]=C2m_g2_approximation(x,mQ,mMu,Amax,Bmax,Cmax,Dmax,a,b);
-    Cerr[9]=C2m_g2_approximation(x,mQ,mMu,Amin,Bmin,Cmin,Dmin,a,b);
+    Cerr[0]=C2m_g2_approximation_implicit(x,mQ,mMu,Amax,B,C,D,a,b);
+    Cerr[1]=C2m_g2_approximation_implicit(x,mQ,mMu,Amin,B,C,D,a,b);
+    Cerr[2]=C2m_g2_approximation_implicit(x,mQ,mMu,A,Bmax,C,D,a,b);
+    Cerr[3]=C2m_g2_approximation_implicit(x,mQ,mMu,A,Bmin,C,D,a,b);
+    Cerr[4]=C2m_g2_approximation_implicit(x,mQ,mMu,A,B,Cmax,D,a,b);
+    Cerr[5]=C2m_g2_approximation_implicit(x,mQ,mMu,A,B,Cmin,D,a,b);
+    Cerr[6]=C2m_g2_approximation_implicit(x,mQ,mMu,A,B,C,Dmax,a,b);
+    Cerr[7]=C2m_g2_approximation_implicit(x,mQ,mMu,A,B,C,Dmin,a,b);
+    Cerr[8]=C2m_g2_approximation_implicit(x,mQ,mMu,Amax,Bmax,Cmax,Dmax,a,b);
+    Cerr[9]=C2m_g2_approximation_implicit(x,mQ,mMu,Amin,Bmin,Cmin,Dmin,a,b);
 
     double min=Cavg,max=Cavg;
     int i;
@@ -211,7 +211,7 @@ double C2m_ps2_approximation(double x, double mQ, double mMu) {
     double a = 2.5, b = 5 ;
     double A = 1.7, B = 2.5, C = 2.5, D = 1.2 ;
 
-    return C2m_ps2_approximation(x, mQ, mMu, A, B, C, D, a, b);
+    return C2m_ps2_approximation_implicit(x, mQ, mMu, A, B, C, D, a, b);
 
 }
 
@@ -219,7 +219,7 @@ double C2m_ps2_approximation(double x, double mQ, double mMu) {
 //  Approximate quark coefficient function for F2 at O(alpha_s^2) with implicit parameters.
 //------------------------------------------------------------------------------------------//
 
-double C2m_ps2_approximation(double x, double mQ, double mMu, double A, double B, double C, double D, double a, double b) {
+double C2m_ps2_approximation_implicit(double x, double mQ, double mMu, double A, double B, double C, double D, double a, double b) {
 
     double xmax = 1. / (1. + 4. * mQ) ;
 
@@ -261,7 +261,7 @@ double CLm_g2_approximation(double x, double mQ, double mMu) {
     double a = 2.5, b = 5 ;
     double A = 20., B = 11., C = 3., D = 2. ;
 
-    return CLm_g2_approximation(x, mQ, mMu, A, B, C, D, a, b) ;
+    return CLm_g2_approximation_implicit(x, mQ, mMu, A, B, C, D, a, b) ;
 
 }
 
@@ -269,7 +269,7 @@ double CLm_g2_approximation(double x, double mQ, double mMu) {
 //  Approximate gluon coefficient function for FL at O(alpha_s) with implicit parameters.
 //------------------------------------------------------------------------------------------//
 
-double CLm_g2_approximation(double x, double mQ, double mMu, double A, double B, double C, double D, double a, double b) {
+double CLm_g2_approximation_implicit(double x, double mQ, double mMu, double A, double B, double C, double D, double a, double b) {
 
     double xmax = 1. / (1. + 4 * mQ) ;
 
@@ -313,7 +313,7 @@ double CLm_ps2_approximation(double x, double mQ, double mMu) {
     double a = 2.5, b = 5 ;
     double A = 20., B = 11., C = 3., D = 2. ;
 
-    return CLm_ps2_approximation(x, mQ, mMu, A, B, C, D, a, b);
+    return CLm_ps2_approximation_implicit(x, mQ, mMu, A, B, C, D, a, b);
 
 }
 
@@ -321,7 +321,7 @@ double CLm_ps2_approximation(double x, double mQ, double mMu) {
 //  Approximate quark coefficient function for FL at O(alpha_s) with implicit parameters.
 //------------------------------------------------------------------------------------------//
 
-double CLm_ps2_approximation(double x, double mQ, double mMu, double A, double B, double C, double D, double a, double b) {
+double CLm_ps2_approximation_implicit(double x, double mQ, double mMu, double A, double B, double C, double D, double a, double b) {
 
     double xmax = 1. / (1. + 4. * mQ) ;
 

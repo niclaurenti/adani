@@ -1,13 +1,16 @@
 /*
  * =====================================================================================
  *
- *       Filename:  MassiveCoefficientFunctions.h
+ *       Filename:  Convolutions.h
  *
- *    Description:  Header file for the MassiveCoefficientFunctions.cc file.
+ *    Description:  Header file for the Convolutions.cc file.
  *
  *         Author:  Dribbla tutti, anche i cammelli del deserto
  *
  *  In this file there are the convolutions between the functions defined in this library.
+ *
+ *  For the convolution between a regular function and a function containing regular,
+ *  singular (plus distribution) and local (delta) parts see Eq. (4.7) of Ref. [arXiv:hep-ph/0504242v1]
  *
  * =====================================================================================
  */
@@ -31,7 +34,7 @@ double CL_b1_x_K_Qg1(double x, double mMu);
 
 double K_Qg1_x_K_gg2(double x, double mMu);
 
-double C2_b2_x_K_bg1(double x, double mMu, int nf);
+// double C2_b2_x_K_bg1(double x, double mMu, int nf);
 
 //==========================================================================================//
 //  Convolution between first order massive gluon coefficient functions and splitting
@@ -97,7 +100,7 @@ double Pgg0_x_Pgq0(double x, int nf);
 double Pqq0_x_Pgq0(double x) ;
 
 //==========================================================================================//
-//  Convolution between thefirst order massive gluon coefficient functions and the convolution
+//  Convolution between the first order massive gluon coefficient functions and the convolution
 //  between the splitting functions Pgg0/Pqq0 and Pgq0
 //------------------------------------------------------------------------------------------//
 
@@ -157,7 +160,7 @@ double CLm_g1_x_Pqg0_x_Pgq0_integrand(double z, void * p);
 double CLm_g1_x_Pqg0_x_Pgq0(double x, double mQ, int nf);
 
 //==========================================================================================//
-//  Convolution between thefirst order massive gluon coefficient functions and the convolution
+//  Convolution between the first order massive gluon coefficient functions and the convolution
 //  between the splitting functions Pgg0 and Pgg0
 //------------------------------------------------------------------------------------------//
 
@@ -169,7 +172,7 @@ double CLm_g1_x_Pgg0_x_Pgg0_sing_integrand(double z, void * p);
 double CLm_g1_x_Pgg0_x_Pgg0(double x, double mQ, int nf);
 
 //==========================================================================================//
-//  Convolution between thefirst order massive gluon coefficient functions and the convolution
+//  Convolution between the first order massive gluon coefficient functions and the convolution
 //  between the splitting functions Pgg0 and Pgg0 using monte carlo mathods
 //------------------------------------------------------------------------------------------//
 

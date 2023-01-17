@@ -1,9 +1,9 @@
 /*
  * =====================================================================================
  *
- *       Filename:  MassiveCoefficientFunctions.h
+ *       Filename:  MatchingConditions.h
  *
- *    Description:  Header file for the MassiveCoefficientFunctions.cc file.
+ *    Description:  Header file for the MatchingConditions.cc file.
  *
  *         Author:  Vamo!!
  *
