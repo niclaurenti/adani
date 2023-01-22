@@ -31,7 +31,7 @@ double C2m_g1(double x, double mQ) { //mQ=m^2/Q^2
     return 4 * TR * (
         L * (-8 * x2 * mQ2 - 4 * x * mQ * (3 * x - 1) + 2 * x2 - 2 * x + 1)
         + beta * (4 * mQ * x * (x - 1) - (8 * x2 - 8 * x + 1))
-   ) / 4. / M_PI ;
+    ) / 4. / M_PI ;
 
 }
 
@@ -43,17 +43,17 @@ double C2m_g1(double x, double mQ) { //mQ=m^2/Q^2
 
 double CLm_g1(double x, double mQ) {
 
-    double x_max=1. / (1. + 4 * mQ) ;
+    double x_max = 1. / (1. + 4. * mQ) ;
 
     if (x>x_max || x<0) return 0;
 
-    double beta = sqrt(1. - 4 * mQ * x / (1 - x)) ;
+    double beta = sqrt(1. - 4. * mQ * x / (1. - x)) ;
     double x2 = x * x ;
     double L = log((1. + beta) / (1. - beta)) ;
 
-    return 16 * TR * (
-        x * (1 - x) * beta - 2 * x2 * mQ * L
-   ) / 4. / M_PI ;
+    return 16. * TR * (
+        x * (1. - x) * beta - 2. * x2 * mQ * L
+    ) / 4. / M_PI ;
 
 }
 
@@ -96,7 +96,7 @@ double CLm_g1(double x, double mQ) {
 double C2m_g2(double x, double mQ, double mMu) {
 
     double xi = 1. / mQ;
-    double eta = 0.25 * xi * (1 - x) / x - 1 ;
+    double eta = 0.25 * xi * (1 - x) / x - 1. ;
 
     double x_max = 1. / (1 + 4 * mQ) ;
 
@@ -113,7 +113,7 @@ double C2m_g2(double x, double mQ, double mMu) {
     return (
         cm.Regular(x * (1 + 4 * mQ))
         + cm_log.Regular(x * (1 + 4 * mQ)) * log(1. / mMu)
-   ) / 16. / pi2 ;
+   ) / x_max / 16. / pi2 ;
 
 }
 
@@ -127,9 +127,9 @@ double C2m_g2(double x, double mQ, double mMu) {
 double C2m_ps2(double x, double mQ, double mMu) {
 
     double xi = 1. / mQ;
-    double eta = 0.25 * xi * (1 - x) / x - 1 ;
+    double eta = 0.25 * xi * (1. - x) / x - 1. ;
 
-    double x_max = 1. / (1 + 4 * mQ) ;
+    double x_max = 1. / (1. + 4. * mQ) ;
 
     if (x>x_max || x<0) return 0;
 
@@ -138,13 +138,13 @@ double C2m_ps2(double x, double mQ, double mMu) {
 
     double pi2 = M_PI * M_PI ;
 
-    Cm22psNC cm(1. / (1 + 4 * mQ));
-    Cm22barpsNC cm_log(1. / (1 + 4 * mQ)) ;
+    Cm22psNC cm(1. / (1. + 4. * mQ));
+    Cm22barpsNC cm_log(1. / (1. + 4. * mQ)) ;
 
     return (
-        cm.Regular(x * (1 + 4 * mQ))
-        + cm_log.Regular(x * (1 + 4 * mQ)) * log(1. / mMu)
-   ) / 16. / pi2 ;
+        cm.Regular(x * (1. + 4. * mQ))
+        + cm_log.Regular(x * (1. + 4. * mQ)) * log(1. / mMu)
+   ) / x_max / 16. / pi2 ;
 
 }
 
@@ -175,7 +175,7 @@ double CLm_g2(double x, double mQ, double mMu) {
     return (
         cm.Regular(x * (1 + 4 * mQ))
         + cm_log.Regular(x * (1 + 4 * mQ)) * log(1. / mMu)
-   ) / 16. / pi2 ;
+   ) / x_max / 16. / pi2 ;
 
 }
 
@@ -205,7 +205,7 @@ double CLm_ps2(double x, double mQ, double mMu) {
     return (
         cm.Regular(x * (1 + 4 * mQ))
         + cm_log.Regular(x * (1 + 4 * mQ)) * log(1. / mMu)
-   ) / 16. / pi2 ;
+   ) / x_max / 16. / pi2 ;
 
 }
 

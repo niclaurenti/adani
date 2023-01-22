@@ -4157,9 +4157,9 @@ double DLm_g2_highscaleNEW(double x, double mQ, double mMu) {
     double z4 = z3 * z ;
 
     double L_M = log(mMu) ;
-    double L_M2 = L_M * L_M ;
+    //double L_M2 = L_M * L_M ;
     double L_Q = log(1./mQ) + L_M ;
-    double L_Q2 = L_Q * L_Q ;
+    //double L_Q2 = L_Q * L_Q ;
 
     double pi2 = M_PI * M_PI ;
 
@@ -4168,11 +4168,11 @@ double DLm_g2_highscaleNEW(double x, double mQ, double mMu) {
     double Hm1 = H(z,-1);
     double H01 = H(z,0,1) ;
     double H0m1 = H(z,0,-1);
-    double H001 = H(z,0,0,1);
-    double H011 = H(z,0,1,1);
+    //double H001 = H(z,0,0,1);
+    //double H011 = H(z,0,1,1);
 
     double zeta_2 = zeta(2) ;
-    double zeta_3 = zeta(3) ;
+    //double zeta_3 = zeta(3) ;
 
     return (
         TR * TR * (-64. / 3 * (z - 1.) * z * L_M)
