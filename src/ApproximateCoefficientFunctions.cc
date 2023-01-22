@@ -139,12 +139,7 @@ double C2m_g2_approximation_implicit(double x, double mQ, double mMu, double A, 
         + C2m_g2_threshold(x,mQ,1) * damp_thr
    );
 
-    double pi2 = M_PI * M_PI ;
-    Cm22bargNC cm_log(1. / (1. + 4 * mQ)) ;
-
-    double C_log ;
-
-    C_log = cm_log.Regular(x * (1. + 4. * mQ)) / 16. / pi2 ;
+    double C_log = C2m_g21(x, mQ) ;
 
     return C_const + C_log * log(1. / mMu) ;
 
@@ -238,12 +233,7 @@ double C2m_ps2_approximation_implicit(double x, double mQ, double mMu, double A,
     double C_const = C2m_ps2_asymptotic(x,mQ,1)*damp_asy ;
     //threshPS = 0
 
-    double pi2 = M_PI * M_PI ;
-    Cm22barpsNC cm_log(1. / (1. + 4. * mQ)) ;
-
-    double C_log ;
-
-    C_log = cm_log.Regular(x * (1. + 4. * mQ)) / 16. / pi2 ;
+    double C_log =C2m_ps21(x, mQ) ;
 
     return C_const + C_log * log(1./mMu);
 
@@ -288,14 +278,9 @@ double CLm_g2_approximation_implicit(double x, double mQ, double mMu, double A, 
     double C_const = (
         CLm_g2_asymptotic(x,mQ,1) * damp_asy
         + CLm_g2_threshold(x,mQ,1) * damp_thr
-   ) ;
+    ) ;
 
-    double pi2 = M_PI * M_PI ;
-    CmL2bargNC cm_log(1. / (1. + 4. * mQ)) ;
-
-    double C_log ;
-
-    C_log = cm_log.Regular(x * (1. + 4. * mQ)) / 16. / pi2 ;
+    double C_log = CLm_g21(x, mQ) ;
 
     return C_const + C_log * log(1/mMu) ;
 
@@ -340,12 +325,7 @@ double CLm_ps2_approximation_implicit(double x, double mQ, double mMu, double A,
     double C_const = CLm_ps2_asymptotic(x,mQ,1) * damp_asy ;
     //threshPS = 0
 
-    double pi2 = M_PI * M_PI ;
-    CmL2barpsNC cm_log(1. / (1. + 4. * mQ)) ;
-
-    double C_log ;
-
-    C_log = cm_log.Regular(x * (1. + 4. * mQ)) / 16. / pi2 ;
+    double C_log = CLm_ps21(x, mQ) ;
 
     return C_const + C_log * log(1/mMu) ;
 
@@ -659,12 +639,7 @@ double C2m_g2_approximationA_klmv(double x, double mQ, double mMu) {
         +f*beta3*C2m_g2_highenergy(x,mQ,1)*eta_gamma/(C+eta_gamma)
    ) ;
 
-    Cm22bargNC cm_log(1./(1+4*mQ));
-
-    double C_log;
-
-    if(x<x_max && x>0) C_log = cm_log.Regular(x*(1+4*mQ))/16/pi2;
-    else C_log=0;
+    double C_log = C2m_g21(x, mQ) ;
 
     return C_const + C_log * log(1/mMu);
 
@@ -706,12 +681,7 @@ double C2m_g2_approximationB_klmv(double x, double mQ, double mMu) {
         +f*beta3*C2m_g2_highenergy(x,mQ,1)*eta_delta/(D+eta_delta)
    ) ;
 
-    Cm22bargNC cm_log(1./(1+4*mQ));
-
-    double C_log;
-
-    if(x<x_max && x>0) C_log = cm_log.Regular(x*(1+4*mQ))/16/pi2;
-    else C_log=0;
+    double C_log =C2m_g21(x, mQ) ;
 
     return C_const + C_log * log(1/mMu);
 
@@ -752,12 +722,7 @@ double C2m_ps2_approximationA_klmv(double x, double mQ, double mMu) {
         +f*beta3*C2m_ps2_highenergy(x,mQ,1)*eta_gamma/(C+eta_gamma)
    );
 
-    Cm22bargNC cm_log(1./(1+4*mQ));
-
-    double C_log;
-
-    if(x<x_max && x>0) C_log = cm_log.Regular(x*(1+4*mQ))/16/pi2;
-    else C_log=0;
+    double C_log =C2m_g21(x, mQ) ;
 
     return C_const + C_log * log(1/mMu);
 
@@ -798,12 +763,7 @@ double C2m_ps2_approximationB_klmv(double x, double mQ, double mMu) {
         +f*beta3*C2m_ps2_highenergy(x,mQ,1)*eta_delta/(D+eta_delta)
    );
 
-    Cm22bargNC cm_log(1./(1+4*mQ));
-
-    double C_log;
-
-    if(x<x_max && x>0) C_log = cm_log.Regular(x*(1+4*mQ))/16/pi2;
-    else C_log=0;
+    double C_log =C2m_g21(x, mQ) ;
 
     return C_const + C_log * log(1/mMu);
 
