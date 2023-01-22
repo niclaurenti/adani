@@ -613,8 +613,6 @@ double C2m_g2_approximationA_klmv(double x, double mQ, double mMu) {
 
     if(x>x_max || x<0) return 0;
 
-    double pi2=M_PI*M_PI;
-
     double beta=sqrt(1-4*mQ*x/(1-x));
 
     double eta=0.25/mQ*(1-x)/x - 1;
@@ -659,8 +657,6 @@ double C2m_g2_approximationB_klmv(double x, double mQ, double mMu) {
 
     if(x>x_max || x<0) return 0;
 
-    double pi2=M_PI*M_PI;
-
     double beta=sqrt(1-4*mQ*x/(1-x));
 
     double eta=0.25/mQ*(1-x)/x - 1;
@@ -701,8 +697,6 @@ double C2m_ps2_approximationA_klmv(double x, double mQ, double mMu) {
 
     if(x>x_max || x<0) return 0;
 
-    double pi2=M_PI*M_PI;
-
     double beta=sqrt(1-4*mQ*x/(1-x));
 
     double eta=0.25/mQ*(1-x)/x - 1;
@@ -741,8 +735,6 @@ double C2m_ps2_approximationB_klmv(double x, double mQ, double mMu) {
     double x_max=1/(1+4*mQ);
 
     if(x>x_max || x<0) return 0;
-
-    double pi2=M_PI*M_PI;
 
     double beta=sqrt(1-4*mQ*x/(1-x));
 
