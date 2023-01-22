@@ -30,7 +30,7 @@ double C2m_g1_approximation_implicit(double x, double mQ, double k, double h) {
     double C_const = (
         C2m_g1_asymptotic(x,mQ) * damp_asy
         + C2m_g1_threshold(x,mQ) * damp_thr
-   ) ;
+    ) ;
 
 
     return C_const ;
@@ -62,7 +62,7 @@ double C2m_g1_approximation(double x, double mQ) {
     double C_const = (
         C2m_g1_asymptotic(x,mQ) * damp_asy
         + C2m_g1_threshold(x,mQ)*damp_thr
-   ) ;
+    ) ;
 
 
     return C_const ;
@@ -137,7 +137,7 @@ double C2m_g2_approximation_implicit(double x, double mQ, double mMu, double A, 
     double C_const = (
         C2m_g2_asymptotic(x,mQ,1) * damp_asy
         + C2m_g2_threshold(x,mQ,1) * damp_thr
-   );
+    );
 
     double C_log = C2m_g21(x, mQ) ;
 
@@ -189,8 +189,8 @@ double C2m_g2_approximation_BAND(double x, double mQ, double mMu, double var, do
     if(v==2) return min;
 
     else {
-     cout<<"Choose either v=0 or v=1 or v=2!!\nExiting!!\n"<<endl;
-     exit(-1);
+        cout<<"Choose either v=0 or v=1 or v=2!!\nExiting!!\n"<<endl;
+        exit(-1);
     }
 
 }
@@ -359,7 +359,7 @@ double C2m_g3_approximation(double x, double mQ, double mMu, int nf, int method_
     double C30 = (
         C2m_g3_asymptotic(x,mQ,1,nf,v1,v2) * damp_asy
         + C2m_g3_threshold(x,mQ,1,nf) * damp_thr
-   ) ;
+    ) ;
 
     if(mMu == 1.) return C30 ;
 
@@ -370,7 +370,7 @@ double C2m_g3_approximation(double x, double mQ, double mMu, int nf, int method_
         C30
         + C2m_g31(x, mQ, nf) * Lmu
         + C2m_g32(x, mQ, nf, method_flag, calls) * Lmu2
-   ) ;
+    ) ;
 
 }
 
@@ -398,7 +398,7 @@ double C2m_g3_approximation_implicit(double x, double mQ, double mMu, int nf, do
     double C30 = (
         C2m_g3_asymptotic(x,mQ,1,nf,v1,v2) * damp_asy
         + C2m_g3_threshold(x,mQ,1,nf) * damp_thr
-   ) ;
+    ) ;
 
     if(mMu == 1.) return C30 ;
 
@@ -409,7 +409,7 @@ double C2m_g3_approximation_implicit(double x, double mQ, double mMu, int nf, do
         C30
         + C2m_g31(x, mQ, nf) * Lmu
         + C2m_g32(x, mQ, nf, method_flag, calls) * Lmu2
-   ) ;
+    ) ;
 
 }
 
@@ -497,8 +497,8 @@ double C2m_ps3_approximation(double x, double mQ, double mMu, int nf) {
     if(x<xmax && x>0) eta=0.25/mQ*(1-x)/x - 1;
     else eta=0;
 
-    double h= A + (B-A)/(1+exp(a*(log(xi)-b)));
-    double k= C + (D-C)/(1+exp(a*(log(xi)-b)));
+    double h = A + (B-A)/(1+exp(a*(log(xi)-b)));
+    double k = C + (D-C)/(1+exp(a*(log(xi)-b)));
 
     double damp_thr=1/(1+pow(eta/h,k));
     double damp_asy=1-damp_thr;
@@ -514,7 +514,7 @@ double C2m_ps3_approximation(double x, double mQ, double mMu, int nf) {
         C30
         + C2m_ps31(x, mQ, nf) * Lmu
         + C2m_ps32(x, mQ, nf) * Lmu2
-   );
+    );
 
 }
 
@@ -545,7 +545,7 @@ double CLm_g3_approximation(double x, double mQ, double mMu, int nf, int method_
     double C30 = (
         CLm_g3_asymptotic(x,mQ,1,nf) * damp_asy
         + CLm_g3_threshold(x,mQ,1,nf) * damp_thr
-   ) ;
+    ) ;
 
     if(mMu == 1.) return C30 ;
 
@@ -556,7 +556,7 @@ double CLm_g3_approximation(double x, double mQ, double mMu, int nf, int method_
         C30
         + CLm_g31(x, mQ, nf) * Lmu
         + CLm_g32(x, mQ, nf, method_flag, calls) * Lmu2
-   ) ;
+    ) ;
 
 }
 
@@ -595,7 +595,7 @@ double CLm_ps3_approximation(double x, double mQ, double mMu, int nf) {
         C30
         + CLm_ps31(x, mQ, nf) * Lmu
         + CLm_ps32(x, mQ, nf) * Lmu2
-   ) ;
+    ) ;
 
 }
 
@@ -635,7 +635,7 @@ double C2m_g2_approximationA_klmv(double x, double mQ, double mMu) {
         C2m_g2_threshold(x,mQ,1) - c_const
         +(1-f)*beta*C2m_g2_highscale(x,mQ,1)
         +f*beta3*C2m_g2_highenergy(x,mQ,1)*eta_gamma/(C+eta_gamma)
-   ) ;
+    ) ;
 
     double C_log = C2m_g21(x, mQ) ;
 
@@ -675,9 +675,9 @@ double C2m_g2_approximationB_klmv(double x, double mQ, double mMu) {
         C2m_g2_threshold(x,mQ,1)
         +(1-f)*beta3*C2m_g2_highscale(x,mQ,1)
         +f*beta3*C2m_g2_highenergy(x,mQ,1)*eta_delta/(D+eta_delta)
-   ) ;
+    ) ;
 
-    double C_log =C2m_g21(x, mQ) ;
+    double C_log = C2m_g21(x, mQ) ;
 
     return C_const + C_log * log(1/mMu);
 
@@ -714,9 +714,9 @@ double C2m_ps2_approximationA_klmv(double x, double mQ, double mMu) {
     double C_const = (
         (1-f)*beta*C2m_ps2_highscale(x,mQ,1)
         +f*beta3*C2m_ps2_highenergy(x,mQ,1)*eta_gamma/(C+eta_gamma)
-   );
+    );
 
-    double C_log =C2m_g21(x, mQ) ;
+    double C_log = C2m_g21(x, mQ) ;
 
     return C_const + C_log * log(1/mMu);
 
@@ -753,9 +753,9 @@ double C2m_ps2_approximationB_klmv(double x, double mQ, double mMu) {
     double C_const = (
         (1-f)*beta3*C2m_ps2_highscale(x,mQ,1)
         +f*beta3*C2m_ps2_highenergy(x,mQ,1)*eta_delta/(D+eta_delta)
-   );
+    );
 
-    double C_log =C2m_g21(x, mQ) ;
+    double C_log = C2m_g21(x, mQ) ;
 
     return C_const + C_log * log(1/mMu);
 
@@ -802,7 +802,7 @@ double C2m_g3_approximationA_klmv(double x, double mQ, double mMu, int nf) {
     double C30 = (
         (C2m_g3_threshold(x,mQ,1,nf)-c_const) + (1. - f)*beta*C2m_g3_highscale(x,mQ,1,nf,1)
         + f*beta3*(-log(eta)/log(x)*C2m_g3_highenergyLL(x,mQ,1) + C2m_g3_highenergyA*eta_gamma/(C+eta_gamma))
-   );
+    );
 
     if(mMu == 1.) return C30 ;
 
@@ -855,7 +855,7 @@ double C2m_g3_approximationB_klmv(double x, double mQ, double mMu, int nf) {
     double C30 = (
         (C2m_g3_threshold(x,mQ,1,nf)-c_const)  +f*2.*c_const  +(1-f)*beta3*C2m_g3_highscale(x,mQ,1,nf,2)
         +f*beta3*(-log(eta)/log(x)*C2m_g3_highenergyLL(x,mQ,1) + C2m_g3_highenergyB*eta_delta/(D+eta_delta))
-   );
+    );
 
     if(mMu == 1.) return C30 ;
 
@@ -910,7 +910,7 @@ double C2m_g3_approximationB_klmv_paper(double x, double mQ, double mMu, int nf)
     double C30 = (
         (C2m_g3_threshold(x,mQ,1,nf)-c_const)  +f*2.*c_const  +(1-f)*beta3*C2m_g3_highscale(x,mQ,1,nf,4)
         +f*beta3*(-log(eta)/log(x)*C2m_g3_highenergyLL(x,mQ,1) + C2m_g3_highenergyB*eta_delta/(D+eta_delta))
-   );
+    );
 
     if(mMu == 1.) return C30 ;
 
@@ -966,7 +966,7 @@ double C2m_g3_approximationBlowxi_klmv(double x, double mQ, double mMu, int nf) 
     double C30 = (
         (C2m_g3_threshold(x,mQ,1,nf)-c_const)  +f*2.*c_const  +(1-f)*beta3*C2m_g3_highscale(x,mQ,1,nf,4)
         +f*beta3*(-log(eta)/log(x)*C2m_g3_highenergyLL(x,mQ,1) + C2m_g3_highenergyB*eta_delta/(D+eta_delta))
-   );
+    );
 
     if(mMu == 1.) return C30 ;
 
@@ -1012,7 +1012,7 @@ double C2m_ps3_approximationA_klmv(double x, double mQ, double mMu, int nf) {
     double C30 = (
         (1. - f)*beta*C2m_ps3_highscale(x,mQ,1,nf)
         + f*beta3*(-log(eta)/log(x)*C2m_ps3_highenergyLL(x,mQ,1) + C2m_ps30_highenergyNLLA*eta_gamma/(C+eta_gamma))
-   );
+    );
 
     if(mMu == 1.) return C30 ;
 
@@ -1057,7 +1057,7 @@ double C2m_ps3_approximationB_klmv(double x, double mQ, double mMu, int nf) {
     double C30 = (
         (1-f)*beta3*C2m_ps3_highscale(x,mQ,1,nf)
         +f*beta3*(-log(eta)/log(x)*C2m_ps3_highenergyLL(x,mQ,1) + C2m_ps30_highenergyNLLB*eta_delta/(D+eta_delta))
-   );
+    );
 
     if(mMu == 1.) return C30 ;
 
@@ -1105,7 +1105,7 @@ double C2m_ps3_approximationA_klmv_paper(double x, double mQ, double mMu, int nf
     double C30 = (
         (1. - f)*beta*C2m_ps3_highscale_klmv_paper(x,mQ,1,nf,1)
         + f*beta3*(-log(eta)/log(x)*C2m_ps3_highenergyLL(x,mQ,1) + C2m_ps30_highenergyNLLA*eta_gamma/(C+eta_gamma))
-   );
+    );
 
     if(mMu == 1.) return C30 ;
 
@@ -1152,7 +1152,7 @@ double C2m_ps3_approximationB_klmv_paper(double x, double mQ, double mMu, int nf
     double C30 = (
         (1.-f)*beta3*C2m_ps3_highscale_klmv_paper(x,mQ,1,nf,2)
         +f*beta3*(-log(eta)/log(x)*C2m_ps3_highenergyLL(x,mQ,1) + C2m_ps30_highenergyNLLB*eta_delta/(D+eta_delta))
-   );
+    );
 
     if(mMu == 1.) return C30 ;
 
