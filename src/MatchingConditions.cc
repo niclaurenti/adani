@@ -1,11 +1,9 @@
 #include "adani/MatchingConditions.h"
 #include "adani/ColorFactors.h"
 #include "adani/SpecialFunctions.h"
-#include "apfel/matchingconditions_sl.h"
-#include<cmath>
+#include <cmath>
 #include <iostream>
 
-using namespace apfel;
 using namespace std;
 
 //==========================================================================================//

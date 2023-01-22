@@ -65,9 +65,10 @@ endif(APFELXX_CONFIG)
 # endif(GSL_CONFIG)
 # message("${GSL_CXX_FLAGS}")
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -fPIC -std=c++17 -stdlib=libc++ -lgsl -lgslcblas -lm `apfelxx-config --cppflags --ldflags --cxxflags`")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GSL_CXX_FLAGS} ${APFELXX_CXX_FLAGS} -Wall -Wextra -fPIC")
+set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS}  -fPIC")
 
 find_package(GSL REQUIRED)
 find_library(APFELXX apfelxx)

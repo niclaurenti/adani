@@ -1,10 +1,7 @@
 #include "adani/AsymptoticCoefficientFunctions.h"
 #include "adani/HighScaleCoefficientFunctions.h"
 #include "adani/HighEnergyCoefficientFunctions.h"
-#include "apfel/massivecoefficientfunctionsunp_sl.h"
 #include <cmath>
-
-using namespace apfel;
 
 //==========================================================================================//
 //  Asymptotic limit of the gluon coefficient function for F2 at O(alpha_s).

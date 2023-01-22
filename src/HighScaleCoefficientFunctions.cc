@@ -5,7 +5,6 @@
 #include "adani/ColorFactors.h"
 #include "adani/SpecialFunctions.h"
 #include "apfel/massivezerocoefficientfunctionsunp_sl.h"
-#include "apfel/specialfunctions.h"
 #include <cmath>
 #include <iostream>
 
@@ -25,7 +24,7 @@ double C2m_g1_highscale(double x, double mQ) {
     return (
         4. * TR * (
             - 8. * x * x + 8. * x - 1. + log((1. - x) / x) * (2 * x * x - 2 * x + 1.)
-       ) / 4. / M_PI
+        ) / 4. / M_PI
         + 2. * K_Qg1(x, mQ)
    ) ;
 
@@ -110,36 +109,64 @@ double C2m_g2_highscale(double x, double mQ, double mMu) {
 //  expanded in terms of \alpha_s^{[nf]}
 //
 //  Eq. (B.9) of Ref. [arXiv:1205.5727].
-//  Taken from APFEL++ (I'm lazy)
 //------------------------------------------------------------------------------------------//
 
 double C2m_ps2_highscale(double x, double mQ, double mMu) {
 
-    if(x>1 || x<0) return 0;
+    double z = x ;
+    double z2 = z * z ;
+    double z3 = z2 * z ;
 
-    Cm022psNC_c cm022psNC_c;
-    Cm022psNC_l cm022psNC_l;
-    Cm022psNC_l2 cm022psNC_l2;
-    Cm022psNC_f cm022psNC_f;
-    Cm022psNC_lf cm022psNC_lf;
-
-    double l = log(1./mQ) ;
-    double l2 = l * l ;
-    double f = log(mMu) ;
-    double lf = l * f ;
+    double L_M = log(mMu) ;
+    double L_M2 = L_M * L_M ;
+    double L_Q = log(1./mQ) + L_M ;
+    double L_Q2 = L_Q * L_Q ;
 
     double pi2 = M_PI * M_PI ;
 
-    double res= (
-        cm022psNC_c.Regular(x)
-        + cm022psNC_l.Regular(x)*l
-        + cm022psNC_l2.Regular(x)*l2
-        + cm022psNC_f.Regular(x)*f
-        + cm022psNC_lf.Regular(x)*lf
-   ) ;
+    double H0 = H(z,0) ;
+    double H1 = H(z,1) ;
+    double Hm1 = H(z,-1);
+    double H01 = H(z,0,1) ;
+    double H0m1 = H(z,0,-1);
+    double H001 = H(z,0,0,1);
+    double H011 = H(z,0,1,1);
 
-    return res / 16. / pi2 ;
+    double zeta_2 = zeta(2) ;
+    double zeta_3 = zeta(3) ;
 
+
+    return CF * TR * (
+            (32. / 3 * H0m1 - 32. / 3 * Hm1 * H0) * (z + 1) * (z+1) * (z+1) / z
+            + (
+                16. / 3 * H0 * H0 * H0 + 32 * H01 * H0
+                - 32 * zeta_2 * H0 - 32 * H001 + 16 * H011 + 16 * zeta_3
+            ) * (z + 1)
+            - 8 * z * (2 * z - 5) * H0 * H0
+            + (
+                4 * (z - 1) * (4 * z2 + 7 * z + 4) / (3 * z) - 8 * (z + 1) * H0
+            ) * L_M2
+            + 16 * (z - 1) * (52 * z2 - 24 * z - 5) / (9 * z)
+            + 32. / 3 * (3 * z3 - 3 * z2 - 1) * zeta_2 / z
+            - 8./9 * (88 * z2 + 99 * z - 105) * H0
+            + L_Q2 * (
+                8 * (z + 1) * H0 - 4 * (z - 1) * (4 * z2 + 7 * z + 4) / (3 * z)
+            )
+            + 16 * (z - 1) * (4 * z2 - 26 * z + 13) * H1 / (9 * z)
+
+            + (z - 1) * (4 * z2 + 7 * z + 4) / z * (
+                -4. / 3 * H1 * H1 - 16. / 3 * H0 * H1
+            )
+            - 16 * (2 * z3 - 3 * z2 + 3 * z + 4) * H01 / (3 * z)
+            + (
+                8 * (z + 1) * H0 * H0 - 8. / 3 * (8 * z2 + 15 * z + 3) * H0
+                + 16 * (z - 1) * (28 * z2 + z + 10) / (9 * z)
+            ) * L_M
+            + L_Q * (
+                32 * H0 * z2 + (z + 1) * (-16 * H0 * H0 - 16 * H01 + 16 * zeta_2)
+                - 16 * (z - 1) * (4 * z2 - 26 * z + 13) / (9 * z)
+                + 8 * (z - 1) * (4 * z2 + 7 * z + 4) * H1 / (3 * z))
+        ) / (16. * pi2) ;
 }
 
 //==========================================================================================//
@@ -149,24 +176,9 @@ double C2m_ps2_highscale(double x, double mQ, double mMu) {
 
 double CLm_g2_highscale(double x, double mQ, double mMu) {
 
-    if(x>1 || x<0) return 0;
+    double Lmu = log(1./mMu);
 
-    Cm0L2gNC_c cm0L2gNC_c;
-    Cm0L2gNC_l cm0L2gNC_l;
-    Cm0L2gNC_f cm0L2gNC_f;
-
-    double l = log(1./mQ);
-    double f = log(mMu);
-
-    double pi2 = M_PI * M_PI ;
-
-    double res= (
-        cm0L2gNC_c.Regular(x)
-        + cm0L2gNC_l.Regular(x) * l
-        + cm0L2gNC_f.Regular(x) * f
-   ) ;
-
-    return res / 16. / pi2 ;
+    return DLm_g2_highscale(x,mQ,mMu) + 1. / 6 / M_PI * Lmu * CLm_g1_highscale(x) ;
 
 }
 
@@ -177,24 +189,7 @@ double CLm_g2_highscale(double x, double mQ, double mMu) {
 
 double CLm_ps2_highscale(double x, double mQ, double mMu) {
 
-    if(x>1 || x<0) return 0;
-
-    Cm0L2psNC_c cm0L2psNC_c;
-    Cm0L2psNC_l cm0L2psNC_l;
-    Cm0L2psNC_f cm0L2psNC_f;
-
-    double l = log(1./mQ);
-    double f = log(mMu);
-
-    double pi2 = M_PI * M_PI;
-
-    double res= (
-        cm0L2psNC_c.Regular(x)
-        + cm0L2psNC_l.Regular(x) * l
-        + cm0L2psNC_f.Regular(x) * f
-   ) ;
-
-    return res / 16. / pi2 ;
+    return DLm_ps2_highscale(x,mQ,mMu) ;
 
 }
 
@@ -233,9 +228,49 @@ double D2m_ps2_highscale(double x, double mQ, double mMu) {
 
 double DLm_g2_highscale(double x, double mQ, double mMu) {
 
-    double Lmu = log(1./mMu);
+    double z = x ;
+    double z2 = z * z ;
+    double z3 = z2 * z ;
+    double z4 = z3 * z ;
 
-    return CLm_g2_highscale(x,mQ,mMu) - 1. / 6 / M_PI * Lmu * CLm_g1_highscale(x) ;
+    double L_M = log(mMu) ;
+    double L_Q = log(1./mQ) + L_M ;
+
+    double pi2 = M_PI * M_PI ;
+
+    double H0 = H(z,0) ;
+    double H1 = H(z,1) ;
+    double Hm1 = H(z,-1);
+    double H01 = H(z,0,1) ;
+    double H0m1 = H(z,0,-1);
+
+    double zeta_2 = zeta(2) ;
+
+    return (
+        TR * TR * (-64. / 3 * (z - 1.) * z * L_M)
+        + CA * TR * (
+            - 32. * (z - 1.) * (53. * z2 + 2. * z - 1.) / (9. * z)
+            - 32. * (13. * z2 -8. * z - 1.) * H0
+            - 32. / 3 * (z - 1.) * (29. * z2 + 2. * z - 1.) * H1 / z
+            + L_Q * (
+                32. / 3 * (z - 1.) * (17. * z2 + 2. * z - 1.) / z
+                - 128. * z * H0 + 64. * (z - 1.) * z * H1
+            )
+            + (z - 1.) * z * (-32. * H1 * H1 - 64. * H0 * H1)
+            + z * (z + 1.) * (64. * Hm1 * H0 - 64. * H0m1)
+            + z * (96. * H0 * H0 + 128. * H01) + 64. * (z - 2.) * z * zeta_2
+        )
+        + CF * TR * (
+            - 64. / 15 * z * (3. * z2 + 5.) * H0 * H0
+            + 16. * (36. * z3 - 78. * z2 - 13. * z - 4.) * H0 / 15. / z
+            + 32. * (z - 1.) * (63. * z2 + 6. * z -2.) / 15. / z
+            + L_Q * (32. * z * H0 - 16. * (z - 1.) * (2. * z + 1.))
+            + 16. * (z - 1.) * (4. * z + 1.) * H1
+            + (z + 1.) * (6. * z4 - 6. * z3 + z2 - z + 1.) / z2 * (64. / 15 * Hm1 * H0 - 64. / 15 * H0m1)
+            - 32. * z * H01 + (16. * (z - 1.) * (2. * z + 1.)
+            - 32. * z * H0) * L_M + 32. / 15 * z * (12. * z2 + 5.) * zeta_2
+        )
+    ) / (16. * pi2) ;
 
 }
 
@@ -246,7 +281,31 @@ double DLm_g2_highscale(double x, double mQ, double mMu) {
 
 double DLm_ps2_highscale(double x, double mQ, double mMu) {
 
-    return CLm_ps2_highscale(x,mQ,mMu) ;
+    double z = x ;
+    double z2 = z * z ;
+
+    double L_M = log(mMu) ;
+    double L_Q = log(1./mQ) + L_M ;
+
+    double pi2 = M_PI * M_PI ;
+
+    double H0 = H(z,0) ;
+    double H1 = H(z,1) ;
+    double H01 = H(z,0,1) ;
+
+    double zeta_2 = zeta(2) ;
+
+    return (
+        CF * TR * (
+            32. / 9. / z * (z - 1.) * (10. * z2 - 2. * z + 1.)
+            - 32. * (z + 1.)  *(2. * z - 1.) * H0
+            - 32. / 3. / z * (z - 1.) * (2. * z2 + 2. * z - 1.) * H1
+            + L_Q * (
+                32. * (z - 1.) * (2. * z2 + 2. * z -1.) / 3. / z - 32. * z * H0
+            )
+            + z * (32. * H0 * H0 + 32. * H01 - 32. * zeta_2)
+        )
+    ) / (16. * pi2) ;
 
 }
 
@@ -4083,176 +4142,5 @@ double D2m_ps3_highscale_klmv_paper(double x, double mQ, double mMu, int nf, int
 
         + aQqPS30
    ) / (64 * pi3) + 1./(1 + nf)*C2_ps3(x, 1 + nf) ;
-
-
-}
-
-//___________________________________________________________
-
-double C2m_ps2_highscaleNEW(double x, double mQ, double mMu) {
-
-    double z = x ;
-    double z2 = z * z ;
-    double z3 = z2 * z ;
-
-    double L_M = log(mMu) ;
-    double L_M2 = L_M * L_M ;
-    double L_Q = log(1./mQ) + L_M ;
-    double L_Q2 = L_Q * L_Q ;
-
-    double pi2 = M_PI * M_PI ;
-
-    double H0 = H(z,0) ;
-    double H1 = H(z,1) ;
-    double Hm1 = H(z,-1);
-    double H01 = H(z,0,1) ;
-    double H0m1 = H(z,0,-1);
-    double H001 = H(z,0,0,1);
-    double H011 = H(z,0,1,1);
-
-    double zeta_2 = zeta(2) ;
-    double zeta_3 = zeta(3) ;
-
-
-    return CF * TR * (
-            (32. / 3 * H0m1 - 32. / 3 * Hm1 * H0) * (z + 1) * (z+1) * (z+1) / z
-            + (
-                16. / 3 * H0 * H0 * H0 + 32 * H01 * H0
-                - 32 * zeta_2 * H0 - 32 * H001 + 16 * H011 + 16 * zeta_3
-            ) * (z + 1)
-            - 8 * z * (2 * z - 5) * H0 * H0
-            + (
-                4 * (z - 1) * (4 * z2 + 7 * z + 4) / (3 * z) - 8 * (z + 1) * H0
-            ) * L_M2
-            + 16 * (z - 1) * (52 * z2 - 24 * z - 5) / (9 * z)
-            + 32. / 3 * (3 * z3 - 3 * z2 - 1) * zeta_2 / z
-            - 8./9 * (88 * z2 + 99 * z - 105) * H0
-            + L_Q2 * (
-                8 * (z + 1) * H0 - 4 * (z - 1) * (4 * z2 + 7 * z + 4) / (3 * z)
-            )
-            + 16 * (z - 1) * (4 * z2 - 26 * z + 13) * H1 / (9 * z)
-
-            + (z - 1) * (4 * z2 + 7 * z + 4) / z * (
-                -4. / 3 * H1 * H1 - 16. / 3 * H0 * H1
-            )
-            - 16 * (2 * z3 - 3 * z2 + 3 * z + 4) * H01 / (3 * z)
-            + (
-                8 * (z + 1) * H0 * H0 - 8. / 3 * (8 * z2 + 15 * z + 3) * H0
-                + 16 * (z - 1) * (28 * z2 + z + 10) / (9 * z)
-            ) * L_M
-            + L_Q * (
-                32 * H0 * z2 + (z + 1) * (-16 * H0 * H0 - 16 * H01 + 16 * zeta_2)
-                - 16 * (z - 1) * (4 * z2 - 26 * z + 13) / (9 * z)
-                + 8 * (z - 1) * (4 * z2 + 7 * z + 4) * H1 / (3 * z))
-        ) / (16. * pi2) ;
-}
-
-//___________________________________________________________
-
-double DLm_g2_highscaleNEW(double x, double mQ, double mMu) {
-
-    double z = x ;
-    double z2 = z * z ;
-    double z3 = z2 * z ;
-    double z4 = z3 * z ;
-
-    double L_M = log(mMu) ;
-    //double L_M2 = L_M * L_M ;
-    double L_Q = log(1./mQ) + L_M ;
-    //double L_Q2 = L_Q * L_Q ;
-
-    double pi2 = M_PI * M_PI ;
-
-    double H0 = H(z,0) ;
-    double H1 = H(z,1) ;
-    double Hm1 = H(z,-1);
-    double H01 = H(z,0,1) ;
-    double H0m1 = H(z,0,-1);
-    //double H001 = H(z,0,0,1);
-    //double H011 = H(z,0,1,1);
-
-    double zeta_2 = zeta(2) ;
-    //double zeta_3 = zeta(3) ;
-
-    return (
-        TR * TR * (-64. / 3 * (z - 1.) * z * L_M)
-        + CA * TR * (
-            - 32. * (z - 1.) * (53. * z2 + 2. * z - 1.) / (9. * z)
-            - 32. * (13. * z2 -8. * z - 1.) * H0
-            - 32. / 3 * (z - 1.) * (29. * z2 + 2. * z - 1.) * H1 / z
-            + L_Q * (
-                32. / 3 * (z - 1.) * (17. * z2 + 2. * z - 1.) / z
-                - 128. * z * H0 + 64. * (z - 1.) * z * H1
-            )
-            + (z - 1.) * z * (-32. * H1 * H1 - 64. * H0 * H1)
-            + z * (z + 1.) * (64. * Hm1 * H0 - 64. * H0m1)
-            + z * (96. * H0 * H0 + 128. * H01) + 64. * (z - 2.) * z * zeta_2
-        )
-        + CF * TR * (
-            - 64. / 15 * z * (3. * z2 + 5.) * H0 * H0
-            + 16. * (36. * z3 - 78. * z2 - 13. * z - 4.) * H0 / 15. / z
-            + 32. * (z - 1.) * (63. * z2 + 6. * z -2.) / 15. / z
-            + L_Q * (32. * z * H0 - 16. * (z - 1.) * (2. * z + 1.))
-            + 16. * (z - 1.) * (4. * z + 1.) * H1
-            + (z + 1.) * (6. * z4 - 6. * z3 + z2 - z + 1.) / z2 * (64. / 15 * Hm1 * H0 - 64. / 15 * H0m1)
-            - 32. * z * H01 + (16. * (z - 1.) * (2. * z + 1.)
-            - 32. * z * H0) * L_M + 32. / 15 * z * (12. * z2 + 5.) * zeta_2
-        )
-    ) / (16. * pi2) ;
-
-}
-
-double CLm_g2_highscaleNEW(double x, double mQ, double mMu) {
-
-    double Lmu = log(1./mMu);
-
-    return DLm_g2_highscaleNEW(x,mQ,mMu) + 1. / 6 / M_PI * Lmu * CLm_g1_highscale(x) ;
-
-}
-
-//___________________________________________________________
-
-double DLm_ps2_highscaleNEW(double x, double mQ, double mMu) {
-
-    double z = x ;
-    double z2 = z * z ;
-    // double z3 = z2 * z ;
-    // double z4 = z3 * z ;
-
-    double L_M = log(mMu) ;
-    // double L_M2 = L_M * L_M ;
-    double L_Q = log(1./mQ) + L_M ;
-    // double L_Q2 = L_Q * L_Q ;
-
-    double pi2 = M_PI * M_PI ;
-
-    double H0 = H(z,0) ;
-    double H1 = H(z,1) ;
-    // double Hm1 = H(z,-1);
-    double H01 = H(z,0,1) ;
-    // double H0m1 = H(z,0,-1);
-    // double H001 = H(z,0,0,1);
-    // double H011 = H(z,0,1,1);
-
-    double zeta_2 = zeta(2) ;
-    // double zeta_3 = zeta(3) ;
-
-    return (
-        CF * TR * (
-            32. / 9. / z * (z - 1.) * (10. * z2 - 2. * z + 1.)
-            - 32. * (z + 1.)  *(2. * z - 1.) * H0
-            - 32. / 3. / z * (z - 1.) * (2. * z2 + 2. * z - 1.) * H1
-            + L_Q * (
-                32. * (z - 1.) * (2. * z2 + 2. * z -1.) / 3. / z - 32. * z * H0
-            )
-            + z * (32. * H0 * H0 + 32. * H01 - 32. * zeta_2)
-        )
-    ) / (16. * pi2) ;
-
-}
-
-double CLm_ps2_highscaleNEW(double x, double mQ, double mMu) {
-
-    return DLm_ps2_highscaleNEW(x,mQ,mMu) ;
 
 }

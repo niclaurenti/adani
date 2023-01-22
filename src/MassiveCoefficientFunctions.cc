@@ -5,11 +5,8 @@
 #include "adani/Convolutions.h"
 #include "adani/SplittingFunctions.h"
 #include "adani/SpecialFunctions.h"
-#include "apfel/massivecoefficientfunctionsunp_sl.h"
-#include<cmath>
+#include <cmath>
 #include <iostream>
-
-using namespace apfel;
 
 //==========================================================================================//
 //  Exact massive gluon coefficient functions for F2 at O(alpha_s)
@@ -106,14 +103,12 @@ double C2m_g2(double x, double mQ, double mMu) {
     if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return 0.;
 
     double pi2 = M_PI * M_PI ;
-
-    Cm22gNC cm(1. / (1 + 4 * mQ));
-    Cm22bargNC cm_log(1. / (1 + 4 * mQ));
+    double wr = xi * ( 1. / x - 1. ) / 4. - 1. ;
 
     return (
-        cm.Regular(x * (1 + 4 * mQ))
-        + cm_log.Regular(x * (1 + 4 * mQ)) * log(1. / mMu)
-   ) / x_max / 16. / pi2 ;
+        16 * M_PI * xi * c2nlog_(&wr, &xi) / x / 16. / pi2
+        + C2m_g21(x, mQ) * log(1. / mMu)
+    ) ;
 
 }
 
@@ -127,9 +122,9 @@ double C2m_g2(double x, double mQ, double mMu) {
 double C2m_ps2(double x, double mQ, double mMu) {
 
     double xi = 1. / mQ;
-    double eta = 0.25 * xi * (1. - x) / x - 1. ;
+    double eta = 0.25 * xi * (1 - x) / x - 1. ;
 
-    double x_max = 1. / (1. + 4. * mQ) ;
+    double x_max = 1. / (1 + 4 * mQ) ;
 
     if (x>x_max || x<0) return 0;
 
@@ -137,14 +132,14 @@ double C2m_ps2(double x, double mQ, double mMu) {
     if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return 0.;
 
     double pi2 = M_PI * M_PI ;
+    double wr = xi * ( 1. / x - 1. ) / 4. - 1. ;
 
-    Cm22psNC cm(1. / (1. + 4. * mQ));
-    Cm22barpsNC cm_log(1. / (1. + 4. * mQ)) ;
+    // std::cout << "diocane"<<16 * M_PI * xi * c2nlog_(&wr, &xi) / x << std::endl;
 
     return (
-        cm.Regular(x * (1. + 4. * mQ))
-        + cm_log.Regular(x * (1. + 4. * mQ)) * log(1. / mMu)
-   ) / x_max / 16. / pi2 ;
+        16 * M_PI * xi * c2nloq_(&wr, &xi) / x / 16. / pi2
+        + C2m_ps21(x, mQ) * log(1. / mMu)
+    ) ;
 
 }
 
@@ -157,8 +152,8 @@ double C2m_ps2(double x, double mQ, double mMu) {
 
 double CLm_g2(double x, double mQ, double mMu) {
 
-    double xi = 1. / mQ ;
-    double eta = 0.25 * xi * (1 - x) / x - 1 ;
+    double xi = 1. / mQ;
+    double eta = 0.25 * xi * (1 - x) / x - 1. ;
 
     double x_max = 1. / (1 + 4 * mQ) ;
 
@@ -168,14 +163,14 @@ double CLm_g2(double x, double mQ, double mMu) {
     if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return 0.;
 
     double pi2 = M_PI * M_PI ;
+    double wr = xi * ( 1. / x - 1. ) / 4. - 1. ;
 
-    CmL2gNC cm(1. / (1 + 4 * mQ)) ;
-    CmL2bargNC cm_log(1. / (1 + 4 * mQ)) ;
+    // std::cout << "diocane"<<16 * M_PI * xi * c2nlog_(&wr, &xi) / x << std::endl;
 
     return (
-        cm.Regular(x * (1 + 4 * mQ))
-        + cm_log.Regular(x * (1 + 4 * mQ)) * log(1. / mMu)
-   ) / x_max / 16. / pi2 ;
+        16 * M_PI * xi * clnlog_(&wr, &xi) / x / 16. / pi2
+        + CLm_g21(x, mQ) * log(1. / mMu)
+    ) ;
 
 }
 
@@ -185,10 +180,11 @@ double CLm_g2(double x, double mQ, double mMu) {
 //  Exact (but numerical) result from [arXiv:hep-ph/9411431].
 //  Taken from APFEL++
 //------------------------------------------------------------------------------------------//
+
 double CLm_ps2(double x, double mQ, double mMu) {
 
-    double xi = 1. / mQ ;
-    double eta = 0.25 * xi * (1 - x) / x - 1 ;
+    double xi = 1. / mQ;
+    double eta = 0.25 * xi * (1 - x) / x - 1. ;
 
     double x_max = 1. / (1 + 4 * mQ) ;
 
@@ -198,14 +194,14 @@ double CLm_ps2(double x, double mQ, double mMu) {
     if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return 0.;
 
     double pi2 = M_PI * M_PI ;
+    double wr = xi * ( 1. / x - 1. ) / 4. - 1. ;
 
-    CmL2psNC cm(1. / (1 + 4 * mQ)) ;
-    CmL2barpsNC cm_log(1. / (1 + 4 * mQ)) ;
+    // std::cout << "diocane"<<16 * M_PI * xi * c2nlog_(&wr, &xi) / x << std::endl;
 
     return (
-        cm.Regular(x * (1 + 4 * mQ))
-        + cm_log.Regular(x * (1 + 4 * mQ)) * log(1. / mMu)
-   ) / x_max / 16. / pi2 ;
+        16 * M_PI * xi * clnloq_(&wr, &xi) / x / 16. / pi2
+        + CLm_ps21(x, mQ) * log(1. / mMu)
+    ) ;
 
 }
 

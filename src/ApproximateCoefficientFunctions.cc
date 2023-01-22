@@ -6,11 +6,9 @@
 #include "adani/AsymptoticCoefficientFunctions.h"
 #include "adani/SpecialFunctions.h"
 #include "adani/ColorFactors.h"
-#include "apfel/massivecoefficientfunctionsunp_sl.h"
 #include <cmath>
 #include <iostream>
 
-using namespace apfel;
 using namespace std;
 
 //==========================================================================================//
