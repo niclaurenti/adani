@@ -87,7 +87,7 @@ double CLm_g1(double x, double mQ) {
 //  Exact massive gluon coefficient functions for F2 at O(alpha_s^2)
 //
 //  Exact (but numerical) result from [arXiv:hep-ph/9411431].
-//  Taken from APFEL++
+//  Taken from the Fortran code 'src/hqcoef.f'
 //------------------------------------------------------------------------------------------//
 
 double C2m_g2(double x, double mQ, double mMu) {
@@ -115,7 +115,7 @@ double C2m_g2(double x, double mQ, double mMu) {
 //  Exact massive quark coefficient functions for F2 at O(alpha_s)
 //
 //  Exact (but numerical) result from [arXiv:hep-ph/9411431].
-//  Taken from APFEL++
+//  Taken from the Fortran code 'src/hqcoef.f'
 //------------------------------------------------------------------------------------------//
 
 double C2m_ps2(double x, double mQ, double mMu) {
@@ -143,7 +143,7 @@ double C2m_ps2(double x, double mQ, double mMu) {
 //  Exact massive gluon coefficient functions for FL at O(alpha_s)
 //
 //  Exact (but numerical) result from [arXiv:hep-ph/9411431].
-//  Taken from APFEL++
+//  Taken from the Fortran code 'src/hqcoef.f'
 //------------------------------------------------------------------------------------------//
 
 double CLm_g2(double x, double mQ, double mMu) {
@@ -171,7 +171,7 @@ double CLm_g2(double x, double mQ, double mMu) {
 //  Exact massive quarkk coefficient functions for FL at O(alpha_s)
 //
 //  Exact (but numerical) result from [arXiv:hep-ph/9411431].
-//  Taken from APFEL++
+//  Taken from the Fortran code 'src/hqcoef.f'
 //------------------------------------------------------------------------------------------//
 
 double CLm_ps2(double x, double mQ, double mMu) {
