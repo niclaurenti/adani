@@ -74,6 +74,13 @@ double D2m_ps3_highscale(double x, double mQ, double mMu, int nf);
 double C2m_ps3_highscale_klmv_paper(double x, double mQ, double mMu, int nf, int v);
 double D2m_ps3_highscale_klmv_paper(double x, double mQ, double mMu, int nf, int v);
 
+// OK
 double C2m_ps2_highscaleNEW(double x, double mQ, double mMu);
+
+double CLm_g2_highscaleNEW(double x, double mQ, double mMu) ;
+double DLm_g2_highscaleNEW(double x, double mQ, double mMu) ;
+
+double CLm_g2_highscaleNEW(double x, double mQ, double mMu) ;
+double DLm_g2_highscaleNEW(double x, double mQ, double mMu) ;
 
 #endif

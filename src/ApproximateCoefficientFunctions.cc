@@ -588,20 +588,20 @@ double CLm_g3_approximation(double x, double mQ, double mMu, int nf, int method_
 
 double CLm_ps3_approximation(double x, double mQ, double mMu, int nf) {
 
-    double a=2.5, b=5;
-    double A=20., B=11., C=3., D=2.;
+    double a = 2.5, b = 5 ;
+    double A = 20., B = 11., C = 3., D = 2.;
 
-    double xmax=1/(1+4*mQ);
+    double xmax = 1. / (1. + 4. * mQ) ;
 
-    double xi=1./mQ;
+    double xi = 1. / mQ ;
 
-    double eta;
+    double eta ;
 
-    if(x<xmax && x>0) eta=0.25/mQ*(1-x)/x - 1;
-    else eta=0;
+    if(x<xmax && x>0) eta = 0.25 / mQ * (1. - x) / x - 1.;
+    else eta = 0. ;
 
-    double h= A + (B-A)/(1+exp(a*(log(xi)-b)));
-    double k= C + (D-C)/(1+exp(a*(log(xi)-b)));
+    double h = A + (B - A) / (1. + exp(a * (log(xi) - b)));
+    double k = C + (D - C) / (1. + exp(a * (log(xi) - b)));
 
     double damp_thr=1/(1+pow(eta/h,k));
     double damp_asy=1-damp_thr;
