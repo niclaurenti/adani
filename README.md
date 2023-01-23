@@ -26,13 +26,20 @@ pip install .
 
 In order to compile a simple program run
 ```bash
-g++ -Wall -o test.exe test.cpp -ladani -std=c++17 -stdlib=libc++ `adani-config --cppflags --ldflags --cxxflags`
+g++ -Wall -o test.exe test.cpp -ladani `adani-config --cppflags --ldflags --cxxflags`
 ```
 or
 ```bash
-g++ -Wall -I/your/installation/path/include -L/your/installation/path/lib/ -o test.exe test.cpp -ladani -std=c++17 -stdlib=libc++
+g++ -Wall -I/your/installation/path/include -L/your/installation/path/lib/ -o test.exe test.cpp -ladani
 ```
-See ```examples/test.cpp```.
+In the first case remember to run
+```bash
+export PATH=$PATH:/your/installation/path/bin
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/your/installation/path/lib
+```
+For MacOS users: add ```-std=c++17 -stdlib=libc++``` when compiling.
+
+For example see ```examples/test.cpp```.
 
 ## Contacts
 
