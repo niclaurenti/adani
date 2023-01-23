@@ -37,9 +37,7 @@ In the first case remember to run
 export PATH=$PATH:/your/installation/path/bin
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/your/installation/path/lib
 ```
-For MacOS users: add ```-std=c++17 -stdlib=libc++``` when compiling.
-
-For example see ```examples/test.cpp```.
+For MacOS users: add the flags ```-std=c++17 -stdlib=libc++```.
 
 ## Contacts
 
