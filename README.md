@@ -39,6 +39,18 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/your/installation/path/lib
 ```
 For MacOS users: add the flags ```-std=c++17 -stdlib=libc++```.
 
+## Python module
+
+In order to use the Python module do
+```bash
+import adanipy
+```
+remembering to run
+```bash
+export PYTHONPATH=$PYTHONPATH:/your/installation/path/lib/python3.X/site-packages/
+```
+where ```X``` is your Python version.
+
 ## Contacts
 
 Contact me at niccolo.laurenti@mi.infn.it.
