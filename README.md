@@ -22,6 +22,10 @@ In order to build just the Python bindings run
 pip install .
 ```
 
+## Contacts
+
+Contact me at niccolo.laurenti@mi.infn.it.
+
 ## Words of our prophet
 
 > La garra charrúa! L'ultima parola agli uruguagi, sempre loro! L'ultima parola nel calcio è la loro: hanno un cuore differente, lo capisci o no? L'artiglio che graffia,
