@@ -11,3 +11,4 @@ adani.egg-info/
 examples/test.exe
 output/Cg*
 output/*.dat
+inc/adani/version.h
