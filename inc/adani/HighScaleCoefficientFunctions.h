@@ -75,7 +75,7 @@ double C2m_ps3_highscale_klmv_paper(double x, double mQ, double mMu, int nf, int
 double D2m_ps3_highscale_klmv_paper(double x, double mQ, double mMu, int nf, int v);
 
 
-/**
+/*
 * @name Fortran harmonic polylogarithms
 * @brief Harmonic polylogarithms up to weight five
 * @param x: real input argument

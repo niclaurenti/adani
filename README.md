@@ -4,7 +4,7 @@ ADANI (Approximate DIS At N3LO Implementation) is a C++ code that computes an ap
 
 ## Dependencies
 
-The codes depend on the public libraries ```apfelxx``` and ```gsl```.
+The code depends on the public library ```gsl```.
 
 Optional dependencies are the library ```pybind11``` and the Python module ```scikit-build``` (both public), that are required for building the Pyhton bindings.
 
@@ -16,7 +16,6 @@ mkdir build && cd build
 cmake -DCMAKE_INSTALL_PREFIX=/your/installation/path/ ..
 make && make install
 ```
-(I tested it with ```apfelxx``` and ```gsl``` installed in the ```/usr/local/```)
 
 In order to build just the Python bindings run
 ```bash

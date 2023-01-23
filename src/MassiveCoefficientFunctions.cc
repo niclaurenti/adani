@@ -102,10 +102,8 @@ double C2m_g2(double x, double mQ, double mMu) {
     //if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return __builtin_nan("");
     if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return 0.;
 
-    double wr = xi * ( 1. / x - 1. ) / 4. - 1. ;
-
     return (
-        xi * c2nlog_(&wr, &xi) / x / M_PI
+        xi * c2nlog_(&eta, &xi) / x / M_PI
         + C2m_g21(x, mQ) * log(1. / mMu)
     ) ;
 
@@ -130,10 +128,8 @@ double C2m_ps2(double x, double mQ, double mMu) {
     //if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return __builtin_nan("");
     if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return 0.;
 
-    double wr = xi * ( 1. / x - 1. ) / 4. - 1. ;
-
     return (
-        xi * c2nloq_(&wr, &xi) / x / M_PI
+        xi * c2nloq_(&eta, &xi) / x / M_PI
         + C2m_ps21(x, mQ) * log(1. / mMu)
     ) ;
 
@@ -158,10 +154,8 @@ double CLm_g2(double x, double mQ, double mMu) {
     //if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return __builtin_nan("");
     if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return 0.;
 
-    double wr = xi * ( 1. / x - 1. ) / 4. - 1. ;
-
     return (
-        xi * clnlog_(&wr, &xi) / x / M_PI
+        xi * clnlog_(&eta, &xi) / x / M_PI
         + CLm_g21(x, mQ) * log(1. / mMu)
     ) ;
 
@@ -186,10 +180,8 @@ double CLm_ps2(double x, double mQ, double mMu) {
     //if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return __builtin_nan("");
     if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return 0.;
 
-    double wr = xi * ( 1. / x - 1. ) / 4. - 1. ;
-
     return (
-        xi * clnloq_(&wr, &xi) / x / M_PI
+        xi * clnloq_(&eta, &xi) / x / M_PI
         + CLm_ps21(x, mQ) * log(1. / mMu)
     ) ;
 
