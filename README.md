@@ -22,6 +22,18 @@ In order to build just the Python bindings run
 pip install .
 ```
 
+## Compile a program
+
+In order to compile a simple program run
+```bash
+g++ -Wall -o test.exe test.cpp -ladani -std=c++17 -stdlib=libc++ `adani-config --cppflags --ldflags --cxxflags`
+```
+or
+```bash
+g++ -Wall -I/your/installation/path/include -L/your/installation/path/lib/ -o test.exe test.cpp -ladani -std=c++17 -stdlib=libc++
+```
+See ```examples/test.cpp```.
+
 ## Contacts
 
 Contact me at niccolo.laurenti@mi.infn.it.

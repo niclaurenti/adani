@@ -1,5 +1,8 @@
-// On my machine it compiles with :
-// g++ -o test.exe test.cpp -ladani -std=c++17 -stdlib=libc++
+// Compile with
+// g++ -Wall -o test.exe test.cpp -ladani -std=c++17 -stdlib=libc++ `adani-config --cppflags --ldflags --cxxflags`
+// or
+// g++ -Wall -I/your/installation/path/include -L/your/installation/path/lib/ -o test.exe test.cpp -ladani -std=c++17 -stdlib=libc++
+
 #include <adani/adani.h>
 #include <iostream>
 #include <cmath>
