@@ -3682,6 +3682,10 @@ double D2m_ps3_highscale_klmv_paper(double x, double mQ, double mMu, int nf, int
         )
         + 8571.165 * x * L - 2346.893 * L * L + 688.396 / x * L ;
     }
+    else {
+        std::cout<<"Choose either v=1, v=2!!\nExiting!!\n"<<std::endl;
+        exit(-1);
+    }
 
     return (
         CF * ( - 6400./81 + 11840./243/x + 4912./81*x - 7376.
