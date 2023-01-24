@@ -17,13 +17,14 @@ std::string print_time(time_t seconds);
 
 int main(int argc, char** argv) {
 
-    if(argc!=5) {
-        cout<< "ERROR!\nUsage: ./output_grid.exe mufrac = mu/Q m channel calls\nExiting..." <<endl;
+    if(argc!=6) {
+        cout<< "ERROR!\nUsage: ./output_grid.exe mufrac = mu/Q m nf channel calls\nExiting..." <<endl;
         return -1;
     }
 
-    string channel = argv[3];
-    int calls = atoi(argv[4]) ;
+    string channel = argv[4];
+    int calls = atoi(argv[5]) ;
+    int nf = atoi(argv[3]) ;
     string filename ;
     if(channel == "2g") {
         string tmp = "mkdir Cg_" + std::string(argv[4]) + "calls/" ;
@@ -61,8 +62,6 @@ int main(int argc, char** argv) {
     double m = atof(argv[2]);
 
     double res ;
-
-    int nf=4;
 
     std::vector<double> Q, x ;
 
