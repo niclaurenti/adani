@@ -12,7 +12,7 @@ except ImportError:
 from setuptools import find_packages
 setup(
     name="adani",
-    version="0.1",
+    version="0.10", # el diez
     description="Un codice scritto a cazzo di cane",
     author="Niccolò Laurenti",
     license="Fateci il cazzo che vi pare, basta che non mi rompete i coglioni",
