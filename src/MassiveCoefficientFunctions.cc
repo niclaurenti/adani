@@ -16,7 +16,7 @@
 
 double C2m_g1(double x, double mQ) { //mQ=m^2/Q^2
 
-    double x_max=1./(1+4*mQ);
+    double x_max = 1. / (1. + 4. * mQ) ;
 
     if (x>x_max || x<0) return 0;
 

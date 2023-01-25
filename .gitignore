@@ -9,6 +9,6 @@ build/
 _skbuild/
 adani.egg-info/
 examples/test.exe
-output/Cg*
+output/results
 output/*.dat
 inc/adani/version.h
