@@ -14,15 +14,15 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -fPIC")
 set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fPIC")
 
 if (NOT DEFINED CMAKE_MACOSX_RPATH)
-  set(CMAKE_MACOSX_RPATH 0)
+    set(CMAKE_MACOSX_RPATH 0)
 endif()
 
 set(adani_VERSION 0.10) # el diez
 
 # export version to file
 configure_file(
-  "${PROJECT_SOURCE_DIR}/inc/adani/version.h.in"
-  "${PROJECT_SOURCE_DIR}/inc/adani/version.h"
+    "${PROJECT_SOURCE_DIR}/inc/adani/version.h.in"
+    "${PROJECT_SOURCE_DIR}/inc/adani/version.h"
 )
 
 # Configuration script
@@ -51,20 +51,20 @@ target_link_libraries(adani GSL::gsl GSL::gslcblas)
 # pybind11
 find_package(pybind11 QUIET)
 if (pybind11_FOUND)
-  pybind11_add_module(adanipy pywrap/pywrap.cc)
-  target_link_libraries(adanipy PRIVATE adani)
-  find_package (Python3 REQUIRED)
-  execute_process(COMMAND "${Python3_EXECUTABLE}" -c "import distutils.sysconfig; print(distutils.sysconfig.get_python_lib(prefix='${CMAKE_INSTALL_PREFIX}', plat_specific=True), end = '')" OUTPUT_VARIABLE PYTHON_INSTALLATION_PATH)
-  install(TARGETS adanipy LIBRARY DESTINATION "${PYTHON_INSTALLATION_PATH}")
+    pybind11_add_module(adanipy pywrap/pywrap.cc)
+    target_link_libraries(adanipy PRIVATE adani)
+    find_package (Python3 REQUIRED)
+    execute_process(COMMAND "${Python3_EXECUTABLE}" -c "import distutils.sysconfig; print(distutils.sysconfig.get_python_lib(prefix='${CMAKE_INSTALL_PREFIX}', plat_specific=True), end = '')" OUTPUT_VARIABLE PYTHON_INSTALLATION_PATH)
+    install(TARGETS adanipy LIBRARY DESTINATION "${PYTHON_INSTALLATION_PATH}")
 else (pybind11_FOUND)
-  message ("-- pybind11 not found. The python wrapper will not be built.")
+    message ("-- pybind11 not found. The python wrapper will not be built.")
 endif (pybind11_FOUND)
 
 # install
 option(PYTHON_ONLY "Compiles only for python." OFF)
 if (NOT PYTHON_ONLY)
-  install(TARGETS adani RUNTIME DESTINATION bin LIBRARY DESTINATION lib)
-  install(DIRECTORY inc/adani DESTINATION include)
-  install(FILES ${PROJECT_BINARY_DIR}/bin/adani-config DESTINATION bin
-  PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+    install(TARGETS adani RUNTIME DESTINATION bin LIBRARY DESTINATION lib)
+    install(DIRECTORY inc/adani DESTINATION include)
+    install(FILES ${PROJECT_BINARY_DIR}/bin/adani-config DESTINATION bin
+    PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
 endif (NOT PYTHON_ONLY)

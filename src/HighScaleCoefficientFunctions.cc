@@ -23,7 +23,7 @@ double C2m_g1_highscale(double x, double mQ) {
             - 8. * x * x + 8. * x - 1. + log((1. - x) / x) * (2 * x * x - 2 * x + 1.)
         ) / 4. / M_PI
         + 2. * K_Qg1(x, mQ)
-   ) ;
+    ) ;
 
 }
 
