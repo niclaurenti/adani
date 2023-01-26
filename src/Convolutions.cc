@@ -5,6 +5,10 @@
 #include "adani/MatchingConditions.h"
 #include "adani/SpecialFunctions.h"
 #include "adani/SplittingFunctions.h"
+#include <gsl/gsl_integration.h>
+#include <gsl/gsl_errno.h>
+#include <gsl/gsl_monte.h>
+#include <gsl/gsl_monte_vegas.h>
 #include <cmath>
 #include <iostream>
 

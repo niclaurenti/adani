@@ -50,7 +50,7 @@ double CLm_g1(double x, double mQ);
 * coefficient functions from 'src/hqcoef.f'.
 */
 ///@{
-extern"C"
+extern "C"
 {
     // double c2log_(double *wr,double *xi);
     double c2nlog_(double *wr,double *xi);
