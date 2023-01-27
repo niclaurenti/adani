@@ -1,0 +1,6 @@
+m: 1.51
+nf: 4
+channel: 2g
+mufrac: 1.
+n_threads: 4
+output_file: "prova.dat"
