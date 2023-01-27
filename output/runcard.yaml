@@ -1,5 +1,6 @@
 m: 1.51
 nf: 4
+calls: 25000
 channel: 2g
 mufrac: 1.
 n_threads: 4
