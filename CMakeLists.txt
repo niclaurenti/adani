@@ -62,6 +62,7 @@ option(PYTHON_ONLY "Compiles only for python." OFF)
 
 # pybind11
 if(PYTHON_ONLY)
+    find_package (Python3 REQUIRED)
     if(SKBUILD)
     message("Found skbuild")
         execute_process(
@@ -90,7 +91,6 @@ if(PYTHON_ONLY)
         src/SplittingFunctions.cc
     )
     target_link_libraries(_core PRIVATE GSL::gsl GSL::gslcblas)
-    # find_package (Python3 REQUIRED)
     target_compile_definitions(_core PRIVATE VERSION_INFO=${PROJECT_VERSION})
     install(TARGETS _core DESTINATION .)
 
@@ -114,12 +114,12 @@ else(PYTHON_ONLY)
 
     # define libraries to be linked
     target_link_libraries(adani GSL::gsl GSL::gslcblas)
-    # install(TARGETS adani RUNTIME DESTINATION bin LIBRARY DESTINATION lib)
 
     # install
     install(FILES ${PROJECT_SOURCE_DIR}/bin/adani-config
     DESTINATION bin PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
     install(FILES ${PROJECT_SOURCE_DIR}/bin/adani.pc DESTINATION lib/pkgconfig)
     install(DIRECTORY inc/adani DESTINATION include)
-    install(TARGETS adani LIBRARY DESTINATION lib)
+    install(TARGETS adani DESTINATION bin LIBRARY DESTINATION lib)
+
 endif (PYTHON_ONLY)
