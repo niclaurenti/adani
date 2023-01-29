@@ -31,8 +31,6 @@ set(exec_prefix "${prefix}")
 set(includedir "${prefix}/include")
 set(libdir "${prefix}/lib")
 
-include_directories(${PROJECT_SOURCE_DIR}/inc)
-
 # export version to file
 configure_file(
     "${PROJECT_SOURCE_DIR}/inc/adani/version.h.in"
@@ -47,6 +45,9 @@ configure_file(
     "${PROJECT_SOURCE_DIR}/bin/adani.pc.in"
     "${PROJECT_SOURCE_DIR}/bin/adani.pc"
 )
+
+include_directories(${PROJECT_SOURCE_DIR}/inc)
+
 # find gsl
 find_package(GSL REQUIRED)
 
