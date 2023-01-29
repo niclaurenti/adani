@@ -1,1 +1,1 @@
-#define VERSION "@adani_VERSION@"
+#define VERSION "@PROJECT_VERSION@"

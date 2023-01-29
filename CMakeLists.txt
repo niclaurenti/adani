@@ -1,23 +1,37 @@
 # BASIC DEFINITIONS ========================================================================
 
 # define minimum version of cmake
-cmake_minimum_required (VERSION 3.5)
+cmake_minimum_required (VERSION 3.15..3.22)
+
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+    message(STATUS "Setting build type to 'Release' as none was specified.")
+    set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE)
+    # Set the possible values of build type for cmake-gui
+    set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release"
+        "MinSizeRel" "RelWithDebInfo")
+endif()
 
 # define project name and its language
-project(adani CXX Fortran)
+project(adani VERSION 0.10) # el diez
 
 # define c++ standard and issue all the warning demanded by this standard
-set(CMAKE_BUILD_TYPE Release)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -fPIC")
+enable_language(Fortran)
 set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fPIC")
 
 if (NOT DEFINED CMAKE_MACOSX_RPATH)
     set(CMAKE_MACOSX_RPATH 0)
 endif()
 
-set(adani_VERSION 0.10) # el diez
+# Configuration script
+set(prefix ${CMAKE_INSTALL_PREFIX})
+set(exec_prefix "${prefix}")
+set(includedir "${prefix}/include")
+set(libdir "${prefix}/lib")
+
+include_directories(${PROJECT_SOURCE_DIR}/inc)
 
 # export version to file
 configure_file(
@@ -25,46 +39,87 @@ configure_file(
     "${PROJECT_SOURCE_DIR}/inc/adani/version.h"
 )
 
-# Configuration script
-set(prefix ${CMAKE_INSTALL_PREFIX})
-set(includedir "${prefix}/include")
-set(libdir "${prefix}/lib")
-configure_file("${PROJECT_SOURCE_DIR}/bin/adani-config.in" "${PROJECT_BINARY_DIR}/bin/adani-config")
-include_directories(${PROJECT_SOURCE_DIR}/inc)
-
+configure_file(
+    "${PROJECT_SOURCE_DIR}/bin/adani-config.in"
+    "${PROJECT_SOURCE_DIR}/bin/adani-config"
+)
+configure_file(
+    "${PROJECT_SOURCE_DIR}/bin/adani.pc.in"
+    "${PROJECT_SOURCE_DIR}/bin/adani.pc"
+)
 # find gsl
 find_package(GSL REQUIRED)
 
 # FINALIZE ==================================================================================
 
 # generate list of source files
-file(GLOB_RECURSE  source_files src/*)
+# file(GLOB_RECURSE  source_files src/*)
 
-# define target library
-set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
+# # define target library
+# set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
-add_library(adani SHARED ${source_files})
-
-# define libraries to be linked
-target_link_libraries(adani GSL::gsl GSL::gslcblas)
+option(PYTHON_ONLY "Compiles only for python." OFF)
 
 # pybind11
-find_package(pybind11 QUIET)
-if (pybind11_FOUND)
-    pybind11_add_module(adanipy pywrap/pywrap.cc)
-    target_link_libraries(adanipy PRIVATE adani)
-    find_package (Python3 REQUIRED)
-    execute_process(COMMAND "${Python3_EXECUTABLE}" -c "import distutils.sysconfig; print(distutils.sysconfig.get_python_lib(prefix='${CMAKE_INSTALL_PREFIX}', plat_specific=True), end = '')" OUTPUT_VARIABLE PYTHON_INSTALLATION_PATH)
-    install(TARGETS adanipy LIBRARY DESTINATION "${PYTHON_INSTALLATION_PATH}")
-else (pybind11_FOUND)
-    message ("-- pybind11 not found. The python wrapper will not be built.")
-endif (pybind11_FOUND)
+if(PYTHON_ONLY)
+    if(SKBUILD)
+    message("Found skbuild")
+        execute_process(
+        COMMAND "${PYTHON_EXECUTABLE}" -c
+                "import pybind11; print(pybind11.get_cmake_dir())"
+        OUTPUT_VARIABLE _tmp_dir
+        OUTPUT_STRIP_TRAILING_WHITESPACE COMMAND_ECHO STDOUT)
+        list(APPEND CMAKE_PREFIX_PATH "${_tmp_dir}")
+    endif(SKBUILD)
+    find_package(pybind11 CONFIG REQUIRED)
+    pybind11_add_module(
+        _core MODULE
+        pywrap/pywrap.cc
+        src/ApproximateCoefficientFunctions.cc
+        src/MassiveCoefficientFunctions.cc
+        src/ThresholdCoefficientFunctions.cc
+        src/AsymptoticCoefficientFunctions.cc
+        src/MasslessCoefficientFunctions.cc
+        src/Convolutions.cc
+        src/MatchingConditions.cc
+        src/hplog.f
+        src/HighEnergyCoefficientFunctions.cc
+        src/SpecialFunctions.cc
+        src/hqcoef.f
+        src/HighScaleCoefficientFunctions.cc
+        src/SplittingFunctions.cc
+    )
+    target_link_libraries(_core PRIVATE GSL::gsl GSL::gslcblas)
+    # find_package (Python3 REQUIRED)
+    target_compile_definitions(_core PRIVATE VERSION_INFO=${PROJECT_VERSION})
+    install(TARGETS _core DESTINATION .)
 
-# install
-option(PYTHON_ONLY "Compiles only for python." OFF)
-if (NOT PYTHON_ONLY)
-    install(TARGETS adani RUNTIME DESTINATION bin LIBRARY DESTINATION lib)
+else(PYTHON_ONLY)
+    add_library(
+        adani SHARED
+        src/ApproximateCoefficientFunctions.cc
+        src/MassiveCoefficientFunctions.cc
+        src/ThresholdCoefficientFunctions.cc
+        src/AsymptoticCoefficientFunctions.cc
+        src/MasslessCoefficientFunctions.cc
+        src/Convolutions.cc
+        src/MatchingConditions.cc
+        src/hplog.f
+        src/HighEnergyCoefficientFunctions.cc
+        src/SpecialFunctions.cc
+        src/hqcoef.f
+        src/HighScaleCoefficientFunctions.cc
+        src/SplittingFunctions.cc
+    )
+
+    # define libraries to be linked
+    target_link_libraries(adani GSL::gsl GSL::gslcblas)
+    # install(TARGETS adani RUNTIME DESTINATION bin LIBRARY DESTINATION lib)
+
+    # install
+    install(FILES ${PROJECT_SOURCE_DIR}/bin/adani-config
+    DESTINATION bin PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+    install(FILES ${PROJECT_SOURCE_DIR}/bin/adani.pc DESTINATION lib/pkgconfig)
     install(DIRECTORY inc/adani DESTINATION include)
-    install(FILES ${PROJECT_BINARY_DIR}/bin/adani-config DESTINATION bin
-    PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
-endif (NOT PYTHON_ONLY)
+    install(TARGETS adani LIBRARY DESTINATION lib)
+endif (PYTHON_ONLY)

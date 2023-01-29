@@ -7,7 +7,7 @@
 
 namespace py = pybind11;
 
-PYBIND11_MODULE(adanipy, m) {
+PYBIND11_MODULE(_core, m) {
     // Documentation
     m.doc() = "Python wrapper of libadani";
 
