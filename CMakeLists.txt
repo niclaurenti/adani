@@ -46,7 +46,7 @@ configure_file(
     "${PROJECT_SOURCE_DIR}/bin/adani.pc"
 )
 
-include_directories(${PROJECT_SOURCE_DIR}/inc)
+include_directories(inc)
 
 # find gsl
 find_package(GSL REQUIRED)
