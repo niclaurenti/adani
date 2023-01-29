@@ -10,7 +10,7 @@ Optional dependencies are the library ```pybind11``` and the Python module ```sc
 
 ## Installation
 
-In order to install the C++ libary run
+In order to install the C++ library run
 ```bash
 mkdir build && cd build
 cmake -DCMAKE_INSTALL_PREFIX=/your/installation/path/ ..
