@@ -27,7 +27,6 @@ double K_gg1_local(double mMu);
 //------------------------------------------------------------------------------------------//
 
 double K_Qg2(double x, double mMu);
-double K_Qg2_apfel(double x, double mMu);
 
 //==========================================================================================//
 //  Matching conditions O(alpha_s^3)

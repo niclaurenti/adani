@@ -4,24 +4,56 @@ ADANI (Approximate DIS At N3LO Implementation) is a C++ code that computes an ap
 
 ## Dependencies
 
-The codes depend on the public libraries ```apfelxx``` and ```gsl```.
+The code depends on the public library ```gsl```.
 
 Optional dependencies are the library ```pybind11``` and the Python module ```scikit-build``` (both public), that are required for building the Pyhton bindings.
 
 ## Installation
 
-In order to install both the C++ libary and the Python bindings run
+In order to install the C++ library run
 ```bash
 mkdir build && cd build
 cmake -DCMAKE_INSTALL_PREFIX=/your/installation/path/ ..
 make && make install
 ```
-(I tested it with ```apfelxx``` and ```gsl``` installed in the ```/usr/local/```)
 
-In order to build just the Python bindings run
+In order to install the Python bindings run
 ```bash
 pip install .
 ```
+
+## Compile a program
+
+In order to compile a simple program run
+```bash
+g++ -Wall -o test.exe test.cpp -ladani `adani-config --cppflags --ldflags --cxxflags`
+```
+or
+```bash
+g++ -Wall -I/your/installation/path/include -L/your/installation/path/lib/ -o test.exe test.cpp -ladani
+```
+In the first case remember to run
+```bash
+export PATH=$PATH:/your/installation/path/bin
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/your/installation/path/lib
+```
+For MacOS users: add the flags ```-std=c++17 -stdlib=libc++```.
+
+## Python module
+
+In order to use the Python module do
+```bash
+import adani
+```
+remembering to run
+```bash
+export PYTHONPATH=$PYTHONPATH:/your/installation/path/lib/python3.X/site-packages/
+```
+where ```X``` is your Python version.
+
+## Contacts
+
+Contact me at niccolo.laurenti@mi.infn.it.
 
 ## Words of our prophet
 

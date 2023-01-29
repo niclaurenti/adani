@@ -1,49 +1,45 @@
-# #! /usr/bin/env bash
+prefix=@prefix@
 
-# # These variables need to exist
-# prefix=@prefix@
+if [[ $# -eq 0 || -n $( echo $* | egrep -- "--help|-h" ) ]]; then
+    echo
+    echo "adani-config: configuration tool for adani"
+    echo "                webpages: https://it.wikipedia.org/wiki/Daniele_Adani"
+    echo "                          https://github.com/niclaurenti/adani"
+    echo
+    echo "Usage: adani-config [[--help|-h] | [--prefix] | [--ldflags]]"
+    echo "Options:"
+    echo "  --help | -h    : show this help message"
+    echo "  --version      : show the code version"
+    echo "  --prefix       : show the installation prefix"
+    echo "  --incdir       : show the path to the adani header directory (for C++ interface)"
+    echo "  --libdir       : show the path to the adani library directory"
+    echo "  --cppflags     : get compiler flags for use with the C preprocessor stage of C++ compilation"
+    echo "  --cxxflags     : get compiler flags for use with the C preprocessor stage of C++ compilation"
+    echo "  --ldflags      : get compiler flags for use with the linker stage of any compilation"
+fi
 
-# if [[ $# -eq 0 || -n $( echo $* | egrep -- "--help|-h" ) ]]; then
-#     echo
-#     echo "adani-config: configuration tool for Master-thesis"
-#     echo "                webpages: ???"
-#     echo
-#     echo "Usage: adani-config [[--help|-h] | [--prefix] | [--ldflags]]"
-#     echo "Options:"
-#     echo "  --help | -h    : show this help message"
-#     echo "  --version      : show the code version"
-#     echo "  --prefix       : show the installation prefix"
-#     echo "  --incdir       : show the path to the APFEL header directory (for C++ interface)"
-#     echo "  --libdir       : show the path to the APFEL library directory"
-#     echo "  --cppflags     : get compiler flags for use with the C preprocessor stage of C++ compilation"
-#     echo "  --cxxflags     : get compiler flags for use with the C preprocessor stage of C++ compilation"
-#     echo "  --ldflags      : get compiler flags for use with the linker stage of any compilation"
-# fi
+OUT=""
 
-# OUT=""
+tmp=$( echo "$*" | egrep -- '--\<prefix\>')
+test -n "$tmp" && OUT="$OUT @prefix@"
 
-# tmp=$( echo "$*" | egrep -- '--\<prefix\>')
-# test -n "$tmp" && OUT="$OUT @prefix@"
+tmp=$( echo "$*" | egrep -- '--\<incdir\>')
+test -n "$tmp" && OUT="$OUT @includedir@"
 
-# tmp=$( echo "$*" | egrep -- '--\<incdir\>')
-# test -n "$tmp" && OUT="$OUT @includedir@"
+tmp=$( echo "$*" | egrep -- '--\<cppflags\>')
+test -n "$tmp" && OUT="$OUT -I@includedir@"
 
-# tmp=$( echo "$*" | egrep -- '--\<cppflags\>')
-# test -n "$tmp" && OUT="$OUT -I@includedir@"
+tmp=$( echo "$*" | egrep -- '--\<cxxflags\>')
+test -n "$tmp" && OUT="$OUT -I@includedir@"
 
-# tmp=$( echo "$*" | egrep -- '--\<cxxflags\>')
-# test -n "$tmp" && OUT="$OUT -I@includedir@"
+tmp=$( echo "$*" | egrep -- '--\<libdir\>')
+test -n "$tmp" && OUT="$OUT @libdir@"
 
-# tmp=$( echo "$*" | egrep -- '--\<libdir\>')
-# test -n "$tmp" && OUT="$OUT @libdir@"
+tmp=$( echo "$*" | egrep -- '--\<ldflags\>')
+test -n "$tmp" && OUT="$OUT -L@libdir@ -ladani"
 
-# tmp=$( echo "$*" | egrep -- '--\<ldflags\>')
-# test -n "$tmp" && OUT="$OUT -L@libdir@ -ladani"
+## Version
+tmp=$( echo "$*" | egrep -- '--\<version\>')
+test -n "$tmp" && OUT="$OUT @adani_VERSION@"
 
-# ## Version
-# tmp=$( echo "$*" | egrep -- '--\<version\>')
-# test -n "$tmp" && OUT="$OUT @adani_VERSION@"
-
-# echo $OUT
-
-#define VERSION "@PROJECT_VERSION@"
+echo $OUT

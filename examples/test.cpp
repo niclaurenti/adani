@@ -1,5 +1,5 @@
-// On my machine it compiles with :
-// g++ -o test.exe test.cpp -ladani -std=c++17 -stdlib=libc++
+// See README.md for compilation suggestions
+
 #include <adani/adani.h>
 #include <iostream>
 #include <cmath>

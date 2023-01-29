@@ -37,6 +37,14 @@ double K_Qg1_x_K_gg2(double x, double mMu);
 // double C2_b2_x_K_bg1(double x, double mMu, int nf);
 
 //==========================================================================================//
+//  WARNING: from now on all the convolutions are numerical.
+//  In all the integrals we have switched off the ERROR raised by gsl when the numerical
+//  precision is not achieved. This is not ideal but as a wise man once said:
+//  "If one has no better options, then he has sex even with his own wife"
+//  (the identity of this enlightened person will not be revealed)
+//------------------------------------------------------------------------------------------//
+
+//==========================================================================================//
 //  Convolution between first order massive gluon coefficient functions and splitting
 //  function Pgq0
 //------------------------------------------------------------------------------------------//
