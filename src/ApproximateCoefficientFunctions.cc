@@ -120,7 +120,7 @@ double C2m_g2_approximation_implicit(double x, double mQ, double mMu, double A, 
 
     double xmax = 1. / (1. + 4. * mQ) ;
 
-    if(x > xmax || x <= 0) return 0 ;
+    if(x >= xmax || x <= 0) return 0 ;
 
     double xi = 1. / mQ ;
 
@@ -216,7 +216,7 @@ double C2m_ps2_approximation_implicit(double x, double mQ, double mMu, double A,
 
     double xmax = 1. / (1. + 4. * mQ) ;
 
-    if(x > xmax || x <= 0) return 0 ;
+    if(x >= xmax || x <= 0) return 0 ;
 
     double xi = 1. / mQ ;
 
@@ -261,7 +261,7 @@ double CLm_g2_approximation_implicit(double x, double mQ, double mMu, double A, 
 
     double xmax = 1. / (1. + 4 * mQ) ;
 
-    if(x > xmax || x <= 0) return 0 ;
+    if(x >= xmax || x <= 0) return 0 ;
 
     double xi = 1. / mQ ;
 
@@ -308,7 +308,7 @@ double CLm_ps2_approximation_implicit(double x, double mQ, double mMu, double A,
 
     double xmax = 1. / (1. + 4. * mQ) ;
 
-    if(x > xmax || x <= 0) return 0 ;
+    if(x >= xmax || x <= 0) return 0 ;
 
     double xi = 1. / mQ ;
 
@@ -611,7 +611,7 @@ double C2m_g2_approximationA_klmv(double x, double mQ, double mMu) {
 
     double x_max=1/(1+4*mQ);
 
-    if(x>x_max || x<0) return 0;
+    if(x>=x_max || x<0) return 0;
 
     double beta=sqrt(1-4*mQ*x/(1-x));
 
@@ -655,7 +655,7 @@ double C2m_g2_approximationB_klmv(double x, double mQ, double mMu) {
 
     double x_max=1/(1+4*mQ);
 
-    if(x>x_max || x<0) return 0;
+    if(x>=x_max || x<0) return 0;
 
     double beta=sqrt(1-4*mQ*x/(1-x));
 
@@ -695,7 +695,7 @@ double C2m_ps2_approximationA_klmv(double x, double mQ, double mMu) {
 
     double x_max=1/(1+4*mQ);
 
-    if(x>x_max || x<0) return 0;
+    if(x>=x_max || x<0) return 0;
 
     double beta=sqrt(1-4*mQ*x/(1-x));
 
@@ -734,7 +734,7 @@ double C2m_ps2_approximationB_klmv(double x, double mQ, double mMu) {
 
     double x_max=1/(1+4*mQ);
 
-    if(x>x_max || x<0) return 0;
+    if(x>=x_max || x<0) return 0;
 
     double beta=sqrt(1-4*mQ*x/(1-x));
 
@@ -774,7 +774,7 @@ double C2m_g3_approximationA_klmv(double x, double mQ, double mMu, int nf) {
 
     double x_max=1/(1+4*mQ);
 
-    if(x>x_max || x<0) return 0;
+    if(x>=x_max || x<0) return 0;
     double pi2=M_PI*M_PI;
 
     double beta=sqrt(1-4*mQ*x/(1-x));
@@ -826,7 +826,7 @@ double C2m_g3_approximationB_klmv(double x, double mQ, double mMu, int nf) {
 
     double x_max=1/(1+4*mQ);
 
-    if(x>x_max || x<0) return 0;
+    if(x>=x_max || x<0) return 0;
 
     double pi2=M_PI*M_PI;
 
@@ -881,7 +881,7 @@ double C2m_g3_approximationB_klmv_paper(double x, double mQ, double mMu, int nf)
 
     double x_max=1/(1+4*mQ);
 
-    if(x>x_max || x<0) return 0;
+    if(x>=x_max || x<0) return 0;
 
     double pi2=M_PI*M_PI;
 
@@ -937,7 +937,7 @@ double C2m_g3_approximationBlowxi_klmv(double x, double mQ, double mMu, int nf) 
 
     double x_max=1/(1+4*mQ);
 
-    if(x>x_max || x<0) return 0;
+    if(x>=x_max || x<0) return 0;
 
     double pi2=M_PI*M_PI;
 
@@ -991,7 +991,7 @@ double C2m_ps3_approximationA_klmv(double x, double mQ, double mMu, int nf) {
 
     double x_max=1/(1+4*mQ);
 
-    if(x>x_max || x<0) return 0;
+    if(x>=x_max || x<0) return 0;
 
     double beta=sqrt(1-4*mQ*x/(1-x));
 
@@ -1036,7 +1036,7 @@ double C2m_ps3_approximationB_klmv(double x, double mQ, double mMu, int nf) {
 
     double x_max=1/(1+4*mQ);
 
-    if(x>x_max || x<0) return 0;
+    if(x>=x_max || x<0) return 0;
 
     double beta=sqrt(1-4*mQ*x/(1-x));
 
@@ -1084,7 +1084,7 @@ double C2m_ps3_approximationA_klmv_paper(double x, double mQ, double mMu, int nf
 
     double x_max=1/(1+4*mQ);
 
-    if(x>x_max || x<0) return 0;
+    if(x>=x_max || x<0) return 0;
 
     double beta=sqrt(1-4*mQ*x/(1-x));
 
@@ -1131,7 +1131,7 @@ double C2m_ps3_approximationB_klmv_paper(double x, double mQ, double mMu, int nf
 
     double x_max=1/(1+4*mQ);
 
-    if(x>x_max || x<0) return 0;
+    if(x>=x_max || x<0) return 0;
 
     double beta=sqrt(1-4*mQ*x/(1-x));
 

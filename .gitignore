@@ -12,3 +12,5 @@ examples/test.exe
 output/results
 output/*.dat
 inc/adani/version.h
+bin/adani-config
+bin/adani.pc

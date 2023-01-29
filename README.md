@@ -10,14 +10,14 @@ Optional dependencies are the library ```pybind11``` and the Python module ```sc
 
 ## Installation
 
-In order to install both the C++ libary and the Python bindings run
+In order to install the C++ library run
 ```bash
 mkdir build && cd build
 cmake -DCMAKE_INSTALL_PREFIX=/your/installation/path/ ..
 make && make install
 ```
 
-In order to build just the Python bindings run
+In order to install the Python bindings run
 ```bash
 pip install .
 ```
@@ -43,7 +43,7 @@ For MacOS users: add the flags ```-std=c++17 -stdlib=libc++```.
 
 In order to use the Python module do
 ```bash
-import adanipy
+import adani
 ```
 remembering to run
 ```bash

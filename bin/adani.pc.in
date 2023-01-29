@@ -1,0 +1,10 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+includedir=@includedir@
+libdir=@libdir@
+
+Name: boh
+Description: The adani library
+Version: @VERSION@
+Cflags: -I@includedir@ -std=c++17
+Libs: -L@libdir@ -ladani

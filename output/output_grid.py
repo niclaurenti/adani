@@ -1,4 +1,4 @@
-import adanipy
+import adani
 from multiprocessing import Pool
 import yaml
 import numpy as np
@@ -21,13 +21,13 @@ def function_to_exe_in_parallel(pair):
     mQ = m**2 / q**2
     mMu = m**2 / mu**2
     if runcard["channel"] == "2g":
-        return adanipy.C2m_g3_approximation(x, mQ, mMu, nf, 1, calls)
+        return adani.C2m_g3_approximation(x, mQ, mMu, nf, 1, calls)
     elif runcard["channel"] == "2q":
-        return adanipy.C2m_ps3_approximation(x, mQ, mMu, nf)
+        return adani.C2m_ps3_approximation(x, mQ, mMu, nf)
     elif runcard["channel"] == "Lg":
-        return adanipy.CLm_g3_approximation(x, mQ, mMu, nf, 1, calls)
+        return adani.CLm_g3_approximation(x, mQ, mMu, nf, 1, calls)
     elif runcard["channel"] == "Lq":
-        return adanipy.CLm_ps3_approximation(x, mQ, mMu, nf)
+        return adani.CLm_ps3_approximation(x, mQ, mMu, nf)
     else:
         raise ValueError("Set channel to one of these: 2g 2q Lg Lq")
 
