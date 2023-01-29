@@ -62,12 +62,11 @@ option(PYTHON_ONLY "Compiles only for python." OFF)
 
 # pybind11
 if(PYTHON_ONLY)
-    find_package (Python3 REQUIRED)
     if(SKBUILD)
     message("Found skbuild")
         execute_process(
-        COMMAND "${PYTHON_EXECUTABLE}" -c
-                "import pybind11; print(pybind11.get_cmake_dir())"
+            COMMAND "${PYTHON_EXECUTABLE}" -c
+                    "import pybind11; print(pybind11.get_cmake_dir())"
         OUTPUT_VARIABLE _tmp_dir
         OUTPUT_STRIP_TRAILING_WHITESPACE COMMAND_ECHO STDOUT)
         list(APPEND CMAKE_PREFIX_PATH "${_tmp_dir}")
