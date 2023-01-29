@@ -343,7 +343,7 @@ double Pgg0sing_integrand(double z, void * p) {
 double C2m_g1_x_Pgg0(double x, double mQ, int nf) {
 
     double x_max=1./(1+4*mQ);
-    if (x>x_max || x<0) return 0. ;
+    if (x>=x_max || x<0) return 0. ;
 
     gsl_integration_workspace * w = gsl_integration_workspace_alloc (1000);
 
@@ -414,7 +414,7 @@ double CLm_g1_x_Pgg0_sing_integrand(double z, void * p) {
 double CLm_g1_x_Pgg0(double x, double mQ, int nf) {
 
     double x_max=1./(1+4*mQ);
-    if (x>x_max || x<0) return 0. ;
+    if (x>=x_max || x<0) return 0. ;
 
     gsl_integration_workspace * w = gsl_integration_workspace_alloc (1000);
 

@@ -18,7 +18,7 @@ double C2m_g1_threshold(double x, double mQ) {
 
     double xmax = 1. / (1. + 4 * mQ) ;
 
-    if (x>xmax || x<0) return 0;
+    if (x>=xmax || x<0) return 0;
 
     double beta = sqrt(1. - 4. * mQ * x / (1. - x)) ;
     double xi = 1. / mQ ;
@@ -38,7 +38,7 @@ double C2m_g2_threshold(double x, double mQ, double mMu) {
 
     double xmax = 1. / (1. + 4 * mQ) ;
 
-    if(x>xmax || x<0) return 0;
+    if(x>=xmax || x<0) return 0;
 
     double beta = sqrt(1. - 4 * mQ * x / (1. - x));
     double xi = 1. / mQ;
@@ -74,7 +74,7 @@ double CLm_g2_threshold(double x, double mQ, double mMu) {
 
     double xmax = 1. / (1. + 4 * mQ) ;
 
-    if(x>xmax || x<0) return 0;
+    if(x>=xmax || x<0) return 0;
 
     double beta = sqrt(1. - 4 * mQ * x / (1. - x));
     double xi = 1. / mQ ;
@@ -109,7 +109,7 @@ double C2m_g3_threshold(double x, double mQ, double mMu, int nf) {
 
     double x_max = 1. / (1. + 4 * mQ);
 
-    if(x>x_max || x<0) return 0;
+    if(x>=x_max || x<0) return 0;
 
     double xi = 1. / mQ ;
     double beta = sqrt(1. - 4. * mQ * x / (1. - x));
@@ -190,7 +190,7 @@ double CLm_g3_threshold(double x, double mQ, double mMu, int nf) {
 
     double x_max=1./(1+4*mQ);
 
-    if(x>x_max || x<0) return 0;
+    if(x>=x_max || x<0) return 0;
 
     double xi=1/mQ;
     double beta=sqrt(1-4*mQ*x/(1-x));
