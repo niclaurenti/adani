@@ -52,12 +52,6 @@ find_package(GSL REQUIRED)
 
 # FINALIZE ==================================================================================
 
-# generate list of source files
-# file(GLOB_RECURSE  source_files src/*)
-
-# # define target library
-# set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
-
 option(PYTHON_ONLY "Compiles only for python." OFF)
 
 # pybind11
@@ -119,6 +113,6 @@ else(PYTHON_ONLY)
     DESTINATION bin PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
     install(FILES ${PROJECT_SOURCE_DIR}/bin/adani.pc DESTINATION lib/pkgconfig)
     install(DIRECTORY inc/adani DESTINATION include)
-    install(TARGETS adani DESTINATION bin LIBRARY DESTINATION lib)
+    install(TARGETS adani DESTINATION lib)
 
 endif (PYTHON_ONLY)
