@@ -461,9 +461,8 @@ double C2m_ps3_highscale(double x, double mQ, double mMu, int nf) {
 //  expanded in terms of \alpha_s^{[nf+1]}
 //------------------------------------------------------------------------------------------//
 
-double DLm_g3_highscale(double x, double mQ, double mMu, int nf) {
+double DLm_g3_highscale(double z, double mQ, double mMu, int nf) {
 
-    double z = x ;
     double z2 = z*z ;
     double z3 = z2*z;
     double z4 = z3*z ;
@@ -481,7 +480,7 @@ double DLm_g3_highscale(double x, double mQ, double mMu, int nf) {
     double pi3 = M_PI * M_PI * M_PI ;
 
     // Allocate pointers for the harmonic polylogs
-    double wx = x;
+    double wx = z;
     int    nw = 4;
     int    n1 =-1;
     int    n2 = 1;
@@ -894,9 +893,8 @@ double CLm_g3_highscale(double x, double mQ, double mMu, int nf) {
 //  expanded in terms of \alpha_s^{[nf+1]}
 //------------------------------------------------------------------------------------------//
 
-double DLm_ps3_highscale(double x, double mQ, double mMu, int nf) {
+double DLm_ps3_highscale(double z, double mQ, double mMu, int nf) {
 
-    double z = x ;
     double z2 = z*z ;
     double z3 = z2*z;
     double z4 = z3*z ;
@@ -913,7 +911,7 @@ double DLm_ps3_highscale(double x, double mQ, double mMu, int nf) {
     double pi3 = M_PI * M_PI * M_PI ;
 
     // Allocate pointers for the harmonic polylogs
-    double wx = x;
+    double wx = z;
     int    nw = 4;
     int    n1 =-1;
     int    n2 = 1;
