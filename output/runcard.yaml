@@ -1,7 +1,7 @@
 m: 4.92
 nf: 5
 calls: 25000
-channel: Lg
+channel: 2g
 mufrac: 1.
 n_threads: 4
-output_file: "results/bottom/CLg"
+output_file: "results/bottom/C2g.dat"
