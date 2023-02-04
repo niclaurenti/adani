@@ -33,6 +33,7 @@ PYBIND11_MODULE(_core, m) {
     // HighscaleCoefficientFunctions
 
     m.def("CLm_g3_highscale", &CLm_g3_highscale, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"));
+    m.def("DLm_g3_highscale", &DLm_g3_highscale, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"));
     m.def("C2m_g3_highscale", &C2m_g3_highscale, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"), py::arg("v")=0);
     m.def("CLm_ps3_highscale", &CLm_ps3_highscale, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"));
     m.def("C2m_ps3_highscale", &C2m_ps3_highscale, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"));
@@ -57,5 +58,14 @@ PYBIND11_MODULE(_core, m) {
 
     m.def("CLm_g32", &CLm_g32, py::arg("x"), py::arg("mQ"), py::arg("nf"), py::arg("method_flag")=1, py::arg("calls")=25000);
     m.def("C2m_g32", &CLm_g32, py::arg("x"), py::arg("mQ"), py::arg("nf"), py::arg("method_flag")=1, py::arg("calls")=25000);
+
+    // MasslessCoefficientFunctions
+    m.def("CL_g3", &CL_g3, py::arg("x"), py::arg("nf"));
+
+    // SplittingFunctions
+    m.def("Pgg1reg", &Pgg1reg, py::arg("x"), py::arg("nf"));
+    m.def("Pgg1sing", &Pgg1sing, py::arg("x"), py::arg("nf"));
+    m.def("Pgg1loc", &Pgg1loc, py::arg("nf"));
+
 
 }

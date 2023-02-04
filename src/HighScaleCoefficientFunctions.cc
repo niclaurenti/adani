@@ -474,8 +474,7 @@ double DLm_g3_highscale(double z, double mQ, double mMu, int nf) {
     double L_M = log(mMu) ;
     double L_M2 = L_M * L_M ;
     double L_Q = log(1./mQ) + L_M ;
-    //double L_Q2 = L_Q * L_Q ;
-    double L_Q2 = log(1./mQ) * log(1./mQ) + L_M2 + 2 * L_M * log(1./mQ) ;
+    double L_Q2 = L_Q * L_Q ;
 
     double pi3 = M_PI * M_PI * M_PI ;
 
@@ -586,15 +585,15 @@ double DLm_g3_highscale(double z, double mQ, double mMu, int nf) {
                 + 128. * z * (z + 3.) * H01 + z * (256. * H0 * H0 - 512. * zeta2)
             ) * L_Q2
             + (
-                64./3 * (18. * z2 - 91. * z + 6.) * H0 * H0
-                + 32. * (2713. * z3 - 1405. * z2 - 60. * z + 4.) * H0 / (9. * z)
-                + 64. * (z - 1.) * (137. * z2 + 12. * z - 6.) * H1 * H0 / (3. * z)
-                + 128. * z * (3. * z - 5.) * H0m1 * H0 - 128. * z * (z + 11.) * H01 * H0
-                + 32. * (z - 1.) * (161. * z2 + 12. * z - 6.) * H1 * H1 / (3. * z)
-                + 32. * (z - 1.) * (680. * z2 - 60. * z - 13.) / (9. * z)
-                + 32. * (z - 1.) * (1919. * z2 + 30. * z - 93.) * H1 / (9. * z)
                 + (
-                    (z + 1.) * (79. * z2 - 8. * z - 4.) * (64./3 * H0m1 - 64./3 * Hm1 * H0)/z
+                    64./3 * (18. * z2 - 91. * z + 6.) * H0 * H0
+                    + 32. * (2713. * z3 - 1405. * z2 - 60. * z + 4.) * H0 / (9. * z)
+                    + 64. * (z - 1.) * (137. * z2 + 12. * z - 6.) * H1 * H0 / (3. * z)
+                    + 128. * z * (3. * z - 5.) * H0m1 * H0 - 128. * z * (z + 11.) * H01 * H0
+                    + 32. * (z - 1.) * (161. * z2 + 12. * z - 6.) * H1 * H1 / (3. * z)
+                    + 32. * (z - 1.) * (680. * z2 - 60. * z - 13.) / (9. * z)
+                    + 32. * (z - 1.) * (1919. * z2 + 30. * z - 93.) * H1 / (9. * z)
+                    + (z + 1.) * (79. * z2 - 8. * z - 4.) * (64./3 * H0m1 - 64./3 * Hm1 * H0)/z
                     - 128. * (z3 + 53. * z2 - 6. * z + 1.) * H01 / (3. * z)
                     - 128. * z * (3. * z - 13.) * H00m1 - 128. * (z - 3.) * z * H001
                     - 256. * z * (z + 5.) * H011 - 64./3 * (135. * z2 - 160. * z - 6.) * zeta2
@@ -905,8 +904,7 @@ double DLm_ps3_highscale(double z, double mQ, double mMu, int nf) {
     double L_M = log(mMu) ;
     double L_M2 = L_M * L_M ;
     double L_Q = log(1./mQ) + L_M ;
-    //double L_Q2 = L_Q * L_Q ;
-    double L_Q2 = log(1./mQ) * log(1./mQ) + L_M2 + 2 * L_M * log(1./mQ) ;
+    double L_Q2 = L_Q * L_Q ;
 
     double pi3 = M_PI * M_PI * M_PI ;
 
