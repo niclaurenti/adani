@@ -1,7 +1,7 @@
 #include "adani/ExactCoefficientFunctions.h"
 #include "adani/MatchingConditions.h"
 #include "adani/Convolutions.h"
-#include "adani/ColorFactors.h"
+#include "adani/Constants.h"
 #include "adani/Convolutions.h"
 #include "adani/SplittingFunctions.h"
 #include "adani/SpecialFunctions.h"

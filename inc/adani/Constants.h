@@ -1,7 +1,7 @@
 /*
  * =====================================================================================
  *
- *       Filename:  ColorFactors.h
+ *       Filename:  Constants.h
  *
  *    Description:  File containing color factors.
  *
@@ -10,8 +10,8 @@
  * =====================================================================================
  */
 
-#ifndef Color_h
-#define Color_h
+#ifndef Const_h
+#define Const_h
 
 const double TR	= 1. / 2. ;
 const double CF	= 4. / 3. ;

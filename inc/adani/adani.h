@@ -1,7 +1,7 @@
 #ifndef adani_h
 #define adani_h
 
-#include "adani/ColorFactors.h"
+#include "adani/Constants.h"
 #include "adani/SpecialFunctions.h"
 #include "adani/SplittingFunctions.h"
 #include "adani/Convolutions.h"
