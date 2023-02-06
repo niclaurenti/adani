@@ -9,7 +9,7 @@
 #include <cmath>
 #include <iostream>
 
-using namespace std;
+using namespace std ;
 
 //==========================================================================================//
 //  Approximate gluon coefficient function for F2 at O(alpha_s) with implicit parameters.
@@ -31,7 +31,6 @@ double C2m_g1_approximation_implicit(double x, double mQ, double k, double h) {
         C2m_g1_asymptotic(x,mQ) * damp_asy
         + C2m_g1_threshold(x,mQ) * damp_thr
     ) ;
-
 
     return C_const ;
 
@@ -485,23 +484,23 @@ double C2m_g3_approximation_BAND(double x, double mQ, double mMu, int nf, double
 
 double C2m_ps3_approximation(double x, double mQ, double mMu, int nf) {
 
-    double a=2.5, b=5;
-    double A=0.3, B=2.5, C=2.5, D=1.2;
+    double a = 2.5, b = 5. ;
+    double A = 0.3, B = 2.5, C = 2.5, D = 1.2 ;
 
-    double xmax=1/(1+4*mQ);
+    double xmax = 1. / (1. + 4. * mQ) ;
 
-    double xi=1./mQ;
+    double xi = 1. / mQ ;
 
-    double eta;
+    double eta ;
 
-    if(x<xmax && x>0) eta=0.25/mQ*(1-x)/x - 1;
+    if(x<xmax && x>0) eta = 0.25 / mQ * (1. - x) / x - 1.;
     else eta=0;
 
-    double h = A + (B-A)/(1+exp(a*(log(xi)-b)));
-    double k = C + (D-C)/(1+exp(a*(log(xi)-b)));
+    double h = A + (B - A) / (1. + exp(a * (log(xi) - b)));
+    double k = C + (D - C) / (1. + exp(a * (log(xi) - b)));
 
-    double damp_thr=1/(1+pow(eta/h,k));
-    double damp_asy=1-damp_thr;
+    double damp_thr = 1. / (1. + pow(eta / h, k));
+    double damp_asy = 1. - damp_thr;
 
     double C30 = C2m_ps3_asymptotic(x,mQ,1,nf) * damp_asy ;
 

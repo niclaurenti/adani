@@ -1,7 +1,7 @@
 # BASIC DEFINITIONS ========================================================================
 
 # define minimum version of cmake
-cmake_minimum_required (VERSION 3.15..3.22)
+cmake_minimum_required (VERSION 3.15)
 
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
     message(STATUS "Setting build type to 'Release' as none was specified.")
@@ -15,7 +15,7 @@ endif()
 project(adani VERSION 0.10) # el diez
 
 # define c++ standard and issue all the warning demanded by this standard
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -fPIC")
 enable_language(Fortran)
