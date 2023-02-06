@@ -1,6 +1,6 @@
 #include "adani/ApproximateCoefficientFunctions.h"
 #include "adani/HighScaleCoefficientFunctions.h"
-#include "adani/MassiveCoefficientFunctions.h"
+#include "adani/ExactCoefficientFunctions.h"
 #include "adani/HighEnergyCoefficientFunctions.h"
 #include "adani/ThresholdCoefficientFunctions.h"
 #include "adani/AsymptoticCoefficientFunctions.h"

@@ -179,10 +179,10 @@ double C2_g3_massless(double x, int nf) {//remember that there is a delta(x1) th
     double fl_g_11=tmp1*tmp1/tmp2/nf;
     */
 
-    double fl_g_11 = 0 ; //we are considering heavy-quark production
+    // double fl_g_11 = 0 ; //we are considering heavy-quark production
 
     double x2 = x * x;
-    double x3 = x2 * x;
+    // double x3 = x2 * x;
 
     double x1 = 1 - x;
     double L0 = log(x);
@@ -282,10 +282,11 @@ double C2_ps3_massless(double x, int nf) {//remember that there is a delta(x1) t
         - 184./81 * L04 + 40.2426 * x1/x
     );
 
-    /*double c_fl_nf =
-        ((126.42 - 50.29 * x - 50.15 * x2) * x1 - 26.717 - 9.075
-        * x * x1 * L1 - x * L02 * (101.8 + 34.79 * L0 + 3.070 * L02)
-        + 59.59 * L0 - 320./81 * L02 * (5 + L0)) * x ;*/
+    /*double c_fl_nf = (
+        (126.42 - 50.29 * x - 50.15 * x2) * x1 - 26.717
+        - 9.075 * x * x1 * L1 - x * L02 * (101.8 + 34.79 * L0 + 3.070 * L02)
+        + 59.59 * L0 - 320./81 * L02 * (5 + L0)
+    ) * x ;*/
 
     double tmp = (
         c_nf * nf
@@ -334,7 +335,7 @@ double CL_g3_massless(double x, int nf) {//remember that there is a delta(x1) th
 
     double L02 = L0 * L0;
     double L03 = L02 * L0;
-    double L04 = L03 * L0;
+    // double L04 = L03 * L0;
 
     double L12 = L1 * L1;
     double L13 = L12 * L1;
@@ -389,7 +390,7 @@ double CL_ps3_massless(double x, int nf) {//remember that there is a delta(x1) t
 
     // double fl_ps_11=0; //we are considering heavy-quark production
 
-    double x2=x*x;
+    // double x2=x*x;
 
     double x1=1-x;
     double L0=log(x);

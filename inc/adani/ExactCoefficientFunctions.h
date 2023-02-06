@@ -1,9 +1,9 @@
 /*
  * =====================================================================================
  *
- *       Filename:  MassiveCoefficientFunctions.h
+ *       Filename:  ExactCoefficientFunctions.h
  *
- *    Description:  Header file for the MassiveCoefficientFunctions.cc file.
+ *    Description:  Header file for the ExactCoefficientFunctions.cc file.
  *
  *         Author:  Hanno un cuore differente
  *
@@ -12,8 +12,8 @@
  * =====================================================================================
  */
 
-#ifndef Massive_h
-#define Massive_h
+#ifndef Exact_h
+#define Exact_h
 
 //==========================================================================================//
 //                      The notation used is the following:
@@ -107,7 +107,7 @@ double CLm_g31(double x, double mQ, int nf) ;
 
 // These two expressions are integrated with montcarlo methods
 
-double C2m_g32(double x, double mQ, int nf, int method_flag = 1, int calls = 25000);
-double CLm_g32(double x, double mQ, int nf, int method_flag = 1, int calls = 25000) ;
+double C2m_g32(double x, double mQ, int nf, int method_flag, int calls);
+double CLm_g32(double x, double mQ, int nf, int method_flag, int calls) ;
 
 #endif

@@ -6,7 +6,7 @@
 #include "adani/SplittingFunctions.h"
 #include "adani/Convolutions.h"
 #include "adani/HighEnergyCoefficientFunctions.h"
-#include "adani/MassiveCoefficientFunctions.h"
+#include "adani/ExactCoefficientFunctions.h"
 #include "adani/HighScaleCoefficientFunctions.h"
 #include "adani/MasslessCoefficientFunctions.h"
 #include "adani/MatchingConditions.h"

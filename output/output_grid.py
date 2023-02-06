@@ -52,9 +52,6 @@ if __name__ == "__main__":
     Qdata = np.array([ l.split() for l in Qlines ])
     Q_grid = np.array([float(i) for i in (Qdata[0,:])])
 
-    x_grid = np.linspace(0.1, 1., 10)
-    Q_grid = np.linspace(10, 200, 20)
-
     print(f"Computation of the grid for the coefficient function C{runcard['channel']} for m = {m} GeV, nf = {nf}, and µ/Q = {mufrac}")
     print(f"Size of the grid (x,Q) = ({len(x_grid)},{len(Q_grid)})")
 
