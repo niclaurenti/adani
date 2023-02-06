@@ -352,6 +352,8 @@ double C2m_g3_approximation_implicit(double x, double mQ, double mMu, int nf, do
 
     double xmax = 1. / ( 1. + 4 * mQ ) ;
 
+    if(x >= xmax || x <= 0) return 0 ;
+
     double xi = 1. / mQ ;
 
     double eta;

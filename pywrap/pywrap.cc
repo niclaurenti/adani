@@ -15,8 +15,8 @@ PYBIND11_MODULE(_core, m) {
 
     // ApproximateCoefficientFunctions
 
-    m.def("C2m_g3_approximation", &C2m_g3_approximation, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"), py::arg("method_flag")=1, py::arg("calls")=25000);
-    m.def("CLm_g3_approximation", &CLm_g3_approximation, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"), py::arg("method_flag")=1, py::arg("calls")=25000);
+    m.def("C2m_g3_approximation", &C2m_g3_approximation, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"), py::arg("method_flag")=default_method, py::arg("calls")=default_calls);
+    m.def("CLm_g3_approximation", &CLm_g3_approximation, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"), py::arg("method_flag")=default_method, py::arg("calls")=default_calls);
     m.def("C2m_ps3_approximation", &C2m_ps3_approximation, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"));
     m.def("CLm_ps3_approximation", &CLm_ps3_approximation, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"));
 
@@ -25,9 +25,9 @@ PYBIND11_MODULE(_core, m) {
     m.def("C2m_ps2_approximation", &C2m_ps2_approximation, py::arg("x"), py::arg("mQ"), py::arg("mMu")) ;
     m.def("CLm_ps2_approximation", &CLm_ps2_approximation, py::arg("x"), py::arg("mQ"), py::arg("mMu")) ;
 
-    m.def("C2m_g3_approximationA_klmv", &C2m_g3_approximationA_klmv, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"));
-    m.def("C2m_g3_approximationB_klmv", &C2m_g3_approximationB_klmv, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"));
-    m.def("C2m_g3_approximationBlowxi_klmv", &C2m_g3_approximationBlowxi_klmv, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"));
+    m.def("C2m_g3_approximationA_klmv", &C2m_g3_approximationA_klmv, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"), py::arg("method_flag")=default_method, py::arg("calls")=default_calls);
+    m.def("C2m_g3_approximationB_klmv", &C2m_g3_approximationB_klmv, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"), py::arg("method_flag")=default_method, py::arg("calls")=default_calls);
+    m.def("C2m_g3_approximationBlowxi_klmv", &C2m_g3_approximationBlowxi_klmv, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"), py::arg("method_flag")=default_method, py::arg("calls")=default_calls);
 
     m.def("C2m_ps3_approximationA_klmv", &C2m_ps3_approximationA_klmv, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"));
     m.def("C2m_ps3_approximationB_klmv", &C2m_ps3_approximationB_klmv, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"));
@@ -63,8 +63,8 @@ PYBIND11_MODULE(_core, m) {
     m.def("CLm_g21", &CLm_g21, py::arg("x"), py::arg("mQ"));
     m.def("CLm_ps21", &CLm_ps21, py::arg("x"), py::arg("mQ"));
 
-    m.def("CLm_g32", &CLm_g32, py::arg("x"), py::arg("mQ"), py::arg("nf"), py::arg("method_flag")=1, py::arg("calls")=25000);
-    m.def("C2m_g32", &CLm_g32, py::arg("x"), py::arg("mQ"), py::arg("nf"), py::arg("method_flag")=1, py::arg("calls")=25000);
+    m.def("CLm_g32", &CLm_g32, py::arg("x"), py::arg("mQ"), py::arg("nf"), py::arg("method_flag")=default_method, py::arg("calls")=default_calls);
+    m.def("C2m_g32", &CLm_g32, py::arg("x"), py::arg("mQ"), py::arg("nf"), py::arg("method_flag")=default_method, py::arg("calls")=default_calls);
 
     // MasslessCoefficientFunctions
 

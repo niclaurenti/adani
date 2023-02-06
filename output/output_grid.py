@@ -43,7 +43,6 @@ def run(n_threads, x_grid, Q_grid):
     return result
 
 if __name__ == "__main__":
-
     xfname = "x.txt"
     xlines = [l.strip() for l in open(xfname)]
     xdata = np.array([ l.split() for l in xlines ])
@@ -53,13 +52,19 @@ if __name__ == "__main__":
     Qdata = np.array([ l.split() for l in Qlines ])
     Q_grid = np.array([float(i) for i in (Qdata[0,:])])
 
+    x_grid = np.linspace(0.1, 1., 10)
+    Q_grid = np.linspace(10, 200, 20)
+
     print(f"Computation of the grid for the coefficient function C{runcard['channel']} for m = {m} GeV, nf = {nf}, and µ/Q = {mufrac}")
     print(f"Size of the grid (x,Q) = ({len(x_grid)},{len(Q_grid)})")
 
     start = time.perf_counter()
-    res=np.array(run(runcard["n_threads"], x_grid, Q_grid))
+    res_vec=np.array(run(runcard["n_threads"], x_grid, Q_grid))
     print("total running time: ", time.perf_counter() - start)
+
+    res_mat = res_vec.reshape(len(Q_grid), len(x_grid))
 
     print("Saving grid in ", runcard["output_file"])
     with open(runcard["output_file"], 'w') as f:
-        print(*res, file=f)
+        for row in res_mat:
+            print(*row, file=f)
