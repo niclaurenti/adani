@@ -1,4 +1,3 @@
-apfelxx/
 .DS_Store
 .vscode/
 *.pdf
@@ -10,3 +9,8 @@ build/
 _skbuild/
 adani.egg-info/
 examples/test.exe
+output/results
+output/*.dat
+inc/adani/version.h
+bin/adani-config
+bin/adani.pc

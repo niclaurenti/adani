@@ -244,7 +244,7 @@ double C2_g3(double x, int nf) {//remember that there is a delta(x1) that has be
 
 double C2_ps3(double x, int nf) {//remember that there is a delta(x1) that has been omitted
 
-    if(x<0 || x>1) return 0;
+    if(x<0 || x>=1) return 0;
 
     double fl_ps_11=0; //we are considering heavy-quark production
 
@@ -303,7 +303,7 @@ double C2_ps3(double x, int nf) {//remember that there is a delta(x1) that has b
 
 double CL_g3(double x, int nf) {//remember that there is a delta(x1) that has been omitted
 
-    if(x<0 || x>1) return 0;
+    if(x<0 || x>=1) return 0;
 
     //****computing fl_g_11=<e>^2/<e^2>****
     /*
@@ -338,30 +338,34 @@ double CL_g3(double x, int nf) {//remember that there is a delta(x1) that has be
 
     double pi3 = M_PI * M_PI * M_PI;
 
-    double c_nf =
-        (144 * L14 - 47024./27. * L13 + 6319 * L12 + 53160 * L1
-       ) * x1 + 72549 * L0 * L1 + 88238 * L02 * L1 + (3709 -
-        33514 * x - 9533 * x2) * x1 + 66773 * x * L02 - 1117 *
-        L0 + 45.37 * L02 - 5360./27. * L03 - (2044.70 * x1 + 409.506
-        * L0)/x;
+    double c_nf = (
+        (144. * L14 - 47024./27. * L13 + 6319. * L12 + 53160. * L1) * x1
+        + 72549. * L0 * L1 + 88238. * L02 * L1
+        + (3709. - 33514. * x - 9533. * x2) * x1 + 66773. * x * L02 - 1117. * L0
+        + 45.37 * L02 - 5360./27. * L03 - (2044.70 * x1 + 409.506 * L0) / x
+    ) ;
 
-    double c_nf2 =
-        (32./3. * L13 - 1216./9. * L12 - 592.3 * L1 + 1511 * x
-        * L1) * x1 + 311.3 * L0 * L1 + 14.24 * L02 * L1 + (577.3
-        - 729 * x) * x1 + 30.78 * x * L03 + 366 * L0 + 1000./9.
-        * L02 + 160./9. * L03 + 88.5037/x * x1;
+    double c_nf2 = (
+        (32./3. * L13 - 1216./9. * L12 - 592.3 * L1 + 1511. * x * L1) * x1
+        + 311.3 * L0 * L1 + 14.24 * L02 * L1 + (577.3 - 729. * x) * x1
+        + 30.78 * x * L03 + 366. * L0 + 1000./9. * L02 + 160./9. * L03
+        + 88.5037/x * x1
+    ) ;
 
-    double c_nf_fl =
-        (-0.0105 * L13 + 1.55 * L12 + 19.72 * x * L1 - 66.745 *
-        x + 0.615 * x2) * x1 + 20./27. * x * L04 + (280./81. + 2.26
-        * x) * x * L03 - (15.4 - 2.201 * x) * x * L02 - (71.66 -
-        0.121 * x) * x * L0;
+    double c_nf_fl = (
+        (
+            -0.0105 * L13 + 1.55 * L12 + 19.72 * x * L1 - 66.745 * x
+            + 0.615 * x2
+        ) * x1
+        + 20./27. * x * L04 + (280./81. + 2.26 * x) * x * L03
+        - (15.4 - 2.201 * x) * x * L02 - (71.66 - 0.121 * x) * x * L0
+    ) ;
 
     double tmp = (
         c_nf * nf
         + c_nf2 * nf * nf
         + c_nf_fl * nf * nf * fl_g_11
-   ) ;
+    ) ;
 
     return tmp / 64. / pi3 ;
 

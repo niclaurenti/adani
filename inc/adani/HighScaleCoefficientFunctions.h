@@ -36,7 +36,7 @@ double DLm_g1_highscale(double x, double mQ);
 //------------------------------------------------------------------------------------------//
 
 double C2m_g2_highscale(double x, double mQ, double mMu);
-double C2m_ps2_highscale(double x, double mQ, double mMu);
+double C2m_ps2_highscale(double z, double mQ, double mMu);
 
 double CLm_g2_highscale(double x, double mQ, double mMu);
 double CLm_ps2_highscale(double x, double mQ, double mMu);
@@ -44,8 +44,8 @@ double CLm_ps2_highscale(double x, double mQ, double mMu);
 double D2m_g2_highscale(double x, double mQ, double mMu);
 double D2m_ps2_highscale(double x, double mQ, double mMu);
 
-double DLm_g2_highscale(double x, double mQ, double mMu);
-double DLm_ps2_highscale(double x, double mQ, double mMu);
+double DLm_g2_highscale(double z, double mQ, double mMu);
+double DLm_ps2_highscale(double z, double mQ, double mMu);
 
 //==========================================================================================//
 //                      High scale (Q^2 >> m^2) coefficient functions O(alpha_s^3)
@@ -57,11 +57,12 @@ double C2m_ps3_highscale(double x, double mQ, double mMu, int nf);
 double CLm_g3_highscale(double x, double mQ, double mMu, int nf);
 double CLm_ps3_highscale(double x, double mQ, double mMu, int nf);
 
-double DLm_g3_highscale(double x, double mQ, double mMu, int nf);
-double DLm_ps3_highscale(double x, double mQ, double mMu, int nf);
+double DLm_g3_highscale(double z, double mQ, double mMu, int nf);
+double DLm_ps3_highscale(double z, double mQ, double mMu, int nf);
 
+double D2m_g3_highscale_incomplete(double x, double mQ, double mMu, int nf);
 double D2m_g3_highscale(double x, double mQ, double mMu, int nf, int v);
-double D2m_ps3_highscale(double x, double mQ, double mMu, int nf);
+double D2m_ps3_highscale(double x, double mQ, double mMu, int nf, int v=0);
 
 
 //==========================================================================================//
@@ -73,7 +74,5 @@ double D2m_ps3_highscale(double x, double mQ, double mMu, int nf);
 
 double C2m_ps3_highscale_klmv_paper(double x, double mQ, double mMu, int nf, int v);
 double D2m_ps3_highscale_klmv_paper(double x, double mQ, double mMu, int nf, int v);
-
-double C2m_ps2_highscaleNEW(double x, double mQ, double mMu);
 
 #endif

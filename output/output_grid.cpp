@@ -1,3 +1,5 @@
+// See README.md for compilation suggestions
+
 #include "adani/adani.h"
 
 #include <iostream>
@@ -15,40 +17,16 @@ std::string print_time(time_t seconds);
 
 int main(int argc, char** argv) {
 
-    if(argc!=5) {
-        cout<< "ERROR!\nUsage: ./output_grid.exe mufrac = mu/Q m channel calls\nExiting..." <<endl;
+    if(argc!=7) {
+        cout<< "ERROR!\nUsage: ./output_grid.exe mufrac = mu/Q m nf channel calls filename\nExiting..." <<endl;
         return -1;
     }
 
-    string channel = argv[3];
-    int calls = atoi(argv[4]) ;
-    string filename ;
-    if(channel == "2g") {
-        string tmp = "mkdir Cg_" + std::string(argv[4]) + "calls/" ;
-        system(tmp.c_str());
-        filename = "Cg_" + std::string(argv[4]) + "calls/C2g.dat";
-    }
-    else if(channel == "2q") filename = "C2q.dat";
-    else if(channel == "Lg") {
-        string tmp = "mkdir Cg_" + std::string(argv[4]) + "calls/" ;
-        system(tmp.c_str());
-        filename = "Cg_" + std::string(argv[4]) + "calls/CLg.dat";
-    }
-    else if(channel == "Lq") filename = "CLq.dat";
-    else {
-        cout<< "ERROR!\nUsage: channel = {2g, 2q, Lg, Lq}\nExiting..." <<endl;
-        return -1;
-    }
+    int nf = atoi(argv[3]) ;
+    string channel = argv[4];
+    int calls = atoi(argv[5]) ;
 
-    ofstream output;
-    output.open(filename);
-    if (! output.is_open()) {
-        cout<<"Problems in opening "<<filename<<endl ;
-        exit(-1);
-    } else {
-        cout << "Saving in " << filename << endl;
-    }
-
+    string filename = argv[6] ;
     ifstream inputQ;
     inputQ.open("Q.txt");
 
@@ -57,10 +35,6 @@ int main(int argc, char** argv) {
 
     double mufrac = atof(argv[1]);
     double m = atof(argv[2]);
-
-    double res ;
-
-    int nf=4;
 
     std::vector<double> Q, x ;
 
@@ -78,12 +52,27 @@ int main(int argc, char** argv) {
         inputQ >> Qtmp ;
     }
 
+    cout    << "Computation of the grid for the coefficient function C"<< channel
+            << " for m = " << m << " GeV, nf = "<< nf << " and µ/Q = "<< mufrac
+            << endl ;
+
+    cout << "Size of the grid (x,Q) = (" << x.size() <<","<< Q.size() << ")" <<endl ;
+
+
+    ofstream output;
+    output.open(filename);
+    if (! output.is_open()) {
+        cout<<"Problems in opening "<<filename<<endl ;
+        exit(-1);
+    } else {
+        cout << "Saving grid in " << filename << endl;
+    }
+
+    double res ;
+
     int k  = 1;
 
     time_t total = 0, mean;
-
-    cout << "Computation of the grid for the coefficient function C"<< channel << " for m = "<< m << " GeV and µ/Q = "<<mufrac << endl ;
-    cout << "Size of the grid (x,Q) = (" <<x.size() <<","<<Q.size()<<")"<<endl ;
 
     time_t starting_time = time(NULL) ;
     //for(std::vector<Datum>::iterator d = data.begin(); d != data.end(); d++) {
@@ -95,9 +84,13 @@ int main(int argc, char** argv) {
             mu = mufrac * Q_ ;
             mMu = pow(m/mu, 2) ;
             if(channel == "2g") res = C2m_g3_approximation(x_,mQ,mMu,nf,1,calls) ;
-            if(channel == "2q") res = C2m_ps3_approximation(x_,mQ,mMu,nf) ;
-            if(channel == "Lg") res = CLm_g3_approximation(x_,mQ,mMu,nf,1,calls)  ;
-            if(channel == "Lq") res = CLm_ps3_approximation(x_,mQ,mMu,nf) ;
+            else if(channel == "2q") res = C2m_ps3_approximation(x_,mQ,mMu,nf) ;
+            else if(channel == "Lg") res = CLm_g3_approximation(x_,mQ,mMu,nf,1,calls)  ;
+            else if(channel == "Lq") res = CLm_ps3_approximation(x_,mQ,mMu,nf) ;
+            else {
+                cout<< "ERROR!\nUsage: channel = {2g, 2q, Lg, Lq}\nExiting..." <<endl;
+                exit(-1);
+            }
             output << res << "   ";
         }
         output << endl ;

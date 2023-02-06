@@ -1,4 +1,4 @@
-#include "/Users/niccololaurenti/Master-thesis/include/MyLib.h"
+#include "adani/adani.h"
 
 #include <iostream>
 #include <fstream>
@@ -11,15 +11,13 @@ using namespace apfel;
 
 int main(int argc, char** argv) {
 
-    if(argc!=3) {
-		cout << "ERROR\nUsage: ./c2_21.exe xi filename\nExiting..." << endl;
-		return -1;
-	}
+    if(argc!=2) {
+        cout << "ERROR\nUsage: ./c2_21.exe xi\nExiting..." << endl;
+        return -1;
+    }
 
     double xi = atof(argv[1]);
     //double D= atof(argv[2]);
-	ofstream output;
-	output.open(argv[2]);
 
     double norm = 16 * M_PI * M_PI ;
 
@@ -33,11 +31,9 @@ int main(int argc, char** argv) {
     double x, dx = 0.001;
 
     for(x=dx; x<1; x+=dx) {
-		//cout << x << "   " << gluon.Regular(x*(1+4*mQ))/ norm << "   " << quark.Regular(x*(1+4*mQ))/ norm << endl;
+        //cout << x << "   " << gluon.Regular(x*(1+4*mQ))/ norm << "   " << quark.Regular(x*(1+4*mQ))/ norm << endl;
         cout << x << "   " << gluonF2.Regular(x*(1+4*mQ))/ norm << "   " << quarkF2.Regular(x*(1+4*mQ))/ norm << "   " << gluonFL.Regular(x*(1+4*mQ))/ norm << "   " << quarkFL.Regular(x*(1+4*mQ))/ norm << "   " << C2m_g21(x, mQ) << "   " <<C2m_ps21(x, mQ)<< "   " << CLm_g21(x, mQ) << "   " <<CLm_ps21(x, mQ) << endl;
-	}
-
-    output.close();
+    }
 
     return 0;
 
