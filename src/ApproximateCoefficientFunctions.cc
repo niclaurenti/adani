@@ -19,10 +19,11 @@ double C2m_g1_approximation_implicit(double x, double mQ, double k, double h) {
 
     double xmax = 1. / (1. + 4. * mQ) ;
 
+    if(x >= xmax || x <= 0) return 0 ;
+
     double eta ;
 
-    if(x < xmax && x > 0) eta = 0.25 / mQ * (1. - x) / x - 1. ;
-    else eta = 0 ;
+    eta = 0.25 / mQ * (1. - x) / x - 1. ;
 
     double damp_thr = 1. / (1. + pow(eta/h , k)) ;
     double damp_asy = 1. - damp_thr ;
@@ -45,12 +46,13 @@ double C2m_g1_approximation(double x, double mQ) {
 
     double xmax = 1. / (1. + 4. * mQ) ;
 
+    if(x >= xmax || x <= 0) return 0 ;
+
     double xi=1./mQ;
 
     double eta ;
 
-    if(x < xmax && x > 0) eta = 0.25 / mQ * (1. - x) / x - 1. ;
-    else eta = 0 ;
+    eta = 0.25 / mQ * (1. - x) / x - 1. ;
 
     double k = 2.5 - 1.3 / (1. + exp(2.5 * (log(xi) - 5.))) ;
     double h = 0.2 + 2.3 / (1. + exp(2.5 * (log(xi) - 5.))) ;
@@ -77,14 +79,15 @@ double CLm_g1_approximation(double x, double mQ) {
 
     double xmax = 1. / (1. + 4. * mQ) ;
 
+    if(x >= xmax || x <= 0) return 0 ;
+
     double xi = 1. / mQ ;
 
     double eta ;
 
-    if(x < xmax && x > 0) eta = 0.25 / mQ * (1. - x) / x - 1. ;
-    else eta = 0 ;
+    eta = 0.25 / mQ * (1. - x) / x - 1. ;
 
-    double k = 1.13086 + exp(0.618532 * log(xi) - 4.10071) ;
+    double k = 1.13086 + exp(0.618532 * log(xi) - 4.10071) ; // TODO : why theese numbers
     double h = 0.3 + 2.2 / (1. + exp(2.5 * (log(xi) - 5))) ;
 
     double damp_thr = 1. / (1. + pow(eta / h, k));
@@ -462,12 +465,13 @@ double C2m_ps3_approximation(double x, double mQ, double mMu, int nf) {
 
     double xmax = 1. / (1. + 4. * mQ) ;
 
+    if(x >= xmax || x <= 0) return 0 ;
+
     double xi = 1. / mQ ;
 
     double eta ;
 
-    if(x<xmax && x>0) eta = 0.25 / mQ * (1. - x) / x - 1.;
-    else eta=0;
+    eta = 0.25 / mQ * (1. - x) / x - 1.;
 
     double h = A + (B - A) / (1. + exp(a * (log(xi) - b)));
     double k = C + (D - C) / (1. + exp(a * (log(xi) - b)));
@@ -501,12 +505,13 @@ double CLm_g3_approximation(double x, double mQ, double mMu, int nf, int method_
 
     double xmax = 1. / (1. + 4 * mQ) ;
 
+    if(x >= xmax || x <= 0) return 0 ;
+
     double xi = 1. / mQ ;
 
     double eta;
 
-    if(x<xmax && x>0) eta = 0.25 / mQ * (1 - x) / x - 1. ;
-    else eta = 0 ;
+    eta = 0.25 / mQ * (1 - x) / x - 1. ;
 
     double h = A + (B - A) / (1. + exp(a * (log(xi) - b))) ;
     double k = C + (D - C) / (1. + exp(a * (log(xi) - b))) ;
@@ -543,12 +548,13 @@ double CLm_ps3_approximation(double x, double mQ, double mMu, int nf) {
 
     double xmax = 1. / (1. + 4. * mQ) ;
 
+    if(x >= xmax || x <= 0) return 0 ;
+
     double xi = 1. / mQ ;
 
     double eta ;
 
-    if(x<xmax && x>0) eta = 0.25 / mQ * (1. - x) / x - 1.;
-    else eta = 0. ;
+    eta = 0.25 / mQ * (1. - x) / x - 1.;
 
     double h = A + (B - A) / (1. + exp(a * (log(xi) - b)));
     double k = C + (D - C) / (1. + exp(a * (log(xi) - b)));
