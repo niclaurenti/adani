@@ -1051,7 +1051,7 @@ double DLm_ps3_highscale(double z, double mQ, double mMu, int nf) {
                 )
             ) * L_Q
         )
-    )/(64. * pi3) + CL_ps3(z, nf + 1) / (nf + 1) ;
+    ) / (64. * pi3) + CL_ps3(z, nf + 1) / (nf + 1) ;
 
 }
 

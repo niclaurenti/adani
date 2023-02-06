@@ -150,45 +150,45 @@ double C2m_g2_approximation_implicit(double x, double mQ, double mMu, double A, 
 
 double C2m_g2_approximation_BAND(double x, double mQ, double mMu, double var, double fact, int v) {
 
-    double a=2.5, b=5;
-    double A=1.7, B=2.5, C=2.5, D=1.2;
+    double a = 2.5, b = 5 ;
+    double A = 1.7, B = 2.5, C = 2.5, D = 1.2 ;
 
-    double Cavg=C2m_g2_approximation_implicit(x,mQ,mMu,A,B,C,D,a,b);
+    double Cavg = C2m_g2_approximation_implicit(x,mQ,mMu,A,B,C,D,a,b);
 
     if(v==0) return Cavg;
 
-    double Amax=fact*A, Amin=A/fact, Bmax=B*fact, Bmin=B/fact;
-    double Cmax=(1+var)*C, Cmin=(1-var)*C, Dmax=(1+var)*D, Dmin=(1-var)*D;
+    double Amax = fact * A, Amin = A / fact, Bmax = B * fact, Bmin = B / fact ;
+    double Cmax = (1. + var) * C, Cmin = (1. - var) * C, Dmax = (1. + var) * D, Dmin = (1. - var) * D ;
 
     double Cerr[10];
 
-    Cerr[0]=C2m_g2_approximation_implicit(x,mQ,mMu,Amax,B,C,D,a,b);
-    Cerr[1]=C2m_g2_approximation_implicit(x,mQ,mMu,Amin,B,C,D,a,b);
-    Cerr[2]=C2m_g2_approximation_implicit(x,mQ,mMu,A,Bmax,C,D,a,b);
-    Cerr[3]=C2m_g2_approximation_implicit(x,mQ,mMu,A,Bmin,C,D,a,b);
-    Cerr[4]=C2m_g2_approximation_implicit(x,mQ,mMu,A,B,Cmax,D,a,b);
-    Cerr[5]=C2m_g2_approximation_implicit(x,mQ,mMu,A,B,Cmin,D,a,b);
-    Cerr[6]=C2m_g2_approximation_implicit(x,mQ,mMu,A,B,C,Dmax,a,b);
-    Cerr[7]=C2m_g2_approximation_implicit(x,mQ,mMu,A,B,C,Dmin,a,b);
-    Cerr[8]=C2m_g2_approximation_implicit(x,mQ,mMu,Amax,Bmax,Cmax,Dmax,a,b);
-    Cerr[9]=C2m_g2_approximation_implicit(x,mQ,mMu,Amin,Bmin,Cmin,Dmin,a,b);
+    Cerr[0] = C2m_g2_approximation_implicit(x,mQ,mMu,Amax,B,C,D,a,b);
+    Cerr[1] = C2m_g2_approximation_implicit(x,mQ,mMu,Amin,B,C,D,a,b);
+    Cerr[2] = C2m_g2_approximation_implicit(x,mQ,mMu,A,Bmax,C,D,a,b);
+    Cerr[3] = C2m_g2_approximation_implicit(x,mQ,mMu,A,Bmin,C,D,a,b);
+    Cerr[4] = C2m_g2_approximation_implicit(x,mQ,mMu,A,B,Cmax,D,a,b);
+    Cerr[5] = C2m_g2_approximation_implicit(x,mQ,mMu,A,B,Cmin,D,a,b);
+    Cerr[6] = C2m_g2_approximation_implicit(x,mQ,mMu,A,B,C,Dmax,a,b);
+    Cerr[7] = C2m_g2_approximation_implicit(x,mQ,mMu,A,B,C,Dmin,a,b);
+    Cerr[8] = C2m_g2_approximation_implicit(x,mQ,mMu,Amax,Bmax,Cmax,Dmax,a,b);
+    Cerr[9] = C2m_g2_approximation_implicit(x,mQ,mMu,Amin,Bmin,Cmin,Dmin,a,b);
 
-    double min=Cavg,max=Cavg;
-    int i;
+    double min = Cavg, max = Cavg;
+    int i ;
 
-    for(i=0;i<10;i++) {
-        if(Cerr[i]>max) max=Cerr[i];
+    for(i = 0; i < 10; i++) {
+        if(Cerr[i]>max) max = Cerr[i];
     }
 
-    for(i=0;i<10;i++) {
-        if(Cerr[i]<min) min=Cerr[i];
+    for(i = 0; i < 10; i++) {
+        if(Cerr[i]<min) min = Cerr[i];
     }
 
     if(v==1) return max;
     if(v==2) return min;
 
     else {
-        cout<<"Choose either v=0 or v=1 or v=2!!\nExiting!!\n"<<endl;
+        cout<<"C2m_g2_approximation_BAND: Choose either v=0 or v=1 or v=2!!\nExiting!!\n"<<endl;
         exit(-1);
     }
 
@@ -426,35 +426,35 @@ double C2m_g3_approximation_BAND(double x, double mQ, double mMu, int nf, double
 
     if(v==0) return Cavg;
 
-    double Amax=fact*A, Amin=A/fact, Bmax=B*fact, Bmin=B/fact;
-    double Cmax=(1+var)*C, Cmin=(1-var)*C, Dmax=(1+var)*D, Dmin=(1-var)*D;
+    double Amax = fact * A, Amin = A / fact, Bmax = B * fact, Bmin = B / fact;
+    double Cmax = (1. + var) * C, Cmin = (1. - var) * C, Dmax=(1. + var) * D, Dmin = (1. - var) * D;
 
     double Cerr[14];
 
     double min=Cavg,max=Cavg;
     int i;
 
-    Cerr[0]=C2m_g3_approximation_implicit(x,mQ,1,nf,Amax,B,C,D,a,b,0,0);
-    Cerr[1]=C2m_g3_approximation_implicit(x,mQ,1,nf,Amin,B,C,D,a,b,0,0);
-    Cerr[2]=C2m_g3_approximation_implicit(x,mQ,1,nf,A,Bmax,C,D,a,b,0,0);
-    Cerr[3]=C2m_g3_approximation_implicit(x,mQ,1,nf,A,Bmin,C,D,a,b,0,0);
-    Cerr[4]=C2m_g3_approximation_implicit(x,mQ,1,nf,A,B,Cmax,D,a,b,0,0);
-    Cerr[5]=C2m_g3_approximation_implicit(x,mQ,1,nf,A,B,Cmin,D,a,b,0,0);
-    Cerr[6]=C2m_g3_approximation_implicit(x,mQ,1,nf,A,B,C,Dmax,a,b,0,0);
-    Cerr[7]=C2m_g3_approximation_implicit(x,mQ,1,nf,A,B,C,Dmin,a,b,0,0);
-    Cerr[8]=C2m_g3_approximation_implicit(x,mQ,1,nf,A,B,C,D,a,b,1,0);
-    Cerr[9]=C2m_g3_approximation_implicit(x,mQ,1,nf,A,B,C,D,a,b,2,0);
-    Cerr[10]=C2m_g3_approximation_implicit(x,mQ,1,nf,A,B,C,D,a,b,0,1);
-    Cerr[11]=C2m_g3_approximation_implicit(x,mQ,1,nf,A,B,C,D,a,b,0,2);
-    Cerr[12]=C2m_g3_approximation_implicit(x,mQ,1,nf,Amax,Bmax,Cmax,Dmax,a, b,1,1);
-    Cerr[13]=C2m_g3_approximation_implicit(x,mQ,1,nf,Amin,Bmin, Cmin,Dmin,a,b,2,2);
+    Cerr[0] = C2m_g3_approximation_implicit(x,mQ,1,nf,Amax,B,C,D,a,b,0,0);
+    Cerr[1] = C2m_g3_approximation_implicit(x,mQ,1,nf,Amin,B,C,D,a,b,0,0);
+    Cerr[2] = C2m_g3_approximation_implicit(x,mQ,1,nf,A,Bmax,C,D,a,b,0,0);
+    Cerr[3] = C2m_g3_approximation_implicit(x,mQ,1,nf,A,Bmin,C,D,a,b,0,0);
+    Cerr[4] = C2m_g3_approximation_implicit(x,mQ,1,nf,A,B,Cmax,D,a,b,0,0);
+    Cerr[5] = C2m_g3_approximation_implicit(x,mQ,1,nf,A,B,Cmin,D,a,b,0,0);
+    Cerr[6] = C2m_g3_approximation_implicit(x,mQ,1,nf,A,B,C,Dmax,a,b,0,0);
+    Cerr[7] = C2m_g3_approximation_implicit(x,mQ,1,nf,A,B,C,Dmin,a,b,0,0);
+    Cerr[8] = C2m_g3_approximation_implicit(x,mQ,1,nf,A,B,C,D,a,b,1,0);
+    Cerr[9] = C2m_g3_approximation_implicit(x,mQ,1,nf,A,B,C,D,a,b,2,0);
+    Cerr[10] = C2m_g3_approximation_implicit(x,mQ,1,nf,A,B,C,D,a,b,0,1);
+    Cerr[11] = C2m_g3_approximation_implicit(x,mQ,1,nf,A,B,C,D,a,b,0,2);
+    Cerr[12] = C2m_g3_approximation_implicit(x,mQ,1,nf,Amax,Bmax,Cmax,Dmax,a, b,1,1);
+    Cerr[13] = C2m_g3_approximation_implicit(x,mQ,1,nf,Amin,Bmin, Cmin,Dmin,a,b,2,2);
 
-    for(i=0;i<14;i++) {
-        if(Cerr[i]>max) max=Cerr[i];
+    for(i=0 ;i < 14; i++) {
+        if(Cerr[i]>max) max = Cerr[i];
     }
 
-    for(i=0;i<14;i++) {
-        if(Cerr[i]<min) min=Cerr[i];
+    for(i=0; i < 14; i++) {
+        if(Cerr[i]<min) min = Cerr[i];
     }
 
     double Lmu = - log(mMu) ;
@@ -472,7 +472,7 @@ double C2m_g3_approximation_BAND(double x, double mQ, double mMu, int nf, double
     if(v==2) return min + C_mu_dep;
 
     else {
-        cout<<"Choose either v=0 or v=1 or v=2!!\nExiting!!\n"<<endl;
+        cout<<"C2m_g3_approximation_BAND: Choose either v=0 or v=1 or v=2!!\nExiting!!\n"<<endl;
         exit(-1);
     }
 
@@ -580,10 +580,10 @@ double CLm_ps3_approximation(double x, double mQ, double mMu, int nf) {
     double h = A + (B - A) / (1. + exp(a * (log(xi) - b)));
     double k = C + (D - C) / (1. + exp(a * (log(xi) - b)));
 
-    double damp_thr=1/(1+pow(eta/h,k));
-    double damp_asy=1-damp_thr;
+    double damp_thr = 1. /(1. + pow(eta / h, k));
+    double damp_asy = 1. - damp_thr;
 
-    double C30 = CLm_ps3_asymptotic(x,mQ,1,nf)*damp_asy ;
+    double C30 = CLm_ps3_asymptotic(x,mQ,1,nf) * damp_asy ;
 
     if(mMu == 1.) return C30 ;
 
@@ -608,37 +608,33 @@ double CLm_ps3_approximation(double x, double mQ, double mMu, int nf) {
 
 double C2m_g2_approximationA_klmv(double x, double mQ, double mMu) {
 
-    double x_max=1/(1+4*mQ);
+    double x_max = 1. / (1. + 4 * mQ) ;
 
     if(x>=x_max || x<0) return 0;
 
-    double beta=sqrt(1-4*mQ*x/(1-x));
+    double beta = sqrt(1. - 4 * mQ * x / (1. - x));
 
-    double eta=0.25/mQ*(1-x)/x - 1;
+    double eta = 0.25 / mQ * (1. - x) / x - 1.;
 
-    double xi=1./mQ;
+    double xi = 1. / mQ;
 
-    double f=1./(1+exp(2*(xi-4)));
+    double f = 1. / (1. + exp(2. * (xi - 4.)));
 
-    double gamma=1.0, C=42.5;
+    double gamma = 1.0, C = 42.5;
 
-    double eta_gamma=pow(eta,gamma);
+    double eta_gamma = pow(eta, gamma);
 
-    double beta3=beta*beta*beta;
-
-    double c_const= c0(xi) + 36*CA*log(2)*log(2) - 60*CA*log(2) + log(1)*(8*CA*log(2) - c0_bar(xi));
-
-    c_const *= C2m_g1(x,mQ)/4/M_PI;
+    double beta3 = beta * beta * beta;
 
     double C_const = (
-        C2m_g2_threshold(x,mQ,1) - c_const
-        +(1-f)*beta*C2m_g2_highscale(x,mQ,1)
-        +f*beta3*C2m_g2_highenergy(x,mQ,1)*eta_gamma/(C+eta_gamma)
+        C2m_g2_threshold(x,mQ,1) - C2m_g2_threshold_const(x, mQ, 1.)
+        + (1. - f) * beta * C2m_g2_highscale(x,mQ,1)
+        + f * beta3 * C2m_g2_highenergy(x,mQ,1) * eta_gamma / (C + eta_gamma)
     ) ;
 
     double C_log = C2m_g21(x, mQ) ;
 
-    return C_const + C_log * log(1/mMu);
+    return C_const + C_log * log(1./mMu);
 
 }
 
@@ -652,33 +648,33 @@ double C2m_g2_approximationA_klmv(double x, double mQ, double mMu) {
 
 double C2m_g2_approximationB_klmv(double x, double mQ, double mMu) {
 
-    double x_max=1/(1+4*mQ);
+    double x_max = 1. / (1. + 4. * mQ);
 
     if(x>=x_max || x<0) return 0;
 
-    double beta=sqrt(1-4*mQ*x/(1-x));
+    double beta = sqrt(1. - 4. * mQ * x / (1. - x));
 
-    double eta=0.25/mQ*(1-x)/x - 1;
+    double eta = 0.25 / mQ * (1. - x) / x - 1.;
 
-    double xi=1./mQ;
+    double xi = 1. / mQ;
 
-    double f=1./(1+exp(2*(xi-4)));
+    double f = 1. / (1. + exp(2. * (xi - 4.)));
 
-    double delta=0.8, D=19.4;
+    double delta = 0.8, D = 19.4;
 
-    double eta_delta=pow(eta,delta);
+    double eta_delta = pow(eta, delta);
 
-    double beta3=beta*beta*beta;
+    double beta3 = beta * beta * beta;
 
     double C_const = (
         C2m_g2_threshold(x,mQ,1)
-        +(1-f)*beta3*C2m_g2_highscale(x,mQ,1)
-        +f*beta3*C2m_g2_highenergy(x,mQ,1)*eta_delta/(D+eta_delta)
+        + (1. - f) * beta3 * C2m_g2_highscale(x,mQ,1)
+        + f * beta3 * C2m_g2_highenergy(x,mQ,1) * eta_delta / (D + eta_delta)
     ) ;
 
     double C_log = C2m_g21(x, mQ) ;
 
-    return C_const + C_log * log(1/mMu);
+    return C_const + C_log * log(1./mMu);
 
 }
 
@@ -692,32 +688,32 @@ double C2m_g2_approximationB_klmv(double x, double mQ, double mMu) {
 
 double C2m_ps2_approximationA_klmv(double x, double mQ, double mMu) {
 
-    double x_max=1/(1+4*mQ);
+    double x_max = 1. / (1. + 4 * mQ);
 
     if(x>=x_max || x<0) return 0;
 
-    double beta=sqrt(1-4*mQ*x/(1-x));
+    double beta = sqrt(1. - 4. * mQ * x / (1. - x));
 
-    double eta=0.25/mQ*(1-x)/x - 1;
+    double eta = 0.25 / mQ * (1. - x) / x - 1.;
 
-    double xi=1./mQ;
+    double xi = 1. / mQ;
 
-    double f=1./(1+exp(2*(xi-4)));
+    double f = 1. / (1. + exp(2. * (xi - 4.)));
 
-    double gamma=1.0, C=42.5;
+    double gamma = 1.0, C = 42.5;
 
-    double eta_gamma=pow(eta,gamma);
+    double eta_gamma = pow(eta, gamma);
 
-    double beta3=beta*beta*beta;
+    double beta3 = beta * beta * beta;
 
     double C_const = (
-        (1-f)*beta*C2m_ps2_highscale(x,mQ,1)
-        +f*beta3*C2m_ps2_highenergy(x,mQ,1)*eta_gamma/(C+eta_gamma)
+        (1. - f) * beta * C2m_ps2_highscale(x,mQ,1)
+        + f * beta3 * C2m_ps2_highenergy(x,mQ,1) * eta_gamma / (C + eta_gamma)
     );
 
     double C_log = C2m_g21(x, mQ) ;
 
-    return C_const + C_log * log(1/mMu);
+    return C_const + C_log * log(1./mMu);
 
 }
 
@@ -731,32 +727,32 @@ double C2m_ps2_approximationA_klmv(double x, double mQ, double mMu) {
 
 double C2m_ps2_approximationB_klmv(double x, double mQ, double mMu) {
 
-    double x_max=1/(1+4*mQ);
+    double x_max = 1. / (1. + 4 * mQ);
 
     if(x>=x_max || x<0) return 0;
 
-    double beta=sqrt(1-4*mQ*x/(1-x));
+    double beta = sqrt(1. - 4 * mQ * x / (1. - x));
 
-    double eta=0.25/mQ*(1-x)/x - 1;
+    double eta = 0.25 / mQ * (1. - x) / x - 1.;
 
-    double xi=1./mQ;
+    double xi = 1. / mQ;
 
-    double f=1./(1+exp(2*(xi-4)));
+    double f = 1. / (1. + exp(2. * (xi - 4.)));
 
-    double delta=0.8, D=19.4;
+    double delta = 0.8, D = 19.4;
 
-    double eta_delta=pow(eta,delta);
+    double eta_delta = pow(eta, delta);
 
-    double beta3=beta*beta*beta;
+    double beta3 = beta * beta * beta;
 
     double C_const = (
-        (1-f)*beta3*C2m_ps2_highscale(x,mQ,1)
-        +f*beta3*C2m_ps2_highenergy(x,mQ,1)*eta_delta/(D+eta_delta)
+        (1. - f) * beta3 * C2m_ps2_highscale(x,mQ,1)
+        + f * beta3 * C2m_ps2_highenergy(x,mQ,1) * eta_delta / (D + eta_delta)
     );
 
     double C_log = C2m_g21(x, mQ) ;
 
-    return C_const + C_log * log(1/mMu);
+    return C_const + C_log * log(1./mMu);
 
 }
 
@@ -769,38 +765,37 @@ double C2m_ps2_approximationB_klmv(double x, double mQ, double mMu) {
 //  This equation uses the approximate form of aQg30 given in Eq. (3.49) of [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
-double C2m_g3_approximationA_klmv(double x, double mQ, double mMu, int nf) {
+double C2m_g3_approximationA_klmv(double x, double mQ, double mMu, int nf, int method_flag, int calls) {
 
-    double x_max=1/(1+4*mQ);
+    double x_max = 1. / (1. + 4 * mQ);
 
     if(x>=x_max || x<0) return 0;
-    double pi2=M_PI*M_PI;
 
-    double beta=sqrt(1-4*mQ*x/(1-x));
+    double beta = sqrt(1. - 4 * mQ * x / (1. - x));
 
-    double eta=0.25/mQ*(1-x)/x - 1;
+    double eta = 0.25 / mQ * (1. - x) / x - 1. ;
 
-    double xi=1./mQ;
+    double xi = 1. / mQ;
 
-    double f=1./(1+exp(2*(xi-4)));
+    double f = 1. / (1. + exp(2. * (xi - 4)));
 
-    double gamma=1.0, C=20.0;
+    double gamma = 1.0, C = 20.0;
 
-    double eta_gamma=pow(eta,gamma);
+    double eta_gamma = pow(eta, gamma);
 
-    double beta3=beta*beta*beta;
+    double beta3 = beta * beta * beta;
 
-    double C2m_g3_highenergyA=(0.007*pow(log(1./mQ)/log(5), 4) - 0.28)*4/mQ/x;
-
-    double c_const_sqrt=c0(xi) + 36*CA*log(2)*log(2) - 60*CA*log(2) + log(1)*(8*CA*log(2) - c0_bar(xi));
-
-    double c_const= c_const_sqrt*c_const_sqrt;
-
-    c_const *= C2m_g1(x,mQ)/pi2/16.;
+    double C2m_g3_highenergyA = (
+        0.007 * pow(log(1./mQ) / log(5), 4) - 0.28
+    ) * 4. / mQ / x;
 
     double C30 = (
-        (C2m_g3_threshold(x,mQ,1,nf)-c_const) + (1. - f)*beta*C2m_g3_highscale(x,mQ,1,nf,1)
-        + f*beta3*(-log(eta)/log(x)*C2m_g3_highenergyLL(x,mQ,1) + C2m_g3_highenergyA*eta_gamma/(C+eta_gamma))
+        (C2m_g3_threshold(x,mQ,1,nf) - C2m_g3_threshold_const(x, mQ, 1.))
+        + (1. - f) * beta * C2m_g3_highscale(x,mQ,1,nf,1)
+        + f * beta3 * (
+            - log(eta) / log(x) * C2m_g3_highenergyLL(x,mQ,1)
+            + C2m_g3_highenergyA * eta_gamma / (C + eta_gamma)
+        )
     );
 
     if(mMu == 1.) return C30 ;
@@ -808,7 +803,7 @@ double C2m_g3_approximationA_klmv(double x, double mQ, double mMu, int nf) {
     double Lmu = - log(mMu) ;
     double Lmu2 = Lmu * Lmu ;
 
-    return C30 + C2m_g31(x, mQ, nf) * Lmu + C2m_g32(x, mQ, nf, 0, 50000) * Lmu2 ;
+    return C30 + C2m_g31(x, mQ, nf) * Lmu + C2m_g32(x, mQ, nf, method_flag, calls) * Lmu2 ;
 
 }
 
@@ -821,39 +816,37 @@ double C2m_g3_approximationA_klmv(double x, double mQ, double mMu, int nf) {
 //  This equation uses the approximate form of aQg30 given in Eq. (16) of Ref. [arXiv:1701.05838].
 //------------------------------------------------------------------------------------------//
 
-double C2m_g3_approximationB_klmv(double x, double mQ, double mMu, int nf) {
+double C2m_g3_approximationB_klmv(double x, double mQ, double mMu, int nf, int method_flag, int calls) {
 
-    double x_max=1/(1+4*mQ);
+    double x_max = 1. / (1. + 4 * mQ);
 
     if(x>=x_max || x<0) return 0;
 
-    double pi2=M_PI*M_PI;
+    double beta = sqrt(1. - 4 * mQ * x / (1. - x));
 
-    double beta=sqrt(1-4*mQ*x/(1-x));
+    double eta = 0.25 / mQ * (1. - x) / x - 1.;
 
-    double eta=0.25/mQ*(1-x)/x - 1;
+    double xi = 1./mQ;
 
-    double xi=1./mQ;
+    double f = 1. / (1. + exp(2. * (xi - 4)));
 
-    double f=1./(1+exp(2*(xi-4)));
+    double delta = 0.8, D = 10.7;
 
-    double delta=0.8, D=10.7;
+    double eta_delta = pow(eta, delta);
 
-    double eta_delta=pow(eta,delta);
+    double beta3 = beta * beta * beta;
 
-    double beta3=beta*beta*beta;
-
-    double c_const_sqrt=c0(xi) + 36*CA*log(2)*log(2) - 60*CA*log(2) + log(1)*(8*CA*log(2) - c0_bar(xi));
-
-    double c_const= c_const_sqrt*c_const_sqrt;
-
-    c_const *= C2m_g1(x,mQ)/pi2/16.;
-
-    double C2m_g3_highenergyB=(0.055*pow(log(1./mQ)/log(5),2) - 0.423)*4/mQ/x;
+    double C2m_g3_highenergyB = (
+        0.055 * pow(log(1./mQ) / log(5), 2) - 0.423
+    ) * 4. / mQ / x;
 
     double C30 = (
-        (C2m_g3_threshold(x,mQ,1,nf)-c_const)  +f*2.*c_const  +(1-f)*beta3*C2m_g3_highscale(x,mQ,1,nf,2)
-        +f*beta3*(-log(eta)/log(x)*C2m_g3_highenergyLL(x,mQ,1) + C2m_g3_highenergyB*eta_delta/(D+eta_delta))
+        (C2m_g3_threshold(x,mQ,1,nf) - C2m_g3_threshold_const(x, mQ, 1.))
+        + f * 2. * C2m_g3_threshold_const(x, mQ, 1.)  + (1. - f) * beta3 * C2m_g3_highscale(x,mQ,1,nf,2)
+        + f * beta3 * (
+            - log(eta)/log(x) * C2m_g3_highenergyLL(x,mQ,1)
+            + C2m_g3_highenergyB * eta_delta / (D + eta_delta)
+        )
     );
 
     if(mMu == 1.) return C30 ;
@@ -861,7 +854,7 @@ double C2m_g3_approximationB_klmv(double x, double mQ, double mMu, int nf) {
     double Lmu = - log(mMu) ;
     double Lmu2 = Lmu * Lmu ;
 
-    return C30 + C2m_g31(x, mQ, nf) * Lmu + C2m_g32(x, mQ, nf, 0, 50000) * Lmu2 ;
+    return C30 + C2m_g31(x, mQ, nf) * Lmu + C2m_g32(x, mQ, nf, method_flag, calls) * Lmu2 ;
 
 
 }
@@ -876,39 +869,38 @@ double C2m_g3_approximationB_klmv(double x, double mQ, double mMu, int nf) {
 //  of the one given in Eq. (16) of Ref. [arXiv:1701.05838].
 //------------------------------------------------------------------------------------------//
 
-double C2m_g3_approximationB_klmv_paper(double x, double mQ, double mMu, int nf) {
+double C2m_g3_approximationB_klmv_paper(double x, double mQ, double mMu, int nf, int method_flag, int calls) {
 
-    double x_max=1/(1+4*mQ);
+    double x_max = 1. / (1. + 4 * mQ);
 
     if(x>=x_max || x<0) return 0;
 
-    double pi2=M_PI*M_PI;
+    double beta = sqrt(1. - 4 * mQ * x / (1. - x));
 
-    double beta=sqrt(1-4*mQ*x/(1-x));
+    double eta = 0.25 / mQ * (1. - x) / x - 1;
 
-    double eta=0.25/mQ*(1-x)/x - 1;
+    double xi = 1. / mQ;
 
-    double xi=1./mQ;
+    double f = 1. / (1. + exp(2. * (xi - 4.)));
 
-    double f=1./(1+exp(2*(xi-4)));
+    double delta = 0.8, D = 10.7;
 
-    double delta=0.8, D=10.7;
+    double eta_delta = pow(eta, delta);
 
-    double eta_delta=pow(eta,delta);
+    double beta3 = beta * beta * beta;
 
-    double beta3=beta*beta*beta;
-
-    double c_const_sqrt=c0(xi) + 36*CA*log(2)*log(2) - 60*CA*log(2) + log(1)*(8*CA*log(2) - c0_bar(xi));
-
-    double c_const= c_const_sqrt*c_const_sqrt;
-
-    c_const *= C2m_g1(x,mQ)/pi2/16.;
-
-    double C2m_g3_highenergyB=(0.055*pow(log(1./mQ)/log(5),2) - 0.423)*4/mQ/x;
+    double C2m_g3_highenergyB = (
+        0.055 * pow(log(1./mQ) / log(5), 2) - 0.423
+    ) * 4. / mQ / x;
 
     double C30 = (
-        (C2m_g3_threshold(x,mQ,1,nf)-c_const)  +f*2.*c_const  +(1-f)*beta3*C2m_g3_highscale(x,mQ,1,nf,4)
-        +f*beta3*(-log(eta)/log(x)*C2m_g3_highenergyLL(x,mQ,1) + C2m_g3_highenergyB*eta_delta/(D+eta_delta))
+        (C2m_g3_threshold(x,mQ,1.,nf) - C2m_g3_threshold_const(x, mQ, 1.))
+        + f * 2. * C2m_g3_threshold_const(x, mQ, 1.)
+        + (1. - f) * beta3 * C2m_g3_highscale(x,mQ,1,nf,4)
+        + f * beta3 * (
+            - log(eta) / log(x) * C2m_g3_highenergyLL(x,mQ,1)
+            + C2m_g3_highenergyB * eta_delta / (D + eta_delta)
+        )
     );
 
     if(mMu == 1.) return C30 ;
@@ -916,7 +908,7 @@ double C2m_g3_approximationB_klmv_paper(double x, double mQ, double mMu, int nf)
     double Lmu = - log(mMu) ;
     double Lmu2 = Lmu * Lmu ;
 
-    return C30 + C2m_g31(x, mQ, nf) * Lmu + C2m_g32(x, mQ, nf, 0, 50000) * Lmu2 ;
+    return C30 + C2m_g31(x, mQ, nf) * Lmu + C2m_g32(x, mQ, nf, method_flag, calls) * Lmu2 ;
 
 
 }
@@ -932,39 +924,38 @@ double C2m_g3_approximationB_klmv_paper(double x, double mQ, double mMu, int nf)
 //  instead of Eq. (4.20)
 //------------------------------------------------------------------------------------------//
 
-double C2m_g3_approximationBlowxi_klmv(double x, double mQ, double mMu, int nf) {
+double C2m_g3_approximationBlowxi_klmv(double x, double mQ, double mMu, int nf, int method_flag, int calls) {
 
-    double x_max=1/(1+4*mQ);
+    double x_max = 1. / (1. + 4 * mQ);
 
     if(x>=x_max || x<0) return 0;
 
-    double pi2=M_PI*M_PI;
+    double beta = sqrt(1. - 4 * mQ * x / (1. - x));
 
-    double beta=sqrt(1-4*mQ*x/(1-x));
+    double eta = 0.25 / mQ * (1. - x) / x - 1.;
 
-    double eta=0.25/mQ*(1-x)/x - 1;
+    double xi = 1./mQ;
 
-    double xi=1./mQ;
+    double f = 1. / (1. + exp(2. * (xi - 4.)));
 
-    double f=1./(1+exp(2*(xi-4)));
+    double delta = 0.8, D = 10.7;
 
-    double delta=0.8, D=10.7;
+    double eta_delta = pow(eta, delta);
 
-    double eta_delta=pow(eta,delta);
+    double beta3 = beta * beta * beta;
 
-    double beta3=beta*beta*beta;
-
-    double c_const_sqrt=c0(xi) + 36*CA*log(2)*log(2) - 60*CA*log(2) + log(1)*(8*CA*log(2) - c0_bar(xi));
-
-    double c_const= c_const_sqrt*c_const_sqrt;
-
-    c_const *= C2m_g1(x,mQ)/pi2/16.;
-
-    double C2m_g3_highenergyB=CA/CF*(0.0245*pow(log(1./mQ)/log(5),2) - 0.17)*4/mQ/x;
+    double C2m_g3_highenergyB= CA / CF * (
+        0.0245 * pow(log(1./mQ) / log(5), 2) - 0.17
+    ) * 4. / mQ / x;
 
     double C30 = (
-        (C2m_g3_threshold(x,mQ,1,nf)-c_const)  +f*2.*c_const  +(1-f)*beta3*C2m_g3_highscale(x,mQ,1,nf,4)
-        +f*beta3*(-log(eta)/log(x)*C2m_g3_highenergyLL(x,mQ,1) + C2m_g3_highenergyB*eta_delta/(D+eta_delta))
+        (C2m_g3_threshold(x,mQ,1,nf) - C2m_g3_threshold_const(x, mQ, 1.))
+        + f * 2. * C2m_g3_threshold_const(x, mQ, 1.)
+        + (1. - f) * beta3 * C2m_g3_highscale(x,mQ,1,nf,4)
+        + f * beta3 * (
+            - log(eta) / log(x) * C2m_g3_highenergyLL(x,mQ,1)
+            + C2m_g3_highenergyB * eta_delta / (D + eta_delta)
+        )
     );
 
     if(mMu == 1.) return C30 ;
@@ -972,7 +963,7 @@ double C2m_g3_approximationBlowxi_klmv(double x, double mQ, double mMu, int nf) 
     double Lmu = - log(mMu) ;
     double Lmu2 = Lmu * Lmu ;
 
-    return C30 + C2m_g31(x, mQ, nf) * Lmu + C2m_g32(x, mQ, nf, 1, 50000) * Lmu2 ;
+    return C30 + C2m_g31(x, mQ, nf) * Lmu + C2m_g32(x, mQ, nf, method_flag, calls) * Lmu2 ;
 
 
 }
@@ -988,29 +979,34 @@ double C2m_g3_approximationBlowxi_klmv(double x, double mQ, double mMu, int nf) 
 
 double C2m_ps3_approximationA_klmv(double x, double mQ, double mMu, int nf) {
 
-    double x_max=1/(1+4*mQ);
+    double x_max = 1. / (1. + 4 * mQ);
 
     if(x>=x_max || x<0) return 0;
 
-    double beta=sqrt(1-4*mQ*x/(1-x));
+    double beta = sqrt(1. - 4. * mQ * x / (1. - x));
 
-    double eta=0.25/mQ*(1-x)/x - 1;
+    double eta = 0.25 / mQ * (1. - x) / x - 1.;
 
-    double xi=1./mQ;
+    double xi = 1. / mQ;
 
-    double f=1./(1+exp(2*(xi-4)));
+    double f = 1. / (1. + exp(2. * (xi - 4)));
 
-    double gamma=1.0, C=20.0;
+    double gamma = 1.0, C = 20.0;
 
-    double eta_gamma=pow(eta,gamma);
+    double eta_gamma = pow(eta, gamma);
 
-    double beta3=beta*beta*beta;
+    double beta3 = beta * beta * beta;
 
-    double C2m_ps30_highenergyNLLA=(0.004*pow(log(1./mQ)/log(5), 4) - 0.125)*4/mQ/x;
+    double C2m_ps30_highenergyNLLA = (
+        0.004 * pow(log(1./mQ) / log(5), 4) - 0.125
+    ) * 4. / mQ / x;
 
     double C30 = (
-        (1. - f)*beta*C2m_ps3_highscale(x,mQ,1,nf)
-        + f*beta3*(-log(eta)/log(x)*C2m_ps3_highenergyLL(x,mQ,1) + C2m_ps30_highenergyNLLA*eta_gamma/(C+eta_gamma))
+        (1. - f) * beta * C2m_ps3_highscale(x,mQ,1,nf)
+        + f * beta3 * (
+            - log(eta) / log(x) * C2m_ps3_highenergyLL(x,mQ,1)
+            + C2m_ps30_highenergyNLLA * eta_gamma / (C + eta_gamma)
+        )
     );
 
     if(mMu == 1.) return C30 ;
@@ -1033,29 +1029,34 @@ double C2m_ps3_approximationA_klmv(double x, double mQ, double mMu, int nf) {
 
 double C2m_ps3_approximationB_klmv(double x, double mQ, double mMu, int nf) {
 
-    double x_max=1/(1+4*mQ);
+    double x_max = 1. / (1. + 4. * mQ);
 
     if(x>=x_max || x<0) return 0;
 
-    double beta=sqrt(1-4*mQ*x/(1-x));
+    double beta = sqrt(1. - 4. * mQ * x / (1. - x));
 
-    double eta=0.25/mQ*(1-x)/x - 1;
+    double eta = 0.25 / mQ * (1. - x) / x - 1.;
 
-    double xi=1./mQ;
+    double xi = 1./mQ;
 
-    double f=1./(1+exp(2*(xi-4)));
+    double f = 1. / (1. + exp(2. * (xi - 4)));
 
-    double delta=0.8, D=10.7;
+    double delta = 0.8, D = 10.7;
 
-    double eta_delta=pow(eta,delta);
+    double eta_delta = pow(eta, delta);
 
-    double beta3=beta*beta*beta;
+    double beta3 = beta * beta * beta;
 
-    double C2m_ps30_highenergyNLLB=(0.0245*pow(log(1./mQ)/log(5),2) - 0.17)*4/mQ/x;
+    double C2m_ps30_highenergyNLLB = (
+        0.0245 * pow(log(1./mQ) / log(5), 2) - 0.17
+    ) * 4. / mQ / x;
 
     double C30 = (
-        (1-f)*beta3*C2m_ps3_highscale(x,mQ,1,nf)
-        +f*beta3*(-log(eta)/log(x)*C2m_ps3_highenergyLL(x,mQ,1) + C2m_ps30_highenergyNLLB*eta_delta/(D+eta_delta))
+        (1. - f) * beta3 * C2m_ps3_highscale(x,mQ,1,nf)
+        + f * beta3 * (
+            - log(eta) / log(x) * C2m_ps3_highenergyLL(x,mQ,1)
+            + C2m_ps30_highenergyNLLB * eta_delta / (D + eta_delta)
+        )
     );
 
     if(mMu == 1.) return C30 ;
@@ -1081,29 +1082,34 @@ double C2m_ps3_approximationB_klmv(double x, double mQ, double mMu, int nf) {
 
 double C2m_ps3_approximationA_klmv_paper(double x, double mQ, double mMu, int nf) {
 
-    double x_max=1/(1+4*mQ);
+    double x_max = 1. / (1. + 4. * mQ);
 
     if(x>=x_max || x<0) return 0;
 
-    double beta=sqrt(1-4*mQ*x/(1-x));
+    double beta = sqrt(1. - 4. * mQ * x / (1. - x));
 
-    double eta=0.25/mQ*(1-x)/x - 1;
+    double eta = 0.25 / mQ * (1. - x) / x - 1.;
 
-    double xi=1./mQ;
+    double xi = 1./mQ;
 
-    double f=1./(1+exp(2*(xi-4)));
+    double f = 1. / (1. + exp(2. * (xi - 4.)));
 
-    double gamma=1.0, C=20.0;
+    double gamma = 1.0, C = 20.0;
 
-    double eta_gamma=pow(eta,gamma);
+    double eta_gamma = pow(eta, gamma);
 
-    double beta3=beta*beta*beta;
+    double beta3 = beta * beta * beta;
 
-    double C2m_ps30_highenergyNLLA=(0.004*pow(log(1./mQ)/log(5), 4) - 0.125)*4/mQ/x;
+    double C2m_ps30_highenergyNLLA = (
+        0.004 * pow(log(1./mQ) / log(5), 4) - 0.125
+    ) * 4. / mQ / x;
 
     double C30 = (
-        (1. - f)*beta*C2m_ps3_highscale_klmv_paper(x,mQ,1,nf,1)
-        + f*beta3*(-log(eta)/log(x)*C2m_ps3_highenergyLL(x,mQ,1) + C2m_ps30_highenergyNLLA*eta_gamma/(C+eta_gamma))
+        (1. - f) * beta * C2m_ps3_highscale_klmv_paper(x,mQ,1,nf,1)
+        + f * beta3 * (
+            - log(eta) / log(x) * C2m_ps3_highenergyLL(x,mQ,1)
+            + C2m_ps30_highenergyNLLA * eta_gamma / (C + eta_gamma)
+        )
     );
 
     if(mMu == 1.) return C30 ;
@@ -1128,29 +1134,34 @@ double C2m_ps3_approximationA_klmv_paper(double x, double mQ, double mMu, int nf
 
 double C2m_ps3_approximationB_klmv_paper(double x, double mQ, double mMu, int nf) {
 
-    double x_max=1/(1+4*mQ);
+    double x_max = 1. / (1. + 4. * mQ);
 
     if(x>=x_max || x<0) return 0;
 
-    double beta=sqrt(1-4*mQ*x/(1-x));
+    double beta = sqrt(1. - 4. * mQ * x / (1. - x));
 
-    double eta=0.25/mQ*(1-x)/x - 1;
+    double eta = 0.25 / mQ * (1. - x) / x - 1.;
 
-    double xi=1./mQ;
+    double xi = 1./mQ;
 
-    double f=1./(1+exp(2*(xi-4)));
+    double f = 1. / (1. + exp(2. * (xi - 4.)));
 
-    double delta=0.8, D=10.7;
+    double delta = 0.8, D = 10.7;
 
-    double eta_delta=pow(eta,delta);
+    double eta_delta = pow(eta, delta);
 
-    double beta3=beta*beta*beta;
+    double beta3 = beta * beta * beta;
 
-    double C2m_ps30_highenergyNLLB=(0.0245*pow(log(1./mQ)/log(5),2) - 0.17)*4/mQ/x;
+    double C2m_ps30_highenergyNLLB = (
+        0.0245 * pow(log(1./mQ) / log(5), 2) - 0.17
+    ) * 4 / mQ / x;
 
     double C30 = (
-        (1.-f)*beta3*C2m_ps3_highscale_klmv_paper(x,mQ,1,nf,2)
-        +f*beta3*(-log(eta)/log(x)*C2m_ps3_highenergyLL(x,mQ,1) + C2m_ps30_highenergyNLLB*eta_delta/(D+eta_delta))
+        (1. - f) * beta3 * C2m_ps3_highscale_klmv_paper(x,mQ,1,nf,2)
+        + f * beta3 * (
+            - log(eta) / log(x) * C2m_ps3_highenergyLL(x,mQ,1)
+            + C2m_ps30_highenergyNLLB * eta_delta / (D + eta_delta)
+        )
     );
 
     if(mMu == 1.) return C30 ;

@@ -28,20 +28,16 @@ double C2m_g1_threshold(double x, double mQ) {
 }
 
 //==========================================================================================//
-//  Threshold limit (x->xmax) of the gluon coefficient function for F2 at O(alpha_s^2).
-//  In order to pass to klmv normalization multiply mQ*M_PI*x and put mu^2=Q^2+4m^2
 //
-//  Eq. (3.16-17) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double C2m_g2_threshold(double x, double mQ, double mMu) {
+double threshold_expansion_g2(double x, double mQ, double mMu) {
 
     double xmax = 1. / (1. + 4 * mQ) ;
 
     if(x>=xmax || x<0) return 0;
 
     double beta = sqrt(1. - 4 * mQ * x / (1. - x));
-    double xi = 1. / mQ;
 
     double logb = log(beta) ;
     double log2b = logb * logb ;
@@ -52,14 +48,41 @@ double C2m_g2_threshold(double x, double mQ, double mMu) {
 
     double C_fracb = (2 * CF - CA) * M_PI * M_PI ;
 
-    double C_const = (
-        c0(xi) + 36 * CA * log(2) * log(2) - 60 * CA * log(2)
-        + log(mMu) * (8 * CA * log(2) - c0_bar(xi))
-    );
+    return (
+        C_log2b * log2b + C_logb * logb + C_fracb / beta
+    ) / (4. * M_PI);
+
+}
+
+//==========================================================================================//
+//
+//------------------------------------------------------------------------------------------//
+
+double threshold_expansion_g2_const(double mQ, double mMu) {
+
+    double xi = 1. / mQ ;
+    double log2 = log(2) ;
+
+    return (
+        c0(xi) + 36 * CA * log2 * log2 - 60 * CA * log2
+        + log(mMu) * (8 * CA * log2 - c0_bar(xi))
+    ) / (4. * M_PI);
+
+}
+
+//==========================================================================================//
+//  Threshold limit (x->xmax) of the gluon coefficient function for F2 at O(alpha_s^2).
+//  In order to pass to klmv normalization multiply mQ*M_PI*x and put mu^2=Q^2+4m^2
+//
+//  Eq. (3.16) of Ref. [arXiv:1205.5727]
+//------------------------------------------------------------------------------------------//
+
+double C2m_g2_threshold(double x, double mQ, double mMu) {
 
     return C2m_g1(x,mQ) * (
-        C_log2b * log2b + C_logb * logb + C_fracb / beta + C_const
-    ) / 4. / M_PI ;
+        threshold_expansion_g2(x, mQ, mMu)
+        + threshold_expansion_g2_const(mQ, mMu)
+    ) ;
 
 }
 
@@ -67,45 +90,49 @@ double C2m_g2_threshold(double x, double mQ, double mMu) {
 //  Threshold limit (x->xmax) of the gluon coefficient function for FL at O(alpha_s^2).
 //  In order to pass to klmv normalization multiply mQ*M_PI*x and put mu^2=Q^2+4m^2
 //
-//  Eq. (3.16-17) of Ref. [arXiv:1205.5727] with C20 -> CL0
+//  Eq. (3.16) of Ref. [arXiv:1205.5727] with C20 -> CL0
 //------------------------------------------------------------------------------------------//
 
 double CLm_g2_threshold(double x, double mQ, double mMu) {
 
-    double xmax = 1. / (1. + 4 * mQ) ;
-
-    if(x>=xmax || x<0) return 0;
-
-    double beta = sqrt(1. - 4 * mQ * x / (1. - x));
-    double xi = 1. / mQ ;
-
-    double logb = log(beta);
-    double log2b = logb * logb ;
-
-    double C_log2b = 16 * CA ;
-
-    double C_logb = 48 * CA * log(2) - 40 * CA + 8 * CA * log(mMu);
-
-    double C_fracb = (2 * CF - CA) * M_PI * M_PI ;
-
-    double C_const = (
-        c0(xi) + 36 * CA * log(2) * log(2) - 60 * CA * log(2)
-        + log(mMu) * (8 * CA * log(2) - c0_bar(xi))
-    ) ;
-
     return CLm_g1(x,mQ) * (
-        C_log2b * log2b + C_logb * logb + C_fracb / beta + C_const
-    ) / 4. / M_PI ;
+        threshold_expansion_g2(x, mQ, mMu)
+        + threshold_expansion_g2_const(mQ, mMu)
+    ) ;
 
 }
 
 //==========================================================================================//
-//  Threshold limit (x->xmax) of the gluon coefficient function for F2 at O(alpha_s^3).
+//  beta independent term of the threshold limit (x->xmax) of the gluon coefficient function
+//  for F2 at O(alpha_s^2).
 //
-//  Eq. (3.18-19) of Ref. [arXiv:1205.5727]
+//  Eq. (3.17) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double C2m_g3_threshold(double x, double mQ, double mMu, int nf) {
+double C2m_g2_threshold_const(double x, double mQ, double mMu) {
+
+    return C2m_g1(x, mQ) * threshold_expansion_g2_const(mQ, mMu) ;
+
+}
+
+//==========================================================================================//
+//  beta independent term of the threshold limit (x->xmax) of the gluon coefficient function
+//  for FL at O(alpha_s^2).
+//
+//  Eq. (3.17) of Ref. [arXiv:1205.5727] with C20 -> CL0
+//------------------------------------------------------------------------------------------//
+
+double CLm_g2_threshold_const(double x, double mQ, double mMu) {
+
+    return CLm_g1(x,mQ) * threshold_expansion_g2_const(mQ, mMu) ;
+
+}
+
+//==========================================================================================//
+//
+//------------------------------------------------------------------------------------------//
+
+double threshold_expansion_g3(double x, double mQ, double mMu, int nf) {
 
     double x_max = 1. / (1. + 4 * mQ);
 
@@ -122,6 +149,8 @@ double C2m_g3_threshold(double x, double mQ, double mMu, int nf) {
     double l4 = l3 * l;
 
     double log2 = log(2);
+    double log2_2 = log2 * log2 ;
+    double log2_3 = log2_2 * log2 ;
 
     double z3 = zeta(3);
     double pi2 = M_PI * M_PI ;
@@ -137,7 +166,7 @@ double C2m_g3_threshold(double x, double mQ, double mMu, int nf) {
 
     double c_log2 = (
         (
-            1728. * log2 * log2 - 3232. * log2
+            1728. * log2_2 - 3232. * log2
             - 208./3. * pi2 + 15520./9.
         ) * CA * CA
         + (64. * log2 - 640. / 9.) * CA * nf
@@ -150,35 +179,83 @@ double C2m_g3_threshold(double x, double mQ, double mMu, int nf) {
     ) ;
 
     double c_log_const = (
-        (1728.*log2*log2*log2 - 4848*log2*log2 + 15520./3.*log2 - 208*pi2*log2 + 936*z3 + 608./3.*pi2 - 88856./27.)*CA*CA
-        + (96*log2*log2 - 640./3.*log2 - 16./3.*pi2 + 4592./27.)*CA*nf - 32*CF*(CF - CA/2)*pi2 + (48*log2 - 40)*CA*c0(xi)
+        (
+            1728. * log2_3 - 4848 * log2_2 + 15520./3. * log2
+            - 208 * pi2 * log2 + 936 * z3 + 608./3. * pi2 - 88856./27.
+        ) * CA * CA
+        + (96. * log2_2 - 640./3. * log2 - 16./3. * pi2 + 4592./27.) * CA * nf
+        - 32. * CF * (CF - CA / 2) * pi2 + (48. * log2 - 40.) * CA * c0(xi)
     );
 
-    double c_log_fracbeta = ((-92./3. + 32*log2)*CA + 8./3.*nf)*(CF - CA/2)*pi2 ;
+    double c_log_fracbeta = (
+        (- 92./3. + 32. * log2) * CA + 8./3. * nf
+    ) * (CF - CA / 2) * pi2 ;
 
-    double c_log_Lm = (
-        - ((-672*log2*log2 + 976*log2 + 104./3.*pi2 - 4160./9.)*CA*CA
-        + (-32*log2 + 320./9.)*CA*nf + (48*log2 - 40)*CA*c0_bar(xi) - 8*CA*c0(xi) - 16*CA*(CF - CA/2)*pi2/beta)
+    double c_log_Lm = - (
+        (- 672. * log2_2 + 976 * log2 + 104./3. * pi2 - 4160./9.) * CA * CA
+        + (- 32. * log2 + 320./9.) * CA * nf + (48. * log2 - 40.) * CA * c0_bar(xi)
+        - 8. * CA * c0(xi) - 16. * CA * (CF - CA/2) * pi2 / beta
     ) ;
 
-    double c_log_Lm2 = ((64*log2 - 44./3.)*CA*CA + 8./3.*CA*nf - 8*CA*c0_bar(xi));
+    double c_log_Lm2 = (
+        (64. * log2 - 44./3.) * CA * CA
+        + 8./3. * CA * nf - 8. * CA * c0_bar(xi)
+    );
 
-    double c_log = c_log_const + c_log_fracbeta/beta + c_log_Lm*Lm + c_log_Lm2*Lm2;
+    double c_log = (
+        c_log_const
+        + c_log_fracbeta / beta
+        + c_log_Lm * Lm
+        + c_log_Lm2 * Lm2
+    );
 
     double c_fracbeta = (
-        ((8*log2*log2 - 68./3.*log2 + 8./3.*pi2 - 658./9.)*CA
-        + (8./3.*log2 - 20./9.)*nf + 2*c0(xi) + (26./3.*CA + 4./3.*nf - 2*c0_bar(xi))*Lm)*(CF - CA/2)*pi2
-    ) ;
+        (8. * log2_2 - 68./3. * log2 + 8./3. * pi2 - 658./9.) * CA
+        + (8./3. * log2 - 20./9.) * nf + 2 * c0(xi)
+        + (26./3. * CA + 4./3. * nf - 2 * c0_bar(xi)) * Lm
+    ) * (CF - CA/2) * pi2 ;
 
-    double c_fracbeta2= 4./3.*(CF - CA/2)*(CF - CA/2)*pi4;
+    double c_fracbeta2 = 4./3.* (CF - CA/2) * (CF - CA/2) * pi4;
 
-    double c_const_sqrt=c0(xi) + 36*CA*log2*log2 - 60*CA*log2 + Lm*(8*CA*log2 - c0_bar(xi));
-
-    double c_const= c_const_sqrt*c_const_sqrt;
-
-    return C2m_g1(x,mQ) / pi2 / 16. * (
+    return (
         c_log4 * l4 + c_log3 * l3 + c_log2 * l2 + c_log * l
-        + c_fracbeta / beta + c_fracbeta2 / beta / beta + c_const
+        + c_fracbeta / beta + c_fracbeta2 / beta / beta
+    ) / (pi2 * 16.) ;
+
+}
+
+//==========================================================================================//
+//
+//------------------------------------------------------------------------------------------//
+
+double threshold_expansion_g3_const(double mQ, double mMu) {
+
+    double xi = 1. / mQ ;
+    double log2 = log(2) ;
+    double Lm = log(mMu);
+
+    double pi2 = M_PI * M_PI ;
+
+    double c_const_sqrt = (
+        c0(xi) + 36. * CA * log2 * log2 - 60. * CA * log2
+        + Lm * (8. * CA * log2 - c0_bar(xi))
+    );
+
+    return c_const_sqrt * c_const_sqrt / (16. * pi2) ;
+
+}
+
+//==========================================================================================//
+//  Threshold limit (x->xmax) of the gluon coefficient function for F2 at O(alpha_s^3).
+//
+//  Eq. (3.18) of Ref. [arXiv:1205.5727]
+//------------------------------------------------------------------------------------------//
+
+double C2m_g3_threshold(double x, double mQ, double mMu, int nf) {
+
+    return C2m_g1(x,mQ) * (
+        threshold_expansion_g3(x, mQ, mMu, nf)
+        + threshold_expansion_g3_const(mQ, mMu)
     );
 
 }
@@ -186,70 +263,41 @@ double C2m_g3_threshold(double x, double mQ, double mMu, int nf) {
 //==========================================================================================//
 //  Threshold limit (x->xmax) of the gluon coefficient function for FL at O(alpha_s^3).
 //
-//  Eq. (3.18-19) of Ref. [arXiv:1205.5727] with C20 -> CL0
+//  Eq. (3.18) of Ref. [arXiv:1205.5727] with C20 -> CL0
 //------------------------------------------------------------------------------------------//
 
 double CLm_g3_threshold(double x, double mQ, double mMu, int nf) {
 
-    double x_max=1./(1+4*mQ);
+    return CLm_g1(x,mQ) * (
+        threshold_expansion_g3(x, mQ, mMu, nf)
+        + threshold_expansion_g3_const(mQ, mMu)
+    );
 
-    if(x>=x_max || x<0) return 0;
+}
 
-    double xi=1/mQ;
-    double beta=sqrt(1-4*mQ*x/(1-x));
+//==========================================================================================//
+//  Approximation for the beta independent term of the threshold limit (x->xmax) of the
+//  gluon coefficient function for F2 at O(alpha_s^3).
+//
+//  Eq. (3.19) of Ref. [arXiv:1205.5727]
+//------------------------------------------------------------------------------------------//
 
-    double Lm=log(mMu);
-    double Lm2=Lm*Lm;
-    double l=log(beta);
-    double l2=l*l;
-    double l3=l2*l;
-    double l4=l3*l;
+double C2m_g3_threshold_const(double x, double mQ, double mMu) {
 
-    double log2=log(2);
+    return C2m_g1(x,mQ) * threshold_expansion_g3_const(mQ, mMu);
 
-    double z3=zeta(3);
-    double pi2=M_PI*M_PI;
-    double pi4=pi2*pi2;
+}
 
-    double c_log4= 128.*CA*CA;
+//==========================================================================================//
+//  Approximation for the beta independent term of the threshold limit (x->xmax) of the
+//  gluon coefficient function for FL at O(alpha_s^3).
+//
+//  Eq. (3.19) of Ref. [arXiv:1205.5727] with C20 -> CL0
+//------------------------------------------------------------------------------------------//
 
-    double c_log3=(768.*log2 - 6464./9.)*CA*CA + 128./9.*CA*nf + 128.*CA*CA*Lm;
+double CLm_g3_threshold_const(double x, double mQ, double mMu) {
 
-    double c_log2 = (
-        (1728.*log2*log2 - 3232.*log2 - 208./3.*pi2 + 15520./9.)*CA*CA + (64.*log2 - 640./9.)*CA*nf + 16.*CA*c0(xi)
-        + 32.*CA*(CF - CA/2)*pi2/beta - ((-512*log2 + 1136./3.)*CA*CA - 32./3.*CA*nf + 16*CA*c0_bar(xi))*Lm+ 32*CA*CA*Lm2
-   ) ;
-
-    double c_log_const = (
-        (1728.*log2*log2*log2 - 4848*log2*log2 + 15520./3.*log2 - 208*pi2*log2 + 936*z3 + 608./3.*pi2 - 88856./27.)*CA*CA
-        + (96*log2*log2 - 640./3.*log2 - 16./3.*pi2 + 4592./27.)*CA*nf - 32*CF*(CF - CA/2)*pi2 + (48*log2 - 40)*CA*c0(xi)
-   );
-
-    double c_log_fracbeta=((-92./3. + 32*log2)*CA + 8./3.*nf)*(CF - CA/2)*pi2;
-
-    double c_log_Lm= (
-        - ((-672*log2*log2 + 976*log2 + 104./3.*pi2 - 4160./9.)*CA*CA + (-32*log2 + 320./9.)*CA*nf
-        + (48*log2 - 40)*CA*c0_bar(xi) - 8*CA*c0(xi) - 16*CA*(CF - CA/2)*pi2/beta)
-   );
-
-    double c_log_Lm2 = ((64*log2 - 44./3.)*CA*CA + 8./3.*CA*nf - 8*CA*c0_bar(xi));
-
-    double c_log = c_log_const + c_log_fracbeta/beta + c_log_Lm*Lm + c_log_Lm2*Lm2;
-
-    double c_fracbeta = (
-        (8*log2*log2 - 68./3.*log2 + 8./3.*pi2 - 658./9.)*CA + (8./3.*log2 - 20./9.)*nf + 2*c0(xi) + (26./3.*CA + 4./3.*nf - 2*c0_bar(xi))*Lm
-   )*(CF - CA/2)*pi2;
-
-    double c_fracbeta2= 4./3.*(CF - CA/2)*(CF - CA/2)*pi4;
-
-    double c_const_sqrt=c0(xi) + 36*CA*log2*log2 - 60*CA*log2 + Lm*(8*CA*log2 - c0_bar(xi));
-
-    double c_const= c_const_sqrt*c_const_sqrt;
-
-    return CLm_g1(x,mQ)/pi2/16.*(
-        c_log4*l4 + c_log3*l3 + c_log2*l2 + c_log*l
-        + c_fracbeta/beta + c_fracbeta2/beta/beta + c_const
-   );
+    return CLm_g1(x,mQ) * threshold_expansion_g3_const(mQ, mMu);
 
 }
 

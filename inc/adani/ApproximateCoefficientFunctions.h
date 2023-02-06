@@ -78,10 +78,10 @@ double C2m_ps2_approximationB_klmv(double x, double mQ, double mMu);
 // They are only used as a benchmark against the plots of the paper
 //------------------------------------------------------------------------------------------//
 
-double C2m_g3_approximationA_klmv(double x, double mQ, double mMu, int nf);
-double C2m_g3_approximationB_klmv(double x, double mQ, double mMu, int nf);
-double C2m_g3_approximationB_klmv_paper(double x, double mQ, double mMu, int nf) ;
-double C2m_g3_approximationBlowxi_klmv(double x, double mQ, double mMu, int nf);
+double C2m_g3_approximationA_klmv(double x, double mQ, double mMu, int nf, int method_flag = 1, int calls = 25000);
+double C2m_g3_approximationB_klmv(double x, double mQ, double mMu, int nf, int method_flag = 1, int calls = 25000);
+double C2m_g3_approximationB_klmv_paper(double x, double mQ, double mMu, int nf, int method_flag = 1, int calls = 25000) ;
+double C2m_g3_approximationBlowxi_klmv(double x, double mQ, double mMu, int nf, int method_flag = 1, int calls = 25000);
 
 double C2m_ps3_approximationA_klmv(double x, double mQ, double mMu, int nf);
 double C2m_ps3_approximationB_klmv(double x, double mQ, double mMu, int nf);
