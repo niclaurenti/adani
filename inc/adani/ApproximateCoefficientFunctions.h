@@ -45,13 +45,19 @@ double CLm_ps2_approximation_implicit(double x, double mQ, double mMu, double A,
 //                      Approximate coefficient functions O(alpha_s^3)
 //------------------------------------------------------------------------------------------//
 
-double C2m_g3_approximation(double x, double mQ, double mMu, int nf, int method_flag = 1, int calls = 25000);
-double C2m_g3_approximation_implicit(double x, double mQ, double mMu, int nf, double A, double B, double C, double D, double a, double b, int v1,int v2, int method_flag = 1, int calls = 25000);
-double C2m_g3_approximation_BAND(double x, double mQ, double mMu, int nf, int v, double var = 0.3, double fact = 3., int method_flag = 1, int calls = 25000);
+#define default_calls 25000
+#define default_method 1
+
+double C2m_g3_approximation(double x, double mQ, double mMu, int nf, int method_flag = default_method, int calls = default_calls);
+double C2m_g3_approximation_implicit(
+    double x, double mQ, double mMu, int nf, double A, double B, double C, double D,
+    double a, double b, int v1,int v2, int method_flag = default_method, int calls = default_calls
+);
+double C2m_g3_approximation_BAND(double x, double mQ, double mMu, int nf, int v, double var = 0.3, double fact = 3., int method_flag = default_method, int calls = default_calls);
 
 double C2m_ps3_approximation(double x, double mQ, double mMu, int nf);
 
-double CLm_g3_approximation(double x, double mQ, double mMu, int nf, int method_flag = 1, int calls = 25000);
+double CLm_g3_approximation(double x, double mQ, double mMu, int nf, int method_flag = default_method, int calls = default_calls);
 
 double CLm_ps3_approximation(double x, double mQ, double mMu, int nf);
 
@@ -78,10 +84,10 @@ double C2m_ps2_approximationB_klmv(double x, double mQ, double mMu);
 // They are only used as a benchmark against the plots of the paper
 //------------------------------------------------------------------------------------------//
 
-double C2m_g3_approximationA_klmv(double x, double mQ, double mMu, int nf, int method_flag = 1, int calls = 25000);
-double C2m_g3_approximationB_klmv(double x, double mQ, double mMu, int nf, int method_flag = 1, int calls = 25000);
-double C2m_g3_approximationB_klmv_paper(double x, double mQ, double mMu, int nf, int method_flag = 1, int calls = 25000) ;
-double C2m_g3_approximationBlowxi_klmv(double x, double mQ, double mMu, int nf, int method_flag = 1, int calls = 25000);
+double C2m_g3_approximationA_klmv(double x, double mQ, double mMu, int nf, int method_flag = default_method, int calls = default_calls);
+double C2m_g3_approximationB_klmv(double x, double mQ, double mMu, int nf, int method_flag = default_method, int calls = default_calls);
+double C2m_g3_approximationB_klmv_paper(double x, double mQ, double mMu, int nf, int method_flag = default_method, int calls = default_calls) ;
+double C2m_g3_approximationBlowxi_klmv(double x, double mQ, double mMu, int nf, int method_flag = default_method, int calls = default_calls);
 
 double C2m_ps3_approximationA_klmv(double x, double mQ, double mMu, int nf);
 double C2m_ps3_approximationB_klmv(double x, double mQ, double mMu, int nf);

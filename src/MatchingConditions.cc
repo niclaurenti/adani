@@ -156,8 +156,6 @@ double a_Qg_30(double x, int v) {
 
     double pi3 = M_PI * M_PI * M_PI ;
 
-    double res ;
-
     if(v==0) {
         return 0.5 * (a_Qg_30(x, 1) + a_Qg_30(x, 2));
     }
