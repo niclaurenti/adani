@@ -9,7 +9,7 @@
 #include <cmath>
 #include <iostream>
 
-using namespace std;
+using namespace std ;
 
 //==========================================================================================//
 //  Approximate gluon coefficient function for F2 at O(alpha_s) with implicit parameters.
@@ -31,7 +31,6 @@ double C2m_g1_approximation_implicit(double x, double mQ, double k, double h) {
         C2m_g1_asymptotic(x,mQ) * damp_asy
         + C2m_g1_threshold(x,mQ) * damp_thr
     ) ;
-
 
     return C_const ;
 
