@@ -68,7 +68,7 @@ PYBIND11_MODULE(_core, m) {
 
     // MasslessCoefficientFunctions
 
-    m.def("CL_g3", &CL_g3, py::arg("x"), py::arg("nf"));
+    m.def("CL_g3_massless", &CL_g3_massless, py::arg("x"), py::arg("nf"));
 
     // SplittingFunctions
 

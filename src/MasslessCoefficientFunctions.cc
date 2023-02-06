@@ -9,7 +9,7 @@
 //  Eq. (4.4) of Ref. [hep-ph/0504242v1]
 //------------------------------------------------------------------------------------------//
 
-double C2_g1(double x, int nf) {
+double C2_g1_massless(double x, int nf) {
 
     if (x>1 || x<0) return 0;
 
@@ -26,7 +26,7 @@ double C2_g1(double x, int nf) {
 // Eq. (3) of Ref. [arXiv:hep-ph/0411112v2]
 //------------------------------------------------------------------------------------------//
 
-double CL_g1(double x, int nf) {
+double CL_g1_massless(double x, int nf) {
 
     if (x>1 || x<0) return 0;
 
@@ -41,7 +41,7 @@ double CL_g1(double x, int nf) {
 //  Eq. (4.10) of Ref. [hep-ph/0504242v1]
 //------------------------------------------------------------------------------------------//
 
-double C2_g2(double x, int nf) {
+double C2_g2_massless(double x, int nf) {
 
     if (x>1 || x<0) return 0;
 
@@ -69,7 +69,7 @@ double C2_g2(double x, int nf) {
 //  Eq. (4.9) of Ref. [hep-ph/0504242v1]
 //------------------------------------------------------------------------------------------//
 
-double C2_ps2(double x, int nf) {
+double C2_ps2_massless(double x, int nf) {
 
     if (x>1 || x<0) return 0;
 
@@ -99,7 +99,7 @@ double C2_ps2(double x, int nf) {
 //  Eq. (6) of Ref. [arXiv:hep-ph/0411112v2]
 //------------------------------------------------------------------------------------------//
 
-double CL_g2(double x, int nf) {
+double CL_g2_massless(double x, int nf) {
 
     if (x>1 || x<0) return 0;
 
@@ -129,7 +129,7 @@ double CL_g2(double x, int nf) {
 //  Eq. (5) of Ref. [arXiv:hep-ph/0411112v2]
 //------------------------------------------------------------------------------------------//
 
-double CL_ps2(double x, int nf) {
+double CL_ps2_massless(double x, int nf) {
 
     if (x>1 || x<0) return 0;
 
@@ -159,7 +159,7 @@ double CL_ps2(double x, int nf) {
 //  Eq. (4.13) of Ref. [hep-ph/0504242v1]
 //------------------------------------------------------------------------------------------//
 
-double C2_g3(double x, int nf) {//remember that there is a delta(x1) that has been omitted
+double C2_g3_massless(double x, int nf) {//remember that there is a delta(x1) that has been omitted
 
     if(x<0 || x>1) return 0;
 
@@ -242,7 +242,7 @@ double C2_g3(double x, int nf) {//remember that there is a delta(x1) that has be
 //------------------------------------------------------------------------------------------//
 
 
-double C2_ps3(double x, int nf) {//remember that there is a delta(x1) that has been omitted
+double C2_ps3_massless(double x, int nf) {//remember that there is a delta(x1) that has been omitted
 
     if(x<0 || x>=1) return 0;
 
@@ -301,7 +301,7 @@ double C2_ps3(double x, int nf) {//remember that there is a delta(x1) that has b
 //  Eq. (10) of Ref. [arXiv:hep-ph/0411112v2]
 //------------------------------------------------------------------------------------------//
 
-double CL_g3(double x, int nf) {//remember that there is a delta(x1) that has been omitted
+double CL_g3_massless(double x, int nf) {//remember that there is a delta(x1) that has been omitted
 
     if(x<0 || x>=1) return 0;
 
@@ -379,7 +379,7 @@ double CL_g3(double x, int nf) {//remember that there is a delta(x1) that has be
 //  Eq. (9) of Ref. [arXiv:hep-ph/0411112v2]
 //------------------------------------------------------------------------------------------//
 
-double CL_ps3(double x, int nf) {//remember that there is a delta(x1) that has been omitted
+double CL_ps3_massless(double x, int nf) {//remember that there is a delta(x1) that has been omitted
 
     if(x<0 || x>1) return 0;
 

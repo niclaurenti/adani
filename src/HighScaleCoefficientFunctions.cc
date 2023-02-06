@@ -36,7 +36,7 @@ double CLm_g1_highscale(double x) {
 
     if(x>=1 || x<0) return 0.;
 
-    return TR * 16. * x * (1. - x) / 4. / M_PI ;  //=CL_g1(x,nf)/nf
+    return TR * 16. * x * (1. - x) / 4. / M_PI ;  //=CL_g1_massless(x,nf)/nf
 
 }
 
@@ -864,7 +864,7 @@ double DLm_g3_highscale(double z, double mQ, double mMu, int nf) {
                 )
             )
         )
-    ) / 64. / pi3 + CL_g3(z, nf + 1) / (nf + 1) ;
+    ) / 64. / pi3 + CL_g3_massless(z, nf + 1) / (nf + 1) ;
 
 }
 
@@ -1051,7 +1051,7 @@ double DLm_ps3_highscale(double z, double mQ, double mMu, int nf) {
                 )
             ) * L_Q
         )
-    ) / (64. * pi3) + CL_ps3(z, nf + 1) / (nf + 1) ;
+    ) / (64. * pi3) + CL_ps3_massless(z, nf + 1) / (nf + 1) ;
 
 }
 
@@ -2611,7 +2611,7 @@ double D2m_g3_highscale_incomplete(double x, double mQ, double mMu, int nf) {
         + CF*nf*(1 - 2*x + 2*x2)*(69 - 28*z2)//from erratum
 
         + 8./9*z3 - 16./9*z3*x + 16./9*z3*x2
-    ) / (64. * pi3) + C2_g3(x, nf+1)/(nf + 1);
+    ) / (64. * pi3) + C2_g3_massless(x, nf+1)/(nf + 1);
 
 }
 
@@ -3332,7 +3332,7 @@ double D2m_ps3_highscale(double x, double mQ, double mMu, int nf, int v) {
 
     ) / (64 * pi3)
     + a_Qq_PS_30(x, Hr1, Hr2, Hr3, Hr4, Hr5, v)
-    + 1. / (1 + nf) * C2_ps3(x, 1 + nf) ;
+    + 1. / (1 + nf) * C2_ps3_massless(x, 1 + nf) ;
 
 }
 
