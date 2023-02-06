@@ -196,59 +196,6 @@ double S12(double x){
 }
 
 //==========================================================================================//
-//  Function needed for the threshold limit.
-//
-//  Eq. (3.10) from Ref. [arXiv:1205.5727]
-//------------------------------------------------------------------------------------------//
-
-double c0(double xi) {
-
-    double y=sqrt(1+4/xi);
-
-    double L1=log(1+xi/2);
-    double L2=log(2+xi/2);
-    double L3=log(sqrt(xi)*(y-1)/2);
-
-    double xp2=2+xi;
-    double xp4=4+xi;
-
-    double Li_2=Li2(-2/xp2);
-    double z2=zeta(2);
-    double pi2=M_PI*M_PI;
-
-    double c_CA= (
-        50 - pi2 + 12*L3/y + 4*L3*L3 + L1*L1 + 6*L2 -
-        4*L2*L2 + 2*Li_2 + 48/xp2 - 4*L2/xp2 + 64*L2/xp2/xp2 -
-        128*L2/(xp2*xp2*xp4) - 160/xp2/xp4 - 64*L2/xp2/xp4 +
-        128/(xp2*xp4*xp4) - 12*(4+z2)/xp4 - 8*L3*L3/xp4 + 64/xp4/xp4
-   );
-
-    double c_CF= (
-        -18 - 2./3.*pi2 - 24*L3/y - 8*L3*L3 + 2*L1*L1 - 6*L2 +
-        4*Li_2 - 48/xp2 + 8*L2/xp2 + 360/xp2/xp4 + 128*L2/xp2/xp4 -
-        544/(xp2*xp4*xp4) + 48*L3*L3/xp4 - 8*L1*L1/xp4 +
-        (44+40*z2)/xp4 - 120*L2/xp2/xp2 + 256*L2/(xp2*xp2*xp4) -
-        16*Li_2/xp4 - 272/xp4/xp4
-   ) ;
-
-  return CA*c_CA + CF*c_CF ;
-
-}
-
-//==========================================================================================//
-//  Function needed for the threshold limit.
-//
-//  Eq. (3.11) from Ref. [arXiv:1205.5727]
-//------------------------------------------------------------------------------------------//
-
-
-double c0_bar(double xi) {
-
-    return 4*CA*(2+log(1+xi/4))-4./3.*TR;
-
-}
-
-//==========================================================================================//
 //  Harmonic polylogarithms of weight 1.
 //
 //  Eq. (1) of Ref. [arXiv:hep-ph/9905237v1]

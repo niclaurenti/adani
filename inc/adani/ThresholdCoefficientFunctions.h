@@ -36,4 +36,11 @@ double CLm_g2_threshold(double x, double mQ, double mMu);
 double C2m_g3_threshold(double x, double mQ, double mMu, int nf);
 double CLm_g3_threshold(double x, double mQ, double mMu, int nf);
 
+//==========================================================================================//
+//  Function needed for the threshold limit.
+//------------------------------------------------------------------------------------------//
+
+double c0(double xi);
+double c0_bar(double xi);
+
 #endif

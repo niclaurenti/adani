@@ -1070,7 +1070,8 @@ double CLm_ps3_highscale(double x, double mQ, double mMu, int nf) {
 
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for F2 at O(alpha_s^3)
-//  expanded in terms of \alpha_s^{[nf+1]}
+//  expanded in terms of \alpha_s^{[nf+1]}.
+//  Only the currently known terms are implemented, i.e. everything but a_Qg_30.
 //
 //  Eq. (B.11) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
@@ -2613,6 +2614,15 @@ double D2m_g3_highscale_incomplete(double x, double mQ, double mMu, int nf) {
     ) / (64. * pi3) + C2_g3(x, nf+1)/(nf + 1);
 
 }
+
+//==========================================================================================//
+//  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for F2 at O(alpha_s^3)
+//  expanded in terms of \alpha_s^{[nf+1]}.
+//  This function uses the approximation for a_Qg_30 given in Eq. (3.49) of Ref. [arXiv:1205.5727]
+//  and in Eq. (16) Ref. of [arXiv:1701.05838].
+//
+//  Eq. (B.11) of Ref. [arXiv:1205.5727].
+//------------------------------------------------------------------------------------------//
 
 double D2m_g3_highscale(double x, double mQ, double mMu, int nf, int v) {
 
