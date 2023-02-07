@@ -63,7 +63,7 @@ double C2_g1_x_Pgg0_reg_integrand(double z, void * p);
 double C2_g1_x_Pgg0_sing_integrand(double z, void * p) ;
 double CL_g1_x_Pgg0_reg_integrand(double z, void * p) ;
 double CL_g1_x_Pgg0_sing_integrand(double z, void * p);
-double Pgg0sing_integrand(double z, void * p);
+double Pgg0sing_integrated(double x);
 double C2_g1_x_Pgg0(double x, double mQ, int nf);
 double CL_g1_x_Pgg0(double x, double mQ, int nf);
 
@@ -96,7 +96,7 @@ double C2_ps20_x_Pqq0_reg_integrand(double z, void * p);
 double C2_ps20_x_Pqq0_sing_integrand(double z, void * p);
 double CL_ps20_x_Pqq0_reg_integrand(double z, void * p);
 double CL_ps20_x_Pqq0_sing_integrand(double z, void * p);
-double Pqq0sing_integrand(double z, void * p);
+double Pqq0sing_integrated(double x);
 double C2_ps20_x_Pqq0(double x, double mQ, int nf);
 double CL_ps20_x_Pqq0(double x, double mQ, int nf) ;
 
@@ -128,7 +128,7 @@ double CL_g1_x_Pqq0_x_Pgq0(double x, double mQ, int nf);
 
 double C2_g1_x_Pgg1_reg_integrand(double z, void * p);
 double C2_g1_x_Pgg1_sing_integrand(double z, void * p);
-double Pgg1sing_integrand(double z, void * p);
+double Pgg1sing_integrated(double x, int nf);
 double C2_g1_x_Pgg1(double x, double mQ, int nf) ;
 double CL_g1_x_Pgg1_reg_integrand(double z, void * p);
 double CL_g1_x_Pgg1_sing_integrand(double z, void * p);
