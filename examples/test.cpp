@@ -29,10 +29,10 @@ int main() {
             mQ = m * m / (Q * Q) ;
             mMu = mQ ;
 
-            cout << "C2_g^(3)(x=" << x << ", Q="<< Q << ") = "<< C2m_g3_approximation(x, mQ, mMu, nf) << endl ;
-            cout << "C2_ps^(3)(x=" << x << ", Q="<< Q << ") = "<< C2m_ps3_approximation(x, mQ, mMu, nf) << endl ;
-            cout << "CL_g^(3)(x=" << x << ", Q="<< Q << ") = "<< CLm_g3_approximation(x, mQ, mMu, nf) << endl ;
-            cout << "CL_ps^(3)(x=" << x << ", Q="<< Q << ") = "<< CLm_ps3_approximation(x, mQ, mMu, nf) << endl ;
+            cout << "C2_g^(3)(x=" << x << ", Q="<< Q << ") = "<< C2_g3_approximation(x, mQ, mMu, nf) << endl ;
+            cout << "C2_ps^(3)(x=" << x << ", Q="<< Q << ") = "<< C2_ps3_approximation(x, mQ, mMu, nf) << endl ;
+            cout << "CL_g^(3)(x=" << x << ", Q="<< Q << ") = "<< CL_g3_approximation(x, mQ, mMu, nf) << endl ;
+            cout << "CL_ps^(3)(x=" << x << ", Q="<< Q << ") = "<< CL_ps3_approximation(x, mQ, mMu, nf) << endl ;
         }
     }
     return 0;

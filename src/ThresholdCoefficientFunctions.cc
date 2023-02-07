@@ -14,7 +14,7 @@
 //  Eq. (3.15) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double C2m_g1_threshold(double x, double mQ) {
+double C2_g1_threshold(double x, double mQ) {
 
     double xmax = 1. / (1. + 4 * mQ) ;
 
@@ -77,9 +77,9 @@ double threshold_expansion_g2_const(double mQ, double mMu) {
 //  Eq. (3.16) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double C2m_g2_threshold(double x, double mQ, double mMu) {
+double C2_g2_threshold(double x, double mQ, double mMu) {
 
-    return C2m_g1(x,mQ) * (
+    return C2_g1(x,mQ) * (
         threshold_expansion_g2(x, mQ, mMu)
         + threshold_expansion_g2_const(mQ, mMu)
     ) ;
@@ -93,9 +93,9 @@ double C2m_g2_threshold(double x, double mQ, double mMu) {
 //  Eq. (3.16) of Ref. [arXiv:1205.5727] with C20 -> CL0
 //------------------------------------------------------------------------------------------//
 
-double CLm_g2_threshold(double x, double mQ, double mMu) {
+double CL_g2_threshold(double x, double mQ, double mMu) {
 
-    return CLm_g1(x,mQ) * (
+    return CL_g1(x,mQ) * (
         threshold_expansion_g2(x, mQ, mMu)
         + threshold_expansion_g2_const(mQ, mMu)
     ) ;
@@ -109,9 +109,9 @@ double CLm_g2_threshold(double x, double mQ, double mMu) {
 //  Eq. (3.17) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double C2m_g2_threshold_const(double x, double mQ, double mMu) {
+double C2_g2_threshold_const(double x, double mQ, double mMu) {
 
-    return C2m_g1(x, mQ) * threshold_expansion_g2_const(mQ, mMu) ;
+    return C2_g1(x, mQ) * threshold_expansion_g2_const(mQ, mMu) ;
 
 }
 
@@ -122,9 +122,9 @@ double C2m_g2_threshold_const(double x, double mQ, double mMu) {
 //  Eq. (3.17) of Ref. [arXiv:1205.5727] with C20 -> CL0
 //------------------------------------------------------------------------------------------//
 
-double CLm_g2_threshold_const(double x, double mQ, double mMu) {
+double CL_g2_threshold_const(double x, double mQ, double mMu) {
 
-    return CLm_g1(x,mQ) * threshold_expansion_g2_const(mQ, mMu) ;
+    return CL_g1(x,mQ) * threshold_expansion_g2_const(mQ, mMu) ;
 
 }
 
@@ -251,9 +251,9 @@ double threshold_expansion_g3_const(double mQ, double mMu) {
 //  Eq. (3.18) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double C2m_g3_threshold(double x, double mQ, double mMu, int nf) {
+double C2_g3_threshold(double x, double mQ, double mMu, int nf) {
 
-    return C2m_g1(x,mQ) * (
+    return C2_g1(x,mQ) * (
         threshold_expansion_g3(x, mQ, mMu, nf)
         + threshold_expansion_g3_const(mQ, mMu)
     );
@@ -266,9 +266,9 @@ double C2m_g3_threshold(double x, double mQ, double mMu, int nf) {
 //  Eq. (3.18) of Ref. [arXiv:1205.5727] with C20 -> CL0
 //------------------------------------------------------------------------------------------//
 
-double CLm_g3_threshold(double x, double mQ, double mMu, int nf) {
+double CL_g3_threshold(double x, double mQ, double mMu, int nf) {
 
-    return CLm_g1(x,mQ) * (
+    return CL_g1(x,mQ) * (
         threshold_expansion_g3(x, mQ, mMu, nf)
         + threshold_expansion_g3_const(mQ, mMu)
     );
@@ -282,9 +282,9 @@ double CLm_g3_threshold(double x, double mQ, double mMu, int nf) {
 //  Eq. (3.19) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double C2m_g3_threshold_const(double x, double mQ, double mMu) {
+double C2_g3_threshold_const(double x, double mQ, double mMu) {
 
-    return C2m_g1(x,mQ) * threshold_expansion_g3_const(mQ, mMu);
+    return C2_g1(x,mQ) * threshold_expansion_g3_const(mQ, mMu);
 
 }
 
@@ -295,9 +295,9 @@ double C2m_g3_threshold_const(double x, double mQ, double mMu) {
 //  Eq. (3.19) of Ref. [arXiv:1205.5727] with C20 -> CL0
 //------------------------------------------------------------------------------------------//
 
-double CLm_g3_threshold_const(double x, double mQ, double mMu) {
+double CL_g3_threshold_const(double x, double mQ, double mMu) {
 
-    return CLm_g1(x,mQ) * threshold_expansion_g3_const(mQ, mMu);
+    return CL_g1(x,mQ) * threshold_expansion_g3_const(mQ, mMu);
 
 }
 

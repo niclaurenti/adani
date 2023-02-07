@@ -20,32 +20,32 @@
 //                      Threshold (s -> 4m^2) coefficient functions O(alpha_s)
 //------------------------------------------------------------------------------------------//
 
-double C2m_g1_threshold(double x, double mQ);
+double C2_g1_threshold(double x, double mQ);
 
 //==========================================================================================//
 //                      Threshold (s -> 4m^2) coefficient functions O(alpha_s^2)
 //------------------------------------------------------------------------------------------//
 
-double C2m_g2_threshold(double x, double mQ, double mMu);
-double CLm_g2_threshold(double x, double mQ, double mMu);
+double C2_g2_threshold(double x, double mQ, double mMu);
+double CL_g2_threshold(double x, double mQ, double mMu);
 
 double threshold_expansion_g2(double x, double mQ, double mMu);
 double threshold_expansion_g2_const(double x, double mQ, double mMu);
 
-double C2m_g2_threshold_const(double x, double mQ, double mMu);
-double CLm_g2_threshold_const(double x, double mQ, double mMu);
+double C2_g2_threshold_const(double x, double mQ, double mMu);
+double CL_g2_threshold_const(double x, double mQ, double mMu);
 
 //==========================================================================================//
 //                      Threshold (s -> 4m^2) coefficient functions O(alpha_s^3)
 //------------------------------------------------------------------------------------------//
 
-double C2m_g3_threshold(double x, double mQ, double mMu, int nf);
-double CLm_g3_threshold(double x, double mQ, double mMu, int nf);
+double C2_g3_threshold(double x, double mQ, double mMu, int nf);
+double CL_g3_threshold(double x, double mQ, double mMu, int nf);
 
 double threshold_expansion_g3(double mQ, double mMu, int nf);
 double threshold_expansion_g3_const(double mQ, double mMu);
 
-double C2m_g3_threshold_const(double x, double mQ, double mMu);
+double C2_g3_threshold_const(double x, double mQ, double mMu);
 
 //==========================================================================================//
 //  Function needed for the threshold limit.

@@ -39,9 +39,9 @@ int main(int argc, char** argv) {
 	for(x=dx; x<1; x+=dx) {
 
 		file_x << x <<"   "
-					 << CLm_g2_asymptotic(x,mQ,mMu) << "   "
-					 << CLm_g2_threshold(x,mQ,mMu) << "   "
-					 << CLm_g2_approximation(x,mQ,mMu) << "   "
+					 << CL_g2_asymptotic(x,mQ,mMu) << "   "
+					 << CL_g2_threshold(x,mQ,mMu) << "   "
+					 << CL_g2_approximation(x,mQ,mMu) << "   "
 					 << endl;
 
 	}
@@ -63,14 +63,14 @@ int main(int argc, char** argv) {
 		//double damp_asy=1-damp_thr;
 
 		file_eta << eta << "   "
-                    << x*CLm_g2(x,mQ,mMu) << "   "
-                    << x*CLm_g2_asymptotic(x,mQ,mMu) << "   "
-					<< x*CLm_g2_threshold(x,mQ,mMu) << "   "
-					<< x*CLm_g2_approximation(x,mQ,mMu,A,B,C,D,a,b) << "   "
-					<< x*CLm_ps2(x,mQ,mMu) << "   "
-                    << x*CLm_ps2_asymptotic(x,mQ,mMu) << "   "
+                    << x*CL_g2(x,mQ,mMu) << "   "
+                    << x*CL_g2_asymptotic(x,mQ,mMu) << "   "
+					<< x*CL_g2_threshold(x,mQ,mMu) << "   "
+					<< x*CL_g2_approximation(x,mQ,mMu,A,B,C,D,a,b) << "   "
+					<< x*CL_ps2(x,mQ,mMu) << "   "
+                    << x*CL_ps2_asymptotic(x,mQ,mMu) << "   "
 					<< 0 << "   "
-					<< x*CLm_ps2_approximation(x,mQ,mMu,A,B,C,D,a,b) << "   "
+					<< x*CL_ps2_approximation(x,mQ,mMu,A,B,C,D,a,b) << "   "
                     << damp_thr(eta,mQ,mMu,A,B,C,D,a,b) << "   "
                     << damp_asy(eta,mQ,mMu,A,B,C,D,a,b) << "   "
 					<< endl;

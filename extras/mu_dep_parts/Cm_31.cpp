@@ -43,10 +43,10 @@ int main(int argc, char** argv) {
 		x=1/(1+4*mQ*(eta+1));
 
         output  << eta << "   "
-                << x * C2m_g31(x, mQ, nf) / norm << "   "
-                << x * C2m_ps31(x, mQ, nf) / norm << "   "
-                << x * CLm_g31(x, mQ, nf) / norm << "   "
-                << x * CLm_ps31(x, mQ, nf) / norm << "   "
+                << x * C2_g31(x, mQ, nf) / norm << "   "
+                << x * C2_ps31(x, mQ, nf) / norm << "   "
+                << x * CL_g31(x, mQ, nf) / norm << "   "
+                << x * CL_ps31(x, mQ, nf) / norm << "   "
                 << endl;
 	}
 

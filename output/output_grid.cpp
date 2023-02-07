@@ -83,10 +83,10 @@ int main(int argc, char** argv) {
             mQ = pow(m/Q_, 2) ;
             mu = mufrac * Q_ ;
             mMu = pow(m/mu, 2) ;
-            if(channel == "2g") res = C2m_g3_approximation(x_,mQ,mMu,nf,1,calls) ;
-            else if(channel == "2q") res = C2m_ps3_approximation(x_,mQ,mMu,nf) ;
-            else if(channel == "Lg") res = CLm_g3_approximation(x_,mQ,mMu,nf,1,calls)  ;
-            else if(channel == "Lq") res = CLm_ps3_approximation(x_,mQ,mMu,nf) ;
+            if(channel == "2g") res = C2_g3_approximation(x_,mQ,mMu,nf,1,calls) ;
+            else if(channel == "2q") res = C2_ps3_approximation(x_,mQ,mMu,nf) ;
+            else if(channel == "Lg") res = CL_g3_approximation(x_,mQ,mMu,nf,1,calls)  ;
+            else if(channel == "Lq") res = CL_ps3_approximation(x_,mQ,mMu,nf) ;
             else {
                 cout<< "ERROR!\nUsage: channel = {2g, 2q, Lg, Lq}\nExiting..." <<endl;
                 exit(-1);
