@@ -53,7 +53,10 @@ double C2_g3_approximation_implicit(
     double x, double mQ, double mMu, int nf, double A, double B, double C, double D,
     double a, double b, int v1,int v2, int method_flag = default_method, int calls = default_calls
 );
-double C2_g3_approximation_BAND(double x, double mQ, double mMu, int nf, int v, double var = 0.3, double fact = 3., int method_flag = default_method, int calls = default_calls);
+double C2_g3_approximation_BAND(
+    double x, double mQ, double mMu, int nf, int v, double var = 0.3, double fact = 3.,
+    int method_flag = default_method, int calls = default_calls)
+;
 
 double C2_ps3_approximation(double x, double mQ, double mMu, int nf);
 

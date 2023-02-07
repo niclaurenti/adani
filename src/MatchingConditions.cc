@@ -57,9 +57,6 @@ double K_Qg2(double x, double mMu) {
     double S12xm = S12(1. - x) ;
     double S12minus = S12(-x) ;
 
-    double z2 = zeta(2);
-    double z3 = zeta(3);
-
     double pi2 = M_PI * M_PI ;
 
     double Lmu = log(mMu) ;
@@ -80,7 +77,7 @@ double K_Qg2(double x, double mMu) {
     double logmu2 = CF * TR * logmu2_CFTR + CA * TR * logmu2_CATR + TR * TR * logmu2_TR2 ;
 
     double logmu_CFTR = (
-        (8. - 16. * x + 16. * x2) * (2. * L * Lm - Lm2 + 2. * z2)
+        (8. - 16. * x + 16. * x2) * (2. * L * Lm - Lm2 + 2. * zeta2)
         - (4. - 8. * x + 16. * x2) * L2 - 32. * x * (1. - x) * Lm
         - (12. - 16. * x + 32. * x2) * L - 56. + 116. * x - 80. * x2
     );
@@ -88,7 +85,7 @@ double K_Qg2(double x, double mMu) {
     double logmu_CATR = (
         (16. + 32. * x + 32. * x2) * (Li2minus + L * Lp)
         + (8. - 16. * x + 16. * x2) * Lm2 + (8. + 16. * x) * L2
-        + 32. * x * z2 + 32. * x * (1. - x) * Lm
+        + 32. * x * zeta2 + 32. * x * (1. - x) * Lm
         - (8. + 64. * x + 352./3. * x2) * L - 160./9./x + 16. - 200. * x + 1744./9.*x2
     );
 
@@ -96,14 +93,14 @@ double K_Qg2(double x, double mMu) {
 
     double const_CFTR = (
         (1. - 2. * x + 2. * x2) * (
-            8. * z3 + 4./3. * Lm3 - 8. * Lm * Li2xm
-            + 8. * z2 * L - 4. * L * Lm2 + 2./3. * L3
+            8. * zeta3 + 4./3. * Lm3 - 8. * Lm * Li2xm
+            + 8. * zeta2 * L - 4. * L * Lm2 + 2./3. * L3
             - 8. * L * Li2xm + 8. * Li3xm - 24. * S12xm
         )
         + x2 * (
-            - 16. * z2 * L + 4./3. * L3 + 16 * L * Li2xm + 32 * S12xm
+            - 16. * zeta2 * L + 4./3. * L3 + 16 * L * Li2xm + 32 * S12xm
         )
-        - (4. + 96. * x - 64. * x2) * Li2xm - (4. - 48. * x + 40. * x2) * z2
+        - (4. + 96. * x - 64. * x2) * Li2xm - (4. - 48. * x + 40. * x2) * zeta2
         - (8. + 48. * x - 24. * x2) * L * Lm + (4. + 8. * x - 12. * x2) * Lm2
         - (1. + 12. * x - 20. * x2) * L2 - (52. * x - 48. * x2) * Lm
         - (16. + 18. * x + 48. * x2) * L + 26. - 82. * x + 80. * x2
@@ -111,13 +108,13 @@ double K_Qg2(double x, double mMu) {
 
     double const_CATR = (
         (1. - 2. * x + 2. * x2) * (-4./3. * Lm3 + 8 * Lm * Li2xm - 8 * Li3xm)
-        + (1. + 2. * x + 2. * x2) * (-8. * z2 * Lp - 16 * Lp * Li2minus - 8 * L * Lp2
+        + (1. + 2. * x + 2. * x2) * (-8. * zeta2 * Lp - 16 * Lp * Li2minus - 8 * L * Lp2
         + 4 * L2 * Lp + 8 * L * Li2minus - 8 * Li3minus - 16 * S12minus)
         + (16. + 64. * x) * (2. * S12xm + L * Li2xm)
-        - (4./3. + 8./3. * x) * L3 + (8. - 32. * x + 16. * x2) * z3
-        - (16. + 64. * x) * z2 * L + (16. * x + 16. * x2) * (Li2minus + L * Lp) //there is a typo here in the e-Print (16+16*x2 -> 16*x+16*x2)
+        - (4./3. + 8./3. * x) * L3 + (8. - 32. * x + 16. * x2) * zeta3
+        - (16. + 64. * x) * zeta2 * L + (16. * x + 16. * x2) * (Li2minus + L * Lp) //there is a typo here in the e-Print (16+16*x2 -> 16*x+16*x2)
         + (32./3. / x + 12. + 64. * x - 272./3. * x2) * Li2xm
-        - (12 + 48 * x - 260./3. * x2 + 32./3. / x) * z2 - 4 * x2 * L * Lm
+        - (12 + 48 * x - 260./3. * x2 + 32./3. / x) * zeta2 - 4 * x2 * L * Lm
         - (2 + 8 * x - 10 * x2) * Lm2 + (2 + 8 * x + 46./3. * x2) * L2
         + (4 + 16 * x - 16 * x2) * Lm - (56./3. + 172./3. * x + 1600./9. * x2) * L
         - 448./27. / x - 4./3. - 628./3. * x + 6352./27. * x2
@@ -173,7 +170,7 @@ double a_Qg_30(double x, int v) {
     }
     else if(v==3) { // do not use this version
         return (
-            L / x * CA * CA * (41984./243 + 160./9 * zeta(2) - 224./9 * zeta(3))
+            L / x * CA * CA * (41984./243 + 160./9 * zeta2 - 224./9 * zeta3)
         ) / (64. * pi3) ;
     }
     else if(v==4) { //Version of the paper (used only for benchamrk)
@@ -238,13 +235,6 @@ double a_Qq_PS_30(double x, double* Hr1, double* Hr2, double* Hr3, double* Hr4, 
         double x4 = x3 * x;
         double x5 = x4 * x;
         double x6 = x5 * x;
-
-        double z2=zeta(2);
-        double z3=zeta(3);
-        double z4=zeta(4);
-        double z5=zeta(5);
-
-        double ln2=log(2);
 
         //weight 2
         const double H0m1 = Hr2[1];
@@ -350,7 +340,7 @@ double a_Qq_PS_30(double x, double* Hr1, double* Hr2, double* Hr3, double* Hr4, 
         double ln2_4 = ln2_3 * ln2 ;
         double ln2_5 = ln2_4 * ln2 ;
 
-        double B_4 = - 4. * z2 * ln2_2 + 2./3 * ln2_4 - 13./2 * z4 + 16 * Li_412 ;
+        double B_4 = - 4. * zeta2 * ln2_2 + 2./3 * ln2_4 - 13./2 * zeta4 + 16 * Li_412 ;
 
         double aQqPS30 = (
             /*CF*nf*TR*TR*(16./81 * (x-1)/x * (4 * x2 + 7 * x + 4) *
@@ -372,9 +362,9 @@ double a_Qq_PS_30(double x, double* Hr1, double* Hr2, double* Hr3, double* Hr4, 
             (x + 1) * H0111 +(80./9 * (x - 1)/x * (4 * x2 + 7 * x
             + 4) * H1 + 16./81 * 1./x * (666 * x3 - 95 * x2 + 589 *
             x - 60) - 224./27 * (6 * x2 + 4 * x - 5) * H0 + 224./9*
-            (x + 1) * H0 * H0 - 160./3 * (x + 1) * H01) * z2 + (32.
+            (x + 1) * H0 * H0 - 160./3 * (x + 1) * H01) * zeta2 + (32.
             /27 * 1./x * (104 * x3 + 67 * x2 - 89 * x + 28) - 320./
-            3 * (x + 1) * H0) * z3 + 560./3 * (x + 1) * z4) + */
+            3 * (x + 1) * H0) * zeta3 + 560./3 * (x + 1) * zeta4) + */
 
             + CF * TR * TR * (
                 - 32./81 * (x-1)/x * (4 * x2 + 7 * x +
@@ -401,8 +391,8 @@ double a_Qq_PS_30(double x, double* Hr1, double* Hr2, double* Hr3, double* Hr4, 
                 1./x * (24 * x6 - 240 * x5 + 120 * x4 + 2250 * x3 - 7265
                 * x2 - 1145 * x - 600) - 32./27 * (60 * x2 + 127 * x +
                 37) * H0 + 224./9 * (x + 1) * H0 * H0 + 64 * (x + 1) *
-                H01) * z2 + (64./27 * 1./x * (64 * x3 + 251 * x2 + 155
-                * x - 64) - 128 * (x + 1) * H0) * z3 - 128./3 * (x + 1) * z4
+                H01) * zeta2 + (64./27 * 1./x * (64 * x3 + 251 * x2 + 155
+                * x - 64) - 128 * (x + 1) * H0) * zeta3 - 128./3 * (x + 1) * zeta4
             )
             + CF * CF * TR * (
                 2./27 * (x - 1)/x * (4 * x2 + 7 * x + 4)
@@ -454,18 +444,18 @@ double a_Qq_PS_30(double x, double* Hr1, double* Hr2, double* Hr3, double* Hr4, 
                 4197 * x2 - 5169 * x + 652)) * H1 +(8./9 * 1./x * (196
                 * x3 - 327 * x2 - 213 * x + 56) - 224./3 * (x + 1) * H0
             ) * H01 - 608./3 * (x + 1) * H001 - 496./3 * (x + 1) *
-                H011) * z2 + 1024./3 * z2 * ln2 * ln2 * ln2 * (x + 1) +
+                H011) * zeta2 + 1024./3 * zeta2 * ln2 * ln2 * ln2 * (x + 1) +
                 (-592./9 * (x - 1)/x * (4 * x2 + 7 * x + 4) * H1 - 4./27
                 * 1./x * (2824 * x3 - 4125 * x2 - 17331 * x + 1938) - 16.
                 /3 * (76 * x2 - 275 * x - 112) * H0 + 920./3 * (x + 1)
-                * H0 * H0 + 1184./3 * (x + 1) * H01) * z3 + 1792 * (x +
-                1) * z3 * ln2 * ln2 + (- 896./3 * 1./x * (4 * x3 - 9 *
-                x2 - 6 * x - 2) + 1792 * (x + 1) * H0) * z3 * ln2 + (-
+                * H0 * H0 + 1184./3 * (x + 1) * H01) * zeta3 + 1792 * (x +
+                1) * zeta3 * ln2 * ln2 + (- 896./3 * 1./x * (4 * x3 - 9 *
+                x2 - 6 * x - 2) + 1792 * (x + 1) * H0) * zeta3 * ln2 + (-
                 4./9 * 1./x * (628 * x3 - 3669 * x2 - 351 * x + 540) +
-                928./3 * (x + 1) * H0) * z4 + 1664 * (x + 1) * z4 * ln2
+                928./3 * (x + 1) * H0) * zeta4 + 1664 * (x + 1) * zeta4 * ln2
                 +(-32./3 * 1./x * (8 * x3 - 30 * x2 - 15 * x - 2) + 128*
                 (x + 1) * H0) * B_4 + 256 * (x + 1) * B_4 * ln2 + 944./
-                3 * (x + 1) * z2 * z3 - 3544 * (x + 1) * z5 + 4096 * (x
+                3 * (x + 1) * zeta2 * zeta3 - 3544 * (x + 1) * zeta5 + 4096 * (x
                 + 1) * Li_512 - 512./15 * ln2_5 * (x + 1)
             )
             + CA * CF * TR * (
@@ -582,20 +572,20 @@ double a_Qq_PS_30(double x, double* Hr1, double* Hr2, double* Hr3, double* Hr4, 
                 x3 - 124 * x2 - 55 * x + 24) + 32./3 * (x + 1) * H0) *
                 H01 - 128 * (x - 1) * H0m1m1 + 544./3 * (x - 1) * H00m1
                 + 16./3 * (7 * x + 3) * H001 + 80./3 * (x + 1) * H011) *
-                z2 - 512./3 * (x + 1) * z2 * ln2_3 + (8./9 * (x -
+                zeta2 - 512./3 * (x + 1) * zeta2 * ln2_3 + (8./9 * (x -
                 1)/x * (88 * x2 + 235 * x + 88) * H1 - 16./9 * 1./x *
                 (52 * x3 + 819 * x2 - 144 * x + 28) * H0 - 4./27 * 1./x
                 * (4612 * x3 + 15262 * x2 + 8524 * x + 2559) + (16 * (x
                 - 4) * (x + 1) * (4 * x - 1) * Hm1)/x + 64./3 * (5 * x
                 - 6)* H0 * H0 + 608./3 * (x - 1) * H0m1 - 496./3 * (x +
-                1)* H01) * z3 - 896 * (x + 1) * z3 * ln2_2 + (448./3 *
+                1)* H01) * zeta3 - 896 * (x + 1) * zeta3 * ln2_2 + (448./3 *
                 1./x * (4 * x3 - 9 * x2 - 6 * x - 2) - 896 * (x + 1) *
-                H0) * z3 * ln2 + (-2./9 * 1./x * (1752 * x3 + 11325 * x2
-                + 1401 * x + 1828) - 76./3 * (17 * x - 15) * H0) * z4 -
-                832 * (x + 1) * z4 * ln2 + (16./3 * 1./x * (8 * x3 - 30
+                H0) * zeta3 * ln2 + (-2./9 * 1./x * (1752 * x3 + 11325 * x2
+                + 1401 * x + 1828) - 76./3 * (17 * x - 15) * H0) * zeta4 -
+                832 * (x + 1) * zeta4 * ln2 + (16./3 * 1./x * (8 * x3 - 30
                 * x2 - 15 * x - 2) - 64 * (x + 1) * H0) * B_4 - 128 *
-                (x + 1) * B_4 * ln2 + 8./3 * (31 * x - 127) * z2 * z3 -
-                12 * (47 * x - 145) * z5 - 2048 * Li_512 * (x + 1)  +
+                (x + 1) * B_4 * ln2 + 8./3 * (31 * x - 127) * zeta2 * zeta3 -
+                12 * (47 * x - 145) * zeta5 - 2048 * Li_512 * (x + 1)  +
                 256./15 * (x+1) *ln2_5
             )
         ) ;
@@ -637,8 +627,8 @@ double a_Qq_PS_30(double x, double* Hr1, double* Hr2, double* Hr3, double* Hr4, 
                 - 256 * (x + 1) * tildeH01m11m1 + 384 * (x + 1) * tildeH01m111
                 - 128 * (x + 1) * tildeH011m1m1 - 384 * (x + 1) * tildeH0111m1
                 + 768 * (x + 1) * tildeH01111 + 64 * (x + 1) * (tildeH0m1m1
-                - tildeH0m11 + tildeH01m1 - tildeH011) * z2 - 128 * (x
-                + 1) * (tildeH0m1 + tildeH01) * z2 * ln2 + (-128./3 *
+                - tildeH0m11 + tildeH01m1 - tildeH011) * zeta2 - 128 * (x
+                + 1) * (tildeH0m1 + tildeH01) * zeta2 * ln2 + (-128./3 *
                 (x - 1)/x * (4 * x2 + 7 * x + 4) * H1 * tildeH0m1 - 32.
                 /3 * 1./x * (32 * x3 + 200 * x2 - 104 * x + 1) * tildeH0m1
                 - 128./3 * (4 * x2 - 21 * x - 9) * H0 * tildeH0m1 + 128

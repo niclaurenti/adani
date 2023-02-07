@@ -44,7 +44,7 @@ double threshold_expansion_g2(double x, double mQ, double mMu) {
 
     double C_log2b = 16 * CA ;
 
-    double C_logb = 48 * CA * log(2) - 40 * CA + 8 * CA * log(mMu) ;
+    double C_logb = 48 * CA * ln2 - 40 * CA + 8 * CA * log(mMu) ;
 
     double C_fracb = (2 * CF - CA) * M_PI * M_PI ;
 
@@ -61,11 +61,10 @@ double threshold_expansion_g2(double x, double mQ, double mMu) {
 double threshold_expansion_g2_const(double mQ, double mMu) {
 
     double xi = 1. / mQ ;
-    double log2 = log(2) ;
 
     return (
-        c0(xi) + 36 * CA * log2 * log2 - 60 * CA * log2
-        + log(mMu) * (8 * CA * log2 - c0_bar(xi))
+        c0(xi) + 36 * CA * ln2 * ln2 - 60 * CA * ln2
+        + log(mMu) * (8 * CA * ln2 - c0_bar(xi))
     ) / (4. * M_PI);
 
 }
@@ -148,57 +147,55 @@ double threshold_expansion_g3(double x, double mQ, double mMu, int nf) {
     double l3 = l2 * l;
     double l4 = l3 * l;
 
-    double log2 = log(2);
-    double log2_2 = log2 * log2 ;
-    double log2_3 = log2_2 * log2 ;
+    double ln2_2 = ln2 * ln2 ;
+    double ln2_3 = ln2_2 * ln2 ;
 
-    double z3 = zeta(3);
     double pi2 = M_PI * M_PI ;
     double pi4 = pi2 * pi2 ;
 
     double c_log4 = 128. * CA * CA ;
 
     double c_log3 = (
-        (768. * log2 - 6464. / 9.) * CA * CA
+        (768. * ln2 - 6464. / 9.) * CA * CA
         + 128. / 9. * CA * nf
         + 128. * CA * CA * Lm
     ) ;
 
     double c_log2 = (
         (
-            1728. * log2_2 - 3232. * log2
+            1728. * ln2_2 - 3232. * ln2
             - 208./3. * pi2 + 15520./9.
         ) * CA * CA
-        + (64. * log2 - 640. / 9.) * CA * nf
+        + (64. * ln2 - 640. / 9.) * CA * nf
         + 16. * CA * c0(xi)
         + 32. * CA * (CF - CA / 2) * pi2 / beta
         - (
-            (-512 * log2 + 1136./3.) * CA * CA - 32./3. * CA * nf
+            (-512 * ln2 + 1136./3.) * CA * CA - 32./3. * CA * nf
             + 16 * CA * c0_bar(xi)
         ) * Lm + 32 * CA * CA * Lm2
     ) ;
 
     double c_log_const = (
         (
-            1728. * log2_3 - 4848 * log2_2 + 15520./3. * log2
-            - 208 * pi2 * log2 + 936 * z3 + 608./3. * pi2 - 88856./27.
+            1728. * ln2_3 - 4848 * ln2_2 + 15520./3. * ln2
+            - 208 * pi2 * ln2 + 936 * zeta3 + 608./3. * pi2 - 88856./27.
         ) * CA * CA
-        + (96. * log2_2 - 640./3. * log2 - 16./3. * pi2 + 4592./27.) * CA * nf
-        - 32. * CF * (CF - CA / 2) * pi2 + (48. * log2 - 40.) * CA * c0(xi)
+        + (96. * ln2_2 - 640./3. * ln2 - 16./3. * pi2 + 4592./27.) * CA * nf
+        - 32. * CF * (CF - CA / 2) * pi2 + (48. * ln2 - 40.) * CA * c0(xi)
     );
 
     double c_log_fracbeta = (
-        (- 92./3. + 32. * log2) * CA + 8./3. * nf
+        (- 92./3. + 32. * ln2) * CA + 8./3. * nf
     ) * (CF - CA / 2) * pi2 ;
 
     double c_log_Lm = - (
-        (- 672. * log2_2 + 976 * log2 + 104./3. * pi2 - 4160./9.) * CA * CA
-        + (- 32. * log2 + 320./9.) * CA * nf + (48. * log2 - 40.) * CA * c0_bar(xi)
+        (- 672. * ln2_2 + 976 * ln2 + 104./3. * pi2 - 4160./9.) * CA * CA
+        + (- 32. * ln2 + 320./9.) * CA * nf + (48. * ln2 - 40.) * CA * c0_bar(xi)
         - 8. * CA * c0(xi) - 16. * CA * (CF - CA/2) * pi2 / beta
     ) ;
 
     double c_log_Lm2 = (
-        (64. * log2 - 44./3.) * CA * CA
+        (64. * ln2 - 44./3.) * CA * CA
         + 8./3. * CA * nf - 8. * CA * c0_bar(xi)
     );
 
@@ -210,8 +207,8 @@ double threshold_expansion_g3(double x, double mQ, double mMu, int nf) {
     );
 
     double c_fracbeta = (
-        (8. * log2_2 - 68./3. * log2 + 8./3. * pi2 - 658./9.) * CA
-        + (8./3. * log2 - 20./9.) * nf + 2 * c0(xi)
+        (8. * ln2_2 - 68./3. * ln2 + 8./3. * pi2 - 658./9.) * CA
+        + (8./3. * ln2 - 20./9.) * nf + 2 * c0(xi)
         + (26./3. * CA + 4./3. * nf - 2 * c0_bar(xi)) * Lm
     ) * (CF - CA/2) * pi2 ;
 
@@ -231,14 +228,13 @@ double threshold_expansion_g3(double x, double mQ, double mMu, int nf) {
 double threshold_expansion_g3_const(double mQ, double mMu) {
 
     double xi = 1. / mQ ;
-    double log2 = log(2) ;
     double Lm = log(mMu);
 
     double pi2 = M_PI * M_PI ;
 
     double c_const_sqrt = (
-        c0(xi) + 36. * CA * log2 * log2 - 60. * CA * log2
-        + Lm * (8. * CA * log2 - c0_bar(xi))
+        c0(xi) + 36. * CA * ln2 * ln2 - 60. * CA * ln2
+        + Lm * (8. * CA * ln2 - c0_bar(xi))
     );
 
     return c_const_sqrt * c_const_sqrt / (16. * pi2) ;
@@ -319,14 +315,13 @@ double c0(double xi) {
     double xp4 = 4. + xi ;
 
     double Li_2 = Li2(- 2. / xp2);
-    double z2 = zeta(2) ;
     double pi2 = M_PI * M_PI ;
 
     double c_CA = (
         50. - pi2 + 12 * L3 / y + 4 * L3 * L3 + L1 * L1 + 6 * L2
         - 4. * L2 * L2 + 2 * Li_2 + 48. / xp2 - 4. * L2 / xp2 + 64. * L2 / xp2 / xp2
         - 128. * L2 /(xp2 * xp2 * xp4) - 160. / xp2 / xp4 - 64. * L2 / xp2 / xp4
-        + 128. / (xp2 * xp4 * xp4) - 12. * (4. + z2) / xp4 - 8. * L3 * L3 / xp4
+        + 128. / (xp2 * xp4 * xp4) - 12. * (4. + zeta2) / xp4 - 8. * L3 * L3 / xp4
         + 64. / xp4 / xp4
     );
 
@@ -334,7 +329,7 @@ double c0(double xi) {
         - 18. - 2./3. * pi2 - 24. * L3 / y - 8. * L3 * L3 + 2. * L1 * L1 - 6. * L2
         + 4. * Li_2 - 48. / xp2 + 8. * L2 / xp2 + 360. / xp2 / xp4 + 128. * L2 / xp2 / xp4
         - 544. / (xp2 * xp4 * xp4) + 48. * L3 * L3 / xp4 - 8. * L1 * L1 / xp4
-        + (44. + 40. * z2) / xp4 - 120. * L2 / xp2 / xp2 + 256. * L2 / (xp2 * xp2 * xp4)
+        + (44. + 40. * zeta2) / xp4 - 120. * L2 / xp2 / xp2 + 256. * L2 / (xp2 * xp2 * xp4)
         - 16 * Li_2 / xp4 - 272 / xp4 / xp4
     ) ;
 

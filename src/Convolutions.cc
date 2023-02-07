@@ -329,13 +329,8 @@ double C2_g1_x_Pgg0_sing_integrand(double z, void * p) {
 
 double Pgg0sing_integrated(double x) {
 
-    //struct function_params * params = (struct function_params *)p;
-
-    //double mQ = (params->mQ);
-    //double x = (params->x);
-    //int nf = (params->nf);
-
     return - Pgg0sing(0.) * log(1. - x) ;
+
 }
 
 // Result
@@ -647,6 +642,7 @@ double C2_ps20_x_Pqq0_sing_integrand(double z, void * p) {
 double Pqq0sing_integrated(double x) {
 
     return - Pqq0sing(0.) * log(1. - x) ;
+
 }
 
 // Result
@@ -988,6 +984,7 @@ double C2_g1_x_Pgg1_sing_integrand(double z, void * p) {
 double Pgg1sing_integrated(double x, int nf) {
 
     return - Pgg1sing(0., nf) * log(1. - x) ;
+
 }
 
 // Result
