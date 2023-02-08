@@ -1,9 +1,5 @@
 .DS_Store
 .vscode/
-*.pdf
-extras/mu_dep_parts/*.dat
-extras/mu_dep_parts/*.exe
-extras/mu_dep_parts/C2m_g1_x_Pgg1*
 output/output_grid.exe
 build/
 _skbuild/
