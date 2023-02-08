@@ -1,6 +1,5 @@
 .DS_Store
 .vscode/
-*.pdf
 output/output_grid.exe
 build/
 _skbuild/
