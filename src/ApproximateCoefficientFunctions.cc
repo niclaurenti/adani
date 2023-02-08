@@ -165,16 +165,16 @@ double C2_g2_approximation_BAND(double x, double mQ, double mMu, int v, double v
 
     double Cerr[10];
 
-    Cerr[0] = C2_g2_approximation_implicit(x, mQ, mMu, Amax, B, C, D, a, b);
-    Cerr[1] = C2_g2_approximation_implicit(x, mQ, mMu, Amin, B, C, D, a, b);
-    Cerr[2] = C2_g2_approximation_implicit(x, mQ, mMu, A, Bmax, C, D, a, b);
-    Cerr[3] = C2_g2_approximation_implicit(x, mQ, mMu, A, Bmin, C, D, a, b);
-    Cerr[4] = C2_g2_approximation_implicit(x, mQ, mMu, A, B, Cmax, D, a, b);
-    Cerr[5] = C2_g2_approximation_implicit(x, mQ, mMu, A, B, Cmin, D, a, b);
-    Cerr[6] = C2_g2_approximation_implicit(x, mQ, mMu, A, B, C, Dmax, a, b);
-    Cerr[7] = C2_g2_approximation_implicit(x, mQ, mMu, A, B, C, Dmin, a, b);
-    Cerr[8] = C2_g2_approximation_implicit(x, mQ, mMu, Amax, Bmax, Cmax, Dmax, a, b);
-    Cerr[9] = C2_g2_approximation_implicit(x, mQ, mMu, Amin, Bmin, Cmin, Dmin, a, b);
+    Cerr[0] = C2_g2_approximation_implicit(x, mQ, 1., Amax, B, C, D, a, b);
+    Cerr[1] = C2_g2_approximation_implicit(x, mQ, 1., Amin, B, C, D, a, b);
+    Cerr[2] = C2_g2_approximation_implicit(x, mQ, 1., A, Bmax, C, D, a, b);
+    Cerr[3] = C2_g2_approximation_implicit(x, mQ, 1., A, Bmin, C, D, a, b);
+    Cerr[4] = C2_g2_approximation_implicit(x, mQ, 1., A, B, Cmax, D, a, b);
+    Cerr[5] = C2_g2_approximation_implicit(x, mQ, 1., A, B, Cmin, D, a, b);
+    Cerr[6] = C2_g2_approximation_implicit(x, mQ, 1., A, B, C, Dmax, a, b);
+    Cerr[7] = C2_g2_approximation_implicit(x, mQ, 1., A, B, C, Dmin, a, b);
+    Cerr[8] = C2_g2_approximation_implicit(x, mQ, 1., Amax, Bmax, Cmax, Dmax, a, b);
+    Cerr[9] = C2_g2_approximation_implicit(x, mQ, 1., Amin, Bmin, Cmin, Dmin, a, b);
 
     double min = Cavg, max = Cavg;
     int i ;
@@ -187,9 +187,10 @@ double C2_g2_approximation_BAND(double x, double mQ, double mMu, int v, double v
         if(Cerr[i]<min) min = Cerr[i];
     }
 
-    if(v==1) return max;
-    if(v==2) return min;
+    double C_mu_dep = C2_g21(x, mQ) * log(1. / mMu);
 
+    if(v==1) return max + C_mu_dep;
+    else if(v==2) return min + C_mu_dep;
     else {
         cout<<"C2_g2_approximation_BAND: Choose either v=0 or v=1 or v=2!!\nExiting!!\n"<<endl;
         exit(-1);
@@ -274,7 +275,7 @@ double CL_g2_approximation_implicit(double x, double mQ, double mMu, double A, d
     double h = A + (B - A) / (1. + exp(a * (log(xi) - b))) ;
     double k = C + (D - C) / (1. + exp(a * (log(xi) - b))) ;
 
-    double damp_thr = 1. / (1. + pow(eta / h ,k)) ;
+    double damp_thr = 1. / (1. + pow(eta / h, k)) ;
     double damp_asy = 1. - damp_thr ;
 
     double C_const = (
@@ -398,7 +399,7 @@ double C2_g3_approximation_BAND(double x, double mQ, double mMu, int nf, int v, 
     double a = 2.5, b = 5;
     double A = 0.3, B = 2.5, C = 2.5, D = 1.2;
 
-    double Cavg=C2_g3_approximation_implicit(x, mQ, 1., nf, A, B, C, D, a, b, 0, 0);
+    double Cavg = C2_g3_approximation_implicit(x, mQ, 1., nf, A, B, C, D, a, b, 0, 0);
 
     if(v==0) return Cavg;
 
@@ -769,7 +770,7 @@ double C2_g3_approximationA_klmv(double x, double mQ, double mMu, int nf, int me
     ) * 4. / mQ / x;
 
     double C30 = (
-        (C2_g3_threshold(x, mQ, 1., nf) - C2_g3_threshold_const(x, mQ, 1.))
+        C2_g3_threshold(x, mQ, 1., nf) - C2_g3_threshold_const(x, mQ, 1.)
         + (1. - f) * beta * C2_g3_highscale(x, mQ, 1., nf, 1)
         + f * beta3 * (
             - log(eta) / log(x) * C2_g3_highenergyLL(x, mQ, 1.)

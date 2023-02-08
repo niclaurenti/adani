@@ -449,6 +449,8 @@ double C2_g32(double x, double mQ, int nf, int method_flag, int calls) {
 
     double C2_g1xPgg0xPgg0 ;
 
+    double beta0 = beta(0, nf) ;
+
     if(method_flag == 0) C2_g1xPgg0xPgg0 = C2_g1_x_Pgg0_x_Pgg0(x, mQ, nf) ;
     else if(method_flag == 1) C2_g1xPgg0xPgg0 = C2_g1_x_Pgg0_x_Pgg0_MC(x, mQ, nf, calls) ;
     else {
@@ -459,8 +461,8 @@ double C2_g32(double x, double mQ, int nf, int method_flag, int calls) {
     return (
         0.5 * C2_g1xPgg0xPgg0
         + 0.5 * C2_g1_x_Pqg0_x_Pgq0(x, mQ, nf)
-        - 3. / 2 * beta(0, nf) * C2_g1_x_Pgg0(x, mQ, nf)
-        + beta(0,nf) * beta(0,nf) * C2_g1(x,mQ)
+        - 3. / 2 * beta0 * C2_g1_x_Pgg0(x, mQ, nf)
+        + beta0 * beta0 * C2_g1(x, mQ)
    );
 
 }
@@ -480,6 +482,8 @@ double CL_g32(double x, double mQ, int nf, int method_flag, int calls) {
 
     double CL_g1xPgg0xPgg0 ;
 
+    double beta0 = beta(0, nf) ;
+
     if(method_flag == 0) CL_g1xPgg0xPgg0 = CL_g1_x_Pgg0_x_Pgg0(x, mQ, nf) ;
     else if(method_flag == 1) CL_g1xPgg0xPgg0 = CL_g1_x_Pgg0_x_Pgg0_MC(x, mQ, nf, calls) ;
     else {
@@ -490,8 +494,8 @@ double CL_g32(double x, double mQ, int nf, int method_flag, int calls) {
     return (
         0.5 * CL_g1xPgg0xPgg0
         + 0.5 * CL_g1_x_Pqg0_x_Pgq0(x, mQ, nf)
-        - 3. / 2 * beta(0, nf) * CL_g1_x_Pgg0(x, mQ, nf)
-        + beta(0,nf) * beta(0,nf) * CL_g1(x,mQ)
+        - 3. / 2 * beta0 * CL_g1_x_Pgg0(x, mQ, nf)
+        + beta0 * beta0 * CL_g1(x, mQ)
    );
 
 }

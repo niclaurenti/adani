@@ -49,7 +49,7 @@ double CL_g1_highscale(double x) {
 
 double D2_g1_highscale(double x, double mQ) {
 
-    return C2_g1_highscale(x,mQ);
+    return C2_g1_highscale(x, mQ);
 
 }
 
@@ -73,9 +73,12 @@ double DL_g1_highscale(double x) {
 
 double C2_g2_highscale(double x, double mQ, double mMu) {
 
-    double Lmu = log(1./mMu) ;
+    double Lmu = log(1. / mMu) ;
 
-    return D2_g2_highscale(x,mQ,mMu) + 1. / 6 / M_PI * Lmu * C2_g1_highscale(x,mQ) ;
+    return (
+        D2_g2_highscale(x, mQ, mMu)
+        + 1. / 6 / M_PI * Lmu * C2_g1_highscale(x, mQ)
+    ) ;
 
 }
 
@@ -95,18 +98,18 @@ double C2_ps2_highscale(double z, double mQ, double mMu) {
 
     double L_M = log(mMu) ;
     double L_M2 = L_M * L_M ;
-    double L_Q = log(1./mQ) + L_M ;
+    double L_Q = log(1. / mQ) + L_M ;
     double L_Q2 = L_Q * L_Q ;
 
     double pi2 = M_PI * M_PI ;
 
-    double H0 = H(z,0) ;
-    double H1 = H(z,1) ;
-    double Hm1 = H(z,-1);
-    double H01 = H(z,0,1) ;
-    double H0m1 = H(z,0,-1);
-    double H001 = H(z,0,0,1);
-    double H011 = H(z,0,1,1);
+    double H0 = H(z, 0) ;
+    double H1 = H(z, 1) ;
+    double Hm1 = H(z, -1);
+    double H01 = H(z, 0, 1) ;
+    double H0m1 = H(z, 0, -1);
+    double H001 = H(z, 0, 0, 1);
+    double H011 = H(z, 0, 1, 1);
 
     return CF * TR * (
         (32. / 3 * H0m1 - 32. / 3 * Hm1 * H0) * (z + 1) * (z+1) * (z+1) / z
@@ -147,9 +150,12 @@ double C2_ps2_highscale(double z, double mQ, double mMu) {
 
 double CL_g2_highscale(double x, double mQ, double mMu) {
 
-    double Lmu = log(1./mMu);
+    double Lmu = log(1. / mMu);
 
-    return DL_g2_highscale(x,mQ,mMu) + 1. / 6 / M_PI * Lmu * CL_g1_highscale(x) ;
+    return (
+        DL_g2_highscale(x, mQ, mMu)
+        + 1. / 6 / M_PI * Lmu * CL_g1_highscale(x)
+    ) ;
 
 }
 
@@ -160,7 +166,7 @@ double CL_g2_highscale(double x, double mQ, double mMu) {
 
 double CL_ps2_highscale(double x, double mQ, double mMu) {
 
-    return DL_ps2_highscale(x,mQ,mMu) ;
+    return DL_ps2_highscale(x, mQ, mMu) ;
 
 }
 
@@ -180,31 +186,31 @@ double D2_g2_highscale(double x, double mQ, double mMu) {
 
     double pi2 = M_PI * M_PI ;
 
-    double H0 = H(x,0) ;
-    double H1 = H(x,1) ;
-    double Hm1 = H(x,-1);
-    double H00 = H(x, 0,0);
-    double H01 = H(x,0,1) ;
-    double H11 = H(x,1,1) ;
-    double H10 = H(x,1,0) ;
-    double H011 = H(x,0,1,1);
-    double H111 = H(x,1,1,1);
-    double H100 = H(x,1,0,0);
-    double H000 = H(x,0,0,0);
-    double H001 = H(x,0,0,1);
-    double H010 = H(x,0,1,0);
-    double H0m10 = H(x,0,-1,0);
-    double H101 = H(x,1,0,1);
-    double Hm1m10 = H(x,-1,-1,0);
-    double Hm10 = H(x, -1,0);
-    double Hm101 = H(x,-1,0,1);
-    double Hm100 = H(x,-1,0,0);
-    double H110 = H(x,1,1,0);
+    double H0 = H(x, 0) ;
+    double H1 = H(x, 1) ;
+    double Hm1 = H(x, -1);
+    double H00 = H(x, 0, 0);
+    double H01 = H(x, 0, 1) ;
+    double H11 = H(x, 1, 1) ;
+    double H10 = H(x, 1, 0) ;
+    double H011 = H(x, 0, 1, 1);
+    double H111 = H(x, 1, 1, 1);
+    double H100 = H(x, 1, 0, 0);
+    double H000 = H(x, 0, 0, 0);
+    double H001 = H(x, 0, 0, 1);
+    double H010 = H(x, 0, 1, 0);
+    double H0m10 = H(x, 0, -1, 0);
+    double H101 = H(x, 1, 0, 1);
+    double Hm1m10 = H(x, -1, -1, 0);
+    double Hm10 = H(x, -1, 0);
+    double Hm101 = H(x, -1, 0, 1);
+    double Hm100 = H(x, -1, 0, 0);
+    double H110 = H(x, 1, 1, 0);
 
-    double LQm=log(1./mQ);
-    double LQm2=LQm*LQm;
+    double LQm = log(1./mQ);
+    double LQm2 = LQm * LQm;
 
-    double Lmmu=log(mMu);
+    double Lmmu = log(mMu);
 
     return (
         + Lmmu * (
@@ -317,7 +323,7 @@ double D2_g2_highscale(double x, double mQ, double mMu) {
 
 double D2_ps2_highscale(double x, double mQ, double mMu) {
 
-    return C2_ps2_highscale(x,mQ,mMu) ;
+    return C2_ps2_highscale(x, mQ, mMu) ;
 
 }
 
@@ -339,11 +345,11 @@ double DL_g2_highscale(double z, double mQ, double mMu) {
 
     double pi2 = M_PI * M_PI ;
 
-    double H0 = H(z,0) ;
-    double H1 = H(z,1) ;
-    double Hm1 = H(z,-1);
-    double H01 = H(z,0,1) ;
-    double H0m1 = H(z,0,-1);
+    double H0 = H(z, 0) ;
+    double H1 = H(z, 1) ;
+    double Hm1 = H(z, -1);
+    double H01 = H(z, 0, 1) ;
+    double H0m1 = H(z, 0, -1);
 
     return (
         TR * TR * (-64. / 3 * (z - 1.) * z * L_M)
@@ -389,9 +395,9 @@ double DL_ps2_highscale(double z, double mQ, double mMu) {
 
     double pi2 = M_PI * M_PI ;
 
-    double H0 = H(z,0) ;
-    double H1 = H(z,1) ;
-    double H01 = H(z,0,1) ;
+    double H0 = H(z, 0) ;
+    double H1 = H(z, 1) ;
+    double H01 = H(z, 0, 1) ;
 
     return (
         CF * TR * (
@@ -422,13 +428,13 @@ double C2_g3_highscale(double x, double mQ, double mMu, int nf, int v) {
     double pi2 = M_PI * M_PI ;
 
     return (
-        D2_g3_highscale(x,mQ,mMu,nf,v)
-        - 1. / 3 / M_PI * Lmu * D2_g2_highscale(x,mQ,mMu)
+        D2_g3_highscale(x, mQ, mMu, nf, v)
+        - 1. / 3 / M_PI * Lmu * D2_g2_highscale(x, mQ, mMu)
         - (
             (16. / 9 * CA - 15. / 2 * CF)
             + (10. / 3 * CA + 2 * CF) * Lmu
             - 4. / 9 * L2mu
-        ) / 16. / pi2 * D2_g1_highscale(x,mQ)
+        ) / 16. / pi2 * D2_g1_highscale(x, mQ)
     ) ;
 
 }
@@ -444,7 +450,10 @@ double C2_ps3_highscale(double x, double mQ, double mMu, int nf) {
 
     double Lmu = log(mMu) ;
 
-    return D2_ps3_highscale(x,mQ,mMu,nf) - 1. / 3 / M_PI * Lmu * D2_ps2_highscale(x,mQ,mMu) ;
+    return (
+        D2_ps3_highscale(x, mQ, mMu, nf)
+        - 1. / 3 / M_PI * Lmu * D2_ps2_highscale(x, mQ, mMu)
+    );
 
 }
 
@@ -867,8 +876,8 @@ double CL_g3_highscale(double x, double mQ, double mMu, int nf) {
     double pi2 = M_PI * M_PI ;
 
     return (
-        DL_g3_highscale(x,mQ,mMu,nf)
-        - 1. / 3 / M_PI * Lmu * DL_g2_highscale(x,mQ,mMu)
+        DL_g3_highscale(x, mQ, mMu, nf)
+        - 1. / 3 / M_PI * Lmu * DL_g2_highscale(x, mQ, mMu)
         - (
             (16. / 9 * CA - 15. / 2 * CF)
             + (10. / 3 * CA + 2 * CF) * Lmu
@@ -887,13 +896,13 @@ double DL_ps3_highscale(double z, double mQ, double mMu, int nf) {
 
     if(z>=1 || z<0) return 0;
 
-    double z2 = z*z ;
-    double z3 = z2*z;
-    double z4 = z3*z ;
+    double z2 = z * z ;
+    double z3 = z2 * z;
+    double z4 = z3 * z ;
 
     double L_M = log(mMu) ;
     double L_M2 = L_M * L_M ;
-    double L_Q = log(1./mQ) + L_M ;
+    double L_Q = log(1. / mQ) + L_M ;
     double L_Q2 = L_Q * L_Q ;
 
     double pi3 = M_PI * M_PI * M_PI ;
@@ -1045,9 +1054,12 @@ double DL_ps3_highscale(double z, double mQ, double mMu, int nf) {
 
 double CL_ps3_highscale(double x, double mQ, double mMu, int nf) {
 
-    double Lmu=log(mMu);
+    double Lmu = log(mMu);
 
-    return DL_ps3_highscale(x,mQ,mMu,nf) - 1. / 3 / M_PI * Lmu * DL_ps2_highscale(x,mQ,mMu) ;
+    return (
+        DL_ps3_highscale(x, mQ, mMu, nf)
+        - 1. / 3 / M_PI * Lmu * DL_ps2_highscale(x, mQ, mMu)
+    );
 
 }
 
@@ -1063,18 +1075,18 @@ double D2_g3_highscale_incomplete(double x, double mQ, double mMu, int nf) {
 
     if(x<0 || x>=1) return 0;
 
-    double x2=x*x;
-    double x3=x2*x;
+    double x2 = x * x;
+    double x3 = x2 * x;
 
-    double LQm=log(1./mQ);
-    double LQm2=LQm*LQm;
-    double LQm3=LQm2*LQm;
+    double LQm = log(1./mQ);
+    double LQm2 = LQm * LQm;
+    double LQm3 = LQm2 * LQm;
 
-    double Lmmu=log(mMu);
-    double Lmmu2=Lmmu*Lmmu;
+    double Lmmu = log(mMu);
+    double Lmmu2 = Lmmu * Lmmu;
     //double Lmmu3=Lmmu2*Lmmu;
 
-    double pi3=M_PI*M_PI*M_PI;
+    double pi3 = M_PI * M_PI * M_PI ;
 
     // Allocate pointers for the harmonic polylogs
     double wx = x;
@@ -2618,17 +2630,17 @@ double D2_ps3_highscale(double x, double mQ, double mMu, int nf, int v) {
 
     if(x<0 || x>=1) return 0;
 
-    double x2=x*x;
-    double x3=x2*x;
+    double x2 = x * x;
+    double x3 = x2 * x;
 
-    double LQm=log(1./mQ);
-    double LQm2=LQm*LQm;
-    double LQm3=LQm2*LQm;
+    double LQm = log(1./mQ);
+    double LQm2 = LQm * LQm;
+    double LQm3 = LQm2 * LQm;
 
-    double Lmmu=log(mMu);
-    double Lmmu2=Lmmu*Lmmu;
+    double Lmmu = log(mMu);
+    double Lmmu2 = Lmmu * Lmmu;
 
-    double pi3=M_PI*M_PI*M_PI;
+    double pi3 = M_PI * M_PI * M_PI;
 
     // Allocate pointers for the harmonic polylogs
     double wx = x;
@@ -3321,9 +3333,12 @@ double D2_ps3_highscale(double x, double mQ, double mMu, int nf, int v) {
 
 double C2_ps3_highscale_klmv_paper(double x, double mQ, double mMu, int nf, int v) {
 
-    double Lmu=log(mMu);
+    double Lmu = log(mMu) ;
 
-    return D2_ps3_highscale_klmv_paper(x,mQ,mMu,nf,v) - 1./3/M_PI*Lmu*D2_ps2_highscale(x,mQ,mMu) ;
+    return (
+        D2_ps3_highscale_klmv_paper(x, mQ, mMu, nf, v)
+        - 1. / 3 / M_PI * Lmu * D2_ps2_highscale(x, mQ, mMu)
+    );
 
 }
 

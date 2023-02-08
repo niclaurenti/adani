@@ -13,7 +13,7 @@ using namespace std;
 //------------------------------------------------------------------------------------------//
 
 double beta(int ord, int nf) {
-    if(ord == 0) return (11. /3 * CA - 2. /3 * nf) / 4. / M_PI ;
+    if(ord == 0) return (11. / 3 * CA - 2. / 3 * nf) / 4. / M_PI ;
     if(ord == 1) {
         double TF = TR * nf ;
         double b_ca2 = 34. / 3. * CA * CA ;
@@ -175,12 +175,11 @@ double S12(double x){
 
 double H(double x, int i) {
 
-    if(i==1) return -log(1-x);
+    if(i==1) return - log(1. - x);
     if(i==0) return log(x);
-    if(i==-1) return log(1+x);
+    if(i==-1) return log(1. + x);
 
     else {
-
         cout << "H(x,i) is defined only for i = -1,0,1! \n Exiting..." << endl;
         exit(-1);
     }
@@ -195,25 +194,25 @@ double H(double x, int i) {
 
 double H(double x, int i, int j) {
 
-    double xp=1+x;
-    double xm=1-x;
+    double xp = 1. + x ;
+    double xm = 1. - x ;
 
-    double L=log(x);
-    double L2=L*L;
-    double Lp=log(xp);
-    double Lp2=Lp*Lp;
-    double Lm=log(xm);
-    double Lm2=Lm*Lm;
+    double L = log(x) ;
+    double L2 = L * L ;
+    double Lp = log(xp) ;
+    double Lp2 = Lp * Lp ;
+    double Lm = log(xm) ;
+    double Lm2 = Lm * Lm ;
 
-    if(i==0 && j==0) return 0.5*L2;
-    if(i==0 && j==1) return Li2(x);
-    if(i==0 && j==-1) return -Li2(-x);
-    if(i==1 && j==0) return -L*Lm - Li2(x); // there's a typo in the paper: +Li2(x)
-    if(i==1 && j==1) return 0.5*Lm2;
-    if(i==1 && j==-1) return Li2(xm/2) - ln2*Lm - Li2(0.5);
-    if(i==-1 && j==0) return L*Lp + Li2(-x);
-    if(i==-1 && j==1) return Li2(xp/2) - ln2*Lp - Li2(0.5);
-    if(i==-1 && j==-1) return 0.5*Lp2;
+    if(i==0 && j==0) return 0.5 * L2 ;
+    if(i==0 && j==1) return Li2(x) ;
+    if(i==0 && j==-1) return - Li2(-x) ;
+    if(i==1 && j==0) return - L * Lm - Li2(x) ; // there's a typo in the paper: +Li2(x)
+    if(i==1 && j==1) return 0.5 * Lm2 ;
+    if(i==1 && j==-1) return Li2(xm / 2.) - ln2 * Lm - Li2(0.5) ;
+    if(i==-1 && j==0) return L * Lp + Li2(-x) ;
+    if(i==-1 && j==1) return Li2(xp / 2) - ln2 * Lp - Li2(0.5) ;
+    if(i==-1 && j==-1) return 0.5 * Lp2 ;
 
     else  {
         cout    << "H(x,"<<i<<","<<j<<") is not defined."<<endl
@@ -231,52 +230,52 @@ double H(double x, int i, int j) {
 
 double H(double x, int i, int j, int k) {
 
-    double xp=1+x;
-    double xm=1-x;
+    double xp = 1. + x ;
+    double xm = 1. - x ;
 
-    double L=log(x);
-    double L2=L*L;
-    double L3=L2*L;
+    double L = log(x) ;
+    double L2 = L * L ;
+    double L3 = L2 * L ;
 
-    double Lp=log(xp);
-    double Lp2=Lp*Lp;
-    double Lp3=Lp2*Lp;
+    double Lp = log(xp) ;
+    double Lp2 = Lp * Lp ;
+    double Lp3 = Lp2 * Lp ;
 
-    double Lm=log(xm);
-    double Lm2=Lm*Lm;
-    double Lm3=Lm2*Lm;
+    double Lm = log(xm) ;
+    double Lm2 = Lm * Lm ;
+    double Lm3 = Lm2 * Lm ;
 
-    double pi2=M_PI*M_PI;
+    double pi2 = M_PI * M_PI ;
 
-    if(i==1 && j==1 && k==1) return -1./6.*Lm3;
-    if(i==1 && j==1 && k==0) return 1./6*pi2*Lm - Li3(xm) + zeta3;
-    if(i==1 && j==1 && k==-1) return 0.5*H(x,1)*H(x,1,-1) - 0.5*H(x,1,-1,1);
-    if(i==1 && j==0 && k==1) return -2*S12(x) - Lm*Li2(x);
-    if(i==1 && j==0 && k==0) return -1./2*L2*Lm - L*Li2(x) + Li3(x);
-    if(i==1 && j==0 && k==-1) return H(x,1)*H(x,0,-1) - H(x,0,1,-1) - H(x,0,-1,1);
-    if(i==1 && j==-1 && k==1) return H(x,1)*H(x,-1,1) - 2*H(x,-1,1,1);
-    if(i==1 && j==-1 && k==0) return H(x,0)*H(x,1,-1) - H(x,0,1,-1) - H(x,1,0,-1);
-    if(i==1 && j==-1 && k==-1) return -0.5*log(xm/2)*Lp2 - Li3(0.5) - Lp*Li2(xp/2)+ Li3(xp/2);
+    if(i==1 && j==1 && k==1) return - 1. / 6. * Lm3 ;
+    if(i==1 && j==1 && k==0) return 1. / 6 * pi2 * Lm - Li3(xm) + zeta3 ;
+    if(i==1 && j==1 && k==-1) return 0.5 * H(x, 1) * H(x, 1, -1) - 0.5 * H(x, 1, -1, 1) ;
+    if(i==1 && j==0 && k==1) return - 2. * S12(x) - Lm * Li2(x) ;
+    if(i==1 && j==0 && k==0) return - 1. / 2 * L2 * Lm - L * Li2(x) + Li3(x) ;
+    if(i==1 && j==0 && k==-1) return H(x, 1) * H(x, 0, -1) - H(x, 0, 1, -1) - H(x, 0, -1, 1) ;
+    if(i==1 && j==-1 && k==1) return H(x, 1) * H(x, -1, 1) - 2. * H(x, -1, 1, 1) ;
+    if(i==1 && j==-1 && k==0) return H(x, 0) * H(x, 1, -1) - H(x, 0, 1, -1) - H(x, 1, 0, -1) ;
+    if(i==1 && j==-1 && k==-1) return - 0.5 * log(xm / 2.) * Lp2 - Li3(0.5) - Lp * Li2(xp / 2.) + Li3(xp / 2.) ;
 
-    if(i==0 && j==1 && k==1) return S12(x);
-    if(i==0 && j==1 && k==0) return L*Li2(x) - 2*Li3(x);
-    if(i==0 && j==1 && k==-1) return Li3(2*x/xp) - Li3(x/xp) - Li3(xp/2) - Li3(x) + Lp*Li2(0.5) + Lp*Li2(x) + 0.5*ln2*Lp2+ Li3(0.5);
-    if(i==0 && j==0 && k==1) return Li3(x);
-    if(i==0 && j==0 && k==0) return 1./6.*L3;
-    if(i==0 && j==0 && k==-1) return -Li3(-x);
-    if(i==0 && j==-1 && k==1) return -S12(x) + Li3(-2*x/xm) - Li3(xm/2) - Li3(-x) + Li3(0.5) + Li3(x) + Lm*Li2(-x) + Lm*Li2(0.5) - Lm*Li2(x)    + 0.5*ln2*Lm2 - 1./6.*Lm3;
-    if(i==0 && j==-1 && k==0) return -L*Li2(-x) + 2*Li3(-x);
-    if(i==0 && j==-1 && k==-1) return S12(-x);
+    if(i==0 && j==1 && k==1) return S12(x) ;
+    if(i==0 && j==1 && k==0) return L * Li2(x) - 2. * Li3(x) ;
+    if(i==0 && j==1 && k==-1) return Li3(2. * x / xp) - Li3(x / xp) - Li3(xp / 2.) - Li3(x) + Lp * Li2(0.5) + Lp * Li2(x) + 0.5 * ln2 * Lp2 + Li3(0.5) ;
+    if(i==0 && j==0 && k==1) return Li3(x) ;
+    if(i==0 && j==0 && k==0) return 1. / 6. * L3 ;
+    if(i==0 && j==0 && k==-1) return - Li3(-x) ;
+    if(i==0 && j==-1 && k==1) return - S12(x) + Li3(- 2. * x / xm) - Li3(xm / 2) - Li3(-x) + Li3(0.5) + Li3(x) + Lm * Li2(-x) + Lm * Li2(0.5) - Lm * Li2(x) + 0.5 * ln2 * Lm2 - 1. / 6. * Lm3 ;
+    if(i==0 && j==-1 && k==0) return - L * Li2(-x) + 2. * Li3(-x) ;
+    if(i==0 && j==-1 && k==-1) return S12(-x) ;
 
-    if(i==-1 && j==1 && k==1) return 0.5*log(xp/2)*Lm2 + Li3(0.5) + Lm*Li2(xm/2) - Li3(xm/2);
-    if(i==-1 && j==1 && k==0) return H(x,0)*H(x,-1,1) - H(x,0,-1,1) - H(x,-1,0,1);
-    if(i==-1 && j==1 && k==-1) return H(x,-1)*H(x,1,-1) - 2*H(x,1,-1,-1);
-    if(i==-1 && j==0 && k==1) return H(x,-1)*H(x,0,1) - H(x,0,-1,1) - H(x,0,1,-1);
-    if(i==-1 && j==0 && k==0) return 0.5*L2*Lp + L*Li2(-x) - Li3(-x);
-    if(i==-1 && j==0 && k==-1) return H(x,0,-1)*H(x,-1) - 2*H(x,0,-1,-1);
-    if(i==-1 && j==-1 && k==1) return 0.5*H(x,-1)*H(x,-1,1) - 0.5*H(x,-1,1,-1);
-    if(i==-1 && j==-1 && k==0) return H(x,0)*H(x,-1,-1) - H(x,0,-1,-1) - H(x,-1,0,-1);
-    if(i==-1 && j==-1 && k==-1) return 1./6.*Lp3;
+    if(i==-1 && j==1 && k==1) return 0.5 * log(xp / 2.) * Lm2 + Li3(0.5) + Lm * Li2(xm / 2.) - Li3(xm / 2) ;
+    if(i==-1 && j==1 && k==0) return H(x, 0) * H(x, -1, 1) - H(x, 0, -1, 1) - H(x, -1, 0, 1) ;
+    if(i==-1 && j==1 && k==-1) return H(x, -1) * H(x, 1, -1) - 2. * H(x, 1, -1, -1) ;
+    if(i==-1 && j==0 && k==1) return H(x, -1) * H(x, 0, 1) - H(x, 0, -1, 1) - H(x, 0, 1, -1) ;
+    if(i==-1 && j==0 && k==0) return 0.5 * L2 * Lp + L * Li2(-x) - Li3(-x) ;
+    if(i==-1 && j==0 && k==-1) return H(x, 0, -1) * H(x, -1) - 2. * H(x, 0, -1, -1) ;
+    if(i==-1 && j==-1 && k==1) return 0.5 * H(x, -1) * H(x, -1, 1) - 0.5 * H(x, -1, 1, -1) ;
+    if(i==-1 && j==-1 && k==0) return H(x, 0) * H(x, -1, -1) - H(x, 0, -1, -1) - H(x, -1, 0, -1) ;
+    if(i==-1 && j==-1 && k==-1) return 1. / 6. * Lp3 ;
 
     else  {
         cout    << "H(x,"<<i<<","<<j<<","<<k<<") is not defined."<<endl

@@ -291,7 +291,7 @@ double C2_g3_highenergy(double x, double mQ, double mMu, int nf) {
     double a21=nf*(26*CF - 23*CA)/36/pi2;
     double a10= -(11*CA + 2*nf*(1-2*CF/CA))/12/M_PI;
 
-    double beta0=(11*CA - 4*nf*TR)/12/M_PI;
+    double beta0= beta(0, nf) ;
 
     double Lmu=log(mMu);
     double Lmu2=Lmu*Lmu;
@@ -389,7 +389,7 @@ double CL_g3_highenergy(double x, double mQ, double mMu, int nf) {
     double a21=nf*(26*CF - 23*CA)/36/pi2;
     double a10= -(11*CA + 2*nf*(1-2*CF/CA))/12/M_PI;
 
-    double beta0=(11*CA - 4*nf*TR)/12/M_PI;
+    double beta0=beta(0, nf) ;
 
     double Lmu=log(mMu);
     double Lmu2=Lmu*Lmu;
@@ -521,7 +521,7 @@ double C2_g3_highenergy_highscale(double x, double mQ, double mMu, int nf) {
     double a21= nf*(26*CF - 23*CA)/36/pi2;
     double a10= -(11*CA + 2*nf*(1-2*CF/CA))/12/M_PI;
 
-    double beta0=(11*CA - 4*nf*TR)/12/M_PI;
+    double beta0=beta(0, nf) ;
 
     double tmp = (
         a10 * a11 * (
@@ -609,7 +609,7 @@ double CL_g3_highenergy_highscale(double x, double mQ, double mMu, int nf) {
     double a21= nf*(26*CF - 23*CA)/36/pi2;
     double a10= -(11*CA + 2*nf*(1-2*CF/CA))/12/M_PI;
 
-    double beta0=(11*CA - 4*nf*TR)/12/M_PI;
+    double beta0=beta(0, nf) ;
 
     double tmp = (
         - a21/9 - 1./54 * a10* a11 *(-136 + 6 * pi2)
@@ -668,7 +668,7 @@ double C2_g3_highenergy_ERR(double x, double mQ, double mMu, int nf) {
     //double a21=nf*(26*CF - 23*CA)/36/pi2;
     double a10= -(11*CA + 2*nf*(1-2*CF/CA))/12/M_PI;
 
-    double beta0=(11*CA - 4*nf*TR)/12/M_PI;
+    double beta0=beta(0, nf) ;
 
     double Lmu=log(mMu);
     double Lmu2=Lmu*Lmu;
@@ -727,7 +727,7 @@ double C2_g3_highenergy_highscale_ERR(double x, double mQ, double mMu, int nf) {
     //double a21= nf*(26*CF - 23*CA)/36/pi2;
     double a10= -(11*CA + 2*nf*(1-2*CF/CA))/12/M_PI;
 
-    double beta0=(11*CA - 4*nf*TR)/12/M_PI;
+    double beta0=beta(0, nf) ;
 
     double tmp = (
         Lmu2 * (
