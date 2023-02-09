@@ -15,30 +15,28 @@ using namespace std;
 
 double C2_g2_highenergy(double x, double mQ, double mMu) {
 
-    if(x>1 || x<0) return 0;
+    if(x>=1 || x<0) return 0;
 
-    double pi2=M_PI*M_PI;
+    double pi2 = M_PI * M_PI;
 
-    double xi=1./mQ;
+    double xi = 1. / mQ;
 
-    double overall=xi/(4*pi2);
+    double z = sqrt(xi / (xi + 4.));
 
-    double z=sqrt(xi/(xi+4));
+    double L = log((1. + z) / (1. - z));
 
-    double L=log((1+z)/(1-z));
+    double Hmp = H(z, 1, 1) + H(z, 1, -1) - H(z, -1, 1) - H(z, -1, -1);
 
-    double Hmp=H(z,1,1) + H(z,1,-1) - H(z,-1,1) - H(z,-1,-1);
+    double I = 4. * mQ * z * Hmp;
+    double J = 4. * mQ * z * L ;
 
-    double I=4*mQ*z*Hmp;
-    double J=4*mQ*z*L;
+    double LMu = log(mMu);
 
-    double LMu=log(mMu);
+    double c_const = 10./3. * mQ + (1. - mQ) * I + (13./6. - 5./3. * mQ) * J ;
 
-    double c_const= 10./3.*mQ+ (1-mQ)*I + (13./6.-5./3.*mQ)*J ;
+    double c_LMu = 2. * mQ + (1. - mQ) * J ;
 
-    double c_LMu= 2*mQ + (1-mQ)*J ;
-
-    return overall*4*M_PI*CA/12/M_PI*(c_const + c_LMu*LMu)/x;
+    return  xi * CA / 12. / pi2 * (c_const + c_LMu * LMu) / x ;
 
 }
 
@@ -60,24 +58,28 @@ double C2_ps2_highenergy(double x, double mQ, double mMu) {
 
 double CL_g2_highenergy(double x, double mQ, double mMu) {
 
-    if(x>1 || x<0) return 0;
+    if(x>=1 || x<0) return 0;
 
-    double xi=1./mQ;
+    double xi = 1. / mQ;
 
-    double z=sqrt(xi/(xi+4));
+    double z = sqrt(xi / (xi + 4.));
 
-    double L=log((1+z)/(1-z));
+    double L = log((1. + z) / (1. - z));
 
-    double Hmp=H(z,1,1) + H(z,1,-1) - H(z,-1,1) - H(z,-1,-1);
+    double Hmp=H(z, 1, 1) + H(z, 1, -1) - H(z, -1, 1) - H(z, -1, -1);
 
-    double I=4*mQ*z*Hmp;
-    double J=4*mQ*z*L;
+    double I = 4. * mQ * z * Hmp;
+    double J = 4. * mQ * z * L;
 
-    double LMu=log(1./mMu);
+    double LMu = log(1./mMu);
 
-    double c_const= (4*mQ - 4./3./(1+xi/4) + (1-2*mQ-1./6./(1+xi/4))*J - (3*mQ + 1./4./(1+xi/4))*I)/6/M_PI ;
+    double c_const = (
+        4. * mQ - 4./3. / (1. + xi/4) + (1. - 2. * mQ - 1./6. / (1. + xi/4)) * J - (3. * mQ + 1./4. / (1. + xi/4)) * I
+    ) / 6. / M_PI ;
 
-    double c_LMu= (-6*mQ + 1./2./(1+xi/4) + (3*mQ+ 1./4./(1+xi/4))*J)/6/M_PI;
+    double c_LMu = (
+        -6. * mQ + 1./2. / (1. + xi/4) + (3. * mQ+ 1./4. / (1. + xi/4)) * J
+    ) / 6. / M_PI;
 
     return xi / M_PI * CA * TR * (c_const + c_LMu * LMu) / x ;
 
@@ -102,7 +104,7 @@ double CL_ps2_highenergy(double x, double mQ, double mMu) {
 
 double C2_g2_highenergy_highscale(double x, double mQ , double mMu) {
 
-    if(x>1 || x<0) return 0;
+    if(x>=1 || x<0) return 0;
 
     double pi2=M_PI*M_PI;
 
@@ -139,7 +141,7 @@ double C2_ps2_highenergy_highscale(double x, double mQ, double mMu) {
 
 double CL_g2_highenergy_highscale(double x, double mQ , double mMu) {
 
-    if(x>1 || x<0) return 0;
+    if(x>=1 || x<0) return 0;
 
     double pi2=M_PI*M_PI;
 
@@ -175,7 +177,7 @@ double CL_ps2_highenergy_highscale(double x, double mQ, double mMu) {
 
 double C2_g2_power_terms(double x, double mQ , double mMu) {
 
-    if (x<0 || x>1) return 0;
+    if (x<0 || x>=1) return 0;
 
     return (
         C2_g2_highenergy(x,mQ ,mMu)
@@ -200,7 +202,7 @@ double C2_ps2_power_terms(double x, double mQ , double mMu) {
 
 double CL_g2_power_terms(double x, double mQ , double mMu) {
 
-    if (x<0 || x>1) return 0;
+    if (x<0 || x>=1) return 0;
 
     return (
         CL_g2_highenergy(x,mQ,mMu)
@@ -227,7 +229,7 @@ double CL_ps2_power_terms(double x, double mQ , double mMu) {
 
 double C2_g3_highenergyLL(double x, double mQ, double mMu) {
 
-    if(x>1 || x<0) return 0;
+    if(x>=1 || x<0) return 0;
 
     double pi2=M_PI*M_PI;
     double pi3=M_PI*pi2;
@@ -269,7 +271,7 @@ double C2_g3_highenergyLL(double x, double mQ, double mMu) {
 
 double C2_g3_highenergy(double x, double mQ, double mMu, int nf) {
 
-    if(x>1 || x<0) return 0;
+    if(x>=1 || x<0) return 0;
 
     double pi2 = M_PI*M_PI ;
 
@@ -367,7 +369,7 @@ double C2_ps3_highenergy(double x, double mQ, double mMu, int nf) {
 
 double CL_g3_highenergy(double x, double mQ, double mMu, int nf) {
 
-    if(x>1 || x<0) return 0;
+    if(x>=1 || x<0) return 0;
 
     double pi2 = M_PI*M_PI ;
 
@@ -466,7 +468,7 @@ double CL_ps3_highenergy(double x, double mQ, double mMu, int nf) {
 
 double C2_g3_highenergy_highscaleLL(double x, double mQ , double mMu) {
 
-    if(x>1 || x<0) return 0;
+    if(x>=1 || x<0) return 0;
 
     double pi2=M_PI*M_PI;
     double pi3=M_PI*pi2;
@@ -505,7 +507,7 @@ double C2_g3_highenergy_highscaleLL(double x, double mQ , double mMu) {
 
 double C2_g3_highenergy_highscale(double x, double mQ, double mMu, int nf) {
 
-    if(x>1 || x<0) return 0;
+    if(x>=1 || x<0) return 0;
 
     double pi2=M_PI*M_PI;
 
@@ -593,7 +595,7 @@ double C2_ps3_highenergy_highscale(double x, double mQ, double mMu, int nf) {
 
 double CL_g3_highenergy_highscale(double x, double mQ, double mMu, int nf) {
 
-    if(x>1 || x<0) return 0;
+    if(x>=1 || x<0) return 0;
 
     double pi2=M_PI*M_PI;
 
@@ -648,7 +650,7 @@ double CL_ps3_highenergy_highscale(double x, double mQ, double mMu, int nf) {
 
 double C2_g3_highenergy_ERR(double x, double mQ, double mMu, int nf) {
 
-    if(x>1 || x<0) return 0;
+    if(x>=1 || x<0) return 0;
 
     double xi=1./mQ;
 
@@ -712,7 +714,7 @@ double C2_g3_highenergy_ERR(double x, double mQ, double mMu, int nf) {
 
 double C2_g3_highenergy_highscale_ERR(double x, double mQ, double mMu, int nf) {
 
-    if(x>1 || x<0) return 0;
+    if(x>=1 || x<0) return 0;
 
     double pi2 = M_PI * M_PI;
 
@@ -773,7 +775,7 @@ double C2_g3_highenergy_highscale_ERR(double x, double mQ, double mMu, int nf) {
 
 double C2_g3_power_termsLL(double x, double mQ , double mMu) {
 
-    if (x<0 || x>1) return 0;
+    if (x<0 || x>=1) return 0;
 
     return (
         C2_g3_highenergyLL(x,mQ ,mMu)
@@ -788,7 +790,7 @@ double C2_g3_power_termsLL(double x, double mQ , double mMu) {
 
 double C2_g3_power_terms(double x, double mQ , double mMu, int nf, int v) {
 
-    if (x<0 || x>1) return 0;
+    if (x<0 || x>=1) return 0;
 
     return (
         C2_g3_highenergy(x,mQ,mMu,nf,v)
@@ -824,7 +826,7 @@ double C2_ps3_power_terms(double x, double mQ , double mMu, int nf) {
 
 double CL_g3_power_terms(double x, double mQ , double mMu, int nf) {
 
-    if (x<0 || x>1) return 0;
+    if (x<0 || x>=1) return 0;
 
     return (
         CL_g3_highenergy(x,mQ,mMu,nf)

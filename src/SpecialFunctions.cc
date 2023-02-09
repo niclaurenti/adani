@@ -1,12 +1,12 @@
 #include "adani/SpecialFunctions.h"
 #include "adani/Constants.h"
-
-//#include<gsl/gsl_sf.h>
-
 #include <iostream>
 #include <cmath>
 
 using namespace std;
+
+#define Li2_1_2 0.5822405265
+#define Li3_1_2 0.5372131936
 
 //==========================================================================================//
 //  Beta function.
@@ -194,26 +194,30 @@ double H(double x, int i) {
 
 double H(double x, int i, int j) {
 
-    double xp = 1. + x ;
-    double xm = 1. - x ;
-
-    double L = log(x) ;
-    double L2 = L * L ;
-    double Lp = log(xp) ;
-    double Lp2 = Lp * Lp ;
-    double Lm = log(xm) ;
-    double Lm2 = Lm * Lm ;
-
-    if(i==0 && j==0) return 0.5 * L2 ;
+    if(i==0 && j==0) {
+        double L = log(x) ;
+        return 0.5 * L * L ;
+    }
     if(i==0 && j==1) return Li2(x) ;
     if(i==0 && j==-1) return - Li2(-x) ;
-    if(i==1 && j==0) return - L * Lm - Li2(x) ; // there's a typo in the paper: +Li2(x)
-    if(i==1 && j==1) return 0.5 * Lm2 ;
-    if(i==1 && j==-1) return Li2(xm / 2.) - ln2 * Lm - Li2(0.5) ;
-    if(i==-1 && j==0) return L * Lp + Li2(-x) ;
-    if(i==-1 && j==1) return Li2(xp / 2) - ln2 * Lp - Li2(0.5) ;
-    if(i==-1 && j==-1) return 0.5 * Lp2 ;
-
+    if(i==1 && j==0) return - log(x) * log(1. - x) - Li2(x) ; // there's a typo in the paper: +Li2(x)
+    if(i==1 && j==1) {
+        double Lm = log(1. - x) ;
+        return 0.5 * Lm * Lm ;
+    }
+    if(i==1 && j==-1) {
+        double xm = 1. - x ;
+        return Li2(xm / 2.) - ln2 * log(xm) - Li2_1_2 ;
+    }
+    if(i==-1 && j==0) return log(x) * log(1. + x) + Li2(-x) ;
+    if(i==-1 && j==1) {
+        double xp = 1. + x ;
+        return Li2(xp / 2) - ln2 * log(xp) - Li2_1_2 ;
+    }
+    if(i==-1 && j==-1) {
+        double Lp = log(1. + x) ;
+        return 0.5 * Lp * Lp ;
+    }
     else  {
         cout    << "H(x,"<<i<<","<<j<<") is not defined."<<endl
                 << "Exiting..."<<endl;
@@ -285,5 +289,3 @@ double H(double x, int i, int j, int k) {
 
 
 }
-
-//__________________________________________________________
