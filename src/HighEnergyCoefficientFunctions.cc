@@ -642,8 +642,6 @@ double C2_g3_highenergy_ERR(double x, double mQ, double mMu, int nf) {
 
     if(x>=1 || x<0) return 0;
 
-    double xi=1./mQ;
-
     double z = sqrt(1. / (1. + 4. * mQ));
 
     double L=log((1+z)/(1-z));

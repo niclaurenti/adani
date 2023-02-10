@@ -92,18 +92,12 @@ double CL_g1(double x, double mQ) {
 
 double C2_g2(double x, double mQ, double mMu) {
 
-    double xi = 1. / mQ;
-    double eta = 0.25 * xi * (1 - x) / x - 1. ;
-
     double x_max = 1. / (1 + 4 * mQ) ;
 
     if (x>=x_max || x<0) return 0;
 
-    //if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return __builtin_nan("");
-    if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return 0.;
-
     return (
-        xi * c2nlog_(&eta, &xi) / x / M_PI
+        C2_g20(x, mQ)
         + C2_g21(x, mQ) * log(1. / mMu)
     ) ;
 
@@ -118,18 +112,12 @@ double C2_g2(double x, double mQ, double mMu) {
 
 double C2_ps2(double x, double mQ, double mMu) {
 
-    double xi = 1. / mQ;
-    double eta = 0.25 * xi * (1 - x) / x - 1. ;
-
     double x_max = 1. / (1 + 4 * mQ) ;
 
     if (x>=x_max || x<0) return 0;
 
-    //if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return __builtin_nan("");
-    if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return 0.;
-
     return (
-        xi * c2nloq_(&eta, &xi) / x / M_PI
+        C2_ps20(x, mQ)
         + C2_ps21(x, mQ) * log(1. / mMu)
     ) ;
 
@@ -144,18 +132,12 @@ double C2_ps2(double x, double mQ, double mMu) {
 
 double CL_g2(double x, double mQ, double mMu) {
 
-    double xi = 1. / mQ;
-    double eta = 0.25 * xi * (1 - x) / x - 1. ;
-
     double x_max = 1. / (1 + 4 * mQ) ;
 
     if (x>=x_max || x<0) return 0;
 
-    //if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return __builtin_nan("");
-    if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return 0.;
-
     return (
-        xi * clnlog_(&eta, &xi) / x / M_PI
+        CL_g20(x, mQ)
         + CL_g21(x, mQ) * log(1. / mMu)
     ) ;
 
@@ -170,18 +152,12 @@ double CL_g2(double x, double mQ, double mMu) {
 
 double CL_ps2(double x, double mQ, double mMu) {
 
-    double xi = 1. / mQ;
-    double eta = 0.25 * xi * (1 - x) / x - 1. ;
-
     double x_max = 1. / (1 + 4 * mQ) ;
 
     if (x>=x_max || x<0) return 0;
 
-    //if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return __builtin_nan("");
-    if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return 0.;
-
     return (
-        xi * clnloq_(&eta, &xi) / x / M_PI
+        CL_ps20(x, mQ)
         + CL_ps21(x, mQ) * log(1. / mMu)
     ) ;
 
@@ -227,6 +203,25 @@ double CL_ps2(double x, double mQ, double mMu) {
 // }
 
 //==========================================================================================//
+//  Exact massive gluon coefficient functions for F2 at O(alpha_s^2):
+//  mu independent term.
+//
+//  Eq. (4.4) of Ref. [arXiv:1205.5727]
+//------------------------------------------------------------------------------------------//
+
+double C2_ps20(double x, double mQ) {
+
+    double xi = 1. / mQ;
+    double eta = 0.25 * xi * (1 - x) / x - 1. ;
+
+    //if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return __builtin_nan("");
+    if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return 0.;
+
+    return xi * c2nloq_(&eta, &xi) / x / M_PI ;
+
+}
+
+//==========================================================================================//
 //  Exact massive quark coefficient functions for F2 at O(alpha_s^2):
 //  Term proportional to log(mu^2/m^2)
 //
@@ -244,6 +239,25 @@ double C2_ps21(double x, double mQ) {
     // the expansion is performed in terms of log(m^2/mu^2)
     // (even if it says the opposite) but we are
     // expanding in terms of log(mu^2/m^2)
+
+}
+
+//==========================================================================================//
+//  Exact massive gluon coefficient functions for F2 at O(alpha_s^2):
+//  mu independent term.
+//
+//  Eq. (4.4) of Ref. [arXiv:1205.5727]
+//------------------------------------------------------------------------------------------//
+
+double CL_ps20(double x, double mQ) {
+
+    double xi = 1. / mQ;
+    double eta = 0.25 * xi * (1 - x) / x - 1. ;
+
+    //if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return __builtin_nan("");
+    if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return 0.;
+
+    return xi * clnloq_(&eta, &xi) / x / M_PI ;
 
 }
 
@@ -266,6 +280,25 @@ double CL_ps21(double x, double mQ) {
 
 //==========================================================================================//
 //  Exact massive gluon coefficient functions for F2 at O(alpha_s^2):
+//  mu independent term.
+//
+//  Eq. (4.4) of Ref. [arXiv:1205.5727]
+//------------------------------------------------------------------------------------------//
+
+double C2_g20(double x, double mQ) {
+
+    double xi = 1. / mQ;
+    double eta = 0.25 * xi * (1 - x) / x - 1. ;
+
+    //if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return __builtin_nan("");
+    if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return 0.;
+
+    return xi * c2nlog_(&eta, &xi) / x / M_PI ;
+
+}
+
+//==========================================================================================//
+//  Exact massive gluon coefficient functions for F2 at O(alpha_s^2):
 //  Term proportional to log(mu^2/m^2)
 //
 //  Eq. (4.4) of Ref. [arXiv:1205.5727]
@@ -281,6 +314,26 @@ double C2_g21(double x, double mQ) {
     //Put nf to 1 since the nf contribution cancels for any value of nf
 
     return - (C2_g1_x_Pgg0(x, mQ, nf) - C2_g1(x, mQ) * beta(0,nf));
+
+}
+
+
+//==========================================================================================//
+//  Exact massive gluon coefficient functions for F2 at O(alpha_s^2):
+//  mu independent term.
+//
+//  Eq. (4.4) of Ref. [arXiv:1205.5727]
+//------------------------------------------------------------------------------------------//
+
+double CL_g20(double x, double mQ) {
+
+    double xi = 1. / mQ;
+    double eta = 0.25 * xi * (1 - x) / x - 1. ;
+
+    //if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return __builtin_nan("");
+    if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return 0.;
+
+    return xi * clnlog_(&eta, &xi) / x / M_PI ;
 
 }
 

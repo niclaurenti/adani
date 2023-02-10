@@ -78,6 +78,15 @@ double CL_ps2(double x, double mQ, double mMu);
 // double DL_g2_5(double x, double mQ, double mMu);
 
 //==========================================================================================//
+//  Exact massive coefficient functions O(alpha_s^2): mu-independent terms
+//------------------------------------------------------------------------------------------//
+
+double C2_g20(double x, double mQ);
+double CL_g20(double x, double mQ);
+double C2_ps20(double x, double mQ);
+double CL_ps20(double x, double mQ);
+
+//==========================================================================================//
 //  Exact massive coefficient functions O(alpha_s^2): terms proportional to log(mu^2/m^2)
 //------------------------------------------------------------------------------------------//
 
@@ -101,9 +110,6 @@ double CL_g31(double x, double mQ, int nf);
 
 double C2_ps32(double x, double mQ, int nf) ;
 double CL_ps32(double x, double mQ, int nf) ;
-
-double C2_g31(double x, double mQ, int nf) ;
-double CL_g31(double x, double mQ, int nf) ;
 
 // These two expressions are integrated with montcarlo methods
 
