@@ -28,7 +28,7 @@ double C2_g1(double x, double mQ) { //mQ=m^2/Q^2
     return 4 * TR * (
         L * (-8 * x2 * mQ2 - 4 * x * mQ * (3 * x - 1) + 2 * x2 - 2 * x + 1)
         + beta * (4 * mQ * x * (x - 1) - (8 * x2 - 8 * x + 1))
-    ) / 4. / M_PI ;
+    ) ;
 
 }
 
@@ -50,7 +50,7 @@ double CL_g1(double x, double mQ) {
 
     return 16. * TR * (
         x * (1. - x) * beta - 2. * x2 * mQ * L
-    ) / 4. / M_PI ;
+    ) ;
 
 }
 
@@ -217,7 +217,7 @@ double C2_ps20(double x, double mQ) {
     //if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return __builtin_nan("");
     if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return 0.;
 
-    return xi * c2nloq_(&eta, &xi) / x / M_PI ;
+    return 16 * M_PI * xi * c2nloq_(&eta, &xi) / x ;
 
 }
 
@@ -257,7 +257,7 @@ double CL_ps20(double x, double mQ) {
     //if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return __builtin_nan("");
     if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return 0.;
 
-    return xi * clnloq_(&eta, &xi) / x / M_PI ;
+    return 16 * M_PI * xi * clnloq_(&eta, &xi) / x ;
 
 }
 
@@ -293,7 +293,7 @@ double C2_g20(double x, double mQ) {
     //if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return __builtin_nan("");
     if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return 0.;
 
-    return xi * c2nlog_(&eta, &xi) / x / M_PI ;
+    return 16 * M_PI * xi * c2nlog_(&eta, &xi) / x ;
 
 }
 
@@ -333,7 +333,7 @@ double CL_g20(double x, double mQ) {
     //if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return __builtin_nan("");
     if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return 0.;
 
-    return xi * clnlog_(&eta, &xi) / x / M_PI ;
+    return 16 * M_PI * xi * clnlog_(&eta, &xi) / x ;
 
 }
 
