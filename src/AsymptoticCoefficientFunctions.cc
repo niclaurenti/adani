@@ -9,7 +9,7 @@
 
 double C2_g1_asymptotic(double x, double mQ) {
 
-    return C2_g1_highscale(x,mQ);
+    return C2_g1_highscale(x, mQ);
 
 }
 
@@ -29,7 +29,7 @@ double CL_g1_asymptotic(double x) {
 
 double C2_g2_asymptotic(double x, double mQ, double mMu) {
 
-    return C2_g2_highscale(x,mQ,mMu) + C2_g2_power_terms(x,mQ,mMu);
+    return C2_g2_highscale(x, mQ, mMu) + C2_g2_power_terms(x, mQ, mMu);
 
 }
 
@@ -39,7 +39,7 @@ double C2_g2_asymptotic(double x, double mQ, double mMu) {
 
 double C2_ps2_asymptotic(double x, double mQ, double mMu) {
 
-    return C2_ps2_highscale(x,mQ,mMu) + C2_ps2_power_terms(x,mQ,mMu);
+    return C2_ps2_highscale(x, mQ, mMu) + C2_ps2_power_terms(x, mQ, mMu);
 
 }
 
@@ -49,7 +49,7 @@ double C2_ps2_asymptotic(double x, double mQ, double mMu) {
 
 double CL_g2_asymptotic(double x, double mQ, double mMu) {
 
-    return CL_g2_highscale(x,mQ,mMu) + CL_g2_power_terms(x,mQ,mMu);
+    return CL_g2_highscale(x, mQ, mMu) + CL_g2_power_terms(x, mQ, mMu);
 
 }
 
@@ -59,7 +59,7 @@ double CL_g2_asymptotic(double x, double mQ, double mMu) {
 
 double CL_ps2_asymptotic(double x, double mQ, double mMu) {
 
-    return CL_ps2_highscale(x,mQ,mMu) + CL_ps2_power_terms(x,mQ,mMu);
+    return CL_ps2_highscale(x, mQ, mMu) + CL_ps2_power_terms(x, mQ, mMu);
 
 }
 
@@ -69,7 +69,7 @@ double CL_ps2_asymptotic(double x, double mQ, double mMu) {
 
 double C2_g3_asymptoticLL(double x, double mQ, double mMu, int nf, int v) {
 
-    return C2_g3_highscale(x,mQ,mMu,nf,v) + C2_g3_power_termsLL(x,mQ,mMu);
+    return C2_g3_highscale(x, mQ, mMu, nf, v) + C2_g3_power_termsLL(x, mQ, mMu);
 
 }
 
@@ -79,7 +79,7 @@ double C2_g3_asymptoticLL(double x, double mQ, double mMu, int nf, int v) {
 
 double C2_g3_asymptotic(double x, double mQ, double mMu, int nf, int v1, int v2) {
 
-    return C2_g3_highscale(x,mQ,mMu,nf,v1) + C2_g3_power_terms(x,mQ,mMu,nf,v2);
+    return C2_g3_highscale(x, mQ, mMu, nf, v1) + C2_g3_power_terms(x, mQ, mMu, nf, v2);
 
 }
 
@@ -89,7 +89,7 @@ double C2_g3_asymptotic(double x, double mQ, double mMu, int nf, int v1, int v2)
 
 double C2_ps3_asymptotic(double x, double mQ, double mMu, int nf) {
 
-    return C2_ps3_highscale(x,mQ,mMu,nf) + C2_ps3_power_terms(x,mQ,mMu,nf);
+    return C2_ps3_highscale(x, mQ, mMu, nf) + C2_ps3_power_terms(x, mQ, mMu, nf);
 
 }
 
@@ -99,7 +99,7 @@ double C2_ps3_asymptotic(double x, double mQ, double mMu, int nf) {
 
 double CL_g3_asymptotic(double x, double mQ, double mMu, int nf) {
 
-    return CL_g3_highscale(x,mQ,mMu,nf) + CL_g3_power_terms(x,mQ,mMu,nf);
+    return CL_g3_highscale(x, mQ, mMu, nf) + CL_g3_power_terms(x, mQ, mMu, nf);
 
 }
 
@@ -109,6 +109,6 @@ double CL_g3_asymptotic(double x, double mQ, double mMu, int nf) {
 
 double CL_ps3_asymptotic(double x, double mQ, double mMu, int nf) {
 
-    return CL_ps3_highscale(x,mQ,mMu,nf) + CL_ps3_power_terms(x,mQ,mMu,nf);
+    return CL_ps3_highscale(x, mQ, mMu, nf) + CL_ps3_power_terms(x, mQ, mMu, nf);
 
 }

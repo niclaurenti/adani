@@ -19,7 +19,7 @@
 
 double C2_b1_x_K_Qg1(double x, double mMu) {
 
-    if (x<0 || x>1) return 0;
+    if (x<0 || x>=1) return 0;
 
     double x2 = x * x ;
     double x1 = 1 - x ;
@@ -28,12 +28,12 @@ double C2_b1_x_K_Qg1(double x, double mMu) {
     double pi2 = M_PI * M_PI ;
 
     double res = (
-        -5. / 2. +  2 * (3 - 4 * x) * x + pi2 / 6. * (-1 + 2 * x - 4 * x2)
-        + L1 * L1 * (1 - 2 * x1 * x) - 0.5 * L1 * (7 + 4 * x * (-4 + 3 * x) + (4 - 8 * x1 * x) * L)
-        + 0.5 * L * (-1 + 4 * x * (3 * x - 2) + (1 - 2 * x + 4 * x2) * L) + (2 * x - 1) * Li2(x)
+        -5. / 2. +  2. * (3. - 4. * x) * x + pi2 / 6. * (-1. + 2. * x - 4. * x2)
+        + L1 * L1 * (1. - 2. * x1 * x) - 0.5 * L1 * (7. + 4. * x * (-4. + 3. * x) + (4. - 8. * x1 * x) * L)
+        + 0.5 * L * (-1. + 4. * x * (3. * x - 2.) + (1. - 2. * x + 4. * x2) * L) + (2. * x - 1.) * Li2(x)
     ) ;
 
-    return 2 * CF * 2 * TR * res * log(1./mMu) / 16. / pi2 ;
+    return 4. * CF * TR * res * log(1./mMu) / 16. / pi2 ;
 
 }
 
@@ -44,13 +44,13 @@ double C2_b1_x_K_Qg1(double x, double mMu) {
 
 double CL_b1_x_K_Qg1(double x, double mMu) {
 
-    if (x<0 || x>1) return 0;
+    if (x<0 || x>=1) return 0;
 
     double x2 = x * x ;
     double L = log(x) ;
     double pi2 = M_PI * M_PI ;
 
-    return 8 * CF * TR * (1 + x - 2 * x2 + 2 * x * L) * log(1./mMu) / 16. / pi2 ;
+    return 8. * CF * TR * (1. + x - 2. * x2 + 2. * x * L) * log(1./mMu) / 16. / pi2 ;
 
 }
 
@@ -58,56 +58,56 @@ double CL_b1_x_K_Qg1(double x, double mMu) {
 //  Convolution between first order matching KQg1 and the second order matching Kgg2
 //------------------------------------------------------------------------------------------//
 
-double K_Qg1_x_K_gg2(double x, double mMu) {
+// double K_Qg1_x_K_gg2(double x, double mMu) {
 
-    if (x<0 || x>1) return 0;
+//     if (x<0 || x>=1) return 0;
 
-    double Lmu=log(1./mMu);
-    double Lmu2=Lmu*Lmu;
+//     double Lmu=log(1./mMu);
+//     double Lmu2=Lmu*Lmu;
 
-    double pi2=M_PI*M_PI;
-    double pi3=pi2*M_PI;
+//     double pi2=M_PI*M_PI;
+//     double pi3=pi2*M_PI;
 
-    double x2=x*x;
-    double x3=x2*x;
+//     double x2=x*x;
+//     double x3=x2*x;
 
-    double L=log(x);
-    double L2=L*L;
-    double L3=L2*L;
-    double L4=L3*L;
+//     double L=log(x);
+//     double L2=L*L;
+//     double L3=L2*L;
+//     double L4=L3*L;
 
-    double Lm=log(1-x);
-    //double Lm2=Lm*Lm;
+//     double Lm=log(1-x);
+//     //double Lm2=Lm*Lm;
 
-    double K_log2_TR2 = 16./9.*(1-2*x+2*x*x);
+//     double K_log2_TR2 = 16./9.*(1-2*x+2*x*x);
 
-    double K_log2_CATR = 4./9./x*(4 + 3*x +24*x2 - 31*x3 + 6*x*(1 - 2*x +2*x2)*Lm + 6*x*(1+4*x)*L);
+//     double K_log2_CATR = 4./9./x*(4 + 3*x +24*x2 - 31*x3 + 6*x*(1 - 2*x +2*x2)*Lm + 6*x*(1+4*x)*L);
 
-    double K_log2_CFTR = 4./9.*(-81 + 8./x +135*x -62*x2 + 3*(-9+8*x2)*L + 9*(-1+2*x)*L2);
+//     double K_log2_CFTR = 4./9.*(-81 + 8./x +135*x -62*x2 + 3*(-9+8*x2)*L + 9*(-1+2*x)*L2);
 
-    double K_log2= TR*TR*K_log2_TR2 + CA*TR*K_log2_CATR + CF*TR*K_log2_CFTR;
+//     double K_log2= TR*TR*K_log2_TR2 + CA*TR*K_log2_CATR + CF*TR*K_log2_CFTR;
 
-    double K_log_CATR = 4./27./x*(92 - 33*x +528*x2 - 551*x3 + 60*x*(1-2*x+2*x2)*Lm + 6*x*(13+64*x+26*x2)*L + 18*x*(-1+2*x)*L2);
+//     double K_log_CATR = 4./27./x*(92 - 33*x +528*x2 - 551*x3 + 60*x*(1-2*x+2*x2)*Lm + 6*x*(13+64*x+26*x2)*L + 18*x*(-1+2*x)*L2);
 
-    double K_log_CFTR = 4./9./x*(-8 - 423*x +792*x2 - 352*x3 + 6*x*(-42 + 9*x + 20*x2)*L + 9*x*(-5+12*x)*L2 + 6*x*(-1+2*x)*L3);
+//     double K_log_CFTR = 4./9./x*(-8 - 423*x +792*x2 - 352*x3 + 6*x*(-42 + 9*x + 20*x2)*L + 9*x*(-5+12*x)*L2 + 6*x*(-1+2*x)*L3);
 
-    double K_log= K_log_CATR*CA*TR + K_log_CFTR*CF*TR;
+//     double K_log= K_log_CATR*CA*TR + K_log_CFTR*CF*TR;
 
-    double K_const_CFTR = 1./3/x*(-16 -660*x + 999*x2 - 368*x3 + 9*x*(-48 - 9*x +16*x2)*L + 3*x*(-28 +23*x)*L2 + 2*x*(-5+12*x)*L3+x*(-1+2*x)*L4);
+//     double K_const_CFTR = 1./3/x*(-16 -660*x + 999*x2 - 368*x3 + 9*x*(-48 - 9*x +16*x2)*L + 3*x*(-28 +23*x)*L2 + 2*x*(-5+12*x)*L3+x*(-1+2*x)*L4);
 
-    double K_const_CATR = 2./81./x*(556 - 660*x + 5052*x2 - 18*pi2*x2 - 4903*x3 + 6*x*(47 - 121*x + 130*x2)*Lm + 210*x*L + 3036*x2*L + 1320*x3*L - 171*x*L2 + 450*x2*L2 - 18*x*L3 + 36*x2*L3 +108*x2*Li2(x));
+//     double K_const_CATR = 2./81./x*(556 - 660*x + 5052*x2 - 18*pi2*x2 - 4903*x3 + 6*x*(47 - 121*x + 130*x2)*Lm + 210*x*L + 3036*x2*L + 1320*x3*L - 171*x*L2 + 450*x2*L2 - 18*x*L3 + 36*x2*L3 +108*x2*Li2(x));
 
-    double K_const= K_const_CFTR*CF*TR + K_const_CATR*CA*TR;
+//     double K_const= K_const_CFTR*CF*TR + K_const_CATR*CA*TR;
 
-    return 2*TR*Lmu*(K_log2*Lmu2 + K_log*(-Lmu) + K_const)/64/pi3;
+//     return 2*TR*Lmu*(K_log2*Lmu2 + K_log*(-Lmu) + K_const)/64/pi3;
 
-}
+// }
 
 // Requires Li4 that is not implemented
 
 // double C2_b2_x_K_bg1(double x, double mMu, int nf) {
 
-//     if (x<0 || x>1) return 0;
+//     if (x<0 || x>=1) return 0;
 
 //     double Lmu = log(1./mMu) ;
 //     double pi3 = M_PI * M_PI * M_PI ;
@@ -222,6 +222,7 @@ double C2_g1_x_Pgq0_integrand(double z, void * p) {
     //int nf = (params->nf);
 
     return C2_g1(z, mQ) * Pgq0(x / z) / z ;
+
 }
 
 double C2_g1_x_Pgq0(double x, double mQ) {
@@ -265,6 +266,7 @@ double CL_g1_x_Pgq0_integrand(double z, void * p) {
     //int nf = (params->nf);
 
     return CL_g1(z, mQ) * Pgq0(x / z) / z;
+
 }
 
 // Result
@@ -310,6 +312,7 @@ double C2_g1_x_Pgg0_reg_integrand(double z, void * p) {
     //int nf = (params->nf);
 
     return C2_g1(z, mQ) * Pgg0reg(x / z) / z;
+
 }
 
 // Integrand of the singular part
@@ -323,6 +326,7 @@ double C2_g1_x_Pgg0_sing_integrand(double z, void * p) {
     //int nf = (params->nf);
 
     return Pgg0sing(z) * (C2_g1(x / z, mQ) / z - C2_g1(x , mQ)) ;
+
 }
 
 // Needed to integrate singular part
@@ -364,6 +368,7 @@ double C2_g1_x_Pgg0(double x, double mQ, int nf) {
     gsl_integration_workspace_free (w);
 
     return regular + singular + local ;
+
 }
 
 //==========================================================================================//
@@ -382,6 +387,7 @@ double CL_g1_x_Pgg0_reg_integrand(double z, void * p) {
     //int nf = (params->nf);
 
     return CL_g1(z, mQ) * Pgg0reg(x / z) / z;
+
 }
 
 // Integrand of the singular part
@@ -395,6 +401,7 @@ double CL_g1_x_Pgg0_sing_integrand(double z, void * p) {
     //int nf = (params->nf);
 
     return Pgg0sing(z) * (CL_g1(x / z, mQ) / z - CL_g1(x , mQ)) ;
+
 }
 
 // Result
@@ -428,6 +435,7 @@ double CL_g1_x_Pgg0(double x, double mQ, int nf) {
     gsl_integration_workspace_free (w);
 
     return regular + singular + local ;
+
 }
 
 //==========================================================================================//
@@ -446,6 +454,7 @@ double C2_g1_x_Pgq1_integrand(double z, void * p) {
     int nf = (params->nf);
 
     return C2_g1(z, mQ) * Pgq1(x / z, nf) / z ;
+
 }
 
 // Result
@@ -490,6 +499,7 @@ double CL_g1_x_Pgq1_integrand(double z, void * p) {
     int nf = (params->nf);
 
     return CL_g1(z, mQ) * Pgq1(x / z, nf) / z;
+
 }
 
 // Result
@@ -534,6 +544,7 @@ double C2_g20_x_Pgq0_integrand(double z, void * p) {
     //int nf = (params->nf);
 
     return C2_g2(z, mQ, 1) * Pgq0(x / z) / z ;
+
 }
 
 // Result
@@ -578,6 +589,7 @@ double CL_g20_x_Pgq0_integrand(double z, void * p) {
     //int nf = (params->nf);
 
     return CL_g2(z, mQ, 1) * Pgq0(x / z) / z;
+
 }
 
 // Result
@@ -622,6 +634,7 @@ double C2_ps20_x_Pqq0_reg_integrand(double z, void * p) {
     //int nf = (params->nf);
 
     return C2_ps2(z, mQ, 1) * Pqq0reg(x / z) / z;
+
 }
 
 // Integrand of the singular part
@@ -635,6 +648,7 @@ double C2_ps20_x_Pqq0_sing_integrand(double z, void * p) {
     //int nf = (params->nf);
 
     return Pqq0sing(z) * (C2_ps2(x / z, mQ, 1) / z - C2_ps2(x , mQ, 1)) ;
+
 }
 
 // Needed to integrate singular part
@@ -673,6 +687,7 @@ double C2_ps20_x_Pqq0(double x, double mQ, int nf) {
     gsl_integration_workspace_free (w);
 
     return regular + singular + local ;
+
 }
 
 //==========================================================================================//
@@ -691,6 +706,7 @@ double CL_ps20_x_Pqq0_reg_integrand(double z, void * p) {
     //int nf = (params->nf);
 
     return CL_ps2(z, mQ, 1) * Pqq0reg(x / z) / z;
+
 }
 
 // Integrand of the singular part
@@ -704,6 +720,7 @@ double CL_ps20_x_Pqq0_sing_integrand(double z, void * p) {
     //int nf = (params->nf);
 
     return Pqq0sing(z) * (CL_ps2(x / z, mQ, 1) / z - CL_ps2(x , mQ, 1)) ;
+
 }
 
 // Result
@@ -734,6 +751,7 @@ double CL_ps20_x_Pqq0(double x, double mQ, int nf) {
     gsl_integration_workspace_free (w);
 
     return regular + singular + local ;
+
 }
 
 //==========================================================================================//
@@ -788,6 +806,7 @@ double C2_g1_x_Pgg0_x_Pgq0_integrand(double z, void * p) {
     int nf = (params->nf);
 
     return C2_g1(z, mQ) * Pgg0_x_Pgq0(x / z, nf) / z;
+
 }
 
 // Result
@@ -832,6 +851,7 @@ double CL_g1_x_Pgg0_x_Pgq0_integrand(double z, void * p) {
     int nf = (params->nf);
 
     return CL_g1(z, mQ) * Pgg0_x_Pgq0(x / z, nf) / z;
+
 }
 
 // Result
@@ -876,6 +896,7 @@ double C2_g1_x_Pqq0_x_Pgq0_integrand(double z, void * p) {
     //int nf = (params->nf);
 
     return C2_g1(z, mQ) * Pqq0_x_Pgq0(x / z) / z;
+
 }
 
 // Result
@@ -920,6 +941,7 @@ double CL_g1_x_Pqq0_x_Pgq0_integrand(double z, void * p) {
     //int nf = (params->nf);
 
     return CL_g1(z, mQ) * Pqq0_x_Pgq0(x / z) / z;
+
 }
 
 // Result
@@ -964,6 +986,7 @@ double C2_g1_x_Pgg1_reg_integrand(double z, void * p) {
     int nf = (params->nf);
 
     return C2_g1(z, mQ) * Pgg1reg(x / z, nf) / z;
+
 }
 
 // Integrand of the singular part
@@ -977,6 +1000,7 @@ double C2_g1_x_Pgg1_sing_integrand(double z, void * p) {
     int nf = (params->nf);
 
     return Pgg1sing(z, nf) * (C2_g1(x / z, mQ) / z - C2_g1(x , mQ)) ;
+
 }
 
 // Needed to integrate singular part
@@ -1034,6 +1058,7 @@ double CL_g1_x_Pgg1_reg_integrand(double z, void * p) {
     int nf = (params->nf);
 
     return CL_g1(z, mQ) * Pgg1reg(x / z, nf) / z;
+
 }
 
 // Integrand of the regular part
@@ -1047,6 +1072,7 @@ double CL_g1_x_Pgg1_sing_integrand(double z, void * p) {
     int nf = (params->nf);
 
     return Pgg1sing(z, nf) * (CL_g1(x / z, mQ) / z - CL_g1(x , mQ)) ;
+
 }
 
 // Result
@@ -1096,6 +1122,7 @@ double C2_ps20_x_Pqg0_integrand(double z, void * p) {
     int nf = (params->nf);
 
     return C2_ps2(z, mQ, 1) * Pqg0(x / z, nf) / z ;
+
 }
 
 // Result
@@ -1140,6 +1167,7 @@ double CL_ps20_x_Pqg0_integrand(double z, void * p) {
     int nf = (params->nf);
 
     return CL_ps2(z, mQ, 1) * Pqg0(x / z, nf) / z ;
+
 }
 
 // Result
@@ -1184,6 +1212,7 @@ double C2_g20_x_Pgg0_reg_integrand(double z, void * p) {
     //int nf = (params->nf);
 
     return C2_g2(z, mQ, 1) * Pgg0reg(x / z) / z;
+
 }
 
 // Integrand of the singular part
@@ -1197,6 +1226,7 @@ double C2_g20_x_Pgg0_sing_integrand(double z, void * p) {
     //int nf = (params->nf);
 
     return Pgg0sing(z) * (C2_g2(x / z, mQ, 1) / z - C2_g2(x , mQ, 1)) ;
+
 }
 
 // Result
@@ -1246,6 +1276,7 @@ double CL_g20_x_Pgg0_reg_integrand(double z, void * p) {
     //int nf = (params->nf);
 
     return CL_g2(z, mQ, 1) * Pgg0reg(x / z) / z;
+
 }
 
 // Integrand of the singular part
@@ -1259,6 +1290,7 @@ double CL_g20_x_Pgg0_sing_integrand(double z, void * p) {
     //int nf = (params->nf);
 
     return Pgg0sing(z) * (CL_g2(x / z, mQ, 1) / z - CL_g2(x , mQ, 1)) ;
+
 }
 
 // Result
@@ -1459,6 +1491,7 @@ double C2_g1_x_Pgg0_x_Pgg0(double x, double mQ, int nf) {
     gsl_integration_workspace_free (w);
 
     return regular + singular + local ;
+
 }
 
 //==========================================================================================//
@@ -1524,6 +1557,7 @@ double CL_g1_x_Pgg0_x_Pgg0(double x, double mQ, int nf) {
     gsl_integration_workspace_free (w);
 
     return regular + singular + local ;
+
 }
 
 //==========================================================================================//

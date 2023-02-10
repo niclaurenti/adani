@@ -107,8 +107,6 @@ double C2_g2_highenergy_highscale(double x, double mQ , double mMu) {
 
     double pi2 = M_PI * M_PI;
 
-    double xi = 1. / mQ;
-
     double LQ = log(1. / mQ);
     double L2Q = LQ * LQ;
 
@@ -143,8 +141,6 @@ double CL_g2_highenergy_highscale(double x, double mQ , double mMu) {
     if(x>=1 || x<0) return 0;
 
     double pi2 = M_PI * M_PI;
-
-    double xi = 1. / mQ;
 
     double LQ = log(1./mQ);
 
@@ -467,32 +463,29 @@ double C2_g3_highenergy_highscaleLL(double x, double mQ , double mMu) {
 
     if(x>=1 || x<0) return 0;
 
-    double pi2=M_PI*M_PI;
-    double pi3=M_PI*pi2;
+    double pi2 = M_PI * M_PI;
+    double pi3 = M_PI * pi2;
 
-    double xi=1/mQ;
-    double overall=xi/(4*pi2);
+    double LQ = log(1. / mQ);
+    double L2Q = LQ * LQ;
+    double L3Q = LQ * L2Q;
 
-    double LQ=log(1./mQ);
-    double L2Q=LQ*LQ;
-    double L3Q=LQ*L2Q;
-
-    double LMu=log(mMu);
-    double L2Mu=LMu*LMu;
+    double LMu = log(mMu);
+    double L2Mu = LMu * LMu;
 
     double c_L3Q = 32./9.;
 
     double c_L2Q = 208./9.;
 
-    double c_LQ = 2272./27. - 64./3.*zeta2;
+    double c_LQ = 2272./27. - 64./3. * zeta2;
 
     double c_const = 1472./27. - 416./9.*zeta2 + 128./3.*zeta3;
 
-    double c_LMu = 32./3.*L2Q + 416./9.*LQ + 160./9. - 64./3.*zeta2;
+    double c_LMu = 32./3. * L2Q + 416./9. * LQ + 160./9. - 64./3. * zeta2;
 
-    double c_L2Mu = 32./3.*LQ + 16./3.;
+    double c_L2Mu = 32./3. * LQ + 16./3.;
 
-    return -mQ*overall*(16*pi2)*CA*CA*log(x)/(256*pi3)*(c_L3Q*L3Q + c_L2Q*L2Q + c_LQ*LQ + c_const + c_LMu*LMu + c_L2Mu*L2Mu)/x;
+    return - CA * CA * log(x) / (64 * pi3) * (c_L3Q*L3Q + c_L2Q*L2Q + c_LQ*LQ + c_const + c_LMu*LMu + c_L2Mu*L2Mu)/x;
 
 }
 

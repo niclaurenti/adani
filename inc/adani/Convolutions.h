@@ -32,7 +32,7 @@ struct function_params {double x; double mQ; int nf;};
 double C2_b1_x_K_Qg1(double x, double mMu);
 double CL_b1_x_K_Qg1(double x, double mMu);
 
-double K_Qg1_x_K_gg2(double x, double mMu);
+// double K_Qg1_x_K_gg2(double x, double mMu);
 
 // double C2_b2_x_K_bg1(double x, double mMu, int nf);
 
