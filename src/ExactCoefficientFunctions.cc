@@ -25,9 +25,9 @@ double C2_g1(double x, double mQ) { //mQ=m^2/Q^2
     double mQ2 = mQ * mQ ;
     double L = log((1. + beta) / (1. - beta)) ;
 
-    return 4 * TR * (
-        L * (-8 * x2 * mQ2 - 4 * x * mQ * (3 * x - 1) + 2 * x2 - 2 * x + 1)
-        + beta * (4 * mQ * x * (x - 1) - (8 * x2 - 8 * x + 1))
+    return 4. * TR * (
+        L * (-8. * x2 * mQ2 - 4. * x * mQ * (3. * x - 1) + 2. * x2 - 2. * x + 1.)
+        + beta * (4. * mQ * x * (x - 1.) - (8. * x2 - 8. * x + 1.))
     ) / 4. / M_PI ;
 
 }
@@ -203,7 +203,7 @@ double CL_ps2(double x, double mQ, double mMu) {
 // }
 
 //==========================================================================================//
-//  Exact massive gluon coefficient functions for F2 at O(alpha_s^2):
+//  Exact massive quark coefficient functions for F2 at O(alpha_s^2):
 //  mu independent term.
 //
 //  Eq. (4.4) of Ref. [arXiv:1205.5727]
@@ -243,7 +243,7 @@ double C2_ps21(double x, double mQ) {
 }
 
 //==========================================================================================//
-//  Exact massive gluon coefficient functions for F2 at O(alpha_s^2):
+//  Exact massive quark coefficient functions for FL at O(alpha_s^2):
 //  mu independent term.
 //
 //  Eq. (4.4) of Ref. [arXiv:1205.5727]
@@ -319,7 +319,7 @@ double C2_g21(double x, double mQ) {
 
 
 //==========================================================================================//
-//  Exact massive gluon coefficient functions for F2 at O(alpha_s^2):
+//  Exact massive gluon coefficient functions for FL at O(alpha_s^2):
 //  mu independent term.
 //
 //  Eq. (4.4) of Ref. [arXiv:1205.5727]
@@ -374,7 +374,7 @@ double C2_ps31(double x, double mQ, int nf) {
         C2_g1_x_Pgq1(x, mQ, nf)
         + C2_g20_x_Pgq0(x, mQ)
         + C2_ps20_x_Pqq0(x, mQ, nf)
-        - 2. * beta(0, nf) * C2_ps2(x, mQ, 1)
+        - 2. * beta(0, nf) * C2_ps20(x, mQ)
    ) ;
 
 }
@@ -396,7 +396,7 @@ double CL_ps31(double x, double mQ, int nf) {
         CL_g1_x_Pgq1(x, mQ, nf)
         + CL_g20_x_Pgq0(x, mQ)
         + CL_ps20_x_Pqq0(x, mQ, nf)
-        - 2. * beta(0, nf) * CL_ps2(x, mQ, 1)
+        - 2. * beta(0, nf) * CL_ps20(x, mQ)
    ) ;
 
 }
@@ -459,7 +459,7 @@ double C2_g31(double x, double mQ, int nf) {
         - beta(1, nf) * C2_g1(x, mQ)
         + C2_ps20_x_Pqg0(x, mQ, nf)
         + C2_g20_x_Pgg0(x, mQ, nf)
-        - 2. * beta(0,nf) * C2_g2(x, mQ, 1)
+        - 2. * beta(0,nf) * C2_g20(x, mQ)
    );
 
 }
@@ -482,7 +482,7 @@ double CL_g31(double x, double mQ, int nf) {
         - beta(1, nf) * CL_g1(x, mQ)
         + CL_ps20_x_Pqg0(x, mQ, nf)
         + CL_g20_x_Pgg0(x, mQ, nf)
-        - 2 * beta(0,nf) * CL_g2(x, mQ, 1)
+        - 2 * beta(0,nf) * CL_g20(x, mQ)
    );
 
 }
