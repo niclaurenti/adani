@@ -102,7 +102,7 @@ double CL_g2_massless(double x, int nf) {
     double L0 = log(x);
     double L02 = L0 * L0;
 
-    double x1= 1. - x ;
+    double x1 = 1. - x ;
     double L1 = log(x1) ;
     double L12 = L1 * L1 ;
 

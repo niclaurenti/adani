@@ -131,7 +131,7 @@ double Pqq0reg(double x) {
 
     if (x<0 || x>=1) return 0. ;
 
-    return CF * 2. * (- 1 - x) ;
+    return CF * 2. * (- 1. - x) ;
 
 }
 
@@ -155,7 +155,7 @@ double Pqq0sing(double x) {
 
     if (x<0 || x>=1) return 0. ;
 
-    return CF * 2. * 2. / (1 - x) ;
+    return CF * 2. * 2. / (1. - x) ;
 
 }
 

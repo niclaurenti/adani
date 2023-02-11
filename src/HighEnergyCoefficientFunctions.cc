@@ -17,8 +17,6 @@ double C2_g2_highenergy(double x, double mQ, double mMu) {
 
     if(x>=1 || x<0) return 0;
 
-    double pi2 = M_PI * M_PI;
-
     double z = sqrt(1. / (1. + 4. * mQ));
 
     double L = log((1. + z) / (1. - z));
@@ -34,7 +32,7 @@ double C2_g2_highenergy(double x, double mQ, double mMu) {
 
     double c_LMu = 2. + (1. - mQ) * J ;
 
-    return  CA / 12. / pi2 * (c_const + c_LMu * LMu) / x ;
+    return  4. / 3. * CA * (c_const + c_LMu * LMu) / x ;
 
 }
 
@@ -73,14 +71,14 @@ double CL_g2_highenergy(double x, double mQ, double mMu) {
         4. * (-1. + 12. * mQ) / (3. + 12. * mQ)
         + (5. - 12. * mQ + 1. / (1. + 4. * mQ)) * J / 6.
         - 4. * mQ * (1. + 3. * mQ) / (1. + 4. * mQ) * I
-    ) / 6. ;
+    ) / 3. ;
 
     double c_LMu = (
         - 4. * (1. + 6. * mQ) / (1. + 4. * mQ)
         + 4. * mQ * (1. + 3. * mQ) / (1. + 4. * mQ) * J
-    ) / 6. ;
+    ) / 3. ;
 
-    return CA * TR * (c_const + c_LMu * LMu) / pi2 / x ;
+    return 8 * CA * TR * (c_const + c_LMu * LMu) / x ;
 
 }
 
@@ -105,8 +103,6 @@ double C2_g2_highenergy_highscale(double x, double mQ , double mMu) {
 
     if(x>=1 || x<0) return 0;
 
-    double pi2 = M_PI * M_PI;
-
     double LQ = log(1. / mQ);
     double L2Q = LQ * LQ;
 
@@ -115,7 +111,7 @@ double C2_g2_highenergy_highscale(double x, double mQ , double mMu) {
     return CA * (
         8. / 3. * L2Q + 104. / 9. * LQ + 40. / 9. - 16. / 3. * zeta2
         + (16. / 3. * LQ + 8. / 3.) * Lm
-    ) / x / (16 * pi2) ;
+    ) / x ;
 
 }
 
@@ -140,8 +136,6 @@ double CL_g2_highenergy_highscale(double x, double mQ , double mMu) {
 
     if(x>=1 || x<0) return 0;
 
-    double pi2 = M_PI * M_PI;
-
     double LQ = log(1./mQ);
 
     double Lm = log(1./mMu);
@@ -150,7 +144,7 @@ double CL_g2_highenergy_highscale(double x, double mQ , double mMu) {
 
     double c_log = - 2. / 3.;
 
-    return CA * TR / (pi2) / x * (c_const + c_log * Lm);
+    return 16 * CA * TR / x * (c_const + c_log * Lm);
 
 }
 
@@ -224,9 +218,6 @@ double C2_g3_highenergyLL(double x, double mQ, double mMu) {
 
     if(x>=1 || x<0) return 0;
 
-    double pi2 = M_PI * M_PI;
-    double pi3 = M_PI * pi2;
-
     double z = sqrt(1. / (1. + 4. * mQ));
 
     double L = log((1. + z) / (1. - z));
@@ -254,7 +245,7 @@ double C2_g3_highenergyLL(double x, double mQ, double mMu) {
 
     double c_L2Mu = -2./3. - 1./3. * (1. - mQ) * J;
 
-    return 4 * CA * CA * log(x) / (32 * pi3) * (c_const + c_LMu * LMu + c_L2Mu * L2Mu) / x;
+    return 8. * CA * CA * log(x) * (c_const + c_LMu * LMu + c_L2Mu * L2Mu) / x;
 
 }
 
@@ -267,8 +258,6 @@ double C2_g3_highenergyLL(double x, double mQ, double mMu) {
 double C2_g3_highenergy(double x, double mQ, double mMu, int nf) {
 
     if(x>=1 || x<0) return 0;
-
-    double pi2 = M_PI*M_PI ;
 
     double z = sqrt(1. / (1. + 4. * mQ));
 
@@ -285,9 +274,9 @@ double C2_g3_highenergy(double x, double mQ, double mMu, int nf) {
     double J = 4 * z * L;
     double K = 4 * z * Hmpm;
 
-    double a11 = CA / M_PI;
-    double a21 = nf * (26. * CF - 23. * CA) / 36 / pi2;
-    double a10 = - (11. * CA + 2. * nf * (1. - 2. * CF / CA)) / 12. / M_PI;
+    double a11 = CA ;
+    double a21 = nf * (26. * CF - 23. * CA) / 36 ;
+    double a10 = - (11. * CA + 2. * nf * (1. - 2. * CF / CA)) / 12. ;
 
     double beta0 = beta(0, nf) ;
 
@@ -341,7 +330,7 @@ double C2_g3_highenergy(double x, double mQ, double mMu, int nf) {
         )
     ) ;
 
-    return tmp / (12 * M_PI * x) ;
+    return 16. / 3 * tmp / x ;
 
 }
 
@@ -372,8 +361,6 @@ double CL_g3_highenergy(double x, double mQ, double mMu, int nf) {
 
     if(x>=1 || x<0) return 0;
 
-    double pi2 = M_PI * M_PI ;
-
     double xi = 1./mQ;
 
     double z = sqrt(1. / (1. + 4. * mQ));
@@ -391,9 +378,9 @@ double CL_g3_highenergy(double x, double mQ, double mMu, int nf) {
     double J = 4 * mQ * z * log(sqrt(xi) / 2 + sqrt(xi/4 + 1.)); // = 4 * mQ * z * acsch(2. / sqrt(xi))
     double K = 4 * mQ * z * Hmpm;
 
-    double a11 = CA / M_PI;
-    double a21 = nf * (26 * CF - 23 * CA) / 36 / pi2;
-    double a10 = -(11 * CA + 2 * nf * (1 - 2 * CF / CA)) / 12 / M_PI ;
+    double a11 = CA ;
+    double a21 = nf * (26 * CF - 23 * CA) / 36 ;
+    double a10 = -(11 * CA + 2 * nf * (1 - 2 * CF / CA)) / 12 ;
 
     double beta0 = beta(0, nf) ;
 
@@ -449,7 +436,7 @@ double CL_g3_highenergy(double x, double mQ, double mMu, int nf) {
         )
     ) ;
 
-    return tmp/(12 * M_PI * mQ * (4 + xi) * x) ;
+    return 16. / 3 * tmp / (mQ * (4 + xi) * x) ;
 
 }
 
@@ -474,9 +461,6 @@ double C2_g3_highenergy_highscaleLL(double x, double mQ , double mMu) {
 
     if(x>=1 || x<0) return 0;
 
-    double pi2 = M_PI * M_PI;
-    double pi3 = M_PI * pi2;
-
     double LQ = log(1. / mQ);
     double L2Q = LQ * LQ;
     double L3Q = LQ * L2Q;
@@ -496,7 +480,7 @@ double C2_g3_highenergy_highscaleLL(double x, double mQ , double mMu) {
 
     double c_L2Mu = 32./3. * LQ + 16./3.;
 
-    return - CA * CA * log(x) / (64 * pi3) * (
+    return - CA * CA * log(x) * (
         c_L3Q * L3Q + c_L2Q * L2Q + c_LQ * LQ
         + c_const + c_LMu * LMu + c_L2Mu * L2Mu
     ) / x;
@@ -513,19 +497,19 @@ double C2_g3_highenergy_highscale(double x, double mQ, double mMu, int nf) {
 
     if(x>=1 || x<0) return 0;
 
-    double pi2 = M_PI * M_PI;
-
     double Lmu = log(mMu);
     double Lmu2 = Lmu * Lmu;
+
+    double pi2 = M_PI * M_PI ;
 
     double LQ = log(mQ);
     double LQ2 = LQ * LQ;
     double LQ3 = LQ2 * LQ;
     double LQ4 = LQ3 * LQ;
 
-    double a11 = CA / M_PI;
-    double a21 = nf * (26 * CF - 23 * CA) / 36. / pi2;
-    double a10 = - (11. * CA + 2 * nf * (1. - 2. * CF / CA)) / 12. / M_PI;
+    double a11 = CA ;
+    double a21 = nf * (26 * CF - 23 * CA) / 36. ;
+    double a10 = - (11. * CA + 2 * nf * (1. - 2. * CF / CA)) / 12. ;
 
     double beta0 = beta(0, nf) ;
 
@@ -566,7 +550,7 @@ double C2_g3_highenergy_highscale(double x, double mQ, double mMu, int nf) {
         )
     );
 
-    return tmp / M_PI / x;
+    return 64 * tmp / x;
 
 }
 
@@ -611,9 +595,9 @@ double CL_g3_highenergy_highscale(double x, double mQ, double mMu, int nf) {
     double LQ3 = LQ2 * LQ;
     //double LQ4=LQ3*LQ;
 
-    double a11 = CA / M_PI;
-    double a21 = nf * (26 * CF - 23 * CA) / 36 / pi2;
-    double a10 = - (11 * CA + 2 * nf * (1. - 2. * CF / CA)) / 12. / M_PI;
+    double a11 = CA ;
+    double a21 = nf * (26 * CF - 23 * CA) / 36 ;
+    double a10 = - (11 * CA + 2 * nf * (1. - 2. * CF / CA)) / 12. ;
 
     double beta0 = beta(0, nf) ;
 
@@ -639,7 +623,7 @@ double CL_g3_highenergy_highscale(double x, double mQ, double mMu, int nf) {
         )
     );
 
-    return tmp / M_PI / x;
+    return 64 * tmp / x;
 
 }
 
@@ -676,9 +660,9 @@ double C2_g3_highenergy_ERR(double x, double mQ, double mMu, int nf) {
     double J = 4 * z * L;
     double K = 4 * z * Hmpm;
 
-    double a11 = CA / M_PI;
+    double a11 = CA ;
     //double a21=nf*(26*CF - 23*CA)/36/pi2;
-    double a10 = -(11 * CA + 2 * nf * (1. - 2. * CF / CA)) / 12 / M_PI;
+    double a10 = -(11 * CA + 2 * nf * (1. - 2. * CF / CA)) / 12 ;
 
     double beta0 = beta(0, nf) ;
 
@@ -716,7 +700,7 @@ double C2_g3_highenergy_ERR(double x, double mQ, double mMu, int nf) {
         )
     );
 
-    return tmp / (12 * M_PI * x) ;
+    return 16. / 3 * tmp / x ;
 
 }
 
@@ -735,9 +719,9 @@ double C2_g3_highenergy_highscale_ERR(double x, double mQ, double mMu, int nf) {
     double LQ2 = LQ * LQ;
     double LQ3 = LQ2 * LQ;
 
-    double a11 = CA / M_PI;
+    double a11 = CA ;
     //double a21= nf*(26*CF - 23*CA)/36/pi2;
-    double a10 = -(11 * CA + 2 * nf * (1. - 2. * CF / CA)) / 12 / M_PI;
+    double a10 = -(11 * CA + 2 * nf * (1. - 2. * CF / CA)) / 12 ;
 
     double beta0 = beta(0, nf) ;
 
@@ -775,7 +759,7 @@ double C2_g3_highenergy_highscale_ERR(double x, double mQ, double mMu, int nf) {
         )
     );
 
-    return tmp / M_PI / x;
+    return 64 * tmp / x;
 
 }
 

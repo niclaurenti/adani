@@ -459,7 +459,7 @@ double C2_g31(double x, double mQ, int nf) {
         - beta(1, nf) * C2_g1(x, mQ)
         + C2_ps20_x_Pqg0(x, mQ, nf)
         + C2_g20_x_Pgg0(x, mQ, nf)
-        - 2. * beta(0,nf) * C2_g20(x, mQ)
+        - 2. * beta(0, nf) * C2_g20(x, mQ)
    );
 
 }
@@ -482,7 +482,7 @@ double CL_g31(double x, double mQ, int nf) {
         - beta(1, nf) * CL_g1(x, mQ)
         + CL_ps20_x_Pqg0(x, mQ, nf)
         + CL_g20_x_Pgg0(x, mQ, nf)
-        - 2 * beta(0,nf) * CL_g20(x, mQ)
+        - 2 * beta(0, nf) * CL_g20(x, mQ)
    );
 
 }

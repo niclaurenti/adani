@@ -751,6 +751,8 @@ double C2_g3_approximationA_klmv(double x, double mQ, double mMu, int nf, int me
 
     if(x>=x_max || x<0) return 0;
 
+    double pi3 = M_PI * M_PI * M_PI ;
+
     double beta = sqrt(1. - 4 * mQ * x / (1. - x));
 
     double eta = 0.25 / mQ * (1. - x) / x - 1. ;
@@ -765,7 +767,7 @@ double C2_g3_approximationA_klmv(double x, double mQ, double mMu, int nf, int me
 
     double beta3 = beta * beta * beta;
 
-    double C2_g3_highenergyA = (
+    double C2_g3_highenergyA = (64. * pi3) * (
         0.007 * pow(log(1./mQ) / log(5), 4) - 0.28
     ) * 4. / mQ / x;
 
@@ -802,6 +804,8 @@ double C2_g3_approximationB_klmv(double x, double mQ, double mMu, int nf, int me
 
     if(x>=x_max || x<0) return 0;
 
+    double pi3 = M_PI * M_PI * M_PI ;
+
     double beta = sqrt(1. - 4 * mQ * x / (1. - x));
 
     double eta = 0.25 / mQ * (1. - x) / x - 1.;
@@ -816,7 +820,7 @@ double C2_g3_approximationB_klmv(double x, double mQ, double mMu, int nf, int me
 
     double beta3 = beta * beta * beta;
 
-    double C2_g3_highenergyB = (
+    double C2_g3_highenergyB = (64. * pi3) * (
         0.055 * pow(log(1./mQ) / log(5), 2) - 0.423
     ) * 4. / mQ / x;
 
@@ -855,6 +859,8 @@ double C2_g3_approximationB_klmv_paper(double x, double mQ, double mMu, int nf, 
 
     if(x>=x_max || x<0) return 0;
 
+    double pi3 = M_PI * M_PI * M_PI ;
+
     double beta = sqrt(1. - 4 * mQ * x / (1. - x));
 
     double eta = 0.25 / mQ * (1. - x) / x - 1;
@@ -869,7 +875,7 @@ double C2_g3_approximationB_klmv_paper(double x, double mQ, double mMu, int nf, 
 
     double beta3 = beta * beta * beta;
 
-    double C2_g3_highenergyB = (
+    double C2_g3_highenergyB = (64. * pi3) * (
         0.055 * pow(log(1./mQ) / log(5), 2) - 0.423
     ) * 4. / mQ / x;
 
@@ -910,6 +916,8 @@ double C2_g3_approximationBlowxi_klmv(double x, double mQ, double mMu, int nf, i
 
     if(x>=x_max || x<0) return 0;
 
+    double pi3 = M_PI * M_PI * M_PI ;
+
     double beta = sqrt(1. - 4 * mQ * x / (1. - x));
 
     double eta = 0.25 / mQ * (1. - x) / x - 1.;
@@ -924,7 +932,7 @@ double C2_g3_approximationBlowxi_klmv(double x, double mQ, double mMu, int nf, i
 
     double beta3 = beta * beta * beta;
 
-    double C2_g3_highenergyB= CA / CF * (
+    double C2_g3_highenergyB = CA / CF * (64. * pi3) * (
         0.0245 * pow(log(1./mQ) / log(5), 2) - 0.17
     ) * 4. / mQ / x;
 
@@ -963,6 +971,8 @@ double C2_ps3_approximationA_klmv(double x, double mQ, double mMu, int nf) {
 
     if(x>=x_max || x<0) return 0;
 
+    double pi3 = M_PI * M_PI * M_PI ;
+
     double beta = sqrt(1. - 4. * mQ * x / (1. - x));
 
     double eta = 0.25 / mQ * (1. - x) / x - 1.;
@@ -977,7 +987,7 @@ double C2_ps3_approximationA_klmv(double x, double mQ, double mMu, int nf) {
 
     double beta3 = beta * beta * beta;
 
-    double C2_ps30_highenergyNLLA = (
+    double C2_ps30_highenergyNLLA = (64. * pi3) *(
         0.004 * pow(log(1./mQ) / log(5), 4) - 0.125
     ) * 4. / mQ / x;
 
@@ -1013,6 +1023,8 @@ double C2_ps3_approximationB_klmv(double x, double mQ, double mMu, int nf) {
 
     if(x>=x_max || x<0) return 0;
 
+    double pi3 = M_PI * M_PI * M_PI ;
+
     double beta = sqrt(1. - 4. * mQ * x / (1. - x));
 
     double eta = 0.25 / mQ * (1. - x) / x - 1.;
@@ -1027,7 +1039,7 @@ double C2_ps3_approximationB_klmv(double x, double mQ, double mMu, int nf) {
 
     double beta3 = beta * beta * beta;
 
-    double C2_ps30_highenergyNLLB = (
+    double C2_ps30_highenergyNLLB = (64. * pi3) * (
         0.0245 * pow(log(1./mQ) / log(5), 2) - 0.17
     ) * 4. / mQ / x;
 
@@ -1066,6 +1078,8 @@ double C2_ps3_approximationA_klmv_paper(double x, double mQ, double mMu, int nf)
 
     if(x>=x_max || x<0) return 0;
 
+    double pi3 = M_PI * M_PI * M_PI ;
+
     double beta = sqrt(1. - 4. * mQ * x / (1. - x));
 
     double eta = 0.25 / mQ * (1. - x) / x - 1.;
@@ -1080,7 +1094,7 @@ double C2_ps3_approximationA_klmv_paper(double x, double mQ, double mMu, int nf)
 
     double beta3 = beta * beta * beta;
 
-    double C2_ps30_highenergyNLLA = (
+    double C2_ps30_highenergyNLLA = (64. * pi3) *(
         0.004 * pow(log(1./mQ) / log(5), 4) - 0.125
     ) * 4. / mQ / x;
 
@@ -1118,6 +1132,8 @@ double C2_ps3_approximationB_klmv_paper(double x, double mQ, double mMu, int nf)
 
     if(x>=x_max || x<0) return 0;
 
+    double pi3 = M_PI * M_PI * M_PI ;
+
     double beta = sqrt(1. - 4. * mQ * x / (1. - x));
 
     double eta = 0.25 / mQ * (1. - x) / x - 1.;
@@ -1132,7 +1148,7 @@ double C2_ps3_approximationB_klmv_paper(double x, double mQ, double mMu, int nf)
 
     double beta3 = beta * beta * beta;
 
-    double C2_ps30_highenergyNLLB = (
+    double C2_ps30_highenergyNLLB = (64. * pi3) * (
         0.0245 * pow(log(1./mQ) / log(5), 2) - 0.17
     ) * 4 / mQ / x;
 

@@ -467,8 +467,6 @@ double DL_g3_highscale(double z, double mQ, double mMu, int nf) {
     double L_Q = log(1./mQ) + L_M ;
     double L_Q2 = L_Q * L_Q ;
 
-    double pi3 = M_PI * M_PI * M_PI ;
-
     // Allocate pointers for the harmonic polylogs
     double wx = z;
     int    nw = 4;
@@ -896,8 +894,6 @@ double DL_ps3_highscale(double z, double mQ, double mMu, int nf) {
     double L_Q = log(1. / mQ) + L_M ;
     double L_Q2 = L_Q * L_Q ;
 
-    double pi3 = M_PI * M_PI * M_PI ;
-
     // Allocate pointers for the harmonic polylogs
     double wx = z;
     int    nw = 4;
@@ -1078,8 +1074,6 @@ double D2_g3_highscale_incomplete(double x, double mQ, double mMu, int nf) {
     double Lmmu = log(mMu);
     double Lmmu2 = Lmmu * Lmmu;
     //double Lmmu3=Lmmu2*Lmmu;
-
-    double pi3 = M_PI * M_PI * M_PI ;
 
     // Allocate pointers for the harmonic polylogs
     double wx = x;
@@ -2594,7 +2588,7 @@ double D2_g3_highscale_incomplete(double x, double mQ, double mMu, int nf) {
 
         + 8./9*zeta3 - 16./9*zeta3*x + 16./9*zeta3*x2
 
-        + C2_g3_massless(x, nf+1)/(nf + 1)
+        + C2_g3_massless(x, nf + 1) / (nf + 1)
     ) ;
 
 }
@@ -2634,8 +2628,6 @@ double D2_ps3_highscale(double x, double mQ, double mMu, int nf, int v) {
 
     double Lmmu = log(mMu);
     double Lmmu2 = Lmmu * Lmmu;
-
-    double pi3 = M_PI * M_PI * M_PI;
 
     // Allocate pointers for the harmonic polylogs
     double wx = x;
@@ -3311,6 +3303,7 @@ double D2_ps3_highscale(double x, double mQ, double mMu, int nf, int v) {
         H1 * x2 - 16./3 * H01 - 16./3 * H01 * x)
 
         + a_Qq_PS_30(x, Hr1, Hr2, Hr3, Hr4, Hr5, v)
+
         + 1. / (1 + nf) * C2_ps3_massless(x, 1 + nf)
 
     ) ;

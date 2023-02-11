@@ -230,8 +230,6 @@ double threshold_expansion_g3_const(double mQ, double mMu) {
     double xi = 1. / mQ ;
     double Lm = log(mMu);
 
-    double pi2 = M_PI * M_PI ;
-
     double c_const_sqrt = (
         c0(xi) + 36. * CA * ln2 * ln2 - 60. * CA * ln2
         + Lm * (8. * CA * ln2 - c0_bar(xi))
