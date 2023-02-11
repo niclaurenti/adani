@@ -68,7 +68,7 @@ double pggsing(double x) {
 
 double Pgq0(double x) {
 
-    return 2. * CF * pgq(x) / 4. / M_PI ;
+    return 2. * CF * pgq(x) ;
 
 }
 
@@ -81,7 +81,7 @@ double Pgq0(double x) {
 
 double Pqg0(double x, int nf) {
 
-    return 2. * nf * pqg(x) / 4. / M_PI ;
+    return 2. * nf * pqg(x) ;
 
 }
 
@@ -93,7 +93,7 @@ double Pqg0(double x, int nf) {
 
 double Pgg0reg(double x) {
 
-    return CA * 4. * pggreg(x) / 4. / M_PI ;
+    return CA * 4. * pggreg(x) ;
 
 }
 
@@ -105,9 +105,7 @@ double Pgg0reg(double x) {
 
 double Pgg0loc(int nf) {
 
-    double tmp = 11. / 3 * CA - 2. / 3 * nf ;
-
-    return tmp / 4. / M_PI ;
+    return 11. / 3 * CA - 2. / 3 * nf ;
 
 }
 
@@ -119,7 +117,7 @@ double Pgg0loc(int nf) {
 
 double Pgg0sing (double x) {
 
-    return 4. * CA * pggsing(x) / 4. / M_PI ;
+    return 4. * CA * pggsing(x) ;
 
 }
 
@@ -133,7 +131,7 @@ double Pqq0reg(double x) {
 
     if (x<0 || x>=1) return 0. ;
 
-    return CF * 2. * (- 1 - x) / 4 / M_PI ;
+    return CF * 2. * (- 1. - x) ;
 
 }
 
@@ -143,7 +141,7 @@ double Pqq0reg(double x) {
 
 double Pqq0loc() {
 
-    return CF * 3. / 4 / M_PI ;
+    return CF * 3. ;
 
 }
 
@@ -157,7 +155,7 @@ double Pqq0sing(double x) {
 
     if (x<0 || x>=1) return 0. ;
 
-    return CF * 2. * 2. / (1 - x) / 4. / M_PI ;
+    return CF * 2. * 2. / (1. - x) ;
 
 }
 
@@ -179,8 +177,6 @@ double Pgq1(double x, int nf) {
     double Hm10 = H(x, -1, 0) ;
     double H01 = H(x, 0, 1) ;
     double H11 = H(x, 1, 1) ;
-
-    double norm = 16. * M_PI * M_PI ;
 
     double tmp_CACF = (
         zeta2 * 16 + 76. / 9 + 4. / x + 148. / 9 * x + 176. / 9 * x * x
@@ -206,7 +202,11 @@ double Pgq1(double x, int nf) {
         + H11 * (+ 16 - 16. / x - 8 * x)
     );
 
-    return (CA * CF * tmp_CACF + CF * nf * tmp_CFnf + CF * CF * tmp_CFCF) / norm ;
+    return (
+        CA * CF * tmp_CACF
+        + CF * nf * tmp_CFnf
+        + CF * CF * tmp_CFCF
+    );
 }
 
 //==========================================================================================//
@@ -227,8 +227,6 @@ double Pgg1reg(double x, int nf) {
     double H10 = H(x, 1, 0) ;
     double Hm10 = H(x, -1, 0) ;
     double H01 = H(x, 0, 1) ;
-
-    double norm = (16. * M_PI * M_PI) ;
 
     double gx = (67. / 18 - zeta2 + H00 + 2. * H10 + 2 * H01) ;
     double g1 = 67. / 18 - zeta2 ;
@@ -260,7 +258,7 @@ double Pgg1reg(double x, int nf) {
         + H00 * (- 8. - 8. * x)
     );
 
-    return (tmp_CAnf * CA * nf + tmp_CACA * CA * CA + tmp_CFnf * CF * nf) / norm ;
+    return (tmp_CAnf * CA * nf + tmp_CACA * CA * CA + tmp_CFnf * CF * nf) ;
 
 }
 
@@ -272,13 +270,11 @@ double Pgg1reg(double x, int nf) {
 
 double Pgg1loc(int nf) {
 
-    double norm = (16. * M_PI * M_PI) ;
-
     double tmp_CAnf = - 2. / 3 ;
     double tmp_CACA =  8. / 3 + 3. * zeta3;
     double tmp_CFnf =  - 1. / 2;
 
-    return 4. * (tmp_CAnf * CA * nf + tmp_CACA * CA * CA + tmp_CFnf * CF * nf) / norm ;
+    return 4. * (tmp_CAnf * CA * nf + tmp_CACA * CA * CA + tmp_CFnf * CF * nf) ;
 
 }
 
@@ -292,13 +288,11 @@ double Pgg1sing(double x, int nf) {
 
     if (x<0 || x>=1) return 0. ;
 
-    double norm = (16. * M_PI * M_PI) ;
-
     double g1 = 67. / 18 - zeta2 ;
 
     double tmp_CAnf =  - 10. / 9 * pggsing(x);
     double tmp_CACA =  2. * g1 * pggsing(x) ;
 
-    return 4. * (tmp_CAnf * CA * nf + tmp_CACA * CA * CA) / norm ;
+    return 4. * (tmp_CAnf * CA * nf + tmp_CACA * CA * CA) ;
 
 }

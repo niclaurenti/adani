@@ -16,7 +16,7 @@ double C2_g1_massless(double x, int nf) {
     return 4. * nf * TR * (
         - 8. * x * x + 8. * x - 1.
         + log((1. - x) / x) * (2. * x * x - 2. * x + 1.)
-    ) / 4. / M_PI ;
+    ) ;
 
 }
 
@@ -30,7 +30,7 @@ double CL_g1_massless(double x, int nf) {
 
     if (x>=1 || x<0) return 0;
 
-    return 16. * nf * TR * x * (1. - x) / 4. / M_PI ;
+    return 16. * nf * TR * x * (1. - x) ;
 
 }
 
@@ -48,17 +48,14 @@ double C2_g2_massless(double x, int nf) {
     double x1 = 1. - x;
     double L0 = log(x);
     double L1 = log(x1);
-    double pi2 = M_PI * M_PI;
 
-    double tmp = nf * (
+    return nf * (
         58./9. * L1 * L1 * L1 - 24 * L1 * L1 - 34.88 * L1 + 30.586
         - (25.08 + 760.3 * x + 29.65 * L1 * L1 * L1) * x1 + 1204 * x * L0 * L0
         + L0 * L1 * (293.8 + 711.2 * x + 1043 * L0)
         + 115.6 * L0 - 7.109 * L0 * L0
         + 70./9. * L0 * L0 * L0 + 11.9033 * x1 / x
     ) ;
-
-    return tmp / 16. / pi2 ;
 
 }
 
@@ -81,14 +78,13 @@ double C2_ps2_massless(double x, int nf) {
     double L1 = log(x1);
     double L12 = L1 * L1 ;
     double L13 = L12 * L1 ;
-    double pi2 = M_PI * M_PI;
 
     return nf * (
         (8./3 * L12 - 32./3 * L1 + 9.8937) * x1
         + (9.57 - 13.41 * x + 0.08 * L13) * x1 * x1 + 5.667 * x * L03
         - L02 * L1 * (20.26 - 33.93 * x) + 43.36 * x1 * L0 - 1.053 * L02
         + 40./9 * L03 + 5.2903 / x * x1 * x1
-    ) / 16. / pi2 ;
+    ) ;
 
 }
 
@@ -103,22 +99,18 @@ double CL_g2_massless(double x, int nf) {
 
     if (x>=1 || x<0) return 0;
 
-    double pi2 = M_PI * M_PI ;
-
     double L0 = log(x);
     double L02 = L0 * L0;
 
-    double x1= 1. - x ;
+    double x1 = 1. - x ;
     double L1 = log(x1) ;
     double L12 = L1 * L1 ;
 
-    double tmp = nf * (
+    return nf * (
         (94.74 - 49.2 * x) * x1 * L12 + 864.8 * x1 * L1
         + 1161 * x * L1 * L0 + 60.06 * x * L02 + 39.66 * x1 * L0
         - 5.333 * (1./x - 1)
     );
-
-    return tmp / 16. / pi2 ;
 
 }
 
@@ -133,21 +125,17 @@ double CL_ps2_massless(double x, int nf) {
 
     if (x>=1 || x<0) return 0;
 
-    double pi2 = M_PI * M_PI;
-
     double L0 = log(x);
     double L02 = L0 * L0;
 
     double x1 = 1. - x;
     double L1 = log(x1);
 
-    double tmp =  nf * (
+    return nf * (
         (15.94 - 5.212 * x) * x1 * x1 * L1
         + (0.421 + 1.520 * x) * L02 + 28.09 * x1 * L0
         - (2.370/x - 19.27) * x1 * x1 * x1
     ) ;
-
-    return tmp / 16. / pi2 ;
 
 }
 
@@ -198,8 +186,6 @@ double C2_g3_massless(double x, int nf) {//remember that there is a delta(x1) th
     double L14 = L13 * L1;
     double L15 = L14 * L1;
 
-    double pi3 = M_PI * M_PI * M_PI;
-
     double c_nf = (
         966./81. * L15 - 1871./18. * L14 + 89.31 * L13 + 979.2 * L12
         - 2405 * L1 + 1372 * x1 * L14 - 15729 - 310510 * x + 331570 * x2
@@ -222,13 +208,11 @@ double C2_g3_massless(double x, int nf) {//remember that there is a delta(x1) th
         * x * L02 + 520./81. * x * L03 + 20./27. * x * L04
     );*/
 
-    double tmp = (
+    return (
         c_nf * nf
         + c_nf2 * nf * nf
         //+ c_nf_fl * nf * nf * fl_g_11
     );
-
-    return tmp / 64. / pi3 ;
 
 }
 
@@ -262,8 +246,6 @@ double C2_ps3_massless(double x, int nf) {//remember that there is a delta(x1) t
     double L13 = L12 * L1;
     double L14 = L13 * L1;
 
-    double pi3 = M_PI * M_PI * M_PI;
-
     double c_nf = (
         856./81 * L14 - 6032./81 * L13 + 130.57 * L12 - 542 * L1
         + 8501 - 4714 * x + 61.5 * x2) * x1 + L0 * L1 * (8831 * L0 + 4162 * x1)
@@ -288,13 +270,11 @@ double C2_ps3_massless(double x, int nf) {//remember that there is a delta(x1) t
         + 59.59 * L0 - 320./81 * L02 * (5 + L0)
     ) * x ;*/
 
-    double tmp = (
+    return (
         c_nf * nf
         + c_nf2 * nf * nf
         //+ c_fl_nf * fl_ps_11 * nf
     );
-
-    return tmp / (64 * pi3) ;
 
 }
 
@@ -341,8 +321,6 @@ double CL_g3_massless(double x, int nf) {//remember that there is a delta(x1) th
     double L13 = L12 * L1;
     double L14 = L13 * L1;
 
-    double pi3 = M_PI * M_PI * M_PI;
-
     double c_nf = (
         (144. * L14 - 47024./27. * L13 + 6319. * L12 + 53160. * L1) * x1
         + 72549. * L0 * L1 + 88238. * L02 * L1
@@ -366,13 +344,11 @@ double CL_g3_massless(double x, int nf) {//remember that there is a delta(x1) th
         - (15.4 - 2.201 * x) * x * L02 - (71.66 - 0.121 * x) * x * L0
     ) ;*/
 
-    double tmp = (
+    return (
         c_nf * nf
         + c_nf2 * nf * nf
         //+ c_nf_fl * nf * nf * fl_g_11
     ) ;
-
-    return tmp / 64. / pi3 ;
 
 }
 
@@ -402,8 +378,6 @@ double CL_ps3_massless(double x, int nf) {//remember that there is a delta(x1) t
     double L12 = L1 * L1;
     double L13 = L12 * L1;
 
-    double pi3 = M_PI * M_PI * M_PI;
-
     double c_nf =  (
         (1568./27 * L13 - 3968./9 * L12 + 5124 * L1) * x1 * x1
         + (2184 * L0 + 6059 * x1) * L0 * L1
@@ -424,12 +398,10 @@ double CL_ps3_massless(double x, int nf) {//remember that there is a delta(x1) t
         + L0)) * x
     );*/
 
-    double tmp = (
+    return (
         c_nf * nf
         + c_nf2 * nf * nf
         //+ c_fl_nf * fl_ps_11 * nf
     ) ;
-
-    return tmp / (64. * pi3) ;
 
 }

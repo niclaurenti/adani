@@ -25,15 +25,14 @@ double C2_b1_x_K_Qg1(double x, double mMu) {
     double x1 = 1 - x ;
     double L = log(x) ;
     double L1 = log(x1) ;
-    double pi2 = M_PI * M_PI ;
 
     double res = (
-        -5. / 2. +  2. * (3. - 4. * x) * x + pi2 / 6. * (-1. + 2. * x - 4. * x2)
+        -5. / 2. +  2. * (3. - 4. * x) * x + zeta2 * (-1. + 2. * x - 4. * x2)
         + L1 * L1 * (1. - 2. * x1 * x) - 0.5 * L1 * (7. + 4. * x * (-4. + 3. * x) + (4. - 8. * x1 * x) * L)
         + 0.5 * L * (-1. + 4. * x * (3. * x - 2.) + (1. - 2. * x + 4. * x2) * L) + (2. * x - 1.) * Li2(x)
     ) ;
 
-    return 4. * CF * TR * res * log(1./mMu) / 16. / pi2 ;
+    return 4. * CF * TR * res * log(1./mMu) ;
 
 }
 
@@ -48,9 +47,8 @@ double CL_b1_x_K_Qg1(double x, double mMu) {
 
     double x2 = x * x ;
     double L = log(x) ;
-    double pi2 = M_PI * M_PI ;
 
-    return 8. * CF * TR * (1. + x - 2. * x2 + 2. * x * L) * log(1./mMu) / 16. / pi2 ;
+    return 8. * CF * TR * (1. + x - 2. * x2 + 2. * x * L) * log(1./mMu) ;
 
 }
 
@@ -754,7 +752,7 @@ double CL_ps20_x_Pqq0(double x, double mQ, int nf) {
 
 double Pgg0_x_Pgq0(double x, int nf) {
 
-    double tmp = (
+    return (
         - 4. * CF * nf * (2. + (- 2. + x) * x)
         + 2. * CA * CF * (
             - 40. + x * (26. + x * (17. + 8. * x))
@@ -762,8 +760,6 @@ double Pgg0_x_Pgq0(double x, int nf) {
             - 24. * (1. + x + x * x) * log(x)
         )
     ) / 3. / x ;
-
-    return tmp / (16. * M_PI * M_PI) ;
 
 }
 
@@ -773,14 +769,12 @@ double Pgg0_x_Pgq0(double x, int nf) {
 
 double Pqq0_x_Pgq0(double x) {
 
-    double tmp = (
+    return (
         2. * CF * CF * (
             4. * (2. + (- 2. + x) * x) * log(1. - x)
             - x * (- 4. + x + 2. * (- 2. + x) * log(x))
         )
     ) / x ;
-
-    return tmp / (16 * M_PI * M_PI) ;
 
 }
 
@@ -1065,7 +1059,7 @@ double CL_g1_x_Pgg1_sing_integrand(double z, void * p) {
     double x = (params->x);
     int nf = (params->nf);
 
-    return Pgg1sing(z, nf) * (CL_g1(x / z, mQ) / z - CL_g1(x , mQ)) ;
+    return Pgg1sing(z, nf) * (CL_g1(x / z, mQ) / z - CL_g1(x, mQ)) ;
 
 }
 
@@ -1324,11 +1318,9 @@ double CL_g20_x_Pgg0(double x, double mQ, int nf) {
 
 double Pqg0_x_Pgq0(double x, int nf) {
 
-    double tmp = 4. * CF * nf * (
+    return 4. * CF * nf * (
         1. + 4. / 3 / x - x - 4. * x * x / 3 + 2. * (1 + x) * log(x)
     ) ;
-
-    return tmp / (16. * M_PI * M_PI) ;
 
 }
 
@@ -1451,7 +1443,7 @@ double C2_g1_x_Pgg0_x_Pgg0_sing_integrand(double z, void * p) {
     double x = (params->x);
     int nf = (params->nf);
 
-    return Pgg0sing(z) * (C2_g1_x_Pgg0(x / z, mQ, nf) / z - C2_g1_x_Pgg0(x , mQ, nf)) ;
+    return Pgg0sing(z) * (C2_g1_x_Pgg0(x / z, mQ, nf) / z - C2_g1_x_Pgg0(x, mQ, nf)) ;
 
 }
 
@@ -1980,7 +1972,9 @@ double CL_g1_x_Pgg0_x_Pgg0_sing1_integrand(double z[], size_t dim, void * p) {
 
     double z1 = z[0], z2 = z[1] ;
 
-    return 1. / z2 * theta(z1 - x) * Pgg0sing(z1) * (theta(z2 - x / z1) / z1 * Pgg0reg(x / (z1 * z2)) - theta(z2 - x) * Pgg0reg(x / z2)) * CL_g1(z2, mQ) ;
+    return 1. / z2 * theta(z1 - x) * Pgg0sing(z1) * (
+            theta(z2 - x / z1) / z1 * Pgg0reg(x / (z1 * z2)) - theta(z2 - x) * Pgg0reg(x / z2)
+        ) * CL_g1(z2, mQ) ;
 
 }
 
@@ -2001,7 +1995,10 @@ double CL_g1_x_Pgg0_x_Pgg0_sing2_integrand(double z[], size_t dim, void * p) {
 
     double z1 = z[0], z2 = z[1] ;
 
-    return theta(z1 - x) * Pgg0sing(z1) * (Pgg0sing(z2) / z1 * (CL_g1(x / (z1 * z2), mQ) / z2 - CL_g1(x / z1, mQ)) * theta(z2 - x / z1) - Pgg0sing(z2) * (CL_g1(x / z2, mQ) / z2 - CL_g1(x, mQ)) * theta(z2 - x)) ;
+    return theta(z1 - x) * Pgg0sing(z1) * (
+        Pgg0sing(z2) / z1 * (CL_g1(x / (z1 * z2), mQ) / z2 - CL_g1(x / z1, mQ)) * theta(z2 - x / z1)
+        - Pgg0sing(z2) * (CL_g1(x / z2, mQ) / z2 - CL_g1(x, mQ)) * theta(z2 - x)
+    ) ;
 
 }
 

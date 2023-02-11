@@ -16,7 +16,7 @@ double K_Qg1(double x, double mMu) {
 
     return 2 * TR * (
         x * x + (x - 1) * (x - 1)
-    ) * log(1. / mMu) / 4. / M_PI ;
+    ) * log(1. / mMu) ;
 }
 
 //==========================================================================================//
@@ -26,7 +26,7 @@ double K_Qg1(double x, double mMu) {
 //------------------------------------------------------------------------------------------//
 
 double K_gg1_local(double mMu) {
-    return - 4. / 3. * TR * log(1. / mMu) / 4. / M_PI ;
+    return - 4. / 3. * TR * log(1. / mMu) ;
 }
 
 //==========================================================================================//
@@ -56,8 +56,6 @@ double K_Qg2(double x, double mMu) {
     double Li3minus = Li3(-x) ;
     double S12xm = S12(1. - x) ;
     double S12minus = S12(-x) ;
-
-    double pi2 = M_PI * M_PI ;
 
     double Lmu = log(mMu) ;
     double Lmu2 = Lmu * Lmu ;
@@ -122,10 +120,9 @@ double K_Qg2(double x, double mMu) {
 
     double const_tot = CF * TR * const_CFTR + CA * TR * const_CATR;
 
-
     double tmp = const_tot + logmu * Lmu + logmu2 * Lmu2;
 
-    return 0.5 * tmp / 16. / pi2 ;
+    return 0.5 * tmp ;
 
 }
 
@@ -151,8 +148,6 @@ double a_Qg_30(double x, int v) {
     double L12 = L1 * L1;
     double L13 = L12 * L1;
 
-    double pi3 = M_PI * M_PI * M_PI ;
-
     if(v==0) {
         return 0.5 * (a_Qg_30(x, 1) + a_Qg_30(x, 2));
     }
@@ -160,24 +155,24 @@ double a_Qg_30(double x, int v) {
         return (
             354.1002 * L13 + 479.3838 * L12 - 7856.784 * (2. - x)
             - 6233.530 * L2 + 9416.621 / x + 1548.891 / x * L
-        ) / (64. * pi3) ;
+        ) ;
     }
     else if(v==2) {//Updated version w.r.t v==4
         return (
             226.3840 * L13 - 652.2045 * L12 - 2686.387 * L1 - 7714.786 * (2. - x)
             - 2841.851 * L2 + 7721.120 / x + 1548.891 / x * L
-        ) / (64. * pi3) ;
+        ) ;
     }
     else if(v==3) { // do not use this version
         return (
             L / x * CA * CA * (41984./243 + 160./9 * zeta2 - 224./9 * zeta3)
-        ) / (64. * pi3) ;
+        ) ;
     }
     else if(v==4) { //Version of the paper (used only for benchamrk)
         return (
             - 2658.323 * L12 - 7449.948 * L1 - 7460.002 * (2. - x)
             + 3178.819 * L2 + 4710.725 / x + 1548.891 / x * L
-        ) / (64. * pi3) ;
+        ) ;
     }
     else {
         cout<<"a_Qg_30: Choose either v=0, v=1, v=2, v=3 or v=4 !!\nExiting!!\n"<<endl;
@@ -209,8 +204,6 @@ double a_Qq_PS_30(double x, double* Hr1, double* Hr2, double* Hr3, double* Hr4, 
     double x2 = x * x ;
     double L1 = - H1 ;
 
-    double pi3 = M_PI * M_PI * M_PI ;
-
     if(v==1) {
         return (
             (1. - x) * (
@@ -218,7 +211,7 @@ double a_Qq_PS_30(double x, double* Hr1, double* Hr2, double* Hr3, double* Hr4, 
                 - 31729.716 * x2 + 66638.193 * x + 2825.641 / x
             )
             + 41850.518 * x * H0 + 688.396 / x * H0
-        ) / (64. * pi3);
+        );
     }
     else if(v==2) {
        return (
@@ -227,7 +220,7 @@ double a_Qq_PS_30(double x, double* Hr1, double* Hr2, double* Hr3, double* Hr4, 
                 + 3780.192 / x
             )
             + 8571.165 * x * H0 - 2346.893 * H0 * H0 + 688.396 / x * H0
-        ) / (64. * pi3) ;
+        ) ;
     }
     else if(v==0){
 
@@ -654,7 +647,7 @@ double a_Qq_PS_30(double x, double* Hr1, double* Hr2, double* Hr3, double* Hr4, 
             )
         ) ;
 
-        return (aQqPS30 + tildeaQqPS30) / (64. * pi3) ;
+        return aQqPS30 + tildeaQqPS30 ;
     }
     else {
         std::cout<<"Choose either v=1, v=2!!\nExiting!!\n"<<std::endl;

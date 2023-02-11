@@ -23,7 +23,7 @@ double C2_g1_threshold(double x, double mQ) {
     double beta = sqrt(1. - 4. * mQ * x / (1. - x)) ;
     double xi = 1. / mQ ;
 
-    return xi / (4 * M_PI) * TR * beta / (1. + xi / 4) / x ;
+    return xi * TR * beta / (1. + xi / 4) / x ;
 
 }
 
@@ -50,7 +50,7 @@ double threshold_expansion_g2(double x, double mQ, double mMu) {
 
     return (
         C_log2b * log2b + C_logb * logb + C_fracb / beta
-    ) / (4. * M_PI);
+    ) ;
 
 }
 
@@ -65,7 +65,7 @@ double threshold_expansion_g2_const(double mQ, double mMu) {
     return (
         c0(xi) + 36 * CA * ln2 * ln2 - 60 * CA * ln2
         + log(mMu) * (8 * CA * ln2 - c0_bar(xi))
-    ) / (4. * M_PI);
+    ) ;
 
 }
 
@@ -217,7 +217,7 @@ double threshold_expansion_g3(double x, double mQ, double mMu, int nf) {
     return (
         c_log4 * l4 + c_log3 * l3 + c_log2 * l2 + c_log * l
         + c_fracbeta / beta + c_fracbeta2 / beta / beta
-    ) / (pi2 * 16.) ;
+    ) ;
 
 }
 
@@ -230,14 +230,12 @@ double threshold_expansion_g3_const(double mQ, double mMu) {
     double xi = 1. / mQ ;
     double Lm = log(mMu);
 
-    double pi2 = M_PI * M_PI ;
-
     double c_const_sqrt = (
         c0(xi) + 36. * CA * ln2 * ln2 - 60. * CA * ln2
         + Lm * (8. * CA * ln2 - c0_bar(xi))
     );
 
-    return c_const_sqrt * c_const_sqrt / (16. * pi2) ;
+    return c_const_sqrt * c_const_sqrt ;
 
 }
 
