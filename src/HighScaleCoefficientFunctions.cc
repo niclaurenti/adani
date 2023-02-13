@@ -2597,21 +2597,6 @@ double D2_g3_highscale(double x, double mQ, double mMu, int nf, int v) {
 }
 
 //==========================================================================================//
-//  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for F2 at O(alpha_s^3)
-//  expanded in terms of \alpha_s^{[nf+1]}.
-//  This function uses the approximation for a_Qg_30 given in Eq. (3.49) of Ref. [arXiv:1205.5727]
-//  and in Eq. (16) Ref. of [arXiv:1701.05838].
-//
-//  Eq. (B.11) of Ref. [arXiv:1205.5727].
-//------------------------------------------------------------------------------------------//
-
-double D2_g3_highscale(double x, double mQ, double mMu, int nf, int v) {
-
-    return D2_g3_highscale_incomplete(x, mQ, mMu, nf) + a_Qg_30(x, v) ;
-
-}
-
-//==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the quark coefficient functions for F2 at O(alpha_s^3)
 //  expanded in terms of \alpha_s^{[nf+1]}
 //
