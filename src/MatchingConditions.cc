@@ -435,6 +435,7 @@ double a_Qq_PS_30(double x, double* Hr1, double* Hr2, double* Hr3, double* Hr4, 
                     - 128 * (x + 1) * H0
                 ) * zeta3 - 128./3 * (x + 1) * zeta4
             )
+
             + CF * CF * TR * (
                 2./27 * (x - 1)/x * (4 * x2 + 7 * x + 4) * H1 * H1 * H1 * H1
                 - 8./81 * (x - 1)/x * (5400 * x2 + 3811 * x + 4614)
@@ -541,6 +542,7 @@ double a_Qq_PS_30(double x, double* Hr1, double* Hr2, double* Hr3, double* Hr4, 
                 - 3544 * (x + 1) * zeta5 + 4096 * (x + 1) * Li_512
                 - 512./15 * ln2_5 * (x + 1)
             )
+
             + CA * CF * TR * (
                 - 2./27 * (x - 1)/x * (4 * x2 + 7 * x + 4) * H1 * H1 * H1 * H1
                 - 16./9 * (x + 1)/x * (32 * x2 + 61 * x + 32) * (H0m1m11 + H0m11m1 + H01m1m1)

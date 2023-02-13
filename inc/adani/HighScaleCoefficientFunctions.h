@@ -60,7 +60,6 @@ double CL_ps3_highscale(double x, double mQ, double mMu, int nf);
 double DL_g3_highscale(double z, double mQ, double mMu, int nf);
 double DL_ps3_highscale(double z, double mQ, double mMu, int nf);
 
-double D2_g3_highscale_incomplete(double x, double mQ, double mMu, int nf);
 double D2_g3_highscale(double x, double mQ, double mMu, int nf, int v);
 double D2_ps3_highscale(double x, double mQ, double mMu, int nf, int v=0);
 

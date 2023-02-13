@@ -261,7 +261,10 @@ double H(double x, int i, int j, int k) {
     if(i==0 && j==1 && k==-1) {
         double xp = 1. + x ;
         double Lp = log(xp) ;
-        return Li3(2. * x / xp) - Li3(x / xp) - Li3(xp / 2.) - Li3(x) + Lp * Li2(0.5) + Lp * Li2(x) + 0.5 * ln2 * Lp * Lp + Li3_1_2 ;
+        return (
+            Li3(2. * x / xp) - Li3(x / xp) - Li3(xp / 2.) - Li3(x)
+            + Lp * Li2(0.5) + Lp * Li2(x) + 0.5 * ln2 * Lp * Lp + Li3_1_2
+        );
     }
     if(i==0 && j==0 && k==1) return Li3(x) ;
     if(i==0 && j==0 && k==0) {
@@ -274,7 +277,11 @@ double H(double x, int i, int j, int k) {
         double Lm = log(xm) ;
         double Lm2 = Lm * Lm ;
         double Lm3 = Lm2 * Lm ;
-        return - S12(x) + Li3(- 2. * x / xm) - Li3(xm / 2) - Li3(-x) + Li3_1_2 + Li3(x) + Lm * Li2(-x) + Lm * Li2_1_2 - Lm * Li2(x) + 0.5 * ln2 * Lm2 - 1. / 6. * Lm3 ;
+        return (
+            - S12(x) + Li3(- 2. * x / xm) - Li3(xm / 2) - Li3(-x) + Li3_1_2
+            + Li3(x) + Lm * Li2(-x) + Lm * Li2_1_2 - Lm * Li2(x) + 0.5 * ln2 * Lm2
+            - 1. / 6. * Lm3
+        );
     }
     if(i==0 && j==-1 && k==0) return - log(x) * Li2(-x) + 2. * Li3(-x) ;
     if(i==0 && j==-1 && k==-1) return S12(-x) ;
