@@ -313,7 +313,7 @@ double C2_g21(double x, double mQ) {
     int nf = 1 ;
     //Put nf to 1 since the nf contribution cancels for any value of nf
 
-    return - (C2_g1_x_Pgg0(x, mQ, nf) - C2_g1(x, mQ) * beta(0,nf));
+    return - (C2_g1_x_Pgg0(x, mQ, nf) - C2_g1(x, mQ) * beta(0, nf));
 
 }
 
@@ -353,7 +353,7 @@ double CL_g21(double x, double mQ) {
     int nf = 1 ;
     //Put nf to 1 since the nf contribution cancels for any value of nf
 
-    return - (CL_g1_x_Pgg0(x, mQ, nf) - CL_g1(x, mQ) * beta(0,nf));
+    return - (CL_g1_x_Pgg0(x, mQ, nf) - CL_g1(x, mQ) * beta(0, nf));
 
 }
 
