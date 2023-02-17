@@ -61,8 +61,8 @@ double C2_ps3_highenergyLL(double x, double mQ, double mMu);
 //                      High energy coefficient functions O(alpha_s^3)
 //------------------------------------------------------------------------------------------//
 
-double C2_g3_highenergy(double x, double mQ, double mMu,int nf);
-double C2_ps3_highenergy(double x, double mQ, double mMu,int nf);
+double C2_g3_highenergy(double x, double mQ, double mMu, int nf);
+double C2_ps3_highenergy(double x, double mQ, double mMu, int nf);
 double CL_g3_highenergy(double x, double mQ, double mMu, int nf);
 double CL_ps3_highenergy(double x, double mQ, double mMu, int nf);
 
@@ -102,8 +102,8 @@ double CL_g3_power_terms(double x, double mQ , double mMu, int nf);
 double CL_ps3_power_terms(double x, double mQ , double mMu, int nf);
 
 //term with band
-double C2_g3_highenergy(double x, double mQ, double mMu, int nf, int v);
-double C2_g3_highenergy_highscale(double x, double mQ, double mMu, int nf, int v);
+double C2_g3_highenergy_BAND(double x, double mQ, double mMu, int nf, int v);
+double C2_g3_highenergy_highscale_BAND(double x, double mQ, double mMu, int nf, int v);
 
 
 
