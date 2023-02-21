@@ -26,13 +26,13 @@ double C2_g2_highenergy(double x, double mQ, double mMu) {
     double I = 4. * z * Hmp;
     double J = 4. * z * L ;
 
-    double LMu = log(mMu);
+    double Lmu = log(mMu);
 
     double c_const = 10./3. + (1. - mQ) * I + (13./6. - 5./3. * mQ) * J ;
 
-    double c_LMu = 2. + (1. - mQ) * J ;
+    double c_Lmu = 2. + (1. - mQ) * J ;
 
-    return  4. / 3. * CA * (c_const + c_LMu * LMu) / x ;
+    return  4. / 3. * CA * (c_const + c_Lmu * Lmu) / x ;
 
 }
 
@@ -65,7 +65,7 @@ double CL_g2_highenergy(double x, double mQ, double mMu) {
     double I = 4. * z * Hmp;
     double J = 4. * z * L;
 
-    double LMu = log(1./mMu);
+    double Lmu = log(1./mMu);
 
     double c_const = (
         4. * (-1. + 12. * mQ) / (3. + 12. * mQ)
@@ -73,12 +73,12 @@ double CL_g2_highenergy(double x, double mQ, double mMu) {
         - 4. * mQ * (1. + 3. * mQ) / (1. + 4. * mQ) * I
     ) / 3. ;
 
-    double c_LMu = (
+    double c_Lmu = (
         - 4. * (1. + 6. * mQ) / (1. + 4. * mQ)
         + 4. * mQ * (1. + 3. * mQ) / (1. + 4. * mQ) * J
     ) / 3. ;
 
-    return 8 * CA * TR * (c_const + c_LMu * LMu) / x ;
+    return 8 * CA * TR * (c_const + c_Lmu * Lmu) / x ;
 
 }
 
@@ -233,19 +233,19 @@ double C2_g3_highenergyLL(double x, double mQ, double mMu) {
     double J = 4 * z * L;
     double K = 4 * z * Hmpm;
 
-    double LMu = log(mMu);
-    double L2Mu = LMu * LMu;
+    double Lmu = log(mMu);
+    double L2mu = Lmu * Lmu;
 
     double c_const = (
         -184./27. - 1./3. * (1. - mQ) * I * log(1. + 1. / 4 / mQ) - 1./9. * (13. - 10. * mQ) * I
         - 1. / 27. * (71. - 92 * mQ) * J + 1./3. * (1. - mQ) * K
     );
 
-    double c_LMu = -20./9. - 2./3. * (1. - mQ) * I - 1./9. * (13. - 10. * mQ) * J;
+    double c_Lmu = -20./9. - 2./3. * (1. - mQ) * I - 1./9. * (13. - 10. * mQ) * J;
 
-    double c_L2Mu = -2./3. - 1./3. * (1. - mQ) * J;
+    double c_L2mu = -2./3. - 1./3. * (1. - mQ) * J;
 
-    return 8. * CA * CA * log(x) * (c_const + c_LMu * LMu + c_L2Mu * L2Mu) / x;
+    return 8. * CA * CA * log(x) * (c_const + c_Lmu * Lmu + c_L2mu * L2mu) / x;
 
 }
 
@@ -491,8 +491,8 @@ double C2_g3_highenergy_highscaleLL(double x, double mQ , double mMu) {
     double L2Q = LQ * LQ;
     double L3Q = LQ * L2Q;
 
-    double LMu = log(mMu);
-    double L2Mu = LMu * LMu;
+    double Lmu = log(mMu);
+    double L2mu = Lmu * Lmu;
 
     double c_L3Q = 32./9.;
 
@@ -502,13 +502,13 @@ double C2_g3_highenergy_highscaleLL(double x, double mQ , double mMu) {
 
     double c_const = 1472./27. - 416./9.*zeta2 + 128./3.*zeta3;
 
-    double c_LMu = 32./3. * L2Q + 416./9. * LQ + 160./9. - 64./3. * zeta2;
+    double c_Lmu = 32./3. * L2Q + 416./9. * LQ + 160./9. - 64./3. * zeta2;
 
-    double c_L2Mu = 32./3. * LQ + 16./3.;
+    double c_L2mu = 32./3. * LQ + 16./3.;
 
     return - CA * CA * log(x) * (
         c_L3Q * L3Q + c_L2Q * L2Q + c_LQ * LQ
-        + c_const + c_LMu * LMu + c_L2Mu * L2Mu
+        + c_const + c_Lmu * Lmu + c_L2mu * L2mu
     ) / x;
 
 }
