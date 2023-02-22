@@ -55,6 +55,7 @@ double CL_ps2_power_terms(double x, double mQ, double mMu);
 //------------------------------------------------------------------------------------------//
 
 double C2_g3_highenergyLL(double x, double mQ, double mMu);
+double CL_g3_highenergyLL(double x, double mQ, double mMu);
 double C2_ps3_highenergyLL(double x, double mQ, double mMu);
 
 //==========================================================================================//
