@@ -54,6 +54,8 @@ if __name__ == "__main__":
 
     print(f"Computation of the grid for the coefficient function C{runcard['channel']} for m = {m} GeV, nf = {nf}, and µ/Q = {mufrac}")
     print(f"Size of the grid (x,Q) = ({len(x_grid)},{len(Q_grid)})")
+    print("This may take a while (depending on the number of threads you choose). In order to spend this time, I would suggest you this interesting view:")
+    print("")
 
     start = time.perf_counter()
     res_vec=np.array(run(runcard["n_threads"], x_grid, Q_grid))

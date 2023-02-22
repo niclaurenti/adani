@@ -37,14 +37,14 @@ double threshold_expansion_g2(double x, double mQ, double mMu) {
 
     if(x>=xmax || x<0) return 0;
 
-    double beta = sqrt(1. - 4 * mQ * x / (1. - x));
+    double beta = sqrt(1. - 4. * mQ * x / (1. - x));
 
     double logb = log(beta) ;
     double log2b = logb * logb ;
 
-    double C_log2b = 16 * CA ;
+    double C_log2b = 16. * CA ;
 
-    double C_logb = 48 * CA * ln2 - 40 * CA + 8 * CA * log(mMu) ;
+    double C_logb = 48. * CA * ln2 - 40. * CA + 8. * CA * log(mMu) ;
 
     double C_fracb = (2 * CF - CA) * M_PI * M_PI ;
 
@@ -63,8 +63,8 @@ double threshold_expansion_g2_const(double mQ, double mMu) {
     double xi = 1. / mQ ;
 
     return (
-        c0(xi) + 36 * CA * ln2 * ln2 - 60 * CA * ln2
-        + log(mMu) * (8 * CA * ln2 - c0_bar(xi))
+        c0(xi) + 36. * CA * ln2 * ln2 - 60 * CA * ln2
+        + log(mMu) * (8. * CA * ln2 - c0_bar(xi))
     ) ;
 
 }
@@ -303,11 +303,11 @@ double CL_g3_threshold_const(double x, double mQ, double mMu) {
 
 double c0(double xi) {
 
-    double y = sqrt(1. + 4./xi ) ;
+    double y = sqrt(1. + 4. / xi) ;
 
-    double L1 = log(1. + xi/2 ) ;
-    double L2 = log(2. + xi/2 ) ;
-    double L3 = log( sqrt(xi) * (y - 1.) / 2) ;
+    double L1 = log(1. + xi / 2) ;
+    double L2 = log(2. + xi / 2) ;
+    double L3 = log(sqrt(xi) * (y - 1.) / 2) ;
 
     double xp2 = 2. + xi ;
     double xp4 = 4. + xi ;
@@ -344,6 +344,6 @@ double c0(double xi) {
 
 double c0_bar(double xi) {
 
-    return 4 * CA * (2. + log(1. + xi/4) ) - 4./3. * TR ;
+    return 4. * CA * (2. + log(1. + xi/4)) - 4./3. * TR ;
 
 }
