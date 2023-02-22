@@ -72,6 +72,7 @@ double CL_ps3_highenergy(double x, double mQ, double mMu, int nf);
 //------------------------------------------------------------------------------------------//
 
 double C2_g3_highenergy_highscaleLL(double x, double mQ, double mMu);
+double CL_g3_highenergy_highscaleLL(double x, double mQ, double mMu);
 double C2_ps3_highenergy_highscaleLL(double x, double mQ, double mMu);
 
 //==========================================================================================//

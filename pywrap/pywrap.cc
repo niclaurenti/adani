@@ -87,8 +87,11 @@ PYBIND11_MODULE(_core, m) {
 
     m.def("C2_g3_highenergy", &C2_g3_highenergy, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"));
     m.def("CL_g3_highenergy", &CL_g3_highenergy, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"));
+    m.def("C2_g3_highenergyLL", &C2_g3_highenergyLL, py::arg("x"), py::arg("mQ"), py::arg("mMu"));
+    m.def("CL_g3_highenergyLL", &CL_g3_highenergyLL, py::arg("x"), py::arg("mQ"), py::arg("mMu"));
     m.def("C2_g3_highenergy_highscale", &C2_g3_highenergy_highscale, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"));
     m.def("CL_g3_highenergy_highscale", &CL_g3_highenergy_highscale, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"));
     m.def("C2_g3_highenergy_highscaleLL", &C2_g3_highenergy_highscaleLL, py::arg("x"), py::arg("mQ"), py::arg("mMu"));
+    m.def("CL_g3_highenergy_highscaleLL", &CL_g3_highenergy_highscaleLL, py::arg("x"), py::arg("mQ"), py::arg("mMu"));
 
 }

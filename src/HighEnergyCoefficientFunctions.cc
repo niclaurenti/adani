@@ -516,7 +516,7 @@ double C2_g3_highenergy_highscaleLL(double x, double mQ , double mMu) {
 
     if(x>=1 || x<0) return 0;
 
-    double LQ = log(1. / mQ);
+    double LQ = log(mQ);
     double LQ2 = LQ * LQ;
     double LQ3 = LQ * LQ2;
 
@@ -533,7 +533,7 @@ double C2_g3_highenergy_highscaleLL(double x, double mQ , double mMu) {
             32. / 9 * (-5. + 6 * zeta2)
             + 416. / 9 * LQ - 32. / 3 * LQ2
         )
-        + 16. / 27 * (-92. + 78. * zeta2 - 72 * zeta3)
+        + 16. / 27 * (-92. + 78. * zeta2 - 72. * zeta3)
     ) / x;
 
 }
