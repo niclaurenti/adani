@@ -564,7 +564,7 @@ double C2_g3_highenergy_highscale(double x, double mQ, double mMu, int nf) {
     double beta0 = beta(0, nf) ;
 
     double NLL = (
-        - 32. /9 * a21 * (-5. + pi2)
+        - 32. / 9 * a21 * (-5. + pi2)
         + (
             - 416. * a21 / 9
             + 64. / 27 * a10 * a11 * (-71. + 3. * pi2)
@@ -590,7 +590,7 @@ double C2_g3_highenergy_highscale(double x, double mQ, double mMu, int nf) {
             ) * LQ
             + ( 64. * a10 * a11 / 3 - 32. * a11 * beta0 / 3) * LQ2
         )
-        + 32. / 27 * a10 * a11 * (-92. + 13. * pi2 - 72. * zeta3)
+        - 32. / 27 * a10 * a11 * (-92. + 13. * pi2 - 72. * zeta3)
         + 16. / 27 * a11 * beta0 * (-92. + 13. * pi2 - 72. * zeta3)
     ) / x;
 

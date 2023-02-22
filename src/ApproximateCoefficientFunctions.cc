@@ -502,6 +502,7 @@ double C2_ps3_approximation(double x, double mQ, double mMu, int nf) {
 double CL_g3_approximation(double x, double mQ, double mMu, int nf, int method_flag, int calls) {
 
     double a = 2.5, b = 5. ;
+    // TODO : maybe a lower A is better (e.g. A=9.)
     double A = 20., B = 11., C = 3., D = 2. ;
 
     double xmax = 1. / (1. + 4 * mQ) ;

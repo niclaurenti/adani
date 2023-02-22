@@ -35,6 +35,8 @@ PYBIND11_MODULE(_core, m) {
     // AsymptoticCoefficientFunctions
 
     m.def("C2_g3_asymptotic", &C2_g3_asymptotic, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"), py::arg("v1")=0, py::arg("v2")=0);
+    m.def("CL_g3_asymptotic", &CL_g3_asymptotic, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"));
+
 
     // HighscaleCoefficientFunctions
 
@@ -79,6 +81,7 @@ PYBIND11_MODULE(_core, m) {
     // ThresholdCoefficientFunctions
 
     m.def("C2_g3_threshold", &C2_g3_threshold, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"));
+    m.def("CL_g3_threshold", &CL_g3_threshold, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"));
 
     // HighEnergyCoefficientFunctions
 
