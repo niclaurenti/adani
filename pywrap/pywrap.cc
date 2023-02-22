@@ -84,5 +84,9 @@ PYBIND11_MODULE(_core, m) {
 
     m.def("C2_g3_power_terms", &C2_g3_power_terms, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"), py::arg("v")=0);
     m.def("CL_g2_highenergy", &CL_g2_highenergy, py::arg("x"), py::arg("mQ"), py::arg("mMu"));
+    m.def("C2_g3_highenergyNLL", &C2_g3_highenergyNLL, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"));
+    m.def("C2_g3_highenergy_highscaleNLL", &C2_g3_highenergy_highscaleNLL, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"));
+    m.def("CL_g3_highenergy", &CL_g3_highenergy, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"));
+    m.def("CL_g3_highenergy_highscale", &CL_g3_highenergy_highscale, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"));
 
 }

@@ -105,6 +105,9 @@ double CL_ps3_power_terms(double x, double mQ , double mMu, int nf);
 double C2_g3_highenergy(double x, double mQ, double mMu, int nf, int v);
 double C2_g3_highenergy_highscale(double x, double mQ, double mMu, int nf, int v);
 
+double C2_g3_highenergy_highscaleNLL(double x, double mQ, double mMu, int nf);
+double C2_g3_highenergyNLL(double x, double mQ, double mMu, int nf);
+
 
 
 #endif
