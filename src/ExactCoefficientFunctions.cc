@@ -22,11 +22,11 @@ double C2_g1(double x, double mQ) { //mQ=m^2/Q^2
 
     double beta = sqrt(1. - 4. * mQ * x / (1 - x)) ;
     double x2 = x * x ;
-    double mQ2 = mQ * mQ ;
+    double mQ_2 = mQ * mQ ;
     double L = log((1. + beta) / (1. - beta)) ;
 
     return 4. * TR * (
-        L * (-8. * x2 * mQ2 - 4. * x * mQ * (3. * x - 1) + 2. * x2 - 2. * x + 1.)
+        L * (-8. * x2 * mQ_2 - 4. * x * mQ * (3. * x - 1) + 2. * x2 - 2. * x + 1.)
         + beta * (4. * mQ * x * (x - 1.) - (8. * x2 - 8. * x + 1.))
     ) ;
 
