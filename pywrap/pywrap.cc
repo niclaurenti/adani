@@ -15,15 +15,15 @@ PYBIND11_MODULE(_core, m) {
 
     // ApproximateCoefficientFunctions
 
-    m.def("C2_g3_approximation", &C2_g3_approximation, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"), py::arg("method_flag")=default_method, py::arg("calls")=default_calls);
+    m.def("C2_g3_approximation", &C2_g3_approximation, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"), py::arg("v")=0, py::arg("method_flag")=default_method, py::arg("calls")=default_calls);
     m.def("CL_g3_approximation", &CL_g3_approximation, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"), py::arg("method_flag")=default_method, py::arg("calls")=default_calls);
     m.def("C2_ps3_approximation", &C2_ps3_approximation, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"));
     m.def("CL_ps3_approximation", &CL_ps3_approximation, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"));
 
-    m.def("C2_g2_approximation", &C2_g2_approximation, py::arg("x"), py::arg("mQ"), py::arg("mMu")) ;
-    m.def("CL_g2_approximation", &CL_g2_approximation, py::arg("x"), py::arg("mQ"), py::arg("mMu")) ;
-    m.def("C2_ps2_approximation", &C2_ps2_approximation, py::arg("x"), py::arg("mQ"), py::arg("mMu")) ;
-    m.def("CL_ps2_approximation", &CL_ps2_approximation, py::arg("x"), py::arg("mQ"), py::arg("mMu")) ;
+    m.def("C2_g2_approximation", &C2_g2_approximation, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("v")=0) ;
+    m.def("CL_g2_approximation", &CL_g2_approximation, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("v")=0) ;
+    m.def("C2_ps2_approximation", &C2_ps2_approximation, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("v")=0) ;
+    m.def("CL_ps2_approximation", &CL_ps2_approximation, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("v")=0) ;
 
     m.def("C2_g3_approximationA_klmv", &C2_g3_approximationA_klmv, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"), py::arg("method_flag")=default_method, py::arg("calls")=default_calls);
     m.def("C2_g3_approximationB_klmv", &C2_g3_approximationB_klmv, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"), py::arg("method_flag")=default_method, py::arg("calls")=default_calls);

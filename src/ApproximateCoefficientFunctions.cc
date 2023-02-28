@@ -8,8 +8,22 @@
 #include "adani/Constants.h"
 #include <cmath>
 #include <iostream>
+#include <vector>
+
+#define default_var 0.3
+#define default_fact 3.
 
 using namespace std ;
+
+struct approximation_parameters C2_g2_params = {1.7, 2.5, 2.5, 1.2, 2.5, 5.} ;
+struct approximation_parameters CL_g2_params = {20., 11., 3., 2., 2.5, 5.} ;
+struct approximation_parameters C2_ps2_params = {1.7, 2.5, 2.5, 1.2, 2.5, 5.} ;
+struct approximation_parameters CL_ps2_params = {20., 11., 3., 2., 2.5, 5.} ;
+
+struct approximation_parameters C2_g3_params = {0.3, 2.5, 2.5, 1.2, 2.5, 5.} ;
+struct approximation_parameters CL_g3_params = {20., 11., 3., 2., 2.5, 5.} ; // TODO : maybe a lower A is better (e.g. A=9.)
+struct approximation_parameters C2_ps3_params = {0.3, 2.5, 2.5, 1.2, 2.5, 5.} ;
+struct approximation_parameters CL_ps3_params = {20., 11., 3., 2., 2.5, 5.} ;
 
 //==========================================================================================//
 //  Approximate gluon coefficient function for F2 at O(alpha_s) with implicit parameters.
@@ -105,12 +119,31 @@ double CL_g1_approximation(double x, double mQ) {
 //  Used for validation of the method.
 //------------------------------------------------------------------------------------------//
 
-double C2_g2_approximation(double x, double mQ, double mMu) {
+double C2_g2_approximation(double x, double mQ, double mMu, int v) {
 
-    double a = 2.5, b = 5 ;
-    double A = 1.7, B = 2.5, C = 2.5, D = 1.2 ;
+    double C_const = C2_g20_approximation_BAND(x, mQ, v);
 
-    return C2_g2_approximation_implicit(x, mQ, mMu, A, B, C, D, a, b);
+    double C_log = C2_g21(x, mQ) ;
+
+    return C_const + C_log * log(1. / mMu) ;
+
+}
+
+//==========================================================================================//
+//  Approximate gluon coefficient function for F2 at O(alpha_s^2).
+//  Used for validation of the method.
+//------------------------------------------------------------------------------------------//
+
+double C2_g20_approximation(double x, double mQ) {
+
+    double A = C2_g2_params.A ;
+    double B = C2_g2_params.B ;
+    double C = C2_g2_params.C ;
+    double D = C2_g2_params.D ;
+    double a = C2_g2_params.a ;
+    double b = C2_g2_params.b ;
+
+    return C2_g20_approximation_implicit(x, mQ, A, B, C, D, a, b);
 
 }
 
@@ -118,7 +151,7 @@ double C2_g2_approximation(double x, double mQ, double mMu) {
 //  Approximate gluon coefficient function for F2 at O(alpha_s) with implicit parameters.
 //------------------------------------------------------------------------------------------//
 
-double C2_g2_approximation_implicit(double x, double mQ, double mMu, double A, double B, double C, double D, double a, double b) {
+double C2_g20_approximation_implicit(double x, double mQ, double A, double B, double C, double D, double a, double b) {
 
     double xmax = 1. / (1. + 4. * mQ) ;
 
@@ -136,14 +169,10 @@ double C2_g2_approximation_implicit(double x, double mQ, double mMu, double A, d
     double damp_thr = 1. / (1. + pow(eta / h , k)) ;
     double damp_asy = 1. - damp_thr ;
 
-    double C_const = (
+    return (
         C2_g2_asymptotic(x, mQ, 1.) * damp_asy
         + C2_g2_threshold(x, mQ, 1.) * damp_thr
     );
-
-    double C_log = C2_g21(x, mQ) ;
-
-    return C_const + C_log * log(1. / mMu) ;
 
 }
 
@@ -151,48 +180,54 @@ double C2_g2_approximation_implicit(double x, double mQ, double mMu, double A, d
 //  Band of the approximate gluon coefficient function for F2 at O(alpha_s^2).
 //------------------------------------------------------------------------------------------//
 
-double C2_g2_approximation_BAND(double x, double mQ, double mMu, int v, double var, double fact) {
+double C2_g20_approximation_BAND(double x, double mQ, int v) {
 
-    double a = 2.5, b = 5 ;
-    double A = 1.7, B = 2.5, C = 2.5, D = 1.2 ;
+    double A = C2_g2_params.A ;
+    double B = C2_g2_params.B ;
+    double C = C2_g2_params.C ;
+    double D = C2_g2_params.D ;
+    double a = C2_g2_params.a ;
+    double b = C2_g2_params.b ;
 
-    double Cavg = C2_g2_approximation_implicit(x, mQ, mMu, A, B, C, D, a, b);
+    double Cavg = C2_g20_approximation(x, mQ);
 
     if(v==0) return Cavg;
+
+    double var = default_var, fact = default_fact ;
 
     double Amax = fact * A, Amin = A / fact, Bmax = B * fact, Bmin = B / fact ;
     double Cmax = (1. + var) * C, Cmin = (1. - var) * C, Dmax = (1. + var) * D, Dmin = (1. - var) * D ;
 
-    double Cerr[10];
+    double Avec[3] = {A, Amin, Amax} ;
+    double Bvec[3] = {B, Bmax, Bmin} ;
+    double Cvec[3] = {C, Cmax, Cmin} ;
+    double Dvec[3] = {D, Dmax, Dmin} ;
 
-    Cerr[0] = C2_g2_approximation_implicit(x, mQ, 1., Amax, B, C, D, a, b);
-    Cerr[1] = C2_g2_approximation_implicit(x, mQ, 1., Amin, B, C, D, a, b);
-    Cerr[2] = C2_g2_approximation_implicit(x, mQ, 1., A, Bmax, C, D, a, b);
-    Cerr[3] = C2_g2_approximation_implicit(x, mQ, 1., A, Bmin, C, D, a, b);
-    Cerr[4] = C2_g2_approximation_implicit(x, mQ, 1., A, B, Cmax, D, a, b);
-    Cerr[5] = C2_g2_approximation_implicit(x, mQ, 1., A, B, Cmin, D, a, b);
-    Cerr[6] = C2_g2_approximation_implicit(x, mQ, 1., A, B, C, Dmax, a, b);
-    Cerr[7] = C2_g2_approximation_implicit(x, mQ, 1., A, B, C, Dmin, a, b);
-    Cerr[8] = C2_g2_approximation_implicit(x, mQ, 1., Amax, Bmax, Cmax, Dmax, a, b);
-    Cerr[9] = C2_g2_approximation_implicit(x, mQ, 1., Amin, Bmin, Cmin, Dmin, a, b);
+    vector<double> replicas ;
+
+    for (int i = 0; i < 3; i++){
+        for (int j = 0; j < 3; j++) {
+            for (int h = 0; h < 3; h++) {
+                for (int k = 0; k < 3; k++) {
+                    replicas.push_back(
+                        C2_g20_approximation_implicit(x, mQ, Avec[i], Bvec[j], Cvec[h], Dvec[k], a, b)
+                    ) ;
+                }
+            }
+        }
+    }
 
     double min = Cavg, max = Cavg;
-    int i ;
 
-    for(i = 0; i < 10; i++) {
-        if(Cerr[i]>max) max = Cerr[i];
+    for(double rep : replicas) {
+        if(rep > max) max = rep ;
+        if(rep < min) min = rep ;
     }
 
-    for(i = 0; i < 10; i++) {
-        if(Cerr[i]<min) min = Cerr[i];
-    }
-
-    double C_mu_dep = C2_g21(x, mQ) * log(1. / mMu);
-
-    if(v==1) return max + C_mu_dep;
-    else if(v==2) return min + C_mu_dep;
+    if(v==1) return max ;
+    if(v==-1) return min ;
     else {
-        cout<<"C2_g2_approximation_BAND: Choose either v=0 or v=1 or v=2!!\nExiting!!\n"<<endl;
+        cout << "C2_g20_approximation_BAND: Choose either v=0 or v=1 or v=2!!\nExiting!!\n" << endl;
         exit(-1);
     }
 
@@ -202,12 +237,26 @@ double C2_g2_approximation_BAND(double x, double mQ, double mMu, int v, double v
 //  Approximate quark coefficient function for F2 at O(alpha_s^2).
 //  Used for validation of the method.
 //------------------------------------------------------------------------------------------//
-double C2_ps2_approximation(double x, double mQ, double mMu) {
+double C2_ps2_approximation(double x, double mQ, double mMu, int v) {
 
-    double a = 2.5, b = 5 ;
-    double A = 1.7, B = 2.5, C = 2.5, D = 1.2 ;
+    double C_const = C2_ps20_approximation_BAND(x, mQ, v);
 
-    return C2_ps2_approximation_implicit(x, mQ, mMu, A, B, C, D, a, b);
+    double C_log = C2_ps21(x, mQ) ;
+
+    return C_const + C_log * log(1. / mMu) ;
+
+}
+
+double C2_ps20_approximation(double x, double mQ) {
+
+    double A = C2_ps2_params.A ;
+    double B = C2_ps2_params.B ;
+    double C = C2_ps2_params.C ;
+    double D = C2_ps2_params.D ;
+    double a = C2_ps2_params.a ;
+    double b = C2_ps2_params.b ;
+
+    return C2_ps20_approximation_implicit(x, mQ, A, B, C, D, a, b);
 
 }
 
@@ -215,7 +264,7 @@ double C2_ps2_approximation(double x, double mQ, double mMu) {
 //  Approximate quark coefficient function for F2 at O(alpha_s^2) with implicit parameters.
 //------------------------------------------------------------------------------------------//
 
-double C2_ps2_approximation_implicit(double x, double mQ, double mMu, double A, double B, double C, double D, double a, double b) {
+double C2_ps20_approximation_implicit(double x, double mQ, double A, double B, double C, double D, double a, double b) {
 
     double xmax = 1. / (1. + 4. * mQ) ;
 
@@ -233,12 +282,60 @@ double C2_ps2_approximation_implicit(double x, double mQ, double mMu, double A, 
     double damp_thr = 1. / (1. + pow(eta / h , k)) ;
     double damp_asy = 1. - damp_thr ;
 
-    double C_const = C2_ps2_asymptotic(x, mQ, 1.) * damp_asy ;
+    return C2_ps2_asymptotic(x, mQ, 1.) * damp_asy ;
     //threshPS = 0
 
-    double C_log = C2_ps21(x, mQ) ;
+}
 
-    return C_const + C_log * log(1./mMu);
+double C2_ps20_approximation_BAND(double x, double mQ, int v) {
+
+    double A = C2_ps2_params.A ;
+    double B = C2_ps2_params.B ;
+    double C = C2_ps2_params.C ;
+    double D = C2_ps2_params.D ;
+    double a = C2_ps2_params.a ;
+    double b = C2_ps2_params.b ;
+
+    double Cavg = C2_ps20_approximation(x, mQ);
+
+    if(v==0) return Cavg;
+
+    double var = default_var, fact = default_fact ;
+    double Amax = fact * A, Amin = A / fact, Bmax = B * fact, Bmin = B / fact ;
+    double Cmax = (1. + var) * C, Cmin = (1. - var) * C, Dmax = (1. + var) * D, Dmin = (1. - var) * D ;
+
+    double Avec[3] = {A, Amin, Amax} ;
+    double Bvec[3] = {B, Bmax, Bmin} ;
+    double Cvec[3] = {C, Cmax, Cmin} ;
+    double Dvec[3] = {D, Dmax, Dmin} ;
+
+    vector<double> replicas ;
+
+    for (int i = 0; i < 3; i++){
+        for (int j = 0; j < 3; j++) {
+            for (int h = 0; h < 3; h++) {
+                for (int k = 0; k < 3; k++) {
+                    replicas.push_back(
+                        C2_g20_approximation_implicit(x, mQ, Avec[i], Bvec[j], Cvec[h], Dvec[k], a, b)
+                    ) ;
+                }
+            }
+        }
+    }
+
+    double min = Cavg, max = Cavg;
+
+    for(double rep : replicas) {
+        if(rep > max) max = rep ;
+        if(rep < min) min = rep ;
+    }
+
+    if(v==1) return max ;
+    if(v==-1) return min ;
+    else {
+        cout << "C2_g20_approximation_BAND: Choose either v=0 or v=1 or v=2!!\nExiting!!\n" << endl;
+        exit(-1);
+    }
 
 }
 
@@ -247,12 +344,26 @@ double C2_ps2_approximation_implicit(double x, double mQ, double mMu, double A, 
 //  Used for validation of the method.
 //------------------------------------------------------------------------------------------//
 
-double CL_g2_approximation(double x, double mQ, double mMu) {
+double CL_g2_approximation(double x, double mQ, double mMu, int v) {
 
-    double a = 2.5, b = 5 ;
-    double A = 20., B = 11., C = 3., D = 2. ;
+    double C_const = CL_g20_approximation_BAND(x, mQ, v);
 
-    return CL_g2_approximation_implicit(x, mQ, mMu, A, B, C, D, a, b) ;
+    double C_log = CL_g21(x, mQ) ;
+
+    return C_const + C_log * log(1. / mMu) ;
+
+}
+
+double CL_g20_approximation(double x, double mQ) {
+
+    double A = CL_g2_params.A ;
+    double B = CL_g2_params.B ;
+    double C = CL_g2_params.C ;
+    double D = CL_g2_params.D ;
+    double a = CL_g2_params.a ;
+    double b = CL_g2_params.b ;
+
+    return CL_g20_approximation_implicit(x, mQ, A, B, C, D, a, b) ;
 
 }
 
@@ -260,7 +371,7 @@ double CL_g2_approximation(double x, double mQ, double mMu) {
 //  Approximate gluon coefficient function for FL at O(alpha_s) with implicit parameters.
 //------------------------------------------------------------------------------------------//
 
-double CL_g2_approximation_implicit(double x, double mQ, double mMu, double A, double B, double C, double D, double a, double b) {
+double CL_g20_approximation_implicit(double x, double mQ, double A, double B, double C, double D, double a, double b) {
 
     double xmax = 1. / (1. + 4 * mQ) ;
 
@@ -278,14 +389,62 @@ double CL_g2_approximation_implicit(double x, double mQ, double mMu, double A, d
     double damp_thr = 1. / (1. + pow(eta / h, k)) ;
     double damp_asy = 1. - damp_thr ;
 
-    double C_const = (
+    return (
         CL_g2_asymptotic(x, mQ, 1.) * damp_asy
         + CL_g2_threshold(x, mQ, 1.) * damp_thr
     ) ;
 
-    double C_log = CL_g21(x, mQ) ;
+}
 
-    return C_const + C_log * log(1. / mMu) ;
+double CL_g20_approximation_BAND(double x, double mQ, int v) {
+
+    double A = CL_g2_params.A ;
+    double B = CL_g2_params.B ;
+    double C = CL_g2_params.C ;
+    double D = CL_g2_params.D ;
+    double a = CL_g2_params.a ;
+    double b = CL_g2_params.b ;
+
+    double Cavg = CL_g20_approximation(x, mQ);
+
+    if(v==0) return Cavg;
+
+    double var = default_var, fact = default_fact ;
+    double Amax = fact * A, Amin = A / fact, Bmax = B * fact, Bmin = B / fact ;
+    double Cmax = (1. + var) * C, Cmin = (1. - var) * C, Dmax = (1. + var) * D, Dmin = (1. - var) * D ;
+
+    double Avec[3] = {A, Amin, Amax} ;
+    double Bvec[3] = {B, Bmax, Bmin} ;
+    double Cvec[3] = {C, Cmax, Cmin} ;
+    double Dvec[3] = {D, Dmax, Dmin} ;
+
+    vector<double> replicas ;
+
+    for (int i = 0; i < 3; i++){
+        for (int j = 0; j < 3; j++) {
+            for (int h = 0; h < 3; h++) {
+                for (int k = 0; k < 3; k++) {
+                    replicas.push_back(
+                        CL_g20_approximation_implicit(x, mQ, Avec[i], Bvec[j], Cvec[h], Dvec[k], a, b)
+                    ) ;
+                }
+            }
+        }
+    }
+
+    double min = Cavg, max = Cavg;
+
+    for(double rep : replicas) {
+        if(rep > max) max = rep ;
+        if(rep < min) min = rep ;
+    }
+
+    if(v==1) return max ;
+    if(v==-1) return min ;
+    else {
+        cout << "CL_g20_approximation_BAND: Choose either v=0 or v=1 or v=2!!\nExiting!!\n" << endl;
+        exit(-1);
+    }
 
 }
 
@@ -294,20 +453,34 @@ double CL_g2_approximation_implicit(double x, double mQ, double mMu, double A, d
 //  Used for validation of the method.
 //------------------------------------------------------------------------------------------//
 
-double CL_ps2_approximation(double x, double mQ, double mMu) {
+double CL_ps2_approximation(double x, double mQ, double mMu, int v) {
 
-    double a = 2.5, b = 5 ;
-    double A = 20., B = 11., C = 3., D = 2. ;
+    double C_const = CL_ps20_approximation_BAND(x, mQ, v);
 
-    return CL_ps2_approximation_implicit(x, mQ, mMu, A, B, C, D, a, b);
+    double C_log = CL_ps21(x, mQ) ;
+
+    return C_const + C_log * log(1. / mMu) ;
+
+}
+
+double CL_ps20_approximation(double x, double mQ) {
+
+    double A = CL_ps2_params.A ;
+    double B = CL_ps2_params.B ;
+    double C = CL_ps2_params.C ;
+    double D = CL_ps2_params.D ;
+    double a = CL_ps2_params.a ;
+    double b = CL_ps2_params.b ;
+
+    return CL_ps20_approximation_implicit(x, mQ, A, B, C, D, a, b);
 
 }
 
 //==========================================================================================//
-//  Approximate quark coefficient function for FL at O(alpha_s) with implicit parameters.
+//  Approximate quark coefficient function for F2 at O(alpha_s^2) with implicit parameters.
 //------------------------------------------------------------------------------------------//
 
-double CL_ps2_approximation_implicit(double x, double mQ, double mMu, double A, double B, double C, double D, double a, double b) {
+double CL_ps20_approximation_implicit(double x, double mQ, double A, double B, double C, double D, double a, double b) {
 
     double xmax = 1. / (1. + 4. * mQ) ;
 
@@ -325,12 +498,80 @@ double CL_ps2_approximation_implicit(double x, double mQ, double mMu, double A, 
     double damp_thr = 1. / (1. + pow(eta / h , k)) ;
     double damp_asy = 1. - damp_thr ;
 
-    double C_const = CL_ps2_asymptotic(x, mQ, 1.) * damp_asy ;
+    return CL_ps2_asymptotic(x, mQ, 1.) * damp_asy ;
     //threshPS = 0
 
-    double C_log = CL_ps21(x, mQ) ;
+}
 
-    return C_const + C_log * log(1. / mMu) ;
+double CL_ps20_approximation_BAND(double x, double mQ, int v) {
+
+    double A = CL_ps2_params.A ;
+    double B = CL_ps2_params.B ;
+    double C = CL_ps2_params.C ;
+    double D = CL_ps2_params.D ;
+    double a = CL_ps2_params.a ;
+    double b = CL_ps2_params.b ;
+
+    double Cavg = CL_ps20_approximation(x, mQ);
+
+    if(v==0) return Cavg;
+
+    double var = default_var, fact = default_fact ;
+    double Amax = fact * A, Amin = A / fact, Bmax = B * fact, Bmin = B / fact ;
+    double Cmax = (1. + var) * C, Cmin = (1. - var) * C, Dmax = (1. + var) * D, Dmin = (1. - var) * D ;
+
+    double Avec[3] = {A, Amin, Amax} ;
+    double Bvec[3] = {B, Bmax, Bmin} ;
+    double Cvec[3] = {C, Cmax, Cmin} ;
+    double Dvec[3] = {D, Dmax, Dmin} ;
+
+    vector<double> replicas ;
+
+    for (int i = 0; i < 3; i++){
+        for (int j = 0; j < 3; j++) {
+            for (int h = 0; h < 3; h++) {
+                for (int k = 0; k < 3; k++) {
+                    replicas.push_back(
+                        CL_g20_approximation_implicit(x, mQ, Avec[i], Bvec[j], Cvec[h], Dvec[k], a, b)
+                    ) ;
+                }
+            }
+        }
+    }
+
+    double min = Cavg, max = Cavg;
+
+    for(double rep : replicas) {
+        if(rep > max) max = rep ;
+        if(rep < min) min = rep ;
+    }
+
+    if(v==1) return max ;
+    if(v==-1) return min ;
+    else {
+        cout << "C2_g20_approximation_BAND: Choose either v=0 or v=1 or v=2!!\nExiting!!\n" << endl;
+        exit(-1);
+    }
+
+}
+//==========================================================================================//
+//  Approximate gluon coefficient function for F2 at O(alpha_s^3).
+//------------------------------------------------------------------------------------------//
+
+double C2_g3_approximation(double x, double mQ, double mMu, int nf, int v, int method_flag, int calls) {
+
+    double C30 = C2_g30_approximation_BAND(x, mQ, nf, v);
+
+    if(mMu == 1.) return C30 ;
+
+    double Lmu = - log(mMu) ;
+    double Lmu2 = Lmu * Lmu ;
+
+    return (
+        C30
+        + C2_g31(x, mQ, nf) * Lmu
+        + C2_g32(x, mQ, nf, method_flag, calls) * Lmu2
+    ) ;
 
 }
 
@@ -338,13 +579,17 @@ double CL_ps2_approximation_implicit(double x, double mQ, double mMu, double A, 
 //  Approximate gluon coefficient function for F2 at O(alpha_s^3).
 //------------------------------------------------------------------------------------------//
 
-double C2_g3_approximation(double x, double mQ, double mMu, int nf, int method_flag, int calls) {
+double C2_g30_approximation(double x, double mQ, int nf) {
 
-    double a = 2.5, b = 5. ;
-    double A = 0.3, B = 2.5, C = 2.5, D = 1.2 ;
+    double A = C2_g3_params.A ;
+    double B = C2_g3_params.B ;
+    double C = C2_g3_params.C ;
+    double D = C2_g3_params.D ;
+    double a = C2_g3_params.a ;
+    double b = C2_g3_params.b ;
     int v1 = 0, v2 = 0 ;
 
-    return C2_g3_approximation_implicit(x, mQ, mMu, nf, A, B, C, D, a, b, v1, v2, method_flag, calls);
+    return C2_g30_approximation_implicit(x, mQ, nf, A, B, C, D, a, b, v1, v2);
 
 }
 
@@ -352,7 +597,7 @@ double C2_g3_approximation(double x, double mQ, double mMu, int nf, int method_f
 //  Approximate gluon coefficient function for F2 at O(alpha_s^3) with implicit parameters.
 //------------------------------------------------------------------------------------------//
 
-double C2_g3_approximation_implicit(double x, double mQ, double mMu, int nf, double A, double B, double C, double D, double a, double b, int v1, int v2, int method_flag, int calls) {
+double C2_g30_approximation_implicit(double x, double mQ, int nf, double A, double B, double C, double D, double a, double b, int v1, int v2) {
 
     double xmax = 1. / ( 1. + 4 * mQ ) ;
 
@@ -371,20 +616,9 @@ double C2_g3_approximation_implicit(double x, double mQ, double mMu, int nf, dou
     double damp_thr = 1. / (1. + pow(eta / h , k)) ;
     double damp_asy = 1. - damp_thr ;
 
-    double C30 = (
+    return (
         C2_g3_asymptotic(x, mQ, 1., nf, v1, v2) * damp_asy
         + C2_g3_threshold(x, mQ, 1., nf) * damp_thr
-    ) ;
-
-    if(mMu == 1.) return C30 ;
-
-    double Lmu = - log(mMu) ;
-    double Lmu2 = Lmu * Lmu ;
-
-    return (
-        C30
-        + C2_g31(x, mQ, nf) * Lmu
-        + C2_g32(x, mQ, nf, method_flag, calls) * Lmu2
     ) ;
 
 }
@@ -394,62 +628,59 @@ double C2_g3_approximation_implicit(double x, double mQ, double mMu, int nf, dou
 //------------------------------------------------------------------------------------------//
 
 
-double C2_g3_approximation_BAND(double x, double mQ, double mMu, int nf, int v, double var, double fact, int method_flag, int calls) {
+double C2_g30_approximation_BAND(double x, double mQ, int nf, int v) {
 
-    double a = 2.5, b = 5;
-    double A = 0.3, B = 2.5, C = 2.5, D = 1.2;
+    double A = C2_g3_params.A ;
+    double B = C2_g3_params.B ;
+    double C = C2_g3_params.C ;
+    double D = C2_g3_params.D ;
+    double a = C2_g3_params.a ;
+    double b = C2_g3_params.b ;
 
-    double Cavg = C2_g3_approximation_implicit(x, mQ, 1., nf, A, B, C, D, a, b, 0, 0);
+    double Cavg = C2_g30_approximation(x, mQ, nf);
 
     if(v==0) return Cavg;
 
+    double var = default_var, fact = default_fact ;
+
     double Amax = fact * A, Amin = A / fact, Bmax = B * fact, Bmin = B / fact;
-    double Cmax = (1. + var) * C, Cmin = (1. - var) * C, Dmax=(1. + var) * D, Dmin = (1. - var) * D;
+    double Cmax = (1. + var) * C, Cmin = (1. - var) * C, Dmax = (1. + var) * D, Dmin = (1. - var) * D;
 
-    double Cerr[14];
+    double Avec[3] = {A, Amin, Amax} ;
+    double Bvec[3] = {B, Bmax, Bmin} ;
+    double Cvec[3] = {C, Cmax, Cmin} ;
+    double Dvec[3] = {D, Dmax, Dmin} ;
 
-    double min=Cavg,max=Cavg;
-    int i;
+    vector<double> replicas ;
 
-    Cerr[0] = C2_g3_approximation_implicit(x, mQ, 1., nf, Amax, B, C, D, a, b, 0, 0);
-    Cerr[1] = C2_g3_approximation_implicit(x, mQ, 1, nf, Amin, B, C, D, a, b, 0, 0);
-    Cerr[2] = C2_g3_approximation_implicit(x, mQ, 1, nf, A, Bmax, C, D, a, b, 0, 0);
-    Cerr[3] = C2_g3_approximation_implicit(x, mQ, 1., nf, A, Bmin, C, D, a, b, 0, 0);
-    Cerr[4] = C2_g3_approximation_implicit(x, mQ, 1., nf, A, B, Cmax, D, a, b, 0, 0);
-    Cerr[5] = C2_g3_approximation_implicit(x, mQ, 1., nf, A, B, Cmin, D, a, b, 0, 0);
-    Cerr[6] = C2_g3_approximation_implicit(x, mQ, 1., nf, A, B, C, Dmax, a, b, 0, 0);
-    Cerr[7] = C2_g3_approximation_implicit(x, mQ, 1., nf, A, B, C, Dmin, a, b, 0, 0);
-    Cerr[8] = C2_g3_approximation_implicit(x, mQ, 1., nf, A, B, C, D, a, b, 1, 0);
-    Cerr[9] = C2_g3_approximation_implicit(x, mQ, 1., nf, A, B, C, D, a, b, 2, 0);
-    Cerr[10] = C2_g3_approximation_implicit(x, mQ, 1., nf, A, B, C, D, a, b, 0, 1);
-    Cerr[11] = C2_g3_approximation_implicit(x, mQ, 1., nf, A, B, C, D, a, b, 0, 2);
-    Cerr[12] = C2_g3_approximation_implicit(x, mQ, 1., nf, Amax, Bmax, Cmax, Dmax, a, b, 1, 1);
-    Cerr[13] = C2_g3_approximation_implicit(x, mQ, 1., nf, Amin, Bmin, Cmin, Dmin, a, b, 2, 2);
-
-    for(i=0 ;i < 14; i++) {
-        if(Cerr[i]>max) max = Cerr[i];
+    for (int i = 0; i < 3; i++){
+        for (int j = 0; j < 3; j++) {
+            for (int h = 0; h < 3; h++) {
+                for (int k = 0; k < 3; k++) {
+                    for (int v1 = 0; v1 < 3; v1++) {
+                        for (int v2 = 0; v2 < 3; v2++) {
+                            replicas.push_back(
+                                C2_g30_approximation_implicit(x, mQ, nf, Avec[i], Bvec[j], Cvec[h], Dvec[k], a, b, v1, v2)
+                            ) ;
+                        }
+                    }
+                }
+            }
+        }
     }
 
-    for(i=0; i < 14; i++) {
-        if(Cerr[i]<min) min = Cerr[i];
+    double min = Cavg, max = Cavg ;
+
+    for(double rep : replicas) {
+        if(rep > max) max = rep ;
+        if(rep < min) min = rep ;
     }
 
-    double Lmu = - log(mMu) ;
-    double Lmu2 = Lmu * Lmu ;
-
-    double C_mu_dep ;
-
-    if(mMu == 1.) {
-        C_mu_dep = 0. ;
-    } else {
-        C_mu_dep = C2_g31(x, mQ, nf) * Lmu + C2_g32(x, mQ, nf, method_flag, calls) * Lmu2 ;
-    }
-
-    if(v==1) return max + C_mu_dep;
-    if(v==2) return min + C_mu_dep;
+    if(v==1) return max ;
+    if(v==-1) return min ;
 
     else {
-        cout<<"C2_g3_approximation_BAND: Choose either v=0 or v=1 or v=2!!\nExiting!!\n"<<endl;
+        cout << "C2_g30_approximation_BAND: Choose either v=0 or v=1 or v=-1!!\nExiting!!\n" << endl;
         exit(-1);
     }
 
@@ -461,8 +692,39 @@ double C2_g3_approximation_BAND(double x, double mQ, double mMu, int nf, int v, 
 
 double C2_ps3_approximation(double x, double mQ, double mMu, int nf) {
 
-    double a = 2.5, b = 5. ;
-    double A = 0.3, B = 2.5, C = 2.5, D = 1.2 ;
+    double C30 = C2_ps30_approximation(x, mQ, nf);
+
+    if(mMu == 1.) return C30 ;
+
+    double Lmu = - log(mMu) ;
+    double Lmu2 = Lmu * Lmu ;
+
+    return (
+        C30
+        + C2_ps31(x, mQ, nf) * Lmu
+        + C2_ps32(x, mQ, nf) * Lmu2
+    );
+
+}
+
+//==========================================================================================//
+//  Approximate gluon coefficient function for F2 at O(alpha_s^3).
+//------------------------------------------------------------------------------------------//
+
+double C2_ps30_approximation(double x, double mQ, int nf) {
+
+    double A = C2_ps3_params.A ;
+    double B = C2_ps3_params.B ;
+    double C = C2_ps3_params.C ;
+    double D = C2_ps3_params.D ;
+    double a = C2_ps3_params.a ;
+    double b = C2_ps3_params.b ;
+
+    return C2_ps30_approximation_implicit(x, mQ, nf, A, B, C, D, a, b);
+
+}
+
+double C2_ps30_approximation_implicit(double x, double mQ, int nf, double A, double B, double C, double D, double a, double b) {
 
     double xmax = 1. / (1. + 4. * mQ) ;
 
@@ -480,18 +742,7 @@ double C2_ps3_approximation(double x, double mQ, double mMu, int nf) {
     double damp_thr = 1. / (1. + pow(eta / h, k));
     double damp_asy = 1. - damp_thr;
 
-    double C30 = C2_ps3_asymptotic(x, mQ, 1., nf) * damp_asy ;
-
-    if(mMu == 1.) return C30 ;
-
-    double Lmu = - log(mMu) ;
-    double Lmu2 = Lmu * Lmu ;
-
-    return (
-        C30
-        + C2_ps31(x, mQ, nf) * Lmu
-        + C2_ps32(x, mQ, nf) * Lmu2
-    );
+    return C2_ps3_asymptotic(x, mQ, 1., nf) * damp_asy ;
 
 }
 
@@ -501,9 +752,39 @@ double C2_ps3_approximation(double x, double mQ, double mMu, int nf) {
 
 double CL_g3_approximation(double x, double mQ, double mMu, int nf, int method_flag, int calls) {
 
-    double a = 2.5, b = 5. ;
-    // TODO : maybe a lower A is better (e.g. A=9.)
-    double A = 20., B = 11., C = 3., D = 2. ;
+    double C30 = CL_g30_approximation(x, mQ, nf);
+
+    if(mMu == 1.) return C30 ;
+
+    double Lmu = - log(mMu) ;
+    double Lmu2 = Lmu * Lmu ;
+
+    return (
+        C30
+        + CL_g31(x, mQ, nf) * Lmu
+        + CL_g32(x, mQ, nf, method_flag, calls) * Lmu2
+    ) ;
+
+}
+
+//==========================================================================================//
+//  Approximate gluon coefficient function for F2 at O(alpha_s^3).
+//------------------------------------------------------------------------------------------//
+
+double CL_g30_approximation(double x, double mQ, int nf) {
+
+    double A = CL_g3_params.A ;
+    double B = CL_g3_params.B ;
+    double C = CL_g3_params.C ;
+    double D = CL_g3_params.D ;
+    double a = CL_g3_params.a ;
+    double b = CL_g3_params.b ;
+
+    return CL_g30_approximation_implicit(x, mQ, nf, A, B, C, D, a, b);
+
+}
+
+double CL_g30_approximation_implicit(double x, double mQ, int nf, double A, double B, double C, double D, double a, double b) {
 
     double xmax = 1. / (1. + 4 * mQ) ;
 
@@ -521,20 +802,9 @@ double CL_g3_approximation(double x, double mQ, double mMu, int nf, int method_f
     double damp_thr = 1. / (1. + pow(eta / h , k)) ;
     double damp_asy = 1. - damp_thr ;
 
-    double C30 = (
+    return (
         CL_g3_asymptotic(x, mQ, 1., nf) * damp_asy
         + CL_g3_threshold(x, mQ, 1., nf) * damp_thr
-    ) ;
-
-    if(mMu == 1.) return C30 ;
-
-    double Lmu = - log(mMu) ;
-    double Lmu2 = Lmu * Lmu ;
-
-    return (
-        C30
-        + CL_g31(x, mQ, nf) * Lmu
-        + CL_g32(x, mQ, nf, method_flag, calls) * Lmu2
     ) ;
 
 }
@@ -545,8 +815,39 @@ double CL_g3_approximation(double x, double mQ, double mMu, int nf, int method_f
 
 double CL_ps3_approximation(double x, double mQ, double mMu, int nf) {
 
-    double a = 2.5, b = 5 ;
-    double A = 20., B = 11., C = 3., D = 2.;
+    double C30 = CL_ps30_approximation(x, mQ, nf);
+
+    if(mMu == 1.) return C30 ;
+
+    double Lmu = - log(mMu) ;
+    double Lmu2 = Lmu * Lmu ;
+
+    return (
+        C30
+        + CL_ps31(x, mQ, nf) * Lmu
+        + CL_ps32(x, mQ, nf) * Lmu2
+    );
+
+}
+
+//==========================================================================================//
+//  Approximate gluon coefficient function for F2 at O(alpha_s^3).
+//------------------------------------------------------------------------------------------//
+
+double CL_ps30_approximation(double x, double mQ, int nf) {
+
+    double A = CL_ps3_params.A ;
+    double B = CL_ps3_params.B ;
+    double C = CL_ps3_params.C ;
+    double D = CL_ps3_params.D ;
+    double a = CL_ps3_params.a ;
+    double b = CL_ps3_params.b ;
+
+    return CL_ps30_approximation_implicit(x, mQ, nf, A, B, C, D, a, b);
+
+}
+
+double CL_ps30_approximation_implicit(double x, double mQ, int nf, double A, double B, double C, double D, double a, double b) {
 
     double xmax = 1. / (1. + 4. * mQ) ;
 
@@ -564,18 +865,7 @@ double CL_ps3_approximation(double x, double mQ, double mMu, int nf) {
     double damp_thr = 1. /(1. + pow(eta / h, k));
     double damp_asy = 1. - damp_thr;
 
-    double C30 = CL_ps3_asymptotic(x, mQ, 1., nf) * damp_asy ;
-
-    if(mMu == 1.) return C30 ;
-
-    double Lmu = - log(mMu) ;
-    double Lmu2 = Lmu * Lmu ;
-
-    return (
-        C30
-        + CL_ps31(x, mQ, nf) * Lmu
-        + CL_ps32(x, mQ, nf) * Lmu2
-    ) ;
+    return CL_ps3_asymptotic(x, mQ, 1., nf) * damp_asy ;
 
 }
 
