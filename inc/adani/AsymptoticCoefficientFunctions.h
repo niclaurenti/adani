@@ -37,15 +37,15 @@ double CL_ps2_asymptotic(double x, double mQ, double mMu);
 //                      Asymptotic coefficient functions O(alpha_s^3) at leading log
 //------------------------------------------------------------------------------------------//
 
-double C2_g3_asymptoticLL(double x, double mQ, double mMu, int nf, int v);
+// double C2_g3_asymptoticLL(double x, double mQ, double mMu, int nf, int v);
 
 //==========================================================================================//
 //                      Asymptotic coefficient functions O(alpha_s^3) at leading log
 //------------------------------------------------------------------------------------------//
 
-double C2_g3_asymptotic(double x, double mQ, double mMu, int nf, int v1=0, int v2=0);
-double C2_ps3_asymptotic(double x, double mQ, double mMu, int nf);
-double CL_g3_asymptotic(double x, double mQ, double mMu, int nf);
-double CL_ps3_asymptotic(double x, double mQ, double mMu, int nf);
+double C2_g3_asymptotic(double x, double mQ, double mMu, int nf, int v1, int v2);
+double C2_ps3_asymptotic(double x, double mQ, double mMu, int nf, int v);
+double CL_g3_asymptotic(double x, double mQ, double mMu, int nf, int v);
+double CL_ps3_asymptotic(double x, double mQ, double mMu, int nf, int v);
 
 #endif

@@ -16,9 +16,9 @@ PYBIND11_MODULE(_core, m) {
     // ApproximateCoefficientFunctions
 
     m.def("C2_g3_approximation", &C2_g3_approximation, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"), py::arg("v")=0, py::arg("method_flag")=default_method, py::arg("calls")=default_calls);
-    m.def("CL_g3_approximation", &CL_g3_approximation, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"), py::arg("method_flag")=default_method, py::arg("calls")=default_calls);
-    m.def("C2_ps3_approximation", &C2_ps3_approximation, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"));
-    m.def("CL_ps3_approximation", &CL_ps3_approximation, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"));
+    m.def("CL_g3_approximation", &CL_g3_approximation, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"), py::arg("v")=0, py::arg("method_flag")=default_method, py::arg("calls")=default_calls);
+    m.def("C2_ps3_approximation", &C2_ps3_approximation, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"), py::arg("v")=0);
+    m.def("CL_ps3_approximation", &CL_ps3_approximation, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"), py::arg("v")=0);
 
     m.def("C2_g2_approximation", &C2_g2_approximation, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("v")=0) ;
     m.def("CL_g2_approximation", &CL_g2_approximation, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("v")=0) ;
@@ -35,7 +35,7 @@ PYBIND11_MODULE(_core, m) {
     // AsymptoticCoefficientFunctions
 
     m.def("C2_g3_asymptotic", &C2_g3_asymptotic, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"), py::arg("v1")=0, py::arg("v2")=0);
-    m.def("CL_g3_asymptotic", &CL_g3_asymptotic, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"));
+    m.def("CL_g3_asymptotic", &CL_g3_asymptotic, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"), py::arg("v"));
 
 
     // HighscaleCoefficientFunctions
@@ -85,15 +85,15 @@ PYBIND11_MODULE(_core, m) {
 
     // HighEnergyCoefficientFunctions
 
-    m.def("C2_g3_power_terms", &C2_g3_power_terms, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"), py::arg("v")=0);
+    m.def("C2_g3_power_terms", &C2_g3_power_terms, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"), py::arg("v"));
     m.def("CL_g2_highenergy", &CL_g2_highenergy, py::arg("x"), py::arg("mQ"), py::arg("mMu"));
 
-    m.def("C2_g3_highenergy", &C2_g3_highenergy, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"));
-    m.def("CL_g3_highenergy", &CL_g3_highenergy, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"));
+    m.def("C2_g3_highenergy", &C2_g3_highenergy, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"), py::arg("v"));
+    m.def("CL_g3_highenergy", &CL_g3_highenergy, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"), py::arg("v"));
     m.def("C2_g3_highenergyLL", &C2_g3_highenergyLL, py::arg("x"), py::arg("mQ"), py::arg("mMu"));
     m.def("CL_g3_highenergyLL", &CL_g3_highenergyLL, py::arg("x"), py::arg("mQ"), py::arg("mMu"));
-    m.def("C2_g3_highenergy_highscale", &C2_g3_highenergy_highscale, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"));
-    m.def("CL_g3_highenergy_highscale", &CL_g3_highenergy_highscale, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"));
+    m.def("C2_g3_highenergy_highscale", &C2_g3_highenergy_highscale, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"), py::arg("v"));
+    m.def("CL_g3_highenergy_highscale", &CL_g3_highenergy_highscale, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"), py::arg("v"));
     m.def("C2_g3_highenergy_highscaleLL", &C2_g3_highenergy_highscaleLL, py::arg("x"), py::arg("mQ"), py::arg("mMu"));
     m.def("CL_g3_highenergy_highscaleLL", &CL_g3_highenergy_highscaleLL, py::arg("x"), py::arg("mQ"), py::arg("mMu"));
 

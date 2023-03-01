@@ -62,17 +62,20 @@ double C2_g30_approximation(double x, double mQ, int nf);
 double C2_g30_approximation_implicit(double x, double mQ, int nf, double A, double B, double C, double D, double a, double b, int v1, int v2);
 double C2_g30_approximation_BAND(double x, double mQ, int nf, int v);
 
-double C2_ps3_approximation(double x, double mQ, double mMu, int nf);
+double C2_ps3_approximation(double x, double mQ, double mMu, int nf, int v = 0);
 double C2_ps30_approximation(double x, double mQ, int nf);
-double C2_ps30_approximation_implicit(double x, double mQ, int nf, double A, double B, double C, double D, double a, double b);
+double C2_ps30_approximation_implicit(double x, double mQ, int nf, double A, double B, double C, double D, double a, double b, int v);
+double C2_ps30_approximation_BAND(double x, double mQ, int nf, int v);
 
-double CL_g3_approximation(double x, double mQ, double mMu, int nf, int method_flag = default_method, int calls = default_calls);
+double CL_g3_approximation(double x, double mQ, double mMu, int nf, int v = 0, int method_flag = default_method, int calls = default_calls);
 double CL_g30_approximation(double x, double mQ, int nf);
-double CL_g30_approximation_implicit(double x, double mQ, int nf, double A, double B, double C, double D, double a, double b);
+double CL_g30_approximation_implicit(double x, double mQ, int nf, double A, double B, double C, double D, double a, double b, int v);
+double CL_g30_approximation_BAND(double x, double mQ, int nf, int v);
 
-double CL_ps3_approximation(double x, double mQ, double mMu, int nf);
+double CL_ps3_approximation(double x, double mQ, double mMu, int nf, int v = 0);
 double CL_ps30_approximation(double x, double mQ, int nf);
-double CL_ps30_approximation_implicit(double x, double mQ, int nf, double A, double B, double C, double D, double a, double b);
+double CL_ps30_approximation_implicit(double x, double mQ, int nf, double A, double B, double C, double D, double a, double b, int v);
+double CL_ps30_approximation_BAND(double x, double mQ, int nf, int v);
 
 //==========================================================================================//
 //              Approximate coefficient functions O(alpha_s^2) from [arXiv:1205.5727]

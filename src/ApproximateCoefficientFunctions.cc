@@ -658,7 +658,7 @@ double C2_g30_approximation_BAND(double x, double mQ, int nf, int v) {
             for (int h = 0; h < 3; h++) {
                 for (int k = 0; k < 3; k++) {
                     for (int v1 = 0; v1 < 3; v1++) {
-                        for (int v2 = 0; v2 < 3; v2++) {
+                        for (int v2 = -1; v2 <= 1; v2++) {
                             replicas.push_back(
                                 C2_g30_approximation_implicit(x, mQ, nf, Avec[i], Bvec[j], Cvec[h], Dvec[k], a, b, v1, v2)
                             ) ;
@@ -690,9 +690,9 @@ double C2_g30_approximation_BAND(double x, double mQ, int nf, int v) {
 //  Approximate quark coefficient function for F2 at O(alpha_s^3).
 //------------------------------------------------------------------------------------------//
 
-double C2_ps3_approximation(double x, double mQ, double mMu, int nf) {
+double C2_ps3_approximation(double x, double mQ, double mMu, int nf, int v) {
 
-    double C30 = C2_ps30_approximation(x, mQ, nf);
+    double C30 = C2_ps30_approximation_BAND(x, mQ, nf, v);
 
     if(mMu == 1.) return C30 ;
 
@@ -720,11 +720,11 @@ double C2_ps30_approximation(double x, double mQ, int nf) {
     double a = C2_ps3_params.a ;
     double b = C2_ps3_params.b ;
 
-    return C2_ps30_approximation_implicit(x, mQ, nf, A, B, C, D, a, b);
+    return C2_ps30_approximation_implicit(x, mQ, nf, A, B, C, D, a, b, 0);
 
 }
 
-double C2_ps30_approximation_implicit(double x, double mQ, int nf, double A, double B, double C, double D, double a, double b) {
+double C2_ps30_approximation_implicit(double x, double mQ, int nf, double A, double B, double C, double D, double a, double b, int v) {
 
     double xmax = 1. / (1. + 4. * mQ) ;
 
@@ -742,7 +742,63 @@ double C2_ps30_approximation_implicit(double x, double mQ, int nf, double A, dou
     double damp_thr = 1. / (1. + pow(eta / h, k));
     double damp_asy = 1. - damp_thr;
 
-    return C2_ps3_asymptotic(x, mQ, 1., nf) * damp_asy ;
+    return C2_ps3_asymptotic(x, mQ, 1., nf, v) * damp_asy ;
+
+}
+
+double C2_ps30_approximation_BAND(double x, double mQ, int nf, int v) {
+
+    double A = C2_ps3_params.A ;
+    double B = C2_ps3_params.B ;
+    double C = C2_ps3_params.C ;
+    double D = C2_ps3_params.D ;
+    double a = C2_ps3_params.a ;
+    double b = C2_ps3_params.b ;
+
+    double Cavg = C2_ps30_approximation(x, mQ, nf);
+
+    if(v==0) return Cavg;
+
+    double var = default_var, fact = default_fact ;
+
+    double Amax = fact * A, Amin = A / fact, Bmax = B * fact, Bmin = B / fact;
+    double Cmax = (1. + var) * C, Cmin = (1. - var) * C, Dmax = (1. + var) * D, Dmin = (1. - var) * D;
+
+    double Avec[3] = {A, Amin, Amax} ;
+    double Bvec[3] = {B, Bmax, Bmin} ;
+    double Cvec[3] = {C, Cmax, Cmin} ;
+    double Dvec[3] = {D, Dmax, Dmin} ;
+
+    vector<double> replicas ;
+
+    for (int i = 0; i < 3; i++){
+        for (int j = 0; j < 3; j++) {
+            for (int h = 0; h < 3; h++) {
+                for (int k = 0; k < 3; k++) {
+                    for (int v1 = -1; v1 <= 1; v1++) {
+                        replicas.push_back(
+                            C2_ps30_approximation_implicit(x, mQ, nf, Avec[i], Bvec[j], Cvec[h], Dvec[k], a, b, v1)
+                        ) ;
+                    }
+                }
+            }
+        }
+    }
+
+    double min = Cavg, max = Cavg ;
+
+    for(double rep : replicas) {
+        if(rep > max) max = rep ;
+        if(rep < min) min = rep ;
+    }
+
+    if(v==1) return max ;
+    if(v==-1) return min ;
+
+    else {
+        cout << "C2_ps30_approximation_BAND: Choose either v=0 or v=1 or v=-1!!\nExiting!!\n" << endl;
+        exit(-1);
+    }
 
 }
 
@@ -750,9 +806,9 @@ double C2_ps30_approximation_implicit(double x, double mQ, int nf, double A, dou
 //  Approximate gluon coefficient function for FL at O(alpha_s^3).
 //------------------------------------------------------------------------------------------//
 
-double CL_g3_approximation(double x, double mQ, double mMu, int nf, int method_flag, int calls) {
+double CL_g3_approximation(double x, double mQ, double mMu, int nf, int v, int method_flag, int calls) {
 
-    double C30 = CL_g30_approximation(x, mQ, nf);
+    double C30 = CL_g30_approximation_BAND(x, mQ, nf, v);
 
     if(mMu == 1.) return C30 ;
 
@@ -780,11 +836,11 @@ double CL_g30_approximation(double x, double mQ, int nf) {
     double a = CL_g3_params.a ;
     double b = CL_g3_params.b ;
 
-    return CL_g30_approximation_implicit(x, mQ, nf, A, B, C, D, a, b);
+    return CL_g30_approximation_implicit(x, mQ, nf, A, B, C, D, a, b, 0);
 
 }
 
-double CL_g30_approximation_implicit(double x, double mQ, int nf, double A, double B, double C, double D, double a, double b) {
+double CL_g30_approximation_implicit(double x, double mQ, int nf, double A, double B, double C, double D, double a, double b, int v) {
 
     double xmax = 1. / (1. + 4 * mQ) ;
 
@@ -803,9 +859,65 @@ double CL_g30_approximation_implicit(double x, double mQ, int nf, double A, doub
     double damp_asy = 1. - damp_thr ;
 
     return (
-        CL_g3_asymptotic(x, mQ, 1., nf) * damp_asy
+        CL_g3_asymptotic(x, mQ, 1., nf, v) * damp_asy
         + CL_g3_threshold(x, mQ, 1., nf) * damp_thr
     ) ;
+
+}
+
+double CL_g30_approximation_BAND(double x, double mQ, int nf, int v) {
+
+    double A = CL_g3_params.A ;
+    double B = CL_g3_params.B ;
+    double C = CL_g3_params.C ;
+    double D = CL_g3_params.D ;
+    double a = CL_g3_params.a ;
+    double b = CL_g3_params.b ;
+
+    double Cavg = CL_g30_approximation(x, mQ, nf);
+
+    if(v==0) return Cavg;
+
+    double var = default_var, fact = default_fact ;
+
+    double Amax = fact * A, Amin = A / fact, Bmax = B * fact, Bmin = B / fact;
+    double Cmax = (1. + var) * C, Cmin = (1. - var) * C, Dmax = (1. + var) * D, Dmin = (1. - var) * D;
+
+    double Avec[3] = {A, Amin, Amax} ;
+    double Bvec[3] = {B, Bmax, Bmin} ;
+    double Cvec[3] = {C, Cmax, Cmin} ;
+    double Dvec[3] = {D, Dmax, Dmin} ;
+
+    vector<double> replicas ;
+
+    for (int i = 0; i < 3; i++){
+        for (int j = 0; j < 3; j++) {
+            for (int h = 0; h < 3; h++) {
+                for (int k = 0; k < 3; k++) {
+                    for (int v1 = -1; v1 <= 1; v1++) {
+                        replicas.push_back(
+                            CL_g30_approximation_implicit(x, mQ, nf, Avec[i], Bvec[j], Cvec[h], Dvec[k], a, b, v1)
+                        ) ;
+                    }
+                }
+            }
+        }
+    }
+
+    double min = Cavg, max = Cavg ;
+
+    for(double rep : replicas) {
+        if(rep > max) max = rep ;
+        if(rep < min) min = rep ;
+    }
+
+    if(v==1) return max ;
+    if(v==-1) return min ;
+
+    else {
+        cout << "CL_g30_approximation_BAND: Choose either v=0 or v=1 or v=-1!!\nExiting!!\n" << endl;
+        exit(-1);
+    }
 
 }
 
@@ -813,9 +925,9 @@ double CL_g30_approximation_implicit(double x, double mQ, int nf, double A, doub
 //  Approximate quark coefficient funtcions for FL at O(alpha_s^3).
 //------------------------------------------------------------------------------------------//
 
-double CL_ps3_approximation(double x, double mQ, double mMu, int nf) {
+double CL_ps3_approximation(double x, double mQ, double mMu, int nf, int v) {
 
-    double C30 = CL_ps30_approximation(x, mQ, nf);
+    double C30 = CL_ps30_approximation_BAND(x, mQ, nf, v);
 
     if(mMu == 1.) return C30 ;
 
@@ -843,11 +955,11 @@ double CL_ps30_approximation(double x, double mQ, int nf) {
     double a = CL_ps3_params.a ;
     double b = CL_ps3_params.b ;
 
-    return CL_ps30_approximation_implicit(x, mQ, nf, A, B, C, D, a, b);
+    return CL_ps30_approximation_implicit(x, mQ, nf, A, B, C, D, a, b, 0);
 
 }
 
-double CL_ps30_approximation_implicit(double x, double mQ, int nf, double A, double B, double C, double D, double a, double b) {
+double CL_ps30_approximation_implicit(double x, double mQ, int nf, double A, double B, double C, double D, double a, double b, int v) {
 
     double xmax = 1. / (1. + 4. * mQ) ;
 
@@ -865,7 +977,63 @@ double CL_ps30_approximation_implicit(double x, double mQ, int nf, double A, dou
     double damp_thr = 1. /(1. + pow(eta / h, k));
     double damp_asy = 1. - damp_thr;
 
-    return CL_ps3_asymptotic(x, mQ, 1., nf) * damp_asy ;
+    return CL_ps3_asymptotic(x, mQ, 1., nf, v) * damp_asy ;
+
+}
+
+double CL_ps30_approximation_BAND(double x, double mQ, int nf, int v) {
+
+    double A = CL_ps3_params.A ;
+    double B = CL_ps3_params.B ;
+    double C = CL_ps3_params.C ;
+    double D = CL_ps3_params.D ;
+    double a = CL_ps3_params.a ;
+    double b = CL_ps3_params.b ;
+
+    double Cavg = CL_ps30_approximation(x, mQ, nf);
+
+    if(v==0) return Cavg;
+
+    double var = default_var, fact = default_fact ;
+
+    double Amax = fact * A, Amin = A / fact, Bmax = B * fact, Bmin = B / fact;
+    double Cmax = (1. + var) * C, Cmin = (1. - var) * C, Dmax = (1. + var) * D, Dmin = (1. - var) * D;
+
+    double Avec[3] = {A, Amin, Amax} ;
+    double Bvec[3] = {B, Bmax, Bmin} ;
+    double Cvec[3] = {C, Cmax, Cmin} ;
+    double Dvec[3] = {D, Dmax, Dmin} ;
+
+    vector<double> replicas ;
+
+    for (int i = 0; i < 3; i++){
+        for (int j = 0; j < 3; j++) {
+            for (int h = 0; h < 3; h++) {
+                for (int k = 0; k < 3; k++) {
+                    for (int v1 = -1; v1 <= 1; v1++) {
+                        replicas.push_back(
+                            CL_ps30_approximation_implicit(x, mQ, nf, Avec[i], Bvec[j], Cvec[h], Dvec[k], a, b, v1)
+                        ) ;
+                    }
+                }
+            }
+        }
+    }
+
+    double min = Cavg, max = Cavg ;
+
+    for(double rep : replicas) {
+        if(rep > max) max = rep ;
+        if(rep < min) min = rep ;
+    }
+
+    if(v==1) return max ;
+    if(v==-1) return min ;
+
+    else {
+        cout << "C2_ps30_approximation_BAND: Choose either v=0 or v=1 or v=-1!!\nExiting!!\n" << endl;
+        exit(-1);
+    }
 
 }
 
