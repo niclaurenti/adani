@@ -16,14 +16,10 @@
 
 double C2_g1_threshold(double x, double mQ) {
 
-    double xmax = 1. / (1. + 4 * mQ) ;
-
-    if (x>=xmax || x<0) return 0;
-
     double beta = sqrt(1. - 4. * mQ * x / (1. - x)) ;
     double xi = 1. / mQ ;
 
-    return xi * TR * beta / (1. + xi / 4) / x ;
+    return xi * TR * beta / (1. + xi / 4.) / x ;
 
 }
 
@@ -32,10 +28,6 @@ double C2_g1_threshold(double x, double mQ) {
 //------------------------------------------------------------------------------------------//
 
 double threshold_expansion_g2(double x, double mQ, double mMu) {
-
-    double xmax = 1. / (1. + 4 * mQ) ;
-
-    if(x>=xmax || x<0) return 0;
 
     double beta = sqrt(1. - 4. * mQ * x / (1. - x));
 
@@ -132,10 +124,6 @@ double CL_g2_threshold_const(double x, double mQ, double mMu) {
 //------------------------------------------------------------------------------------------//
 
 double threshold_expansion_g3(double x, double mQ, double mMu, int nf) {
-
-    double x_max = 1. / (1. + 4 * mQ);
-
-    if(x>=x_max || x<0) return 0;
 
     double xi = 1. / mQ ;
     double beta = sqrt(1. - 4. * mQ * x / (1. - x));
@@ -309,26 +297,26 @@ double c0(double xi) {
     double L2 = log(2. + xi / 2) ;
     double L3 = log(sqrt(xi) * (y - 1.) / 2) ;
 
-    double xp2 = 2. + xi ;
-    double xp4 = 4. + xi ;
+    double xip2 = 2. + xi ;
+    double xip4 = 4. + xi ;
 
-    double Li_2 = Li2(- 2. / xp2);
+    double Li_2 = Li2(- 2. / xip2);
     double pi2 = M_PI * M_PI ;
 
     double c_CA = (
-        50. - pi2 + 12 * L3 / y + 4 * L3 * L3 + L1 * L1 + 6 * L2
-        - 4. * L2 * L2 + 2 * Li_2 + 48. / xp2 - 4. * L2 / xp2 + 64. * L2 / xp2 / xp2
-        - 128. * L2 /(xp2 * xp2 * xp4) - 160. / xp2 / xp4 - 64. * L2 / xp2 / xp4
-        + 128. / (xp2 * xp4 * xp4) - 12. * (4. + zeta2) / xp4 - 8. * L3 * L3 / xp4
-        + 64. / xp4 / xp4
+        50. - pi2 + 12. * L3 / y + 4. * L3 * L3 + L1 * L1 + 6. * L2
+        - 4. * L2 * L2 + 2 * Li_2 + 48. / xip2 - 4. * L2 / xip2 + 64. * L2 / xip2 / xip2
+        - 128. * L2 /(xip2 * xip2 * xip4) - 160. / xip2 / xip4 - 64. * L2 / xip2 / xip4
+        + 128. / (xip2 * xip4 * xip4) - 12. * (4. + zeta2) / xip4 - 8. * L3 * L3 / xip4
+        + 64. / xip4 / xip4
     );
 
-    double c_CF= (
+    double c_CF = (
         - 18. - 2./3. * pi2 - 24. * L3 / y - 8. * L3 * L3 + 2. * L1 * L1 - 6. * L2
-        + 4. * Li_2 - 48. / xp2 + 8. * L2 / xp2 + 360. / xp2 / xp4 + 128. * L2 / xp2 / xp4
-        - 544. / (xp2 * xp4 * xp4) + 48. * L3 * L3 / xp4 - 8. * L1 * L1 / xp4
-        + (44. + 40. * zeta2) / xp4 - 120. * L2 / xp2 / xp2 + 256. * L2 / (xp2 * xp2 * xp4)
-        - 16 * Li_2 / xp4 - 272 / xp4 / xp4
+        + 4. * Li_2 - 48. / xip2 + 8. * L2 / xip2 + 360. / xip2 / xip4 + 128. * L2 / xip2 / xip4
+        - 544. / (xip2 * xip4 * xip4) + 48. * L3 * L3 / xip4 - 8. * L1 * L1 / xip4
+        + (44. + 40. * zeta2) / xip4 - 120. * L2 / xip2 / xip2 + 256. * L2 / (xip2 * xip2 * xip4)
+        - 16. * Li_2 / xip4 - 272. / xip4 / xip4
     ) ;
 
     return CA * c_CA + CF * c_CF ;
@@ -344,6 +332,6 @@ double c0(double xi) {
 
 double c0_bar(double xi) {
 
-    return 4. * CA * (2. + log(1. + xi/4)) - 4./3. * TR ;
+    return 4. * CA * (2. + log(1. + xi / 4.)) - 4./3. * TR ;
 
 }

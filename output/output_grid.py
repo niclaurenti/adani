@@ -52,18 +52,19 @@ if __name__ == "__main__":
     Qdata = np.array([ l.split() for l in Qlines ])
     Q_grid = np.array([float(i) for i in (Qdata[0,:])])
 
-    print(f"Computation of the grid for the coefficient function C{runcard['channel']} for m = {m} GeV, nf = {nf}, and µ/Q = {mufrac}")
-    print(f"Size of the grid (x,Q) = ({len(x_grid)},{len(Q_grid)})")
-    print("This may take a while (depending on the number of threads you choose). In order to spend this time, I would suggest you this interesting view:")
-    print("https://www.youtube.com/watch?v=53pG68KCUMI")
+    if runcard["verbose"]:
+        print(f"Computation of the grid for the coefficient function C{runcard['channel']} for m = {m} GeV, nf = {nf}, and µ/Q = {mufrac}")
+        print(f"Size of the grid (x,Q) = ({len(x_grid)},{len(Q_grid)})")
+        print("This may take a while (depending on the number of threads you choose). In order to spend this time, I would suggest you this interesting view:")
+        print("https://www.youtube.com/watch?v=53pG68KCUMI")
 
     start = time.perf_counter()
     res_vec=np.array(run(runcard["n_threads"], x_grid, Q_grid))
-    print("total running time: ", time.perf_counter() - start)
+    if runcard["verbose"]:
+        print("total running time: ", time.perf_counter() - start)
 
     res_mat = res_vec.reshape(len(Q_grid), len(x_grid))
-
-    print("Saving grid in ", runcard["output_file"])
+    if runcard["verbose"]:
+        print("Saving grid in ", runcard["output_file"])
     with open(runcard["output_file"], 'w') as f:
-        for row in res_mat:
-            print(*row, file=f)
+        np.savetxt(f, res_mat)
