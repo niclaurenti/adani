@@ -21,13 +21,13 @@ def function_to_exe_in_parallel(pair):
     mQ = m**2 / q**2
     mMu = m**2 / mu**2
     if runcard["channel"] == "2g":
-        return adani.C2_g3_approximation(x, mQ, mMu, nf, 1, calls)
+        return adani.C2_g3_approximation(x, mQ, mMu, nf, 0, 0, calls)
     elif runcard["channel"] == "2q":
-        return adani.C2_ps3_approximation(x, mQ, mMu, nf)
+        return adani.C2_ps3_approximation(x, mQ, mMu, nf, 0)
     elif runcard["channel"] == "Lg":
-        return adani.CL_g3_approximation(x, mQ, mMu, nf, 1, calls)
+        return adani.CL_g3_approximation(x, mQ, mMu, nf, 0, 0, calls)
     elif runcard["channel"] == "Lq":
-        return adani.CL_ps3_approximation(x, mQ, mMu, nf)
+        return adani.CL_ps3_approximation(x, mQ, mMu, nf, 0)
     else:
         raise ValueError("Set channel to one of these: 2g 2q Lg Lq")
 
@@ -51,6 +51,9 @@ if __name__ == "__main__":
     Qlines = [l.strip() for l in open(Qfname)]
     Qdata = np.array([ l.split() for l in Qlines ])
     Q_grid = np.array([float(i) for i in (Qdata[0,:])])
+    if runcard["debug"]:
+        x_grid = np.geomspace(1e-4, 1, 10)
+        Q_grid = np.geomspace(1., 100, 10)
 
     if runcard["verbose"]:
         print(f"Computation of the grid for the coefficient function C{runcard['channel']} for m = {m} GeV, nf = {nf}, and µ/Q = {mufrac}")

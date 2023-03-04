@@ -13,8 +13,6 @@ using namespace std;
 
 double pgq(double x){
 
-    if (x<0 || x>=1) return 0;
-
     return 2. / x - 2. + x ;
 }
 
@@ -25,8 +23,6 @@ double pgq(double x){
 //------------------------------------------------------------------------------------------//
 
 double pqg(double x) {
-
-    if (x<0 || x>=1) return 0.;
 
     return 1. - 2. * x + 2. * x * x ;
 
@@ -40,8 +36,6 @@ double pqg(double x) {
 
 double pggreg(double x) {
 
-    if (x<0 || x>=1) return 0.;
-
     return 1. / x - 2. + x - x * x ;
 
 }
@@ -53,8 +47,6 @@ double pggreg(double x) {
 //------------------------------------------------------------------------------------------//
 
 double pggsing(double x) {
-
-    if (x<0 || x>=1) return 0.;
 
     return 1. / (1. - x) ;
 
@@ -129,8 +121,6 @@ double Pgg0sing (double x) {
 
 double Pqq0reg(double x) {
 
-    if (x<0 || x>=1) return 0. ;
-
     return CF * 2. * (- 1. - x) ;
 
 }
@@ -153,8 +143,6 @@ double Pqq0loc() {
 
 double Pqq0sing(double x) {
 
-    if (x<0 || x>=1) return 0. ;
-
     return CF * 2. * 2. / (1. - x) ;
 
 }
@@ -166,8 +154,6 @@ double Pqq0sing(double x) {
 //------------------------------------------------------------------------------------------//
 
 double Pgq1(double x, int nf) {
-
-    if (x<0 || x>=1) return 0. ;
 
     double H0 = H(x, 0) ;
     double H1 = H(x, 1) ;
@@ -216,8 +202,6 @@ double Pgq1(double x, int nf) {
 //------------------------------------------------------------------------------------------//
 
 double Pgg1reg(double x, int nf) {
-
-    if (x<0 || x>=1) return 0. ;
 
     double x2 = x * x ;
 
@@ -285,8 +269,6 @@ double Pgg1loc(int nf) {
 //------------------------------------------------------------------------------------------//
 
 double Pgg1sing(double x, int nf) {
-
-    if (x<0 || x>=1) return 0. ;
 
     double g1 = 67. / 18 - zeta2 ;
 

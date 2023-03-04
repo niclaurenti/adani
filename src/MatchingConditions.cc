@@ -194,8 +194,6 @@ double a_Qg_30(double x, int v) {
 
 double a_Qq_PS_30(double x, double* Hr1, double* Hr2, double* Hr3, double* Hr4, double* Hr5, int v) {
 
-    if(x<0 || x>=1) return 0;
-
     //weight 1
     const double Hm1 = Hr1[0];
     const double H0  = Hr1[1];

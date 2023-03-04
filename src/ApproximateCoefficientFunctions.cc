@@ -560,6 +560,10 @@ double CL_ps20_approximation_BAND(double x, double mQ, int v) {
 
 double C2_g3_approximation(double x, double mQ, double mMu, int nf, int v, int method_flag, int calls) {
 
+    double xmax = 1. / (1. + 4. * mQ) ;
+
+    if(x >= xmax || x <= 0) return 0. ;
+
     double C30 = C2_g30_approximation_BAND(x, mQ, nf, v);
 
     if(mMu == 1.) return C30 ;
@@ -598,10 +602,6 @@ double C2_g30_approximation(double x, double mQ, int nf) {
 //------------------------------------------------------------------------------------------//
 
 double C2_g30_approximation_implicit(double x, double mQ, int nf, double A, double B, double C, double D, double a, double b, int v1, int v2) {
-
-    double xmax = 1. / ( 1. + 4 * mQ ) ;
-
-    if(x >= xmax || x <= 0) return 0 ;
 
     double xi = 1. / mQ ;
 
@@ -692,6 +692,10 @@ double C2_g30_approximation_BAND(double x, double mQ, int nf, int v) {
 
 double C2_ps3_approximation(double x, double mQ, double mMu, int nf, int v) {
 
+    double xmax = 1. / (1. + 4. * mQ) ;
+
+    if(x >= xmax || x <= 0) return 0. ;
+
     double C30 = C2_ps30_approximation_BAND(x, mQ, nf, v);
 
     if(mMu == 1.) return C30 ;
@@ -725,10 +729,6 @@ double C2_ps30_approximation(double x, double mQ, int nf) {
 }
 
 double C2_ps30_approximation_implicit(double x, double mQ, int nf, double A, double B, double C, double D, double a, double b, int v) {
-
-    double xmax = 1. / (1. + 4. * mQ) ;
-
-    if(x >= xmax || x <= 0) return 0 ;
 
     double xi = 1. / mQ ;
 
@@ -808,6 +808,10 @@ double C2_ps30_approximation_BAND(double x, double mQ, int nf, int v) {
 
 double CL_g3_approximation(double x, double mQ, double mMu, int nf, int v, int method_flag, int calls) {
 
+    double xmax = 1. / (1. + 4. * mQ) ;
+
+    if(x >= xmax || x <= 0) return 0. ;
+
     double C30 = CL_g30_approximation_BAND(x, mQ, nf, v);
 
     if(mMu == 1.) return C30 ;
@@ -841,10 +845,6 @@ double CL_g30_approximation(double x, double mQ, int nf) {
 }
 
 double CL_g30_approximation_implicit(double x, double mQ, int nf, double A, double B, double C, double D, double a, double b, int v) {
-
-    double xmax = 1. / (1. + 4 * mQ) ;
-
-    if(x >= xmax || x <= 0) return 0 ;
 
     double xi = 1. / mQ ;
 
@@ -927,6 +927,10 @@ double CL_g30_approximation_BAND(double x, double mQ, int nf, int v) {
 
 double CL_ps3_approximation(double x, double mQ, double mMu, int nf, int v) {
 
+    double xmax = 1. / (1. + 4. * mQ) ;
+
+    if(x >= xmax || x <= 0) return 0. ;
+
     double C30 = CL_ps30_approximation_BAND(x, mQ, nf, v);
 
     if(mMu == 1.) return C30 ;
@@ -960,10 +964,6 @@ double CL_ps30_approximation(double x, double mQ, int nf) {
 }
 
 double CL_ps30_approximation_implicit(double x, double mQ, int nf, double A, double B, double C, double D, double a, double b, int v) {
-
-    double xmax = 1. / (1. + 4. * mQ) ;
-
-    if(x >= xmax || x <= 0) return 0 ;
 
     double xi = 1. / mQ ;
 

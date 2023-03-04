@@ -11,8 +11,6 @@
 
 double C2_g1_massless(double x, int nf) {
 
-    if (x>=1 || x<0) return 0;
-
     return 4. * nf * TR * (
         - 8. * x * x + 8. * x - 1.
         + log((1. - x) / x) * (2. * x * x - 2. * x + 1.)
@@ -28,8 +26,6 @@ double C2_g1_massless(double x, int nf) {
 
 double CL_g1_massless(double x, int nf) {
 
-    if (x>=1 || x<0) return 0;
-
     return 16. * nf * TR * x * (1. - x) ;
 
 }
@@ -42,8 +38,6 @@ double CL_g1_massless(double x, int nf) {
 //------------------------------------------------------------------------------------------//
 
 double C2_g2_massless(double x, int nf) {
-
-    if (x>=1 || x<0) return 0;
 
     double x1 = 1. - x;
     double L0 = log(x);
@@ -67,8 +61,6 @@ double C2_g2_massless(double x, int nf) {
 //------------------------------------------------------------------------------------------//
 
 double C2_ps2_massless(double x, int nf) {
-
-    if (x>=1 || x<0) return 0;
 
     double x1 = 1 - x ;
     double L0 = log(x);
@@ -97,8 +89,6 @@ double C2_ps2_massless(double x, int nf) {
 
 double CL_g2_massless(double x, int nf) {
 
-    if (x>=1 || x<0) return 0;
-
     double L0 = log(x);
     double L02 = L0 * L0;
 
@@ -123,8 +113,6 @@ double CL_g2_massless(double x, int nf) {
 
 double CL_ps2_massless(double x, int nf) {
 
-    if (x>=1 || x<0) return 0;
-
     double L0 = log(x);
     double L02 = L0 * L0;
 
@@ -148,8 +136,6 @@ double CL_ps2_massless(double x, int nf) {
 //------------------------------------------------------------------------------------------//
 
 double C2_g3_massless(double x, int nf) {//remember that there is a delta(x1) that has been omitted
-
-    if(x<0 || x>=1) return 0;
 
     /*
     //computing fl_g_11=<e>^2/<e^2>
@@ -227,8 +213,6 @@ double C2_g3_massless(double x, int nf) {//remember that there is a delta(x1) th
 
 double C2_ps3_massless(double x, int nf) {//remember that there is a delta(x1) that has been omitted
 
-    if(x<0 || x>=1) return 0;
-
     //double fl_ps_11=0; //we are considering heavy-quark production
 
     double x2 = x * x;
@@ -287,8 +271,6 @@ double C2_ps3_massless(double x, int nf) {//remember that there is a delta(x1) t
 //------------------------------------------------------------------------------------------//
 
 double CL_g3_massless(double x, int nf) {//remember that there is a delta(x1) that has been omitted
-
-    if(x<0 || x>=1) return 0;
 
     //****computing fl_g_11=<e>^2/<e^2>****
     /*
@@ -361,8 +343,6 @@ double CL_g3_massless(double x, int nf) {//remember that there is a delta(x1) th
 //------------------------------------------------------------------------------------------//
 
 double CL_ps3_massless(double x, int nf) {//remember that there is a delta(x1) that has been omitted
-
-    if(x<0 || x>=1) return 0;
 
     // double fl_ps_11=0; //we are considering heavy-quark production
 

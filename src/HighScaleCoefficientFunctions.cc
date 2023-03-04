@@ -16,8 +16,6 @@
 
 double C2_g1_highscale(double x, double mQ) {
 
-    if(x>=1 || x<0) return 0.;
-
     return (
         4. * TR * (
             - 8. * x * x + 8. * x - 1.
@@ -34,8 +32,6 @@ double C2_g1_highscale(double x, double mQ) {
 //------------------------------------------------------------------------------------------//
 
 double CL_g1_highscale(double x) {
-
-    if(x>=1 || x<0) return 0.;
 
     return TR * 16. * x * (1. - x) ;  //=CL_g1_massless(x,nf)/nf
 
@@ -91,8 +87,6 @@ double C2_g2_highscale(double x, double mQ, double mMu) {
 //------------------------------------------------------------------------------------------//
 
 double C2_ps2_highscale(double z, double mQ, double mMu) {
-
-    if(z>=1 || z<0) return 0;
 
     double z2 = z * z ;
     double z3 = z2 * z ;
@@ -177,8 +171,6 @@ double CL_ps2_highscale(double x, double mQ, double mMu) {
 //------------------------------------------------------------------------------------------//
 
 double D2_g2_highscale(double x, double mQ, double mMu) {
-
-    if(x<0 || x>=1) return 0;
 
     double x2 = x * x;
     double x3 = x2 * x;
@@ -331,8 +323,6 @@ double D2_ps2_highscale(double x, double mQ, double mMu) {
 
 double DL_g2_highscale(double z, double mQ, double mMu) {
 
-    if(z>=1 || z<0) return 0;
-
     double z2 = z * z ;
     double z3 = z2 * z ;
     double z4 = z3 * z ;
@@ -380,8 +370,6 @@ double DL_g2_highscale(double z, double mQ, double mMu) {
 //------------------------------------------------------------------------------------------//
 
 double DL_ps2_highscale(double z, double mQ, double mMu) {
-
-    if(z>=1 || z<0) return 0;
 
     double z2 = z * z ;
 
@@ -454,8 +442,6 @@ double C2_ps3_highscale(double x, double mQ, double mMu, int nf) {
 //------------------------------------------------------------------------------------------//
 
 double DL_g3_highscale(double z, double mQ, double mMu, int nf) {
-
-    if(z>=1 || z<0) return 0;
 
     double z2 = z*z ;
     double z3 = z2*z;
@@ -883,8 +869,6 @@ double CL_g3_highscale(double x, double mQ, double mMu, int nf) {
 
 double DL_ps3_highscale(double z, double mQ, double mMu, int nf) {
 
-    if(z>=1 || z<0) return 0;
-
     double z2 = z * z ;
     double z3 = z2 * z;
     double z4 = z3 * z ;
@@ -1062,8 +1046,6 @@ double CL_ps3_highscale(double x, double mQ, double mMu, int nf) {
 //------------------------------------------------------------------------------------------//
 
 double D2_g3_highscale(double x, double mQ, double mMu, int nf, int v) {
-
-    if(x<0 || x>=1) return 0;
 
     double x2 = x * x;
     double x3 = x2 * x;
@@ -2388,8 +2370,6 @@ double D2_g3_highscale(double x, double mQ, double mMu, int nf, int v) {
 
 double D2_ps3_highscale(double x, double mQ, double mMu, int nf, int v) {
 
-    if(x<0 || x>=1) return 0;
-
     double x2 = x * x;
     double x3 = x2 * x;
 
@@ -3086,9 +3066,7 @@ double C2_ps3_highscale_klmv_paper(double x, double mQ, double mMu, int nf, int 
 
 double D2_ps3_highscale_klmv_paper(double x, double mQ, double mMu, int nf, int v) {
 
-    if(x<0 || x>=1) return 0;
-
-    else if(v==1) {
+    if(v==1) {
         return D2_ps3_highscale(x, mQ, mMu, nf, v) ;
     }
     else if(v==2) {
