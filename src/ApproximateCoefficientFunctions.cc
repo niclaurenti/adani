@@ -605,10 +605,7 @@ double C2_g30_approximation_implicit(double x, double mQ, int nf, double A, doub
 
     double xi = 1. / mQ ;
 
-    double eta;
-
-    if(x<xmax && x>0) eta = 0.25 / mQ * (1 - x) / x - 1. ;
-    else eta = 0 ;
+    double eta = 0.25 / mQ * (1 - x) / x - 1. ;
 
     double h = A + (B - A) / (1. + exp(a * (log(xi) - b))) ;
     double k = C + (D - C) / (1. + exp(a * (log(xi) - b))) ;
@@ -732,9 +729,7 @@ double C2_ps30_approximation_implicit(double x, double mQ, int nf, double A, dou
 
     double xi = 1. / mQ ;
 
-    double eta ;
-
-    eta = 0.25 / mQ * (1. - x) / x - 1.;
+    double eta = 0.25 / mQ * (1. - x) / x - 1.;
 
     double h = A + (B - A) / (1. + exp(a * (log(xi) - b)));
     double k = C + (D - C) / (1. + exp(a * (log(xi) - b)));
@@ -848,9 +843,7 @@ double CL_g30_approximation_implicit(double x, double mQ, int nf, double A, doub
 
     double xi = 1. / mQ ;
 
-    double eta;
-
-    eta = 0.25 / mQ * (1 - x) / x - 1. ;
+    double eta = 0.25 / mQ * (1 - x) / x - 1. ;
 
     double h = A + (B - A) / (1. + exp(a * (log(xi) - b))) ;
     double k = C + (D - C) / (1. + exp(a * (log(xi) - b))) ;
@@ -967,9 +960,7 @@ double CL_ps30_approximation_implicit(double x, double mQ, int nf, double A, dou
 
     double xi = 1. / mQ ;
 
-    double eta ;
-
-    eta = 0.25 / mQ * (1. - x) / x - 1.;
+    double eta = 0.25 / mQ * (1. - x) / x - 1.;
 
     double h = A + (B - A) / (1. + exp(a * (log(xi) - b)));
     double k = C + (D - C) / (1. + exp(a * (log(xi) - b)));
