@@ -21,7 +21,7 @@ double C2_g1_highscale(double x, double mQ) {
     return (
         4. * TR * (
             - 8. * x * x + 8. * x - 1.
-            + log((1. - x) / x) * (2 * x * x - 2 * x + 1.)
+            + log((1. - x) / x) * (2. * x * x - 2. * x + 1.)
         )
         + 2. * K_Qg1(x, mQ)
     ) ;

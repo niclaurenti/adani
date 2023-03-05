@@ -307,8 +307,8 @@ double H(double x, int i, int j, int k) {
     }
 
     else  {
-        cout    << "H(x,"<<i<<","<<j<<","<<k<<") is not defined."<<endl
-                << "Exiting..."<<endl;
+        cout    << "H(x," << i << "," << j << "," << k << ") is not defined." << endl
+                << "Exiting..." << endl ;
         exit(-1);
     }
 
