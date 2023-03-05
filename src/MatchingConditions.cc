@@ -133,8 +133,7 @@ double K_Qg2(double x, double mMu) {
 //  v = 0 : center of the band given by v = 1 and v = 2
 //  v = 1 : Eq. (3.49) of Ref. [arXiv:1205.5727]
 //  v = 2 : Eq. (16) Ref. of [arXiv:1701.05838]
-//  v = 3 : Eq. ??? (obsolete)
-//  v = 4 : Eq. (3.50) of Ref. [arXiv:1205.5727]
+//  v = -12 : Eq. (3.50) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
 double a_Qg_30(double x, int v) {
@@ -157,18 +156,13 @@ double a_Qg_30(double x, int v) {
             - 6233.530 * L2 + 9416.621 / x + 1548.891 / x * L
         ) ;
     }
-    else if(v==2) {//Updated version w.r.t v==4
+    else if(v==2) {//Updated version w.r.t v==-12
         return (
             226.3840 * L13 - 652.2045 * L12 - 2686.387 * L1 - 7714.786 * (2. - x)
             - 2841.851 * L2 + 7721.120 / x + 1548.891 / x * L
         ) ;
     }
-    else if(v==3) { // do not use this version
-        return (
-            L / x * CA * CA * (41984./243 + 160./9 * zeta2 - 224./9 * zeta3)
-        ) ;
-    }
-    else if(v==4) { //Version of the paper (used only for benchamrk)
+    else if(v==-12) { //Version of the paper (used only for benchamrk)
         return (
             - 2658.323 * L12 - 7449.948 * L1 - 7460.002 * (2. - x)
             + 3178.819 * L2 + 4710.725 / x + 1548.891 / x * L

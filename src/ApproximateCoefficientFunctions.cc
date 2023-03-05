@@ -1341,7 +1341,7 @@ double C2_g3_approximationB_klmv_paper(double x, double mQ, double mMu, int nf, 
     double C30 = (
         (C2_g3_threshold(x,mQ,1.,nf) - C2_g3_threshold_const(x, mQ, 1.))
         + f * 2. * C2_g3_threshold_const(x, mQ, 1.)
-        + (1. - f) * beta3 * C2_g3_highscale(x, mQ, 1., nf, 4)
+        + (1. - f) * beta3 * C2_g3_highscale(x, mQ, 1., nf, -12)
         + f * beta3 * (
             - log(eta) / log(x) * C2_g3_highenergyLL(x, mQ, 1.)
             + C2_g3_highenergyB * eta_delta / (D + eta_delta)

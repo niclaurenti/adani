@@ -18,8 +18,7 @@
 //==========================================================================================//
 //                      The notation used is the following:
 //                      C^{(k)} = k-th order expansion in terms of \alpha_s^{[nf]}
-//  D^{(k)}_4 = k-th order expansion in terms of \alpha_s^{[nf+1]} in thhe nf flavor scheme (unused)
-//  D^{(k)}_5 = k-th order expansion in terms of \alpha_s^{[nf+1]} in thhe nf+1 flavor scheme (unused)
+//
 //------------------------------------------------------------------------------------------//
 //==========================================================================================//
 //                      Notation:
@@ -33,11 +32,6 @@
 
 double C2_g1(double x, double mQ);
 double CL_g1(double x, double mQ);
-
-// double D2_g1_4(double x, double mQ);
-// double DL_g1_4(double x, double mQ);
-// double D2_g1_5(double x, double mQ);
-// double DL_g1_5(double x, double mQ);
 
 //==========================================================================================//
 //                      Exact massive coefficient functions O(alpha_s^2)
@@ -70,12 +64,6 @@ double C2_ps2(double x, double mQ, double mMu);
 
 double CL_g2(double x, double mQ, double mMu);
 double CL_ps2(double x, double mQ, double mMu);
-
-// double D2_g2_4(double x, double mQ, double mMu);
-// double DL_g2_4(double x, double mQ, double mMu);
-
-// double D2_g2_5(double x, double mQ, double mMu);
-// double DL_g2_5(double x, double mQ, double mMu);
 
 //==========================================================================================//
 //  Exact massive coefficient functions O(alpha_s^2): mu-independent terms

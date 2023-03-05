@@ -19,10 +19,7 @@ double C2_g1_highscale(double x, double mQ) {
     if(x>=1 || x<0) return 0.;
 
     return (
-        4. * TR * (
-            - 8. * x * x + 8. * x - 1.
-            + log((1. - x) / x) * (2. * x * x - 2. * x + 1.)
-        )
+        C2_g1_massless(x, 1.)
         + 2. * K_Qg1(x, mQ)
     ) ;
 
@@ -37,7 +34,7 @@ double CL_g1_highscale(double x) {
 
     if(x>=1 || x<0) return 0.;
 
-    return TR * 16. * x * (1. - x) ;  //=CL_g1_massless(x,nf)/nf
+    return CL_g1_massless(x, 1.) ;
 
 }
 
@@ -3088,10 +3085,7 @@ double D2_ps3_highscale_klmv_paper(double x, double mQ, double mMu, int nf, int 
 
     if(x<0 || x>=1) return 0;
 
-    else if(v==1) {
-        return D2_ps3_highscale(x, mQ, mMu, nf, v) ;
-    }
-    else if(v==2) {
+    else if(v==1 || v==2) {
         return D2_ps3_highscale(x, mQ, mMu, nf, v) ;
     }
     else {

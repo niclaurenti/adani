@@ -54,10 +54,12 @@ PYBIND11_MODULE(_core, m) {
     m.def("D2_g2_highscale", &D2_g2_highscale, py::arg("x"), py::arg("mQ"), py::arg("mMu"));
 
     m.def("C2_g1_highscale", &C2_g1_highscale, py::arg("x"), py::arg("mQ"));
+    m.def("CL_g1_highscale", &CL_g1_highscale, py::arg("x"));
 
     // ExactCoefficientFunctions
 
     m.def("C2_g1", &C2_g1, py::arg("x"), py::arg("mQ"));
+    m.def("CL_g1", &CL_g1, py::arg("x"), py::arg("mQ"));
 
     m.def("C2_g2", &C2_g2, py::arg("x"), py::arg("mQ"), py::arg("mMu"));
     m.def("C2_ps2", &C2_ps2, py::arg("x"), py::arg("mQ"), py::arg("mMu"));

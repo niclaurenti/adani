@@ -54,35 +54,6 @@ double CL_g1(double x, double mQ) {
 
 }
 
-
-// double D2_g1_4(double x, double mQ) {
-
-//     return C2_g1(x,mQ);
-
-// }
-
-
-// double DL_g1_4(double x, double mQ) {
-
-//     return CL_g1(x,mQ);
-
-// }
-
-
-// double D2_g1_5(double x, double mQ) {
-
-//     return D2_g1_4(x,mQ) - 2 * K_Qg1(x,mQ);
-
-// }
-
-
-// double DL_g1_5(double x, double mQ) {
-
-//     return DL_g1_4(x,mQ);
-
-// }
-
-
 //==========================================================================================//
 //  Exact massive gluon coefficient functions for F2 at O(alpha_s^2)
 //
@@ -162,45 +133,6 @@ double CL_ps2(double x, double mQ, double mMu) {
     ) ;
 
 }
-
-
-// double D2_g2_4(double x, double mQ, double mMu) {
-
-//     double Lmu=log(1./mMu);
-
-//     return C2_g2(x,mQ,mMu) - Lmu / 6. / M_PI * C2_g1(x,mQ);
-
-// }
-
-// double DL_g2_4(double x, double mQ, double mMu) {
-
-//     double Lmu=log(1./mMu);
-
-//     return CL_g2(x,mQ,mMu) - Lmu / 6. / M_PI * CL_g1(x,mQ);
-
-// }
-
-// double D2_g2_5(double x, double mQ, double mMu) {
-
-//     return (
-//         D2_g2_4(x, mQ, mMu)
-//         -D2_g1_4(x,mQ)*K_gg1_local(mMu)
-//         -2*(K_Qg2(x,mMu)-K_Qg1(x,mMu)*K_gg1_local(mMu))
-//         -2*C2_b1_x_K_Qg1(x,mQ)
-//    ) ;
-
-// }
-
-
-// double DL_g2_5(double x, double mQ, double mMu) {
-
-//     return (
-//         DL_g2_4(x, mQ, mMu)
-//         -DL_g1_4(x,mQ)*K_gg1_local(mMu)
-//         -2*CL_b1_x_K_Qg1(x,mQ)
-//    ) ;
-
-// }
 
 //==========================================================================================//
 //  Exact massive quark coefficient functions for F2 at O(alpha_s^2):
