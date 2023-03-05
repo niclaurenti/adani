@@ -38,14 +38,11 @@ double threshold_expansion_g2(double x, double mQ, double mMu) {
     double logb = log(beta) ;
     double log2b = logb * logb ;
 
-    double C_log2b = 16. * CA ;
-
-    double C_logb = 48. * CA * ln2 - 40. * CA + 8. * CA * log(mMu) ;
-
-    double C_fracb = (2 * CF - CA) * M_PI * M_PI ;
-
     return (
-        C_log2b * log2b + C_logb * logb + C_fracb / beta
+        16. * CA * log2b
+        + (48. * CA * ln2 - 40. * CA) * logb
+        + (2 * CF - CA) * M_PI * M_PI / beta
+        + 8. * CA * log(mMu) * logb
     ) ;
 
 }
@@ -204,7 +201,7 @@ double threshold_expansion_g3(double x, double mQ, double mMu, int nf) {
         + (26./3. * CA + 4./3. * nf - 2 * c0_bar(xi)) * Lm
     ) * (CF - CA/2) * pi2 ;
 
-    double c_fracbeta2 = 4./3.* (CF - CA/2) * (CF - CA/2) * pi4;
+    double c_fracbeta2 = 4./3. * (CF - CA/2) * (CF - CA/2) * pi4;
 
     return (
         c_log4 * l4 + c_log3 * l3 + c_log2 * l2 + c_log * l
@@ -310,7 +307,7 @@ double c0(double xi) {
     double c_CA = (
         50. - pi2 + 12. * L3 / y + 4. * L3 * L3 + L1 * L1 + 6. * L2
         - 4. * L2 * L2 + 2 * Li_2 + 48. / xip2 - 4. * L2 / xip2 + 64. * L2 / xip2 / xip2
-        - 128. * L2 /(xip2 * xip2 * xip4) - 160. / xip2 / xip4 - 64. * L2 / xip2 / xip4
+        - 128. * L2 / (xip2 * xip2 * xip4) - 160. / xip2 / xip4 - 64. * L2 / xip2 / xip4
         + 128. / (xip2 * xip4 * xip4) - 12. * (4. + zeta2) / xip4 - 8. * L3 * L3 / xip4
         + 64. / xip4 / xip4
     );

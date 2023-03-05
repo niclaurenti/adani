@@ -53,7 +53,11 @@ PYBIND11_MODULE(_core, m) {
     m.def("CL_ps2_highscale", &CL_ps2_highscale, py::arg("x"), py::arg("mQ"), py::arg("mMu"));
     m.def("D2_g2_highscale", &D2_g2_highscale, py::arg("x"), py::arg("mQ"), py::arg("mMu"));
 
+    m.def("C2_g1_highscale", &C2_g1_highscale, py::arg("x"), py::arg("mQ"));
+
     // ExactCoefficientFunctions
+
+    m.def("C2_g1", &C2_g1, py::arg("x"), py::arg("mQ"));
 
     m.def("C2_g2", &C2_g2, py::arg("x"), py::arg("mQ"), py::arg("mMu"));
     m.def("C2_ps2", &C2_ps2, py::arg("x"), py::arg("mQ"), py::arg("mMu"));
@@ -79,6 +83,10 @@ PYBIND11_MODULE(_core, m) {
     m.def("Pgg1loc", &Pgg1loc, py::arg("nf"));
 
     // ThresholdCoefficientFunctions
+
+    m.def("C2_g1_threshold", &C2_g1_threshold, py::arg("x"), py::arg("mQ"));
+
+    m.def("C2_g2_threshold", &C2_g2_threshold, py::arg("x"), py::arg("mQ"), py::arg("mMu"));
 
     m.def("C2_g3_threshold", &C2_g3_threshold, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"));
     m.def("CL_g3_threshold", &CL_g3_threshold, py::arg("x"), py::arg("mQ"), py::arg("mMu"), py::arg("nf"));
