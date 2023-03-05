@@ -18,16 +18,16 @@ mufrac = runcard["mufrac"]
 def function_to_exe_in_parallel(pair):
     x, q = pair
     mu = mufrac * q
-    mQ = m**2 / q**2
-    mMu = m**2 / mu**2
+    m2Q2 = m**2 / q**2
+    m2mu2 = m**2 / mu**2
     if runcard["channel"] == "2g":
-        return adani.C2_g3_approximation(x, mQ, mMu, nf, 1, calls)
+        return adani.C2_g3_approximation(x, m2Q2, m2mu2, nf, 1, calls)
     elif runcard["channel"] == "2q":
-        return adani.C2_ps3_approximation(x, mQ, mMu, nf)
+        return adani.C2_ps3_approximation(x, m2Q2, m2mu2, nf)
     elif runcard["channel"] == "Lg":
-        return adani.CL_g3_approximation(x, mQ, mMu, nf, 1, calls)
+        return adani.CL_g3_approximation(x, m2Q2, m2mu2, nf, 1, calls)
     elif runcard["channel"] == "Lq":
-        return adani.CL_ps3_approximation(x, mQ, mMu, nf)
+        return adani.CL_ps3_approximation(x, m2Q2, m2mu2, nf)
     else:
         raise ValueError("Set channel to one of these: 2g 2q Lg Lq")
 

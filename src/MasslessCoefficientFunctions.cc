@@ -151,23 +151,7 @@ double C2_g3_massless(double x, int nf) {//remember that there is a delta(x1) th
 
     if(x<0 || x>=1) return 0;
 
-    /*
-    //computing fl_g_11=<e>^2/<e^2>
-
-    double charges[]={2./3., -1./3., -1./3., 2./3., -1./3., 2./3.};
-    //                  u       d       s      c       b       t
-
-    double tmp1=0, tmp2=0;
-
-    for(int i=0;i<nf;i++) {
-        tmp1+=charges[i];
-        tmp2+=charges[i]*charges[i];
-    }
-
-    double fl_g_11=tmp1*tmp1/tmp2/nf;
-    */
-
-    // double fl_g_11 = 0 ; //we are considering heavy-quark production
+    // double fl_g_11 = fl11g(nf) ;
 
     double x2 = x * x;
     // double x3 = x2 * x;
@@ -229,7 +213,7 @@ double C2_ps3_massless(double x, int nf) {//remember that there is a delta(x1) t
 
     if(x<0 || x>=1) return 0;
 
-    //double fl_ps_11=0; //we are considering heavy-quark production
+    // double fl_ps_11 = fl11ps(nf) ;
 
     double x2 = x * x;
 
@@ -290,22 +274,7 @@ double CL_g3_massless(double x, int nf) {//remember that there is a delta(x1) th
 
     if(x<0 || x>=1) return 0;
 
-    //****computing fl_g_11=<e>^2/<e^2>****
-    /*
-    double charges[]={2./3., -1./3., -1./3., 2./3., -1./3., 2./3.};
-    //                  u       d       s      c       b       t
-
-    double tmp1=0, tmp2=0;
-
-    for(int i=0;i<nf;i++) {
-        tmp1+=charges[i];
-        tmp2+=charges[i]*charges[i];
-    }
-
-    double fl_g_11=tmp1*tmp1/tmp2/nf;
-    */
-
-    //double fl_g_11 = 0 ; //we are considering heavy-quark production
+    // double fl_g_11 = fl11g(nf) ;
 
     double x2 = x * x;
 
@@ -364,7 +333,7 @@ double CL_ps3_massless(double x, int nf) {//remember that there is a delta(x1) t
 
     if(x<0 || x>=1) return 0;
 
-    // double fl_ps_11=0; //we are considering heavy-quark production
+    // double fl_ps_11 = fl11ps(nf) ;
 
     // double x2=x*x;
 
@@ -404,4 +373,41 @@ double CL_ps3_massless(double x, int nf) {//remember that there is a delta(x1) t
         //+ c_fl_nf * fl_ps_11 * nf
     ) ;
 
+}
+
+//==========================================================================================//
+//  Charge factors for the flavour topologies entering up to three loops.
+//
+//  Table 2 of Ref. [arXiv:hep-ph/0504242v1]
+//------------------------------------------------------------------------------------------//
+
+//                    u       d       s      c       b       t
+double charges[] = {2./3., -1./3., -1./3., 2./3., -1./3., 2./3.} ;
+
+double fl11g(int nf) {
+
+    double eavg = 0., e2avg = 0. ;
+
+    for(int i=0; i<nf; i++) {
+        eavg += charges[i] ;
+        e2avg += charges[i] * charges[i] ;
+    }
+    eavg /= nf ;
+    e2avg /= nf ;
+
+    return eavg * eavg / e2avg ;
+}
+
+double fl11ps(int nf) {
+
+    double eavg = 0., e2avg = 0. ;
+
+    for(int i=0; i<nf; i++) {
+        eavg += charges[i] ;
+        e2avg += charges[i] * charges[i] ;
+    }
+    eavg /= nf ;
+    e2avg /= nf ;
+
+    return eavg * eavg / e2avg - 3 * eavg ;
 }

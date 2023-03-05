@@ -12,11 +12,11 @@ using namespace std;
 //  Eq. (B.2) from Ref. [arXiv:hep-ph/9612398v1]
 //------------------------------------------------------------------------------------------//
 
-double K_Qg1(double x, double mMu) {
+double K_Qg1(double x, double m2mu2) {
 
     return 2 * TR * (
         x * x + (x - 1) * (x - 1)
-    ) * log(1. / mMu) ;
+    ) * log(1. / m2mu2) ;
 }
 
 //==========================================================================================//
@@ -25,8 +25,8 @@ double K_Qg1(double x, double mMu) {
 //  Eq. (B.6) from Ref. [arXiv:hep-ph/9612398v1]
 //------------------------------------------------------------------------------------------//
 
-double K_gg1_local(double mMu) {
-    return - 4. / 3. * TR * log(1. / mMu) ;
+double K_gg1_local(double m2mu2) {
+    return - 4. / 3. * TR * log(1. / m2mu2) ;
 }
 
 //==========================================================================================//
@@ -35,7 +35,7 @@ double K_gg1_local(double mMu) {
 //  Eq. (B.3) from Ref. [arXiv:hep-ph/9612398v1]
 //------------------------------------------------------------------------------------------//
 
-double K_Qg2(double x, double mMu) {
+double K_Qg2(double x, double m2mu2) {
 
     double x2 = x * x ;
 
@@ -57,7 +57,7 @@ double K_Qg2(double x, double mMu) {
     double S12xm = S12(1. - x) ;
     double S12minus = S12(-x) ;
 
-    double Lmu = log(mMu) ;
+    double Lmu = log(m2mu2) ;
     double Lmu2 = Lmu * Lmu ;
 
     double logmu2_CFTR = (

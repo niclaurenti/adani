@@ -19,14 +19,14 @@
 //  Matching conditions O(alpha_s)
 //------------------------------------------------------------------------------------------//
 
-double K_Qg1(double x, double mMu);
-double K_gg1_local(double mMu);
+double K_Qg1(double x, double m2mu2);
+double K_gg1_local(double m2mu2);
 
 //==========================================================================================//
 //  Matching conditions O(alpha_s^2)
 //------------------------------------------------------------------------------------------//
 
-double K_Qg2(double x, double mMu);
+double K_Qg2(double x, double m2mu2);
 
 //==========================================================================================//
 //  Matching conditions O(alpha_s^3)
