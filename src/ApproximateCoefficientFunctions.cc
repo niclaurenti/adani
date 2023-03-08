@@ -1031,7 +1031,7 @@ double CL_ps30_approximation_BAND(double x, double m2Q2, int nf, int v) {
     if(v==-1) return min ;
 
     else {
-        cout << "C2_ps30_approximation_BAND: Choose either v=0 or v=1 or v=-1!!\nExiting!!\n" << endl;
+        cout << "CL_ps30_approximation_BAND: Choose either v=0 or v=1 or v=-1!!\nExiting!!\n" << endl;
         exit(-1);
     }
 
