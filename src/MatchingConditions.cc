@@ -195,7 +195,7 @@ double a_Qq_PS_30(double x, double* Hr1, double* Hr2, double* Hr3, double* Hr4, 
     const double H0  = Hr1[1];
     const double H1  = Hr1[2];
 
-    double H0_2 = H0*H0 ;
+    double H0_2 = H0 * H0 ;
 
     double x2 = x * x ;
     double L1 = - H1 ;

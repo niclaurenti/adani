@@ -1398,7 +1398,7 @@ double C2_g3_approximationBlowxi_klmv(double x, double m2Q2, double m2mu2, int n
     double C30 = (
         (C2_g3_threshold(x, m2Q2, 1., nf) - C2_g3_threshold_const(x, m2Q2, 1.))
         + f * 2. * C2_g3_threshold_const(x, m2Q2, 1.)
-        + (1. - f) * beta3 * C2_g3_highscale(x, m2Q2, 1., nf, 4)
+        + (1. - f) * beta3 * C2_g3_highscale(x, m2Q2, 1., nf, -12)
         + f * beta3 * (
             - log(eta) / log(x) * C2_g3_highenergyLL(x, m2Q2, 1.)
             + C2_g3_highenergyB * eta_delta / (D + eta_delta)
@@ -1553,7 +1553,7 @@ double C2_ps3_approximationA_klmv_paper(double x, double m2Q2, double m2mu2, int
 
     double beta3 = beta * beta * beta;
 
-    double C2_ps30_highenergyNLLA = (64. * pi3) *(
+    double C2_ps30_highenergyNLLA = (64. * pi3) * (
         0.004 * pow(log(1./m2Q2) / log(5), 4) - 0.125
     ) * 4. / m2Q2 / x;
 
@@ -1609,7 +1609,7 @@ double C2_ps3_approximationB_klmv_paper(double x, double m2Q2, double m2mu2, int
 
     double C2_ps30_highenergyNLLB = (64. * pi3) * (
         0.0245 * pow(log(1./m2Q2) / log(5), 2) - 0.17
-    ) * 4 / m2Q2 / x;
+    ) * 4. / m2Q2 / x;
 
     double C30 = (
         (1. - f) * beta3 * C2_ps3_highscale_klmv_paper(x, m2Q2, 1., nf, 2)

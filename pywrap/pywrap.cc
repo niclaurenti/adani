@@ -25,12 +25,18 @@ PYBIND11_MODULE(_core, m) {
     m.def("C2_ps2_approximation", &C2_ps2_approximation, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("v")=0) ;
     m.def("CL_ps2_approximation", &CL_ps2_approximation, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("v")=0) ;
 
+    m.def("C2_g2_approximationA_klmv", &C2_g2_approximationA_klmv, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"));
+    m.def("C2_g2_approximationB_klmv", &C2_g2_approximationB_klmv, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"));
+
     m.def("C2_g3_approximationA_klmv", &C2_g3_approximationA_klmv, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf"), py::arg("method_flag")=default_method, py::arg("calls")=default_calls);
     m.def("C2_g3_approximationB_klmv", &C2_g3_approximationB_klmv, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf"), py::arg("method_flag")=default_method, py::arg("calls")=default_calls);
+    m.def("C2_g3_approximationB_klmv_paper", &C2_g3_approximationB_klmv_paper, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf"), py::arg("method_flag")=default_method, py::arg("calls")=default_calls);
     m.def("C2_g3_approximationBlowxi_klmv", &C2_g3_approximationBlowxi_klmv, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf"), py::arg("method_flag")=default_method, py::arg("calls")=default_calls);
 
     m.def("C2_ps3_approximationA_klmv", &C2_ps3_approximationA_klmv, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf"));
     m.def("C2_ps3_approximationB_klmv", &C2_ps3_approximationB_klmv, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf"));
+    m.def("C2_ps3_approximationA_klmv_paper", &C2_ps3_approximationA_klmv_paper, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf"));
+    m.def("C2_ps3_approximationB_klmv_paper", &C2_ps3_approximationB_klmv_paper, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf"));
 
     // AsymptoticCoefficientFunctions
 

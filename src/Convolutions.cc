@@ -223,6 +223,8 @@ double C2_g1_x_Pgq0_integrand(double z, void * p) {
 
 }
 
+// Result
+
 double C2_g1_x_Pgq0(double x, double m2Q2) {
 
     double result, error, abserr = 0.001, relerr = 0.001;
