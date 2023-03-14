@@ -2579,6 +2579,7 @@ double D2_ps3_highscale(double x, double m2Q2, double m2mu2, int nf, int v) {
             + 16./9 * H0 * x
         )
 
+        // from Moch, Vogt
         + CF * nf * (
             14800./243 - 12032./729/x - 19840./243 * x + 27152./729 * x2
             + 256./27 * zeta3/x - 976./27 * zeta3 - 928./27 * zeta3 * x
@@ -2606,6 +2607,34 @@ double D2_ps3_highscale(double x, double m2Q2, double m2mu2, int nf, int v) {
             + 128./27 * H001 * x + 64./9 * H001 * x2 - 32./3 * H0010 - 32./3 * H0010 * x
             + 32./9 * H0011 + 32./9 * H0011 * x - 64./9 * H0001 - 64./9 * H0001 * x
         )
+
+        // from Bluemline
+        // + CF * nf * (
+        //     - 944./27 - 14 * zeta2 * 6./9 - 2 * zeta4 * 90./27 + 5248./243/x
+        //     + 40 * zeta2 * 6./81/x + 2416. * x/27 + 26. * zeta2 * 6 * x / 9
+        //     - 2 * zeta4 * 90 * x / 27 - 18496 * x2/243 - 148 * zeta2 * 6 * x2/81
+        //     + 296./27 * H0 - 20./27 * zeta2 * 6 * H0 - 152./27 * x * H0
+        //     + 16./27 * zeta2 * 6 * x * H0 + 6400./81 * x2 * H0 + 8./9 * zeta2 * 6 * x2 * H0
+        //     - 56./9 * H0 * H0 - 4./9 * zeta2 * 6 * H0*H0 - 88./9 * x * H0*H0
+        //     - 4./9 * zeta2 * 6 * x * H0 * H0 - 448./27 * x2 * H0*H0 + 4./9 * H0*H0*H0
+        //     + 20./9 * x * H0*H0*H0 + 32./27 * x2 * H0*H0*H0 - 2./9 * H0*H0*H0*H0
+        //     - 2./9 * x * H0*H0*H0*H0 + 2./9 * zeta2 * 6 * H1 + 8 * zeta2 * 6 * H1/27/x
+        //     - 2./9 * zeta2 * 6 * x * H1 - 8./27 * zeta2 * 6 * x2 * H1 + 32./3 * H0 * H1
+        //     - 320 * H0 * H1/27/x - 32 * x * H0 * H1 + 896./27 * x2 * H0 * H1 + 8./3 * H0*H0 * H1
+        //     + 32 * H0*H0 * H1/9/ x - 8./3 * x * H0*H0 * H1 - 32./9 * x2 * H0*H0 * H1
+        //     - 32./3 * H01 + 4./9 * zeta2 * 6 * H01 + 320 * H01/27/x
+        //     + 32 * x * H01 + 4./9 * zeta2 * 6 * x * H01 - 896./27 * x2 * H01 - 32./3 * H0 * H01
+        //     - 64 * H0 * H01 / 9 /x - 64./3 * x * H0 * H01 - 64./9 * x2 * H0 * H01
+        //     + 16./3 * H0*H0 * H01 + 16./3 * x * H0*H0 * H01 + 16 * H001
+        //     + 64 * H001/9 / x + 48 * x * H001 + 64./3 * x2 * H001 - 32./3 * H0 * H001
+        //     - 32./3 * x * H0 * H001 - 88 * zeta3/9 + 32 * zeta3/27/ x
+        //     - 488./9 * x * zeta3 - 800./27 * x2 * zeta3 + 208./9 * H0 * zeta3 + 208./9 * x * H0 * zeta3
+        // )
+
+        // the commented term is from Bluemline and is the only term that disagrees
+        // with the one from Moch, Vogt
+        // Which one should I trust?
+        // Anyway, in the plots the difference is very small
 
         + CF * nf * Lmmu * (
             880./9 - 208./3 * x - 256./9 * x2

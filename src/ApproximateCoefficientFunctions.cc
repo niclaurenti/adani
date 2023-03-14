@@ -1554,7 +1554,7 @@ double C2_ps3_approximationA_klmv_paper(double x, double m2Q2, double m2mu2, int
     double beta3 = beta * beta * beta;
 
     double C2_ps30_highenergyNLLA = (64. * pi3) * (
-        0.004 * pow(log(1./m2Q2) / log(5), 4) - 0.125
+        0.004 * pow(log(1./m2Q2) / log(5.), 4) - 0.125
     ) * 4. / m2Q2 / x;
 
     double C30 = (
@@ -1608,7 +1608,7 @@ double C2_ps3_approximationB_klmv_paper(double x, double m2Q2, double m2mu2, int
     double beta3 = beta * beta * beta;
 
     double C2_ps30_highenergyNLLB = (64. * pi3) * (
-        0.0245 * pow(log(1./m2Q2) / log(5), 2) - 0.17
+        0.0245 * pow(log(1./m2Q2) / log(5.), 2) - 0.17
     ) * 4. / m2Q2 / x;
 
     double C30 = (
