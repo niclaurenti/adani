@@ -3071,7 +3071,7 @@ double D2_ps3_highscale(double x, double m2Q2, double m2mu2, int nf, int v) {
             + 8./3 * H1 * x + 32./9 * H1 * x2 - 16./3 * H01 - 16./3 * H01 * x
         )
 
-        + a_Qq_PS_30(x, Hr1, Hr2, Hr3, Hr4, Hr5, v)
+        + a_Qq_PS_30(x, v)
 
         + 1. / (1 + nf) * C2_ps3_massless(x, 1 + nf)
 

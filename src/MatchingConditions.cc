@@ -186,44 +186,38 @@ double a_Qg_30(double x, int v) {
 //  v = 2 : approximation from Eq. (3.53) of [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double a_Qq_PS_30(double x, double* Hr1, double* Hr2, double* Hr3, double* Hr4, double* Hr5, int v) {
+double a_Qq_PS_30(double x, int v) {
 
     if(x<0 || x>=1) return 0;
 
-    //weight 1
-    const double Hm1 = Hr1[0];
-    const double H0  = Hr1[1];
-    const double H1  = Hr1[2];
-
-    double H0_2 = H0 * H0 ;
-
     double x2 = x * x ;
-    double L1 = - H1 ;
 
-    if(v==1) {
-        return (
-            (1. - x) * (
-                232.9555 * L1 * L1 * L1 + 1309.528 * L1 * L1
-                - 31729.716 * x2 + 66638.193 * x + 2825.641 / x
-            )
-            + 41850.518 * x * H0 + 688.396 / x * H0
-        );
-    }
-    else if(v==2) {
-       return (
-            (1. - x) * (
-                126.3546 * L1 * L1 + 353.8539 * L1 + 6787.608 * x
-                + 3780.192 / x
-            )
-            + 8571.165 * x * H0 - 2346.893 * H0_2 + 688.396 / x * H0
-        ) ;
-    }
-    else if(v==0){
+    if(v==0){
 
         double x3 = x2 * x;
         double x4 = x3 * x;
         double x5 = x4 * x;
         double x6 = x5 * x;
+
+        // Allocate pointers for the harmonic polylogs
+        double wx = x;
+        int    nw = 5;
+        int    n1 =-1;
+        int    n2 = 1;
+        int    sz = n2 - n1 + 1;
+        double *Hr1 = new double[sz];
+        double *Hr2 = new double[sz*sz];
+        double *Hr3 = new double[sz*sz*sz];
+        double *Hr4 = new double[sz*sz*sz*sz];
+        double *Hr5 = new double[sz*sz*sz*sz*sz];
+
+        // Call polylogs
+        apf_hplog_(&wx, &nw, Hr1, Hr2, Hr3, Hr4, Hr5, &n1, &n2);
+
+        //weight 1
+        const double Hm1 = Hr1[0];
+        const double H0  = Hr1[1];
+        const double H1  = Hr1[2];
 
         //weight 2
         const double H0m1 = Hr2[1];
@@ -272,11 +266,13 @@ double a_Qq_PS_30(double x, double* Hr1, double* Hr2, double* Hr3, double* Hr4, 
         const double H00111   = Hr5[238];
         const double H01111   = Hr5[241];
 
-        double wx = 1 - 2 * x ;
-        int    nw = 5;
-        int    n1 =-1;
-        int    n2 = 1;
-        int    sz = n2 - n1 + 1;
+        delete[] Hr1;
+        delete[] Hr2;
+        delete[] Hr3;
+        delete[] Hr4;
+        delete[] Hr5;
+
+        wx = 1 - 2 * x ;
         double *tildeHr1 = new double[sz];
         double *tildeHr2 = new double[sz*sz];
         double *tildeHr3 = new double[sz*sz*sz];
@@ -324,13 +320,14 @@ double a_Qq_PS_30(double x, double* Hr1, double* Hr2, double* Hr3, double* Hr4, 
         delete[] tildeHr4;
         delete[] tildeHr5;
 
-        double H0_3 = H0_2*H0 ;
-        double H0_4 = H0_3*H0 ;
-        double H0_5 = H0_4*H0 ;
+        double H0_2 = H0 * H0 ;
+        double H0_3 = H0_2 * H0 ;
+        double H0_4 = H0_3 * H0 ;
+        double H0_5 = H0_4 * H0 ;
 
-        double H1_2 = H1*H1 ;
-        double H1_3 = H1_2*H1 ;
-        double H1_4 = H1_3*H1 ;
+        double H1_2 = H1 * H1 ;
+        double H1_3 = H1_2 * H1 ;
+        double H1_4 = H1_3 * H1 ;
 
         double ln2_2 = ln2 * ln2 ;
         double ln2_3 = ln2_2 * ln2 ;
@@ -870,6 +867,28 @@ double a_Qq_PS_30(double x, double* Hr1, double* Hr2, double* Hr3, double* Hr4, 
         ) ;
 
         return aQqPS30 + tildeaQqPS30 ;
+    }
+    else if(v==1) {
+        double L1 = log(1. - x) ;
+        double L = log(x) ;
+        return (
+            (1. - x) * (
+                232.9555 * L1 * L1 * L1 + 1309.528 * L1 * L1
+                - 31729.716 * x2 + 66638.193 * x + 2825.641 / x
+            )
+            + 41850.518 * x * L + 688.396 / x * L
+        );
+    }
+    else if(v==2) {
+        double L1 = log(1. - x) ;
+        double L = log(x) ;
+        return (
+            (1. - x) * (
+                126.3546 * L1 * L1 + 353.8539 * L1 + 6787.608 * x
+                + 3780.192 / x
+            )
+            + 8571.165 * x * L - 2346.893 * L * L + 688.396 / x * L
+        ) ;
     }
     else {
         std::cout<<"Choose either v=1, v=2!!\nExiting!!\n"<<std::endl;
