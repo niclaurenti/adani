@@ -316,7 +316,7 @@ double C2_ps20_approximation_BAND(double x, double m2Q2, int v) {
             for (int h = 0; h < 3; h++) {
                 for (int k = 0; k < 3; k++) {
                     replicas.push_back(
-                        C2_g20_approximation_implicit(x, m2Q2, Avec[i], Bvec[j], Cvec[h], Dvec[k], a, b)
+                        C2_ps20_approximation_implicit(x, m2Q2, Avec[i], Bvec[j], Cvec[h], Dvec[k], a, b)
                     ) ;
                 }
             }
@@ -532,7 +532,7 @@ double CL_ps20_approximation_BAND(double x, double m2Q2, int v) {
             for (int h = 0; h < 3; h++) {
                 for (int k = 0; k < 3; k++) {
                     replicas.push_back(
-                        CL_g20_approximation_implicit(x, m2Q2, Avec[i], Bvec[j], Cvec[h], Dvec[k], a, b)
+                        CL_ps20_approximation_implicit(x, m2Q2, Avec[i], Bvec[j], Cvec[h], Dvec[k], a, b)
                     ) ;
                 }
             }

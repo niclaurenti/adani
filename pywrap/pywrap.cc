@@ -39,14 +39,32 @@ PYBIND11_MODULE(_core, m) {
     m.def("C2_ps3_approximationB_klmv_paper", &C2_ps3_approximationB_klmv_paper, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf"));
 
     m.def("CL_g20_approximation", &CL_g20_approximation, py::arg("x"), py::arg("m2Q2"));
+    m.def("C2_ps20_approximation", &C2_ps20_approximation, py::arg("x"), py::arg("m2Q2"));
+    m.def("CL_ps20_approximation", &CL_ps20_approximation, py::arg("x"), py::arg("m2Q2"));
     m.def("CL_g30_approximation", &CL_g30_approximation, py::arg("x"), py::arg("m2Q2"), py::arg("nf"));
+    m.def("C2_ps30_approximation", &C2_ps30_approximation, py::arg("x"), py::arg("m2Q2"), py::arg("nf"));
+    m.def("CL_ps30_approximation", &CL_ps30_approximation, py::arg("x"), py::arg("m2Q2"), py::arg("nf"));
     m.def("CL_g30_approximation_implicit", &CL_g30_approximation_implicit, py::arg("x"), py::arg("m2Q2"), py::arg("nf"), py::arg("A"), py::arg("B"), py::arg("C"), py::arg("D"), py::arg("a"), py::arg("b"), py::arg("v"));
+
+    m.def("C2_g20_approximation_BAND", &C2_g20_approximation_BAND, py::arg("x"), py::arg("m2Q2"), py::arg("v"));
+    m.def("CL_g20_approximation_BAND", &CL_g20_approximation_BAND, py::arg("x"), py::arg("m2Q2"), py::arg("v"));
+    m.def("C2_ps20_approximation_BAND", &C2_ps20_approximation_BAND, py::arg("x"), py::arg("m2Q2"), py::arg("v"));
+    m.def("CL_ps20_approximation_BAND", &CL_ps20_approximation_BAND, py::arg("x"), py::arg("m2Q2"), py::arg("v"));
+
+    m.def("C2_g30_approximation_BAND", &C2_g30_approximation_BAND, py::arg("x"), py::arg("m2Q2"), py::arg("nf"), py::arg("v"));
+    m.def("CL_g30_approximation_BAND", &CL_g30_approximation_BAND, py::arg("x"), py::arg("m2Q2"), py::arg("nf"), py::arg("v"));
+    m.def("C2_ps30_approximation_BAND", &C2_ps30_approximation_BAND, py::arg("x"), py::arg("m2Q2"), py::arg("nf"), py::arg("v"));
+    m.def("CL_ps30_approximation_BAND", &CL_ps30_approximation_BAND, py::arg("x"), py::arg("m2Q2"), py::arg("nf"), py::arg("v"));
 
     // AsymptoticCoefficientFunctions
 
     m.def("C2_g3_asymptotic", &C2_g3_asymptotic, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf"), py::arg("v1")=0, py::arg("v2")=0);
     m.def("CL_g3_asymptotic", &CL_g3_asymptotic, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf"), py::arg("v"));
     m.def("CL_g2_asymptotic", &CL_g2_asymptotic, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"));
+    m.def("C2_ps2_asymptotic", &C2_ps2_asymptotic, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"));
+    m.def("CL_ps2_asymptotic", &CL_ps2_asymptotic, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"));
+    m.def("C2_ps3_asymptotic", &C2_ps3_asymptotic, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf"), py::arg("v"));
+    m.def("CL_ps3_asymptotic", &CL_ps3_asymptotic, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf"), py::arg("v"));
 
 
     // HighscaleCoefficientFunctions
@@ -78,6 +96,7 @@ PYBIND11_MODULE(_core, m) {
     m.def("CL_ps2", &CL_ps2, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"));
 
     m.def("CL_g20", &CL_g20, py::arg("x"), py::arg("m2Q2"));
+    m.def("CL_ps20", &CL_ps20, py::arg("x"), py::arg("m2Q2"));
 
     m.def("C2_g21", &C2_g21, py::arg("x"), py::arg("m2Q2"));
     m.def("C2_ps21", &C2_ps21, py::arg("x"), py::arg("m2Q2"));
