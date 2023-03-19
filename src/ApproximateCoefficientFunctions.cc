@@ -21,7 +21,7 @@ struct approximation_parameters C2_ps2_params = {1.7, 2.5, 2.5, 1.2, 2.5, 5.} ;
 struct approximation_parameters CL_ps2_params = {20., 11., 3., 2., 2.5, 5.} ;
 
 struct approximation_parameters C2_g3_params = {0.3, 2.5, 2.5, 1.2, 2.5, 5.} ;
-struct approximation_parameters CL_g3_params = {20., 11., 3., 2., 2.5, 5.} ; // TODO : maybe a lower A is better (e.g. A=9.)
+struct approximation_parameters CL_g3_params = {10., 11., 3., 2., 2.5, 5.} ;
 struct approximation_parameters C2_ps3_params = {0.3, 2.5, 2.5, 1.2, 2.5, 5.} ;
 struct approximation_parameters CL_ps3_params = {20., 11., 3., 2., 2.5, 5.} ;
 

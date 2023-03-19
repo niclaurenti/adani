@@ -307,7 +307,7 @@ double C2_ps31(double x, double m2Q2, int nf) {
         + C2_g20_x_Pgq0(x, m2Q2)
         + C2_ps20_x_Pqq0(x, m2Q2, nf)
         - 2. * beta(0, nf) * C2_ps20(x, m2Q2)
-   ) ;
+    ) ;
 
 }
 
@@ -329,7 +329,7 @@ double CL_ps31(double x, double m2Q2, int nf) {
         + CL_g20_x_Pgq0(x, m2Q2)
         + CL_ps20_x_Pqq0(x, m2Q2, nf)
         - 2. * beta(0, nf) * CL_ps20(x, m2Q2)
-   ) ;
+    ) ;
 
 }
 
@@ -349,7 +349,7 @@ double C2_ps32(double x, double m2Q2, int nf) {
     return (
         0.5 * (C2_g1_x_Pgg0_x_Pgq0(x, m2Q2, nf) + C2_g1_x_Pqq0_x_Pgq0(x, m2Q2, nf))
         - 3. / 2 * beta(0, nf) * C2_g1_x_Pgq0(x, m2Q2)
-   ) ;
+    ) ;
 
 }
 
@@ -369,7 +369,7 @@ double CL_ps32(double x, double m2Q2, int nf) {
     return (
         0.5 * (CL_g1_x_Pgg0_x_Pgq0(x, m2Q2, nf) + CL_g1_x_Pqq0_x_Pgq0(x, m2Q2, nf))
         - 3. / 2 * beta(0, nf) * CL_g1_x_Pgq0(x, m2Q2)
-   ) ;
+    ) ;
 
 }
 
@@ -392,7 +392,7 @@ double C2_g31(double x, double m2Q2, int nf) {
         + C2_ps20_x_Pqg0(x, m2Q2, nf)
         + C2_g20_x_Pgg0(x, m2Q2, nf)
         - 2. * beta(0, nf) * C2_g20(x, m2Q2)
-   );
+    );
 
 }
 
@@ -415,7 +415,7 @@ double CL_g31(double x, double m2Q2, int nf) {
         + CL_ps20_x_Pqg0(x, m2Q2, nf)
         + CL_g20_x_Pgg0(x, m2Q2, nf)
         - 2 * beta(0, nf) * CL_g20(x, m2Q2)
-   );
+    );
 
 }
 
@@ -448,7 +448,7 @@ double C2_g32(double x, double m2Q2, int nf, int method_flag, int calls) {
         + 0.5 * C2_g1_x_Pqg0_x_Pgq0(x, m2Q2, nf)
         - 3. / 2 * beta0 * C2_g1_x_Pgg0(x, m2Q2, nf)
         + beta0 * beta0 * C2_g1(x, m2Q2)
-   );
+    );
 
 }
 
@@ -481,6 +481,6 @@ double CL_g32(double x, double m2Q2, int nf, int method_flag, int calls) {
         + 0.5 * CL_g1_x_Pqg0_x_Pgq0(x, m2Q2, nf)
         - 3. / 2 * beta0 * CL_g1_x_Pgg0(x, m2Q2, nf)
         + beta0 * beta0 * CL_g1(x, m2Q2)
-   );
+    );
 
 }

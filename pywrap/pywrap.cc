@@ -38,10 +38,15 @@ PYBIND11_MODULE(_core, m) {
     m.def("C2_ps3_approximationA_klmv_paper", &C2_ps3_approximationA_klmv_paper, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf"));
     m.def("C2_ps3_approximationB_klmv_paper", &C2_ps3_approximationB_klmv_paper, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf"));
 
+    m.def("CL_g20_approximation", &CL_g20_approximation, py::arg("x"), py::arg("m2Q2"));
+    m.def("CL_g30_approximation", &CL_g30_approximation, py::arg("x"), py::arg("m2Q2"), py::arg("nf"));
+    m.def("CL_g30_approximation_implicit", &CL_g30_approximation_implicit, py::arg("x"), py::arg("m2Q2"), py::arg("nf"), py::arg("A"), py::arg("B"), py::arg("C"), py::arg("D"), py::arg("a"), py::arg("b"), py::arg("v"));
+
     // AsymptoticCoefficientFunctions
 
     m.def("C2_g3_asymptotic", &C2_g3_asymptotic, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf"), py::arg("v1")=0, py::arg("v2")=0);
     m.def("CL_g3_asymptotic", &CL_g3_asymptotic, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf"), py::arg("v"));
+    m.def("CL_g2_asymptotic", &CL_g2_asymptotic, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"));
 
 
     // HighscaleCoefficientFunctions
@@ -72,13 +77,16 @@ PYBIND11_MODULE(_core, m) {
     m.def("CL_g2", &CL_g2, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"));
     m.def("CL_ps2", &CL_ps2, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"));
 
+    m.def("CL_g20", &CL_g20, py::arg("x"), py::arg("m2Q2"));
+
     m.def("C2_g21", &C2_g21, py::arg("x"), py::arg("m2Q2"));
     m.def("C2_ps21", &C2_ps21, py::arg("x"), py::arg("m2Q2"));
     m.def("CL_g21", &CL_g21, py::arg("x"), py::arg("m2Q2"));
     m.def("CL_ps21", &CL_ps21, py::arg("x"), py::arg("m2Q2"));
 
+    m.def("C2_g31", &C2_g31, py::arg("x"), py::arg("m2Q2"), py::arg("nf"));
     m.def("CL_g32", &CL_g32, py::arg("x"), py::arg("m2Q2"), py::arg("nf"), py::arg("method_flag")=default_method, py::arg("calls")=default_calls);
-    m.def("C2_g32", &CL_g32, py::arg("x"), py::arg("m2Q2"), py::arg("nf"), py::arg("method_flag")=default_method, py::arg("calls")=default_calls);
+    m.def("C2_g32", &C2_g32, py::arg("x"), py::arg("m2Q2"), py::arg("nf"), py::arg("method_flag")=default_method, py::arg("calls")=default_calls);
 
     // MasslessCoefficientFunctions
 
@@ -95,6 +103,7 @@ PYBIND11_MODULE(_core, m) {
     m.def("C2_g1_threshold", &C2_g1_threshold, py::arg("x"), py::arg("m2Q2"));
 
     m.def("C2_g2_threshold", &C2_g2_threshold, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"));
+    m.def("CL_g2_threshold", &CL_g2_threshold, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"));
 
     m.def("C2_g3_threshold", &C2_g3_threshold, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf"));
     m.def("CL_g3_threshold", &CL_g3_threshold, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf"));
