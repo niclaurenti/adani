@@ -24,7 +24,4 @@ const double zeta3 = 1.2020569031595942 ;
 const double zeta4 = 1.0823232337111381 ;
 const double zeta5 = 1.03692775514337 ;
 
-// const double pi2 = 9.869604401089358 ;
-// const double pi3 = 31.006276680299816 ;
-
 #endif

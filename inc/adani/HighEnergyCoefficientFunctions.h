@@ -112,4 +112,12 @@ double C2_ps3_power_terms(double x, double m2Q2 , double m2mu2, int nf, int v);
 double CL_g3_power_terms(double x, double m2Q2 , double m2mu2, int nf, int v);
 double CL_ps3_power_terms(double x, double m2Q2 , double m2mu2, int nf, int v);
 
+//==========================================================================================//
+//                  Color factors O(alpha_s^3)
+//------------------------------------------------------------------------------------------//
+
+double a_10(int nf) ;
+double a_11() ;
+double a_21(int nf) ;
+
 #endif

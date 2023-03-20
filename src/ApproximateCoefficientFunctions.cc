@@ -10,9 +10,6 @@
 #include <iostream>
 #include <vector>
 
-#define default_var 0.3
-#define default_fact 3.
-
 using namespace std ;
 
 struct approximation_parameters C2_g2_params = {1.7, 2.5, 2.5, 1.2, 2.5, 5.} ;
@@ -121,7 +118,7 @@ double CL_g1_approximation(double x, double m2Q2) {
 
 double C2_g2_approximation(double x, double m2Q2, double m2mu2, int v) {
 
-    double C_const = C2_g20_approximation_BAND(x, m2Q2, v);
+    double C_const = C2_g20_approximation_BAND(x, m2Q2, v, default_var, default_fact);
 
     double C_log = C2_g21(x, m2Q2) ;
 
@@ -130,8 +127,7 @@ double C2_g2_approximation(double x, double m2Q2, double m2mu2, int v) {
 }
 
 //==========================================================================================//
-//  Approximate gluon coefficient function for F2 at O(alpha_s^2).
-//  Used for validation of the method.
+//  Approximate mu-independent term of the gluon coefficient function for F2 at O(alpha_s^2).
 //------------------------------------------------------------------------------------------//
 
 double C2_g20_approximation(double x, double m2Q2) {
@@ -148,7 +144,8 @@ double C2_g20_approximation(double x, double m2Q2) {
 }
 
 //==========================================================================================//
-//  Approximate gluon coefficient function for F2 at O(alpha_s) with implicit parameters.
+//  Approximate mu-independent term of the gluon coefficient function for F2 at O(alpha_s)
+//  with implicit parameters.
 //------------------------------------------------------------------------------------------//
 
 double C2_g20_approximation_implicit(double x, double m2Q2, double A, double B, double C, double D, double a, double b) {
@@ -177,10 +174,11 @@ double C2_g20_approximation_implicit(double x, double m2Q2, double A, double B, 
 }
 
 //==========================================================================================//
-//  Band of the approximate gluon coefficient function for F2 at O(alpha_s^2).
+//  Band of the approximate mu-independent term of the gluon coefficient function for F2
+//  at O(alpha_s^2).
 //------------------------------------------------------------------------------------------//
 
-double C2_g20_approximation_BAND(double x, double m2Q2, int v) {
+double C2_g20_approximation_BAND(double x, double m2Q2, int v, double var, double fact) {
 
     double A = C2_g2_params.A ;
     double B = C2_g2_params.B ;
@@ -192,8 +190,6 @@ double C2_g20_approximation_BAND(double x, double m2Q2, int v) {
     double Cavg = C2_g20_approximation(x, m2Q2);
 
     if(v==0) return Cavg;
-
-    double var = default_var, fact = default_fact ;
 
     double Amax = fact * A, Amin = A / fact, Bmax = B * fact, Bmin = B / fact ;
     double Cmax = (1. + var) * C, Cmin = (1. - var) * C, Dmax = (1. + var) * D, Dmin = (1. - var) * D ;
@@ -237,15 +233,20 @@ double C2_g20_approximation_BAND(double x, double m2Q2, int v) {
 //  Approximate quark coefficient function for F2 at O(alpha_s^2).
 //  Used for validation of the method.
 //------------------------------------------------------------------------------------------//
+
 double C2_ps2_approximation(double x, double m2Q2, double m2mu2, int v) {
 
-    double C_const = C2_ps20_approximation_BAND(x, m2Q2, v);
+    double C_const = C2_ps20_approximation_BAND(x, m2Q2, v, default_var, default_fact);
 
     double C_log = C2_ps21(x, m2Q2) ;
 
     return C_const + C_log * log(1. / m2mu2) ;
 
 }
+
+//==========================================================================================//
+//  Approximate mu-independent term of the quark coefficient function for F2 at O(alpha_s^2).
+//------------------------------------------------------------------------------------------//
 
 double C2_ps20_approximation(double x, double m2Q2) {
 
@@ -261,7 +262,8 @@ double C2_ps20_approximation(double x, double m2Q2) {
 }
 
 //==========================================================================================//
-//  Approximate quark coefficient function for F2 at O(alpha_s^2) with implicit parameters.
+//  Approximate mu-independent term of the quark coefficient function for F2 at O(alpha_s^2)
+//  with implicit parameters.
 //------------------------------------------------------------------------------------------//
 
 double C2_ps20_approximation_implicit(double x, double m2Q2, double A, double B, double C, double D, double a, double b) {
@@ -287,7 +289,12 @@ double C2_ps20_approximation_implicit(double x, double m2Q2, double A, double B,
 
 }
 
-double C2_ps20_approximation_BAND(double x, double m2Q2, int v) {
+//==========================================================================================//
+//  Band of the approximate mu-independent term of the quark coefficient function for F2
+//  at O(alpha_s^2).
+//------------------------------------------------------------------------------------------//
+
+double C2_ps20_approximation_BAND(double x, double m2Q2, int v, double var, double fact) {
 
     double A = C2_ps2_params.A ;
     double B = C2_ps2_params.B ;
@@ -300,7 +307,6 @@ double C2_ps20_approximation_BAND(double x, double m2Q2, int v) {
 
     if(v==0) return Cavg;
 
-    double var = default_var, fact = default_fact ;
     double Amax = fact * A, Amin = A / fact, Bmax = B * fact, Bmin = B / fact ;
     double Cmax = (1. + var) * C, Cmin = (1. - var) * C, Dmax = (1. + var) * D, Dmin = (1. - var) * D ;
 
@@ -346,13 +352,17 @@ double C2_ps20_approximation_BAND(double x, double m2Q2, int v) {
 
 double CL_g2_approximation(double x, double m2Q2, double m2mu2, int v) {
 
-    double C_const = CL_g20_approximation_BAND(x, m2Q2, v);
+    double C_const = CL_g20_approximation_BAND(x, m2Q2, v, default_var, default_fact);
 
     double C_log = CL_g21(x, m2Q2) ;
 
     return C_const + C_log * log(1. / m2mu2) ;
 
 }
+
+//==========================================================================================//
+//  Approximate mu-independent term of the gluon coefficient function for FL at O(alpha_s^2).
+//------------------------------------------------------------------------------------------//
 
 double CL_g20_approximation(double x, double m2Q2) {
 
@@ -368,7 +378,8 @@ double CL_g20_approximation(double x, double m2Q2) {
 }
 
 //==========================================================================================//
-//  Approximate gluon coefficient function for FL at O(alpha_s) with implicit parameters.
+//  Approximate mu-independent term of the gluon coefficient function for FL at O(alpha_s)
+//  with implicit parameters.
 //------------------------------------------------------------------------------------------//
 
 double CL_g20_approximation_implicit(double x, double m2Q2, double A, double B, double C, double D, double a, double b) {
@@ -396,7 +407,12 @@ double CL_g20_approximation_implicit(double x, double m2Q2, double A, double B, 
 
 }
 
-double CL_g20_approximation_BAND(double x, double m2Q2, int v) {
+//==========================================================================================//
+//  Band of the approximate mu-independent term of the gluon coefficient function for FL
+//  at O(alpha_s^2).
+//------------------------------------------------------------------------------------------//
+
+double CL_g20_approximation_BAND(double x, double m2Q2, int v, double var, double fact) {
 
     double A = CL_g2_params.A ;
     double B = CL_g2_params.B ;
@@ -409,7 +425,6 @@ double CL_g20_approximation_BAND(double x, double m2Q2, int v) {
 
     if(v==0) return Cavg;
 
-    double var = default_var, fact = default_fact ;
     double Amax = fact * A, Amin = A / fact, Bmax = B * fact, Bmin = B / fact ;
     double Cmax = (1. + var) * C, Cmin = (1. - var) * C, Dmax = (1. + var) * D, Dmin = (1. - var) * D ;
 
@@ -455,13 +470,17 @@ double CL_g20_approximation_BAND(double x, double m2Q2, int v) {
 
 double CL_ps2_approximation(double x, double m2Q2, double m2mu2, int v) {
 
-    double C_const = CL_ps20_approximation_BAND(x, m2Q2, v);
+    double C_const = CL_ps20_approximation_BAND(x, m2Q2, v, default_var, default_fact);
 
     double C_log = CL_ps21(x, m2Q2) ;
 
     return C_const + C_log * log(1. / m2mu2) ;
 
 }
+
+//==========================================================================================//
+//  Approximate mu-independent term of the quark coefficient function for FL at O(alpha_s^2).
+//------------------------------------------------------------------------------------------//
 
 double CL_ps20_approximation(double x, double m2Q2) {
 
@@ -477,7 +496,8 @@ double CL_ps20_approximation(double x, double m2Q2) {
 }
 
 //==========================================================================================//
-//  Approximate quark coefficient function for F2 at O(alpha_s^2) with implicit parameters.
+//  Approximate mu-independent term of the quark coefficient function for FL at O(alpha_s^2)
+//  with implicit parameters.
 //------------------------------------------------------------------------------------------//
 
 double CL_ps20_approximation_implicit(double x, double m2Q2, double A, double B, double C, double D, double a, double b) {
@@ -503,7 +523,12 @@ double CL_ps20_approximation_implicit(double x, double m2Q2, double A, double B,
 
 }
 
-double CL_ps20_approximation_BAND(double x, double m2Q2, int v) {
+//==========================================================================================//
+//  Band of the approximate mu-independent term of the quark coefficient function for FL
+//  at O(alpha_s^2).
+//------------------------------------------------------------------------------------------//
+
+double CL_ps20_approximation_BAND(double x, double m2Q2, int v, double var, double fact) {
 
     double A = CL_ps2_params.A ;
     double B = CL_ps2_params.B ;
@@ -516,7 +541,6 @@ double CL_ps20_approximation_BAND(double x, double m2Q2, int v) {
 
     if(v==0) return Cavg;
 
-    double var = default_var, fact = default_fact ;
     double Amax = fact * A, Amin = A / fact, Bmax = B * fact, Bmin = B / fact ;
     double Cmax = (1. + var) * C, Cmin = (1. - var) * C, Dmax = (1. + var) * D, Dmin = (1. - var) * D ;
 
@@ -560,7 +584,7 @@ double CL_ps20_approximation_BAND(double x, double m2Q2, int v) {
 
 double C2_g3_approximation(double x, double m2Q2, double m2mu2, int nf, int v, int method_flag, int calls) {
 
-    double C30 = C2_g30_approximation_BAND(x, m2Q2, nf, v);
+    double C30 = C2_g30_approximation_BAND(x, m2Q2, nf, v, default_var, default_fact);
 
     if(m2mu2 == 1.) return C30 ;
 
@@ -576,7 +600,7 @@ double C2_g3_approximation(double x, double m2Q2, double m2mu2, int nf, int v, i
 }
 
 //==========================================================================================//
-//  Approximate gluon coefficient function for F2 at O(alpha_s^3).
+//  Approximate mu-independent term of the gluon coefficient function for F2 at O(alpha_s^3).
 //------------------------------------------------------------------------------------------//
 
 double C2_g30_approximation(double x, double m2Q2, int nf) {
@@ -594,7 +618,8 @@ double C2_g30_approximation(double x, double m2Q2, int nf) {
 }
 
 //==========================================================================================//
-//  Approximate gluon coefficient function for F2 at O(alpha_s^3) with implicit parameters.
+//  Approximate mu-independent term of the gluon coefficient function for F2 at O(alpha_s^3)
+//  with implicit parameters.
 //------------------------------------------------------------------------------------------//
 
 double C2_g30_approximation_implicit(double x, double m2Q2, int nf, double A, double B, double C, double D, double a, double b, int v1, int v2) {
@@ -624,11 +649,12 @@ double C2_g30_approximation_implicit(double x, double m2Q2, int nf, double A, do
 }
 
 //==========================================================================================//
-//  Band of the approximate gluon coefficient function for F2 at O(alpha_s^3).
+//  Band of the approximate mu-independent term of the gluon coefficient function for F2
+//  at O(alpha_s^3).
 //------------------------------------------------------------------------------------------//
 
 
-double C2_g30_approximation_BAND(double x, double m2Q2, int nf, int v) {
+double C2_g30_approximation_BAND(double x, double m2Q2, int nf, int v, double var, double fact) {
 
     double A = C2_g3_params.A ;
     double B = C2_g3_params.B ;
@@ -640,8 +666,6 @@ double C2_g30_approximation_BAND(double x, double m2Q2, int nf, int v) {
     double Cavg = C2_g30_approximation(x, m2Q2, nf);
 
     if(v==0) return Cavg;
-
-    double var = default_var, fact = default_fact ;
 
     double Amax = fact * A, Amin = A / fact, Bmax = B * fact, Bmin = B / fact;
     double Cmax = (1. + var) * C, Cmin = (1. - var) * C, Dmax = (1. + var) * D, Dmin = (1. - var) * D;
@@ -692,7 +716,7 @@ double C2_g30_approximation_BAND(double x, double m2Q2, int nf, int v) {
 
 double C2_ps3_approximation(double x, double m2Q2, double m2mu2, int nf, int v) {
 
-    double C30 = C2_ps30_approximation_BAND(x, m2Q2, nf, v);
+    double C30 = C2_ps30_approximation_BAND(x, m2Q2, nf, v, default_var, default_fact);
 
     if(m2mu2 == 1.) return C30 ;
 
@@ -708,7 +732,7 @@ double C2_ps3_approximation(double x, double m2Q2, double m2mu2, int nf, int v) 
 }
 
 //==========================================================================================//
-//  Approximate gluon coefficient function for F2 at O(alpha_s^3).
+//  Approximate mu-independent term of the quark coefficient function for F2 at O(alpha_s^3).
 //------------------------------------------------------------------------------------------//
 
 double C2_ps30_approximation(double x, double m2Q2, int nf) {
@@ -723,6 +747,11 @@ double C2_ps30_approximation(double x, double m2Q2, int nf) {
     return C2_ps30_approximation_implicit(x, m2Q2, nf, A, B, C, D, a, b, 0);
 
 }
+
+//==========================================================================================//
+//  Approximate mu-independent term of the quark coefficient function for F2 at O(alpha_s^3)
+//  with implicit parameters.
+//------------------------------------------------------------------------------------------//
 
 double C2_ps30_approximation_implicit(double x, double m2Q2, int nf, double A, double B, double C, double D, double a, double b, int v) {
 
@@ -746,7 +775,12 @@ double C2_ps30_approximation_implicit(double x, double m2Q2, int nf, double A, d
 
 }
 
-double C2_ps30_approximation_BAND(double x, double m2Q2, int nf, int v) {
+//==========================================================================================//
+//  Band of the approximate mu-independent term of the quark coefficient function for F2
+//  at O(alpha_s^3).
+//------------------------------------------------------------------------------------------//
+
+double C2_ps30_approximation_BAND(double x, double m2Q2, int nf, int v, double var, double fact) {
 
     double A = C2_ps3_params.A ;
     double B = C2_ps3_params.B ;
@@ -758,8 +792,6 @@ double C2_ps30_approximation_BAND(double x, double m2Q2, int nf, int v) {
     double Cavg = C2_ps30_approximation(x, m2Q2, nf);
 
     if(v==0) return Cavg;
-
-    double var = default_var, fact = default_fact ;
 
     double Amax = fact * A, Amin = A / fact, Bmax = B * fact, Bmin = B / fact;
     double Cmax = (1. + var) * C, Cmin = (1. - var) * C, Dmax = (1. + var) * D, Dmin = (1. - var) * D;
@@ -808,7 +840,7 @@ double C2_ps30_approximation_BAND(double x, double m2Q2, int nf, int v) {
 
 double CL_g3_approximation(double x, double m2Q2, double m2mu2, int nf, int v, int method_flag, int calls) {
 
-    double C30 = CL_g30_approximation_BAND(x, m2Q2, nf, v);
+    double C30 = CL_g30_approximation_BAND(x, m2Q2, nf, v, default_var, default_fact);
 
     if(m2mu2 == 1.) return C30 ;
 
@@ -824,7 +856,7 @@ double CL_g3_approximation(double x, double m2Q2, double m2mu2, int nf, int v, i
 }
 
 //==========================================================================================//
-//  Approximate gluon coefficient function for F2 at O(alpha_s^3).
+//  Approximate mu-independent term of the gluon coefficient function for F2 at O(alpha_s^3).
 //------------------------------------------------------------------------------------------//
 
 double CL_g30_approximation(double x, double m2Q2, int nf) {
@@ -839,6 +871,11 @@ double CL_g30_approximation(double x, double m2Q2, int nf) {
     return CL_g30_approximation_implicit(x, m2Q2, nf, A, B, C, D, a, b, 0);
 
 }
+
+//==========================================================================================//
+//  Approximate mu-independent term of the gluon coefficient function for FL at O(alpha_s^3)
+//  with implicit parameters.
+//------------------------------------------------------------------------------------------//
 
 double CL_g30_approximation_implicit(double x, double m2Q2, int nf, double A, double B, double C, double D, double a, double b, int v) {
 
@@ -865,7 +902,12 @@ double CL_g30_approximation_implicit(double x, double m2Q2, int nf, double A, do
 
 }
 
-double CL_g30_approximation_BAND(double x, double m2Q2, int nf, int v) {
+//==========================================================================================//
+//  Band of the approximate mu-independent term of the gluon coefficient function for FL
+//  at O(alpha_s^3).
+//------------------------------------------------------------------------------------------//
+
+double CL_g30_approximation_BAND(double x, double m2Q2, int nf, int v, double var, double fact) {
 
     double A = CL_g3_params.A ;
     double B = CL_g3_params.B ;
@@ -877,8 +919,6 @@ double CL_g30_approximation_BAND(double x, double m2Q2, int nf, int v) {
     double Cavg = CL_g30_approximation(x, m2Q2, nf);
 
     if(v==0) return Cavg;
-
-    double var = default_var, fact = default_fact ;
 
     double Amax = fact * A, Amin = A / fact, Bmax = B * fact, Bmin = B / fact;
     double Cmax = (1. + var) * C, Cmin = (1. - var) * C, Dmax = (1. + var) * D, Dmin = (1. - var) * D;
@@ -927,7 +967,7 @@ double CL_g30_approximation_BAND(double x, double m2Q2, int nf, int v) {
 
 double CL_ps3_approximation(double x, double m2Q2, double m2mu2, int nf, int v) {
 
-    double C30 = CL_ps30_approximation_BAND(x, m2Q2, nf, v);
+    double C30 = CL_ps30_approximation_BAND(x, m2Q2, nf, v, default_var, default_fact);
 
     if(m2mu2 == 1.) return C30 ;
 
@@ -943,7 +983,7 @@ double CL_ps3_approximation(double x, double m2Q2, double m2mu2, int nf, int v) 
 }
 
 //==========================================================================================//
-//  Approximate gluon coefficient function for F2 at O(alpha_s^3).
+//  Approximate mu-independent term of the quark coefficient function for F2 at O(alpha_s^3).
 //------------------------------------------------------------------------------------------//
 
 double CL_ps30_approximation(double x, double m2Q2, int nf) {
@@ -958,6 +998,11 @@ double CL_ps30_approximation(double x, double m2Q2, int nf) {
     return CL_ps30_approximation_implicit(x, m2Q2, nf, A, B, C, D, a, b, 0);
 
 }
+
+//==========================================================================================//
+//  Approximate mu-independent term of the quark coefficient function for FL at O(alpha_s^3)
+//  with implicit parameters.
+//------------------------------------------------------------------------------------------//
 
 double CL_ps30_approximation_implicit(double x, double m2Q2, int nf, double A, double B, double C, double D, double a, double b, int v) {
 
@@ -981,7 +1026,12 @@ double CL_ps30_approximation_implicit(double x, double m2Q2, int nf, double A, d
 
 }
 
-double CL_ps30_approximation_BAND(double x, double m2Q2, int nf, int v) {
+//==========================================================================================//
+//  Band of the approximate mu-independent term of the quark coefficient function for FL
+//  at O(alpha_s^3).
+//------------------------------------------------------------------------------------------//
+
+double CL_ps30_approximation_BAND(double x, double m2Q2, int nf, int v, double var, double fact) {
 
     double A = CL_ps3_params.A ;
     double B = CL_ps3_params.B ;
@@ -993,8 +1043,6 @@ double CL_ps30_approximation_BAND(double x, double m2Q2, int nf, int v) {
     double Cavg = CL_ps30_approximation(x, m2Q2, nf);
 
     if(v==0) return Cavg;
-
-    double var = default_var, fact = default_fact ;
 
     double Amax = fact * A, Amin = A / fact, Bmax = B * fact, Bmin = B / fact;
     double Cmax = (1. + var) * C, Cmin = (1. - var) * C, Dmax = (1. + var) * D, Dmin = (1. - var) * D;
