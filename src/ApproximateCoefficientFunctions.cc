@@ -22,6 +22,12 @@ struct approximation_parameters CL_g3_params = {10., 11., 3., 2., 2.5, 5.} ;
 struct approximation_parameters C2_ps3_params = {0.3, 2.5, 2.5, 1.2, 2.5, 5.} ;
 struct approximation_parameters CL_ps3_params = {20., 11., 3., 2., 2.5, 5.} ;
 
+#define var_C2 0.3
+#define fact_C2 3.
+
+#define var_CL 0.2
+#define fact_CL 2.
+
 //==========================================================================================//
 //  Approximate gluon coefficient function for F2 at O(alpha_s) with implicit parameters.
 //------------------------------------------------------------------------------------------//
@@ -118,7 +124,7 @@ double CL_g1_approximation(double x, double m2Q2) {
 
 double C2_g2_approximation(double x, double m2Q2, double m2mu2, int v) {
 
-    double C_const = C2_g20_approximation_BAND(x, m2Q2, v, default_var, default_fact);
+    double C_const = C2_g20_approximation_BAND(x, m2Q2, v, var_C2, fact_C2);
 
     double C_log = C2_g21(x, m2Q2) ;
 
@@ -236,7 +242,7 @@ double C2_g20_approximation_BAND(double x, double m2Q2, int v, double var, doubl
 
 double C2_ps2_approximation(double x, double m2Q2, double m2mu2, int v) {
 
-    double C_const = C2_ps20_approximation_BAND(x, m2Q2, v, default_var, default_fact);
+    double C_const = C2_ps20_approximation_BAND(x, m2Q2, v, var_C2, fact_C2);
 
     double C_log = C2_ps21(x, m2Q2) ;
 
@@ -352,7 +358,7 @@ double C2_ps20_approximation_BAND(double x, double m2Q2, int v, double var, doub
 
 double CL_g2_approximation(double x, double m2Q2, double m2mu2, int v) {
 
-    double C_const = CL_g20_approximation_BAND(x, m2Q2, v, default_var, default_fact);
+    double C_const = CL_g20_approximation_BAND(x, m2Q2, v, var_CL, fact_CL);
 
     double C_log = CL_g21(x, m2Q2) ;
 
@@ -470,7 +476,7 @@ double CL_g20_approximation_BAND(double x, double m2Q2, int v, double var, doubl
 
 double CL_ps2_approximation(double x, double m2Q2, double m2mu2, int v) {
 
-    double C_const = CL_ps20_approximation_BAND(x, m2Q2, v, default_var, default_fact);
+    double C_const = CL_ps20_approximation_BAND(x, m2Q2, v, var_CL, fact_CL);
 
     double C_log = CL_ps21(x, m2Q2) ;
 
@@ -584,7 +590,7 @@ double CL_ps20_approximation_BAND(double x, double m2Q2, int v, double var, doub
 
 double C2_g3_approximation(double x, double m2Q2, double m2mu2, int nf, int v, int method_flag, int calls) {
 
-    double C30 = C2_g30_approximation_BAND(x, m2Q2, nf, v, default_var, default_fact);
+    double C30 = C2_g30_approximation_BAND(x, m2Q2, nf, v, var_C2, fact_C2);
 
     if(m2mu2 == 1.) return C30 ;
 
@@ -716,7 +722,7 @@ double C2_g30_approximation_BAND(double x, double m2Q2, int nf, int v, double va
 
 double C2_ps3_approximation(double x, double m2Q2, double m2mu2, int nf, int v) {
 
-    double C30 = C2_ps30_approximation_BAND(x, m2Q2, nf, v, default_var, default_fact);
+    double C30 = C2_ps30_approximation_BAND(x, m2Q2, nf, v, var_C2, fact_C2);
 
     if(m2mu2 == 1.) return C30 ;
 
@@ -840,7 +846,7 @@ double C2_ps30_approximation_BAND(double x, double m2Q2, int nf, int v, double v
 
 double CL_g3_approximation(double x, double m2Q2, double m2mu2, int nf, int v, int method_flag, int calls) {
 
-    double C30 = CL_g30_approximation_BAND(x, m2Q2, nf, v, default_var, default_fact);
+    double C30 = CL_g30_approximation_BAND(x, m2Q2, nf, v, var_CL, fact_CL);
 
     if(m2mu2 == 1.) return C30 ;
 
@@ -967,7 +973,7 @@ double CL_g30_approximation_BAND(double x, double m2Q2, int nf, int v, double va
 
 double CL_ps3_approximation(double x, double m2Q2, double m2mu2, int nf, int v) {
 
-    double C30 = CL_ps30_approximation_BAND(x, m2Q2, nf, v, default_var, default_fact);
+    double C30 = CL_ps30_approximation_BAND(x, m2Q2, nf, v, var_CL, fact_CL);
 
     if(m2mu2 == 1.) return C30 ;
 

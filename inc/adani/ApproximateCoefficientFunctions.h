@@ -16,9 +16,6 @@
 #ifndef Approximate_h
 #define Approximate_h
 
-#define default_var 0.3
-#define default_fact 3.
-
 //==========================================================================================//
 //                      Approximate coefficient functions O(alpha_s)
 //------------------------------------------------------------------------------------------//
