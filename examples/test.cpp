@@ -15,7 +15,7 @@ int main() {
     double dlogx=(logx_max - logx_min) / N;
     double dlogQ=(logQ_max - logQ_min) / N;
 
-    double m = 4.92, mQ, mMu ;
+    double m = 4.92, m2Q2, m2mu2 ;
     int nf = 4 ;
 
     for(int i=0; i<N; i++) {
@@ -26,13 +26,13 @@ int main() {
             logQ = logQ_min + j * dlogQ;
             Q = pow(10, logQ);
 
-            mQ = m * m / (Q * Q) ;
-            mMu = mQ ;
+            m2Q2 = m * m / (Q * Q) ;
+            m2mu2 = m2Q2 ;
 
-            cout << "C2_g^(3)(x=" << x << ", Q="<< Q << ") = "<< C2m_g3_approximation(x, mQ, mMu, nf) << endl ;
-            cout << "C2_ps^(3)(x=" << x << ", Q="<< Q << ") = "<< C2m_ps3_approximation(x, mQ, mMu, nf) << endl ;
-            cout << "CL_g^(3)(x=" << x << ", Q="<< Q << ") = "<< CLm_g3_approximation(x, mQ, mMu, nf) << endl ;
-            cout << "CL_ps^(3)(x=" << x << ", Q="<< Q << ") = "<< CLm_ps3_approximation(x, mQ, mMu, nf) << endl ;
+            cout << "C2_g^(3)(x=" << x << ", Q="<< Q << ") = "<< C2_g3_approximation(x, m2Q2, m2mu2, nf) << endl ;
+            cout << "C2_ps^(3)(x=" << x << ", Q="<< Q << ") = "<< C2_ps3_approximation(x, m2Q2, m2mu2, nf) << endl ;
+            cout << "CL_g^(3)(x=" << x << ", Q="<< Q << ") = "<< CL_g3_approximation(x, m2Q2, m2mu2, nf) << endl ;
+            cout << "CL_ps^(3)(x=" << x << ", Q="<< Q << ") = "<< CL_ps3_approximation(x, m2Q2, m2mu2, nf) << endl ;
         }
     }
     return 0;

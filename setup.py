@@ -20,9 +20,9 @@ with open(os.path.join(this_directory, "README.md"), encoding="utf-8") as f:
 setup(
     name="adani",
     version="0.10", # el diez
-    description="Un codice scritto a cazzo di cane",
+    description="Code computing approximate DIS N3LO coefficients",
     author="Niccolò Laurenti",
-    license="Fateci il cazzo che vi pare, basta che non mi rompete i coglioni",
+    license="AGPLv3",
     packages=find_packages(where="inc"),
     package_dir={"": "inc"},
     cmake_install_dir="inc/adani",

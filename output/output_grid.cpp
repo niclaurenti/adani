@@ -79,14 +79,14 @@ int main(int argc, char** argv) {
     for(double Q_ : Q) {
         time_t t1 = time(NULL) ;
         for(double x_ : x) {
-            double mQ, mu, mMu ;
-            mQ = pow(m/Q_, 2) ;
+            double m2Q2, mu, m2mu2 ;
+            m2Q2 = pow(m/Q_, 2) ;
             mu = mufrac * Q_ ;
-            mMu = pow(m/mu, 2) ;
-            if(channel == "2g") res = C2m_g3_approximation(x_,mQ,mMu,nf,1,calls) ;
-            else if(channel == "2q") res = C2m_ps3_approximation(x_,mQ,mMu,nf) ;
-            else if(channel == "Lg") res = CLm_g3_approximation(x_,mQ,mMu,nf,1,calls)  ;
-            else if(channel == "Lq") res = CLm_ps3_approximation(x_,mQ,mMu,nf) ;
+            m2mu2 = pow(m/mu, 2) ;
+            if(channel == "2g") res = C2_g3_approximation(x_,m2Q2,m2mu2,nf,1,calls) ;
+            else if(channel == "2q") res = C2_ps3_approximation(x_,m2Q2,m2mu2,nf) ;
+            else if(channel == "Lg") res = CL_g3_approximation(x_,m2Q2,m2mu2,nf,1,calls)  ;
+            else if(channel == "Lq") res = CL_ps3_approximation(x_,m2Q2,m2mu2,nf) ;
             else {
                 cout<< "ERROR!\nUsage: channel = {2g, 2q, Lg, Lq}\nExiting..." <<endl;
                 exit(-1);
@@ -94,12 +94,6 @@ int main(int argc, char** argv) {
             output << res << "   ";
         }
         output << endl ;
-        time_t t2 = time(NULL) ;
-        cout << "Time for evaluating Q = "<< Q_ <<" is " << print_time(t2 - t1) << endl ;
-        total += t2 - t1 ;
-        mean = total / k ;
-        cout << "Expected remaining time is " << print_time((Q.size() - k) * mean) << endl ;
-        k++ ;
     }
 
     time_t ending_time = time(NULL) ;
