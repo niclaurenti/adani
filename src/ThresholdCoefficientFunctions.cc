@@ -9,21 +9,21 @@
 
 //==========================================================================================//
 //  Threshold limit (x->xmax) of the gluon coefficient function for F2 at O(alpha_s).
-//  In order to pass to klmv normalization multiply mQ*4*M_PI*M_PI*x
+//  In order to pass to klmv normalization multiply m2Q2*4*M_PI*M_PI*x
 //
 //  Eq. (3.15) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double C2_g1_threshold(double x, double mQ) {
+double C2_g1_threshold(double x, double m2Q2) {
 
-    double xmax = 1. / (1. + 4 * mQ) ;
+    double xmax = 1. / (1. + 4 * m2Q2) ;
 
-    if (x>=xmax || x<0) return 0;
+    if(x >= xmax || x <= 0) return 0 ;
 
-    double beta = sqrt(1. - 4. * mQ * x / (1. - x)) ;
-    double xi = 1. / mQ ;
+    double beta = sqrt(1. - 4. * m2Q2 * x / (1. - x)) ;
+    double xi = 1. / m2Q2 ;
 
-    return xi * TR * beta / (1. + xi / 4) / x ;
+    return xi * TR * beta / (1. + xi / 4.) / x ;
 
 }
 
@@ -31,25 +31,18 @@ double C2_g1_threshold(double x, double mQ) {
 //
 //------------------------------------------------------------------------------------------//
 
-double threshold_expansion_g2(double x, double mQ, double mMu) {
+double threshold_expansion_g2(double x, double m2Q2, double m2mu2) {
 
-    double xmax = 1. / (1. + 4 * mQ) ;
-
-    if(x>=xmax || x<0) return 0;
-
-    double beta = sqrt(1. - 4 * mQ * x / (1. - x));
+    double beta = sqrt(1. - 4. * m2Q2 * x / (1. - x));
 
     double logb = log(beta) ;
     double log2b = logb * logb ;
 
-    double C_log2b = 16 * CA ;
-
-    double C_logb = 48 * CA * ln2 - 40 * CA + 8 * CA * log(mMu) ;
-
-    double C_fracb = (2 * CF - CA) * M_PI * M_PI ;
-
     return (
-        C_log2b * log2b + C_logb * logb + C_fracb / beta
+        16. * CA * log2b
+        + (48. * CA * ln2 - 40. * CA) * logb
+        + (2 * CF - CA) * M_PI * M_PI / beta
+        + 8. * CA * log(m2mu2) * logb
     ) ;
 
 }
@@ -58,45 +51,45 @@ double threshold_expansion_g2(double x, double mQ, double mMu) {
 //
 //------------------------------------------------------------------------------------------//
 
-double threshold_expansion_g2_const(double mQ, double mMu) {
+double threshold_expansion_g2_const(double m2Q2, double m2mu2) {
 
-    double xi = 1. / mQ ;
+    double xi = 1. / m2Q2 ;
 
     return (
-        c0(xi) + 36 * CA * ln2 * ln2 - 60 * CA * ln2
-        + log(mMu) * (8 * CA * ln2 - c0_bar(xi))
+        c0(xi) + 36. * CA * ln2 * ln2 - 60 * CA * ln2
+        + log(m2mu2) * (8. * CA * ln2 - c0_bar(xi))
     ) ;
 
 }
 
 //==========================================================================================//
 //  Threshold limit (x->xmax) of the gluon coefficient function for F2 at O(alpha_s^2).
-//  In order to pass to klmv normalization multiply mQ*M_PI*x and put mu^2=Q^2+4m^2
+//  In order to pass to klmv normalization multiply m2Q2*M_PI*x and put mu^2=Q^2+4m^2
 //
 //  Eq. (3.16) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double C2_g2_threshold(double x, double mQ, double mMu) {
+double C2_g2_threshold(double x, double m2Q2, double m2mu2) {
 
-    return C2_g1(x,mQ) * (
-        threshold_expansion_g2(x, mQ, mMu)
-        + threshold_expansion_g2_const(mQ, mMu)
+    return C2_g1(x,m2Q2) * (
+        threshold_expansion_g2(x, m2Q2, m2mu2)
+        + threshold_expansion_g2_const(m2Q2, m2mu2)
     ) ;
 
 }
 
 //==========================================================================================//
 //  Threshold limit (x->xmax) of the gluon coefficient function for FL at O(alpha_s^2).
-//  In order to pass to klmv normalization multiply mQ*M_PI*x and put mu^2=Q^2+4m^2
+//  In order to pass to klmv normalization multiply m2Q2*M_PI*x and put mu^2=Q^2+4m^2
 //
 //  Eq. (3.16) of Ref. [arXiv:1205.5727] with C20 -> CL0
 //------------------------------------------------------------------------------------------//
 
-double CL_g2_threshold(double x, double mQ, double mMu) {
+double CL_g2_threshold(double x, double m2Q2, double m2mu2) {
 
-    return CL_g1(x,mQ) * (
-        threshold_expansion_g2(x, mQ, mMu)
-        + threshold_expansion_g2_const(mQ, mMu)
+    return CL_g1(x,m2Q2) * (
+        threshold_expansion_g2(x, m2Q2, m2mu2)
+        + threshold_expansion_g2_const(m2Q2, m2mu2)
     ) ;
 
 }
@@ -108,9 +101,9 @@ double CL_g2_threshold(double x, double mQ, double mMu) {
 //  Eq. (3.17) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double C2_g2_threshold_const(double x, double mQ, double mMu) {
+double C2_g2_threshold_const(double x, double m2Q2, double m2mu2) {
 
-    return C2_g1(x, mQ) * threshold_expansion_g2_const(mQ, mMu) ;
+    return C2_g1(x, m2Q2) * threshold_expansion_g2_const(m2Q2, m2mu2) ;
 
 }
 
@@ -121,9 +114,9 @@ double C2_g2_threshold_const(double x, double mQ, double mMu) {
 //  Eq. (3.17) of Ref. [arXiv:1205.5727] with C20 -> CL0
 //------------------------------------------------------------------------------------------//
 
-double CL_g2_threshold_const(double x, double mQ, double mMu) {
+double CL_g2_threshold_const(double x, double m2Q2, double m2mu2) {
 
-    return CL_g1(x,mQ) * threshold_expansion_g2_const(mQ, mMu) ;
+    return CL_g1(x,m2Q2) * threshold_expansion_g2_const(m2Q2, m2mu2) ;
 
 }
 
@@ -131,16 +124,12 @@ double CL_g2_threshold_const(double x, double mQ, double mMu) {
 //
 //------------------------------------------------------------------------------------------//
 
-double threshold_expansion_g3(double x, double mQ, double mMu, int nf) {
+double threshold_expansion_g3(double x, double m2Q2, double m2mu2, int nf) {
 
-    double x_max = 1. / (1. + 4 * mQ);
+    double xi = 1. / m2Q2 ;
+    double beta = sqrt(1. - 4. * m2Q2 * x / (1. - x));
 
-    if(x>=x_max || x<0) return 0;
-
-    double xi = 1. / mQ ;
-    double beta = sqrt(1. - 4. * mQ * x / (1. - x));
-
-    double Lm = log(mMu);
+    double Lm = log(m2mu2);
     double Lm2 = Lm * Lm;
     double l = log(beta);
     double l2 = l * l;
@@ -212,7 +201,7 @@ double threshold_expansion_g3(double x, double mQ, double mMu, int nf) {
         + (26./3. * CA + 4./3. * nf - 2 * c0_bar(xi)) * Lm
     ) * (CF - CA/2) * pi2 ;
 
-    double c_fracbeta2 = 4./3.* (CF - CA/2) * (CF - CA/2) * pi4;
+    double c_fracbeta2 = 4./3. * (CF - CA/2) * (CF - CA/2) * pi4;
 
     return (
         c_log4 * l4 + c_log3 * l3 + c_log2 * l2 + c_log * l
@@ -225,10 +214,10 @@ double threshold_expansion_g3(double x, double mQ, double mMu, int nf) {
 //
 //------------------------------------------------------------------------------------------//
 
-double threshold_expansion_g3_const(double mQ, double mMu) {
+double threshold_expansion_g3_const(double m2Q2, double m2mu2) {
 
-    double xi = 1. / mQ ;
-    double Lm = log(mMu);
+    double xi = 1. / m2Q2 ;
+    double Lm = log(m2mu2);
 
     double c_const_sqrt = (
         c0(xi) + 36. * CA * ln2 * ln2 - 60. * CA * ln2
@@ -245,11 +234,11 @@ double threshold_expansion_g3_const(double mQ, double mMu) {
 //  Eq. (3.18) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double C2_g3_threshold(double x, double mQ, double mMu, int nf) {
+double C2_g3_threshold(double x, double m2Q2, double m2mu2, int nf) {
 
-    return C2_g1(x,mQ) * (
-        threshold_expansion_g3(x, mQ, mMu, nf)
-        + threshold_expansion_g3_const(mQ, mMu)
+    return C2_g1(x,m2Q2) * (
+        threshold_expansion_g3(x, m2Q2, m2mu2, nf)
+        + threshold_expansion_g3_const(m2Q2, m2mu2)
     );
 
 }
@@ -260,11 +249,11 @@ double C2_g3_threshold(double x, double mQ, double mMu, int nf) {
 //  Eq. (3.18) of Ref. [arXiv:1205.5727] with C20 -> CL0
 //------------------------------------------------------------------------------------------//
 
-double CL_g3_threshold(double x, double mQ, double mMu, int nf) {
+double CL_g3_threshold(double x, double m2Q2, double m2mu2, int nf) {
 
-    return CL_g1(x,mQ) * (
-        threshold_expansion_g3(x, mQ, mMu, nf)
-        + threshold_expansion_g3_const(mQ, mMu)
+    return CL_g1(x,m2Q2) * (
+        threshold_expansion_g3(x, m2Q2, m2mu2, nf)
+        + threshold_expansion_g3_const(m2Q2, m2mu2)
     );
 
 }
@@ -276,9 +265,9 @@ double CL_g3_threshold(double x, double mQ, double mMu, int nf) {
 //  Eq. (3.19) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double C2_g3_threshold_const(double x, double mQ, double mMu) {
+double C2_g3_threshold_const(double x, double m2Q2, double m2mu2) {
 
-    return C2_g1(x,mQ) * threshold_expansion_g3_const(mQ, mMu);
+    return C2_g1(x,m2Q2) * threshold_expansion_g3_const(m2Q2, m2mu2);
 
 }
 
@@ -289,9 +278,9 @@ double C2_g3_threshold_const(double x, double mQ, double mMu) {
 //  Eq. (3.19) of Ref. [arXiv:1205.5727] with C20 -> CL0
 //------------------------------------------------------------------------------------------//
 
-double CL_g3_threshold_const(double x, double mQ, double mMu) {
+double CL_g3_threshold_const(double x, double m2Q2, double m2mu2) {
 
-    return CL_g1(x,mQ) * threshold_expansion_g3_const(mQ, mMu);
+    return CL_g1(x,m2Q2) * threshold_expansion_g3_const(m2Q2, m2mu2);
 
 }
 
@@ -303,32 +292,32 @@ double CL_g3_threshold_const(double x, double mQ, double mMu) {
 
 double c0(double xi) {
 
-    double y = sqrt(1. + 4./xi ) ;
+    double y = sqrt(1. + 4. / xi) ;
 
-    double L1 = log(1. + xi/2 ) ;
-    double L2 = log(2. + xi/2 ) ;
-    double L3 = log( sqrt(xi) * (y - 1.) / 2) ;
+    double L1 = log(1. + xi / 2) ;
+    double L2 = log(2. + xi / 2) ;
+    double L3 = log(sqrt(xi) * (y - 1.) / 2) ;
 
-    double xp2 = 2. + xi ;
-    double xp4 = 4. + xi ;
+    double xip2 = 2. + xi ;
+    double xip4 = 4. + xi ;
 
-    double Li_2 = Li2(- 2. / xp2);
+    double Li_2 = Li2(- 2. / xip2);
     double pi2 = M_PI * M_PI ;
 
     double c_CA = (
-        50. - pi2 + 12 * L3 / y + 4 * L3 * L3 + L1 * L1 + 6 * L2
-        - 4. * L2 * L2 + 2 * Li_2 + 48. / xp2 - 4. * L2 / xp2 + 64. * L2 / xp2 / xp2
-        - 128. * L2 /(xp2 * xp2 * xp4) - 160. / xp2 / xp4 - 64. * L2 / xp2 / xp4
-        + 128. / (xp2 * xp4 * xp4) - 12. * (4. + zeta2) / xp4 - 8. * L3 * L3 / xp4
-        + 64. / xp4 / xp4
+        50. - pi2 + 12. * L3 / y + 4. * L3 * L3 + L1 * L1 + 6. * L2
+        - 4. * L2 * L2 + 2 * Li_2 + 48. / xip2 - 4. * L2 / xip2 + 64. * L2 / xip2 / xip2
+        - 128. * L2 / (xip2 * xip2 * xip4) - 160. / xip2 / xip4 - 64. * L2 / xip2 / xip4
+        + 128. / (xip2 * xip4 * xip4) - 12. * (4. + zeta2) / xip4 - 8. * L3 * L3 / xip4
+        + 64. / xip4 / xip4
     );
 
-    double c_CF= (
+    double c_CF = (
         - 18. - 2./3. * pi2 - 24. * L3 / y - 8. * L3 * L3 + 2. * L1 * L1 - 6. * L2
-        + 4. * Li_2 - 48. / xp2 + 8. * L2 / xp2 + 360. / xp2 / xp4 + 128. * L2 / xp2 / xp4
-        - 544. / (xp2 * xp4 * xp4) + 48. * L3 * L3 / xp4 - 8. * L1 * L1 / xp4
-        + (44. + 40. * zeta2) / xp4 - 120. * L2 / xp2 / xp2 + 256. * L2 / (xp2 * xp2 * xp4)
-        - 16 * Li_2 / xp4 - 272 / xp4 / xp4
+        + 4. * Li_2 - 48. / xip2 + 8. * L2 / xip2 + 360. / xip2 / xip4 + 128. * L2 / xip2 / xip4
+        - 544. / (xip2 * xip4 * xip4) + 48. * L3 * L3 / xip4 - 8. * L1 * L1 / xip4
+        + (44. + 40. * zeta2) / xip4 - 120. * L2 / xip2 / xip2 + 256. * L2 / (xip2 * xip2 * xip4)
+        - 16. * Li_2 / xip4 - 272. / xip4 / xip4
     ) ;
 
     return CA * c_CA + CF * c_CF ;
@@ -344,6 +333,6 @@ double c0(double xi) {
 
 double c0_bar(double xi) {
 
-    return 4 * CA * (2. + log(1. + xi/4) ) - 4./3. * TR ;
+    return 4. * CA * (2. + log(1. + xi / 4.)) - 4./3. * TR ;
 
 }

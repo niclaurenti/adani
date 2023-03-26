@@ -1,7 +1,8 @@
 m: 4.92
 nf: 5
 calls: 25000
-channel: Lg
+channel: Lq
 mufrac: 1.
 n_threads: 4
 output_file: "prova.dat"
+verbose: on

@@ -44,5 +44,12 @@ double C2_ps3_massless(double x, int nf);
 double CL_g3_massless(double x, int nf);
 double CL_ps3_massless(double x, int nf);
 
+//==========================================================================================//
+//                      Charge factors
+//------------------------------------------------------------------------------------------//
+
+double fl11g(int nf) ;
+double fl11ps(int nf) ;
+
 
 #endif

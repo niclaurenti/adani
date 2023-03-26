@@ -23,18 +23,18 @@
 #include <gsl/gsl_monte.h>
 #include <gsl/gsl_monte_vegas.h>
 
-struct function_params {double x; double mQ; int nf;};
+struct function_params {double x; double m2Q2; int nf;};
 
 //==========================================================================================//
 //  Convolution between first order massless quark coefficient functions and first order matchings
 //------------------------------------------------------------------------------------------//
 
-double C2_b1_x_K_Qg1(double x, double mMu);
-double CL_b1_x_K_Qg1(double x, double mMu);
+double C2_b1_x_K_Qg1(double x, double m2mu2);
+double CL_b1_x_K_Qg1(double x, double m2mu2);
 
-// double K_Qg1_x_K_gg2(double x, double mMu);
+// double K_Qg1_x_K_gg2(double x, double m2mu2);
 
-// double C2_b2_x_K_bg1(double x, double mMu, int nf);
+// double C2_b2_x_K_bg1(double x, double m2mu2, int nf);
 
 //==========================================================================================//
 //  WARNING: from now on all the convolutions are numerical.
@@ -50,9 +50,9 @@ double CL_b1_x_K_Qg1(double x, double mMu);
 //------------------------------------------------------------------------------------------//
 
 double C2_g1_x_Pgq0_integrand(double z, void * p) ;
-double C2_g1_x_Pgq0(double x, double mQ) ;
+double C2_g1_x_Pgq0(double x, double m2Q2) ;
 double CL_g1_x_Pgq0_integrand(double z, void * p) ;
-double CL_g1_x_Pgq0(double x, double mQ) ;
+double CL_g1_x_Pgq0(double x, double m2Q2) ;
 
 //==========================================================================================//
 //  Convolution between first order massive gluon coefficient functions and splitting
@@ -64,8 +64,8 @@ double C2_g1_x_Pgg0_sing_integrand(double z, void * p) ;
 double CL_g1_x_Pgg0_reg_integrand(double z, void * p) ;
 double CL_g1_x_Pgg0_sing_integrand(double z, void * p);
 double Pgg0sing_integrated(double x);
-double C2_g1_x_Pgg0(double x, double mQ, int nf);
-double CL_g1_x_Pgg0(double x, double mQ, int nf);
+double C2_g1_x_Pgg0(double x, double m2Q2, int nf);
+double CL_g1_x_Pgg0(double x, double m2Q2, int nf);
 
 //==========================================================================================//
 //  Convolution between first order massive gluon coefficient functions and splitting
@@ -73,9 +73,9 @@ double CL_g1_x_Pgg0(double x, double mQ, int nf);
 //------------------------------------------------------------------------------------------//
 
 double C2_g1_x_Pgq1_integrand(double z, void * p);
-double C2_g1_x_Pgq1(double x, double mQ, int nf) ;
+double C2_g1_x_Pgq1(double x, double m2Q2, int nf) ;
 double CL_g1_x_Pgq1_integrand(double z, void * p);
-double CL_g1_x_Pgq1(double x, double mQ, int nf) ;
+double CL_g1_x_Pgq1(double x, double m2Q2, int nf) ;
 
 //==========================================================================================//
 //  Convolution between the mu-independent term of the second order massive gluon coefficient
@@ -83,9 +83,9 @@ double CL_g1_x_Pgq1(double x, double mQ, int nf) ;
 //------------------------------------------------------------------------------------------//
 
 double C2_g20_x_Pgq0_integrand(double z, void * p);
-double C2_g20_x_Pgq0(double x, double mQ);
+double C2_g20_x_Pgq0(double x, double m2Q2);
 double CL_g20_x_Pgq0_integrand(double z, void * p);
-double CL_g20_x_Pgq0(double x, double mQ);
+double CL_g20_x_Pgq0(double x, double m2Q2);
 
 //==========================================================================================//
 //  Convolution between the mu-independent term of the second order massive quark coefficient
@@ -97,8 +97,8 @@ double C2_ps20_x_Pqq0_sing_integrand(double z, void * p);
 double CL_ps20_x_Pqq0_reg_integrand(double z, void * p);
 double CL_ps20_x_Pqq0_sing_integrand(double z, void * p);
 double Pqq0sing_integrated(double x);
-double C2_ps20_x_Pqq0(double x, double mQ, int nf);
-double CL_ps20_x_Pqq0(double x, double mQ, int nf) ;
+double C2_ps20_x_Pqq0(double x, double m2Q2, int nf);
+double CL_ps20_x_Pqq0(double x, double m2Q2, int nf) ;
 
 //==========================================================================================//
 //  Convolution between the splitting functions Pgg0/Pqq0 and Pgq0
@@ -113,13 +113,13 @@ double Pqq0_x_Pgq0(double x) ;
 //------------------------------------------------------------------------------------------//
 
 double C2_g1_x_Pgg0_x_Pgq0_integrand(double z, void * p);
-double C2_g1_x_Pgg0_x_Pgq0(double x, double mQ, int nf) ;
+double C2_g1_x_Pgg0_x_Pgq0(double x, double m2Q2, int nf) ;
 double C2_g1_x_Pqq0_x_Pgq0_integrand(double z, void * p);
-double C2_g1_x_Pqq0_x_Pgq0(double x, double mQ, int nf);
+double C2_g1_x_Pqq0_x_Pgq0(double x, double m2Q2, int nf);
 double CL_g1_x_Pgg0_x_Pgq0_integrand(double z, void * p);
-double CL_g1_x_Pgg0_x_Pgq0(double x, double mQ, int nf);
+double CL_g1_x_Pgg0_x_Pgq0(double x, double m2Q2, int nf);
 double CL_g1_x_Pqq0_x_Pgq0_integrand(double z, void * p);
-double CL_g1_x_Pqq0_x_Pgq0(double x, double mQ, int nf);
+double CL_g1_x_Pqq0_x_Pgq0(double x, double m2Q2, int nf);
 
 //==========================================================================================//
 //  Convolution between first order massive gluon coefficient functions and splitting
@@ -129,10 +129,10 @@ double CL_g1_x_Pqq0_x_Pgq0(double x, double mQ, int nf);
 double C2_g1_x_Pgg1_reg_integrand(double z, void * p);
 double C2_g1_x_Pgg1_sing_integrand(double z, void * p);
 double Pgg1sing_integrated(double x, int nf);
-double C2_g1_x_Pgg1(double x, double mQ, int nf) ;
+double C2_g1_x_Pgg1(double x, double m2Q2, int nf) ;
 double CL_g1_x_Pgg1_reg_integrand(double z, void * p);
 double CL_g1_x_Pgg1_sing_integrand(double z, void * p);
-double CL_g1_x_Pgg1(double x, double mQ, int nf);
+double CL_g1_x_Pgg1(double x, double m2Q2, int nf);
 
 //==========================================================================================//
 //  Convolution between the mu-independent term of the second order massive quark coefficient
@@ -140,9 +140,9 @@ double CL_g1_x_Pgg1(double x, double mQ, int nf);
 //------------------------------------------------------------------------------------------//
 
 double C2_ps20_x_Pqg0_integrand(double z, void * p);
-double C2_ps20_x_Pqg0(double x, double mQ, int nf);
+double C2_ps20_x_Pqg0(double x, double m2Q2, int nf);
 double CL_ps20_x_Pqg0_integrand(double z, void * p);
-double CL_ps20_x_Pqg0(double x, double mQ, int nf) ;
+double CL_ps20_x_Pqg0(double x, double m2Q2, int nf) ;
 
 //==========================================================================================//
 //  Convolution between the mu-independent term of the second order massive gluon coefficient
@@ -151,10 +151,10 @@ double CL_ps20_x_Pqg0(double x, double mQ, int nf) ;
 
 double C2_g20_x_Pgg0_reg_integrand(double z, void * p);
 double C2_g20_x_Pgg0_sing_integrand(double z, void * p);
-double C2_g20_x_Pgg0(double x, double mQ, int nf);
+double C2_g20_x_Pgg0(double x, double m2Q2, int nf);
 double CL_g20_x_Pgg0_reg_integrand(double z, void * p);
 double CL_g20_x_Pgg0_sing_integrand(double z, void * p);
-double CL_g20_x_Pgg0(double x, double mQ, int nf) ;
+double CL_g20_x_Pgg0(double x, double m2Q2, int nf) ;
 
 //==========================================================================================//
 //  Convolution between the first order massive gluon coefficient functions and the convolution
@@ -163,9 +163,9 @@ double CL_g20_x_Pgg0(double x, double mQ, int nf) ;
 
 double Pqg0_x_Pgq0(double x, int nf) ;
 double C2_g1_x_Pqg0_x_Pgq0_integrand(double z, void * p);
-double C2_g1_x_Pqg0_x_Pgq0(double x, double mQ, int nf);
+double C2_g1_x_Pqg0_x_Pgq0(double x, double m2Q2, int nf);
 double CL_g1_x_Pqg0_x_Pgq0_integrand(double z, void * p);
-double CL_g1_x_Pqg0_x_Pgq0(double x, double mQ, int nf);
+double CL_g1_x_Pqg0_x_Pgq0(double x, double m2Q2, int nf);
 
 //==========================================================================================//
 //  Convolution between the first order massive gluon coefficient functions and the convolution
@@ -174,10 +174,10 @@ double CL_g1_x_Pqg0_x_Pgq0(double x, double mQ, int nf);
 
 double C2_g1_x_Pgg0_x_Pgg0_reg_integrand(double z, void * p);
 double C2_g1_x_Pgg0_x_Pgg0_sing_integrand(double z, void * p);
-double C2_g1_x_Pgg0_x_Pgg0(double x, double mQ, int nf);
+double C2_g1_x_Pgg0_x_Pgg0(double x, double m2Q2, int nf);
 double CL_g1_x_Pgg0_x_Pgg0_reg_integrand(double z, void * p);
 double CL_g1_x_Pgg0_x_Pgg0_sing_integrand(double z, void * p);
-double CL_g1_x_Pgg0_x_Pgg0(double x, double mQ, int nf);
+double CL_g1_x_Pgg0_x_Pgg0(double x, double m2Q2, int nf);
 
 //==========================================================================================//
 //  Convolution between the first order massive gluon coefficient functions and the convolution
@@ -188,28 +188,28 @@ double C2_g1_x_Pgg0_x_Pgg0_reg1_integrand(double z[], size_t dim, void * p) ;
 double C2_g1_x_Pgg0_x_Pgg0_reg2_integrand(double z[], size_t dim, void * p) ;
 double C2_g1_x_Pgg0_x_Pgg0_reg3_integrand(double z[], size_t dim, void * p);
 
-double C2_g1_x_Pgg0_x_Pgg0_reg(double x, double mQ, int nf, size_t calls);
+double C2_g1_x_Pgg0_x_Pgg0_reg(double x, double m2Q2, int nf, size_t calls);
 
 double C2_g1_x_Pgg0_x_Pgg0_sing1_integrand(double z[], size_t dim, void * p) ;
 double C2_g1_x_Pgg0_x_Pgg0_sing2_integrand(double z[], size_t dim, void * p) ;
 double C2_g1_x_Pgg0_x_Pgg0_sing3_integrand(double z[], size_t dim, void * p);
 
-double C2_g1_x_Pgg0_x_Pgg0_sing(double x, double mQ, int nf, size_t calls);
+double C2_g1_x_Pgg0_x_Pgg0_sing(double x, double m2Q2, int nf, size_t calls);
 
-double C2_g1_x_Pgg0_x_Pgg0_MC(double x, double mQ, int nf, size_t calls) ;
+double C2_g1_x_Pgg0_x_Pgg0_MC(double x, double m2Q2, int nf, size_t calls) ;
 
 double CL_g1_x_Pgg0_x_Pgg0_reg1_integrand(double z[], size_t dim, void * p) ;
 double CL_g1_x_Pgg0_x_Pgg0_reg2_integrand(double z[], size_t dim, void * p) ;
 double CL_g1_x_Pgg0_x_Pgg0_reg3_integrand(double z[], size_t dim, void * p);
 
-double CL_g1_x_Pgg0_x_Pgg0_reg(double x, double mQ, int nf, size_t calls);
+double CL_g1_x_Pgg0_x_Pgg0_reg(double x, double m2Q2, int nf, size_t calls);
 
 double CL_g1_x_Pgg0_x_Pgg0_sing1_integrand(double z[], size_t dim, void * p) ;
 double CL_g1_x_Pgg0_x_Pgg0_sing2_integrand(double z[], size_t dim, void * p) ;
 double CL_g1_x_Pgg0_x_Pgg0_sing3_integrand(double z[], size_t dim, void * p);
 
-double CL_g1_x_Pgg0_x_Pgg0_sing(double x, double mQ, int nf, size_t calls);
+double CL_g1_x_Pgg0_x_Pgg0_sing(double x, double m2Q2, int nf, size_t calls);
 
-double CL_g1_x_Pgg0_x_Pgg0_MC(double x, double mQ, int nf, size_t calls) ;
+double CL_g1_x_Pgg0_x_Pgg0_MC(double x, double m2Q2, int nf, size_t calls) ;
 
 #endif
