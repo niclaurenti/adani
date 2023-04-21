@@ -17,9 +17,9 @@ cmake -DCMAKE_INSTALL_PREFIX=/your/installation/path/ ..
 make && make install
 ```
 
-In order to install the Python bindings run
+In order to install the Python package run
 ```bash
-pip install .
+pip install adani
 ```
 
 ## Compile a program

@@ -12,11 +12,11 @@ using namespace std;
 //  Eq. (B.2) from Ref. [arXiv:hep-ph/9612398v1]
 //------------------------------------------------------------------------------------------//
 
-double K_Qg1(double x, double mMu) {
+double K_Qg1(double x, double m2mu2) {
 
     return 2 * TR * (
         x * x + (x - 1) * (x - 1)
-    ) * log(1. / mMu) ;
+    ) * log(1. / m2mu2) ;
 }
 
 //==========================================================================================//
@@ -25,8 +25,8 @@ double K_Qg1(double x, double mMu) {
 //  Eq. (B.6) from Ref. [arXiv:hep-ph/9612398v1]
 //------------------------------------------------------------------------------------------//
 
-double K_gg1_local(double mMu) {
-    return - 4. / 3. * TR * log(1. / mMu) ;
+double K_gg1_local(double m2mu2) {
+    return - 4. / 3. * TR * log(1. / m2mu2) ;
 }
 
 //==========================================================================================//
@@ -35,7 +35,7 @@ double K_gg1_local(double mMu) {
 //  Eq. (B.3) from Ref. [arXiv:hep-ph/9612398v1]
 //------------------------------------------------------------------------------------------//
 
-double K_Qg2(double x, double mMu) {
+double K_Qg2(double x, double m2mu2) {
 
     double x2 = x * x ;
 
@@ -57,7 +57,7 @@ double K_Qg2(double x, double mMu) {
     double S12xm = S12(1. - x) ;
     double S12minus = S12(-x) ;
 
-    double Lmu = log(mMu) ;
+    double Lmu = log(m2mu2) ;
     double Lmu2 = Lmu * Lmu ;
 
     double logmu2_CFTR = (
@@ -133,8 +133,7 @@ double K_Qg2(double x, double mMu) {
 //  v = 0 : center of the band given by v = 1 and v = 2
 //  v = 1 : Eq. (3.49) of Ref. [arXiv:1205.5727]
 //  v = 2 : Eq. (16) Ref. of [arXiv:1701.05838]
-//  v = 3 : Eq. ??? (obsolete)
-//  v = 4 : Eq. (3.50) of Ref. [arXiv:1205.5727]
+//  v = -12 : Eq. (3.50) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
 double a_Qg_30(double x, int v) {
@@ -157,18 +156,13 @@ double a_Qg_30(double x, int v) {
             - 6233.530 * L2 + 9416.621 / x + 1548.891 / x * L
         ) ;
     }
-    else if(v==2) {//Updated version w.r.t v==4
+    else if(v==2) {//Updated version w.r.t v==-12
         return (
             226.3840 * L13 - 652.2045 * L12 - 2686.387 * L1 - 7714.786 * (2. - x)
             - 2841.851 * L2 + 7721.120 / x + 1548.891 / x * L
         ) ;
     }
-    else if(v==3) { // do not use this version
-        return (
-            L / x * CA * CA * (41984./243 + 160./9 * zeta2 - 224./9 * zeta3)
-        ) ;
-    }
-    else if(v==4) { //Version of the paper (used only for benchamrk)
+    else if(v==-12) { //Version of the paper (used only for benchamrk)
         return (
             - 2658.323 * L12 - 7449.948 * L1 - 7460.002 * (2. - x)
             + 3178.819 * L2 + 4710.725 / x + 1548.891 / x * L
@@ -192,42 +186,38 @@ double a_Qg_30(double x, int v) {
 //  v = 2 : approximation from Eq. (3.53) of [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double a_Qq_PS_30(double x, double* Hr1, double* Hr2, double* Hr3, double* Hr4, double* Hr5, int v) {
+double a_Qq_PS_30(double x, int v) {
 
-    //weight 1
-    const double Hm1 = Hr1[0];
-    const double H0  = Hr1[1];
-    const double H1  = Hr1[2];
-
-    double H0_2 = H0*H0 ;
+    if(x<0 || x>=1) return 0;
 
     double x2 = x * x ;
-    double L1 = - H1 ;
 
-    if(v==1) {
-        return (
-            (1. - x) * (
-                232.9555 * L1 * L1 * L1 + 1309.528 * L1 * L1
-                - 31729.716 * x2 + 66638.193 * x + 2825.641 / x
-            )
-            + 41850.518 * x * H0 + 688.396 / x * H0
-        );
-    }
-    else if(v==2) {
-       return (
-            (1. - x) * (
-                126.3546 * L1 * L1 + 353.8539 * L1 + 6787.608 * x
-                + 3780.192 / x
-            )
-            + 8571.165 * x * H0 - 2346.893 * H0_2 + 688.396 / x * H0
-        ) ;
-    }
-    else if(v==0){
+    if(v==0){
 
         double x3 = x2 * x;
         double x4 = x3 * x;
         double x5 = x4 * x;
         double x6 = x5 * x;
+
+        // Allocate pointers for the harmonic polylogs
+        double wx = x;
+        int    nw = 5;
+        int    n1 =-1;
+        int    n2 = 1;
+        int    sz = n2 - n1 + 1;
+        double *Hr1 = new double[sz];
+        double *Hr2 = new double[sz*sz];
+        double *Hr3 = new double[sz*sz*sz];
+        double *Hr4 = new double[sz*sz*sz*sz];
+        double *Hr5 = new double[sz*sz*sz*sz*sz];
+
+        // Call polylogs
+        apf_hplog_(&wx, &nw, Hr1, Hr2, Hr3, Hr4, Hr5, &n1, &n2);
+
+        //weight 1
+        const double Hm1 = Hr1[0];
+        const double H0  = Hr1[1];
+        const double H1  = Hr1[2];
 
         //weight 2
         const double H0m1 = Hr2[1];
@@ -276,11 +266,13 @@ double a_Qq_PS_30(double x, double* Hr1, double* Hr2, double* Hr3, double* Hr4, 
         const double H00111   = Hr5[238];
         const double H01111   = Hr5[241];
 
-        double wx = 1 - 2 * x ;
-        int    nw = 5;
-        int    n1 =-1;
-        int    n2 = 1;
-        int    sz = n2 - n1 + 1;
+        delete[] Hr1;
+        delete[] Hr2;
+        delete[] Hr3;
+        delete[] Hr4;
+        delete[] Hr5;
+
+        wx = 1 - 2 * x ;
         double *tildeHr1 = new double[sz];
         double *tildeHr2 = new double[sz*sz];
         double *tildeHr3 = new double[sz*sz*sz];
@@ -328,13 +320,14 @@ double a_Qq_PS_30(double x, double* Hr1, double* Hr2, double* Hr3, double* Hr4, 
         delete[] tildeHr4;
         delete[] tildeHr5;
 
-        double H0_3 = H0_2*H0 ;
-        double H0_4 = H0_3*H0 ;
-        double H0_5 = H0_4*H0 ;
+        double H0_2 = H0 * H0 ;
+        double H0_3 = H0_2 * H0 ;
+        double H0_4 = H0_3 * H0 ;
+        double H0_5 = H0_4 * H0 ;
 
-        double H1_2 = H1*H1 ;
-        double H1_3 = H1_2*H1 ;
-        double H1_4 = H1_3*H1 ;
+        double H1_2 = H1 * H1 ;
+        double H1_3 = H1_2 * H1 ;
+        double H1_4 = H1_3 * H1 ;
 
         double ln2_2 = ln2 * ln2 ;
         double ln2_3 = ln2_2 * ln2 ;
@@ -874,6 +867,28 @@ double a_Qq_PS_30(double x, double* Hr1, double* Hr2, double* Hr3, double* Hr4, 
         ) ;
 
         return aQqPS30 + tildeaQqPS30 ;
+    }
+    else if(v==1) {
+        double L1 = log(1. - x) ;
+        double L = log(x) ;
+        return (
+            (1. - x) * (
+                232.9555 * L1 * L1 * L1 + 1309.528 * L1 * L1
+                - 31729.716 * x2 + 66638.193 * x + 2825.641 / x
+            )
+            + 41850.518 * x * L + 688.396 / x * L
+        );
+    }
+    else if(v==2) {
+        double L1 = log(1. - x) ;
+        double L = log(x) ;
+        return (
+            (1. - x) * (
+                126.3546 * L1 * L1 + 353.8539 * L1 + 6787.608 * x
+                + 3780.192 / x
+            )
+            + 8571.165 * x * L - 2346.893 * L * L + 688.396 / x * L
+        ) ;
     }
     else {
         std::cout<<"Choose either v=1, v=2!!\nExiting!!\n"<<std::endl;

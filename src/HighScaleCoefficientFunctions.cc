@@ -14,14 +14,11 @@
 //  Eq. (B.4) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
-double C2_g1_highscale(double x, double mQ) {
+double C2_g1_highscale(double x, double m2Q2) {
 
     return (
-        4. * TR * (
-            - 8. * x * x + 8. * x - 1.
-            + log((1. - x) / x) * (2 * x * x - 2 * x + 1.)
-        )
-        + 2. * K_Qg1(x, mQ)
+        C2_g1_massless(x, 1.)
+        + 2. * K_Qg1(x, m2Q2)
     ) ;
 
 }
@@ -33,7 +30,9 @@ double C2_g1_highscale(double x, double mQ) {
 
 double CL_g1_highscale(double x) {
 
-    return TR * 16. * x * (1. - x) ;  //=CL_g1_massless(x,nf)/nf
+    if(x>=1 || x<0) return 0.;
+
+    return CL_g1_massless(x, 1) ;
 
 }
 
@@ -44,9 +43,9 @@ double CL_g1_highscale(double x) {
 //  Eq. (B.4) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
-double D2_g1_highscale(double x, double mQ) {
+double D2_g1_highscale(double x, double m2Q2) {
 
-    return C2_g1_highscale(x, mQ);
+    return C2_g1_highscale(x, m2Q2);
 
 }
 
@@ -68,13 +67,13 @@ double DL_g1_highscale(double x) {
 //  Eq. (B.6) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
-double C2_g2_highscale(double x, double mQ, double mMu) {
+double C2_g2_highscale(double x, double m2Q2, double m2mu2) {
 
-    double Lmu = log(1. / mMu) ;
+    double Lmu = log(1. / m2mu2) ;
 
     return (
-        D2_g2_highscale(x, mQ, mMu)
-        + 2. / 3 * Lmu * C2_g1_highscale(x, mQ)
+        D2_g2_highscale(x, m2Q2, m2mu2)
+        + 2. / 3 * Lmu * C2_g1_highscale(x, m2Q2)
     ) ;
 
 }
@@ -86,14 +85,14 @@ double C2_g2_highscale(double x, double mQ, double mMu) {
 //  Eq. (B.9) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
-double C2_ps2_highscale(double z, double mQ, double mMu) {
+double C2_ps2_highscale(double z, double m2Q2, double m2mu2) {
 
     double z2 = z * z ;
     double z3 = z2 * z ;
 
-    double L_M = log(mMu) ;
+    double L_M = log(m2mu2) ;
     double L_M2 = L_M * L_M ;
-    double L_Q = log(1. / mQ) + L_M ;
+    double L_Q = log(1. / m2Q2) + L_M ;
     double L_Q2 = L_Q * L_Q ;
 
     double H0 = H(z, 0) ;
@@ -141,12 +140,12 @@ double C2_ps2_highscale(double z, double mQ, double mMu) {
 //  expanded in terms of \alpha_s^{[nf]}
 //------------------------------------------------------------------------------------------//
 
-double CL_g2_highscale(double x, double mQ, double mMu) {
+double CL_g2_highscale(double x, double m2Q2, double m2mu2) {
 
-    double Lmu = log(1. / mMu);
+    double Lmu = log(1. / m2mu2);
 
     return (
-        DL_g2_highscale(x, mQ, mMu)
+        DL_g2_highscale(x, m2Q2, m2mu2)
         + 2. / 3 * Lmu * CL_g1_highscale(x)
     ) ;
 
@@ -157,9 +156,9 @@ double CL_g2_highscale(double x, double mQ, double mMu) {
 //  expanded in terms of \alpha_s^{[nf]}
 //------------------------------------------------------------------------------------------//
 
-double CL_ps2_highscale(double x, double mQ, double mMu) {
+double CL_ps2_highscale(double x, double m2Q2, double m2mu2) {
 
-    return DL_ps2_highscale(x, mQ, mMu) ;
+    return DL_ps2_highscale(x, m2Q2, m2mu2) ;
 
 }
 
@@ -170,7 +169,7 @@ double CL_ps2_highscale(double x, double mQ, double mMu) {
 //  Eq. (B.5) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
-double D2_g2_highscale(double x, double mQ, double mMu) {
+double D2_g2_highscale(double x, double m2Q2, double m2mu2) {
 
     double x2 = x * x;
     double x3 = x2 * x;
@@ -196,10 +195,10 @@ double D2_g2_highscale(double x, double mQ, double mMu) {
     double Hm100 = H(x, -1, 0, 0);
     double H110 = H(x, 1, 1, 0);
 
-    double LQm = log(1./mQ);
+    double LQm = log(1./m2Q2);
     double LQm2 = LQm * LQm;
 
-    double Lmmu = log(mMu);
+    double Lmmu = log(m2mu2);
 
     return (
         + Lmmu * (
@@ -310,9 +309,9 @@ double D2_g2_highscale(double x, double mQ, double mMu) {
 //  Eq. (B.6) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
-double D2_ps2_highscale(double x, double mQ, double mMu) {
+double D2_ps2_highscale(double x, double m2Q2, double m2mu2) {
 
-    return C2_ps2_highscale(x, mQ, mMu) ;
+    return C2_ps2_highscale(x, m2Q2, m2mu2) ;
 
 }
 
@@ -321,14 +320,14 @@ double D2_ps2_highscale(double x, double mQ, double mMu) {
 //  expanded in terms of \alpha_s^{[nf+1]}
 //------------------------------------------------------------------------------------------//
 
-double DL_g2_highscale(double z, double mQ, double mMu) {
+double DL_g2_highscale(double z, double m2Q2, double m2mu2) {
 
     double z2 = z * z ;
     double z3 = z2 * z ;
     double z4 = z3 * z ;
 
-    double L_M = log(mMu) ;
-    double L_Q = log(1./mQ) + L_M ;
+    double L_M = log(m2mu2) ;
+    double L_Q = log(1./m2Q2) + L_M ;
 
     double H0 = H(z, 0) ;
     double H1 = H(z, 1) ;
@@ -369,12 +368,12 @@ double DL_g2_highscale(double z, double mQ, double mMu) {
 //  expanded in terms of \alpha_s^{[nf+1]}
 //------------------------------------------------------------------------------------------//
 
-double DL_ps2_highscale(double z, double mQ, double mMu) {
+double DL_ps2_highscale(double z, double m2Q2, double m2mu2) {
 
     double z2 = z * z ;
 
-    double L_M = log(mMu) ;
-    double L_Q = log(1./mQ) + L_M ;
+    double L_M = log(m2mu2) ;
+    double L_Q = log(1./m2Q2) + L_M ;
 
     double H0 = H(z, 0) ;
     double H1 = H(z, 1) ;
@@ -401,19 +400,19 @@ double DL_ps2_highscale(double z, double mQ, double mMu) {
 //  Eq. (B.8) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
-double C2_g3_highscale(double x, double mQ, double mMu, int nf, int v) {
+double C2_g3_highscale(double x, double m2Q2, double m2mu2, int nf, int v) {
 
-    double Lmu = log(mMu);
+    double Lmu = log(m2mu2);
     double L2mu = Lmu * Lmu;
 
     return (
-        D2_g3_highscale(x, mQ, mMu, nf, v)
-        - 4. / 3 * Lmu * D2_g2_highscale(x, mQ, mMu)
+        D2_g3_highscale(x, m2Q2, m2mu2, nf, v)
+        - 4. / 3 * Lmu * D2_g2_highscale(x, m2Q2, m2mu2)
         - (
             (16. / 9 * CA - 15. / 2 * CF)
             + (10. / 3 * CA + 2 * CF) * Lmu
             - 4. / 9 * L2mu
-        ) * D2_g1_highscale(x, mQ)
+        ) * D2_g1_highscale(x, m2Q2)
     ) ;
 
 }
@@ -425,13 +424,13 @@ double C2_g3_highscale(double x, double mQ, double mMu, int nf, int v) {
 //  Eq. (B.11) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
-double C2_ps3_highscale(double x, double mQ, double mMu, int nf) {
+double C2_ps3_highscale(double x, double m2Q2, double m2mu2, int nf) {
 
-    double Lmu = log(mMu) ;
+    double Lmu = log(m2mu2) ;
 
     return (
-        D2_ps3_highscale(x, mQ, mMu, nf)
-        - 4. / 3 * Lmu * D2_ps2_highscale(x, mQ, mMu)
+        D2_ps3_highscale(x, m2Q2, m2mu2, nf)
+        - 4. / 3 * Lmu * D2_ps2_highscale(x, m2Q2, m2mu2)
     );
 
 }
@@ -441,16 +440,16 @@ double C2_ps3_highscale(double x, double mQ, double mMu, int nf) {
 //  expanded in terms of \alpha_s^{[nf+1]}
 //------------------------------------------------------------------------------------------//
 
-double DL_g3_highscale(double z, double mQ, double mMu, int nf) {
+double DL_g3_highscale(double z, double m2Q2, double m2mu2, int nf) {
 
     double z2 = z*z ;
     double z3 = z2*z;
     double z4 = z3*z ;
     double z5 = z4*z;
 
-    double L_M = log(mMu) ;
+    double L_M = log(m2mu2) ;
     double L_M2 = L_M * L_M ;
-    double L_Q = log(1./mQ) + L_M ;
+    double L_Q = log(1./m2Q2) + L_M ;
     double L_Q2 = L_Q * L_Q ;
 
     // Allocate pointers for the harmonic polylogs
@@ -845,14 +844,14 @@ double DL_g3_highscale(double z, double mQ, double mMu, int nf) {
 //  expanded in terms of \alpha_s^{[nf]}
 //------------------------------------------------------------------------------------------//
 
-double CL_g3_highscale(double x, double mQ, double mMu, int nf) {
+double CL_g3_highscale(double x, double m2Q2, double m2mu2, int nf) {
 
-    double Lmu = log(mMu) ;
+    double Lmu = log(m2mu2) ;
     double L2mu = Lmu * Lmu ;
 
     return (
-        DL_g3_highscale(x, mQ, mMu, nf)
-        - 4. / 3 * Lmu * DL_g2_highscale(x, mQ, mMu)
+        DL_g3_highscale(x, m2Q2, m2mu2, nf)
+        - 4. / 3 * Lmu * DL_g2_highscale(x, m2Q2, m2mu2)
         - (
             (16. / 9 * CA - 15. / 2 * CF)
             + (10. / 3 * CA + 2 * CF) * Lmu
@@ -867,15 +866,15 @@ double CL_g3_highscale(double x, double mQ, double mMu, int nf) {
 //  expanded in terms of \alpha_s^{[nf+1]}
 //------------------------------------------------------------------------------------------//
 
-double DL_ps3_highscale(double z, double mQ, double mMu, int nf) {
+double DL_ps3_highscale(double z, double m2Q2, double m2mu2, int nf) {
 
     double z2 = z * z ;
     double z3 = z2 * z;
     double z4 = z3 * z ;
 
-    double L_M = log(mMu) ;
+    double L_M = log(m2mu2) ;
     double L_M2 = L_M * L_M ;
-    double L_Q = log(1. / mQ) + L_M ;
+    double L_Q = log(1. / m2Q2) + L_M ;
     double L_Q2 = L_Q * L_Q ;
 
     // Allocate pointers for the harmonic polylogs
@@ -1025,13 +1024,13 @@ double DL_ps3_highscale(double z, double mQ, double mMu, int nf) {
 //  expanded in terms of \alpha_s^{[nf]}
 //------------------------------------------------------------------------------------------//
 
-double CL_ps3_highscale(double x, double mQ, double mMu, int nf) {
+double CL_ps3_highscale(double x, double m2Q2, double m2mu2, int nf) {
 
-    double Lmu = log(mMu);
+    double Lmu = log(m2mu2);
 
     return (
-        DL_ps3_highscale(x, mQ, mMu, nf)
-        - 4. / 3 * Lmu * DL_ps2_highscale(x, mQ, mMu)
+        DL_ps3_highscale(x, m2Q2, m2mu2, nf)
+        - 4. / 3 * Lmu * DL_ps2_highscale(x, m2Q2, m2mu2)
     );
 
 }
@@ -1045,16 +1044,16 @@ double CL_ps3_highscale(double x, double mQ, double mMu, int nf) {
 //  Eq. (B.11) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
-double D2_g3_highscale(double x, double mQ, double mMu, int nf, int v) {
+double D2_g3_highscale(double x, double m2Q2, double m2mu2, int nf, int v) {
 
     double x2 = x * x;
     double x3 = x2 * x;
 
-    double LQm = log(1./mQ);
+    double LQm = log(1./m2Q2);
     double LQm2 = LQm * LQm;
     double LQm3 = LQm2 * LQm;
 
-    double Lmmu = log(mMu);
+    double Lmmu = log(m2mu2);
     double Lmmu2 = Lmmu * Lmmu;
     //double Lmmu3=Lmmu2*Lmmu;
 
@@ -2368,16 +2367,16 @@ double D2_g3_highscale(double x, double mQ, double mMu, int nf, int v) {
 //  Eq. (B.10) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
-double D2_ps3_highscale(double x, double mQ, double mMu, int nf, int v) {
+double D2_ps3_highscale(double x, double m2Q2, double m2mu2, int nf, int v) {
 
     double x2 = x * x;
     double x3 = x2 * x;
 
-    double LQm = log(1./mQ);
+    double LQm = log(1./m2Q2);
     double LQm2 = LQm * LQm;
     double LQm3 = LQm2 * LQm;
 
-    double Lmmu = log(mMu);
+    double Lmmu = log(m2mu2);
     double Lmmu2 = Lmmu * Lmmu;
 
     // Allocate pointers for the harmonic polylogs
@@ -2562,6 +2561,7 @@ double D2_ps3_highscale(double x, double mQ, double mMu, int nf, int v) {
             + 16./9 * H0 * x
         )
 
+        // from Moch, Vogt
         + CF * nf * (
             14800./243 - 12032./729/x - 19840./243 * x + 27152./729 * x2
             + 256./27 * zeta3/x - 976./27 * zeta3 - 928./27 * zeta3 * x
@@ -2589,6 +2589,34 @@ double D2_ps3_highscale(double x, double mQ, double mMu, int nf, int v) {
             + 128./27 * H001 * x + 64./9 * H001 * x2 - 32./3 * H0010 - 32./3 * H0010 * x
             + 32./9 * H0011 + 32./9 * H0011 * x - 64./9 * H0001 - 64./9 * H0001 * x
         )
+
+        // from Bluemline
+        // + CF * nf * (
+        //     - 944./27 - 14 * zeta2 * 6./9 - 2 * zeta4 * 90./27 + 5248./243/x
+        //     + 40 * zeta2 * 6./81/x + 2416. * x/27 + 26. * zeta2 * 6 * x / 9
+        //     - 2 * zeta4 * 90 * x / 27 - 18496 * x2/243 - 148 * zeta2 * 6 * x2/81
+        //     + 296./27 * H0 - 20./27 * zeta2 * 6 * H0 - 152./27 * x * H0
+        //     + 16./27 * zeta2 * 6 * x * H0 + 6400./81 * x2 * H0 + 8./9 * zeta2 * 6 * x2 * H0
+        //     - 56./9 * H0 * H0 - 4./9 * zeta2 * 6 * H0*H0 - 88./9 * x * H0*H0
+        //     - 4./9 * zeta2 * 6 * x * H0 * H0 - 448./27 * x2 * H0*H0 + 4./9 * H0*H0*H0
+        //     + 20./9 * x * H0*H0*H0 + 32./27 * x2 * H0*H0*H0 - 2./9 * H0*H0*H0*H0
+        //     - 2./9 * x * H0*H0*H0*H0 + 2./9 * zeta2 * 6 * H1 + 8 * zeta2 * 6 * H1/27/x
+        //     - 2./9 * zeta2 * 6 * x * H1 - 8./27 * zeta2 * 6 * x2 * H1 + 32./3 * H0 * H1
+        //     - 320 * H0 * H1/27/x - 32 * x * H0 * H1 + 896./27 * x2 * H0 * H1 + 8./3 * H0*H0 * H1
+        //     + 32 * H0*H0 * H1/9/ x - 8./3 * x * H0*H0 * H1 - 32./9 * x2 * H0*H0 * H1
+        //     - 32./3 * H01 + 4./9 * zeta2 * 6 * H01 + 320 * H01/27/x
+        //     + 32 * x * H01 + 4./9 * zeta2 * 6 * x * H01 - 896./27 * x2 * H01 - 32./3 * H0 * H01
+        //     - 64 * H0 * H01 / 9 /x - 64./3 * x * H0 * H01 - 64./9 * x2 * H0 * H01
+        //     + 16./3 * H0*H0 * H01 + 16./3 * x * H0*H0 * H01 + 16 * H001
+        //     + 64 * H001/9 / x + 48 * x * H001 + 64./3 * x2 * H001 - 32./3 * H0 * H001
+        //     - 32./3 * x * H0 * H001 - 88 * zeta3/9 + 32 * zeta3/27/ x
+        //     - 488./9 * x * zeta3 - 800./27 * x2 * zeta3 + 208./9 * H0 * zeta3 + 208./9 * x * H0 * zeta3
+        // )
+
+        // the commented term is from Bluemline and is the only term that disagrees
+        // with the one from Moch, Vogt
+        // Which one should I trust?
+        // Anyway, in the plots the difference is very small
 
         + CF * nf * Lmmu * (
             880./9 - 208./3 * x - 256./9 * x2
@@ -3025,7 +3053,7 @@ double D2_ps3_highscale(double x, double mQ, double mMu, int nf, int v) {
             + 8./3 * H1 * x + 32./9 * H1 * x2 - 16./3 * H01 - 16./3 * H01 * x
         )
 
-        + a_Qq_PS_30(x, Hr1, Hr2, Hr3, Hr4, Hr5, v)
+        + a_Qq_PS_30(x, v)
 
         + 1. / (1 + nf) * C2_ps3_massless(x, 1 + nf)
 
@@ -3043,13 +3071,13 @@ double D2_ps3_highscale(double x, double mQ, double mMu, int nf, int v) {
 //  Eq. (B.11) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
-double C2_ps3_highscale_klmv_paper(double x, double mQ, double mMu, int nf, int v) {
+double C2_ps3_highscale_klmv_paper(double x, double m2Q2, double m2mu2, int nf, int v) {
 
-    double Lmu = log(mMu) ;
+    double Lmu = log(m2mu2) ;
 
     return (
-        D2_ps3_highscale_klmv_paper(x, mQ, mMu, nf, v)
-        - 4. / 3 * Lmu * D2_ps2_highscale(x, mQ, mMu)
+        D2_ps3_highscale_klmv_paper(x, m2Q2, m2mu2, nf, v)
+        - 4. / 3 * Lmu * D2_ps2_highscale(x, m2Q2, m2mu2)
     );
 
 }
@@ -3064,13 +3092,12 @@ double C2_ps3_highscale_klmv_paper(double x, double mQ, double mMu, int nf, int 
 //  Eq. (B.10) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
-double D2_ps3_highscale_klmv_paper(double x, double mQ, double mMu, int nf, int v) {
+double D2_ps3_highscale_klmv_paper(double x, double m2Q2, double m2mu2, int nf, int v) {
 
-    if(v==1) {
-        return D2_ps3_highscale(x, mQ, mMu, nf, v) ;
-    }
-    else if(v==2) {
-        return D2_ps3_highscale(x, mQ, mMu, nf, v) ;
+    if(x<0 || x>=1) return 0;
+
+    if(v==1 || v==2) {
+        return D2_ps3_highscale(x, m2Q2, m2mu2, nf, v) ;
     }
     else {
         std::cout<<"Choose either v=1, v=2!!\nExiting!!\n"<<std::endl;

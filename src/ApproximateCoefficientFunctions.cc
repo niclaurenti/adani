@@ -10,9 +10,6 @@
 #include <iostream>
 #include <vector>
 
-#define default_var 0.3
-#define default_fact 3.
-
 using namespace std ;
 
 struct approximation_parameters C2_g2_params = {1.7, 2.5, 2.5, 1.2, 2.5, 5.} ;
@@ -21,30 +18,36 @@ struct approximation_parameters C2_ps2_params = {1.7, 2.5, 2.5, 1.2, 2.5, 5.} ;
 struct approximation_parameters CL_ps2_params = {20., 11., 3., 2., 2.5, 5.} ;
 
 struct approximation_parameters C2_g3_params = {0.3, 2.5, 2.5, 1.2, 2.5, 5.} ;
-struct approximation_parameters CL_g3_params = {20., 11., 3., 2., 2.5, 5.} ; // TODO : maybe a lower A is better (e.g. A=9.)
+struct approximation_parameters CL_g3_params = {10., 11., 3., 2., 2.5, 5.} ;
 struct approximation_parameters C2_ps3_params = {0.3, 2.5, 2.5, 1.2, 2.5, 5.} ;
 struct approximation_parameters CL_ps3_params = {20., 11., 3., 2., 2.5, 5.} ;
+
+#define var_C2 0.3
+#define fact_C2 3.
+
+#define var_CL 0.2
+#define fact_CL 2.
 
 //==========================================================================================//
 //  Approximate gluon coefficient function for F2 at O(alpha_s) with implicit parameters.
 //------------------------------------------------------------------------------------------//
 
-double C2_g1_approximation_implicit(double x, double mQ, double k, double h) {
+double C2_g1_approximation_implicit(double x, double m2Q2, double k, double h) {
 
-    double xmax = 1. / (1. + 4. * mQ) ;
+    double xmax = 1. / (1. + 4. * m2Q2) ;
 
     if(x >= xmax || x <= 0) return 0 ;
 
     double eta ;
 
-    eta = 0.25 / mQ * (1. - x) / x - 1. ;
+    eta = 0.25 / m2Q2 * (1. - x) / x - 1. ;
 
     double damp_thr = 1. / (1. + pow(eta/h , k)) ;
     double damp_asy = 1. - damp_thr ;
 
     double C_const = (
-        C2_g1_asymptotic(x,mQ) * damp_asy
-        + C2_g1_threshold(x,mQ) * damp_thr
+        C2_g1_asymptotic(x,m2Q2) * damp_asy
+        + C2_g1_threshold(x,m2Q2) * damp_thr
     ) ;
 
     return C_const ;
@@ -56,17 +59,17 @@ double C2_g1_approximation_implicit(double x, double mQ, double k, double h) {
 //  Used for validation of the method.
 //------------------------------------------------------------------------------------------//
 
-double C2_g1_approximation(double x, double mQ) {
+double C2_g1_approximation(double x, double m2Q2) {
 
-    double xmax = 1. / (1. + 4. * mQ) ;
+    double xmax = 1. / (1. + 4. * m2Q2) ;
 
     if(x >= xmax || x <= 0) return 0 ;
 
-    double xi=1./mQ;
+    double xi=1./m2Q2;
 
     double eta ;
 
-    eta = 0.25 / mQ * (1. - x) / x - 1. ;
+    eta = 0.25 / m2Q2 * (1. - x) / x - 1. ;
 
     double k = 2.5 - 1.3 / (1. + exp(2.5 * (log(xi) - 5.))) ;
     double h = 0.2 + 2.3 / (1. + exp(2.5 * (log(xi) - 5.))) ;
@@ -75,8 +78,8 @@ double C2_g1_approximation(double x, double mQ) {
     double damp_asy = 1. - damp_thr;
 
     double C_const = (
-        C2_g1_asymptotic(x,mQ) * damp_asy
-        + C2_g1_threshold(x,mQ) * damp_thr
+        C2_g1_asymptotic(x,m2Q2) * damp_asy
+        + C2_g1_threshold(x,m2Q2) * damp_thr
     ) ;
 
 
@@ -89,17 +92,17 @@ double C2_g1_approximation(double x, double mQ) {
 //  Used for validation of the method.
 //------------------------------------------------------------------------------------------//
 
-double CL_g1_approximation(double x, double mQ) {
+double CL_g1_approximation(double x, double m2Q2) {
 
-    double xmax = 1. / (1. + 4. * mQ) ;
+    double xmax = 1. / (1. + 4. * m2Q2) ;
 
     if(x >= xmax || x <= 0) return 0 ;
 
-    double xi = 1. / mQ ;
+    double xi = 1. / m2Q2 ;
 
     double eta ;
 
-    eta = 0.25 / mQ * (1. - x) / x - 1. ;
+    eta = 0.25 / m2Q2 * (1. - x) / x - 1. ;
 
     double k = 1.13086 + exp(0.618532 * log(xi) - 4.10071) ; // TODO : why theese numbers
     double h = 0.3 + 2.2 / (1. + exp(2.5 * (log(xi) - 5))) ;
@@ -119,22 +122,21 @@ double CL_g1_approximation(double x, double mQ) {
 //  Used for validation of the method.
 //------------------------------------------------------------------------------------------//
 
-double C2_g2_approximation(double x, double mQ, double mMu, int v) {
+double C2_g2_approximation(double x, double m2Q2, double m2mu2, int v) {
 
-    double C_const = C2_g20_approximation_BAND(x, mQ, v);
+    double C_const = C2_g20_approximation_BAND(x, m2Q2, v, var_C2, fact_C2);
 
-    double C_log = C2_g21(x, mQ) ;
+    double C_log = C2_g21(x, m2Q2) ;
 
-    return C_const + C_log * log(1. / mMu) ;
+    return C_const + C_log * log(1. / m2mu2) ;
 
 }
 
 //==========================================================================================//
-//  Approximate gluon coefficient function for F2 at O(alpha_s^2).
-//  Used for validation of the method.
+//  Approximate mu-independent term of the gluon coefficient function for F2 at O(alpha_s^2).
 //------------------------------------------------------------------------------------------//
 
-double C2_g20_approximation(double x, double mQ) {
+double C2_g20_approximation(double x, double m2Q2) {
 
     double A = C2_g2_params.A ;
     double B = C2_g2_params.B ;
@@ -143,25 +145,26 @@ double C2_g20_approximation(double x, double mQ) {
     double a = C2_g2_params.a ;
     double b = C2_g2_params.b ;
 
-    return C2_g20_approximation_implicit(x, mQ, A, B, C, D, a, b);
+    return C2_g20_approximation_implicit(x, m2Q2, A, B, C, D, a, b);
 
 }
 
 //==========================================================================================//
-//  Approximate gluon coefficient function for F2 at O(alpha_s) with implicit parameters.
+//  Approximate mu-independent term of the gluon coefficient function for F2 at O(alpha_s)
+//  with implicit parameters.
 //------------------------------------------------------------------------------------------//
 
-double C2_g20_approximation_implicit(double x, double mQ, double A, double B, double C, double D, double a, double b) {
+double C2_g20_approximation_implicit(double x, double m2Q2, double A, double B, double C, double D, double a, double b) {
 
-    double xmax = 1. / (1. + 4. * mQ) ;
+    double xmax = 1. / (1. + 4. * m2Q2) ;
 
     if(x >= xmax || x <= 0) return 0 ;
 
-    double xi = 1. / mQ ;
+    double xi = 1. / m2Q2 ;
 
     double eta;
 
-    eta = 0.25 / mQ * (1 - x) / x - 1 ;
+    eta = 0.25 / m2Q2 * (1 - x) / x - 1 ;
 
     double h = A + (B - A) / (1. + exp(a * (log(xi) - b))) ;
     double k = C + (D - C) / (1. + exp(a * (log(xi) - b))) ;
@@ -170,17 +173,18 @@ double C2_g20_approximation_implicit(double x, double mQ, double A, double B, do
     double damp_asy = 1. - damp_thr ;
 
     return (
-        C2_g2_asymptotic(x, mQ, 1.) * damp_asy
-        + C2_g2_threshold(x, mQ, 1.) * damp_thr
+        C2_g2_asymptotic(x, m2Q2, 1.) * damp_asy
+        + C2_g2_threshold(x, m2Q2, 1.) * damp_thr
     );
 
 }
 
 //==========================================================================================//
-//  Band of the approximate gluon coefficient function for F2 at O(alpha_s^2).
+//  Band of the approximate mu-independent term of the gluon coefficient function for F2
+//  at O(alpha_s^2).
 //------------------------------------------------------------------------------------------//
 
-double C2_g20_approximation_BAND(double x, double mQ, int v) {
+double C2_g20_approximation_BAND(double x, double m2Q2, int v, double var, double fact) {
 
     double A = C2_g2_params.A ;
     double B = C2_g2_params.B ;
@@ -189,11 +193,9 @@ double C2_g20_approximation_BAND(double x, double mQ, int v) {
     double a = C2_g2_params.a ;
     double b = C2_g2_params.b ;
 
-    double Cavg = C2_g20_approximation(x, mQ);
+    double Cavg = C2_g20_approximation(x, m2Q2);
 
     if(v==0) return Cavg;
-
-    double var = default_var, fact = default_fact ;
 
     double Amax = fact * A, Amin = A / fact, Bmax = B * fact, Bmin = B / fact ;
     double Cmax = (1. + var) * C, Cmin = (1. - var) * C, Dmax = (1. + var) * D, Dmin = (1. - var) * D ;
@@ -210,7 +212,7 @@ double C2_g20_approximation_BAND(double x, double mQ, int v) {
             for (int h = 0; h < 3; h++) {
                 for (int k = 0; k < 3; k++) {
                     replicas.push_back(
-                        C2_g20_approximation_implicit(x, mQ, Avec[i], Bvec[j], Cvec[h], Dvec[k], a, b)
+                        C2_g20_approximation_implicit(x, m2Q2, Avec[i], Bvec[j], Cvec[h], Dvec[k], a, b)
                     ) ;
                 }
             }
@@ -237,17 +239,22 @@ double C2_g20_approximation_BAND(double x, double mQ, int v) {
 //  Approximate quark coefficient function for F2 at O(alpha_s^2).
 //  Used for validation of the method.
 //------------------------------------------------------------------------------------------//
-double C2_ps2_approximation(double x, double mQ, double mMu, int v) {
 
-    double C_const = C2_ps20_approximation_BAND(x, mQ, v);
+double C2_ps2_approximation(double x, double m2Q2, double m2mu2, int v) {
 
-    double C_log = C2_ps21(x, mQ) ;
+    double C_const = C2_ps20_approximation_BAND(x, m2Q2, v, var_C2, fact_C2);
 
-    return C_const + C_log * log(1. / mMu) ;
+    double C_log = C2_ps21(x, m2Q2) ;
+
+    return C_const + C_log * log(1. / m2mu2) ;
 
 }
 
-double C2_ps20_approximation(double x, double mQ) {
+//==========================================================================================//
+//  Approximate mu-independent term of the quark coefficient function for F2 at O(alpha_s^2).
+//------------------------------------------------------------------------------------------//
+
+double C2_ps20_approximation(double x, double m2Q2) {
 
     double A = C2_ps2_params.A ;
     double B = C2_ps2_params.B ;
@@ -256,25 +263,26 @@ double C2_ps20_approximation(double x, double mQ) {
     double a = C2_ps2_params.a ;
     double b = C2_ps2_params.b ;
 
-    return C2_ps20_approximation_implicit(x, mQ, A, B, C, D, a, b);
+    return C2_ps20_approximation_implicit(x, m2Q2, A, B, C, D, a, b);
 
 }
 
 //==========================================================================================//
-//  Approximate quark coefficient function for F2 at O(alpha_s^2) with implicit parameters.
+//  Approximate mu-independent term of the quark coefficient function for F2 at O(alpha_s^2)
+//  with implicit parameters.
 //------------------------------------------------------------------------------------------//
 
-double C2_ps20_approximation_implicit(double x, double mQ, double A, double B, double C, double D, double a, double b) {
+double C2_ps20_approximation_implicit(double x, double m2Q2, double A, double B, double C, double D, double a, double b) {
 
-    double xmax = 1. / (1. + 4. * mQ) ;
+    double xmax = 1. / (1. + 4. * m2Q2) ;
 
     if(x >= xmax || x <= 0) return 0 ;
 
-    double xi = 1. / mQ ;
+    double xi = 1. / m2Q2 ;
 
     double eta ;
 
-    eta = 0.25 / mQ * (1. - x) / x - 1. ;
+    eta = 0.25 / m2Q2 * (1. - x) / x - 1. ;
 
     double h = A + (B - A) / (1. + exp(a * (log(xi) - b))) ;
     double k = C + (D - C) / (1. + exp(a * (log(xi) - b))) ;
@@ -282,12 +290,17 @@ double C2_ps20_approximation_implicit(double x, double mQ, double A, double B, d
     double damp_thr = 1. / (1. + pow(eta / h , k)) ;
     double damp_asy = 1. - damp_thr ;
 
-    return C2_ps2_asymptotic(x, mQ, 1.) * damp_asy ;
+    return C2_ps2_asymptotic(x, m2Q2, 1.) * damp_asy ;
     //threshPS = 0
 
 }
 
-double C2_ps20_approximation_BAND(double x, double mQ, int v) {
+//==========================================================================================//
+//  Band of the approximate mu-independent term of the quark coefficient function for F2
+//  at O(alpha_s^2).
+//------------------------------------------------------------------------------------------//
+
+double C2_ps20_approximation_BAND(double x, double m2Q2, int v, double var, double fact) {
 
     double A = C2_ps2_params.A ;
     double B = C2_ps2_params.B ;
@@ -296,11 +309,10 @@ double C2_ps20_approximation_BAND(double x, double mQ, int v) {
     double a = C2_ps2_params.a ;
     double b = C2_ps2_params.b ;
 
-    double Cavg = C2_ps20_approximation(x, mQ);
+    double Cavg = C2_ps20_approximation(x, m2Q2);
 
     if(v==0) return Cavg;
 
-    double var = default_var, fact = default_fact ;
     double Amax = fact * A, Amin = A / fact, Bmax = B * fact, Bmin = B / fact ;
     double Cmax = (1. + var) * C, Cmin = (1. - var) * C, Dmax = (1. + var) * D, Dmin = (1. - var) * D ;
 
@@ -316,7 +328,7 @@ double C2_ps20_approximation_BAND(double x, double mQ, int v) {
             for (int h = 0; h < 3; h++) {
                 for (int k = 0; k < 3; k++) {
                     replicas.push_back(
-                        C2_g20_approximation_implicit(x, mQ, Avec[i], Bvec[j], Cvec[h], Dvec[k], a, b)
+                        C2_ps20_approximation_implicit(x, m2Q2, Avec[i], Bvec[j], Cvec[h], Dvec[k], a, b)
                     ) ;
                 }
             }
@@ -344,17 +356,21 @@ double C2_ps20_approximation_BAND(double x, double mQ, int v) {
 //  Used for validation of the method.
 //------------------------------------------------------------------------------------------//
 
-double CL_g2_approximation(double x, double mQ, double mMu, int v) {
+double CL_g2_approximation(double x, double m2Q2, double m2mu2, int v) {
 
-    double C_const = CL_g20_approximation_BAND(x, mQ, v);
+    double C_const = CL_g20_approximation_BAND(x, m2Q2, v, var_CL, fact_CL);
 
-    double C_log = CL_g21(x, mQ) ;
+    double C_log = CL_g21(x, m2Q2) ;
 
-    return C_const + C_log * log(1. / mMu) ;
+    return C_const + C_log * log(1. / m2mu2) ;
 
 }
 
-double CL_g20_approximation(double x, double mQ) {
+//==========================================================================================//
+//  Approximate mu-independent term of the gluon coefficient function for FL at O(alpha_s^2).
+//------------------------------------------------------------------------------------------//
+
+double CL_g20_approximation(double x, double m2Q2) {
 
     double A = CL_g2_params.A ;
     double B = CL_g2_params.B ;
@@ -363,25 +379,26 @@ double CL_g20_approximation(double x, double mQ) {
     double a = CL_g2_params.a ;
     double b = CL_g2_params.b ;
 
-    return CL_g20_approximation_implicit(x, mQ, A, B, C, D, a, b) ;
+    return CL_g20_approximation_implicit(x, m2Q2, A, B, C, D, a, b) ;
 
 }
 
 //==========================================================================================//
-//  Approximate gluon coefficient function for FL at O(alpha_s) with implicit parameters.
+//  Approximate mu-independent term of the gluon coefficient function for FL at O(alpha_s)
+//  with implicit parameters.
 //------------------------------------------------------------------------------------------//
 
-double CL_g20_approximation_implicit(double x, double mQ, double A, double B, double C, double D, double a, double b) {
+double CL_g20_approximation_implicit(double x, double m2Q2, double A, double B, double C, double D, double a, double b) {
 
-    double xmax = 1. / (1. + 4 * mQ) ;
+    double xmax = 1. / (1. + 4 * m2Q2) ;
 
     if(x >= xmax || x <= 0) return 0 ;
 
-    double xi = 1. / mQ ;
+    double xi = 1. / m2Q2 ;
 
     double eta ;
 
-    eta = 0.25 / mQ * (1. - x) / x - 1. ;
+    eta = 0.25 / m2Q2 * (1. - x) / x - 1. ;
 
     double h = A + (B - A) / (1. + exp(a * (log(xi) - b))) ;
     double k = C + (D - C) / (1. + exp(a * (log(xi) - b))) ;
@@ -390,13 +407,18 @@ double CL_g20_approximation_implicit(double x, double mQ, double A, double B, do
     double damp_asy = 1. - damp_thr ;
 
     return (
-        CL_g2_asymptotic(x, mQ, 1.) * damp_asy
-        + CL_g2_threshold(x, mQ, 1.) * damp_thr
+        CL_g2_asymptotic(x, m2Q2, 1.) * damp_asy
+        + CL_g2_threshold(x, m2Q2, 1.) * damp_thr
     ) ;
 
 }
 
-double CL_g20_approximation_BAND(double x, double mQ, int v) {
+//==========================================================================================//
+//  Band of the approximate mu-independent term of the gluon coefficient function for FL
+//  at O(alpha_s^2).
+//------------------------------------------------------------------------------------------//
+
+double CL_g20_approximation_BAND(double x, double m2Q2, int v, double var, double fact) {
 
     double A = CL_g2_params.A ;
     double B = CL_g2_params.B ;
@@ -405,11 +427,10 @@ double CL_g20_approximation_BAND(double x, double mQ, int v) {
     double a = CL_g2_params.a ;
     double b = CL_g2_params.b ;
 
-    double Cavg = CL_g20_approximation(x, mQ);
+    double Cavg = CL_g20_approximation(x, m2Q2);
 
     if(v==0) return Cavg;
 
-    double var = default_var, fact = default_fact ;
     double Amax = fact * A, Amin = A / fact, Bmax = B * fact, Bmin = B / fact ;
     double Cmax = (1. + var) * C, Cmin = (1. - var) * C, Dmax = (1. + var) * D, Dmin = (1. - var) * D ;
 
@@ -425,7 +446,7 @@ double CL_g20_approximation_BAND(double x, double mQ, int v) {
             for (int h = 0; h < 3; h++) {
                 for (int k = 0; k < 3; k++) {
                     replicas.push_back(
-                        CL_g20_approximation_implicit(x, mQ, Avec[i], Bvec[j], Cvec[h], Dvec[k], a, b)
+                        CL_g20_approximation_implicit(x, m2Q2, Avec[i], Bvec[j], Cvec[h], Dvec[k], a, b)
                     ) ;
                 }
             }
@@ -453,17 +474,21 @@ double CL_g20_approximation_BAND(double x, double mQ, int v) {
 //  Used for validation of the method.
 //------------------------------------------------------------------------------------------//
 
-double CL_ps2_approximation(double x, double mQ, double mMu, int v) {
+double CL_ps2_approximation(double x, double m2Q2, double m2mu2, int v) {
 
-    double C_const = CL_ps20_approximation_BAND(x, mQ, v);
+    double C_const = CL_ps20_approximation_BAND(x, m2Q2, v, var_CL, fact_CL);
 
-    double C_log = CL_ps21(x, mQ) ;
+    double C_log = CL_ps21(x, m2Q2) ;
 
-    return C_const + C_log * log(1. / mMu) ;
+    return C_const + C_log * log(1. / m2mu2) ;
 
 }
 
-double CL_ps20_approximation(double x, double mQ) {
+//==========================================================================================//
+//  Approximate mu-independent term of the quark coefficient function for FL at O(alpha_s^2).
+//------------------------------------------------------------------------------------------//
+
+double CL_ps20_approximation(double x, double m2Q2) {
 
     double A = CL_ps2_params.A ;
     double B = CL_ps2_params.B ;
@@ -472,25 +497,24 @@ double CL_ps20_approximation(double x, double mQ) {
     double a = CL_ps2_params.a ;
     double b = CL_ps2_params.b ;
 
-    return CL_ps20_approximation_implicit(x, mQ, A, B, C, D, a, b);
+    return CL_ps20_approximation_implicit(x, m2Q2, A, B, C, D, a, b);
 
 }
 
 //==========================================================================================//
-//  Approximate quark coefficient function for F2 at O(alpha_s^2) with implicit parameters.
+//  Approximate mu-independent term of the quark coefficient function for FL at O(alpha_s^2)
+//  with implicit parameters.
 //------------------------------------------------------------------------------------------//
 
-double CL_ps20_approximation_implicit(double x, double mQ, double A, double B, double C, double D, double a, double b) {
+double CL_ps20_approximation_implicit(double x, double m2Q2, double A, double B, double C, double D, double a, double b) {
 
-    double xmax = 1. / (1. + 4. * mQ) ;
+    double xmax = 1. / (1. + 4. * m2Q2) ;
 
     if(x >= xmax || x <= 0) return 0 ;
 
-    double xi = 1. / mQ ;
+    double xi = 1. / m2Q2 ;
 
-    double eta ;
-
-    eta = 0.25 / mQ * (1. - x) / x - 1. ;
+    double eta = 0.25 / m2Q2 * (1. - x) / x - 1. ;
 
     double h = A + (B - A) / (1. + exp(a * (log(xi) - b))) ;
     double k = C + (D - C) / (1. + exp(a * (log(xi) - b))) ;
@@ -498,12 +522,17 @@ double CL_ps20_approximation_implicit(double x, double mQ, double A, double B, d
     double damp_thr = 1. / (1. + pow(eta / h , k)) ;
     double damp_asy = 1. - damp_thr ;
 
-    return CL_ps2_asymptotic(x, mQ, 1.) * damp_asy ;
+    return CL_ps2_asymptotic(x, m2Q2, 1.) * damp_asy ;
     //threshPS = 0
 
 }
 
-double CL_ps20_approximation_BAND(double x, double mQ, int v) {
+//==========================================================================================//
+//  Band of the approximate mu-independent term of the quark coefficient function for FL
+//  at O(alpha_s^2).
+//------------------------------------------------------------------------------------------//
+
+double CL_ps20_approximation_BAND(double x, double m2Q2, int v, double var, double fact) {
 
     double A = CL_ps2_params.A ;
     double B = CL_ps2_params.B ;
@@ -512,11 +541,10 @@ double CL_ps20_approximation_BAND(double x, double mQ, int v) {
     double a = CL_ps2_params.a ;
     double b = CL_ps2_params.b ;
 
-    double Cavg = CL_ps20_approximation(x, mQ);
+    double Cavg = CL_ps20_approximation(x, m2Q2);
 
     if(v==0) return Cavg;
 
-    double var = default_var, fact = default_fact ;
     double Amax = fact * A, Amin = A / fact, Bmax = B * fact, Bmin = B / fact ;
     double Cmax = (1. + var) * C, Cmin = (1. - var) * C, Dmax = (1. + var) * D, Dmin = (1. - var) * D ;
 
@@ -532,7 +560,7 @@ double CL_ps20_approximation_BAND(double x, double mQ, int v) {
             for (int h = 0; h < 3; h++) {
                 for (int k = 0; k < 3; k++) {
                     replicas.push_back(
-                        CL_g20_approximation_implicit(x, mQ, Avec[i], Bvec[j], Cvec[h], Dvec[k], a, b)
+                        CL_ps20_approximation_implicit(x, m2Q2, Avec[i], Bvec[j], Cvec[h], Dvec[k], a, b)
                     ) ;
                 }
             }
@@ -558,32 +586,28 @@ double CL_ps20_approximation_BAND(double x, double mQ, int v) {
 //  Approximate gluon coefficient function for F2 at O(alpha_s^3).
 //------------------------------------------------------------------------------------------//
 
-double C2_g3_approximation(double x, double mQ, double mMu, int nf, int v, int method_flag, int calls) {
+double C2_g3_approximation(double x, double m2Q2, double m2mu2, int nf, int v, int method_flag, int calls) {
 
-    double xmax = 1. / (1. + 4. * mQ) ;
+    double C30 = C2_g30_approximation_BAND(x, m2Q2, nf, v, var_C2, fact_C2);
 
-    if(x >= xmax || x <= 0) return 0. ;
+    if(m2mu2 == 1.) return C30 ;
 
-    double C30 = C2_g30_approximation_BAND(x, mQ, nf, v);
-
-    if(mMu == 1.) return C30 ;
-
-    double Lmu = - log(mMu) ;
+    double Lmu = - log(m2mu2) ;
     double Lmu2 = Lmu * Lmu ;
 
     return (
         C30
-        + C2_g31(x, mQ, nf) * Lmu
-        + C2_g32(x, mQ, nf, method_flag, calls) * Lmu2
+        + C2_g31(x, m2Q2, nf) * Lmu
+        + C2_g32(x, m2Q2, nf, method_flag, calls) * Lmu2
     ) ;
 
 }
 
 //==========================================================================================//
-//  Approximate gluon coefficient function for F2 at O(alpha_s^3).
+//  Approximate mu-independent term of the gluon coefficient function for F2 at O(alpha_s^3).
 //------------------------------------------------------------------------------------------//
 
-double C2_g30_approximation(double x, double mQ, int nf) {
+double C2_g30_approximation(double x, double m2Q2, int nf) {
 
     double A = C2_g3_params.A ;
     double B = C2_g3_params.B ;
@@ -593,19 +617,24 @@ double C2_g30_approximation(double x, double mQ, int nf) {
     double b = C2_g3_params.b ;
     int v1 = 0, v2 = 0 ;
 
-    return C2_g30_approximation_implicit(x, mQ, nf, A, B, C, D, a, b, v1, v2);
+    return C2_g30_approximation_implicit(x, m2Q2, nf, A, B, C, D, a, b, v1, v2);
 
 }
 
 //==========================================================================================//
-//  Approximate gluon coefficient function for F2 at O(alpha_s^3) with implicit parameters.
+//  Approximate mu-independent term of the gluon coefficient function for F2 at O(alpha_s^3)
+//  with implicit parameters.
 //------------------------------------------------------------------------------------------//
 
-double C2_g30_approximation_implicit(double x, double mQ, int nf, double A, double B, double C, double D, double a, double b, int v1, int v2) {
+double C2_g30_approximation_implicit(double x, double m2Q2, int nf, double A, double B, double C, double D, double a, double b, int v1, int v2) {
 
-    double xi = 1. / mQ ;
+    double xmax = 1. / ( 1. + 4 * m2Q2 ) ;
 
-    double eta = 0.25 / mQ * (1 - x) / x - 1. ;
+    if(x >= xmax || x <= 0) return 0 ;
+
+    double xi = 1. / m2Q2 ;
+
+    double eta = 0.25 / m2Q2 * (1 - x) / x - 1. ;
 
     double h = A + (B - A) / (1. + exp(a * (log(xi) - b))) ;
     double k = C + (D - C) / (1. + exp(a * (log(xi) - b))) ;
@@ -614,18 +643,19 @@ double C2_g30_approximation_implicit(double x, double mQ, int nf, double A, doub
     double damp_asy = 1. - damp_thr ;
 
     return (
-        C2_g3_asymptotic(x, mQ, 1., nf, v1, v2) * damp_asy
-        + C2_g3_threshold(x, mQ, 1., nf) * damp_thr
+        C2_g3_asymptotic(x, m2Q2, 1., nf, v1, v2) * damp_asy
+        + C2_g3_threshold(x, m2Q2, 1., nf) * damp_thr
     ) ;
 
 }
 
 //==========================================================================================//
-//  Band of the approximate gluon coefficient function for F2 at O(alpha_s^3).
+//  Band of the approximate mu-independent term of the gluon coefficient function for F2
+//  at O(alpha_s^3).
 //------------------------------------------------------------------------------------------//
 
 
-double C2_g30_approximation_BAND(double x, double mQ, int nf, int v) {
+double C2_g30_approximation_BAND(double x, double m2Q2, int nf, int v, double var, double fact) {
 
     double A = C2_g3_params.A ;
     double B = C2_g3_params.B ;
@@ -634,11 +664,9 @@ double C2_g30_approximation_BAND(double x, double mQ, int nf, int v) {
     double a = C2_g3_params.a ;
     double b = C2_g3_params.b ;
 
-    double Cavg = C2_g30_approximation(x, mQ, nf);
+    double Cavg = C2_g30_approximation(x, m2Q2, nf);
 
     if(v==0) return Cavg;
-
-    double var = default_var, fact = default_fact ;
 
     double Amax = fact * A, Amin = A / fact, Bmax = B * fact, Bmin = B / fact;
     double Cmax = (1. + var) * C, Cmin = (1. - var) * C, Dmax = (1. + var) * D, Dmin = (1. - var) * D;
@@ -657,7 +685,7 @@ double C2_g30_approximation_BAND(double x, double mQ, int nf, int v) {
                     for (int v1 = 0; v1 < 3; v1++) {
                         for (int v2 = -1; v2 <= 1; v2++) {
                             replicas.push_back(
-                                C2_g30_approximation_implicit(x, mQ, nf, Avec[i], Bvec[j], Cvec[h], Dvec[k], a, b, v1, v2)
+                                C2_g30_approximation_implicit(x, m2Q2, nf, Avec[i], Bvec[j], Cvec[h], Dvec[k], a, b, v1, v2)
                             ) ;
                         }
                     }
@@ -687,32 +715,28 @@ double C2_g30_approximation_BAND(double x, double mQ, int nf, int v) {
 //  Approximate quark coefficient function for F2 at O(alpha_s^3).
 //------------------------------------------------------------------------------------------//
 
-double C2_ps3_approximation(double x, double mQ, double mMu, int nf, int v) {
+double C2_ps3_approximation(double x, double m2Q2, double m2mu2, int nf, int v) {
 
-    double xmax = 1. / (1. + 4. * mQ) ;
+    double C30 = C2_ps30_approximation_BAND(x, m2Q2, nf, v, var_C2, fact_C2);
 
-    if(x >= xmax || x <= 0) return 0. ;
+    if(m2mu2 == 1.) return C30 ;
 
-    double C30 = C2_ps30_approximation_BAND(x, mQ, nf, v);
-
-    if(mMu == 1.) return C30 ;
-
-    double Lmu = - log(mMu) ;
+    double Lmu = - log(m2mu2) ;
     double Lmu2 = Lmu * Lmu ;
 
     return (
         C30
-        + C2_ps31(x, mQ, nf) * Lmu
-        + C2_ps32(x, mQ, nf) * Lmu2
+        + C2_ps31(x, m2Q2, nf) * Lmu
+        + C2_ps32(x, m2Q2, nf) * Lmu2
     );
 
 }
 
 //==========================================================================================//
-//  Approximate gluon coefficient function for F2 at O(alpha_s^3).
+//  Approximate mu-independent term of the quark coefficient function for F2 at O(alpha_s^3).
 //------------------------------------------------------------------------------------------//
 
-double C2_ps30_approximation(double x, double mQ, int nf) {
+double C2_ps30_approximation(double x, double m2Q2, int nf) {
 
     double A = C2_ps3_params.A ;
     double B = C2_ps3_params.B ;
@@ -721,15 +745,26 @@ double C2_ps30_approximation(double x, double mQ, int nf) {
     double a = C2_ps3_params.a ;
     double b = C2_ps3_params.b ;
 
-    return C2_ps30_approximation_implicit(x, mQ, nf, A, B, C, D, a, b, 0);
+    return C2_ps30_approximation_implicit(x, m2Q2, nf, A, B, C, D, a, b, 0);
 
 }
 
-double C2_ps30_approximation_implicit(double x, double mQ, int nf, double A, double B, double C, double D, double a, double b, int v) {
+//==========================================================================================//
+//  Approximate mu-independent term of the quark coefficient function for F2 at O(alpha_s^3)
+//  with implicit parameters.
+//------------------------------------------------------------------------------------------//
 
-    double xi = 1. / mQ ;
+double C2_ps30_approximation_implicit(double x, double m2Q2, int nf, double A, double B, double C, double D, double a, double b, int v) {
 
-    double eta = 0.25 / mQ * (1. - x) / x - 1.;
+    double xmax = 1. / (1. + 4. * m2Q2) ;
+
+    if(x >= xmax || x <= 0) return 0 ;
+
+    double xi = 1. / m2Q2 ;
+
+    double eta ;
+
+    eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
 
     double h = A + (B - A) / (1. + exp(a * (log(xi) - b)));
     double k = C + (D - C) / (1. + exp(a * (log(xi) - b)));
@@ -737,11 +772,16 @@ double C2_ps30_approximation_implicit(double x, double mQ, int nf, double A, dou
     double damp_thr = 1. / (1. + pow(eta / h, k));
     double damp_asy = 1. - damp_thr;
 
-    return C2_ps3_asymptotic(x, mQ, 1., nf, v) * damp_asy ;
+    return C2_ps3_asymptotic(x, m2Q2, 1., nf, v) * damp_asy ;
 
 }
 
-double C2_ps30_approximation_BAND(double x, double mQ, int nf, int v) {
+//==========================================================================================//
+//  Band of the approximate mu-independent term of the quark coefficient function for F2
+//  at O(alpha_s^3).
+//------------------------------------------------------------------------------------------//
+
+double C2_ps30_approximation_BAND(double x, double m2Q2, int nf, int v, double var, double fact) {
 
     double A = C2_ps3_params.A ;
     double B = C2_ps3_params.B ;
@@ -750,11 +790,9 @@ double C2_ps30_approximation_BAND(double x, double mQ, int nf, int v) {
     double a = C2_ps3_params.a ;
     double b = C2_ps3_params.b ;
 
-    double Cavg = C2_ps30_approximation(x, mQ, nf);
+    double Cavg = C2_ps30_approximation(x, m2Q2, nf);
 
     if(v==0) return Cavg;
-
-    double var = default_var, fact = default_fact ;
 
     double Amax = fact * A, Amin = A / fact, Bmax = B * fact, Bmin = B / fact;
     double Cmax = (1. + var) * C, Cmin = (1. - var) * C, Dmax = (1. + var) * D, Dmin = (1. - var) * D;
@@ -772,7 +810,7 @@ double C2_ps30_approximation_BAND(double x, double mQ, int nf, int v) {
                 for (int k = 0; k < 3; k++) {
                     for (int v1 = -1; v1 <= 1; v1++) {
                         replicas.push_back(
-                            C2_ps30_approximation_implicit(x, mQ, nf, Avec[i], Bvec[j], Cvec[h], Dvec[k], a, b, v1)
+                            C2_ps30_approximation_implicit(x, m2Q2, nf, Avec[i], Bvec[j], Cvec[h], Dvec[k], a, b, v1)
                         ) ;
                     }
                 }
@@ -801,32 +839,28 @@ double C2_ps30_approximation_BAND(double x, double mQ, int nf, int v) {
 //  Approximate gluon coefficient function for FL at O(alpha_s^3).
 //------------------------------------------------------------------------------------------//
 
-double CL_g3_approximation(double x, double mQ, double mMu, int nf, int v, int method_flag, int calls) {
+double CL_g3_approximation(double x, double m2Q2, double m2mu2, int nf, int v, int method_flag, int calls) {
 
-    double xmax = 1. / (1. + 4. * mQ) ;
+    double C30 = CL_g30_approximation_BAND(x, m2Q2, nf, v, var_CL, fact_CL);
 
-    if(x >= xmax || x <= 0) return 0. ;
+    if(m2mu2 == 1.) return C30 ;
 
-    double C30 = CL_g30_approximation_BAND(x, mQ, nf, v);
-
-    if(mMu == 1.) return C30 ;
-
-    double Lmu = - log(mMu) ;
+    double Lmu = - log(m2mu2) ;
     double Lmu2 = Lmu * Lmu ;
 
     return (
         C30
-        + CL_g31(x, mQ, nf) * Lmu
-        + CL_g32(x, mQ, nf, method_flag, calls) * Lmu2
+        + CL_g31(x, m2Q2, nf) * Lmu
+        + CL_g32(x, m2Q2, nf, method_flag, calls) * Lmu2
     ) ;
 
 }
 
 //==========================================================================================//
-//  Approximate gluon coefficient function for F2 at O(alpha_s^3).
+//  Approximate mu-independent term of the gluon coefficient function for F2 at O(alpha_s^3).
 //------------------------------------------------------------------------------------------//
 
-double CL_g30_approximation(double x, double mQ, int nf) {
+double CL_g30_approximation(double x, double m2Q2, int nf) {
 
     double A = CL_g3_params.A ;
     double B = CL_g3_params.B ;
@@ -835,15 +869,24 @@ double CL_g30_approximation(double x, double mQ, int nf) {
     double a = CL_g3_params.a ;
     double b = CL_g3_params.b ;
 
-    return CL_g30_approximation_implicit(x, mQ, nf, A, B, C, D, a, b, 0);
+    return CL_g30_approximation_implicit(x, m2Q2, nf, A, B, C, D, a, b, 0);
 
 }
 
-double CL_g30_approximation_implicit(double x, double mQ, int nf, double A, double B, double C, double D, double a, double b, int v) {
+//==========================================================================================//
+//  Approximate mu-independent term of the gluon coefficient function for FL at O(alpha_s^3)
+//  with implicit parameters.
+//------------------------------------------------------------------------------------------//
 
-    double xi = 1. / mQ ;
+double CL_g30_approximation_implicit(double x, double m2Q2, int nf, double A, double B, double C, double D, double a, double b, int v) {
 
-    double eta = 0.25 / mQ * (1 - x) / x - 1. ;
+    double xmax = 1. / (1. + 4 * m2Q2) ;
+
+    if(x >= xmax || x <= 0) return 0 ;
+
+    double xi = 1. / m2Q2 ;
+
+    double eta = 0.25 / m2Q2 * (1 - x) / x - 1. ;
 
     double h = A + (B - A) / (1. + exp(a * (log(xi) - b))) ;
     double k = C + (D - C) / (1. + exp(a * (log(xi) - b))) ;
@@ -852,13 +895,18 @@ double CL_g30_approximation_implicit(double x, double mQ, int nf, double A, doub
     double damp_asy = 1. - damp_thr ;
 
     return (
-        CL_g3_asymptotic(x, mQ, 1., nf, v) * damp_asy
-        + CL_g3_threshold(x, mQ, 1., nf) * damp_thr
+        CL_g3_asymptotic(x, m2Q2, 1., nf, v) * damp_asy
+        + CL_g3_threshold(x, m2Q2, 1., nf) * damp_thr
     ) ;
 
 }
 
-double CL_g30_approximation_BAND(double x, double mQ, int nf, int v) {
+//==========================================================================================//
+//  Band of the approximate mu-independent term of the gluon coefficient function for FL
+//  at O(alpha_s^3).
+//------------------------------------------------------------------------------------------//
+
+double CL_g30_approximation_BAND(double x, double m2Q2, int nf, int v, double var, double fact) {
 
     double A = CL_g3_params.A ;
     double B = CL_g3_params.B ;
@@ -867,11 +915,9 @@ double CL_g30_approximation_BAND(double x, double mQ, int nf, int v) {
     double a = CL_g3_params.a ;
     double b = CL_g3_params.b ;
 
-    double Cavg = CL_g30_approximation(x, mQ, nf);
+    double Cavg = CL_g30_approximation(x, m2Q2, nf);
 
     if(v==0) return Cavg;
-
-    double var = default_var, fact = default_fact ;
 
     double Amax = fact * A, Amin = A / fact, Bmax = B * fact, Bmin = B / fact;
     double Cmax = (1. + var) * C, Cmin = (1. - var) * C, Dmax = (1. + var) * D, Dmin = (1. - var) * D;
@@ -889,7 +935,7 @@ double CL_g30_approximation_BAND(double x, double mQ, int nf, int v) {
                 for (int k = 0; k < 3; k++) {
                     for (int v1 = -1; v1 <= 1; v1++) {
                         replicas.push_back(
-                            CL_g30_approximation_implicit(x, mQ, nf, Avec[i], Bvec[j], Cvec[h], Dvec[k], a, b, v1)
+                            CL_g30_approximation_implicit(x, m2Q2, nf, Avec[i], Bvec[j], Cvec[h], Dvec[k], a, b, v1)
                         ) ;
                     }
                 }
@@ -918,32 +964,28 @@ double CL_g30_approximation_BAND(double x, double mQ, int nf, int v) {
 //  Approximate quark coefficient funtcions for FL at O(alpha_s^3).
 //------------------------------------------------------------------------------------------//
 
-double CL_ps3_approximation(double x, double mQ, double mMu, int nf, int v) {
+double CL_ps3_approximation(double x, double m2Q2, double m2mu2, int nf, int v) {
 
-    double xmax = 1. / (1. + 4. * mQ) ;
+    double C30 = CL_ps30_approximation_BAND(x, m2Q2, nf, v, var_CL, fact_CL);
 
-    if(x >= xmax || x <= 0) return 0. ;
+    if(m2mu2 == 1.) return C30 ;
 
-    double C30 = CL_ps30_approximation_BAND(x, mQ, nf, v);
-
-    if(mMu == 1.) return C30 ;
-
-    double Lmu = - log(mMu) ;
+    double Lmu = - log(m2mu2) ;
     double Lmu2 = Lmu * Lmu ;
 
     return (
         C30
-        + CL_ps31(x, mQ, nf) * Lmu
-        + CL_ps32(x, mQ, nf) * Lmu2
+        + CL_ps31(x, m2Q2, nf) * Lmu
+        + CL_ps32(x, m2Q2, nf) * Lmu2
     );
 
 }
 
 //==========================================================================================//
-//  Approximate gluon coefficient function for F2 at O(alpha_s^3).
+//  Approximate mu-independent term of the quark coefficient function for F2 at O(alpha_s^3).
 //------------------------------------------------------------------------------------------//
 
-double CL_ps30_approximation(double x, double mQ, int nf) {
+double CL_ps30_approximation(double x, double m2Q2, int nf) {
 
     double A = CL_ps3_params.A ;
     double B = CL_ps3_params.B ;
@@ -952,15 +994,24 @@ double CL_ps30_approximation(double x, double mQ, int nf) {
     double a = CL_ps3_params.a ;
     double b = CL_ps3_params.b ;
 
-    return CL_ps30_approximation_implicit(x, mQ, nf, A, B, C, D, a, b, 0);
+    return CL_ps30_approximation_implicit(x, m2Q2, nf, A, B, C, D, a, b, 0);
 
 }
 
-double CL_ps30_approximation_implicit(double x, double mQ, int nf, double A, double B, double C, double D, double a, double b, int v) {
+//==========================================================================================//
+//  Approximate mu-independent term of the quark coefficient function for FL at O(alpha_s^3)
+//  with implicit parameters.
+//------------------------------------------------------------------------------------------//
 
-    double xi = 1. / mQ ;
+double CL_ps30_approximation_implicit(double x, double m2Q2, int nf, double A, double B, double C, double D, double a, double b, int v) {
 
-    double eta = 0.25 / mQ * (1. - x) / x - 1.;
+    double xmax = 1. / (1. + 4. * m2Q2) ;
+
+    if(x >= xmax || x <= 0) return 0 ;
+
+    double xi = 1. / m2Q2 ;
+
+    double eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
 
     double h = A + (B - A) / (1. + exp(a * (log(xi) - b)));
     double k = C + (D - C) / (1. + exp(a * (log(xi) - b)));
@@ -968,11 +1019,16 @@ double CL_ps30_approximation_implicit(double x, double mQ, int nf, double A, dou
     double damp_thr = 1. /(1. + pow(eta / h, k));
     double damp_asy = 1. - damp_thr;
 
-    return CL_ps3_asymptotic(x, mQ, 1., nf, v) * damp_asy ;
+    return CL_ps3_asymptotic(x, m2Q2, 1., nf, v) * damp_asy ;
 
 }
 
-double CL_ps30_approximation_BAND(double x, double mQ, int nf, int v) {
+//==========================================================================================//
+//  Band of the approximate mu-independent term of the quark coefficient function for FL
+//  at O(alpha_s^3).
+//------------------------------------------------------------------------------------------//
+
+double CL_ps30_approximation_BAND(double x, double m2Q2, int nf, int v, double var, double fact) {
 
     double A = CL_ps3_params.A ;
     double B = CL_ps3_params.B ;
@@ -981,11 +1037,9 @@ double CL_ps30_approximation_BAND(double x, double mQ, int nf, int v) {
     double a = CL_ps3_params.a ;
     double b = CL_ps3_params.b ;
 
-    double Cavg = CL_ps30_approximation(x, mQ, nf);
+    double Cavg = CL_ps30_approximation(x, m2Q2, nf);
 
     if(v==0) return Cavg;
-
-    double var = default_var, fact = default_fact ;
 
     double Amax = fact * A, Amin = A / fact, Bmax = B * fact, Bmin = B / fact;
     double Cmax = (1. + var) * C, Cmin = (1. - var) * C, Dmax = (1. + var) * D, Dmin = (1. - var) * D;
@@ -1003,7 +1057,7 @@ double CL_ps30_approximation_BAND(double x, double mQ, int nf, int v) {
                 for (int k = 0; k < 3; k++) {
                     for (int v1 = -1; v1 <= 1; v1++) {
                         replicas.push_back(
-                            CL_ps30_approximation_implicit(x, mQ, nf, Avec[i], Bvec[j], Cvec[h], Dvec[k], a, b, v1)
+                            CL_ps30_approximation_implicit(x, m2Q2, nf, Avec[i], Bvec[j], Cvec[h], Dvec[k], a, b, v1)
                         ) ;
                     }
                 }
@@ -1022,7 +1076,7 @@ double CL_ps30_approximation_BAND(double x, double mQ, int nf, int v) {
     if(v==-1) return min ;
 
     else {
-        cout << "C2_ps30_approximation_BAND: Choose either v=0 or v=1 or v=-1!!\nExiting!!\n" << endl;
+        cout << "CL_ps30_approximation_BAND: Choose either v=0 or v=1 or v=-1!!\nExiting!!\n" << endl;
         exit(-1);
     }
 
@@ -1036,17 +1090,17 @@ double CL_ps30_approximation_BAND(double x, double mQ, int nf, int v) {
 //  Eq. (4.10) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
-double C2_g2_approximationA_klmv(double x, double mQ, double mMu) {
+double C2_g2_approximationA_klmv(double x, double m2Q2, double m2mu2) {
 
-    double x_max = 1. / (1. + 4 * mQ) ;
+    double x_max = 1. / (1. + 4 * m2Q2) ;
 
     if(x>=x_max || x<0) return 0;
 
-    double beta = sqrt(1. - 4 * mQ * x / (1. - x));
+    double beta = sqrt(1. - 4 * m2Q2 * x / (1. - x));
 
-    double eta = 0.25 / mQ * (1. - x) / x - 1.;
+    double eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
 
-    double xi = 1. / mQ;
+    double xi = 1. / m2Q2;
 
     double f = 1. / (1. + exp(2. * (xi - 4.)));
 
@@ -1057,14 +1111,14 @@ double C2_g2_approximationA_klmv(double x, double mQ, double mMu) {
     double beta3 = beta * beta * beta;
 
     double C_const = (
-        C2_g2_threshold(x,mQ,1) - C2_g2_threshold_const(x, mQ, 1.)
-        + (1. - f) * beta * C2_g2_highscale(x, mQ, 1.)
-        + f * beta3 * C2_g2_highenergy(x, mQ, 1.) * eta_gamma / (C + eta_gamma)
+        C2_g2_threshold(x,m2Q2,1) - C2_g2_threshold_const(x, m2Q2, 1.)
+        + (1. - f) * beta * C2_g2_highscale(x, m2Q2, 1.)
+        + f * beta3 * C2_g2_highenergy(x, m2Q2, 1.) * eta_gamma / (C + eta_gamma)
     ) ;
 
-    double C_log = C2_g21(x, mQ) ;
+    double C_log = C2_g21(x, m2Q2) ;
 
-    return C_const + C_log * log(1./mMu);
+    return C_const + C_log * log(1./m2mu2);
 
 }
 
@@ -1076,17 +1130,17 @@ double C2_g2_approximationA_klmv(double x, double mQ, double mMu) {
 //  Eq. (4.11) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
-double C2_g2_approximationB_klmv(double x, double mQ, double mMu) {
+double C2_g2_approximationB_klmv(double x, double m2Q2, double m2mu2) {
 
-    double x_max = 1. / (1. + 4. * mQ);
+    double x_max = 1. / (1. + 4. * m2Q2);
 
     if(x>=x_max || x<0) return 0;
 
-    double beta = sqrt(1. - 4. * mQ * x / (1. - x));
+    double beta = sqrt(1. - 4. * m2Q2 * x / (1. - x));
 
-    double eta = 0.25 / mQ * (1. - x) / x - 1.;
+    double eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
 
-    double xi = 1. / mQ;
+    double xi = 1. / m2Q2;
 
     double f = 1. / (1. + exp(2. * (xi - 4.)));
 
@@ -1097,14 +1151,14 @@ double C2_g2_approximationB_klmv(double x, double mQ, double mMu) {
     double beta3 = beta * beta * beta;
 
     double C_const = (
-        C2_g2_threshold(x, mQ, 1.)
-        + (1. - f) * beta3 * C2_g2_highscale(x, mQ, 1.)
-        + f * beta3 * C2_g2_highenergy(x, mQ, 1.) * eta_delta / (D + eta_delta)
+        C2_g2_threshold(x, m2Q2, 1.)
+        + (1. - f) * beta3 * C2_g2_highscale(x, m2Q2, 1.)
+        + f * beta3 * C2_g2_highenergy(x, m2Q2, 1.) * eta_delta / (D + eta_delta)
     ) ;
 
-    double C_log = C2_g21(x, mQ) ;
+    double C_log = C2_g21(x, m2Q2) ;
 
-    return C_const + C_log * log(1./mMu);
+    return C_const + C_log * log(1./m2mu2);
 
 }
 
@@ -1116,17 +1170,17 @@ double C2_g2_approximationB_klmv(double x, double mQ, double mMu) {
 //  Eq. (4.10) of Ref. [arXiv:1205.5727] but for the quark coefficient function.
 //------------------------------------------------------------------------------------------//
 
-double C2_ps2_approximationA_klmv(double x, double mQ, double mMu) {
+double C2_ps2_approximationA_klmv(double x, double m2Q2, double m2mu2) {
 
-    double x_max = 1. / (1. + 4 * mQ);
+    double x_max = 1. / (1. + 4 * m2Q2);
 
     if(x>=x_max || x<0) return 0;
 
-    double beta = sqrt(1. - 4. * mQ * x / (1. - x));
+    double beta = sqrt(1. - 4. * m2Q2 * x / (1. - x));
 
-    double eta = 0.25 / mQ * (1. - x) / x - 1.;
+    double eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
 
-    double xi = 1. / mQ;
+    double xi = 1. / m2Q2;
 
     double f = 1. / (1. + exp(2. * (xi - 4.)));
 
@@ -1137,13 +1191,13 @@ double C2_ps2_approximationA_klmv(double x, double mQ, double mMu) {
     double beta3 = beta * beta * beta;
 
     double C_const = (
-        (1. - f) * beta * C2_ps2_highscale(x, mQ, 1.)
-        + f * beta3 * C2_ps2_highenergy(x, mQ, 1.) * eta_gamma / (C + eta_gamma)
+        (1. - f) * beta * C2_ps2_highscale(x, m2Q2, 1.)
+        + f * beta3 * C2_ps2_highenergy(x, m2Q2, 1.) * eta_gamma / (C + eta_gamma)
     );
 
-    double C_log = C2_g21(x, mQ) ;
+    double C_log = C2_g21(x, m2Q2) ;
 
-    return C_const + C_log * log(1./mMu);
+    return C_const + C_log * log(1./m2mu2);
 
 }
 
@@ -1155,17 +1209,17 @@ double C2_ps2_approximationA_klmv(double x, double mQ, double mMu) {
 //  Eq. (4.11) of Ref. [arXiv:1205.5727] but for the quark coefficient function.
 //------------------------------------------------------------------------------------------//
 
-double C2_ps2_approximationB_klmv(double x, double mQ, double mMu) {
+double C2_ps2_approximationB_klmv(double x, double m2Q2, double m2mu2) {
 
-    double x_max = 1. / (1. + 4 * mQ);
+    double x_max = 1. / (1. + 4 * m2Q2);
 
     if(x>=x_max || x<0) return 0;
 
-    double beta = sqrt(1. - 4 * mQ * x / (1. - x));
+    double beta = sqrt(1. - 4 * m2Q2 * x / (1. - x));
 
-    double eta = 0.25 / mQ * (1. - x) / x - 1.;
+    double eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
 
-    double xi = 1. / mQ;
+    double xi = 1. / m2Q2;
 
     double f = 1. / (1. + exp(2. * (xi - 4.)));
 
@@ -1176,13 +1230,13 @@ double C2_ps2_approximationB_klmv(double x, double mQ, double mMu) {
     double beta3 = beta * beta * beta;
 
     double C_const = (
-        (1. - f) * beta3 * C2_ps2_highscale(x, mQ, 1.)
-        + f * beta3 * C2_ps2_highenergy(x, mQ, 1.) * eta_delta / (D + eta_delta)
+        (1. - f) * beta3 * C2_ps2_highscale(x, m2Q2, 1.)
+        + f * beta3 * C2_ps2_highenergy(x, m2Q2, 1.) * eta_delta / (D + eta_delta)
     );
 
-    double C_log = C2_g21(x, mQ) ;
+    double C_log = C2_g21(x, m2Q2) ;
 
-    return C_const + C_log * log(1./mMu);
+    return C_const + C_log * log(1./m2mu2);
 
 }
 
@@ -1195,19 +1249,19 @@ double C2_ps2_approximationB_klmv(double x, double mQ, double mMu) {
 //  This equation uses the approximate form of aQg30 given in Eq. (3.49) of [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
-double C2_g3_approximationA_klmv(double x, double mQ, double mMu, int nf, int method_flag, int calls) {
+double C2_g3_approximationA_klmv(double x, double m2Q2, double m2mu2, int nf, int method_flag, int calls) {
 
-    double x_max = 1. / (1. + 4 * mQ);
+    double x_max = 1. / (1. + 4 * m2Q2);
 
     if(x>=x_max || x<0) return 0;
 
     double pi3 = M_PI * M_PI * M_PI ;
 
-    double beta = sqrt(1. - 4 * mQ * x / (1. - x));
+    double beta = sqrt(1. - 4 * m2Q2 * x / (1. - x));
 
-    double eta = 0.25 / mQ * (1. - x) / x - 1. ;
+    double eta = 0.25 / m2Q2 * (1. - x) / x - 1. ;
 
-    double xi = 1. / mQ;
+    double xi = 1. / m2Q2;
 
     double f = 1. / (1. + exp(2. * (xi - 4)));
 
@@ -1218,24 +1272,24 @@ double C2_g3_approximationA_klmv(double x, double mQ, double mMu, int nf, int me
     double beta3 = beta * beta * beta;
 
     double C2_g3_highenergyA = (64. * pi3) * (
-        0.007 * pow(log(1./mQ) / log(5), 4) - 0.28
-    ) * 4. / mQ / x;
+        0.007 * pow(log(1./m2Q2) / log(5), 4) - 0.28
+    ) * 4. / m2Q2 / x;
 
     double C30 = (
-        C2_g3_threshold(x, mQ, 1., nf) - C2_g3_threshold_const(x, mQ, 1.)
-        + (1. - f) * beta * C2_g3_highscale(x, mQ, 1., nf, 1)
+        C2_g3_threshold(x, m2Q2, 1., nf) - C2_g3_threshold_const(x, m2Q2, 1.)
+        + (1. - f) * beta * C2_g3_highscale(x, m2Q2, 1., nf, 1)
         + f * beta3 * (
-            - log(eta) / log(x) * C2_g3_highenergyLL(x, mQ, 1.)
+            - log(eta) / log(x) * C2_g3_highenergyLL(x, m2Q2, 1.)
             + C2_g3_highenergyA * eta_gamma / (C + eta_gamma)
         )
     );
 
-    if(mMu == 1.) return C30 ;
+    if(m2mu2 == 1.) return C30 ;
 
-    double Lmu = - log(mMu) ;
+    double Lmu = - log(m2mu2) ;
     double Lmu2 = Lmu * Lmu ;
 
-    return C30 + C2_g31(x, mQ, nf) * Lmu + C2_g32(x, mQ, nf, method_flag, calls) * Lmu2 ;
+    return C30 + C2_g31(x, m2Q2, nf) * Lmu + C2_g32(x, m2Q2, nf, method_flag, calls) * Lmu2 ;
 
 }
 
@@ -1248,19 +1302,19 @@ double C2_g3_approximationA_klmv(double x, double mQ, double mMu, int nf, int me
 //  This equation uses the approximate form of aQg30 given in Eq. (16) of Ref. [arXiv:1701.05838].
 //------------------------------------------------------------------------------------------//
 
-double C2_g3_approximationB_klmv(double x, double mQ, double mMu, int nf, int method_flag, int calls) {
+double C2_g3_approximationB_klmv(double x, double m2Q2, double m2mu2, int nf, int method_flag, int calls) {
 
-    double x_max = 1. / (1. + 4 * mQ);
+    double x_max = 1. / (1. + 4 * m2Q2);
 
     if(x>=x_max || x<0) return 0;
 
     double pi3 = M_PI * M_PI * M_PI ;
 
-    double beta = sqrt(1. - 4 * mQ * x / (1. - x));
+    double beta = sqrt(1. - 4 * m2Q2 * x / (1. - x));
 
-    double eta = 0.25 / mQ * (1. - x) / x - 1.;
+    double eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
 
-    double xi = 1./mQ;
+    double xi = 1./m2Q2;
 
     double f = 1. / (1. + exp(2. * (xi - 4)));
 
@@ -1271,24 +1325,24 @@ double C2_g3_approximationB_klmv(double x, double mQ, double mMu, int nf, int me
     double beta3 = beta * beta * beta;
 
     double C2_g3_highenergyB = (64. * pi3) * (
-        0.055 * pow(log(1./mQ) / log(5), 2) - 0.423
-    ) * 4. / mQ / x;
+        0.055 * pow(log(1./m2Q2) / log(5), 2) - 0.423
+    ) * 4. / m2Q2 / x;
 
     double C30 = (
-        (C2_g3_threshold(x, mQ, 1., nf) - C2_g3_threshold_const(x, mQ, 1.))
-        + f * 2. * C2_g3_threshold_const(x, mQ, 1.)  + (1. - f) * beta3 * C2_g3_highscale(x, mQ, 1., nf, 2)
+        (C2_g3_threshold(x, m2Q2, 1., nf) - C2_g3_threshold_const(x, m2Q2, 1.))
+        + f * 2. * C2_g3_threshold_const(x, m2Q2, 1.)  + (1. - f) * beta3 * C2_g3_highscale(x, m2Q2, 1., nf, 2)
         + f * beta3 * (
-            - log(eta)/log(x) * C2_g3_highenergyLL(x, mQ, 1.)
+            - log(eta)/log(x) * C2_g3_highenergyLL(x, m2Q2, 1.)
             + C2_g3_highenergyB * eta_delta / (D + eta_delta)
         )
     );
 
-    if(mMu == 1.) return C30 ;
+    if(m2mu2 == 1.) return C30 ;
 
-    double Lmu = - log(mMu) ;
+    double Lmu = - log(m2mu2) ;
     double Lmu2 = Lmu * Lmu ;
 
-    return C30 + C2_g31(x, mQ, nf) * Lmu + C2_g32(x, mQ, nf, method_flag, calls) * Lmu2 ;
+    return C30 + C2_g31(x, m2Q2, nf) * Lmu + C2_g32(x, m2Q2, nf, method_flag, calls) * Lmu2 ;
 
 
 }
@@ -1303,19 +1357,19 @@ double C2_g3_approximationB_klmv(double x, double mQ, double mMu, int nf, int me
 //  of the one given in Eq. (16) of Ref. [arXiv:1701.05838].
 //------------------------------------------------------------------------------------------//
 
-double C2_g3_approximationB_klmv_paper(double x, double mQ, double mMu, int nf, int method_flag, int calls) {
+double C2_g3_approximationB_klmv_paper(double x, double m2Q2, double m2mu2, int nf, int method_flag, int calls) {
 
-    double x_max = 1. / (1. + 4 * mQ);
+    double x_max = 1. / (1. + 4 * m2Q2);
 
     if(x>=x_max || x<0) return 0;
 
     double pi3 = M_PI * M_PI * M_PI ;
 
-    double beta = sqrt(1. - 4 * mQ * x / (1. - x));
+    double beta = sqrt(1. - 4 * m2Q2 * x / (1. - x));
 
-    double eta = 0.25 / mQ * (1. - x) / x - 1;
+    double eta = 0.25 / m2Q2 * (1. - x) / x - 1;
 
-    double xi = 1. / mQ;
+    double xi = 1. / m2Q2;
 
     double f = 1. / (1. + exp(2. * (xi - 4.)));
 
@@ -1326,25 +1380,25 @@ double C2_g3_approximationB_klmv_paper(double x, double mQ, double mMu, int nf, 
     double beta3 = beta * beta * beta;
 
     double C2_g3_highenergyB = (64. * pi3) * (
-        0.055 * pow(log(1./mQ) / log(5), 2) - 0.423
-    ) * 4. / mQ / x;
+        0.055 * pow(log(1./m2Q2) / log(5), 2) - 0.423
+    ) * 4. / m2Q2 / x;
 
     double C30 = (
-        (C2_g3_threshold(x,mQ,1.,nf) - C2_g3_threshold_const(x, mQ, 1.))
-        + f * 2. * C2_g3_threshold_const(x, mQ, 1.)
-        + (1. - f) * beta3 * C2_g3_highscale(x, mQ, 1., nf, 4)
+        (C2_g3_threshold(x,m2Q2,1.,nf) - C2_g3_threshold_const(x, m2Q2, 1.))
+        + f * 2. * C2_g3_threshold_const(x, m2Q2, 1.)
+        + (1. - f) * beta3 * C2_g3_highscale(x, m2Q2, 1., nf, -12)
         + f * beta3 * (
-            - log(eta) / log(x) * C2_g3_highenergyLL(x, mQ, 1.)
+            - log(eta) / log(x) * C2_g3_highenergyLL(x, m2Q2, 1.)
             + C2_g3_highenergyB * eta_delta / (D + eta_delta)
         )
     );
 
-    if(mMu == 1.) return C30 ;
+    if(m2mu2 == 1.) return C30 ;
 
-    double Lmu = - log(mMu) ;
+    double Lmu = - log(m2mu2) ;
     double Lmu2 = Lmu * Lmu ;
 
-    return C30 + C2_g31(x, mQ, nf) * Lmu + C2_g32(x, mQ, nf, method_flag, calls) * Lmu2 ;
+    return C30 + C2_g31(x, m2Q2, nf) * Lmu + C2_g32(x, m2Q2, nf, method_flag, calls) * Lmu2 ;
 
 
 }
@@ -1360,19 +1414,19 @@ double C2_g3_approximationB_klmv_paper(double x, double mQ, double mMu, int nf, 
 //  instead of Eq. (4.20)
 //------------------------------------------------------------------------------------------//
 
-double C2_g3_approximationBlowxi_klmv(double x, double mQ, double mMu, int nf, int method_flag, int calls) {
+double C2_g3_approximationBlowxi_klmv(double x, double m2Q2, double m2mu2, int nf, int method_flag, int calls) {
 
-    double x_max = 1. / (1. + 4 * mQ);
+    double x_max = 1. / (1. + 4 * m2Q2);
 
     if(x>=x_max || x<0) return 0;
 
     double pi3 = M_PI * M_PI * M_PI ;
 
-    double beta = sqrt(1. - 4 * mQ * x / (1. - x));
+    double beta = sqrt(1. - 4 * m2Q2 * x / (1. - x));
 
-    double eta = 0.25 / mQ * (1. - x) / x - 1.;
+    double eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
 
-    double xi = 1./mQ;
+    double xi = 1./m2Q2;
 
     double f = 1. / (1. + exp(2. * (xi - 4.)));
 
@@ -1383,25 +1437,25 @@ double C2_g3_approximationBlowxi_klmv(double x, double mQ, double mMu, int nf, i
     double beta3 = beta * beta * beta;
 
     double C2_g3_highenergyB = CA / CF * (64. * pi3) * (
-        0.0245 * pow(log(1./mQ) / log(5), 2) - 0.17
-    ) * 4. / mQ / x;
+        0.0245 * pow(log(1./m2Q2) / log(5), 2) - 0.17
+    ) * 4. / m2Q2 / x;
 
     double C30 = (
-        (C2_g3_threshold(x, mQ, 1., nf) - C2_g3_threshold_const(x, mQ, 1.))
-        + f * 2. * C2_g3_threshold_const(x, mQ, 1.)
-        + (1. - f) * beta3 * C2_g3_highscale(x, mQ, 1., nf, 4)
+        (C2_g3_threshold(x, m2Q2, 1., nf) - C2_g3_threshold_const(x, m2Q2, 1.))
+        + f * 2. * C2_g3_threshold_const(x, m2Q2, 1.)
+        + (1. - f) * beta3 * C2_g3_highscale(x, m2Q2, 1., nf, -12)
         + f * beta3 * (
-            - log(eta) / log(x) * C2_g3_highenergyLL(x, mQ, 1.)
+            - log(eta) / log(x) * C2_g3_highenergyLL(x, m2Q2, 1.)
             + C2_g3_highenergyB * eta_delta / (D + eta_delta)
         )
     );
 
-    if(mMu == 1.) return C30 ;
+    if(m2mu2 == 1.) return C30 ;
 
-    double Lmu = - log(mMu) ;
+    double Lmu = - log(m2mu2) ;
     double Lmu2 = Lmu * Lmu ;
 
-    return C30 + C2_g31(x, mQ, nf) * Lmu + C2_g32(x, mQ, nf, method_flag, calls) * Lmu2 ;
+    return C30 + C2_g31(x, m2Q2, nf) * Lmu + C2_g32(x, m2Q2, nf, method_flag, calls) * Lmu2 ;
 
 
 }
@@ -1415,19 +1469,19 @@ double C2_g3_approximationBlowxi_klmv(double x, double mQ, double mMu, int nf, i
 //  This equation uses the exact expression of aQqPS30 given in Eq. (5.41, 5.42, 5.45) of Ref. [arXiv:1409.1135]
 //------------------------------------------------------------------------------------------//
 
-double C2_ps3_approximationA_klmv(double x, double mQ, double mMu, int nf) {
+double C2_ps3_approximationA_klmv(double x, double m2Q2, double m2mu2, int nf) {
 
-    double x_max = 1. / (1. + 4 * mQ);
+    double x_max = 1. / (1. + 4 * m2Q2);
 
     if(x>=x_max || x<0) return 0;
 
     double pi3 = M_PI * M_PI * M_PI ;
 
-    double beta = sqrt(1. - 4. * mQ * x / (1. - x));
+    double beta = sqrt(1. - 4. * m2Q2 * x / (1. - x));
 
-    double eta = 0.25 / mQ * (1. - x) / x - 1.;
+    double eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
 
-    double xi = 1. / mQ;
+    double xi = 1. / m2Q2;
 
     double f = 1. / (1. + exp(2. * (xi - 4)));
 
@@ -1438,23 +1492,23 @@ double C2_ps3_approximationA_klmv(double x, double mQ, double mMu, int nf) {
     double beta3 = beta * beta * beta;
 
     double C2_ps30_highenergyNLLA = (64. * pi3) *(
-        0.004 * pow(log(1./mQ) / log(5), 4) - 0.125
-    ) * 4. / mQ / x;
+        0.004 * pow(log(1./m2Q2) / log(5), 4) - 0.125
+    ) * 4. / m2Q2 / x;
 
     double C30 = (
-        (1. - f) * beta * C2_ps3_highscale(x, mQ, 1., nf)
+        (1. - f) * beta * C2_ps3_highscale(x, m2Q2, 1., nf)
         + f * beta3 * (
-            - log(eta) / log(x) * C2_ps3_highenergyLL(x, mQ, 1.)
+            - log(eta) / log(x) * C2_ps3_highenergyLL(x, m2Q2, 1.)
             + C2_ps30_highenergyNLLA * eta_gamma / (C + eta_gamma)
         )
     );
 
-    if(mMu == 1.) return C30 ;
+    if(m2mu2 == 1.) return C30 ;
 
-    double Lmu = - log(mMu) ;
+    double Lmu = - log(m2mu2) ;
     double Lmu2 = Lmu * Lmu ;
 
-    return C30 + C2_ps31(x, mQ, nf) * Lmu + C2_ps32(x, mQ, nf) * Lmu2 ;
+    return C30 + C2_ps31(x, m2Q2, nf) * Lmu + C2_ps32(x, m2Q2, nf) * Lmu2 ;
 
 }
 
@@ -1467,19 +1521,19 @@ double C2_ps3_approximationA_klmv(double x, double mQ, double mMu, int nf) {
 //  This equation uses the exact expression of aQqPS30 given in Eq. (5.41, 5.42, 5.45) of Ref. [arXiv:1409.1135]
 //------------------------------------------------------------------------------------------//
 
-double C2_ps3_approximationB_klmv(double x, double mQ, double mMu, int nf) {
+double C2_ps3_approximationB_klmv(double x, double m2Q2, double m2mu2, int nf) {
 
-    double x_max = 1. / (1. + 4. * mQ);
+    double x_max = 1. / (1. + 4. * m2Q2);
 
     if(x>=x_max || x<0) return 0;
 
     double pi3 = M_PI * M_PI * M_PI ;
 
-    double beta = sqrt(1. - 4. * mQ * x / (1. - x));
+    double beta = sqrt(1. - 4. * m2Q2 * x / (1. - x));
 
-    double eta = 0.25 / mQ * (1. - x) / x - 1.;
+    double eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
 
-    double xi = 1./mQ;
+    double xi = 1./m2Q2;
 
     double f = 1. / (1. + exp(2. * (xi - 4)));
 
@@ -1490,23 +1544,23 @@ double C2_ps3_approximationB_klmv(double x, double mQ, double mMu, int nf) {
     double beta3 = beta * beta * beta;
 
     double C2_ps30_highenergyNLLB = (64. * pi3) * (
-        0.0245 * pow(log(1./mQ) / log(5), 2) - 0.17
-    ) * 4. / mQ / x;
+        0.0245 * pow(log(1./m2Q2) / log(5), 2) - 0.17
+    ) * 4. / m2Q2 / x;
 
     double C30 = (
-        (1. - f) * beta3 * C2_ps3_highscale(x, mQ, 1., nf)
+        (1. - f) * beta3 * C2_ps3_highscale(x, m2Q2, 1., nf)
         + f * beta3 * (
-            - log(eta) / log(x) * C2_ps3_highenergyLL(x, mQ, 1.)
+            - log(eta) / log(x) * C2_ps3_highenergyLL(x, m2Q2, 1.)
             + C2_ps30_highenergyNLLB * eta_delta / (D + eta_delta)
         )
     );
 
-    if(mMu == 1.) return C30 ;
+    if(m2mu2 == 1.) return C30 ;
 
-    double Lmu = - log(mMu) ;
+    double Lmu = - log(m2mu2) ;
     double Lmu2 = Lmu * Lmu ;
 
-    return C30 + C2_ps31(x, mQ, nf) * Lmu + C2_ps32(x, mQ, nf) * Lmu2 ;
+    return C30 + C2_ps31(x, m2Q2, nf) * Lmu + C2_ps32(x, m2Q2, nf) * Lmu2 ;
 
 
 }
@@ -1522,19 +1576,19 @@ double C2_ps3_approximationB_klmv(double x, double mQ, double mMu, int nf) {
 //  Used only as a benchmark against the plots of the paper [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
-double C2_ps3_approximationA_klmv_paper(double x, double mQ, double mMu, int nf) {
+double C2_ps3_approximationA_klmv_paper(double x, double m2Q2, double m2mu2, int nf) {
 
-    double x_max = 1. / (1. + 4. * mQ);
+    double x_max = 1. / (1. + 4. * m2Q2);
 
     if(x>=x_max || x<0) return 0;
 
     double pi3 = M_PI * M_PI * M_PI ;
 
-    double beta = sqrt(1. - 4. * mQ * x / (1. - x));
+    double beta = sqrt(1. - 4. * m2Q2 * x / (1. - x));
 
-    double eta = 0.25 / mQ * (1. - x) / x - 1.;
+    double eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
 
-    double xi = 1./mQ;
+    double xi = 1./m2Q2;
 
     double f = 1. / (1. + exp(2. * (xi - 4.)));
 
@@ -1544,24 +1598,24 @@ double C2_ps3_approximationA_klmv_paper(double x, double mQ, double mMu, int nf)
 
     double beta3 = beta * beta * beta;
 
-    double C2_ps30_highenergyNLLA = (64. * pi3) *(
-        0.004 * pow(log(1./mQ) / log(5), 4) - 0.125
-    ) * 4. / mQ / x;
+    double C2_ps30_highenergyNLLA = (64. * pi3) * (
+        0.004 * pow(log(1./m2Q2) / log(5.), 4) - 0.125
+    ) * 4. / m2Q2 / x;
 
     double C30 = (
-        (1. - f) * beta * C2_ps3_highscale_klmv_paper(x, mQ, 1., nf, 1)
+        (1. - f) * beta * C2_ps3_highscale_klmv_paper(x, m2Q2, 1., nf, 1)
         + f * beta3 * (
-            - log(eta) / log(x) * C2_ps3_highenergyLL(x, mQ, 1.)
+            - log(eta) / log(x) * C2_ps3_highenergyLL(x, m2Q2, 1.)
             + C2_ps30_highenergyNLLA * eta_gamma / (C + eta_gamma)
         )
     );
 
-    if(mMu == 1.) return C30 ;
+    if(m2mu2 == 1.) return C30 ;
 
-    double Lmu = - log(mMu) ;
+    double Lmu = - log(m2mu2) ;
     double Lmu2 = Lmu * Lmu ;
 
-    return C30 + C2_ps31(x, mQ, nf) * Lmu + C2_ps32(x, mQ, nf) * Lmu2 ;
+    return C30 + C2_ps31(x, m2Q2, nf) * Lmu + C2_ps32(x, m2Q2, nf) * Lmu2 ;
 
 }
 
@@ -1576,19 +1630,19 @@ double C2_ps3_approximationA_klmv_paper(double x, double mQ, double mMu, int nf)
 //  Used only as a benchmark against the plots of the paper [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
-double C2_ps3_approximationB_klmv_paper(double x, double mQ, double mMu, int nf) {
+double C2_ps3_approximationB_klmv_paper(double x, double m2Q2, double m2mu2, int nf) {
 
-    double x_max = 1. / (1. + 4. * mQ);
+    double x_max = 1. / (1. + 4. * m2Q2);
 
     if(x>=x_max || x<0) return 0;
 
     double pi3 = M_PI * M_PI * M_PI ;
 
-    double beta = sqrt(1. - 4. * mQ * x / (1. - x));
+    double beta = sqrt(1. - 4. * m2Q2 * x / (1. - x));
 
-    double eta = 0.25 / mQ * (1. - x) / x - 1.;
+    double eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
 
-    double xi = 1./mQ;
+    double xi = 1./m2Q2;
 
     double f = 1. / (1. + exp(2. * (xi - 4.)));
 
@@ -1599,22 +1653,22 @@ double C2_ps3_approximationB_klmv_paper(double x, double mQ, double mMu, int nf)
     double beta3 = beta * beta * beta;
 
     double C2_ps30_highenergyNLLB = (64. * pi3) * (
-        0.0245 * pow(log(1./mQ) / log(5), 2) - 0.17
-    ) * 4 / mQ / x;
+        0.0245 * pow(log(1./m2Q2) / log(5.), 2) - 0.17
+    ) * 4. / m2Q2 / x;
 
     double C30 = (
-        (1. - f) * beta3 * C2_ps3_highscale_klmv_paper(x, mQ, 1., nf, 2)
+        (1. - f) * beta3 * C2_ps3_highscale_klmv_paper(x, m2Q2, 1., nf, 2)
         + f * beta3 * (
-            - log(eta) / log(x) * C2_ps3_highenergyLL(x, mQ, 1.)
+            - log(eta) / log(x) * C2_ps3_highenergyLL(x, m2Q2, 1.)
             + C2_ps30_highenergyNLLB * eta_delta / (D + eta_delta)
         )
     );
 
-    if(mMu == 1.) return C30 ;
+    if(m2mu2 == 1.) return C30 ;
 
-    double Lmu = - log(mMu) ;
+    double Lmu = - log(m2mu2) ;
     double Lmu2 = Lmu * Lmu ;
 
-    return C30 + C2_ps31(x, mQ, nf) * Lmu + C2_ps32(x, mQ, nf) * Lmu2 ;
+    return C30 + C2_ps31(x, m2Q2, nf) * Lmu + C2_ps32(x, m2Q2, nf) * Lmu2 ;
 
 }

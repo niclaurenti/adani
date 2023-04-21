@@ -10,3 +10,6 @@ output/*.dat
 inc/adani/version.h
 bin/adani-config
 bin/adani.pc
+
+dist/
+MANIFEST.in
