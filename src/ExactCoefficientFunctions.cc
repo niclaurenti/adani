@@ -55,6 +55,17 @@ double CL_g1(double x, double m2Q2) {
 }
 
 //==========================================================================================//
+//  OBSERVATION: in the O(alpha_s^2) exact coefficeint functions the mu-independent part is
+//  an interpolation in a certain grid. When this function is called for a (x,Q) value outside
+//  this grid, the value 0 is returned.
+//  The mu-dependent part is defined everywhere. However, also this is put to zero for values
+//  outside the grid otherwise we would have that one term contributes while the other doesn't.
+//  Unfortunately in this way the check if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return 0.
+//  must be performed twice (but this is not a big issue since in the integrals we have only the
+//  interpolated result).
+//------------------------------------------------------------------------------------------//
+
+//==========================================================================================//
 //  Exact massive gluon coefficient functions for F2 at O(alpha_s^2)
 //
 //  Exact (but numerical) result from [arXiv:hep-ph/9411431].
@@ -63,9 +74,10 @@ double CL_g1(double x, double m2Q2) {
 
 double C2_g2(double x, double m2Q2, double m2mu2) {
 
-    double x_max = 1. / (1 + 4 * m2Q2) ;
+    double xi = 1. / m2Q2;
+    double eta = 0.25 * xi * (1 - x) / x - 1. ;
 
-    if (x>=x_max || x<0) return 0;
+    if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return 0.;
 
     return (
         C2_g20(x, m2Q2)
@@ -83,9 +95,10 @@ double C2_g2(double x, double m2Q2, double m2mu2) {
 
 double C2_ps2(double x, double m2Q2, double m2mu2) {
 
-    double x_max = 1. / (1 + 4 * m2Q2) ;
+    double xi = 1. / m2Q2;
+    double eta = 0.25 * xi * (1 - x) / x - 1. ;
 
-    if (x>=x_max || x<0) return 0;
+    if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return 0.;
 
     return (
         C2_ps20(x, m2Q2)
@@ -103,9 +116,10 @@ double C2_ps2(double x, double m2Q2, double m2mu2) {
 
 double CL_g2(double x, double m2Q2, double m2mu2) {
 
-    double x_max = 1. / (1 + 4 * m2Q2) ;
+    double xi = 1. / m2Q2;
+    double eta = 0.25 * xi * (1 - x) / x - 1. ;
 
-    if (x>=x_max || x<0) return 0;
+    if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return 0.;
 
     return (
         CL_g20(x, m2Q2)
@@ -123,9 +137,10 @@ double CL_g2(double x, double m2Q2, double m2mu2) {
 
 double CL_ps2(double x, double m2Q2, double m2mu2) {
 
-    double x_max = 1. / (1 + 4 * m2Q2) ;
+    double xi = 1. / m2Q2;
+    double eta = 0.25 * xi * (1 - x) / x - 1. ;
 
-    if (x>=x_max || x<0) return 0;
+    if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return 0.;
 
     return (
         CL_ps20(x, m2Q2)
