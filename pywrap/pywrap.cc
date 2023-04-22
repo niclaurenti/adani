@@ -143,4 +143,31 @@ PYBIND11_MODULE(_core, m) {
     m.def("C2_g3_highenergy_highscaleLL", &C2_g3_highenergy_highscaleLL, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"));
     m.def("CL_g3_highenergy_highscaleLL", &CL_g3_highenergy_highscaleLL, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"));
 
+    // Convolutions
+    m.def("C2_g1_x_Pgq0", &C2_g1_x_Pgq0, py::arg("x"), py::arg("m2Q2"));
+    m.def("CL_g1_x_Pgq0", &CL_g1_x_Pgq0, py::arg("x"), py::arg("m2Q2"));
+    m.def("C2_g1_x_Pgg0", &C2_g1_x_Pgg0, py::arg("x"), py::arg("m2Q2"), py::arg("nf"));
+    m.def("CL_g1_x_Pgg0", &CL_g1_x_Pgg0, py::arg("x"), py::arg("m2Q2"), py::arg("nf"));
+    m.def("C2_g1_x_Pgq1", &C2_g1_x_Pgq1, py::arg("x"), py::arg("m2Q2"), py::arg("nf"));
+    m.def("CL_g1_x_Pgq1", &CL_g1_x_Pgq1, py::arg("x"), py::arg("m2Q2"), py::arg("nf"));
+    m.def("C2_g20_x_Pgq0", &C2_g20_x_Pgq0, py::arg("x"), py::arg("m2Q2"));
+    m.def("CL_g20_x_Pgq0", &CL_g20_x_Pgq0, py::arg("x"), py::arg("m2Q2"));
+    m.def("C2_ps20_x_Pqq0", &C2_ps20_x_Pqq0, py::arg("x"), py::arg("m2Q2"), py::arg("nf"));
+    m.def("CL_ps20_x_Pqq0", &CL_ps20_x_Pqq0, py::arg("x"), py::arg("m2Q2"), py::arg("nf"));
+    m.def("C2_g1_x_Pgg0_x_Pgq0", &C2_g1_x_Pgg0_x_Pgq0, py::arg("x"), py::arg("m2Q2"), py::arg("nf"));
+    m.def("CL_g1_x_Pgg0_x_Pgq0", &CL_g1_x_Pgg0_x_Pgq0, py::arg("x"), py::arg("m2Q2"), py::arg("nf"));
+    m.def("C2_g1_x_Pqq0_x_Pgq0", &C2_g1_x_Pqq0_x_Pgq0, py::arg("x"), py::arg("m2Q2"), py::arg("nf"));
+    m.def("CL_g1_x_Pqq0_x_Pgq0", &CL_g1_x_Pqq0_x_Pgq0, py::arg("x"), py::arg("m2Q2"), py::arg("nf"));
+    m.def("C2_g1_x_Pgg1", &C2_g1_x_Pgg1, py::arg("x"), py::arg("m2Q2"), py::arg("nf"));
+    m.def("CL_g1_x_Pgg1", &CL_g1_x_Pgg1, py::arg("x"), py::arg("m2Q2"), py::arg("nf"));
+    m.def("C2_ps20_x_Pqg0", &C2_ps20_x_Pqg0, py::arg("x"), py::arg("m2Q2"), py::arg("nf"));
+    m.def("CL_ps20_x_Pqg0", &CL_ps20_x_Pqg0, py::arg("x"), py::arg("m2Q2"), py::arg("nf"));
+    m.def("C2_g20_x_Pgg0", &C2_g20_x_Pgg0, py::arg("x"), py::arg("m2Q2"), py::arg("nf"));
+    m.def("CL_g20_x_Pgg0", &CL_g20_x_Pgg0, py::arg("x"), py::arg("m2Q2"), py::arg("nf"));
+    m.def("Pqg0_x_Pgq0", &Pqg0_x_Pgq0, py::arg("x"), py::arg("nf"));
+    m.def("C2_g1_x_Pqg0_x_Pgq0", &C2_g1_x_Pqg0_x_Pgq0, py::arg("x"), py::arg("m2Q2"), py::arg("nf"));
+    m.def("CL_g1_x_Pqg0_x_Pgq0", &CL_g1_x_Pqg0_x_Pgq0, py::arg("x"), py::arg("m2Q2"), py::arg("nf"));
+    m.def("C2_g1_x_Pgg0_x_Pgg0", &C2_g1_x_Pgg0_x_Pgg0, py::arg("x"), py::arg("m2Q2"), py::arg("nf"));
+    m.def("CL_g1_x_Pgg0_x_Pgg0", &CL_g1_x_Pgg0_x_Pgg0, py::arg("x"), py::arg("m2Q2"), py::arg("nf"));
+
 }
