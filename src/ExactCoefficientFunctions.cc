@@ -50,7 +50,7 @@ double CL_g1(double x, double m2Q2) {
 //  OBSERVATION: in the O(alpha_s^2) exact coefficeint functions the mu-independent part is
 //  an interpolation in a certain grid. When this function is called for a (x,Q) value outside
 //  this grid, the value 0 is returned.
-//  The mu-dependent part is defined everywhere. However, also this is put to zero for values
+//  The mu-dependent part is defined everywhere. However, also this one is put to zero for values
 //  outside the grid otherwise we would have that one term contributes while the other doesn't.
 //  Unfortunately in this way the check if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return 0.
 //  must be performed twice (but this is not a big issue since in the integrals we have only the

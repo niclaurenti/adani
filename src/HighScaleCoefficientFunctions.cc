@@ -30,8 +30,6 @@ double C2_g1_highscale(double x, double m2Q2) {
 
 double CL_g1_highscale(double x) {
 
-    if(x>=1 || x<0) return 0.;
-
     return CL_g1_massless(x, 1) ;
 
 }
@@ -3093,8 +3091,6 @@ double C2_ps3_highscale_klmv_paper(double x, double m2Q2, double m2mu2, int nf, 
 //------------------------------------------------------------------------------------------//
 
 double D2_ps3_highscale_klmv_paper(double x, double m2Q2, double m2mu2, int nf, int v) {
-
-    if(x<0 || x>=1) return 0;
 
     if(v==1 || v==2) {
         return D2_ps3_highscale(x, m2Q2, m2mu2, nf, v) ;

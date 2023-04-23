@@ -188,8 +188,6 @@ double a_Qg_30(double x, int v) {
 
 double a_Qq_PS_30(double x, int v) {
 
-    if(x<0 || x>=1) return 0;
-
     double x2 = x * x ;
 
     if(v==0){
