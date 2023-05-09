@@ -171,5 +171,10 @@ PYBIND11_MODULE(_core, m) {
     m.def("CL_g1_x_Pgg0_x_Pgg0", &CL_g1_x_Pgg0_x_Pgg0, py::arg("x"), py::arg("m2Q2"), py::arg("nf"));
 
     m.def("C2_g1_x_Pgg0_x_Pgg0_reg", &C2_g1_x_Pgg0_x_Pgg0_reg, py::arg("x"), py::arg("m2Q2"), py::arg("nf"), py::arg("calls"));
+    m.def("CL_g1_x_Pgg0_x_Pgg0_reg", &CL_g1_x_Pgg0_x_Pgg0_reg, py::arg("x"), py::arg("m2Q2"), py::arg("nf"), py::arg("calls"));
+    m.def("C2_g1_x_Pgg0_x_Pgg0_sing", &C2_g1_x_Pgg0_x_Pgg0_sing, py::arg("x"), py::arg("m2Q2"), py::arg("nf"), py::arg("calls"));
+    m.def("CL_g1_x_Pgg0_x_Pgg0_sing", &CL_g1_x_Pgg0_x_Pgg0_sing, py::arg("x"), py::arg("m2Q2"), py::arg("nf"), py::arg("calls"));
+
+    m.def("C2_g1_x_Pgg0_x_Pgg0_MC", &C2_g1_x_Pgg0_x_Pgg0_MC, py::arg("x"), py::arg("m2Q2"), py::arg("nf"), py::arg("calls"));
 
 }
