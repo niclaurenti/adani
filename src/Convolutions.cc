@@ -1722,15 +1722,15 @@ double C2_g1_x_Pgg0_x_Pgg0_sing1_integrand(double z[], size_t dim, void * p) {
     double z1 = z[0], z2 = z[1] ;
 
     double tmp ;
-    if (z2 - x / z1 > 0.) {
+    if (z2 > x / z1) {
         tmp = Pgg0reg(x / (z1 * z2)) / z1 ;
     } else {
         tmp = 0. ;
     }
 
-    return 1. / z2 * Pgg0sing(z1) * (
+    return Pgg0sing(z1) * (
         tmp - Pgg0reg(x / z2)
-    ) * C2_g1(z2, m2Q2) ;
+    ) * C2_g1(z2, m2Q2) / z2 ;
 
 }
 
