@@ -1979,10 +1979,16 @@ double CL_g1_x_Pgg0_x_Pgg0_sing1_integrand(double z[], size_t dim, void * p) {
 
     double z1 = z[0], z2 = z[1] ;
 
-    return 1. / z2 * Pgg0sing(z1) * (
-        theta(z2 - x / z1) / z1 * Pgg0reg(x / (z1 * z2))
-        - Pgg0reg(x / z2)
-    ) * CL_g1(z2, m2Q2) ;
+    double tmp ;
+    if (z2 > x / z1) {
+        tmp = Pgg0reg(x / (z1 * z2)) / z1 ;
+    } else {
+        tmp = 0. ;
+    }
+
+    return Pgg0sing(z1) * (
+        tmp - Pgg0reg(x / z2)
+    ) * CL_g1(z2, m2Q2) / z2 ;
 
 }
 
@@ -2000,9 +2006,15 @@ double CL_g1_x_Pgg0_x_Pgg0_sing2_integrand(double z[], size_t dim, void * p) {
 
     double z1 = z[0], z2 = z[1] ;
 
-    return Pgg0sing(z1) * (
-        Pgg0sing(z2) / z1 * (CL_g1(x / (z1 * z2), m2Q2) / z2 - CL_g1(x / z1, m2Q2)) * theta(z2 - x / (x_max * z1))
-        - Pgg0sing(z2) * (CL_g1(x / z2, m2Q2) / z2 - CL_g1(x, m2Q2))
+    double tmp ;
+    if(z2 > x / (x_max * z1)) {
+        tmp = (CL_g1(x / (z1 * z2), m2Q2) / z2 - CL_g1(x / z1, m2Q2)) / z1 ;
+    } else {
+        tmp = 0. ;
+    }
+
+    return Pgg0sing(z1) * Pgg0sing(z2) * (
+        tmp - (CL_g1(x / z2, m2Q2) / z2 - CL_g1(x, m2Q2))
     ) ;
 
 }
