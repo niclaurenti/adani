@@ -1579,11 +1579,6 @@ double CL_g1_x_Pgg0_x_Pgg0(double x, double m2Q2, int nf) {
 
 double C2_g1_x_Pgg0_x_Pgg0_reg1_integrand(double z[], size_t dim, void * p) {
 
-    if (dim != 2) {
-        std::cout << "error: dim != 2" << std::endl ;
-        exit(-1);
-    }
-
     struct function_params * params = (struct function_params *)p;
 
     double m2Q2 = (params->m2Q2);
@@ -1603,11 +1598,6 @@ double C2_g1_x_Pgg0_x_Pgg0_reg1_integrand(double z[], size_t dim, void * p) {
 //------------------------------------------------------------------------------------------//
 
 double C2_g1_x_Pgg0_x_Pgg0_reg2_integrand(double z[], size_t dim, void * p) {
-
-    if (dim != 2) {
-        std::cout << "error: dim != 2" << std::endl ;
-        exit(-1);
-    }
 
     struct function_params * params = (struct function_params *)p;
 
@@ -1708,11 +1698,6 @@ double C2_g1_x_Pgg0_x_Pgg0_reg(double x, double m2Q2, int nf, size_t calls) {
 
 double C2_g1_x_Pgg0_x_Pgg0_sing1_integrand(double z[], size_t dim, void * p) {
 
-    if (dim != 2) {
-        std::cout << "error: dim != 2" << std::endl ;
-        exit(-1);
-    }
-
     struct function_params * params = (struct function_params *)p;
 
     double m2Q2 = (params->m2Q2);
@@ -1738,11 +1723,6 @@ double C2_g1_x_Pgg0_x_Pgg0_sing1_integrand(double z[], size_t dim, void * p) {
 
 double C2_g1_x_Pgg0_x_Pgg0_sing2_integrand(double z[], size_t dim, void * p) {
 
-    if (dim != 2) {
-        std::cout << "error: dim != 2" << std::endl ;
-        exit(-1);
-    }
-
     struct function_params * params = (struct function_params *)p;
 
     double m2Q2 = (params->m2Q2);
@@ -1754,7 +1734,7 @@ double C2_g1_x_Pgg0_x_Pgg0_sing2_integrand(double z[], size_t dim, void * p) {
     double z1 = z[0], z2 = z[1] ;
 
     double tmp ;
-    if(z2 - x / (x_max * z1) > 0.) {
+    if(z2 > x / (x_max * z1)) {
         tmp = (C2_g1(x / (z1 * z2), m2Q2) / z2 - C2_g1(x / z1, m2Q2)) / z1 ;
     } else {
         tmp = 0. ;
@@ -1872,11 +1852,6 @@ double C2_g1_x_Pgg0_x_Pgg0_MC(double x, double m2Q2, int nf, size_t calls) {
 
 double CL_g1_x_Pgg0_x_Pgg0_reg1_integrand(double z[], size_t dim, void * p) {
 
-    if (dim != 2) {
-        std::cout << "error: dim != 2" << std::endl ;
-        exit(-1);
-    }
-
     struct function_params * params = (struct function_params *)p;
 
     double m2Q2 = (params->m2Q2);
@@ -1896,11 +1871,6 @@ double CL_g1_x_Pgg0_x_Pgg0_reg1_integrand(double z[], size_t dim, void * p) {
 //------------------------------------------------------------------------------------------//
 
 double CL_g1_x_Pgg0_x_Pgg0_reg2_integrand(double z[], size_t dim, void * p) {
-
-    if (dim != 2) {
-        std::cout << "error: dim != 2" << std::endl ;
-        exit(-1);
-    }
 
     struct function_params * params = (struct function_params *)p;
 
@@ -2001,11 +1971,6 @@ double CL_g1_x_Pgg0_x_Pgg0_reg(double x, double m2Q2, int nf, size_t calls) {
 
 double CL_g1_x_Pgg0_x_Pgg0_sing1_integrand(double z[], size_t dim, void * p) {
 
-    if (dim != 2) {
-        std::cout << "error: dim != 2" << std::endl ;
-        exit(-1);
-    }
-
     struct function_params * params = (struct function_params *)p;
 
     double m2Q2 = (params->m2Q2);
@@ -2024,11 +1989,6 @@ double CL_g1_x_Pgg0_x_Pgg0_sing1_integrand(double z[], size_t dim, void * p) {
 //------------------------------------------------------------------------------------------//
 
 double CL_g1_x_Pgg0_x_Pgg0_sing2_integrand(double z[], size_t dim, void * p) {
-
-    if (dim != 2) {
-        std::cout << "error: dim != 2" << std::endl ;
-        exit(-1);
-    }
 
     struct function_params * params = (struct function_params *)p;
 
