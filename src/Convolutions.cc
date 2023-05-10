@@ -11,6 +11,7 @@
 
 #define REL 0.001
 #define ABS 0.001
+#define CALLS 50000
 #define DIM 1000
 
 // TODO : in all the numerical convolutions the gsl default error is first switched off and
@@ -1634,7 +1635,7 @@ double C2_g1_x_Pgg0_x_Pgg0_reg3_integrand(double z, void * p) {
 
 //------------------------------------------------------------------------------------------//
 
-double C2_g1_x_Pgg0_x_Pgg0_reg(double x, double m2Q2, int nf, size_t calls) {
+double C2_g1_x_Pgg0_x_Pgg0_reg(double x, double m2Q2, int nf) {
 
     double x_max = 1. / (1. + 4 * m2Q2) ;
     struct function_params params = {x, m2Q2, nf} ;
@@ -1642,6 +1643,7 @@ double C2_g1_x_Pgg0_x_Pgg0_reg(double x, double m2Q2, int nf, size_t calls) {
     double xu[2] = {x_max, x_max};
 
     double err, regular1, regular2, regular3, regular4 ;
+    size_t calls = CALLS ;
 
     gsl_monte_vegas_state *s = gsl_monte_vegas_alloc (2);
 
@@ -1769,7 +1771,7 @@ double C2_g1_x_Pgg0_x_Pgg0_sing3_integrand(double z, void * p) {
 
 //------------------------------------------------------------------------------------------//
 
-double C2_g1_x_Pgg0_x_Pgg0_sing(double x, double m2Q2, int nf, size_t calls) {
+double C2_g1_x_Pgg0_x_Pgg0_sing(double x, double m2Q2, int nf) {
 
     double x_max = 1. / (1. + 4 * m2Q2) ;
     struct function_params params = {x, m2Q2, nf} ;
@@ -1778,6 +1780,7 @@ double C2_g1_x_Pgg0_x_Pgg0_sing(double x, double m2Q2, int nf, size_t calls) {
     double xu[2] = {1, x_max};
 
     double err, singular1, singular2, singular3, singular4 ;
+    size_t calls = CALLS ;
 
     gsl_monte_vegas_state *s = gsl_monte_vegas_alloc (2);
 
@@ -1833,13 +1836,13 @@ double C2_g1_x_Pgg0_x_Pgg0_sing(double x, double m2Q2, int nf, size_t calls) {
 
 //------------------------------------------------------------------------------------------//
 
-double C2_g1_x_Pgg0_x_Pgg0_MC(double x, double m2Q2, int nf, size_t calls) {
+double C2_g1_x_Pgg0_x_Pgg0_MC(double x, double m2Q2, int nf) {
 
     double x_max = 1. / (1. + 4 * m2Q2) ;
 
     return (
-        C2_g1_x_Pgg0_x_Pgg0_reg(x, m2Q2, nf, calls)
-        + C2_g1_x_Pgg0_x_Pgg0_sing(x, m2Q2, nf, calls)
+        C2_g1_x_Pgg0_x_Pgg0_reg(x, m2Q2, nf)
+        + C2_g1_x_Pgg0_x_Pgg0_sing(x, m2Q2, nf)
         + C2_g1_x_Pgg0(x, m2Q2, nf) * (Pgg0loc(nf) - Pgg0sing_integrated(x / x_max))
     );
 
@@ -1907,7 +1910,7 @@ double CL_g1_x_Pgg0_x_Pgg0_reg3_integrand(double z, void * p) {
 
 //------------------------------------------------------------------------------------------//
 
-double CL_g1_x_Pgg0_x_Pgg0_reg(double x, double m2Q2, int nf, size_t calls) {
+double CL_g1_x_Pgg0_x_Pgg0_reg(double x, double m2Q2, int nf) {
 
     double x_max = 1. / (1. + 4 * m2Q2) ;
     struct function_params params = {x, m2Q2, nf} ;
@@ -1915,6 +1918,7 @@ double CL_g1_x_Pgg0_x_Pgg0_reg(double x, double m2Q2, int nf, size_t calls) {
     double xu[2] = {x_max, x_max};
 
     double err, regular1, regular2, regular3, regular4 ;
+    size_t calls = CALLS ;
 
     gsl_monte_vegas_state *s = gsl_monte_vegas_alloc (2);
 
@@ -2042,7 +2046,7 @@ double CL_g1_x_Pgg0_x_Pgg0_sing3_integrand(double z, void * p) {
 
 //------------------------------------------------------------------------------------------//
 
-double CL_g1_x_Pgg0_x_Pgg0_sing(double x, double m2Q2, int nf, size_t calls) {
+double CL_g1_x_Pgg0_x_Pgg0_sing(double x, double m2Q2, int nf) {
 
     double x_max = 1. / (1. + 4 * m2Q2) ;
     struct function_params params = {x, m2Q2, nf} ;
@@ -2051,6 +2055,7 @@ double CL_g1_x_Pgg0_x_Pgg0_sing(double x, double m2Q2, int nf, size_t calls) {
     double xu[2] = {1, x_max};
 
     double err, singular1, singular2, singular3, singular4 ;
+    size_t calls = CALLS ;
 
     gsl_monte_vegas_state *s = gsl_monte_vegas_alloc (2);
 
@@ -2106,13 +2111,13 @@ double CL_g1_x_Pgg0_x_Pgg0_sing(double x, double m2Q2, int nf, size_t calls) {
 
 //------------------------------------------------------------------------------------------//
 
-double CL_g1_x_Pgg0_x_Pgg0_MC(double x, double m2Q2, int nf, size_t calls) {
+double CL_g1_x_Pgg0_x_Pgg0_MC(double x, double m2Q2, int nf) {
 
     double x_max = 1. / (1. + 4 * m2Q2) ;
 
     return (
-        CL_g1_x_Pgg0_x_Pgg0_reg(x, m2Q2, nf, calls)
-        + CL_g1_x_Pgg0_x_Pgg0_sing(x, m2Q2, nf, calls)
+        CL_g1_x_Pgg0_x_Pgg0_reg(x, m2Q2, nf)
+        + CL_g1_x_Pgg0_x_Pgg0_sing(x, m2Q2, nf)
         + CL_g1_x_Pgg0(x, m2Q2, nf) * (Pgg0loc(nf) - Pgg0sing_integrated(x / x_max))
     );
 

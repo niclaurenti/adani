@@ -12,7 +12,6 @@ with open("runcard.yaml", 'r') as stream:
 
 m = runcard["m"]
 nf = runcard["nf"]
-calls = runcard["calls"]
 mufrac = runcard["mufrac"]
 
 def function_to_exe_in_parallel(pair):
@@ -21,11 +20,11 @@ def function_to_exe_in_parallel(pair):
     m2Q2 = m**2 / q**2
     m2mu2 = m**2 / mu**2
     if runcard["channel"] == "2g":
-        return adani.C2_g3_approximation(x, m2Q2, m2mu2, nf, v=0, method_flag=1, calls=calls)
+        return adani.C2_g3_approximation(x, m2Q2, m2mu2, nf, v=0, method_flag=0)
     elif runcard["channel"] == "2q":
         return adani.C2_ps3_approximation(x, m2Q2, m2mu2, nf, v=0)
     elif runcard["channel"] == "Lg":
-        return adani.CL_g3_approximation(x, m2Q2, m2mu2, nf, v=0, method_flag=1, calls=calls)
+        return adani.CL_g3_approximation(x, m2Q2, m2mu2, nf, v=0, method_flag=0)
     elif runcard["channel"] == "Lq":
         return adani.CL_ps3_approximation(x, m2Q2, m2mu2, nf, v=0)
     else:

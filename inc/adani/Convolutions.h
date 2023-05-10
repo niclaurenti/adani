@@ -188,28 +188,28 @@ double C2_g1_x_Pgg0_x_Pgg0_reg1_integrand(double z[], size_t dim, void * p) ;
 double C2_g1_x_Pgg0_x_Pgg0_reg2_integrand(double z[], size_t dim, void * p) ;
 double C2_g1_x_Pgg0_x_Pgg0_reg3_integrand(double z[], size_t dim, void * p);
 
-double C2_g1_x_Pgg0_x_Pgg0_reg(double x, double m2Q2, int nf, size_t calls);
+double C2_g1_x_Pgg0_x_Pgg0_reg(double x, double m2Q2, int nf);
 
 double C2_g1_x_Pgg0_x_Pgg0_sing1_integrand(double z[], size_t dim, void * p) ;
 double C2_g1_x_Pgg0_x_Pgg0_sing2_integrand(double z[], size_t dim, void * p) ;
 double C2_g1_x_Pgg0_x_Pgg0_sing3_integrand(double z[], size_t dim, void * p);
 
-double C2_g1_x_Pgg0_x_Pgg0_sing(double x, double m2Q2, int nf, size_t calls);
+double C2_g1_x_Pgg0_x_Pgg0_sing(double x, double m2Q2, int nf);
 
-double C2_g1_x_Pgg0_x_Pgg0_MC(double x, double m2Q2, int nf, size_t calls) ;
+double C2_g1_x_Pgg0_x_Pgg0_MC(double x, double m2Q2, int nf) ;
 
 double CL_g1_x_Pgg0_x_Pgg0_reg1_integrand(double z[], size_t dim, void * p) ;
 double CL_g1_x_Pgg0_x_Pgg0_reg2_integrand(double z[], size_t dim, void * p) ;
 double CL_g1_x_Pgg0_x_Pgg0_reg3_integrand(double z[], size_t dim, void * p);
 
-double CL_g1_x_Pgg0_x_Pgg0_reg(double x, double m2Q2, int nf, size_t calls);
+double CL_g1_x_Pgg0_x_Pgg0_reg(double x, double m2Q2, int nf);
 
 double CL_g1_x_Pgg0_x_Pgg0_sing1_integrand(double z[], size_t dim, void * p) ;
 double CL_g1_x_Pgg0_x_Pgg0_sing2_integrand(double z[], size_t dim, void * p) ;
 double CL_g1_x_Pgg0_x_Pgg0_sing3_integrand(double z[], size_t dim, void * p);
 
-double CL_g1_x_Pgg0_x_Pgg0_sing(double x, double m2Q2, int nf, size_t calls);
+double CL_g1_x_Pgg0_x_Pgg0_sing(double x, double m2Q2, int nf);
 
-double CL_g1_x_Pgg0_x_Pgg0_MC(double x, double m2Q2, int nf, size_t calls) ;
+double CL_g1_x_Pgg0_x_Pgg0_MC(double x, double m2Q2, int nf) ;
 
 #endif

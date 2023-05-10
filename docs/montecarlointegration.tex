@@ -32,8 +32,8 @@ where $\PR$ is regular in $x\rightarrow 1$, while $\PS$ is singular in $x\righta
 The convolution between $C(x)$ and $P(x)$ is
 \begin{equation}
 	\begin{split}
-	(C \otimes P)(x)&=\int_x^{x_{\rm max}} \frac{dz_2}{z_2} C(z_2) \PR \left(\frac{x}{z_2}\right) + \int_{\frac{x}{\xm}}^1dz_2 \PS(z_2) \left( \frac{C\left(\frac{x}{z_2}\right)}{z_2} - C(x)\right)-C(x)\int_0^{\frac{x}{\xm}}dz_2\PS(z_2) + C(x)\PL \\
-	&=\int_x^{x_{\rm max}} \frac{dz_2}{z_2} C(z_2) \PR \left(\frac{x}{z_2}\right) + \int_{\frac{x}{\xm}}^1dz_2 \PS(z_2) \left( \frac{C\left(\frac{x}{z_2}\right)}{z_2} - C(x)\right)+ C(x)\left(\PL - \PmS\left(\frac{x}{\xm}\right)\right)
+	(C \otimes P)(x)&=\int_x^{\xm} \frac{dz_2}{z_2} C(z_2) \PR \left(\frac{x}{z_2}\right) + \int_{\frac{x}{\xm}}^1dz_2 \PS(z_2) \left( \frac{C\left(\frac{x}{z_2}\right)}{z_2} - C(x)\right)-C(x)\int_0^{\frac{x}{\xm}}dz_2\PS(z_2) + C(x)\PL \\
+	&=\int_x^{\xm} \frac{dz_2}{z_2} C(z_2) \PR \left(\frac{x}{z_2}\right) + \int_{\frac{x}{\xm}}^1dz_2 \PS(z_2) \left( \frac{C\left(\frac{x}{z_2}\right)}{z_2} - C(x)\right)+ C(x)\left(\PL - \PmS\left(\frac{x}{\xm}\right)\right)
 \end{split}
 \end{equation}
 where we defined
@@ -56,9 +56,9 @@ Let's consider each piece separately.
 \begin{equation*}
 	\begin{split}
 		& \int_x^{x_{\rm max}} \frac{dz_1}{z_1} (C \otimes P)(z_1) \PR \left(\frac{x}{z_1}\right)  = \\
-		&\int_x^{\xm} \frac{dz_1}{z_1}\PR\left(\frac{x}{z_1}\right) \left[ \int_{\zo}^{\xm} \frac{d\zt}{\zt}C(\zt)\PR\left(\frac{\zo}{\zt}\right) +  \int_{\frac{\zo}{\xm}}^{1} \PS(\zt)\left(\frac{C\left(\frac{\zo}{\zt}\right)}{\zt}-C(\zo)\right) + C(\zo)\left(\PL - \PmS\left(\frac{\zo}{\xm}\right)\right)\right]\\
+		&\int_x^{\xm} \frac{dz_1}{z_1}\PR\left(\frac{x}{z_1}\right) \left[ \int_{\zo}^{\xm} \frac{d\zt}{\zt}C(\zt)\PR\left(\frac{\zo}{\zt}\right) +  \int_{\frac{\zo}{\xm}}^{1}d\zt \PS(\zt)\left(\frac{C\left(\frac{\zo}{\zt}\right)}{\zt}-C(\zo)\right) + C(\zo)\left(\PL - \PmS\left(\frac{\zo}{\xm}\right)\right)\right]\\
 		&= \int_x^{\xm}d\zo \int_{\zo}^{\xm}d\zt \frac{1}{\zo \zt} \PR \left(\frac{x}{\zo}\right)C(\zt)\PR \left(\frac{\zo}{\zt}\right) + \int_x^{\xm}d\zo \int_{\frac{\zo}{\xm}}^{1}d\zt \frac{\PR\left(\frac{x}{\zo}\right)\PS(\zt)}{\zo} \left( \frac{C\left(\frac{\zo}{\zt}\right)}{\zt} - C(\zo) \right) \\
-		&-\int_x^{\xm}d\zo \int_0^{\frac{\zo}{\xm}}d\zt\frac{\PR\left(\frac{x}{\zo}\right) C(\zo)\PS(\zt)}{\zo} + \PL \int_x^{\xm} \frac{d\zo}{\zo} \PR\left(\frac{x}{\zo}\right) C(\zo)
+		&-\int_x^{\xm}\frac{d\zo}{\zo} \PR\left(\frac{x}{\zo}\right) C(\zo)\PmS\left(\frac{\zo}{\xm}\right) + \PL \int_x^{\xm} \frac{d\zo}{\zo} \PR\left(\frac{x}{\zo}\right) C(\zo)
 	\end{split}
 \end{equation*}
 In the second integral of the last line we can perform the change of variable $z_2 \rightarrow \frac{\zo}{\zt}$, so that we get

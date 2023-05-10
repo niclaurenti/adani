@@ -17,16 +17,15 @@ std::string print_time(time_t seconds);
 
 int main(int argc, char** argv) {
 
-    if(argc!=7) {
-        cout<< "ERROR!\nUsage: ./output_grid.exe mufrac = mu/Q m nf channel calls filename\nExiting..." <<endl;
+    if(argc!=6) {
+        cout<< "ERROR!\nUsage: ./output_grid.exe mufrac = mu/Q m nf channel filename\nExiting..." <<endl;
         return -1;
     }
 
     int nf = atoi(argv[3]) ;
     string channel = argv[4];
-    int calls = atoi(argv[5]) ;
 
-    string filename = argv[6] ;
+    string filename = argv[5] ;
     ifstream inputQ;
     inputQ.open("Q.txt");
 
@@ -75,7 +74,7 @@ int main(int argc, char** argv) {
     time_t total = 0, mean;
 
     time_t starting_time = time(NULL) ;
-    //for(std::vector<Datum>::iterator d = data.begin(); d != data.end(); d++) {
+
     for(double Q_ : Q) {
         time_t t1 = time(NULL) ;
         for(double x_ : x) {
@@ -83,9 +82,9 @@ int main(int argc, char** argv) {
             m2Q2 = pow(m/Q_, 2) ;
             mu = mufrac * Q_ ;
             m2mu2 = pow(m/mu, 2) ;
-            if(channel == "2g") res = C2_g3_approximation(x_,m2Q2,m2mu2,nf,1,calls) ;
+            if(channel == "2g") res = C2_g3_approximation(x_,m2Q2,m2mu2,nf,1) ;
             else if(channel == "2q") res = C2_ps3_approximation(x_,m2Q2,m2mu2,nf) ;
-            else if(channel == "Lg") res = CL_g3_approximation(x_,m2Q2,m2mu2,nf,1,calls)  ;
+            else if(channel == "Lg") res = CL_g3_approximation(x_,m2Q2,m2mu2,nf,1)  ;
             else if(channel == "Lq") res = CL_ps3_approximation(x_,m2Q2,m2mu2,nf) ;
             else {
                 cout<< "ERROR!\nUsage: channel = {2g, 2q, Lg, Lq}\nExiting..." <<endl;

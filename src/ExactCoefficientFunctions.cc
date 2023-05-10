@@ -389,14 +389,14 @@ double CL_g31(double x, double m2Q2, int nf) {
 //  Eq. (4.6) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double C2_g32(double x, double m2Q2, int nf, int method_flag, int calls) {
+double C2_g32(double x, double m2Q2, int nf, int method_flag) {
 
     double C2_g1xPgg0xPgg0 ;
 
     double beta0 = beta(0, nf) ;
 
     if(method_flag == 0) C2_g1xPgg0xPgg0 = C2_g1_x_Pgg0_x_Pgg0(x, m2Q2, nf) ;
-    else if(method_flag == 1) C2_g1xPgg0xPgg0 = C2_g1_x_Pgg0_x_Pgg0_MC(x, m2Q2, nf, calls) ;
+    else if(method_flag == 1) C2_g1xPgg0xPgg0 = C2_g1_x_Pgg0_x_Pgg0_MC(x, m2Q2, nf) ;
     else {
         std::cout << "Choose either method_flag = 0 or method_flag = 1" << std::endl ;
         exit(-1);
@@ -418,14 +418,14 @@ double C2_g32(double x, double m2Q2, int nf, int method_flag, int calls) {
 //  Eq. (4.6) of Ref. [arXiv:1205.5727] for FL
 //------------------------------------------------------------------------------------------//
 
-double CL_g32(double x, double m2Q2, int nf, int method_flag, int calls) {
+double CL_g32(double x, double m2Q2, int nf, int method_flag) {
 
     double CL_g1xPgg0xPgg0 ;
 
     double beta0 = beta(0, nf) ;
 
     if(method_flag == 0) CL_g1xPgg0xPgg0 = CL_g1_x_Pgg0_x_Pgg0(x, m2Q2, nf) ;
-    else if(method_flag == 1) CL_g1xPgg0xPgg0 = CL_g1_x_Pgg0_x_Pgg0_MC(x, m2Q2, nf, calls) ;
+    else if(method_flag == 1) CL_g1xPgg0xPgg0 = CL_g1_x_Pgg0_x_Pgg0_MC(x, m2Q2, nf) ;
     else {
         std::cout << "Choose either method_flag = 0 or method_flag = 1" << std::endl ;
         exit(-1);
