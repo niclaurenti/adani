@@ -1796,14 +1796,14 @@ double C2_g1_x_Pgg0_x_Pgg0_sing(double x, double m2Q2, int nf) {
     F.dim = 2;
     F.params = &params;
 
+    gsl_monte_vegas_init(s) ;
     gsl_monte_vegas_integrate(&F, xl, xu, 2, calls, r, s, &singular1, &err);
 
     xl[1] = x/x_max ;
     xu[1] = 1 ;
 
-    gsl_monte_vegas_init(s) ; // in order to reuse the same integration workspace
-
     F.f = &C2_g1_x_Pgg0_x_Pgg0_sing2_integrand;
+    gsl_monte_vegas_init(s) ;
     gsl_monte_vegas_integrate(&F, xl, xu, 2, calls, r, s, &singular2, &err);
 
     gsl_monte_vegas_free (s);
@@ -2073,14 +2073,14 @@ double CL_g1_x_Pgg0_x_Pgg0_sing(double x, double m2Q2, int nf) {
     F.dim = 2;
     F.params = &params;
 
+    gsl_monte_vegas_init(s) ;
     gsl_monte_vegas_integrate(&F, xl, xu, 2, calls, r, s, &singular1, &err);
 
     xl[1] = x/x_max ;
     xu[1] = 1 ;
 
-    gsl_monte_vegas_init(s) ; // in order to reuse the same integration workspace
-
     F.f = &CL_g1_x_Pgg0_x_Pgg0_sing2_integrand;
+    gsl_monte_vegas_init(s) ;
     gsl_monte_vegas_integrate(&F, xl, xu, 2, calls, r, s, &singular2, &err);
 
     gsl_monte_vegas_free (s);
