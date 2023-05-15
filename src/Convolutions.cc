@@ -11,7 +11,7 @@
 
 #define REL 0.001
 #define ABS 0.001
-#define CALLS 50000
+#define CALLS 100000
 #define DIM 1000
 
 // TODO : in all the numerical convolutions the gsl default error is first switched off and
@@ -1801,6 +1801,8 @@ double C2_g1_x_Pgg0_x_Pgg0_sing(double x, double m2Q2, int nf) {
     xl[1] = x/x_max ;
     xu[1] = 1 ;
 
+    gsl_monte_vegas_init(s) ; // in order to reuse the same integration workspace
+
     F.f = &C2_g1_x_Pgg0_x_Pgg0_sing2_integrand;
     gsl_monte_vegas_integrate(&F, xl, xu, 2, calls, r, s, &singular2, &err);
 
@@ -2075,6 +2077,8 @@ double CL_g1_x_Pgg0_x_Pgg0_sing(double x, double m2Q2, int nf) {
 
     xl[1] = x/x_max ;
     xu[1] = 1 ;
+
+    gsl_monte_vegas_init(s) ; // in order to reuse the same integration workspace
 
     F.f = &CL_g1_x_Pgg0_x_Pgg0_sing2_integrand;
     gsl_monte_vegas_integrate(&F, xl, xu, 2, calls, r, s, &singular2, &err);

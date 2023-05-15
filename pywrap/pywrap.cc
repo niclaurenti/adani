@@ -176,5 +176,6 @@ PYBIND11_MODULE(_core, m) {
     m.def("CL_g1_x_Pgg0_x_Pgg0_sing", &CL_g1_x_Pgg0_x_Pgg0_sing, py::arg("x"), py::arg("m2Q2"), py::arg("nf"));
 
     m.def("C2_g1_x_Pgg0_x_Pgg0_MC", &C2_g1_x_Pgg0_x_Pgg0_MC, py::arg("x"), py::arg("m2Q2"), py::arg("nf"));
+    m.def("CL_g1_x_Pgg0_x_Pgg0_MC", &CL_g1_x_Pgg0_x_Pgg0_MC, py::arg("x"), py::arg("m2Q2"), py::arg("nf"));
 
 }

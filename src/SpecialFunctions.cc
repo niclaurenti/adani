@@ -33,7 +33,8 @@ double beta(int ord, int nf) {
 
 double theta(double x) {
 
-    return x > 0 ? 1 : 0 ;
+    if (x>0) return 1. ;
+    else return 0. ;
 
 }
 
