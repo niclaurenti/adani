@@ -1,0 +1,110 @@
+\documentclass[a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{xcolor}
+
+\usepackage[a4paper,top=2cm,bottom=2cm,left=1cm,right=1cm]{geometry}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{bbold}
+
+\newcommand{\PR}[0]{P^{^R}}
+\newcommand{\PS}[0]{P^{^S}}
+\newcommand{\PmS}[0]{\mathcal{P}^{^S}}
+\newcommand{\PL}[0]{P^{^L}}
+\newcommand{\xm}[0]{x_{\rm m}}
+\newcommand{\zo}[0]{{z_1}}
+\newcommand{\zt}[0]{{z_2}}
+
+\title{Convolutions using Monte-Carlo methods}
+\author{Niccolò Laurenti}
+
+\date{\today}
+
+\begin{document}
+	In this document we compute the double convolution between a regular coefficient function $C(x)$ and a splitting function $P(x)$ containing a regular, a singular and a local part, i.e.
+	\begin{equation}
+		P(x) = P^{^R}(x) + P^{^S}(x) + P^{^L} \delta(x-1)
+	\end{equation}
+where $\PR$ is regular in $x\rightarrow 1$, while $\PS$ is singular in $x\rightarrow 1$.
+
+The convolution between $C(x)$ and $P(x)$ is
+\begin{equation}
+	\begin{split}
+	(C \otimes P)(x)&=\int_x^{\xm} \frac{dz_2}{z_2} C(z_2) \PR \left(\frac{x}{z_2}\right) + \int_{\frac{x}{\xm}}^1dz_2 \PS(z_2) \left( \frac{C\left(\frac{x}{z_2}\right)}{z_2} - C(x)\right)-C(x)\int_0^{\frac{x}{\xm}}dz_2\PS(z_2) + C(x)\PL \\
+	&=\int_x^{\xm} \frac{dz_2}{z_2} C(z_2) \PR \left(\frac{x}{z_2}\right) + \int_{\frac{x}{\xm}}^1dz_2 \PS(z_2) \left( \frac{C\left(\frac{x}{z_2}\right)}{z_2} - C(x)\right)+ C(x)\left(\PL - \PmS\left(\frac{x}{\xm}\right)\right)
+\end{split}
+\end{equation}
+where we defined
+\begin{equation*}
+	\PmS(x) = \int_0^{x}dz\PS(z)
+\end{equation*}
+and we used that $C(x)$ is defined for $0<x<\xm$ and zero outside.
+
+The double convolution is defined as
+\begin{equation}
+	\begin{split}
+		(C \otimes P \otimes P)(x)  ={}& \int_x^{x_{\rm max}} \frac{dz_1}{z_1} (C \otimes P)(z_1) \PR \left(\frac{x}{z_1}\right) \\
+		&+ \int_{\frac{x}{\xm}}^1dz_1 \PS(z_1) \left( \frac{(C \otimes P)\left(\frac{x}{z_1}\right)}{z_1} - (C \otimes P)(x)\right)\\
+		& + (C \otimes P)(x)\left(\PL - \PmS\left(\frac{x}{\xm}\right)\right)
+	\end{split}
+\end{equation}
+Let's consider each piece separately.
+\section{Regular term}
+
+\begin{equation*}
+	\begin{split}
+		& \int_x^{x_{\rm max}} \frac{dz_1}{z_1} (C \otimes P)(z_1) \PR \left(\frac{x}{z_1}\right)  = \\
+		&\int_x^{\xm} \frac{dz_1}{z_1}\PR\left(\frac{x}{z_1}\right) \left[ \int_{\zo}^{\xm} \frac{d\zt}{\zt}C(\zt)\PR\left(\frac{\zo}{\zt}\right) +  \int_{\frac{\zo}{\xm}}^{1}d\zt \PS(\zt)\left(\frac{C\left(\frac{\zo}{\zt}\right)}{\zt}-C(\zo)\right) + C(\zo)\left(\PL - \PmS\left(\frac{\zo}{\xm}\right)\right)\right]\\
+		&= \int_x^{\xm}d\zo \int_{\zo}^{\xm}d\zt \frac{1}{\zo \zt} \PR \left(\frac{x}{\zo}\right)C(\zt)\PR \left(\frac{\zo}{\zt}\right) + \int_x^{\xm}d\zo \int_{\frac{\zo}{\xm}}^{1}d\zt \frac{\PR\left(\frac{x}{\zo}\right)\PS(\zt)}{\zo} \left( \frac{C\left(\frac{\zo}{\zt}\right)}{\zt} - C(\zo) \right) \\
+		&-\int_x^{\xm}\frac{d\zo}{\zo} \PR\left(\frac{x}{\zo}\right) C(\zo)\PmS\left(\frac{\zo}{\xm}\right) + \PL \int_x^{\xm} \frac{d\zo}{\zo} \PR\left(\frac{x}{\zo}\right) C(\zo)
+	\end{split}
+\end{equation*}
+In the second integral of the last line we can perform the change of variable $z_2 \rightarrow \frac{\zo}{\zt}$, so that we get
+\begin{equation*}
+	\begin{split}
+		&= \int_x^{\xm}d\zo \int_{\zo}^{\xm}d\zt \frac{1}{\zo \zt} \PR \left(\frac{x}{\zo}\right)C(\zt)\PR \left(\frac{\zo}{\zt}\right) +\int_x^{\xm}d\zo \int_{\zo}^{\xm}\frac{d\zt}{\zt} \PR\left(\frac{x}{\zo}\right)\PS\left(\frac{\zo}{\zt}\right) \left( \frac{C(\zt)}{\zo} - \frac{C(\zo)}{\zt} \right) \\
+		&-\int_x^{\xm}d\zo \frac{\PR\left(\frac{x}{\zo}\right) C(\zo)\PmS\left(\frac{\zo}{\xm}\right)}{\zo} + \PL \int_x^{\xm} \frac{d\zo}{\zo} \PR\left(\frac{x}{\zo}\right) C(\zo)
+	\end{split}
+\end{equation*}
+Now the double integrals can be trasformed in integrals over rectangles, using the theta functions:
+\begin{equation}
+	\begin{split}
+		&= \int\int_x^{\xm}d\zo d\zt \theta(\zt-\zo)\frac{1}{\zo \zt} \PR \left(\frac{x}{\zo}\right)C(\zt)\PR \left(\frac{\zo}{\zt}\right) \\
+		& +\int\int_x^{\xm}d\zo d\zt \theta(\zt-\zo)\frac{1}{\zt} \PR\left(\frac{x}{\zo}\right)\PS\left(\frac{\zo}{\zt}\right) \left( \frac{C(\zt)}{\zo} - \frac{C(\zo)}{\zt} \right) \\
+		&-\int_x^{\xm}d\zo \frac{\PR\left(\frac{x}{\zo}\right) C(\zo)\PmS\left(\frac{\zo}{\xm}\right)}{\zo} + \PL \int_x^{\xm} \frac{d\zo}{\zo} \PR\left(\frac{x}{\zo}\right) C(\zo)
+	\end{split}
+\end{equation}
+The last equation is what has been implemented in the code with Monte Carlo integrals.
+
+\section{Singular term}
+
+\begin{equation*}
+	\hspace{-1.cm}\begin{split}
+		&  \int_{\frac{x}{\xm}}^1dz_1 \PS(z_1) \left\{ \frac{(C \otimes P)\left(\frac{x}{z_1}\right)}{z_1} - (C \otimes P)(x)\right\} = \\
+		& \int_{\frac{x}{\xm}}^1d\zo \PS(\zo) \Biggl\{\frac{1}{\zo}\left[\int_{\frac{x}{\zo}}^{\xm}\frac{d\zt}{\zt}C(\zt)\PR\left(\frac{x}{\zo \zt}\right) + \int_{\frac{x}{\zo \xm}}^1d\zt \PS(\zt)\left(\frac{C\left(\frac{x}{\zo \zt}\right)}{\zt}-C\left(\frac{x}{\zo}\right)\right) + C\left(\frac{x}{\zo}\right)\left(\PL - \PmS\left(\frac{x}{\zo \xm}\right)\right) \right] \\
+		&- \left[\int_x^{\xm}\frac{d\zt}{\zt} C(\zt) \PR\left(\frac{x}{\zt}\right) + \int_\frac{x}{\xm}^1 d\zt \PS(\zt)\left(\frac{C\left(\frac{x}{\zt}\right)}{\zt}-C(x)\right) + C(x)\left(\PL - \PmS\left(\frac{x}{\xm}\right)\right) \right] \Biggr\} \\
+		&=\int_{\frac{x}{\xm}}^1d\zo \int_\frac{x}{\zo}^{\xm}d\zt \frac{1}{\zo \zt} \PS(\zo) C(\zt) \PR\left(\frac{x}{\zo \zt}\right) + \int_{\frac{x}{\xm}}^1d\zo \int_\frac{x}{\zo \xm}^1d\zt \frac{\PS(\zo)\PS(\zt)}{\zo}\left(\frac{C\left(\frac{x}{\zo \zt}\right)}{\zt}-C\left(\frac{x}{\zo}\right)\right) \\
+		&-\int_\frac{x}{\xm}^1d\zo \frac{ \PS(\zo)\PmS\left(\frac{x}{\zo \xm}\right) }{\zo} C\left(\frac{x}{\zo}\right) + \PL \int_\frac{x}{\xm}^1\frac{d\zo}{\zo}\PS(\zo)C\left(\frac{x}{\zo}\right) \\
+		&- \int_\frac{x}{\xm}^1d\zo \int_x^{\xm}\frac{d\zt}{\zt} \PS(\zo) C(\zt) \PR\left(\frac{x}{\zt}\right)  - \int_\frac{x}{\xm}^1 d\zo \int_\frac{x}{\xm}^1 d\zt \PS(\zo) \PS(\zt) \left(\frac{C\left(\frac{x}{\zt}\right)}{\zt}-C(x)\right) \\
+		&+ \int_\frac{x}{\xm}^1 d \zo\PS(\zo) C(x)  \PmS\left(\frac{x}{\xm}\right) - \PL \int_\frac{x}{\xm}^1 d\zo \PS(\zo) C(x)
+\end{split}
+\end{equation*}
+Collecting the terms with same integration boundaries, and using theta functions, we get
+\begin{equation*}
+	\begin{split}
+		&= \int_{\frac{x}{\xm}}^1dz_1 \int_x^{\xm}dz_2\PS(\zo)\left(\frac{\PR\left(\frac{x}{\zo \zt}\right)\theta\left(\zt-\frac{x}{\zo}\right)}{\zo} - \PR\left(\frac{x}{\zt} \right)\right)\frac{C(\zt)}{\zt} \\
+		&+\int_{\frac{x}{\xm}}^1dz_1 \int_{\frac{x}{\xm}}^1dz_2 \PS(\zo) \left[ \frac{\PS(\zt)}{\zo}\left(\frac{C\left(\frac{x}{\zo \zt}\right)}{\zt}-C\left(\frac{x}{\zo}\right) \right)\theta\left(\zt - \frac{x}{\zo \xm}\right) - \PS(\zt)\left(\frac{C\left(\frac{x}{\zt}\right)}{\zt}-C(x) \right)\right] \\
+		&- \int_\frac{x}{\xm}^1 d\zo\PS(\zo)\left(\frac{C\left(\frac{x}{\zo}\right)\PmS\left(\frac{x}{\zo \xm}\right)}{\zo} - C(x) \PmS\left(\frac{x}{\xm}\right) \right) \\
+		&+\PL \int_\frac{x}{\xm}^1 d\zo \PS(\zo)\left(\frac{C\left(\frac{x}{\zo}\right)}{\zo}-C(x)\right)
+	\end{split}
+\end{equation*}
+Observe that all these terms  are finite since the singularity of $\PS$ for $z \rightarrow 1$ is integrable since it always appears together with a term of the form $f(x/z) /z-f(x)$ so that the integral
+\begin{equation*}
+	\int_{x/\xm}^1dz\PS(z)\left(\frac{f\left(\frac{x}{z}\right)}{z}-f(x)\right)
+\end{equation*}
+is finite.
+
+
+\end{document}

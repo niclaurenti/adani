@@ -34,10 +34,6 @@ struct approximation_parameters CL_ps3_params = {20., 11., 3., 2., 2.5, 5.} ;
 
 double C2_g1_approximation_implicit(double x, double m2Q2, double k, double h) {
 
-    double xmax = 1. / (1. + 4. * m2Q2) ;
-
-    if(x >= xmax || x <= 0) return 0 ;
-
     double eta ;
 
     eta = 0.25 / m2Q2 * (1. - x) / x - 1. ;
@@ -63,7 +59,7 @@ double C2_g1_approximation(double x, double m2Q2) {
 
     double xmax = 1. / (1. + 4. * m2Q2) ;
 
-    if(x >= xmax || x <= 0) return 0 ;
+    if(x >= xmax || x <= 0) return 0. ;
 
     double xi=1./m2Q2;
 
@@ -96,7 +92,7 @@ double CL_g1_approximation(double x, double m2Q2) {
 
     double xmax = 1. / (1. + 4. * m2Q2) ;
 
-    if(x >= xmax || x <= 0) return 0 ;
+    if(x >= xmax || x <= 0) return 0. ;
 
     double xi = 1. / m2Q2 ;
 
@@ -123,6 +119,10 @@ double CL_g1_approximation(double x, double m2Q2) {
 //------------------------------------------------------------------------------------------//
 
 double C2_g2_approximation(double x, double m2Q2, double m2mu2, int v) {
+
+    double xmax = 1. / (1. + 4. * m2Q2) ;
+
+    if(x >= xmax || x <= 0) return 0. ;
 
     double C_const = C2_g20_approximation_BAND(x, m2Q2, v, var_C2, fact_C2);
 
@@ -155,10 +155,6 @@ double C2_g20_approximation(double x, double m2Q2) {
 //------------------------------------------------------------------------------------------//
 
 double C2_g20_approximation_implicit(double x, double m2Q2, double A, double B, double C, double D, double a, double b) {
-
-    double xmax = 1. / (1. + 4. * m2Q2) ;
-
-    if(x >= xmax || x <= 0) return 0 ;
 
     double xi = 1. / m2Q2 ;
 
@@ -242,6 +238,10 @@ double C2_g20_approximation_BAND(double x, double m2Q2, int v, double var, doubl
 
 double C2_ps2_approximation(double x, double m2Q2, double m2mu2, int v) {
 
+    double xmax = 1. / (1. + 4. * m2Q2) ;
+
+    if(x >= xmax || x <= 0) return 0. ;
+
     double C_const = C2_ps20_approximation_BAND(x, m2Q2, v, var_C2, fact_C2);
 
     double C_log = C2_ps21(x, m2Q2) ;
@@ -273,10 +273,6 @@ double C2_ps20_approximation(double x, double m2Q2) {
 //------------------------------------------------------------------------------------------//
 
 double C2_ps20_approximation_implicit(double x, double m2Q2, double A, double B, double C, double D, double a, double b) {
-
-    double xmax = 1. / (1. + 4. * m2Q2) ;
-
-    if(x >= xmax || x <= 0) return 0 ;
 
     double xi = 1. / m2Q2 ;
 
@@ -358,6 +354,10 @@ double C2_ps20_approximation_BAND(double x, double m2Q2, int v, double var, doub
 
 double CL_g2_approximation(double x, double m2Q2, double m2mu2, int v) {
 
+    double xmax = 1. / (1. + 4 * m2Q2) ;
+
+    if(x >= xmax || x <= 0) return 0. ;
+
     double C_const = CL_g20_approximation_BAND(x, m2Q2, v, var_CL, fact_CL);
 
     double C_log = CL_g21(x, m2Q2) ;
@@ -389,10 +389,6 @@ double CL_g20_approximation(double x, double m2Q2) {
 //------------------------------------------------------------------------------------------//
 
 double CL_g20_approximation_implicit(double x, double m2Q2, double A, double B, double C, double D, double a, double b) {
-
-    double xmax = 1. / (1. + 4 * m2Q2) ;
-
-    if(x >= xmax || x <= 0) return 0 ;
 
     double xi = 1. / m2Q2 ;
 
@@ -476,6 +472,10 @@ double CL_g20_approximation_BAND(double x, double m2Q2, int v, double var, doubl
 
 double CL_ps2_approximation(double x, double m2Q2, double m2mu2, int v) {
 
+    double xmax = 1. / (1. + 4. * m2Q2) ;
+
+    if(x >= xmax || x <= 0) return 0. ;
+
     double C_const = CL_ps20_approximation_BAND(x, m2Q2, v, var_CL, fact_CL);
 
     double C_log = CL_ps21(x, m2Q2) ;
@@ -508,15 +508,9 @@ double CL_ps20_approximation(double x, double m2Q2) {
 
 double CL_ps20_approximation_implicit(double x, double m2Q2, double A, double B, double C, double D, double a, double b) {
 
-    double xmax = 1. / (1. + 4. * m2Q2) ;
-
-    if(x >= xmax || x <= 0) return 0 ;
-
     double xi = 1. / m2Q2 ;
 
-    double eta ;
-
-    eta = 0.25 / m2Q2 * (1. - x) / x - 1. ;
+    double eta = 0.25 / m2Q2 * (1. - x) / x - 1. ;
 
     double h = A + (B - A) / (1. + exp(a * (log(xi) - b))) ;
     double k = C + (D - C) / (1. + exp(a * (log(xi) - b))) ;
@@ -588,7 +582,11 @@ double CL_ps20_approximation_BAND(double x, double m2Q2, int v, double var, doub
 //  Approximate gluon coefficient function for F2 at O(alpha_s^3).
 //------------------------------------------------------------------------------------------//
 
-double C2_g3_approximation(double x, double m2Q2, double m2mu2, int nf, int v, int method_flag, int calls) {
+double C2_g3_approximation(double x, double m2Q2, double m2mu2, int nf, int v, int method_flag) {
+
+    double xmax = 1. / (1. + 4. * m2Q2) ;
+
+    if(x >= xmax || x <= 0) return 0. ;
 
     double C30 = C2_g30_approximation_BAND(x, m2Q2, nf, v, var_C2, fact_C2);
 
@@ -600,7 +598,7 @@ double C2_g3_approximation(double x, double m2Q2, double m2mu2, int nf, int v, i
     return (
         C30
         + C2_g31(x, m2Q2, nf) * Lmu
-        + C2_g32(x, m2Q2, nf, method_flag, calls) * Lmu2
+        + C2_g32(x, m2Q2, nf, method_flag) * Lmu2
     ) ;
 
 }
@@ -630,16 +628,9 @@ double C2_g30_approximation(double x, double m2Q2, int nf) {
 
 double C2_g30_approximation_implicit(double x, double m2Q2, int nf, double A, double B, double C, double D, double a, double b, int v1, int v2) {
 
-    double xmax = 1. / ( 1. + 4 * m2Q2 ) ;
-
-    if(x >= xmax || x <= 0) return 0 ;
-
     double xi = 1. / m2Q2 ;
 
-    double eta;
-
-    if(x<xmax && x>0) eta = 0.25 / m2Q2 * (1 - x) / x - 1. ;
-    else eta = 0 ;
+    double eta = 0.25 / m2Q2 * (1 - x) / x - 1. ;
 
     double h = A + (B - A) / (1. + exp(a * (log(xi) - b))) ;
     double k = C + (D - C) / (1. + exp(a * (log(xi) - b))) ;
@@ -722,6 +713,10 @@ double C2_g30_approximation_BAND(double x, double m2Q2, int nf, int v, double va
 
 double C2_ps3_approximation(double x, double m2Q2, double m2mu2, int nf, int v) {
 
+    double xmax = 1. / (1. + 4. * m2Q2) ;
+
+    if(x >= xmax || x <= 0) return 0. ;
+
     double C30 = C2_ps30_approximation_BAND(x, m2Q2, nf, v, var_C2, fact_C2);
 
     if(m2mu2 == 1.) return C30 ;
@@ -761,15 +756,9 @@ double C2_ps30_approximation(double x, double m2Q2, int nf) {
 
 double C2_ps30_approximation_implicit(double x, double m2Q2, int nf, double A, double B, double C, double D, double a, double b, int v) {
 
-    double xmax = 1. / (1. + 4. * m2Q2) ;
-
-    if(x >= xmax || x <= 0) return 0 ;
-
     double xi = 1. / m2Q2 ;
 
-    double eta ;
-
-    eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
+    double eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
 
     double h = A + (B - A) / (1. + exp(a * (log(xi) - b)));
     double k = C + (D - C) / (1. + exp(a * (log(xi) - b)));
@@ -844,7 +833,11 @@ double C2_ps30_approximation_BAND(double x, double m2Q2, int nf, int v, double v
 //  Approximate gluon coefficient function for FL at O(alpha_s^3).
 //------------------------------------------------------------------------------------------//
 
-double CL_g3_approximation(double x, double m2Q2, double m2mu2, int nf, int v, int method_flag, int calls) {
+double CL_g3_approximation(double x, double m2Q2, double m2mu2, int nf, int v, int method_flag) {
+
+    double xmax = 1. / (1. + 4. * m2Q2) ;
+
+    if(x >= xmax || x <= 0) return 0. ;
 
     double C30 = CL_g30_approximation_BAND(x, m2Q2, nf, v, var_CL, fact_CL);
 
@@ -856,7 +849,7 @@ double CL_g3_approximation(double x, double m2Q2, double m2mu2, int nf, int v, i
     return (
         C30
         + CL_g31(x, m2Q2, nf) * Lmu
-        + CL_g32(x, m2Q2, nf, method_flag, calls) * Lmu2
+        + CL_g32(x, m2Q2, nf, method_flag) * Lmu2
     ) ;
 
 }
@@ -885,15 +878,9 @@ double CL_g30_approximation(double x, double m2Q2, int nf) {
 
 double CL_g30_approximation_implicit(double x, double m2Q2, int nf, double A, double B, double C, double D, double a, double b, int v) {
 
-    double xmax = 1. / (1. + 4 * m2Q2) ;
-
-    if(x >= xmax || x <= 0) return 0 ;
-
     double xi = 1. / m2Q2 ;
 
-    double eta;
-
-    eta = 0.25 / m2Q2 * (1 - x) / x - 1. ;
+    double eta = 0.25 / m2Q2 * (1 - x) / x - 1. ;
 
     double h = A + (B - A) / (1. + exp(a * (log(xi) - b))) ;
     double k = C + (D - C) / (1. + exp(a * (log(xi) - b))) ;
@@ -973,6 +960,10 @@ double CL_g30_approximation_BAND(double x, double m2Q2, int nf, int v, double va
 
 double CL_ps3_approximation(double x, double m2Q2, double m2mu2, int nf, int v) {
 
+    double xmax = 1. / (1. + 4. * m2Q2) ;
+
+    if(x >= xmax || x <= 0) return 0. ;
+
     double C30 = CL_ps30_approximation_BAND(x, m2Q2, nf, v, var_CL, fact_CL);
 
     if(m2mu2 == 1.) return C30 ;
@@ -1012,15 +1003,9 @@ double CL_ps30_approximation(double x, double m2Q2, int nf) {
 
 double CL_ps30_approximation_implicit(double x, double m2Q2, int nf, double A, double B, double C, double D, double a, double b, int v) {
 
-    double xmax = 1. / (1. + 4. * m2Q2) ;
-
-    if(x >= xmax || x <= 0) return 0 ;
-
     double xi = 1. / m2Q2 ;
 
-    double eta ;
-
-    eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
+    double eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
 
     double h = A + (B - A) / (1. + exp(a * (log(xi) - b)));
     double k = C + (D - C) / (1. + exp(a * (log(xi) - b)));
@@ -1258,7 +1243,7 @@ double C2_ps2_approximationB_klmv(double x, double m2Q2, double m2mu2) {
 //  This equation uses the approximate form of aQg30 given in Eq. (3.49) of [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
-double C2_g3_approximationA_klmv(double x, double m2Q2, double m2mu2, int nf, int method_flag, int calls) {
+double C2_g3_approximationA_klmv(double x, double m2Q2, double m2mu2, int nf, int method_flag) {
 
     double x_max = 1. / (1. + 4 * m2Q2);
 
@@ -1298,7 +1283,7 @@ double C2_g3_approximationA_klmv(double x, double m2Q2, double m2mu2, int nf, in
     double Lmu = - log(m2mu2) ;
     double Lmu2 = Lmu * Lmu ;
 
-    return C30 + C2_g31(x, m2Q2, nf) * Lmu + C2_g32(x, m2Q2, nf, method_flag, calls) * Lmu2 ;
+    return C30 + C2_g31(x, m2Q2, nf) * Lmu + C2_g32(x, m2Q2, nf, method_flag) * Lmu2 ;
 
 }
 
@@ -1311,7 +1296,7 @@ double C2_g3_approximationA_klmv(double x, double m2Q2, double m2mu2, int nf, in
 //  This equation uses the approximate form of aQg30 given in Eq. (16) of Ref. [arXiv:1701.05838].
 //------------------------------------------------------------------------------------------//
 
-double C2_g3_approximationB_klmv(double x, double m2Q2, double m2mu2, int nf, int method_flag, int calls) {
+double C2_g3_approximationB_klmv(double x, double m2Q2, double m2mu2, int nf, int method_flag) {
 
     double x_max = 1. / (1. + 4 * m2Q2);
 
@@ -1351,7 +1336,7 @@ double C2_g3_approximationB_klmv(double x, double m2Q2, double m2mu2, int nf, in
     double Lmu = - log(m2mu2) ;
     double Lmu2 = Lmu * Lmu ;
 
-    return C30 + C2_g31(x, m2Q2, nf) * Lmu + C2_g32(x, m2Q2, nf, method_flag, calls) * Lmu2 ;
+    return C30 + C2_g31(x, m2Q2, nf) * Lmu + C2_g32(x, m2Q2, nf, method_flag) * Lmu2 ;
 
 
 }
@@ -1366,7 +1351,7 @@ double C2_g3_approximationB_klmv(double x, double m2Q2, double m2mu2, int nf, in
 //  of the one given in Eq. (16) of Ref. [arXiv:1701.05838].
 //------------------------------------------------------------------------------------------//
 
-double C2_g3_approximationB_klmv_paper(double x, double m2Q2, double m2mu2, int nf, int method_flag, int calls) {
+double C2_g3_approximationB_klmv_paper(double x, double m2Q2, double m2mu2, int nf, int method_flag) {
 
     double x_max = 1. / (1. + 4 * m2Q2);
 
@@ -1407,7 +1392,7 @@ double C2_g3_approximationB_klmv_paper(double x, double m2Q2, double m2mu2, int 
     double Lmu = - log(m2mu2) ;
     double Lmu2 = Lmu * Lmu ;
 
-    return C30 + C2_g31(x, m2Q2, nf) * Lmu + C2_g32(x, m2Q2, nf, method_flag, calls) * Lmu2 ;
+    return C30 + C2_g31(x, m2Q2, nf) * Lmu + C2_g32(x, m2Q2, nf, method_flag) * Lmu2 ;
 
 
 }
@@ -1423,7 +1408,7 @@ double C2_g3_approximationB_klmv_paper(double x, double m2Q2, double m2mu2, int 
 //  instead of Eq. (4.20)
 //------------------------------------------------------------------------------------------//
 
-double C2_g3_approximationBlowxi_klmv(double x, double m2Q2, double m2mu2, int nf, int method_flag, int calls) {
+double C2_g3_approximationBlowxi_klmv(double x, double m2Q2, double m2mu2, int nf, int method_flag) {
 
     double x_max = 1. / (1. + 4 * m2Q2);
 
@@ -1464,7 +1449,7 @@ double C2_g3_approximationBlowxi_klmv(double x, double m2Q2, double m2mu2, int n
     double Lmu = - log(m2mu2) ;
     double Lmu2 = Lmu * Lmu ;
 
-    return C30 + C2_g31(x, m2Q2, nf) * Lmu + C2_g32(x, m2Q2, nf, method_flag, calls) * Lmu2 ;
+    return C30 + C2_g31(x, m2Q2, nf) * Lmu + C2_g32(x, m2Q2, nf, method_flag) * Lmu2 ;
 
 
 }

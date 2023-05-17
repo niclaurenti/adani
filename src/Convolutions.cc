@@ -9,6 +9,11 @@
 #include <cmath>
 #include <iostream>
 
+#define REL 0.001
+#define ABS 0.001
+#define CALLS 25000
+#define DIM 1000
+
 // TODO : in all the numerical convolutions the gsl default error is first switched off and
 // then swithced on again: see if it can be done once for all
 
@@ -18,8 +23,6 @@
 //------------------------------------------------------------------------------------------//
 
 double C2_b1_x_K_Qg1(double x, double m2mu2) {
-
-    if (x<0 || x>=1) return 0;
 
     double x2 = x * x ;
     double x1 = 1 - x ;
@@ -42,8 +45,6 @@ double C2_b1_x_K_Qg1(double x, double m2mu2) {
 //------------------------------------------------------------------------------------------//
 
 double CL_b1_x_K_Qg1(double x, double m2mu2) {
-
-    if (x<0 || x>=1) return 0;
 
     double x2 = x * x ;
     double L = log(x) ;
@@ -227,11 +228,12 @@ double C2_g1_x_Pgq0_integrand(double z, void * p) {
 
 double C2_g1_x_Pgq0(double x, double m2Q2) {
 
-    double result, error, abserr = 0.001, relerr = 0.001;
+    double x_max = 1. / (1. + 4 * m2Q2) ;
+    double result, error, abserr = ABS, relerr = REL;
     struct function_params params = {x, m2Q2, static_cast<int>(nan(""))};
     //It is not dependent on nf so nf is put to nan
 
-    gsl_integration_workspace * w = gsl_integration_workspace_alloc (1000);
+    gsl_integration_workspace * w = gsl_integration_workspace_alloc (DIM);
 
     gsl_function F;
     F.function = &C2_g1_x_Pgq0_integrand;
@@ -240,7 +242,7 @@ double C2_g1_x_Pgq0(double x, double m2Q2) {
     gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
     gsl_set_error_handler_off();
 
-    gsl_integration_qag(&F, x, 1., abserr, relerr, 1000, 4, w, &result, &error);
+    gsl_integration_qag(&F, x, x_max, abserr, relerr, DIM, 4, w, &result, &error);
 
     gsl_set_error_handler (old_handler);
 
@@ -273,11 +275,12 @@ double CL_g1_x_Pgq0_integrand(double z, void * p) {
 
 double CL_g1_x_Pgq0(double x, double m2Q2) {
 
-    double result, error, abserr = 0.001, relerr = 0.001;
+    double x_max = 1. / (1. + 4 * m2Q2) ;
+    double result, error, abserr = ABS, relerr = REL;
     struct function_params params = {x, m2Q2, static_cast<int>(nan(""))};
     //It is not dependent on nf so nf is put to nan
 
-    gsl_integration_workspace * w = gsl_integration_workspace_alloc (1000);
+    gsl_integration_workspace * w = gsl_integration_workspace_alloc (DIM);
 
     gsl_function F;
     F.function = &CL_g1_x_Pgq0_integrand;
@@ -286,7 +289,7 @@ double CL_g1_x_Pgq0(double x, double m2Q2) {
     gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
     gsl_set_error_handler_off();
 
-    gsl_integration_qag(&F, x, 1., abserr, relerr, 1000, 4, w, &result, &error);
+    gsl_integration_qag(&F, x, x_max, abserr, relerr, DIM, 4, w, &result, &error);
 
     gsl_set_error_handler (old_handler);
 
@@ -341,9 +344,10 @@ double Pgg0sing_integrated(double x) {
 
 double C2_g1_x_Pgg0(double x, double m2Q2, int nf) {
 
-    gsl_integration_workspace * w = gsl_integration_workspace_alloc (1000);
+    double x_max = 1. / (1. + 4 * m2Q2) ;
+    gsl_integration_workspace * w = gsl_integration_workspace_alloc (DIM);
 
-    double regular, singular, local, error, abserr = 0.001, relerr = 0.001;
+    double regular, singular, local, error, abserr = ABS, relerr = REL;
     struct function_params params = {x, m2Q2, nf};
 
     gsl_function F;
@@ -353,14 +357,14 @@ double C2_g1_x_Pgg0(double x, double m2Q2, int nf) {
     gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
     gsl_set_error_handler_off();
 
-    gsl_integration_qag(&F, x, 1., abserr, relerr, 1000, 4, w, &regular, &error);
+    gsl_integration_qag(&F, x, x_max, abserr, relerr, DIM, 4, w, &regular, &error);
 
     F.function = &C2_g1_x_Pgg0_sing_integrand;
-    gsl_integration_qag(&F, x, 1., abserr, relerr, 1000, 4, w, &singular, &error);
+    gsl_integration_qag(&F, x/x_max, 1., abserr, relerr, DIM, 4, w, &singular, &error);
 
     gsl_set_error_handler (old_handler);
 
-    local = C2_g1(x, m2Q2) * (Pgg0loc(nf) - Pgg0sing_integrated(x)) ;
+    local = C2_g1(x, m2Q2) * (Pgg0loc(nf) - Pgg0sing_integrated(x / x_max)) ;
 
     gsl_integration_workspace_free (w);
 
@@ -405,9 +409,10 @@ double CL_g1_x_Pgg0_sing_integrand(double z, void * p) {
 
 double CL_g1_x_Pgg0(double x, double m2Q2, int nf) {
 
-    gsl_integration_workspace * w = gsl_integration_workspace_alloc (1000);
+    double x_max = 1. / (1. + 4 * m2Q2) ;
+    gsl_integration_workspace * w = gsl_integration_workspace_alloc (DIM);
 
-    double regular, singular, local, error, abserr = 0.001, relerr = 0.001;
+    double regular, singular, local, error, abserr = ABS, relerr = REL;
     struct function_params params = {x, m2Q2, nf};
 
     gsl_function F;
@@ -417,14 +422,14 @@ double CL_g1_x_Pgg0(double x, double m2Q2, int nf) {
     gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
     gsl_set_error_handler_off();
 
-    gsl_integration_qag(&F, x, 1., abserr, relerr, 1000, 4, w, &regular, &error);
+    gsl_integration_qag(&F, x, x_max, abserr, relerr, DIM, 4, w, &regular, &error);
 
     F.function = &CL_g1_x_Pgg0_sing_integrand;
-    gsl_integration_qag(&F, x, 1., abserr, relerr, 1000, 4, w, &singular, &error);
+    gsl_integration_qag(&F, x/x_max, 1., abserr, relerr, DIM, 4, w, &singular, &error);
 
     gsl_set_error_handler (old_handler);
 
-    local = CL_g1(x, m2Q2) * (Pgg0loc(nf) - Pgg0sing_integrated(x)) ;
+    local = CL_g1(x, m2Q2) * (Pgg0loc(nf) - Pgg0sing_integrated(x / x_max)) ;
 
     gsl_integration_workspace_free (w);
 
@@ -455,9 +460,10 @@ double C2_g1_x_Pgq1_integrand(double z, void * p) {
 
 double C2_g1_x_Pgq1(double x, double m2Q2, int nf) {
 
-    gsl_integration_workspace * w = gsl_integration_workspace_alloc (1000);
+    double x_max = 1. / (1. + 4 * m2Q2) ;
+    gsl_integration_workspace * w = gsl_integration_workspace_alloc (DIM);
 
-    double result, error, abserr = 0.001, relerr = 0.001;
+    double result, error, abserr = ABS, relerr = REL;
     struct function_params params = {x, m2Q2, nf};
 
     gsl_function F;
@@ -467,7 +473,7 @@ double C2_g1_x_Pgq1(double x, double m2Q2, int nf) {
     gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
     gsl_set_error_handler_off();
 
-    gsl_integration_qag(&F, x, 1., abserr, relerr, 1000, 4, w, &result, &error);
+    gsl_integration_qag(&F, x, x_max, abserr, relerr, DIM, 4, w, &result, &error);
 
     gsl_set_error_handler (old_handler);
 
@@ -500,9 +506,10 @@ double CL_g1_x_Pgq1_integrand(double z, void * p) {
 
 double CL_g1_x_Pgq1(double x, double m2Q2, int nf) {
 
-    gsl_integration_workspace * w = gsl_integration_workspace_alloc (1000);
+    double x_max = 1. / (1. + 4 * m2Q2) ;
+    gsl_integration_workspace * w = gsl_integration_workspace_alloc (DIM);
 
-    double result, error, abserr = 0.001, relerr = 0.001;
+    double result, error, abserr = ABS, relerr = REL;
     struct function_params params = {x, m2Q2, nf};
 
     gsl_function F;
@@ -512,7 +519,7 @@ double CL_g1_x_Pgq1(double x, double m2Q2, int nf) {
     gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
     gsl_set_error_handler_off();
 
-    gsl_integration_qag(&F, x, 1., abserr, relerr, 1000, 4, w, &result, &error);
+    gsl_integration_qag(&F, x, x_max, abserr, relerr, DIM, 4, w, &result, &error);
 
     gsl_set_error_handler (old_handler);
 
@@ -545,9 +552,10 @@ double C2_g20_x_Pgq0_integrand(double z, void * p) {
 
 double C2_g20_x_Pgq0(double x, double m2Q2) {
 
-    gsl_integration_workspace * w = gsl_integration_workspace_alloc (1000);
+    double x_max = 1. / (1. + 4 * m2Q2) ;
+    gsl_integration_workspace * w = gsl_integration_workspace_alloc (DIM);
 
-    double result, error, abserr = 0.001, relerr = 0.001;
+    double result, error, abserr = ABS, relerr = REL;
     struct function_params params = {x, m2Q2, static_cast<int>(nan(""))};
 
     gsl_function F;
@@ -557,7 +565,7 @@ double C2_g20_x_Pgq0(double x, double m2Q2) {
     gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
     gsl_set_error_handler_off();
 
-    gsl_integration_qag(&F, x, 1., abserr, relerr, 1000, 4, w, &result, &error);
+    gsl_integration_qag(&F, x, x_max, abserr, relerr, DIM, 4, w, &result, &error);
 
     gsl_set_error_handler (old_handler);
 
@@ -590,9 +598,10 @@ double CL_g20_x_Pgq0_integrand(double z, void * p) {
 
 double CL_g20_x_Pgq0(double x, double m2Q2) {
 
-    gsl_integration_workspace * w = gsl_integration_workspace_alloc (1000);
+    double x_max = 1. / (1. + 4 * m2Q2) ;
+    gsl_integration_workspace * w = gsl_integration_workspace_alloc (DIM);
 
-    double result, error, abserr = 0.001, relerr = 0.001;
+    double result, error, abserr = ABS, relerr = REL;
     struct function_params params = {x, m2Q2, static_cast<int>(nan(""))};
 
     gsl_function F;
@@ -602,7 +611,7 @@ double CL_g20_x_Pgq0(double x, double m2Q2) {
     gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
     gsl_set_error_handler_off();
 
-    gsl_integration_qag(&F, x, 1., abserr, relerr, 1000, 4, w, &result, &error);
+    gsl_integration_qag(&F, x, x_max, abserr, relerr, DIM, 4, w, &result, &error);
 
     gsl_set_error_handler (old_handler);
 
@@ -657,9 +666,10 @@ double Pqq0sing_integrated(double x) {
 
 double C2_ps20_x_Pqq0(double x, double m2Q2, int nf) {
 
-    gsl_integration_workspace * w = gsl_integration_workspace_alloc (1000);
+    double x_max = 1. / (1. + 4 * m2Q2) ;
+    gsl_integration_workspace * w = gsl_integration_workspace_alloc (DIM);
 
-    double regular, singular, local, error, abserr = 0.001, relerr = 0.001;
+    double regular, singular, local, error, abserr = ABS, relerr = REL;
     struct function_params params = {x, m2Q2, nf};
 
     gsl_function F;
@@ -669,14 +679,14 @@ double C2_ps20_x_Pqq0(double x, double m2Q2, int nf) {
     gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
     gsl_set_error_handler_off();
 
-    gsl_integration_qag(&F, x, 1., abserr, relerr, 1000, 4, w, &regular, &error);
+    gsl_integration_qag(&F, x, x_max, abserr, relerr, DIM, 4, w, &regular, &error);
 
     F.function = &C2_ps20_x_Pqq0_sing_integrand;
-    gsl_integration_qag(&F, x, 1., abserr, relerr, 1000, 4, w, &singular, &error);
+    gsl_integration_qag(&F, x/x_max, 1., abserr, relerr, DIM, 4, w, &singular, &error);
 
     gsl_set_error_handler (old_handler);
 
-    local = C2_ps20(x, m2Q2) * (Pqq0loc() - Pqq0sing_integrated(x));
+    local = C2_ps20(x, m2Q2) * (Pqq0loc() - Pqq0sing_integrated(x / x_max));
 
     gsl_integration_workspace_free (w);
 
@@ -721,9 +731,10 @@ double CL_ps20_x_Pqq0_sing_integrand(double z, void * p) {
 
 double CL_ps20_x_Pqq0(double x, double m2Q2, int nf) {
 
-    gsl_integration_workspace * w = gsl_integration_workspace_alloc (1000);
+    double x_max = 1. / (1. + 4 * m2Q2) ;
+    gsl_integration_workspace * w = gsl_integration_workspace_alloc (DIM);
 
-    double regular, singular, local, error, abserr = 0.001, relerr = 0.001;
+    double regular, singular, local, error, abserr = ABS, relerr = REL;
     struct function_params params = {x, m2Q2, nf};
 
     gsl_function F;
@@ -733,14 +744,14 @@ double CL_ps20_x_Pqq0(double x, double m2Q2, int nf) {
     gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
     gsl_set_error_handler_off();
 
-    gsl_integration_qag(&F, x, 1., abserr, relerr, 1000, 4, w, &regular, &error);
+    gsl_integration_qag(&F, x, x_max, abserr, relerr, DIM, 4, w, &regular, &error);
 
     F.function = &CL_ps20_x_Pqq0_sing_integrand;
-    gsl_integration_qag(&F, x, 1., abserr, relerr, 1000, 4, w, &singular, &error);
+    gsl_integration_qag(&F, x/x_max, 1., abserr, relerr, DIM, 4, w, &singular, &error);
 
     gsl_set_error_handler (old_handler);
 
-    local = CL_ps20(x, m2Q2) * (Pqq0loc() - Pqq0sing_integrated(x));
+    local = CL_ps20(x, m2Q2) * (Pqq0loc() - Pqq0sing_integrated(x / x_max));
 
     gsl_integration_workspace_free (w);
 
@@ -803,9 +814,10 @@ double C2_g1_x_Pgg0_x_Pgq0_integrand(double z, void * p) {
 
 double C2_g1_x_Pgg0_x_Pgq0(double x, double m2Q2, int nf) {
 
-    gsl_integration_workspace * w = gsl_integration_workspace_alloc (1000);
+    double x_max = 1. / (1. + 4 * m2Q2) ;
+    gsl_integration_workspace * w = gsl_integration_workspace_alloc (DIM);
 
-    double result, error, abserr = 0.001, relerr = 0.001;
+    double result, error, abserr = ABS, relerr = REL;
     struct function_params params = {x, m2Q2, nf};
 
     gsl_function F;
@@ -815,7 +827,7 @@ double C2_g1_x_Pgg0_x_Pgq0(double x, double m2Q2, int nf) {
     gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
     gsl_set_error_handler_off();
 
-    gsl_integration_qag(&F, x, 1., abserr, relerr, 1000, 4, w, &result, &error);
+    gsl_integration_qag(&F, x, x_max, abserr, relerr, DIM, 4, w, &result, &error);
 
     gsl_set_error_handler (old_handler);
 
@@ -848,9 +860,10 @@ double CL_g1_x_Pgg0_x_Pgq0_integrand(double z, void * p) {
 
 double CL_g1_x_Pgg0_x_Pgq0(double x, double m2Q2, int nf) {
 
-    gsl_integration_workspace * w = gsl_integration_workspace_alloc (1000);
+    double x_max = 1. / (1. + 4 * m2Q2) ;
+    gsl_integration_workspace * w = gsl_integration_workspace_alloc (DIM);
 
-    double result, error, abserr = 0.001, relerr = 0.001;
+    double result, error, abserr = ABS, relerr = REL;
     struct function_params params = {x, m2Q2, nf};
 
     gsl_function F;
@@ -860,7 +873,7 @@ double CL_g1_x_Pgg0_x_Pgq0(double x, double m2Q2, int nf) {
     gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
     gsl_set_error_handler_off();
 
-    gsl_integration_qag(&F, x, 1., abserr, relerr, 1000, 4, w, &result, &error);
+    gsl_integration_qag(&F, x, x_max, abserr, relerr, DIM, 4, w, &result, &error);
 
     gsl_set_error_handler (old_handler);
 
@@ -893,9 +906,10 @@ double C2_g1_x_Pqq0_x_Pgq0_integrand(double z, void * p) {
 
 double C2_g1_x_Pqq0_x_Pgq0(double x, double m2Q2, int nf) {
 
-    gsl_integration_workspace * w = gsl_integration_workspace_alloc (1000);
+    double x_max = 1. / (1. + 4 * m2Q2) ;
+    gsl_integration_workspace * w = gsl_integration_workspace_alloc (DIM);
 
-    double result, error, abserr = 0.001, relerr = 0.001;
+    double result, error, abserr = ABS, relerr = REL;
     struct function_params params = {x, m2Q2, nf};
 
     gsl_function F;
@@ -905,7 +919,7 @@ double C2_g1_x_Pqq0_x_Pgq0(double x, double m2Q2, int nf) {
     gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
     gsl_set_error_handler_off();
 
-    gsl_integration_qag(&F, x, 1., abserr, relerr, 1000, 4, w, &result, &error);
+    gsl_integration_qag(&F, x, x_max, abserr, relerr, DIM, 4, w, &result, &error);
 
     gsl_set_error_handler (old_handler);
 
@@ -938,9 +952,10 @@ double CL_g1_x_Pqq0_x_Pgq0_integrand(double z, void * p) {
 
 double CL_g1_x_Pqq0_x_Pgq0(double x, double m2Q2, int nf) {
 
-    gsl_integration_workspace * w = gsl_integration_workspace_alloc (1000);
+    double x_max = 1. / (1. + 4 * m2Q2) ;
+    gsl_integration_workspace * w = gsl_integration_workspace_alloc (DIM);
 
-    double result, error, abserr = 0.001, relerr = 0.001;
+    double result, error, abserr = ABS, relerr = REL;
     struct function_params params = {x, m2Q2, nf};
 
     gsl_function F;
@@ -950,7 +965,7 @@ double CL_g1_x_Pqq0_x_Pgq0(double x, double m2Q2, int nf) {
     gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
     gsl_set_error_handler_off();
 
-    gsl_integration_qag(&F, x, 1., abserr, relerr, 1000, 4, w, &result, &error);
+    gsl_integration_qag(&F, x, x_max, abserr, relerr, DIM, 4, w, &result, &error);
 
     gsl_set_error_handler (old_handler);
 
@@ -1005,10 +1020,11 @@ double Pgg1sing_integrated(double x, int nf) {
 
 double C2_g1_x_Pgg1(double x, double m2Q2, int nf) {
 
-    double regular, singular, local, error, abserr = 0.001, relerr = 0.001;
+    double x_max = 1. / (1. + 4 * m2Q2) ;
+    double regular, singular, local, error, abserr = ABS, relerr = REL;
     struct function_params params = {x, m2Q2, nf};
 
-    gsl_integration_workspace * w = gsl_integration_workspace_alloc (1000);
+    gsl_integration_workspace * w = gsl_integration_workspace_alloc (DIM);
 
     gsl_function F;
     F.function = &C2_g1_x_Pgg1_reg_integrand;
@@ -1017,14 +1033,14 @@ double C2_g1_x_Pgg1(double x, double m2Q2, int nf) {
     gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
     gsl_set_error_handler_off();
 
-    gsl_integration_qag(&F, x, 1., abserr, relerr, 1000, 4, w, &regular, &error);
+    gsl_integration_qag(&F, x, x_max, abserr, relerr, DIM, 4, w, &regular, &error);
 
     F.function = &C2_g1_x_Pgg1_sing_integrand;
-    gsl_integration_qag(&F, x, 1., abserr, relerr, 1000, 4, w, &singular, &error);
+    gsl_integration_qag(&F, x/x_max, 1., abserr, relerr, DIM, 4, w, &singular, &error);
 
     gsl_set_error_handler (old_handler);
 
-    local = C2_g1(x, m2Q2) * (Pgg1loc(nf) - Pgg1sing_integrated(x, nf)) ;
+    local = C2_g1(x, m2Q2) * (Pgg1loc(nf) - Pgg1sing_integrated(x / x_max, nf)) ;
 
     gsl_integration_workspace_free (w);
 
@@ -1069,10 +1085,11 @@ double CL_g1_x_Pgg1_sing_integrand(double z, void * p) {
 
 double CL_g1_x_Pgg1(double x, double m2Q2, int nf) {
 
-    double regular, singular, local, error, abserr = 0.001, relerr = 0.001;
+    double x_max = 1. / (1. + 4 * m2Q2) ;
+    double regular, singular, local, error, abserr = ABS, relerr = REL;
     struct function_params params = {x, m2Q2, nf};
 
-    gsl_integration_workspace * w = gsl_integration_workspace_alloc (1000);
+    gsl_integration_workspace * w = gsl_integration_workspace_alloc (DIM);
 
     gsl_function F;
     F.function = &CL_g1_x_Pgg1_reg_integrand;
@@ -1081,14 +1098,14 @@ double CL_g1_x_Pgg1(double x, double m2Q2, int nf) {
     gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
     gsl_set_error_handler_off();
 
-    gsl_integration_qag(&F, x, 1., abserr, relerr, 1000, 4, w, &regular, &error);
+    gsl_integration_qag(&F, x, x_max, abserr, relerr, DIM, 4, w, &regular, &error);
 
     F.function = &CL_g1_x_Pgg1_sing_integrand;
-    gsl_integration_qag(&F, x, 1., abserr, relerr, 1000, 4, w, &singular, &error);
+    gsl_integration_qag(&F, x/x_max, 1., abserr, relerr, DIM, 4, w, &singular, &error);
 
     gsl_set_error_handler (old_handler);
 
-    local = CL_g1(x, m2Q2) * (Pgg1loc(nf) - Pgg1sing_integrated(x, nf)) ;
+    local = CL_g1(x, m2Q2) * (Pgg1loc(nf) - Pgg1sing_integrated(x / x_max, nf)) ;
 
     gsl_integration_workspace_free (w);
 
@@ -1119,10 +1136,11 @@ double C2_ps20_x_Pqg0_integrand(double z, void * p) {
 
 double C2_ps20_x_Pqg0(double x, double m2Q2, int nf) {
 
-    double result, error, abserr = 0.001, relerr = 0.001;
+    double x_max = 1. / (1. + 4 * m2Q2) ;
+    double result, error, abserr = ABS, relerr = REL;
     struct function_params params = {x, m2Q2, nf};
 
-    gsl_integration_workspace * w = gsl_integration_workspace_alloc(1000);
+    gsl_integration_workspace * w = gsl_integration_workspace_alloc(DIM);
 
     gsl_function F;
     F.function = &C2_ps20_x_Pqg0_integrand;
@@ -1131,7 +1149,7 @@ double C2_ps20_x_Pqg0(double x, double m2Q2, int nf) {
     gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
     gsl_set_error_handler_off();
 
-    gsl_integration_qag(&F, x, 1., abserr, relerr, 1000, 4, w, &result, &error);
+    gsl_integration_qag(&F, x, x_max, abserr, relerr, DIM, 4, w, &result, &error);
 
     gsl_set_error_handler (old_handler);
 
@@ -1164,10 +1182,11 @@ double CL_ps20_x_Pqg0_integrand(double z, void * p) {
 
 double CL_ps20_x_Pqg0(double x, double m2Q2, int nf) {
 
-    double result, error, abserr = 0.001, relerr = 0.001;
+    double x_max = 1. / (1. + 4 * m2Q2) ;
+    double result, error, abserr = ABS, relerr = REL;
     struct function_params params = {x, m2Q2, nf};
 
-    gsl_integration_workspace * w = gsl_integration_workspace_alloc(1000);
+    gsl_integration_workspace * w = gsl_integration_workspace_alloc(DIM);
 
     gsl_function F;
     F.function = &CL_ps20_x_Pqg0_integrand;
@@ -1176,7 +1195,7 @@ double CL_ps20_x_Pqg0(double x, double m2Q2, int nf) {
     gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
     gsl_set_error_handler_off();
 
-    gsl_integration_qag(&F, x, 1., abserr, relerr, 1000, 4, w, &result, &error);
+    gsl_integration_qag(&F, x, x_max, abserr, relerr, DIM, 4, w, &result, &error);
 
     gsl_set_error_handler (old_handler);
 
@@ -1223,9 +1242,10 @@ double C2_g20_x_Pgg0_sing_integrand(double z, void * p) {
 
 double C2_g20_x_Pgg0(double x, double m2Q2, int nf) {
 
-    gsl_integration_workspace * w = gsl_integration_workspace_alloc(1000);
+    double x_max = 1. / (1. + 4 * m2Q2) ;
+    gsl_integration_workspace * w = gsl_integration_workspace_alloc(DIM);
 
-    double regular, singular, local, error, abserr = 0.001, relerr = 0.001;
+    double regular, singular, local, error, abserr = ABS, relerr = REL;
     struct function_params params = {x, m2Q2, nf};
 
     gsl_function F;
@@ -1235,14 +1255,14 @@ double C2_g20_x_Pgg0(double x, double m2Q2, int nf) {
     gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
     gsl_set_error_handler_off();
 
-    gsl_integration_qag(&F, x, 1., abserr, relerr, 1000, 4, w, &regular, &error);
+    gsl_integration_qag(&F, x, x_max, abserr, relerr, DIM, 4, w, &regular, &error);
 
     F.function = &C2_g20_x_Pgg0_sing_integrand;
-    gsl_integration_qag(&F, x, 1., abserr, relerr, 1000, 4, w, &singular, &error);
+    gsl_integration_qag(&F, x/x_max, 1., abserr, relerr, DIM, 4, w, &singular, &error);
 
     gsl_set_error_handler (old_handler);
 
-    local = C2_g20(x, m2Q2) * (Pgg0loc(nf) - Pgg0sing_integrated(x)) ;
+    local = C2_g20(x, m2Q2) * (Pgg0loc(nf) - Pgg0sing_integrated(x / x_max)) ;
 
     gsl_integration_workspace_free (w);
 
@@ -1287,9 +1307,10 @@ double CL_g20_x_Pgg0_sing_integrand(double z, void * p) {
 
 double CL_g20_x_Pgg0(double x, double m2Q2, int nf) {
 
-    gsl_integration_workspace * w = gsl_integration_workspace_alloc(1000);
+    double x_max = 1. / (1. + 4 * m2Q2) ;
+    gsl_integration_workspace * w = gsl_integration_workspace_alloc(DIM);
 
-    double regular, singular, local, error, abserr = 0.001, relerr = 0.001;
+    double regular, singular, local, error, abserr = ABS, relerr = REL;
     struct function_params params = {x, m2Q2, nf};
 
     gsl_function F;
@@ -1299,14 +1320,14 @@ double CL_g20_x_Pgg0(double x, double m2Q2, int nf) {
     gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
     gsl_set_error_handler_off();
 
-    gsl_integration_qag(&F, x, 1., abserr, relerr, 1000, 4, w, &regular, &error);
+    gsl_integration_qag(&F, x, x_max, abserr, relerr, DIM, 4, w, &regular, &error);
 
     F.function = &CL_g20_x_Pgg0_sing_integrand;
-    gsl_integration_qag(&F, x, 1., abserr, relerr, 1000, 4, w, &singular, &error);
+    gsl_integration_qag(&F, x/x_max, 1., abserr, relerr, DIM, 4, w, &singular, &error);
 
     gsl_set_error_handler (old_handler);
 
-    local = CL_g20(x, m2Q2) * (Pgg0loc(nf) - Pgg0sing_integrated(x)) ;
+    local = CL_g20(x, m2Q2) * (Pgg0loc(nf) - Pgg0sing_integrated(x / x_max)) ;
 
     gsl_integration_workspace_free (w);
 
@@ -1349,9 +1370,10 @@ double C2_g1_x_Pqg0_x_Pgq0_integrand(double z, void * p) {
 
 double C2_g1_x_Pqg0_x_Pgq0(double x, double m2Q2, int nf) {
 
-    gsl_integration_workspace * w = gsl_integration_workspace_alloc (1000);
+    double x_max = 1. / (1. + 4 * m2Q2) ;
+    gsl_integration_workspace * w = gsl_integration_workspace_alloc (DIM);
 
-    double result, error, abserr = 0.001, relerr = 0.001;
+    double result, error, abserr = ABS, relerr = REL;
     struct function_params params = {x, m2Q2, nf};
 
     gsl_function F;
@@ -1361,7 +1383,7 @@ double C2_g1_x_Pqg0_x_Pgq0(double x, double m2Q2, int nf) {
     gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
     gsl_set_error_handler_off();
 
-    gsl_integration_qag(&F, x, 1., abserr, relerr, 1000, 4, w, &result, &error);
+    gsl_integration_qag(&F, x, x_max, abserr, relerr, DIM, 4, w, &result, &error);
 
     gsl_set_error_handler (old_handler);
 
@@ -1394,9 +1416,10 @@ double CL_g1_x_Pqg0_x_Pgq0_integrand(double z, void * p) {
 
 double CL_g1_x_Pqg0_x_Pgq0(double x, double m2Q2, int nf) {
 
-    gsl_integration_workspace * w = gsl_integration_workspace_alloc (1000);
+    double x_max = 1. / (1. + 4 * m2Q2) ;
+    gsl_integration_workspace * w = gsl_integration_workspace_alloc (DIM);
 
-    double result, error, abserr = 0.001, relerr = 0.001;
+    double result, error, abserr = ABS, relerr = REL;
     struct function_params params = {x, m2Q2, nf};
 
     gsl_function F;
@@ -1406,7 +1429,7 @@ double CL_g1_x_Pqg0_x_Pgq0(double x, double m2Q2, int nf) {
     gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
     gsl_set_error_handler_off();
 
-    gsl_integration_qag(&F, x, 1., abserr, relerr, 1000, 4, w, &result, &error);
+    gsl_integration_qag(&F, x, x_max, abserr, relerr, DIM, 4, w, &result, &error);
 
     gsl_set_error_handler (old_handler);
 
@@ -1453,9 +1476,10 @@ double C2_g1_x_Pgg0_x_Pgg0_sing_integrand(double z, void * p) {
 
 double C2_g1_x_Pgg0_x_Pgg0(double x, double m2Q2, int nf) {
 
-    gsl_integration_workspace * w = gsl_integration_workspace_alloc(1000);
+    double x_max = 1. / (1. + 4 * m2Q2) ;
+    gsl_integration_workspace * w = gsl_integration_workspace_alloc(DIM);
 
-    double regular, singular, local, error, abserr = 0.001, relerr = 0.001;
+    double regular, singular, local, error, abserr = ABS, relerr = REL;
     struct function_params params = {x, m2Q2, nf};
 
     double C2_g1xPgg0 = C2_g1_x_Pgg0(x, m2Q2, nf) ;
@@ -1467,14 +1491,14 @@ double C2_g1_x_Pgg0_x_Pgg0(double x, double m2Q2, int nf) {
     gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
     gsl_set_error_handler_off();
 
-    gsl_integration_qag(&F, x, 1., abserr, relerr, 1000, 4, w, &regular, &error);
+    gsl_integration_qag(&F, x, x_max, abserr, relerr, DIM, 4, w, &regular, &error);
 
     F.function = &C2_g1_x_Pgg0_x_Pgg0_sing_integrand;
-    gsl_integration_qag(&F, x, 1., abserr, relerr, 1000, 4, w, &singular, &error);
+    gsl_integration_qag(&F, x/x_max, 1., abserr, relerr, DIM, 4, w, &singular, &error);
 
     gsl_set_error_handler (old_handler);
 
-    local = C2_g1xPgg0 * (Pgg0loc(nf) - Pgg0sing_integrated(x)) ;
+    local = C2_g1xPgg0 * (Pgg0loc(nf) - Pgg0sing_integrated(x / x_max)) ;
 
     gsl_integration_workspace_free (w);
 
@@ -1519,9 +1543,10 @@ double CL_g1_x_Pgg0_x_Pgg0_sing_integrand(double z, void * p) {
 
 double CL_g1_x_Pgg0_x_Pgg0(double x, double m2Q2, int nf) {
 
-    gsl_integration_workspace * w = gsl_integration_workspace_alloc(1000);
+    double x_max = 1. / (1. + 4 * m2Q2) ;
+    gsl_integration_workspace * w = gsl_integration_workspace_alloc(DIM);
 
-    double regular, singular, local, error, abserr = 0.001, relerr = 0.001;
+    double regular, singular, local, error, abserr = ABS, relerr = REL;
     struct function_params params = {x, m2Q2, nf};
 
     double CL_g1xPgg0 = CL_g1_x_Pgg0(x, m2Q2, nf) ;
@@ -1533,14 +1558,14 @@ double CL_g1_x_Pgg0_x_Pgg0(double x, double m2Q2, int nf) {
     gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
     gsl_set_error_handler_off();
 
-    gsl_integration_qag(&F, x, 1., abserr, relerr, 1000, 4, w, &regular, &error);
+    gsl_integration_qag(&F, x, x_max, abserr, relerr, DIM, 4, w, &regular, &error);
 
     F.function = &CL_g1_x_Pgg0_x_Pgg0_sing_integrand;
-    gsl_integration_qag(&F, x, 1., abserr, relerr, 1000, 4, w, &singular, &error);
+    gsl_integration_qag(&F, x/x_max, 1., abserr, relerr, DIM, 4, w, &singular, &error);
 
     gsl_set_error_handler (old_handler);
 
-    local = CL_g1xPgg0 * (Pgg0loc(nf) - Pgg0sing_integrated(x)) ;
+    local = CL_g1xPgg0 * (Pgg0loc(nf) - Pgg0sing_integrated(x / x_max)) ;
 
     gsl_integration_workspace_free (w);
 
@@ -1550,15 +1575,10 @@ double CL_g1_x_Pgg0_x_Pgg0(double x, double m2Q2, int nf) {
 
 //==========================================================================================//
 //  Convolution between the first order massive gluon coefficient functions for F2 and the convolution
-//  between the splitting functions Pgg0 and Pgg0 using monte carlo mathods
+//  between the splitting functions Pgg0 and Pgg0 using monte carlo methods
 //------------------------------------------------------------------------------------------//
 
 double C2_g1_x_Pgg0_x_Pgg0_reg1_integrand(double z[], size_t dim, void * p) {
-
-    if (dim != 2) {
-        std::cout << "error: dim != 2" << std::endl ;
-        exit(-1);
-    }
 
     struct function_params * params = (struct function_params *)p;
 
@@ -1568,9 +1588,11 @@ double C2_g1_x_Pgg0_x_Pgg0_reg1_integrand(double z[], size_t dim, void * p) {
 
     double z1 = z[0], z2 = z[1] ;
 
-    double int_bound = theta(z1 - x) * theta(z2 - z1) ;
-
-    return 1. / (z1 * z2) * Pgg0reg(x / z1) * Pgg0reg(z1 / z2) * C2_g1(z2, m2Q2) * int_bound ;
+    if (z2 > z1) {
+        return 1. / (z1 * z2) * Pgg0reg(x / z1) * Pgg0reg(z1 / z2) * C2_g1(z2, m2Q2) ;
+    } else {
+        return 0. ;
+    }
 
 }
 
@@ -1578,11 +1600,6 @@ double C2_g1_x_Pgg0_x_Pgg0_reg1_integrand(double z[], size_t dim, void * p) {
 
 double C2_g1_x_Pgg0_x_Pgg0_reg2_integrand(double z[], size_t dim, void * p) {
 
-    if (dim != 2) {
-        std::cout << "error: dim != 2" << std::endl ;
-        exit(-1);
-    }
-
     struct function_params * params = (struct function_params *)p;
 
     double m2Q2 = (params->m2Q2);
@@ -1591,44 +1608,42 @@ double C2_g1_x_Pgg0_x_Pgg0_reg2_integrand(double z[], size_t dim, void * p) {
 
     double z1 = z[0], z2 = z[1] ;
 
-    double int_bound = theta(z1 - x) * theta(z2 - z1) ;
-
-    return 1. / z1 * Pgg0reg(x / z1) * Pgg0sing(z2) * (C2_g1(z1 / z2, m2Q2) / z2 -  C2_g1(z1, m2Q2)) * int_bound ;
+    if (z2 > z1) {
+        return 1. / (z1 * z2) * Pgg0reg(x / z1) * Pgg0sing(z1 / z2) * (
+            C2_g1(z2, m2Q2) - z1 / z2 * C2_g1(z1, m2Q2)
+        ) ;
+    } else {
+        return 0. ;
+    }
 
 }
 
 //------------------------------------------------------------------------------------------//
 
-double C2_g1_x_Pgg0_x_Pgg0_reg3_integrand(double z[], size_t dim, void * p) {
-
-    if (dim != 2) {
-        std::cout << "error: dim != 2" << std::endl ;
-        exit(-1);
-    }
+double C2_g1_x_Pgg0_x_Pgg0_reg3_integrand(double z, void * p) {
 
     struct function_params * params = (struct function_params *)p;
 
     double m2Q2 = (params->m2Q2);
     double x = (params->x);
     //int nf = (params->nf);
+    double x_max = 1. / (1. + 4 * m2Q2) ;
 
-    double z1 = z[0], z2 = z[1] ;
-
-    double int_bound = theta(z1 - x) * theta(z1 - z2) ;
-
-    return - 1. / z1 * Pgg0reg(x / z1) * C2_g1(z1, m2Q2) * Pgg0sing(z2) * int_bound ;
+    return - 1. / z * Pgg0reg(x / z) * C2_g1(z, m2Q2) * Pgg0sing_integrated(z / x_max)  ;
 
 }
 
 //------------------------------------------------------------------------------------------//
 
-double C2_g1_x_Pgg0_x_Pgg0_reg(double x, double m2Q2, int nf, size_t calls) {
+double C2_g1_x_Pgg0_x_Pgg0_reg(double x, double m2Q2, int nf) {
 
+    double x_max = 1. / (1. + 4 * m2Q2) ;
     struct function_params params = {x, m2Q2, nf} ;
     double xl[2] = {x, x};
-    double xu[2] = {1, 1};
+    double xu[2] = {x_max, x_max};
 
     double err, regular1, regular2, regular3, regular4 ;
+    size_t calls = CALLS ;
 
     gsl_monte_vegas_state *s = gsl_monte_vegas_alloc (2);
 
@@ -1651,26 +1666,25 @@ double C2_g1_x_Pgg0_x_Pgg0_reg(double x, double m2Q2, int nf, size_t calls) {
     gsl_monte_vegas_init (s);
     gsl_monte_vegas_integrate(&F, xl, xu, 2, calls, r, s, &regular2, &err);
 
-    double xl_new[] = {x, 0} ;
-
-    F.f = &C2_g1_x_Pgg0_x_Pgg0_reg3_integrand;
-    gsl_monte_vegas_init (s);
-    gsl_monte_vegas_integrate(&F, xl_new, xu, 2, calls, r, s, &regular3, &err);
-
     gsl_monte_vegas_free (s);
+    gsl_rng_free (r);
 
-    gsl_integration_workspace * w = gsl_integration_workspace_alloc (1000) ;
+    gsl_integration_workspace * w = gsl_integration_workspace_alloc (DIM) ;
 
-    double abserr = 0.001, relerr = 0.001;
+    double abserr = ABS, relerr = REL;
 
     gsl_function f;
-    f.function = &C2_g1_x_Pgg0_reg_integrand;
+    f.function = &C2_g1_x_Pgg0_x_Pgg0_reg3_integrand;
     f.params = &params;
 
     gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
     gsl_set_error_handler_off();
 
-    gsl_integration_qag(&f, x, 1, abserr, relerr, 1000, 4, w, &regular4, &err);
+    gsl_integration_qag(&f, x, x_max, abserr, relerr, DIM, 4, w, &regular3, &err);
+
+    f.function = &C2_g1_x_Pgg0_reg_integrand;
+
+    gsl_integration_qag(&f, x, x_max, abserr, relerr, DIM, 4, w, &regular4, &err);
 
     gsl_set_error_handler (old_handler);
 
@@ -1686,11 +1700,6 @@ double C2_g1_x_Pgg0_x_Pgg0_reg(double x, double m2Q2, int nf, size_t calls) {
 
 double C2_g1_x_Pgg0_x_Pgg0_sing1_integrand(double z[], size_t dim, void * p) {
 
-    if (dim != 2) {
-        std::cout << "error: dim != 2" << std::endl ;
-        exit(-1);
-    }
-
     struct function_params * params = (struct function_params *)p;
 
     double m2Q2 = (params->m2Q2);
@@ -1699,10 +1708,16 @@ double C2_g1_x_Pgg0_x_Pgg0_sing1_integrand(double z[], size_t dim, void * p) {
 
     double z1 = z[0], z2 = z[1] ;
 
-    return 1. / z2 * theta(z1 - x) * Pgg0sing(z1) * (
-        theta(z2 - x / z1) / z1 * Pgg0reg(x / (z1 * z2))
-        - theta(z2 - x) * Pgg0reg(x / z2)
-   ) * C2_g1(z2, m2Q2) ;
+    double tmp ;
+    if (z2 > x / z1) {
+        tmp = Pgg0reg(x / (z1 * z2)) / z1 ;
+    } else {
+        tmp = 0. ;
+    }
+
+    return Pgg0sing(z1) * (
+        tmp - Pgg0reg(x / z2)
+    ) * C2_g1(z2, m2Q2) / z2 ;
 
 }
 
@@ -1710,34 +1725,32 @@ double C2_g1_x_Pgg0_x_Pgg0_sing1_integrand(double z[], size_t dim, void * p) {
 
 double C2_g1_x_Pgg0_x_Pgg0_sing2_integrand(double z[], size_t dim, void * p) {
 
-    if (dim != 2) {
-        std::cout << "error: dim != 2" << std::endl ;
-        exit(-1);
-    }
-
     struct function_params * params = (struct function_params *)p;
 
     double m2Q2 = (params->m2Q2);
     double x = (params->x);
     //int nf = (params->nf);
 
+    double x_max = 1. / (1. + 4 * m2Q2) ;
+
     double z1 = z[0], z2 = z[1] ;
 
-    return theta(z1 - x) * Pgg0sing(z1) * (
-        Pgg0sing(z2) / z1 * (C2_g1(x / (z1 * z2), m2Q2) / z2 - C2_g1(x / z1, m2Q2)) * theta(z2 - x / z1)
-        - Pgg0sing(z2) * (C2_g1(x / z2, m2Q2) / z2 - C2_g1(x, m2Q2)) * theta(z2 - x)
+    double tmp ;
+    if(z2 > x / (x_max * z1)) {
+        tmp = (C2_g1(x / (z1 * z2), m2Q2) / z2 - C2_g1(x / z1, m2Q2)) / z1 ;
+    } else {
+        tmp = 0. ;
+    }
+
+    return Pgg0sing(z1) * Pgg0sing(z2) * (
+        tmp - (C2_g1(x / z2, m2Q2) / z2 - C2_g1(x, m2Q2))
     ) ;
 
 }
 
 //------------------------------------------------------------------------------------------//
 
-double C2_g1_x_Pgg0_x_Pgg0_sing3_integrand(double z[], size_t dim, void * p) {
-
-    if (dim != 2) {
-        std::cout << "error: dim != 2" << std::endl ;
-        exit(-1);
-    }
+double C2_g1_x_Pgg0_x_Pgg0_sing3_integrand(double z, void * p) {
 
     struct function_params * params = (struct function_params *)p;
 
@@ -1745,22 +1758,29 @@ double C2_g1_x_Pgg0_x_Pgg0_sing3_integrand(double z[], size_t dim, void * p) {
     double x = (params->x);
     //int nf = (params->nf);
 
-    double z1 = z[0], z2 = z[1] ;
+    double x_max = 1. / (1. + 4 * m2Q2) ;
 
-    return - (theta(z1 - x) * Pgg0sing(z1) * Pgg0sing(z2) * (C2_g1(x / z1 , m2Q2) / z1 * theta(x / z1 - z2) - C2_g1(x , m2Q2) * theta(x - z2)));
+    return - (
+        Pgg0sing(z) * (
+            C2_g1(x / z , m2Q2) * Pgg0sing_integrated(x / (x_max * z)) / z
+            - C2_g1(x , m2Q2) * Pgg0sing_integrated(x / x_max)
+        )
+    );
 
 }
 
 //------------------------------------------------------------------------------------------//
 
-double C2_g1_x_Pgg0_x_Pgg0_sing(double x, double m2Q2, int nf, size_t calls) {
+double C2_g1_x_Pgg0_x_Pgg0_sing(double x, double m2Q2, int nf) {
 
+    double x_max = 1. / (1. + 4 * m2Q2) ;
     struct function_params params = {x, m2Q2, nf} ;
-    double xl[2] = {x, 0};
-    //double xl[2] = {x, x};
-    double xu[2] = {1, 1};
+
+    double xl[2] = {x/x_max, x};
+    double xu[2] = {1, x_max};
 
     double err, singular1, singular2, singular3, singular4 ;
+    size_t calls = CALLS ;
 
     gsl_monte_vegas_state *s = gsl_monte_vegas_alloc (2);
 
@@ -1776,30 +1796,35 @@ double C2_g1_x_Pgg0_x_Pgg0_sing(double x, double m2Q2, int nf, size_t calls) {
     F.dim = 2;
     F.params = &params;
 
+    gsl_monte_vegas_init(s) ;
     gsl_monte_vegas_integrate(&F, xl, xu, 2, calls, r, s, &singular1, &err);
 
+    xl[1] = x/x_max ;
+    xu[1] = 1 ;
+
     F.f = &C2_g1_x_Pgg0_x_Pgg0_sing2_integrand;
+    gsl_monte_vegas_init(s) ;
     gsl_monte_vegas_integrate(&F, xl, xu, 2, calls, r, s, &singular2, &err);
 
-    //double xl_new[] = {x, 0} ;
-
-    F.f = &C2_g1_x_Pgg0_x_Pgg0_sing3_integrand;
-    gsl_monte_vegas_integrate(&F, xl, xu, 2, calls, r, s, &singular3, &err);
-
     gsl_monte_vegas_free (s);
+    gsl_rng_free (r);
 
-    gsl_integration_workspace * w = gsl_integration_workspace_alloc (1000);
+    gsl_integration_workspace * w = gsl_integration_workspace_alloc (DIM);
 
-    double abserr = 0.001, relerr = 0.001;
+    double abserr = ABS, relerr = REL;
 
     gsl_function f;
-    f.function = &C2_g1_x_Pgg0_sing_integrand;
+    f.function = &C2_g1_x_Pgg0_x_Pgg0_sing3_integrand;
     f.params = &params;
 
     gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
     gsl_set_error_handler_off();
 
-    gsl_integration_qag(&f, x, 1, abserr, relerr, 1000, 4, w, &singular4, &err);
+    gsl_integration_qag(&f, x/x_max, 1, abserr, relerr, DIM, 4, w, &singular3, &err);
+
+    f.function = &C2_g1_x_Pgg0_sing_integrand;
+
+    gsl_integration_qag(&f, x/x_max, 1, abserr, relerr, DIM, 4, w, &singular4, &err);
 
     gsl_set_error_handler (old_handler);
 
@@ -1813,12 +1838,14 @@ double C2_g1_x_Pgg0_x_Pgg0_sing(double x, double m2Q2, int nf, size_t calls) {
 
 //------------------------------------------------------------------------------------------//
 
-double C2_g1_x_Pgg0_x_Pgg0_MC(double x, double m2Q2, int nf, size_t calls) {
+double C2_g1_x_Pgg0_x_Pgg0_MC(double x, double m2Q2, int nf) {
+
+    double x_max = 1. / (1. + 4 * m2Q2) ;
 
     return (
-        C2_g1_x_Pgg0_x_Pgg0_reg(x, m2Q2, nf, calls)
-        + C2_g1_x_Pgg0_x_Pgg0_sing(x, m2Q2, nf, calls)
-        + C2_g1_x_Pgg0(x, m2Q2, nf) * (Pgg0loc(nf) - Pgg0sing_integrated(x))
+        C2_g1_x_Pgg0_x_Pgg0_reg(x, m2Q2, nf)
+        + C2_g1_x_Pgg0_x_Pgg0_sing(x, m2Q2, nf)
+        + C2_g1_x_Pgg0(x, m2Q2, nf) * (Pgg0loc(nf) - Pgg0sing_integrated(x / x_max))
     );
 
 }
@@ -1830,11 +1857,6 @@ double C2_g1_x_Pgg0_x_Pgg0_MC(double x, double m2Q2, int nf, size_t calls) {
 
 double CL_g1_x_Pgg0_x_Pgg0_reg1_integrand(double z[], size_t dim, void * p) {
 
-    if (dim != 2) {
-        std::cout << "error: dim != 2" << std::endl ;
-        exit(-1);
-    }
-
     struct function_params * params = (struct function_params *)p;
 
     double m2Q2 = (params->m2Q2);
@@ -1843,9 +1865,11 @@ double CL_g1_x_Pgg0_x_Pgg0_reg1_integrand(double z[], size_t dim, void * p) {
 
     double z1 = z[0], z2 = z[1] ;
 
-    double int_bound = theta(z1 - x) * theta(z2 - z1) ;
-
-    return 1. / (z1 * z2) * Pgg0reg(x / z1) * Pgg0reg(z1 / z2) * CL_g1(z2, m2Q2) * int_bound ;
+    if (z2 > z1) {
+        return 1. / (z1 * z2) * Pgg0reg(x / z1) * Pgg0reg(z1 / z2) * CL_g1(z2, m2Q2) ;
+    } else {
+        return 0. ;
+    }
 
 }
 
@@ -1853,11 +1877,6 @@ double CL_g1_x_Pgg0_x_Pgg0_reg1_integrand(double z[], size_t dim, void * p) {
 
 double CL_g1_x_Pgg0_x_Pgg0_reg2_integrand(double z[], size_t dim, void * p) {
 
-    if (dim != 2) {
-        std::cout << "error: dim != 2" << std::endl ;
-        exit(-1);
-    }
-
     struct function_params * params = (struct function_params *)p;
 
     double m2Q2 = (params->m2Q2);
@@ -1866,44 +1885,42 @@ double CL_g1_x_Pgg0_x_Pgg0_reg2_integrand(double z[], size_t dim, void * p) {
 
     double z1 = z[0], z2 = z[1] ;
 
-    double int_bound = theta(z1 - x) * theta(z2 - z1) ;
-
-    return 1. / z1 * Pgg0reg(x / z1) * Pgg0sing(z2) * (CL_g1(z1 / z2, m2Q2) / z2 -  CL_g1(z1, m2Q2)) * int_bound ;
+    if (z2 > z1) {
+        return 1. / (z1 * z2) * Pgg0reg(x / z1) * Pgg0sing(z1 / z2) * (
+            CL_g1(z2, m2Q2) - z1 / z2 * CL_g1(z1, m2Q2)
+        ) ;
+    } else {
+        return 0. ;
+    }
 
 }
 
 //------------------------------------------------------------------------------------------//
 
-double CL_g1_x_Pgg0_x_Pgg0_reg3_integrand(double z[], size_t dim, void * p) {
-
-    if (dim != 2) {
-        std::cout << "error: dim != 2" << std::endl ;
-        exit(-1);
-    }
+double CL_g1_x_Pgg0_x_Pgg0_reg3_integrand(double z, void * p) {
 
     struct function_params * params = (struct function_params *)p;
 
     double m2Q2 = (params->m2Q2);
     double x = (params->x);
     //int nf = (params->nf);
+    double x_max = 1. / (1. + 4 * m2Q2) ;
 
-    double z1 = z[0], z2 = z[1] ;
-
-    double int_bound = theta(z1 - x) * theta(z1 - z2) ;
-
-    return - 1. / z1 * Pgg0reg(x / z1) * CL_g1(z1, m2Q2) * Pgg0sing(z2) * int_bound ;
+    return - 1. / z * Pgg0reg(x / z) * CL_g1(z, m2Q2) * Pgg0sing_integrated(z / x_max)  ;
 
 }
 
 //------------------------------------------------------------------------------------------//
 
-double CL_g1_x_Pgg0_x_Pgg0_reg(double x, double m2Q2, int nf, size_t calls) {
+double CL_g1_x_Pgg0_x_Pgg0_reg(double x, double m2Q2, int nf) {
 
+    double x_max = 1. / (1. + 4 * m2Q2) ;
     struct function_params params = {x, m2Q2, nf} ;
     double xl[2] = {x, x};
-    double xu[2] = {1, 1};
+    double xu[2] = {x_max, x_max};
 
     double err, regular1, regular2, regular3, regular4 ;
+    size_t calls = CALLS ;
 
     gsl_monte_vegas_state *s = gsl_monte_vegas_alloc (2);
 
@@ -1926,26 +1943,25 @@ double CL_g1_x_Pgg0_x_Pgg0_reg(double x, double m2Q2, int nf, size_t calls) {
     gsl_monte_vegas_init (s);
     gsl_monte_vegas_integrate(&F, xl, xu, 2, calls, r, s, &regular2, &err);
 
-    double xl_new[] = {x, 0} ;
-
-    F.f = &CL_g1_x_Pgg0_x_Pgg0_reg3_integrand;
-    gsl_monte_vegas_init (s);
-    gsl_monte_vegas_integrate(&F, xl_new, xu, 2, calls, r, s, &regular3, &err);
-
     gsl_monte_vegas_free (s);
+    gsl_rng_free (r);
 
-    gsl_integration_workspace * w = gsl_integration_workspace_alloc (1000);
+    gsl_integration_workspace * w = gsl_integration_workspace_alloc (DIM) ;
 
-    double abserr = 0.001, relerr = 0.001;
+    double abserr = ABS, relerr = REL;
 
     gsl_function f;
-    f.function = &CL_g1_x_Pgg0_reg_integrand;
+    f.function = &CL_g1_x_Pgg0_x_Pgg0_reg3_integrand;
     f.params = &params;
 
     gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
     gsl_set_error_handler_off();
 
-    gsl_integration_qag(&f, x, 1, abserr, relerr, 1000, 4, w, &regular4, &err);
+    gsl_integration_qag(&f, x, x_max, abserr, relerr, DIM, 4, w, &regular3, &err);
+
+    f.function = &CL_g1_x_Pgg0_reg_integrand;
+
+    gsl_integration_qag(&f, x, x_max, abserr, relerr, DIM, 4, w, &regular4, &err);
 
     gsl_set_error_handler (old_handler);
 
@@ -1961,11 +1977,6 @@ double CL_g1_x_Pgg0_x_Pgg0_reg(double x, double m2Q2, int nf, size_t calls) {
 
 double CL_g1_x_Pgg0_x_Pgg0_sing1_integrand(double z[], size_t dim, void * p) {
 
-    if (dim != 2) {
-        std::cout << "error: dim != 2" << std::endl ;
-        exit(-1);
-    }
-
     struct function_params * params = (struct function_params *)p;
 
     double m2Q2 = (params->m2Q2);
@@ -1974,9 +1985,16 @@ double CL_g1_x_Pgg0_x_Pgg0_sing1_integrand(double z[], size_t dim, void * p) {
 
     double z1 = z[0], z2 = z[1] ;
 
-    return 1. / z2 * theta(z1 - x) * Pgg0sing(z1) * (
-            theta(z2 - x / z1) / z1 * Pgg0reg(x / (z1 * z2)) - theta(z2 - x) * Pgg0reg(x / z2)
-        ) * CL_g1(z2, m2Q2) ;
+    double tmp ;
+    if (z2 > x / z1) {
+        tmp = Pgg0reg(x / (z1 * z2)) / z1 ;
+    } else {
+        tmp = 0. ;
+    }
+
+    return Pgg0sing(z1) * (
+        tmp - Pgg0reg(x / z2)
+    ) * CL_g1(z2, m2Q2) / z2 ;
 
 }
 
@@ -1984,34 +2002,32 @@ double CL_g1_x_Pgg0_x_Pgg0_sing1_integrand(double z[], size_t dim, void * p) {
 
 double CL_g1_x_Pgg0_x_Pgg0_sing2_integrand(double z[], size_t dim, void * p) {
 
-    if (dim != 2) {
-        std::cout << "error: dim != 2" << std::endl ;
-        exit(-1);
-    }
-
     struct function_params * params = (struct function_params *)p;
 
     double m2Q2 = (params->m2Q2);
     double x = (params->x);
     //int nf = (params->nf);
 
+    double x_max = 1. / (1. + 4 * m2Q2) ;
+
     double z1 = z[0], z2 = z[1] ;
 
-    return theta(z1 - x) * Pgg0sing(z1) * (
-        Pgg0sing(z2) / z1 * (CL_g1(x / (z1 * z2), m2Q2) / z2 - CL_g1(x / z1, m2Q2)) * theta(z2 - x / z1)
-        - Pgg0sing(z2) * (CL_g1(x / z2, m2Q2) / z2 - CL_g1(x, m2Q2)) * theta(z2 - x)
+    double tmp ;
+    if(z2 > x / (x_max * z1)) {
+        tmp = (CL_g1(x / (z1 * z2), m2Q2) / z2 - CL_g1(x / z1, m2Q2)) / z1 ;
+    } else {
+        tmp = 0. ;
+    }
+
+    return Pgg0sing(z1) * Pgg0sing(z2) * (
+        tmp - (CL_g1(x / z2, m2Q2) / z2 - CL_g1(x, m2Q2))
     ) ;
 
 }
 
 //------------------------------------------------------------------------------------------//
 
-double CL_g1_x_Pgg0_x_Pgg0_sing3_integrand(double z[], size_t dim, void * p) {
-
-    if (dim != 2) {
-        std::cout << "error: dim != 2" << std::endl ;
-        exit(-1);
-    }
+double CL_g1_x_Pgg0_x_Pgg0_sing3_integrand(double z, void * p) {
 
     struct function_params * params = (struct function_params *)p;
 
@@ -2019,22 +2035,29 @@ double CL_g1_x_Pgg0_x_Pgg0_sing3_integrand(double z[], size_t dim, void * p) {
     double x = (params->x);
     //int nf = (params->nf);
 
-    double z1 = z[0], z2 = z[1] ;
+    double x_max = 1. / (1. + 4 * m2Q2) ;
 
-    return - (theta(z1 - x) * Pgg0sing(z1) * Pgg0sing(z2) * (CL_g1(x / z1 , m2Q2) / z1 * theta(x / z1 - z2) - CL_g1(x , m2Q2) * theta(x - z2)));
+    return - (
+        Pgg0sing(z) * (
+            CL_g1(x / z , m2Q2) * Pgg0sing_integrated(x / (x_max * z)) / z
+            - CL_g1(x , m2Q2) * Pgg0sing_integrated(x / x_max)
+        )
+    );
 
 }
 
 //------------------------------------------------------------------------------------------//
 
-double CL_g1_x_Pgg0_x_Pgg0_sing(double x, double m2Q2, int nf, size_t calls) {
+double CL_g1_x_Pgg0_x_Pgg0_sing(double x, double m2Q2, int nf) {
 
+    double x_max = 1. / (1. + 4 * m2Q2) ;
     struct function_params params = {x, m2Q2, nf} ;
-    double xl[2] = {x, 0};
-    //double xl[2] = {x, x};
-    double xu[2] = {1, 1};
+
+    double xl[2] = {x/x_max, x};
+    double xu[2] = {1, x_max};
 
     double err, singular1, singular2, singular3, singular4 ;
+    size_t calls = CALLS ;
 
     gsl_monte_vegas_state *s = gsl_monte_vegas_alloc (2);
 
@@ -2050,30 +2073,35 @@ double CL_g1_x_Pgg0_x_Pgg0_sing(double x, double m2Q2, int nf, size_t calls) {
     F.dim = 2;
     F.params = &params;
 
+    gsl_monte_vegas_init(s) ;
     gsl_monte_vegas_integrate(&F, xl, xu, 2, calls, r, s, &singular1, &err);
 
+    xl[1] = x/x_max ;
+    xu[1] = 1 ;
+
     F.f = &CL_g1_x_Pgg0_x_Pgg0_sing2_integrand;
+    gsl_monte_vegas_init(s) ;
     gsl_monte_vegas_integrate(&F, xl, xu, 2, calls, r, s, &singular2, &err);
 
-    //xl_new[] = {x, 0} ;
-
-    F.f = &CL_g1_x_Pgg0_x_Pgg0_sing3_integrand;
-    gsl_monte_vegas_integrate(&F, xl, xu, 2, calls, r, s, &singular3, &err);
-
     gsl_monte_vegas_free (s);
+    gsl_rng_free (r);
 
-    gsl_integration_workspace * w = gsl_integration_workspace_alloc (1000);
+    gsl_integration_workspace * w = gsl_integration_workspace_alloc (DIM);
 
-    double abserr = 0.001, relerr = 0.001;
+    double abserr = ABS, relerr = REL;
 
     gsl_function f;
-    f.function = &CL_g1_x_Pgg0_sing_integrand;
+    f.function = &CL_g1_x_Pgg0_x_Pgg0_sing3_integrand;
     f.params = &params;
 
     gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
     gsl_set_error_handler_off();
 
-    gsl_integration_qag(&f, x, 1, abserr, relerr, 1000, 4, w, &singular4, &err);
+    gsl_integration_qag(&f, x/x_max, 1, abserr, relerr, DIM, 4, w, &singular3, &err);
+
+    f.function = &CL_g1_x_Pgg0_sing_integrand;
+
+    gsl_integration_qag(&f, x/x_max, 1, abserr, relerr, DIM, 4, w, &singular4, &err);
 
     gsl_set_error_handler (old_handler);
 
@@ -2087,12 +2115,14 @@ double CL_g1_x_Pgg0_x_Pgg0_sing(double x, double m2Q2, int nf, size_t calls) {
 
 //------------------------------------------------------------------------------------------//
 
-double CL_g1_x_Pgg0_x_Pgg0_MC(double x, double m2Q2, int nf, size_t calls) {
+double CL_g1_x_Pgg0_x_Pgg0_MC(double x, double m2Q2, int nf) {
+
+    double x_max = 1. / (1. + 4 * m2Q2) ;
 
     return (
-        CL_g1_x_Pgg0_x_Pgg0_reg(x, m2Q2, nf, calls)
-        + CL_g1_x_Pgg0_x_Pgg0_sing(x, m2Q2, nf, calls)
-        + CL_g1_x_Pgg0(x, m2Q2, nf) * (Pgg0loc(nf) - Pgg0sing_integrated(x))
+        CL_g1_x_Pgg0_x_Pgg0_reg(x, m2Q2, nf)
+        + CL_g1_x_Pgg0_x_Pgg0_sing(x, m2Q2, nf)
+        + CL_g1_x_Pgg0(x, m2Q2, nf) * (Pgg0loc(nf) - Pgg0sing_integrated(x / x_max))
     );
 
 }

@@ -33,7 +33,8 @@ double beta(int ord, int nf) {
 
 double theta(double x) {
 
-    return 0.5 * (1. + x / fabs(x)) ;
+    if (x>0) return 1. ;
+    else return 0. ;
 
 }
 

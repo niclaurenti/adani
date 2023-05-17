@@ -16,10 +16,6 @@
 
 double C2_g1_threshold(double x, double m2Q2) {
 
-    double xmax = 1. / (1. + 4 * m2Q2) ;
-
-    if(x >= xmax || x <= 0) return 0 ;
-
     double beta = sqrt(1. - 4. * m2Q2 * x / (1. - x)) ;
     double xi = 1. / m2Q2 ;
 
