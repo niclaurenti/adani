@@ -11,7 +11,7 @@
 
 #define REL 0.001
 #define ABS 0.001
-#define CALLS 50000
+#define CALLS 25000
 #define DIM 1000
 
 // TODO : in all the numerical convolutions the gsl default error is first switched off and
