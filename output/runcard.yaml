@@ -1,6 +1,6 @@
 m: 4.92
 nf: 4
-channel: Lg
+channel: 2g
 mufrac: 1.
 n_threads: 4
 output_file: "prova.dat"
