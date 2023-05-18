@@ -12,7 +12,7 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 endif()
 
 # define project name and its language
-project(adani VERSION 0.10) # el diez
+project(adani VERSION 0.10.0) # el diez
 
 # define c++ standard and issue all the warning demanded by this standard
 set(CMAKE_CXX_STANDARD 14)
