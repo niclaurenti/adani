@@ -25,6 +25,7 @@ jobs:
           pip install flake8 pytest
           pip install pybind11
           pip install scikit-build
+          pip install setuptools
           pip install .
       - name: Lint with flake8
         run: |
