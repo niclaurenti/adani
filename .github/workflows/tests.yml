@@ -7,7 +7,7 @@ jobs:
 
     runs-on: ubuntu-latest
     container:
-          image: ghcr.io/nnpdf/lhapdf:v2.2.8
+          image: ghcr.io/dockcross/manylinux-x64
           credentials:
             username: ${{ github.repository_owner }}
             password: ${{ secrets.GITHUB_TOKEN }}
