@@ -8,9 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     container:
           image: dockcross/manylinux-x64
-          credentials:
-            username: ${{ github.repository_owner }}
-            password: ${{ secrets.GITHUB_TOKEN }}
+          # credentials:
+          #   username: ${{ github.repository_owner }}
+          #   password: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v3
       - name: Install needed stuff
