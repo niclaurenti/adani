@@ -17,6 +17,7 @@ jobs:
         run: |
           apt-get update
           apt-get -y install gcc
+          apt-get -y install ninja-build
           apt-get -y install libgsl-dev
       - name: Install dependencies
         run: |
