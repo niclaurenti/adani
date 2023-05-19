@@ -17,7 +17,8 @@ jobs:
         run: |
           apt-get update
           apt-get -y install gcc
-          apt-get -y install build-essentials libssl-dev
+          apt-get -y install build-essentials
+          apt-get -y install  libssl-dev
           apt-get -y install libgsl-dev
       - name: Install dependencies
         run: |
