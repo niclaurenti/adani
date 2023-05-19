@@ -28,6 +28,7 @@ jobs:
           pip install pybind11
           pip install scikit-build
           pip install setuptools
+          pip install numpy
           pip install .
       - name: Lint with flake8
         run: |
