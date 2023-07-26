@@ -3,9 +3,11 @@
  *
  *       Filename:  SplittingFunctions.h
  *
- *    Description:  Header file for the SplittingFunctions.cc file.
+ *    Description:  Header file for the
+ * SplittingFunctions.cc file.
  *
- *         Author:  Al livello di servilismo come siamo messi?
+ *         Author:  Al livello di servilismo come siamo
+ * messi?
  *
  *  In this file there are the splitting functions.
  *
@@ -16,7 +18,8 @@
 #define Split
 
 //==========================================================================================//
-//                      Splitting functions O(alpha_s) without color factors
+//                      Splitting functions O(alpha_s)
+//                      without color factors
 //------------------------------------------------------------------------------------------//
 
 double pgq(double x);
@@ -46,7 +49,7 @@ double Pqq0sing(double x);
 double Pgq1(double x, int nf);
 
 double Pgg1reg(double x, int nf);
-double Pgg1sing (double x, int nf);
+double Pgg1sing(double x, int nf);
 double Pgg1loc(int nf);
 
 #endif

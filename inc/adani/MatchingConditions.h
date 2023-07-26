@@ -3,7 +3,8 @@
  *
  *       Filename:  MatchingConditions.h
  *
- *    Description:  Header file for the MatchingConditions.cc file.
+ *    Description:  Header file for the
+ * MatchingConditions.cc file.
  *
  *         Author:  Vamo!!
  *
@@ -34,6 +35,6 @@ double K_Qg2(double x, double m2mu2);
 
 double a_Qg_30(double x, int v);
 
-double a_Qq_PS_30(double x, int v=0) ;
+double a_Qq_PS_30(double x, int v = 0);
 
 #endif
