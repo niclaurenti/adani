@@ -39,12 +39,8 @@ struct function_params {
 //  coefficient functions and first order matchings
 //------------------------------------------------------------------------------------------//
 
-double C2_b1_x_K_Qg1(double x, double m2mu2);
-double CL_b1_x_K_Qg1(double x, double m2mu2);
-
-// double K_Qg1_x_K_gg2(double x, double m2mu2);
-
-// double C2_b2_x_K_bg1(double x, double m2mu2, int nf);
+double C2_Q1_x_K_Qg1(double x, double m2mu2);
+double CL_Q1_x_K_Qg1(double x, double m2mu2);
 
 //==========================================================================================//
 //  WARNING: from now on all the convolutions are numerical.

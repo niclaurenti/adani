@@ -54,6 +54,24 @@ double CL_ps3_massless(double x, int nf);
 double fl11g(int nf);
 double fl11ps(int nf);
 
-double CL_ps3_masslessOLD(double x, int nf);
+//==========================================================================================//
+//                      Massless coefficient functions (parametrization)
+//                      O(alpha_s^2)
+//------------------------------------------------------------------------------------------//
+
+// double C2_g2_massless_param(double x, int nf);
+// double C2_ps2_massless_param(double x, int nf);
+// double CL_g2_massless_param(double x, int nf);
+// double CL_ps2_massless_param(double x, int nf);
+
+//==========================================================================================//
+//                      Massless coefficient functions (parametrization)
+//                      O(alpha_s^3)
+//------------------------------------------------------------------------------------------//
+
+// double C2_g3_massless_param(double x, int nf);
+// double C2_ps3_massless_param(double x, int nf);
+// double CL_g3_massless_param(double x, int nf);
+// double CL_ps3_massless_param(double x, int nf);
 
 #endif
