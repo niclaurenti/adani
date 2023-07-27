@@ -38,52 +38,28 @@ double C2_g2_massless(double x, int nf) {
     double x2 = x * x;
     double x3 = x2 * x;
 
-    // Allocate pointers for the harmonic polylogs
-    double wx = x;
-    int nw = 3;
-    int n1 = -1;
-    int n2 = 1;
-    int sz = n2 - n1 + 1;
-    double *Hr1 = new double[sz];
-    double *Hr2 = new double[sz * sz];
-    double *Hr3 = new double[sz * sz * sz];
-    double *Hr4 = new double[sz * sz * sz * sz];
-    double *Hr5 = new double[sz * sz * sz * sz * sz];
+    double Hm1 = H(x, -1);
+    double H0 = H(x, 0);
+    double H1 = H(x, 1);
 
-    // Call polylogs
-    apf_hplog_(&wx, &nw, Hr1, Hr2, Hr3, Hr4, Hr5, &n1, &n2);
+    double H00 = H(x, 0, 0);
+    double H10 = H(x, 1, 0);
+    double Hm10 = H(x, -1, 0);
+    double H01 = H(x, 0, 1);
+    double H11 = H(x, 1, 1);
 
-    // weight 1
-    const double Hm1 = Hr1[0];
-    const double H0 = Hr1[1];
-    const double H1 = Hr1[2];
-
-    // weight 2
-    const double Hm10 = Hr2[3];
-    const double H00 = Hr2[4];
-    const double H10 = Hr2[5];
-    const double H01 = Hr2[7];
-    const double H11 = Hr2[8];
-
-    // weight 3
-    const double Hm1m10 = Hr3[9];
-    const double H0m10 = Hr3[10];
-    const double Hm100 = Hr3[12];
-    const double H000 = Hr3[13];
-    const double H100 = Hr3[14];
-    const double H010 = Hr3[16];
-    const double H110 = Hr3[17];
-    const double Hm101 = Hr3[21];
-    const double H001 = Hr3[22];
-    const double H101 = Hr3[23];
-    const double H011 = Hr3[25];
-    const double H111 = Hr3[26];
-
-    delete[] Hr1;
-    delete[] Hr2;
-    delete[] Hr3;
-    delete[] Hr4;
-    delete[] Hr5;
+    double Hm1m10 = H(x, -1, -1, 0);
+    double H0m10 = H(x, 0, -1, 0);
+    double Hm100 = H(x, -1, 0, 0);
+    double H000 = H(x, 0, 0, 0);
+    double H100 = H(x, 1, 0, 0);
+    double H010 = H(x, 0, 1, 0);
+    double H110 = H(x, 1, 1, 0);
+    double Hm101 = H(x, -1, 0, 1);
+    double H001 = H(x, 0, 0, 1);
+    double H101 = H(x, 1, 0, 1);
+    double H011 = H(x, 0, 1, 1);
+    double H111 = H(x, 1, 1, 1);
 
     return nf * CF
                * (-647. / 15 - 104. / 3 * zeta2 * x + 72 * zeta2 * x2
@@ -146,43 +122,19 @@ double C2_ps2_massless(double x, int nf) {
 
     double x2 = x * x;
 
-    // Allocate pointers for the harmonic polylogs
-    double wx = x;
-    int nw = 3;
-    int n1 = -1;
-    int n2 = 1;
-    int sz = n2 - n1 + 1;
-    double *Hr1 = new double[sz];
-    double *Hr2 = new double[sz * sz];
-    double *Hr3 = new double[sz * sz * sz];
-    double *Hr4 = new double[sz * sz * sz * sz];
-    double *Hr5 = new double[sz * sz * sz * sz * sz];
+    double H0 = H(x, 0);
+    double H1 = H(x, 1);
 
-    // Call polylogs
-    apf_hplog_(&wx, &nw, Hr1, Hr2, Hr3, Hr4, Hr5, &n1, &n2);
+    double H00 = H(x, 0, 0);
+    double H10 = H(x, 1, 0);
+    double Hm10 = H(x, -1, 0);
+    double H01 = H(x, 0, 1);
+    double H11 = H(x, 1, 1);
 
-    // weight 1
-    const double H0 = Hr1[1];
-    const double H1 = Hr1[2];
-
-    // weight 2
-    const double Hm10 = Hr2[3];
-    const double H00 = Hr2[4];
-    const double H10 = Hr2[5];
-    const double H01 = Hr2[7];
-    const double H11 = Hr2[8];
-
-    // weight 3
-    const double H000 = Hr3[13];
-    const double H010 = Hr3[16];
-    const double H001 = Hr3[22];
-    const double H011 = Hr3[25];
-
-    delete[] Hr1;
-    delete[] Hr2;
-    delete[] Hr3;
-    delete[] Hr4;
-    delete[] Hr5;
+    double H000 = H(x, 0, 0, 0);
+    double H010 = H(x, 0, 1, 0);
+    double H001 = H(x, 0, 0, 1);
+    double H011 = H(x, 0, 1, 1);
 
     return nf * CF
            * (+158. / 9 - 16. / 3 * zeta2 / x - 16 * zeta2 * x + 16 * zeta2 * x2
@@ -211,37 +163,14 @@ double CL_g2_massless(double x, int nf) {
     double x2 = x * x;
     double x3 = x2 * x;
 
-    // Allocate pointers for the harmonic polylogs
-    double wx = x;
-    int nw = 2;
-    int n1 = -1;
-    int n2 = 1;
-    int sz = n2 - n1 + 1;
-    double *Hr1 = new double[sz];
-    double *Hr2 = new double[sz * sz];
-    double *Hr3 = new double[sz * sz * sz];
-    double *Hr4 = new double[sz * sz * sz * sz];
-    double *Hr5 = new double[sz * sz * sz * sz * sz];
+    double H0 = H(x, 0);
+    double H1 = H(x, 1);
 
-    // Call polylogs
-    apf_hplog_(&wx, &nw, Hr1, Hr2, Hr3, Hr4, Hr5, &n1, &n2);
-
-    // weight 1
-    const double H0 = Hr1[1];
-    const double H1 = Hr1[2];
-
-    // weight 2
-    const double Hm10 = Hr2[3];
-    const double H00 = Hr2[4];
-    const double H10 = Hr2[5];
-    const double H01 = Hr2[7];
-    const double H11 = Hr2[8];
-
-    delete[] Hr1;
-    delete[] Hr2;
-    delete[] Hr3;
-    delete[] Hr4;
-    delete[] Hr5;
+    double H00 = H(x, 0, 0);
+    double H10 = H(x, 1, 0);
+    double Hm10 = H(x, -1, 0);
+    double H01 = H(x, 0, 1);
+    double H11 = H(x, 1, 1);
 
     return nf * CF
                * (-128. / 15 + 16. / 3 * zeta2 * x + 64. / 5 * zeta2 * x3
@@ -272,34 +201,12 @@ double CL_ps2_massless(double x, int nf) {
 
     double x2 = x * x;
 
-    // Allocate pointers for the harmonic polylogs
-    double wx = x;
-    int nw = 2;
-    int n1 = -1;
-    int n2 = 1;
-    int sz = n2 - n1 + 1;
-    double *Hr1 = new double[sz];
-    double *Hr2 = new double[sz * sz];
-    double *Hr3 = new double[sz * sz * sz];
-    double *Hr4 = new double[sz * sz * sz * sz];
-    double *Hr5 = new double[sz * sz * sz * sz * sz];
+    double H0 = H(x, 0);
+    double H1 = H(x, 1);
 
-    // Call polylogs
-    apf_hplog_(&wx, &nw, Hr1, Hr2, Hr3, Hr4, Hr5, &n1, &n2);
+    double H00 = H(x, 0, 0);
+    double H01 = H(x, 0, 1);
 
-    // weight 1
-    const double H0 = Hr1[1];
-    const double H1 = Hr1[2];
-
-    // weight 2
-    const double H00 = Hr2[4];
-    const double H01 = Hr2[7];
-
-    delete[] Hr1;
-    delete[] Hr2;
-    delete[] Hr3;
-    delete[] Hr4;
-    delete[] Hr5;
     return nf * CF
            * (+16. / 3 - 16 * zeta2 * x - 16. / 9 / x - 64. / 3 * x
               + 160. / 9 * x2 + 16 * H0 - 16 * H0 * x - 32 * H0 * x2
