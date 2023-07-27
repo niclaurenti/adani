@@ -43,53 +43,33 @@ double DL_g1_highscale(double x, double m2Q2);
 //------------------------------------------------------------------------------------------//
 
 double C2_g2_highscale(double x, double m2Q2, double m2mu2);
-double
-C2_ps2_highscale(double z, double m2Q2, double m2mu2);
+double C2_ps2_highscale(double z, double m2Q2, double m2mu2);
 
 double CL_g2_highscale(double x, double m2Q2, double m2mu2);
-double
-CL_ps2_highscale(double x, double m2Q2, double m2mu2);
+double CL_ps2_highscale(double x, double m2Q2, double m2mu2);
 
 double D2_g2_highscale(double x, double m2Q2, double m2mu2);
-double
-D2_ps2_highscale(double x, double m2Q2, double m2mu2);
+double D2_ps2_highscale(double x, double m2Q2, double m2mu2);
 
 double DL_g2_highscale(double z, double m2Q2, double m2mu2);
-double
-DL_ps2_highscale(double z, double m2Q2, double m2mu2);
+double DL_ps2_highscale(double z, double m2Q2, double m2mu2);
 
 //==========================================================================================//
 //                      High scale (Q^2 >> m^2) coefficient
 //                      functions O(alpha_s^3)
 //------------------------------------------------------------------------------------------//
 
-double C2_g3_highscale(
-    double x, double m2Q2, double m2mu2, int nf, int v = 0
-);
-double C2_ps3_highscale(
-    double x, double m2Q2, double m2mu2, int nf
-);
+double C2_g3_highscale(double x, double m2Q2, double m2mu2, int nf, int v = 0);
+double C2_ps3_highscale(double x, double m2Q2, double m2mu2, int nf);
 
-double CL_g3_highscale(
-    double x, double m2Q2, double m2mu2, int nf
-);
-double CL_ps3_highscale(
-    double x, double m2Q2, double m2mu2, int nf
-);
+double CL_g3_highscale(double x, double m2Q2, double m2mu2, int nf);
+double CL_ps3_highscale(double x, double m2Q2, double m2mu2, int nf);
 
-double DL_g3_highscale(
-    double z, double m2Q2, double m2mu2, int nf
-);
-double DL_ps3_highscale(
-    double z, double m2Q2, double m2mu2, int nf
-);
+double DL_g3_highscale(double z, double m2Q2, double m2mu2, int nf);
+double DL_ps3_highscale(double z, double m2Q2, double m2mu2, int nf);
 
-double D2_g3_highscale(
-    double x, double m2Q2, double m2mu2, int nf, int v
-);
-double D2_ps3_highscale(
-    double x, double m2Q2, double m2mu2, int nf, int v = 0
-);
+double D2_g3_highscale(double x, double m2Q2, double m2mu2, int nf, int v);
+double D2_ps3_highscale(double x, double m2Q2, double m2mu2, int nf, int v = 0);
 
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) coefficient functions at
@@ -100,11 +80,9 @@ double D2_ps3_highscale(
 //  benchmark against the plots on the paper
 //------------------------------------------------------------------------------------------//
 
-double C2_ps3_highscale_klmv_paper(
-    double x, double m2Q2, double m2mu2, int nf, int v
-);
-double D2_ps3_highscale_klmv_paper(
-    double x, double m2Q2, double m2mu2, int nf, int v
-);
+double
+C2_ps3_highscale_klmv_paper(double x, double m2Q2, double m2mu2, int nf, int v);
+double
+D2_ps3_highscale_klmv_paper(double x, double m2Q2, double m2mu2, int nf, int v);
 
 #endif

@@ -23,10 +23,10 @@
 double beta(int ord, int nf);
 
 //==========================================================================================//
-//  Theta function.
+//  Theta function. (no longer used)
 //------------------------------------------------------------------------------------------//
 
-double theta(double x);
+// double theta(double x);
 
 //==========================================================================================//
 //  Polylogarithms.
@@ -67,9 +67,8 @@ double H(double x, int i, int j, int k);
  */
 extern "C" {
     double apf_hplog_(
-        double *wx, int *wnw, double *Hr1, double *Hr2,
-        double *Hr3, double *Hr4, double *Hr5, int *wn1,
-        int *wn2
+        double *wx, int *wnw, double *Hr1, double *Hr2, double *Hr3,
+        double *Hr4, double *Hr5, int *wn1, int *wn2
     );
 }
 

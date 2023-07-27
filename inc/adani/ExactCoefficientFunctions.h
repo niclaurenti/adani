@@ -110,9 +110,7 @@ double CL_ps32(double x, double m2Q2, int nf);
 // These two expressions are integrated with montcarlo
 // methods
 
-double
-C2_g32(double x, double m2Q2, int nf, int method_flag);
-double
-CL_g32(double x, double m2Q2, int nf, int method_flag);
+double C2_g32(double x, double m2Q2, int nf, int method_flag);
+double CL_g32(double x, double m2Q2, int nf, int method_flag);
 
 #endif
