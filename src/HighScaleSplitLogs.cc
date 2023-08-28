@@ -2320,8 +2320,8 @@ double C2_g3_highscale_N3LL(double x, int nf, int v) {
 }
 
 //==========================================================================================//
-//  High scale (Q^2 >> m^2) limit of the pure singlet coefficient functions for F2 at
-//  O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//  High scale (Q^2 >> m^2) limit of the pure singlet coefficient functions for
+//  F2 at O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
 //
 //  Coefficient of log(m^2/Q^2)^3
 //------------------------------------------------------------------------------------------//
@@ -2389,8 +2389,8 @@ double C2_ps3_highscale_LL(double x, int nf) {
 }
 
 //==========================================================================================//
-//  High scale (Q^2 >> m^2) limit of the pure singlet coefficient functions for F2 at
-//  O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//  High scale (Q^2 >> m^2) limit of the pure singlet coefficient functions for
+//  F2 at O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
 //
 //  Coefficient of log(m^2/Q^2)^2
 //------------------------------------------------------------------------------------------//
@@ -2581,8 +2581,8 @@ double C2_ps3_highscale_NLL(double x, int nf) {
 }
 
 //==========================================================================================//
-//  High scale (Q^2 >> m^2) limit of the pure singlet coefficient functions for F2 at
-//  O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//  High scale (Q^2 >> m^2) limit of the pure singlet coefficient functions for
+//  F2 at O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
 //
 //  Coefficient of log(m^2/Q^2)^1
 //------------------------------------------------------------------------------------------//
@@ -2980,10 +2980,9 @@ double C2_ps3_highscale_N2LL(double x, int nf) {
                     + (17.545963379714415 * (-1. - 3. * x2 + 3. * x3)) / x);
 }
 
-
 //==========================================================================================//
-//  High scale (Q^2 >> m^2) limit of the pure singlet coefficient functions for F2 at
-//  O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//  High scale (Q^2 >> m^2) limit of the pure singlet coefficient functions for
+//  F2 at O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
 //
 //  Coefficient of log(m^2/Q^2)^0
 //------------------------------------------------------------------------------------------//
@@ -3594,8 +3593,8 @@ double CL_g3_highscale_N3LL(double x, int nf) {
 }
 
 //==========================================================================================//
-//  High scale (Q^2 >> m^2) limit of the pure singlet coefficient functions for FL at
-//  O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//  High scale (Q^2 >> m^2) limit of the pure singlet coefficient functions for
+//  FL at O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
 //
 //  Coefficient of log(m^2/Q^2)^2
 //------------------------------------------------------------------------------------------//
@@ -3613,8 +3612,8 @@ double CL_ps3_highscale_NLL(double x) {
 }
 
 //==========================================================================================//
-//  High scale (Q^2 >> m^2) limit of the pure singlet coefficient functions for FL at
-//  O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//  High scale (Q^2 >> m^2) limit of the pure singlet coefficient functions for
+//  FL at O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
 //
 //  Coefficient of log(m^2/Q^2)^1
 //------------------------------------------------------------------------------------------//
@@ -3633,8 +3632,8 @@ double CL_ps3_highscale_N2LL(double x) {
 }
 
 //==========================================================================================//
-//  High scale (Q^2 >> m^2) limit of the pure singlet coefficient functions for FL at
-//  O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//  High scale (Q^2 >> m^2) limit of the pure singlet coefficient functions for
+//  FL at O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
 //
 //  Coefficient of log(m^2/Q^2)^0
 //------------------------------------------------------------------------------------------//
