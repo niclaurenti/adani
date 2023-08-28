@@ -7,6 +7,13 @@
 #include <cmath>
 #include <iostream>
 
+//==========================================================================================//
+//  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for F2 at
+//  O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//
+//  Coefficient of log(m^2/Q^2)^3
+//------------------------------------------------------------------------------------------//
+
 double C2_g3_highscale_LL(double x, int nf) {
 
     double x2 = x * x;
@@ -145,6 +152,13 @@ double C2_g3_highscale_LL(double x, int nf) {
                           * (-1. - 2. * H0 - 4. * H1 + 4. * x + 4. * H0 * x
                              + 8. * H1 * x - 8. * H0 * x2 - 8. * H1 * x2));
 }
+
+//==========================================================================================//
+//  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for F2 at
+//  O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//
+//  Coefficient of log(m^2/Q^2)^2
+//------------------------------------------------------------------------------------------//
 
 double C2_g3_highscale_NLL(double x, int nf) {
 
@@ -546,6 +560,13 @@ double C2_g3_highscale_NLL(double x, int nf) {
                              - 16. * Hm10 * x2))
            + 0.4444444444444444 * C2_g1_massless(x, 1);
 }
+
+//==========================================================================================//
+//  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for F2 at
+//  O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//
+//  Coefficient of log(m^2/Q^2)^1
+//------------------------------------------------------------------------------------------//
 
 double C2_g3_highscale_N2LL(double x, int nf) {
 
@@ -1488,6 +1509,13 @@ double C2_g3_highscale_N2LL(double x, int nf) {
            - 12.666666666666666 * C2_g1_massless(x, 1);
 }
 
+//==========================================================================================//
+//  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for F2 at
+//  O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//
+//  Coefficient of log(m^2/Q^2)^0
+//------------------------------------------------------------------------------------------//
+
 double C2_g3_highscale_N3LL(double x, int nf, int v) {
 
     double x2 = x * x;
@@ -2291,6 +2319,13 @@ double C2_g3_highscale_N3LL(double x, int nf, int v) {
            + C2_g3_massless(x, 1 + nf) / (1. + nf);
 }
 
+//==========================================================================================//
+//  High scale (Q^2 >> m^2) limit of the pure singlet coefficient functions for F2 at
+//  O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//
+//  Coefficient of log(m^2/Q^2)^3
+//------------------------------------------------------------------------------------------//
+
 double C2_ps3_highscale_LL(double x, int nf) {
 
     double x2 = x * x;
@@ -2352,6 +2387,13 @@ double C2_ps3_highscale_LL(double x, int nf) {
                     + (1.3333333333333333 * (-1. + x) * (4. + 7. * x + 4. * x2))
                           / x);
 }
+
+//==========================================================================================//
+//  High scale (Q^2 >> m^2) limit of the pure singlet coefficient functions for F2 at
+//  O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//
+//  Coefficient of log(m^2/Q^2)^2
+//------------------------------------------------------------------------------------------//
 
 double C2_ps3_highscale_NLL(double x, int nf) {
 
@@ -2537,6 +2579,13 @@ double C2_ps3_highscale_NLL(double x, int nf) {
                     + (1.7777777777777777 * (-1. + x) * (10. + x + 28. * x2))
                           / x);
 }
+
+//==========================================================================================//
+//  High scale (Q^2 >> m^2) limit of the pure singlet coefficient functions for F2 at
+//  O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//
+//  Coefficient of log(m^2/Q^2)^1
+//------------------------------------------------------------------------------------------//
 
 double C2_ps3_highscale_N2LL(double x, int nf) {
 
@@ -2931,6 +2980,14 @@ double C2_ps3_highscale_N2LL(double x, int nf) {
                     + (17.545963379714415 * (-1. - 3. * x2 + 3. * x3)) / x);
 }
 
+
+//==========================================================================================//
+//  High scale (Q^2 >> m^2) limit of the pure singlet coefficient functions for F2 at
+//  O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//
+//  Coefficient of log(m^2/Q^2)^0
+//------------------------------------------------------------------------------------------//
+
 double C2_ps3_highscale_N3LL(double x, int nf) {
 
     double x2 = x * x;
@@ -3299,6 +3356,13 @@ double C2_ps3_highscale_N3LL(double x, int nf) {
            + a_Qq_PS_30(x, 0) + C2_ps3_massless(x, 1 + nf) / (1. + nf);
 }
 
+//==========================================================================================//
+//  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for FL at
+//  O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//
+//  Coefficient of log(m^2/Q^2)^2
+//------------------------------------------------------------------------------------------//
+
 double CL_g3_highscale_NLL(double x) {
 
     double x2 = x * x;
@@ -3318,6 +3382,13 @@ double CL_g3_highscale_NLL(double x) {
            - 39.111111111111114 * H1 * x2
            + 0.4444444444444444 * CL_g1_massless(x, 1);
 }
+
+//==========================================================================================//
+//  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for FL at
+//  O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//
+//  Coefficient of log(m^2/Q^2)^1
+//------------------------------------------------------------------------------------------//
 
 double CL_g3_highscale_N2LL(double x, int nf) {
 
@@ -3421,6 +3492,13 @@ double CL_g3_highscale_N2LL(double x, int nf) {
            - 12.666666666666666 * CL_g1_massless(x, 1);
 }
 
+//==========================================================================================//
+//  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for FL at
+//  O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//
+//  Coefficient of log(m^2/Q^2)^0
+//------------------------------------------------------------------------------------------//
+
 double CL_g3_highscale_N3LL(double x, int nf) {
 
     double x2 = x * x;
@@ -3515,6 +3593,13 @@ double CL_g3_highscale_N3LL(double x, int nf) {
            + CL_g3_massless(x, 1 + nf) / (1. + nf);
 }
 
+//==========================================================================================//
+//  High scale (Q^2 >> m^2) limit of the pure singlet coefficient functions for FL at
+//  O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//
+//  Coefficient of log(m^2/Q^2)^2
+//------------------------------------------------------------------------------------------//
+
 double CL_ps3_highscale_NLL(double x) {
 
     double x2 = x * x;
@@ -3526,6 +3611,13 @@ double CL_ps3_highscale_NLL(double x) {
            - 28.444444444444443 * H0 * x + 14.222222222222221 * H0 * H0 * x
            - 9.481481481481481 * x2;
 }
+
+//==========================================================================================//
+//  High scale (Q^2 >> m^2) limit of the pure singlet coefficient functions for FL at
+//  O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//
+//  Coefficient of log(m^2/Q^2)^1
+//------------------------------------------------------------------------------------------//
 
 double CL_ps3_highscale_N2LL(double x) {
 
@@ -3539,6 +3631,13 @@ double CL_ps3_highscale_N2LL(double x) {
            - 9.481481481481481 * H0 * H0 * H0 * x - 224.39506172839506 * x2
            + 113.77777777777777 * H0 * x2;
 }
+
+//==========================================================================================//
+//  High scale (Q^2 >> m^2) limit of the pure singlet coefficient functions for FL at
+//  O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//
+//  Coefficient of log(m^2/Q^2)^0
+//------------------------------------------------------------------------------------------//
 
 double CL_ps3_highscale_N3LL(double x, int nf) {
 
