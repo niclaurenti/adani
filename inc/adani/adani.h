@@ -8,6 +8,7 @@
 #include "adani/ExactCoefficientFunctions.h"
 #include "adani/HighEnergyCoefficientFunctions.h"
 #include "adani/HighScaleCoefficientFunctions.h"
+#include "adani/HighScaleSplitLogs.h"
 #include "adani/MasslessCoefficientFunctions.h"
 #include "adani/MatchingConditions.h"
 #include "adani/SpecialFunctions.h"
