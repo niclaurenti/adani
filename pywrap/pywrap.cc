@@ -482,4 +482,52 @@ PYBIND11_MODULE(_core, m) {
         "CL_g1_x_Pgg0_x_Pgg0_MC", &CL_g1_x_Pgg0_x_Pgg0_MC, py::arg("x"),
         py::arg("m2Q2"), py::arg("nf")
     );
+
+    // HighScaleSplitLogs
+    m.def(
+        "C2_g3_highscale_LL", &C2_g3_highscale_LL, py::arg("x"), py::arg("nf")
+    );
+    m.def(
+        "C2_g3_highscale_NLL", &C2_g3_highscale_NLL, py::arg("x"), py::arg("nf")
+    );
+    m.def(
+        "C2_g3_highscale_N2LL", &C2_g3_highscale_N2LL, py::arg("x"),
+        py::arg("nf")
+    );
+    m.def(
+        "C2_g3_highscale_N3LL", &C2_g3_highscale_N3LL, py::arg("x"),
+        py::arg("nf"), py::arg("v")
+    );
+    m.def(
+        "C2_ps3_highscale_LL", &C2_ps3_highscale_LL, py::arg("x"), py::arg("nf")
+    );
+    m.def(
+        "C2_ps3_highscale_NLL", &C2_ps3_highscale_NLL, py::arg("x"),
+        py::arg("nf")
+    );
+    m.def(
+        "C2_ps3_highscale_N2LL", &C2_ps3_highscale_N2LL, py::arg("x"),
+        py::arg("nf")
+    );
+    m.def(
+        "C2_ps3_highscale_N3LL", &C2_ps3_highscale_N3LL, py::arg("x"),
+        py::arg("nf")
+    );
+    m.def(
+        "CL_g3_highscale_NLL", &CL_g3_highscale_NLL, py::arg("x")
+    );
+    m.def(
+        "CL_g3_highscale_N2LL", &CL_g3_highscale_N2LL, py::arg("x"),
+        py::arg("nf")
+    );
+    m.def(
+        "CL_g3_highscale_N3LL", &CL_g3_highscale_N3LL, py::arg("x"),
+        py::arg("nf")
+    );
+    m.def("CL_ps3_highscale_NLL", &CL_ps3_highscale_NLL, py::arg("x"));
+    m.def("CL_ps3_highscale_N2LL", &CL_ps3_highscale_N2LL, py::arg("x"));
+    m.def(
+        "CL_ps3_highscale_N3LL", &CL_ps3_highscale_N3LL, py::arg("x"),
+        py::arg("nf")
+    );
 }
