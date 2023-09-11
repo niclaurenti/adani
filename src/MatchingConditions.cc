@@ -141,13 +141,13 @@ double a_Qg_30(double x, int v) {
     double L13 = L12 * L1;
 
     if (v == 0) {
-        return 0.5 * (a_Qg_30(x, 1) + a_Qg_30(x, 2));
+        return 0.5 * (a_Qg_30(x, 1) + a_Qg_30(x, -1));
     } else if (v == 1) {
         return (
             354.1002 * L13 + 479.3838 * L12 - 7856.784 * (2. - x)
             - 6233.530 * L2 + 9416.621 / x + 1548.891 / x * L
         );
-    } else if (v == 2) { // Updated version w.r.t v==-12
+    } else if (v == -1) { // Updated version w.r.t v==-12
         return (
             226.3840 * L13 - 652.2045 * L12 - 2686.387 * L1
             - 7714.786 * (2. - x) - 2841.851 * L2 + 7721.120 / x
@@ -159,7 +159,7 @@ double a_Qg_30(double x, int v) {
             + 3178.819 * L2 + 4710.725 / x + 1548.891 / x * L
         );
     } else {
-        cout << "a_Qg_30: Choose either v=0, v=1, v=2, v=3 or v=4 "
+        cout << "a_Qg_30: Choose either v=0, v=1, v=-1 or v=-12"
                 "!!\nExiting!!\n"
              << endl;
         exit(-1);
@@ -869,7 +869,7 @@ double a_Qq_PS_30(double x, int v) {
                    + 66638.193 * x + 2825.641 / x)
             + 41850.518 * x * L + 688.396 / x * L
         );
-    } else if (v == 2) {
+    } else if (v == -1) {
         double L1 = log(1. - x);
         double L = log(x);
         return (
@@ -879,7 +879,7 @@ double a_Qq_PS_30(double x, int v) {
             + 8571.165 * x * L - 2346.893 * L * L + 688.396 / x * L
         );
     } else {
-        std::cout << "Choose either v=1, v=2!!\nExiting!!\n" << std::endl;
+        std::cout << "a_Qq_PS_30: Choose either v=0, v=1 or v=-1!!\nExiting!!\n" << std::endl;
         exit(-1);
     }
 }

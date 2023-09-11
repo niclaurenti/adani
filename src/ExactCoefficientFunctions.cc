@@ -363,7 +363,7 @@ double C2_g32(double x, double m2Q2, int nf, int method_flag) {
     else if (method_flag == 1)
         C2_g1xPgg0xPgg0 = C2_g1_x_Pgg0_x_Pgg0_MC(x, m2Q2, nf);
     else {
-        std::cout << "Choose either method_flag = 0 or method_flag = 1"
+        std::cout << "C2_g32: Choose either method_flag = 0 or method_flag = 1"
                   << std::endl;
         exit(-1);
     }
@@ -391,7 +391,7 @@ double CL_g32(double x, double m2Q2, int nf, int method_flag) {
     else if (method_flag == 1)
         CL_g1xPgg0xPgg0 = CL_g1_x_Pgg0_x_Pgg0_MC(x, m2Q2, nf);
     else {
-        std::cout << "Choose either method_flag = 0 or method_flag = 1"
+        std::cout << "C2_g32: Choose either method_flag = 0 or method_flag = 1"
                   << std::endl;
         exit(-1);
     }

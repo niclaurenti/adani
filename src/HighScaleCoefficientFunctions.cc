@@ -3812,10 +3812,10 @@ double D2_ps3_highscale_klmv_paper(
     double x, double m2Q2, double m2mu2, int nf, int v
 ) {
 
-    if (v == 1 || v == 2) {
+    if (v == 1 || v == -1) {
         return D2_ps3_highscale(x, m2Q2, m2mu2, nf, v);
     } else {
-        std::cout << "Choose either v=1, v=2!!\nExiting!!\n" << std::endl;
+        std::cout << "D2_ps3_highscale_klmv_paper: Choose either v=1, v=-1!!\nExiting!!\n" << std::endl;
         exit(-1);
     }
 }

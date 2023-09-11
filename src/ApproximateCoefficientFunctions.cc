@@ -717,7 +717,7 @@ double C2_g30_approximation_BAND(
         for (int j = 0; j < 3; j++) {
             for (int h = 0; h < 3; h++) {
                 for (int k = 0; k < 3; k++) {
-                    for (int v1 = 0; v1 < 3; v1++) {
+                    for (int v1 = -1; v1 <= 1; v1++) {
                         for (int v2 = -1; v2 <= 1; v2++) {
                             replicas.push_back(C2_g30_approximation_implicit(
                                 x, m2Q2, nf, Avec[i], Bvec[j], Cvec[h], Dvec[k],
@@ -1404,7 +1404,7 @@ double C2_g3_approximationB_klmv(
     double C30 =
         (C2_g3_threshold(x, m2Q2, 1., nf) - C2_g3_threshold_const(x, m2Q2, 1.))
         + f * 2. * C2_g3_threshold_const(x, m2Q2, 1.)
-        + (1. - f) * beta3 * C2_g3_highscale(x, m2Q2, 1., nf, 2)
+        + (1. - f) * beta3 * C2_g3_highscale(x, m2Q2, 1., nf, -1)
         + f * beta3
               * (-log(eta) / log(x) * C2_g3_highenergyLL(x, m2Q2, 1.)
                  + C2_g3_highenergyB * eta_delta / (D + eta_delta));
@@ -1736,7 +1736,7 @@ C2_ps3_approximationB_klmv_paper(double x, double m2Q2, double m2mu2, int nf) {
         / m2Q2 / x;
 
     double C30 =
-        (1. - f) * beta3 * C2_ps3_highscale_klmv_paper(x, m2Q2, 1., nf, 2)
+        (1. - f) * beta3 * C2_ps3_highscale_klmv_paper(x, m2Q2, 1., nf, -1)
         + f * beta3
               * (-log(eta) / log(x) * C2_ps3_highenergyLL(x, m2Q2, 1.)
                  + C2_ps30_highenergyNLLB * eta_delta / (D + eta_delta));
