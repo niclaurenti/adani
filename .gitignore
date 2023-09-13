@@ -11,5 +11,11 @@ inc/adani/version.h
 bin/adani-config
 bin/adani.pc
 
+docs/*.aux
+docs/*.fdb_latexmk
+docs/*.fls
+docs/*.log
+docs/*.synctex.gz
+
 dist/
 MANIFEST.in
