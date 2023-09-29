@@ -369,6 +369,22 @@ PYBIND11_MODULE(_core, m) {
         "CL_g3_highenergy_highscaleLL", &CL_g3_highenergy_highscaleLL,
         py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2")
     );
+    m.def(
+        "C2_g2_highenergy", &C2_g2_highenergy,
+        py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2")
+    );
+    m.def(
+        "CL_g2_highenergy", &CL_g2_highenergy,
+        py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2")
+    );
+    m.def(
+        "C2_ps2_highenergy", &C2_ps2_highenergy,
+        py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2")
+    );
+    m.def(
+        "CL_ps2_highenergy", &CL_ps2_highenergy,
+        py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2")
+    );
 
     // Convolutions
     m.def("C2_g1_x_Pgq0", &C2_g1_x_Pgq0, py::arg("x"), py::arg("m2Q2"));
