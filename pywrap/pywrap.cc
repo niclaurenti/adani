@@ -184,7 +184,19 @@ PYBIND11_MODULE(_core, m) {
     );
     m.def(
         "CL_g3_asymptotic", &CL_g3_asymptotic, py::arg("x"), py::arg("m2Q2"),
-        py::arg("m2mu2"), py::arg("nf"), py::arg("v")
+        py::arg("m2mu2"), py::arg("nf"), py::arg("v") = 0
+    );
+    m.def(
+        "C2_ps3_asymptotic", &C2_ps3_asymptotic, py::arg("x"), py::arg("m2Q2"),
+        py::arg("m2mu2"), py::arg("nf"), py::arg("v") = 0
+    );
+    m.def(
+        "CL_ps3_asymptotic", &CL_ps3_asymptotic, py::arg("x"), py::arg("m2Q2"),
+        py::arg("m2mu2"), py::arg("nf"), py::arg("v") = 0
+    );
+    m.def(
+        "C2_g2_asymptotic", &C2_g2_asymptotic, py::arg("x"), py::arg("m2Q2"),
+        py::arg("m2mu2")
     );
     m.def(
         "CL_g2_asymptotic", &CL_g2_asymptotic, py::arg("x"), py::arg("m2Q2"),
@@ -197,14 +209,6 @@ PYBIND11_MODULE(_core, m) {
     m.def(
         "CL_ps2_asymptotic", &CL_ps2_asymptotic, py::arg("x"), py::arg("m2Q2"),
         py::arg("m2mu2")
-    );
-    m.def(
-        "C2_ps3_asymptotic", &C2_ps3_asymptotic, py::arg("x"), py::arg("m2Q2"),
-        py::arg("m2mu2"), py::arg("nf"), py::arg("v")
-    );
-    m.def(
-        "CL_ps3_asymptotic", &CL_ps3_asymptotic, py::arg("x"), py::arg("m2Q2"),
-        py::arg("m2mu2"), py::arg("nf"), py::arg("v")
     );
 
     // HighscaleCoefficientFunctions
@@ -367,6 +371,38 @@ PYBIND11_MODULE(_core, m) {
     );
     m.def(
         "CL_g3_highenergy_highscaleLL", &CL_g3_highenergy_highscaleLL,
+        py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2")
+    );
+    m.def(
+        "C2_g2_highenergy", &C2_g2_highenergy,
+        py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2")
+    );
+    m.def(
+        "CL_g2_highenergy", &CL_g2_highenergy,
+        py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2")
+    );
+    m.def(
+        "C2_ps2_highenergy", &C2_ps2_highenergy,
+        py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2")
+    );
+    m.def(
+        "CL_ps2_highenergy", &CL_ps2_highenergy,
+        py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2")
+    );
+    m.def(
+        "C2_g2_highenergy_highscale", &C2_g2_highenergy_highscale,
+        py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2")
+    );
+    m.def(
+        "CL_g2_highenergy_highscale", &CL_g2_highenergy_highscale,
+        py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2")
+    );
+    m.def(
+        "C2_ps2_highenergy_highscale", &C2_ps2_highenergy_highscale,
+        py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2")
+    );
+    m.def(
+        "CL_ps2_highenergy_highscale", &CL_ps2_highenergy_highscale,
         py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2")
     );
 
