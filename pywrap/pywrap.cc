@@ -184,15 +184,15 @@ PYBIND11_MODULE(_core, m) {
     );
     m.def(
         "CL_g3_asymptotic", &CL_g3_asymptotic, py::arg("x"), py::arg("m2Q2"),
-        py::arg("m2mu2"), py::arg("nf"), py::arg("v")
+        py::arg("m2mu2"), py::arg("nf"), py::arg("v") = 0
     );
     m.def(
         "C2_ps3_asymptotic", &C2_ps3_asymptotic, py::arg("x"), py::arg("m2Q2"),
-        py::arg("m2mu2"), py::arg("nf"), py::arg("v")
+        py::arg("m2mu2"), py::arg("nf"), py::arg("v") = 0
     );
     m.def(
         "CL_ps3_asymptotic", &CL_ps3_asymptotic, py::arg("x"), py::arg("m2Q2"),
-        py::arg("m2mu2"), py::arg("nf"), py::arg("v")
+        py::arg("m2mu2"), py::arg("nf"), py::arg("v") = 0
     );
     m.def(
         "C2_g2_asymptotic", &C2_g2_asymptotic, py::arg("x"), py::arg("m2Q2"),
