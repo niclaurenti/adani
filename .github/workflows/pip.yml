@@ -66,6 +66,8 @@ jobs:
       uses: modflowpy/install-gfortran-action@v1
     - name: Install GSL
       run: sudo apt-get -y install libgsl-dev
+    - name: which gsl
+      run: which gsl-config
     - name: Install ninja
       run: sudo apt-get -y install ninja-build
     - uses: pypa/cibuildwheel@v2.11.2
