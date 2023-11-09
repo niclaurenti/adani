@@ -23,6 +23,8 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install GNU Fortran
       uses: modflowpy/install-gfortran-action@v1
+    - name: Install GSL
+      run: apt-get -y install libgsl-dev
     - name: Build and install
       run: pip install .[test]
     - name: Test
@@ -56,6 +58,8 @@ jobs:
         submodules: true
     - name: Install GNU Fortran
       uses: modflowpy/install-gfortran-action@v1
+    - name: Install GSL
+      run: apt-get -y install libgsl-dev
     - uses: pypa/cibuildwheel@v2.11.2
       env:
         CIBW_ARCHS_MACOS: auto universal2
