@@ -1,0 +1,8 @@
+m: 4.92
+nf: 4
+channel: 2q
+mufrac: 1.
+n_threads: 8
+output_file: "results/grid_4FS_2q.dat"
+verbose: on
+debug: off

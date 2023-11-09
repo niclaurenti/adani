@@ -12,7 +12,7 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 endif()
 
 # define project name and its language
-project(adani VERSION 0.12)
+project(adani VERSION 0.0)
 
 # define c++ standard and issue all the warning demanded by this standard
 set(CMAKE_CXX_STANDARD 14)
@@ -82,6 +82,7 @@ if(PYTHON_ONLY)
         src/SpecialFunctions.cc
         src/hqcoef.f
         src/HighScaleCoefficientFunctions.cc
+        src/HighScaleSplitLogs.cc
         src/SplittingFunctions.cc
     )
     target_link_libraries(_core PRIVATE GSL::gsl GSL::gslcblas)
@@ -103,6 +104,7 @@ else(PYTHON_ONLY)
         src/SpecialFunctions.cc
         src/hqcoef.f
         src/HighScaleCoefficientFunctions.cc
+        src/HighScaleSplitLogs.cc
         src/SplittingFunctions.cc
     )
 

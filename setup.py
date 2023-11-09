@@ -19,7 +19,7 @@ with open(os.path.join(this_directory, "README.md"), encoding="utf-8") as f:
 
 setup(
     name="adani",
-    version="0.12",
+    version="0.0",
     description="Code computing approximate DIS N3LO coefficients",
     author="Niccolò Laurenti",
     license="AGPLv3",

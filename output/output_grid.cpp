@@ -17,23 +17,28 @@ std::string print_time(time_t seconds);
 
 int main(int argc, char** argv) {
 
-    if(argc!=6) {
-        cout<< "ERROR!\nUsage: ./output_grid.exe mufrac = mu/Q m nf channel filename\nExiting..." <<endl;
+    if(argc!=7) {
+        cout<< "ERROR!\nUsage: ./output_grid.exe mufrac = mu/Q m nf v channel filename\nExiting..." <<endl;
         return -1;
     }
 
-    int nf = atoi(argv[3]) ;
-    string channel = argv[4];
+    double mufrac = atof(argv[1]);
+    double m = atof(argv[2]);
 
-    string filename = argv[5] ;
+    int nf = atoi(argv[3]) ;
+    int v = atoi(argv[4]) ;
+    if (v < -1 || v > 1) {
+        cout << "Choose v = {-1, 0, 1}" << endl ;
+        exit(-1);
+    }
+    string channel = argv[5];
+
+    string filename = argv[6] ;
     ifstream inputQ;
     inputQ.open("Q.txt");
 
     ifstream inputx;
     inputx.open("x.txt");
-
-    double mufrac = atof(argv[1]);
-    double m = atof(argv[2]);
 
     std::vector<double> Q, x ;
 
@@ -82,10 +87,10 @@ int main(int argc, char** argv) {
             m2Q2 = pow(m/Q_, 2) ;
             mu = mufrac * Q_ ;
             m2mu2 = pow(m/mu, 2) ;
-            if(channel == "2g") res = C2_g3_approximation(x_,m2Q2,m2mu2,nf,1) ;
-            else if(channel == "2q") res = C2_ps3_approximation(x_,m2Q2,m2mu2,nf) ;
-            else if(channel == "Lg") res = CL_g3_approximation(x_,m2Q2,m2mu2,nf,1)  ;
-            else if(channel == "Lq") res = CL_ps3_approximation(x_,m2Q2,m2mu2,nf) ;
+            if(channel == "2g") res = C2_g3_approximation(x_, m2Q2, m2mu2, nf, v, 1) ;
+            else if(channel == "2q") res = C2_ps3_approximation(x_, m2Q2, m2mu2, nf, v) ;
+            else if(channel == "Lg") res = CL_g3_approximation(x_, m2Q2, m2mu2, nf, v, 1)  ;
+            else if(channel == "Lq") res = CL_ps3_approximation(x_, m2Q2, m2mu2, nf, v) ;
             else {
                 cout<< "ERROR!\nUsage: channel = {2g, 2q, Lg, Lq}\nExiting..." <<endl;
                 exit(-1);

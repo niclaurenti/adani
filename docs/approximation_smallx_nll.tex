@@ -1,0 +1,252 @@
+\documentclass[a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{xcolor}
+
+\usepackage[a4paper,top=2cm,bottom=2cm,left=1cm,right=1cm]{geometry}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{bbold}
+
+\newcommand{\ord}[1]{\mathcal{O} (a_s^{#1})}
+\newcommand{\C}[0]{\tilde{\mathcal{C}}}
+\newcommand{\MSbar}[0]{\overline{\mbox{MS}}}
+
+
+\title{Approximate NLL small-$x$ limit for the N$^3$LO massive coefficient function}
+\author{Niccolò Laurenti}
+
+
+
+\date{\today}
+
+\begin{document}
+	\maketitle
+	In this document we will explain the construction for the approximate NLL small-$x$ limit for the N$^3$LO massive coefficient function, which is not currently known.
+	The gluon coefficient function for $F_2$ can be written as (in Mellin space)
+	\begin{equation}
+		\label{K}
+		\begin{split}
+		\tilde{\mathcal{C}}_{2}(N, M,& \xi, \xi_\mu) = \\
+		&\frac{\alpha_s}{3 \pi} \frac{3}{2} \xi_\mu^{-M} \left(1+\frac{\xi}{4}\right)^{-N} \frac{\Gamma(1-M)^3 \Gamma(1+M)}{(3-2M)(1+2M)\Gamma(2-2M)}\, \times \\
+		& \left[1+M - \left( 1 + M - \frac{\xi}{2}(2+3M - 3M^2) \right){}_2F_1\left(1-M,1,\frac{3}{2}, -\frac{\xi}{4}\right)\right]\,.
+		\end{split}
+	\end{equation}
+	with
+	\begin{equation}
+		\xi = \frac{Q^2}{m^2}\,, \quad \xi_\mu = \frac{\mu^2}{m^2}\,.
+	\end{equation}
+See [arXiv:1708.07510] for the definition of $\C_2$.
+Now we can expand Eq.~\eqref{K} for small $M$ up to second order. What we find is
+\begin{equation}\label{Fpart:mell:exp}
+	\C_2 = \C_2^{(0)}+ M \C_2^{(1)}+ M^2 \C_2^{(2)}+\mathcal{O}(M^3).
+\end{equation}
+Then we make the following substitution
+\begin{align}
+	\begin{split}
+	M^0 & \rightarrow \bigl[M^0\bigr] =1 \,,\\
+	M^1 & \rightarrow \bigl[M^1\bigr] =M= a_s \gamma_0 +a_s^2 \gamma_1 +\mathcal{O}(a_s^3) \,,\\
+	M^2 & \rightarrow \bigl[M^2\bigr]=M(M-a_s\beta_0) = a_s^2(\gamma^2_0- \gamma_0\beta_0) +\mathcal{O}(a_s^3) \,,
+	\end{split}
+\end{align}
+where $a_s = \frac{\alpha_s}{4\pi}$ and $\beta_0 = \frac{11}{3} C_A - \frac{2}{3} n_f$.
+In this way Eq.~\eqref{Fpart:mell:exp} becomes
+\begin{equation}\label{Fpart:exp2}
+	\C_2=\C_2^{(0)} + a_s \C_2^{(1)} \gamma_0+ a_s^2\Bigl(\C_2^{(1)} \gamma_1 + \C_2^{(2)}\bigl(\gamma_0^2-\gamma_0\beta_0\bigr)\Bigr)+\mathcal{O}(a_s^4).
+\end{equation}
+Observe that since $\C_2$ is $\ord{}$, then all the $\C_2^{(k)}$ are $\ord{}$. It means that the term proportional to $a_s^2$ in \eqref{Fpart:exp2} is the $\ord{3}$ expansion of the partonic structure function of the gluon in Mellin space.
+Moreover, observe that all of this must be taken in the limit $N \ll M$, and therefore the term $\left(1+\frac{\xi}{4}\right)^{-N}$ in Eq.~\eqref{K} can be replaced with 1.
+The value of $\gamma_0$ is known exactly, and is
+\begin{align}
+	\label{gamma0}
+	\gamma^{\rm NLL}_0&=\frac{a_{11}}{N}+\frac{a_{10}}{N+1},
+\end{align}
+while $\gamma_1$ is still not known. For this reason we used the approximate value
+\begin{align}
+	\label{gamma1}
+	\gamma^{\rm NLL}_1&=\frac{a_{21}}{N}-\frac{2a_{21}}{N+1}\,.
+\end{align}
+In Eqs.~\eqref{gamma0}-\eqref{gamma1} we defined
+\begin{align}
+	\begin{split}
+	a_{11}&=C_A, \\
+	a_{10}&=-\frac{11C_A + 2n_f(1-2C_F/C_A)}{12}, \\
+	a_{21}&=n_f\frac{26C_F - 23C_A}{36}.
+	\end{split}
+\end{align}
+Now we have to transform back from Mellin space to $z$-space. Using that the Mellin transform is defined as
+\begin{equation}
+	\mathcal{M}\bigl[f(z)\bigr]\equiv f(N)=\int_0^1dz\,z^{N-1}f(z),
+\end{equation}
+one can show that
+\begin{align}
+	\begin{split}
+	\mathcal{M}\bigl[1\bigr]&=\frac{1}{N}, \\
+	\mathcal{M}\bigl[z\bigr]&=\frac{1}{N+1}, \\
+	\mathcal{M}\bigl[\log(z)\bigr]&=-\frac{1}{N^2}, \\
+	\mathcal{M}\bigl[z\log(z)\bigr]&=-\frac{1}{(N+1)^2},
+	\end{split}
+\end{align}
+We find that, neglecting terms proportional to $z$ and $z\log(z)$, our approximation of the next-to-leading logarithm expansion of the $\ord{3}$ gluon coefficient function for $F_2$ is
+\begingroup
+\allowdisplaybreaks
+\begin{align}
+		z C_{2,g}^{[3](3) \rm h.e.}&\Bigl(z,\xi,\xi_\mu\Bigr)= \notag \\
+		& a_{11}^2\Biggl[-\frac{147}{27} - \frac{8}{3} K(\xi) \left(\frac{1}{\xi}-1\right) + \frac{8}{27} J(\xi) \left(\frac{92}{\xi} - 71\right) + I(\xi) \left(\frac{8}{3} L_\xi \left(\frac{1}{\xi}-1\right) + \frac{8}{9} \left(\frac{10}{\xi} - 13\right)\right) \notag\\
+		& \qquad + \left(-\frac{160}{9} + \frac{16}{3} I(\xi) \left(\frac{1}{\xi}-1\right) + \frac{8}{9} J(\xi) \left(\frac{10}{\xi} - 13\right)\right) L_\mu + \left(-\frac{16}{3} + \frac{8}{3} J(\xi) \left(\frac{1}{\xi}-1\right)\right) L_\mu^2\Biggr] \log(z) \notag\\
+		& + a_{21} \left[\frac{16}{9} - \frac{16}{3} I(\xi) \left(\frac{1}{\xi}-1\right) - \frac{8}{9} J(\xi) \left(\frac{10}{\xi} - 13\right)\right] \notag\\
+		& + a_{10} a_{11} \left[\frac{2944}{27} + \frac{16}{3} K(\xi) \left(\frac{1}{\xi}-1\right) - \frac{16}{27} J(\xi) \left(\frac{92}{\xi} - 71\right) + I(\xi) \left(-\frac{16}{3} L_\xi \left(\frac{1}{\xi}-1\right) - \frac{16}{9} \left(\frac{10}{\xi} - 13\right)\right)\right] \notag\\
+		& + a_{11} \beta_0 \left[-\frac{1472}{27} - \frac{8}{3} K(\xi) \left(\frac{1}{\xi}-1\right) + \frac{8}{27} J(\xi) \left(\frac{92}{\xi} - 71\right) + I(\xi) \left(\frac{8}{3} L_\xi \left(\frac{1}{\xi}-1\right) + \frac{8}{9} \left(\frac{10}{\xi} - 13\right)\right)\right] \notag\\
+		& + \Biggl[a_{21} \left(\frac{32}{3} - \frac{16}{3} J(\xi) \left(\frac{1}{\xi}-1\right) \right) + a_{10} a_{11} \left(\frac{320}{9} - \frac{32}{3} I(\xi) \left(\frac{1}{\xi}-1\right) - \frac{16}{9} J(\xi) \left(\frac{10}{\xi} - 13\right)\right) \notag\\
+		& \qquad+ a_{11} \beta_0 \left(-\frac{160}{9} + \frac{16}{3} I(\xi) \left(\frac{1}{\xi}-1\right) + \frac{8}{9} J(\xi) \left(\frac{10}{\xi} - 13\right)\right) \Biggr] L_\mu \notag\\
+		& + \left[ a_{10} a_{11} \left(\frac{32}{3} - \frac{16}{3} J(\xi) \left(\frac{1}{\xi}-1 \right)\right) + a_{11} \beta_0 \left(-\frac{16}{3} + \frac{8}{3} J(\xi) \left(\frac{1}{\xi}-1\right)\right)\right] L_\mu^2\,, \label{C2_g3}
+\end{align}
+\endgroup
+where we defined $L_\mu = \log\left(1/\xi_\mu\right)$, $L_\xi=\log\left(1 + \xi/4\right)$ and
+\begin{equation}
+	\begin{split}
+    I(\xi)=&\frac{4}{\xi}\sqrt{\frac{\xi}{\xi+4}}H \left(+,-,\sqrt{\frac{\xi}{\xi+4}}\right)\,, \\
+    J(\xi)=&\frac{4}{\xi}\sqrt{\frac{\xi}{\xi+4}}L\left(\sqrt{\frac{\xi}{\xi+4}}\right)\,, \\
+    K(\xi)=&\frac{4}{\xi}\sqrt{\frac{\xi}{\xi+4}}H\left(-,+,-,\sqrt{\frac{\xi}{\xi+4}}\right)\,,
+	\end{split}
+\end{equation}
+with
+\begin{equation}
+	\begin{split}
+	L(z)={}&\log\biggl(\frac{1+z}{1-z}\biggr), \\
+	H\Bigl(+,-,z\Bigr)={}&H_{1,1}(z)+H_{1,-1}(z)-H_{-1,1}(z)-H_{-1,-1}(z) ,\\
+	H\Bigl(-,+,-,z\Bigr)={}&H_{1,1,1}(z)-H_{1,1,-1}(z)+H_{1,-1,1}(z) - H_{1,-1,-1}(z) \\
+	&- H_{-1,1,1}(z) + H_{-1,1,-1}(z) - H_{-1,-1,1}(z) + H_{-1,-1,-1}(z).
+	\end{split}
+\end{equation}
+
+We can apply the same procedure for $F_L$: all the steps we did to get Eq.~\eqref{C2_g3} are unchanged and the only difference will be in the from
+of the function in Eq.~\eqref{K}. In this case we have to use
+\begin{equation}
+	\label{KL}
+	\begin{split}
+	\C_{L}(N, M,& \xi, \xi_\mu) = \\
+	&\frac{\alpha_s}{3 \pi} \frac{3}{2} \left(1+\frac{\xi}{4}\right)^{-N}\xi_\mu^{-M} \frac{\Gamma(1-M)^3 \Gamma(1+M)}{(3-2M)(1+2M)\Gamma(2-2M)} \frac{4}{4 + \xi} \,\times \\
+	& \left[3 + \frac{\xi}{2}(1 - M) - \left( 3 + \xi (1 - M)\left(1 - \frac{\xi}{4}M \right)\right){}_2F_1\left(1-M,1,\frac{3}{2}, -\frac{\xi}{4}\right)\right]\,.
+	\end{split}
+\end{equation}
+We get that
+\begingroup
+\allowdisplaybreaks
+\begin{align}
+		z \left(1 + \frac{4}{\xi}\right) &C_{L,g}^{[3](3) \rm h.e.}\Bigl(z,\xi,\xi_\mu\Bigr)= \notag\\
+		& a_{11}^2 \Biggl[ -\frac{32}{3 \xi} K(\xi) \left(1 + \frac{3}{\xi}\right) - \frac{128}{27} \left(17 + \frac{120}{\xi}\right) + \frac{16}{27} J(\xi) \left(3 + \frac{136}{\xi} + \frac{480}{\xi^2}\right) \notag\\
+		&\qquad + I(\xi) \left(\frac{32}{3\xi} L_\xi \left(1 + \frac{3}{\xi}\right) + \frac{16}{9} \left(-3 - \frac{4}{\xi} + \frac{24}{\xi^2}\right)\right) \notag\\
+	 	& \qquad + \left(\frac{64}{3\xi} I(\xi) \left(1 + \frac{3}{\xi}\right) - \frac{64}{9} \left(\frac{12}{\xi} - 1\right) + \frac{16}{9} J(\xi) \left(-3 - \frac{4}{\xi} + \frac{24}{\xi^2}\right)\right) L_\mu \notag\\
+		& \qquad + \left(\frac{32}{3\xi} J(\xi) \left(1 + \frac{3}{\xi}\right) - \frac{32}{3} \left(1 + \frac{6}{\xi}\right)\right) L_\mu^2\Biggr] \log(z)\notag\\
+		& + a_{21} \left[\frac{64}{9} \left(\frac{12}{\xi} - 1\right) -\frac{64}{3\xi} I(\xi)  \left(1 + \frac{3}{\xi}\right) - \frac{16}{9} J(\xi) \left(-3 - \frac{4}{\xi} + \frac{24}{\xi^2}\right)\right] \notag\\
+		& + a_{10} a_{11} \Biggl[\frac{256}{27} \left(17 + \frac{120}{\xi}\right) + \frac{64}{3\xi} K(\xi) \left(1 + \frac{3}{\xi}\right) - \frac{32}{27} J(\xi) \left(3 + \frac{136}{\xi} + \frac{480}{\xi^2}\right) \notag\\
+		& \qquad + I(\xi) \left(-\frac{64}{3\xi} L_\xi \left(1 + \frac{3}{\xi}\right) - \frac{32}{9} \left(-3 - \frac{4}{\xi} + \frac{24}{\xi^2}\right)\right)\Biggr] \notag\\
+		& + a_{11} \beta_0 \Biggl[- \frac{128}{27} \left(17 + \frac{120}{\xi}\right) -\frac{32}{3\xi} K(\xi) \left(1 + \frac{3}{\xi}\right) + \frac{16}{27} J(\xi) \left(3 + \frac{136}{\xi} + \frac{480}{\xi^2}\right) \notag\\
+		& \qquad+ I(\xi) \left(\frac{32}{3\xi} L_\xi \left(1 + \frac{3}{\xi}\right) + \frac{16}{9} \left(-3 - \frac{4}{\xi} + \frac{24}{\xi^2}\right)\right)\Biggr] \notag\\
+		& + \Biggl[a_{21} \left(\frac{64}{3} \left(1 + \frac{6}{\xi} \right) -\frac{64}{3\xi} J(\xi) \left(1 + \frac{3}{\xi}\right) \right) \notag\\
+		& \qquad + a_{10} a_{11} \left(\frac{128}{9} \left(\frac{12}{\xi} - 1\right) -\frac{128}{3\xi} I(\xi) \left(1 + \frac{3}{\xi}\right) - \frac{32}{9} J(\xi) \left(-3 - \frac{4}{\xi} + \frac{24}{\xi^2}\right)\right)\notag \\
+		& \qquad + a_{11} \beta_0 \left(\frac{64}{3\xi} I(\xi) \left(1 + \frac{3}{\xi}\right) - \frac{64}{9} \left(\frac{12}{\xi} - 1\right) + \frac{16}{9} J(\xi) \left(-3 - \frac{4}{\xi} + \frac{24}{\xi^2}\right)\right)\Biggr] L_\mu \notag\\
+		& + \Biggl[ a_{11} \beta_0 \left( \frac{32}{3\xi} J(\xi) \left(1 + \frac{3}{\xi}\right) - \frac{32}{3} \left(1 + \frac{6}{\xi}\right) \right)
+		+ a_{10} a_{11} \left(-\frac{64}{3\xi} J(\xi) \left(1 + \frac{3}{\xi}\right) + \frac{64}{3} \left(1 + \frac{6}{\xi}\right) \right) \Biggr] L_\mu^2\,. \label{CL_g3}
+	\end{align}
+\endgroup
+
+It is now useful to compute the large $Q$ limits of Eqs.~\eqref{C2_g3},\eqref{CL_g3}. What we get is
+\begingroup
+\allowdisplaybreaks
+\begin{align}
+		z C_{2,g}^{[3, 0](3) \rm h.e.}&\Bigl(z,\xi,\xi_\mu\Bigr)= \notag\\
+		& a_{11}^2 \Biggl[\frac{16}{27} \left(13 \pi^2 -92- 72 \zeta_3\right) -\frac{32}{27} \left(3 \pi^2 - 71\right) L_Q - \frac{208}{9} L_Q^2 + \frac{32}{9} L_Q^3 \notag \\
+		& \qquad + L_\mu \left(\frac{32}{9} \left( \pi^2 - 5\right) + \frac{416}{9} L_Q - \frac{32}{3} L_Q^2 \right) + L_\mu^2 \left(-\frac{16}{3} + \frac{32}{3} L_Q\right)\Biggr] \log(x) \notag\\
+		& - \frac{32}{27} a_{10} a_{11} \left(13 \pi^2 -92- 72 \zeta_3\right) + \frac{16}{27} a_{11} \beta_0 \left(13 \pi^2 -92- 72 \zeta_3\right) -\frac{32}{9} a_{21} (\pi^2 - 5)\notag\\
+		& + \left(-\frac{416}{9} a_{21} + \frac{64}{27} a_{10} a_{11} (3 \pi^2 - 71) - \frac{32}{27} a_{11} \beta_0 \left(3 \pi^2 - 71\right)\right) L_Q \notag\\
+		& + \left( \frac{416}{9} a_{10} a_{11} + \frac{32}{3} a_{21} - \frac{208}{9} a_{11} \beta_0 \right) L_Q^2 + \left(-\frac{64}{9} a_{10} a_{11} + \frac{32}{9} a_{11} \beta_0 \right) L_Q^3 \notag\\
+		& + L_\mu \Biggl( \frac{32}{3} a_{21} - \frac{64}{9} a_{10} a_{11} \left(\pi^2 - 5\right) + \frac{32}{9} a_{11} \beta_0 \left( \pi^2 - 5\right) + \left(-\frac{832}{9} a_{10} a_{11} - \frac{64}{3} a_{21} + \frac{416}{9} a_{11} \beta_0 \right)L_Q \notag\\
+		& \qquad + \left( \frac{64}{3} a_{10} a_{11} - \frac{32}{3} a_{11} \beta_0\right) L_Q^2\Biggr) \notag\\
+		& + L_\mu^2 \left( \frac{32}{3} a_{10} a_{11} - \frac{16}{3} a_{11} \beta_0 + \left(-\frac{64}{3} a_{10} a_{11} + \frac{32}{3} a_{11} \beta_0 \right) L_Q \right)\,,
+\end{align}
+\endgroup
+\begingroup
+\allowdisplaybreaks
+\begin{align}
+		z C_{L,g}^{[3, 0](3) \rm h.e.}&\Bigl(z,\xi,\xi_\mu\Bigr)= \notag\\
+		& + a_{11}^2 \left(\frac{32}{27} (3 \pi^2 - 68) - \frac{64}{9} L_Q - \frac{32}{3} L_Q^2 + L_\mu \left(\frac{64}{9} + \frac{64}{9} L_Q\right)- \frac{32}{3} L_\mu^2\right) \log(x) \notag\\
+		& -\frac{64}{9} a_{21} - \frac{64}{27} a_{10} a_{11} (3 \pi^2 - 68) +  \frac{32}{27} a_{11} \beta_0 (3 \pi^2 - 68)\notag \\
+		&  + \left(\frac{128}{9} a_{10} a_{11} - \frac{64}{3} a_{21} - \frac{64}{9} a_{11} \beta_0\right) L_Q + \left(\frac{64}{3} a_{10} a_{11} - \frac{32}{3} a_{11} \beta_0\right) L_Q^2\notag\\
+		& + L_\mu \left(-\frac{128}{9} a_{10} a_{11} + \frac{64}{3} a_{21} + \frac{64}{9} a_{11} \beta_0 +\left(- \frac{128}{3} a_{10} a_{11} + \frac{64}{3} a_{11} \beta_0 \right)L_Q\right) \notag\\
+		& + \left(\frac{64}{3} a_{10} a_{11} - \frac{32}{3} a_{11} \beta_0\right) L_\mu^2\,.
+	\end{align}
+	\endgroup
+where we used that $L_Q = \log\left(1/\xi\right)$.
+
+Now we want to construct an uncertainty band for our approximation. It will be done using a different expression for $\gamma_1^{\rm NLL}$, i.e.\
+\begin{equation}
+	\gamma_1^{\rm NLL'} = \beta_0 a_{11} \left(\frac{21}{8} \zeta_3 - 4 \log 2\right)\left(\frac{1}{N} - \frac{4N}{(N+1)^2}\right)\,.
+\end{equation}
+Applying the exact same procedure we find
+\begingroup
+\allowdisplaybreaks
+\begin{align}
+		z C_{2,g}'^{[3](3) \rm h.e.}&\Bigl(z,\xi,\xi_\mu\Bigr)= \notag\\
+		& a_{11}^2\Biggl[-\frac{147}{27} - \frac{8}{3} K(\xi) \left(\frac{1}{\xi}-1\right) + \frac{8}{27} J(\xi) \left(\frac{92}{\xi} - 71\right) + I(\xi) \left(\frac{8}{3} L_\xi \left(\frac{1}{\xi}-1\right) + \frac{8}{9} \left(\frac{10}{\xi} - 13\right)\right)\notag \\
+		& \qquad + \left(-\frac{160}{9} + \frac{16}{3} I(\xi) \left(\frac{1}{\xi}-1\right) + \frac{8}{9} J(\xi) \left(\frac{10}{\xi} - 13\right)\right) L_\mu + \left(-\frac{16}{3} + \frac{8}{3} J(\xi) \left(\frac{1}{\xi}-1\right)\right) L_\mu^2\Biggr] \log(z) \notag\\
+		& + a_{10} a_{11} \Biggl[\frac{2944}{27} + \frac{16}{3} K(\xi) \left(\frac{1}{\xi} - 1\right) - \frac{16}{27} J(\xi) \left(\frac{92}{\xi} - 71\right) + I(\xi) \left(-\frac{16}{3} L_\xi \left(\frac{1}{\xi} - 1\right) - \frac{16}{9} \left(\frac{10}{\xi} - 13\right)\right) \Biggr]\notag \\
+		& + a_{11} \beta_0 \Biggl[ -\frac{1472}{27} - \frac{8}{3} K(\xi) \left(\frac{1}{\xi} - 1\right) - \frac{640}{9} \log 2 + \frac{140}{3} \zeta_3 \notag\\
+		& \qquad + I(\xi) \left(\frac{8}{3} L_\xi \left(\frac{1}{\xi} - 1\right) + \frac{8}{9} \left(\frac{10}{\xi} - 13\right) + \frac{64}{3} \left(\frac{1}{\xi} - 1\right) \log 2 - 14 \left(\frac{1}{\xi} - 1\right) \zeta_3\right) \notag\\
+		& \qquad + J(\xi) \left(\frac{8}{27} \left(\frac{92}{\xi} - 71\right) + \frac{32}{9} \left(\frac{10}{\xi} - 13\right) \log 2 - \frac{7}{3} \left(\frac{10}{\xi} - 13\right) \zeta_3 \right)\Biggr] \notag\\
+		& + L_\mu \Biggl[a_{10} a_{11} \left(\frac{320}{9} - \frac{32}{3} I(\xi) \left(\frac{1}{\xi} - 1\right) - \frac{16}{9} J(\xi) \left(\frac{10}{\xi} - 13\right)\right)\notag \\
+		& \qquad + a_{11} \beta_0 \Biggl(-\frac{160}{9} + \frac{16}{3} I(\xi) \left(\frac{1}{\xi} - 1\right) - \frac{28}{3} \log 2 + 28 \zeta_3 \notag\\
+		& \qquad \qquad+ J(\xi) \left(\frac{8}{9} \left(\frac{10}{\xi} - 13\right) + \frac{64}{3} \left(\frac{1}{\xi} - 1\right) \log 2 - 14 \left(\frac{1}{\xi} - 1\right) \zeta_3 \right)\Biggr)\Biggr]\notag\\
+		& + \Biggl[a_{10} a_{11} \left(\frac{32}{3} - \frac{16}{3} J(\xi) \left(\frac{1}{\xi} - 1\right)\right) + a_{11} \beta_0 \left(-\frac{16}{3} + \frac{8}{3} J(\xi) \left(\frac{1}{\xi} - 1\right)\right)\Biggr] L_\mu^2\,,
+	\end{align}
+	\endgroup
+\begingroup
+\allowdisplaybreaks
+\begin{align}
+		z \left(1 + \frac{4}{\xi}\right) &C_{L,g}'^{[3](3) \rm h.e.}\Bigl(z,\xi,\xi_\mu\Bigr)=\notag \\
+		& a_{11}^2 \Biggl[ -\frac{32}{3 \xi} K(\xi) \left(1 + \frac{3}{\xi}\right) - \frac{128}{27} \left(17 + \frac{120}{\xi}\right) + \frac{16}{27} J(\xi) \left(3 + \frac{136}{\xi} + \frac{480}{\xi^2}\right) \notag\\
+		&\qquad + I(\xi) \left(\frac{32}{3\xi} L_\xi \left(1 + \frac{3}{\xi}\right) + \frac{16}{9} \left(-3 - \frac{4}{\xi} + \frac{24}{\xi^2}\right)\right) \notag\\
+	 	& \qquad + \left(\frac{64}{3\xi} I(\xi) \left(1 + \frac{3}{\xi}\right) - \frac{64}{9} \left(\frac{12}{\xi} - 1\right) + \frac{16}{9} J(\xi) \left(-3 - \frac{4}{\xi} + \frac{24}{\xi^2}\right)\right) L_\mu \notag\\
+		& \qquad + \left(\frac{32}{3\xi} J(\xi) \left(1 + \frac{3}{\xi}\right) - \frac{32}{3} \left(1 + \frac{6}{\xi}\right)\right) L_\mu^2\Biggr] \log(z) \notag\\
+		& + a_{10} a_{11} \Biggl[ \frac{64}{3\xi} K(\xi) \left(1 + \frac{3}{\xi}\right) + \frac{256}{27} \left(17 + \frac{120}{\xi}\right) - \frac{32}{27} J(\xi) \left(3 + \frac{136}{\xi} + \frac{480}{\xi^2} \right) \notag\\
+		& \qquad + I(\xi) \left(-\frac{64}{3\xi} L_\xi \left(1 + \frac{3}{\xi}\right) - \frac{32}{9} \left(-3 - \frac{4}{\xi} + \frac{24}{\xi^2}\right)\right)\Biggr] \notag\\
+		& a_{11} \beta_0 \Biggl[-\frac{32}{3\xi} K(\xi) \left(1 + \frac{3}{\xi}\right) - \frac{128}{27} \left(17 + \frac{120}{\xi}\right) -	\frac{256}{9} \left(\frac{12}{\xi} - 1\right) \log 2 + \frac{56}{3} \left(\frac{12}{\xi} - 1\right) \zeta_3\notag \\
+		& \qquad + I(\xi) \left(\frac{32}{3\xi} L_\xi \left(1 + \frac{3}{\xi}\right) + \frac{16}{9} \left(-3 - \frac{4}{\xi} + \frac{24}{\xi^2}\right) + \frac{256}{3\xi} \left(1 + \frac{3}{\xi}\right) \log 2 - \frac{56}{\xi} \left(1 + \frac{3}{\xi}\right) \zeta_3\right) \notag\\
+		& \qquad + J(\xi) \left( \frac{16}{27} \left(3 + \frac{136}{\xi} + \frac{480}{\xi^2}\right) + \frac{64}{9} \left(-3 - \frac{4}{\xi} + \frac{24}{\xi^2}\right) \log 2 - \frac{14}{3} \left(-3 - \frac{4}{\xi} + \frac{24}{\xi^2}\right) \zeta_3\right)\Biggr] \notag\\
+		& + L_\mu \Biggl[ a_{10} a_{11} \left(-\frac{128}{3\xi} I(\xi) \left(1 + \frac{3}{\xi}\right) + \frac{128}{9} \left(\frac{12}{\xi} - 1\right) - \frac{32}{9} J(\xi) \left(-3 - \frac{4}{\xi} + \frac{24}{\xi^2}\right)\right) \notag\\
+		&\qquad + a_{11} \beta_0 \Biggl(\frac{64}{3\xi} I(\xi) \left(1 + \frac{3}{\xi}\right) - \frac{64}{9} \left(\frac{12}{\xi} - 1\right) - \frac{256}{3} \left(1 + \frac{6}{\xi}\right) \log 2 + 56 \left(1 + \frac{6}{\xi}\right) \zeta_3 \notag\\
+		& \qquad \qquad + J(\xi) \left( \frac{16}{9} \left(-3 - \frac{4}{\xi} + \frac{24}{\xi^2}\right) + \frac{256}{3\xi} \left(1 + \frac{3}{\xi}\right) \log 2 - \frac{56}{\xi}\left(1 + \frac{3}{\xi}\right) \zeta_3 \right)\Biggr)\Biggr]\notag \\
+		& + \Biggl[a_{11} \beta_0 \left( \frac{32}{3\xi} J(\xi) \left(1 + \frac{3}{\xi}\right) - \frac{32}{3} \left(1 + \frac{6}{\xi}\right) \right)  + a_{10} a_{11} \left(-\frac{64}{3\xi} J(\xi) \left(1 + \frac{3}{\xi}\right) + \frac{64}{3} \left(1 + \frac{6}{\xi}\right)\right)\Biggr] L_\mu^2\,,
+	\end{align}
+	\endgroup
+whose large $Q$ limits are
+\begingroup
+\allowdisplaybreaks
+\begin{align}
+		z C_{2,g}'^{[3, 0](3) \rm h.e.}&\Bigl(z,\xi,\xi_\mu\Bigr)= \notag\\
+		& a_{11}^2 \Biggl[\frac{16}{27} \left(13 \pi^2 -92- 72 \zeta_3\right) -\frac{32}{27} \left(3 \pi^2 - 71\right) L_Q - \frac{208}{9} L_Q^2 + \frac{32}{9} L_Q^3 \notag \\
+		& \qquad + L_\mu \left(\frac{32}{9} \left( \pi^2 - 5\right) + \frac{416}{9} L_Q - \frac{32}{3} L_Q^2 \right) + L_\mu^2 \left(-\frac{16}{3} + \frac{32}{3} L_Q\right)\Biggr] \log(x) \notag\\
+		& + \frac{4}{27} a_{11} \beta_0 \left(-368 + 52 \pi^2 - 480 \log 2 + 96 \pi^2 \log 2 + 27 \zeta_3 - 63 \pi^2 \zeta_3\right) - \frac{32}{27} a_{10} a_{11} \left(13 \pi^2 -92- 72 \zeta_3\right) \notag\\
+		& + L_Q \left( \frac{64}{27} a_{10} a_{11} (3 \pi^2 - 71) - \frac{4}{27} a_{11} \beta_0 (-568 + 24 \pi^2 - 1248 \log 2 + 819 \zeta_3) \right) \notag\\
+		& + L_Q^2 \left(\frac{416}{9} a_{10} a_{11} - \frac{4}{9} a_{11} \beta_0 \left(52 + 96 \log 2 - 63 \zeta_3 \right)\right) + \left(- \frac{64}{9} a_{10} a_{11} + \frac{32}{9} a_{11} \beta_0 \right) L_Q^3 \notag\\
+		& L_\mu \Biggl[-\frac{64}{9} a_{10} a_{11} \left( \pi^2 - 5\right) + \frac{4}{9} a_{11} \beta_0 (-40 + 8 \pi^2 - 96 \log 2 + 63 \zeta_3)\notag \\
+		& \qquad + L_Q \left(-\frac{832}{9} a_{10} a_{11} + \frac{8}{9} a_{11} \beta_0 (52 + 96 \log 2 - 63 \zeta_3)\right) + \left(\frac{64}{3} a_{10} a_{11} - \frac{32}{3} a_{11} \beta_0 \right) L_Q^2 \Biggr]\notag \\
+		& + L_\mu^2 \Biggl[\frac{32}{3} a_{10} a_{11} - \frac{16}{3} a_{11} \beta_0 + \left(-\frac{64}{3} a_{10} a_{11} + \frac{32}{3} a_{11} \beta_0 \right) L_Q \Biggr]\,,
+	\end{align}
+	\endgroup
+\begingroup
+\allowdisplaybreaks
+\begin{align}
+		z C_{L,g}'^{[3, 0](3) \rm h.e.}&\Bigl(z,\xi,\xi_\mu\Bigr)= \notag\\
+		& + a_{11}^2 \left(\frac{32}{27} (3 \pi^2 - 68) - \frac{64}{9} L_Q - \frac{32}{3} L_Q^2 + L_\mu \left(\frac{64}{9} + \frac{64}{9} L_Q\right)- \frac{32}{3} L_\mu^2\right) \log(x) \notag\\
+		& -\frac{64}{27} a_{10} a_{11} \left(3 \pi^2 - 68\right) + \frac{8}{27} a_{11} \beta_0 (-272 + 12 \pi^2 + 96 \log 2 - 63 \zeta_3) \notag\\
+		& + L_Q \left(\frac{128}{9} a_{10} a_{11} + \frac{8}{9} a_{11} \beta_0 (-8 + 96 \log 2 - 63 \zeta_3)\right) + \Biggl[ \frac{64}{3} a_{10} a_{11} - \frac{32}{3} a_{11} \beta_0\Biggr] L_Q^2 \notag\\
+		& + L_\mu \Biggl[- \frac{128}{9} a_{10} a_{11} - \frac{8}{9} a_{11} \beta_0 \left(-8 + 96 \log 2 - 63 \zeta_3\right) + \left(- \frac{128}{3} a_{10} a_{11} + \frac{64}{3} a_{11} \beta_0 \right) L_Q \Biggr] \notag\\
+		& + \Biggl[\frac{64}{3} a_{10} a_{11} - \frac{32}{3} a_{11} \beta_0 \Biggr] L_\mu^2\,.
+	\end{align}
+	\endgroup
+
+
+\end{document}

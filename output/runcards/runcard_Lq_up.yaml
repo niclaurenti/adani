@@ -1,0 +1,9 @@
+m: 4.92
+nf: 4
+channel: Lq
+mufrac: 1.
+v: 1
+n_threads: 8
+output_file: "results/grid_4FS_Lq_up.dat"
+verbose: on
+debug: off
