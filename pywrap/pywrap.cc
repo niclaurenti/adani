@@ -175,6 +175,12 @@ PYBIND11_MODULE(_core, m) {
         py::arg("m2Q2"), py::arg("nf"), py::arg("v"), py::arg("var"),
         py::arg("fact")
     );
+    m.def(
+        "CL_g1_approximation", &CL_g1_approximation, py::arg("x"), py::arg("m2Q2")
+    );
+    m.def(
+        "C2_g1_approximation", &C2_g1_approximation, py::arg("x"), py::arg("m2Q2")
+    );
 
     // AsymptoticCoefficientFunctions
 
@@ -209,6 +215,12 @@ PYBIND11_MODULE(_core, m) {
     m.def(
         "CL_ps2_asymptotic", &CL_ps2_asymptotic, py::arg("x"), py::arg("m2Q2"),
         py::arg("m2mu2")
+    );
+    m.def(
+        "C2_g1_asymptotic", &C2_g1_asymptotic, py::arg("x"), py::arg("m2Q2")
+    );
+    m.def(
+        "CL_g1_asymptotic", &CL_g1_asymptotic, py::arg("x")
     );
 
     // HighscaleCoefficientFunctions
