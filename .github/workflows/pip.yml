@@ -29,7 +29,9 @@ jobs:
     - name: Build and install
       run: pip install .
     - name: Install pytest
-      run: pip install pytest
+      run: |
+        pip install pytest
+        pip install numpy
     - name: Test
       run: pytest tests
 
