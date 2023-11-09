@@ -27,7 +27,9 @@ jobs:
     - name: Install GSL
       run: sudo apt-get -y install libgsl-dev
     - name: Build and install
-      run: pip install .[test]
+      run: pip install .
+    - name: Install pytest
+      run: pip install pytest
     - name: Test
       run: pytest tests
 
