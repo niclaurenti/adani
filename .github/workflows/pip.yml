@@ -12,7 +12,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [ubuntu-latest, macos-latest]
+        # platform: [ubuntu-latest, macos-latest]
+        platform: [ubuntu-latest]
         python-version: [3.9]
     steps:
     - uses: actions/checkout@v3
@@ -24,7 +25,7 @@ jobs:
     - name: Install GNU Fortran
       uses: modflowpy/install-gfortran-action@v1
     - name: Install GSL
-      run: apt-get -y install libgsl-dev
+      run: sudo apt-get -y install libgsl-dev
     - name: Build and install
       run: pip install .[test]
     - name: Test
@@ -51,7 +52,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [ubuntu-latest, macos-latest]
+        #platform: [ubuntu-latest, macos-latest]
+        platform: [ubuntu-latest]
     steps:
     - uses: actions/checkout@v3
       with:
@@ -59,7 +61,7 @@ jobs:
     - name: Install GNU Fortran
       uses: modflowpy/install-gfortran-action@v1
     - name: Install GSL
-      run: apt-get -y install libgsl-dev
+      run: sudo apt-get -y install libgsl-dev
     - uses: pypa/cibuildwheel@v2.11.2
       env:
         CIBW_ARCHS_MACOS: auto universal2
