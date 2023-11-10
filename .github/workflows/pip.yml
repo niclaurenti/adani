@@ -80,39 +80,40 @@ jobs:
       with:
         path: wheelhouse/*.whl
 
-  build_wheels_mac:
-    name: Wheels on Mac
-    runs-on: macos-latest
-    strategy:
-      fail-fast: false
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        submodules: true
-    - uses: pypa/cibuildwheel@v2.11.2
-      env:
-        # CIBW_ARCHS_MACOS: auto universal2
-        CIBW_ARCHS_MACOS: x86_64  arm64
-        CIBW_SKIP: pp* cp36-* *-musllinux_x86_64 *_i686
-        CIBW_BEFORE_BUILD: >
-          brew reinstall gcc &&
-          wget https://mirror.ibcp.fr/pub/gnu/gsl/gsl-2.7.1.tar.gz &&
-          tar -zxvf gsl-2.7.1.tar.gz &&
-          cd gsl-2.7.1 &&
-          ./configure &&
-          make &&
-          make install &&
-          cd ..
-    - name: Verify clean directory
-      run: git diff --exit-code
-      shell: bash
-    - uses: actions/upload-artifact@v3
-      with:
-        path: wheelhouse/*.whl
+  # build_wheels_mac:
+  #   name: Wheels on Mac
+  #   runs-on: macos-latest
+  #   strategy:
+  #     fail-fast: false
+  #   steps:
+  #   - uses: actions/checkout@v3
+  #     with:
+  #       submodules: true
+  #   - uses: pypa/cibuildwheel@v2.11.2
+  #     env:
+  #       # CIBW_ARCHS_MACOS: auto universal2
+  #       CIBW_ARCHS_MACOS: x86_64 arm64
+  #       CIBW_SKIP: pp* cp36-* *-musllinux_x86_64 *_i686
+  #       CIBW_BEFORE_BUILD: >
+  #         brew reinstall gcc &&
+  #         wget https://mirror.ibcp.fr/pub/gnu/gsl/gsl-2.7.1.tar.gz &&
+  #         tar -zxvf gsl-2.7.1.tar.gz &&
+  #         cd gsl-2.7.1 &&
+  #         ./configure &&
+  #         make &&
+  #         make install &&
+  #         cd ..
+  #   - name: Verify clean directory
+  #     run: git diff --exit-code
+  #     shell: bash
+  #   - uses: actions/upload-artifact@v3
+  #     with:
+  #       path: wheelhouse/*.whl
 
   upload_all:
     name: Upload if release
-    needs: [build_wheels_ubuntu, build_wheels_mac, build_sdist]
+    # needs: [build_wheels_ubuntu, build_wheels_mac, build_sdist]
+    needs: [build_wheels_ubuntu, build_sdist]
     runs-on: ubuntu-latest
     if: github.event_name == 'release' && github.event.action == 'published'
     steps:
