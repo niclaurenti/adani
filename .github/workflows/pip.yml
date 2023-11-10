@@ -86,14 +86,14 @@ jobs:
         CIBW_ARCHS_MACOS: auto universal2
         CIBW_SKIP: pp* cp36-* *-musllinux_x86_64 *_i686
         CIBW_BEFORE_BUILD: >
-          sudo apt-get -y install wget
-          sudo apt-get -y install tar
+          apt-get -y install wget
+          apt-get -y install tar
           wget https://mirror.ibcp.fr/pub/gnu/gsl/gsl-2.7.1.tar.gz
           tar -zxvf gsl-2.7.1.tar.gz
           cd gsl-2.7.1
           ./configure
           make
-          sudo make install
+          make install
           cd ..
     - name: Verify clean directory
       run: git diff --exit-code
