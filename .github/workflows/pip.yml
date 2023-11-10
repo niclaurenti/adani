@@ -94,7 +94,7 @@ jobs:
           ./configure &&
           make &&
           make install &&
-          cd .. &&
+          cd ..
     - name: Verify clean directory
       run: git diff --exit-code
       shell: bash
