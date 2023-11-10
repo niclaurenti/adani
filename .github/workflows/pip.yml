@@ -68,8 +68,16 @@ jobs:
         submodules: true
     # - name: Install GNU Fortran
     #   uses: modflowpy/install-gfortran-action@v1
-    # - name: Install GSL
-    #   run: sudo apt-get -y install libgsl-dev
+    - name: Install GSL
+      run: |
+        wget https://mirror.ibcp.fr/pub/gnu/gsl/gsl-2.7.1.tar.gz
+        tar -zxvf gsl-2.7.1.tar.gz
+        cd gsl-2.7.1
+        mkdir build && cd build
+        cmake ..
+        make
+        sudo make install
+        cd ../..
     - name: which gsl
       run: which gsl-config
     # - name: Install ninja
