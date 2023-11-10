@@ -54,14 +54,14 @@ jobs:
       with:
         path: dist/*.tar.gz
 
-  build_wheels:
-    name: Wheels on ${{ matrix.platform }}
-    runs-on: ${{ matrix.platform }}
+  build_wheels_ubuntu:
+    name: Wheels on Ubuntu
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      matrix:
+      # matrix:
         #platform: [ubuntu-latest, macos-latest]
-        platform: [ubuntu-latest]
+        # platform: [ubuntu-latest]
     steps:
     - uses: actions/checkout@v3
       with:
@@ -88,6 +88,54 @@ jobs:
         CIBW_BEFORE_BUILD: >
           yum -y install wget &&
           yum -y install tar &&
+          wget https://mirror.ibcp.fr/pub/gnu/gsl/gsl-2.7.1.tar.gz &&
+          tar -zxvf gsl-2.7.1.tar.gz &&
+          cd gsl-2.7.1 &&
+          ./configure &&
+          make &&
+          make install &&
+          cd ..
+    - name: Verify clean directory
+      run: git diff --exit-code
+      shell: bash
+    - uses: actions/upload-artifact@v3
+      with:
+        path: wheelhouse/*.whl
+
+  build_wheels_mac:
+    name: Wheels on Mac
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      # matrix:
+        #platform: [ubuntu-latest, macos-latest]
+        # platform: [ubuntu-latest]
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: true
+    # - name: Install GNU Fortran
+    #   uses: modflowpy/install-gfortran-action@v1
+    # - name: Install GSL
+    #   run: |
+    #     wget https://mirror.ibcp.fr/pub/gnu/gsl/gsl-2.7.1.tar.gz
+    #     tar -zxvf gsl-2.7.1.tar.gz
+    #     cd gsl-2.7.1
+    #     ./configure
+    #     make
+    #     sudo make install
+    #     cd ..
+    # - name: which gsl
+    #   run: which gsl-config
+    # - name: Install ninja
+    #   run: sudo apt-get -y install ninja-build
+    - uses: pypa/cibuildwheel@v2.11.2
+      env:
+        CIBW_ARCHS_MACOS: auto universal2
+        CIBW_SKIP: pp* cp36-* *-musllinux_x86_64 *_i686
+        CIBW_BEFORE_BUILD: >
+          brew install wget -y &&
+          brew install tar -y &&
           wget https://mirror.ibcp.fr/pub/gnu/gsl/gsl-2.7.1.tar.gz &&
           tar -zxvf gsl-2.7.1.tar.gz &&
           cd gsl-2.7.1 &&
