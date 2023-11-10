@@ -1,9 +1,13 @@
 name: "Build wheels and deploy"
 
+# on:
+#   push:
+#     tags:
+#       - "*"
 on:
   push:
-    tags:
-      - "*"
+    branches:
+      - main
 
 jobs:
   build:
@@ -62,14 +66,14 @@ jobs:
     - uses: actions/checkout@v3
       with:
         submodules: true
-    - name: Install GNU Fortran
-      uses: modflowpy/install-gfortran-action@v1
-    - name: Install GSL
-      run: sudo apt-get -y install libgsl-dev
-    - name: which gsl
-      run: which gsl-config
-    - name: Install ninja
-      run: sudo apt-get -y install ninja-build
+    # - name: Install GNU Fortran
+    #   uses: modflowpy/install-gfortran-action@v1
+    # - name: Install GSL
+    #   run: sudo apt-get -y install libgsl-dev
+    # - name: which gsl
+    #   run: which gsl-config
+    # - name: Install ninja
+    #   run: sudo apt-get -y install ninja-build
     - uses: pypa/cibuildwheel@v2.11.2
       env:
         CIBW_ARCHS_MACOS: auto universal2
