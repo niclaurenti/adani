@@ -23,8 +23,8 @@ jobs:
           path: dist/*.tar.gz
 
   build_wheels:
-    name: Wheels on Ubuntu
-    runs-on: ubuntu-latest
+    name: Build wheels on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
