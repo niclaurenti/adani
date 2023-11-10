@@ -23,7 +23,7 @@
 //------------------------------------------------------------------------------------------//
 
 double C2_g1_asymptotic(double x, double m2Q2);
-double CL_g1_asymptotic(double x, double m2Q2);
+double CL_g1_asymptotic(double x);
 
 //==========================================================================================//
 //                      Asymptotic coefficient functions

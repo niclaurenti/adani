@@ -96,9 +96,8 @@ double CL_g1_approximation(double x, double m2Q2) {
 
     eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
 
-    double k = 1.13086
-               + exp(0.618532 * log(xi) - 4.10071); // TODO : why theese numbers
-    double h = 0.3 + 2.2 / (1. + exp(2.5 * (log(xi) - 5)));
+    double k = 3. - (3. - 2.) / (1. + exp(2.5 * (log(xi) - 5.)));
+    double h = 20. + (11. - 20.) / (1. + exp(2.5 * (log(xi) - 5.))); //the 20 must be retuned
 
     double damp_thr = 1. / (1. + pow(eta / h, k));
     double damp_asy = 1. - damp_thr;
