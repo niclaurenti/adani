@@ -73,11 +73,10 @@ jobs:
         wget https://mirror.ibcp.fr/pub/gnu/gsl/gsl-2.7.1.tar.gz
         tar -zxvf gsl-2.7.1.tar.gz
         cd gsl-2.7.1
-        mkdir build && cd build
-        cmake ..
+        ./configure
         make
         sudo make install
-        cd ../..
+        cd ..
     - name: which gsl
       run: which gsl-config
     # - name: Install ninja
