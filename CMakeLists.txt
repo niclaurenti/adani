@@ -49,7 +49,7 @@ configure_file(
 include_directories(inc)
 
 # find gsl
-find_package(GSL REQUIRED)
+# find_package(GSL REQUIRED)
 
 # FINALIZE ==================================================================================
 
@@ -85,7 +85,8 @@ if(PYTHON_ONLY)
         src/HighScaleSplitLogs.cc
         src/SplittingFunctions.cc
     )
-    target_link_libraries(_core PRIVATE GSL::gsl GSL::gslcblas)
+    # target_link_libraries(_core PRIVATE GSL::gsl GSL::gslcblas)
+    target_link_libraries(_core PRIVATE gsl gslcblas)
     target_compile_definitions(_core PRIVATE VERSION_INFO=${PROJECT_VERSION})
     install(TARGETS _core DESTINATION .)
 
@@ -109,7 +110,8 @@ else(PYTHON_ONLY)
     )
 
     # define libraries to be linked
-    target_link_libraries(adani GSL::gsl GSL::gslcblas)
+    # target_link_libraries(adani GSL::gsl GSL::gslcblas)
+    target_link_libraries(adani gsl gslcblas)
 
     # install
     install(FILES ${PROJECT_SOURCE_DIR}/bin/adani-config
