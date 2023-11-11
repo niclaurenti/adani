@@ -1,4 +1,4 @@
-name: "Build wheels and deploy"
+name: Wheels
 
 on:
   push:
@@ -6,124 +6,71 @@ on:
       - "*"
 
 jobs:
-  build:
-    name: Build with Pip
-    runs-on: ${{ matrix.platform }}
-    strategy:
-      fail-fast: false
-      matrix:
-        # platform: [ubuntu-latest, macos-latest]
-        platform: [ubuntu-latest]
-        python-version: [3.9]
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        submodules: recursive
-    - uses: actions/setup-python@v4
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install GNU Fortran
-      uses: modflowpy/install-gfortran-action@v1
-    - name: Install GSL
-      run: sudo apt-get -y install libgsl-dev
-    - name: Build and install
-      run: pip install .
-    - name: Install pytest
-      run: |
-        pip install pytest
-        pip install numpy
-    - name: Test
-      run: pytest tests
-
   build_sdist:
     name: Build sdist
     runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        submodules: true
-    - name: Build SDist
-      run: pipx run build --sdist
-    - name: Check metadata
-      run: pipx run twine check dist/*
-    - uses: actions/upload-artifact@v3
-      with:
-        path: dist/*.tar.gz
 
-  build_wheels_ubuntu:
-    name: Wheels on Ubuntu
-    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+      - name: Build SDist
+        run: pipx run build --sdist
+      - name: Check metadata
+        run: pipx run twine check dist/*
+      - uses: actions/upload-artifact@v3
+        with:
+          path: dist/*.tar.gz
+
+  build_wheels:
+    name: Build wheels on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        submodules: true
-    - uses: pypa/cibuildwheel@v2.11.2
-      env:
-        CIBW_ARCHS_MACOS: auto universal2
-        CIBW_SKIP: pp* cp36-* *-musllinux_x86_64 *_i686
-        CIBW_BEFORE_BUILD: >
-          yum -y install wget &&
-          yum -y install tar &&
-          wget https://mirror.ibcp.fr/pub/gnu/gsl/gsl-2.7.1.tar.gz &&
-          tar -zxvf gsl-2.7.1.tar.gz &&
-          cd gsl-2.7.1 &&
-          ./configure &&
-          make &&
-          make install &&
-          cd ..
-    - name: Verify clean directory
-      run: git diff --exit-code
-      shell: bash
-    - uses: actions/upload-artifact@v3
-      with:
-        path: wheelhouse/*.whl
+      matrix:
+        os: [ubuntu-latest, macos-latest]
 
-  # build_wheels_mac:
-  #   name: Wheels on Mac
-  #   runs-on: macos-latest
-  #   strategy:
-  #     fail-fast: false
-  #   steps:
-  #   - uses: actions/checkout@v3
-  #     with:
-  #       submodules: true
-  #   - uses: pypa/cibuildwheel@v2.11.2
-  #     env:
-  #       # CIBW_ARCHS_MACOS: auto universal2
-  #       CIBW_ARCHS_MACOS: x86_64 arm64
-  #       CIBW_SKIP: pp* cp36-* *-musllinux_x86_64 *_i686
-  #       CIBW_BEFORE_BUILD: >
-  #         brew reinstall gcc &&
-  #         wget https://mirror.ibcp.fr/pub/gnu/gsl/gsl-2.7.1.tar.gz &&
-  #         tar -zxvf gsl-2.7.1.tar.gz &&
-  #         cd gsl-2.7.1 &&
-  #         ./configure &&
-  #         make &&
-  #         make install &&
-  #         cd ..
-  #   - name: Verify clean directory
-  #     run: git diff --exit-code
-  #     shell: bash
-  #   - uses: actions/upload-artifact@v3
-  #     with:
-  #       path: wheelhouse/*.whl
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+      - uses: pypa/cibuildwheel@v2.16
+        env:
+          CIBW_ARCHS_MACOS: auto x86_64 arm64
+          CIBW_SKIP: pp* cp36-* *-musllinux_x86_64 *_i686
+          CIBW_BEFORE_BUILD_LINUX: >
+            yum -y install wget &&
+            yum -y install tar &&
+            wget https://mirror.ibcp.fr/pub/gnu/gsl/gsl-2.7.1.tar.gz &&
+            tar -zxvf gsl-2.7.1.tar.gz &&
+            cd gsl-2.7.1 &&
+            ./configure &&
+            make &&
+            make install &&
+            cd ..
+          CIBW_BEFORE_BUILD_MACOS: >
+            brew reinstall gcc &&
+            brew install gsl
+      - name: Verify clean directory
+        run: git diff --exit-code
+        shell: bash
+      - uses: actions/upload-artifact@v3
+        with:
+          path: wheelhouse/*.whl
 
   upload_all:
     name: Upload
-    # needs: [build_wheels_ubuntu, build_wheels_mac, build_sdist]
-    needs: [build_wheels_ubuntu, build_sdist]
+    needs: [build_wheels, build_sdist]
     runs-on: ubuntu-latest
-    # if: github.event_name == 'release' && github.event.action == 'published'
+
     steps:
-    - uses: actions/setup-python@v4
-      with:
-        python-version: "3.x"
-    - uses: actions/download-artifact@v3
-      with:
-        name: artifact
-        path: dist
-    - uses: pypa/gh-action-pypi-publish@master
-      with:
-        password: ${{ secrets.PYPI_TOKEN }}
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+      - uses: actions/download-artifact@v3
+        with:
+          name: artifact
+          path: dist
+      - uses: pypa/gh-action-pypi-publish@master
+        with:
+          password: ${{ secrets.PYPI_TOKEN }}
