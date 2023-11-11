@@ -36,7 +36,7 @@ jobs:
           submodules: true
       - uses: pypa/cibuildwheel@v2.16
         env:
-          CIBW_ARCHS_MACOS: x86_64 arm64
+          CIBW_ARCHS_MACOS: auto
           CIBW_SKIP: pp* cp36-* *-musllinux_x86_64 *_i686
           CIBW_BEFORE_BUILD_LINUX: >
             yum -y install wget &&
