@@ -50,13 +50,7 @@ jobs:
             cd ..
           CIBW_BEFORE_BUILD_MACOS: >
             brew reinstall gcc &&
-            wget https://mirror.ibcp.fr/pub/gnu/gsl/gsl-2.7.1.tar.gz &&
-            tar -zxvf gsl-2.7.1.tar.gz &&
-            cd gsl-2.7.1 &&
-            ./configure &&
-            make &&
-            make install &&
-            cd ..
+            brew install gsl
       - name: Verify clean directory
         run: git diff --exit-code
         shell: bash
