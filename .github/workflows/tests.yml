@@ -30,6 +30,7 @@ jobs:
           pip install scikit-build
           pip install setuptools
           pip install numpy
+          pip install versioneer
           pip install .
       - name: Lint with flake8
         run: |

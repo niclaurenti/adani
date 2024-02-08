@@ -4,5 +4,14 @@ requires = [
     "pybind11>=2.9.2",
     "cmake>=3.22",
     "scikit-build>=0.15.0",
+    "versioneer==0.29"
 ]
 build-backend = "setuptools.build_meta"
+
+[tool.versioneer]
+VCS = "git"
+style = "pep440"
+versionfile_source = "inc/adani/_version.py"
+versionfile_build = "adani/_version.py"
+tag_prefix = "v"
+parentdir_prefix = "adani-"
