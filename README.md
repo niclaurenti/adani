@@ -17,7 +17,7 @@ cmake -DCMAKE_INSTALL_PREFIX=/your/installation/path/ ..
 make && make install
 ```
 
-The Python package is available in the PyPI <a href="https://pypi.org/project/adani/"><img alt="PyPI" src="https://img.shields.io/pypi/v/adani"/></a>
+The Python package is available in the PyPI <a href="https://pypi.org/project/adani/"><img alt="PyPI" src="https://img.shields.io/pypi/v/adani"/></a>. Install it with
 ```bash
 pip install adani
 ```
