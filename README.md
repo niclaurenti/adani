@@ -17,12 +17,12 @@ cmake -DCMAKE_INSTALL_PREFIX=/your/installation/path/ ..
 make && make install
 ```
 
-In order to install the Python package run
+The Python package is available in the PyPI <a href="https://pypi.org/project/adani/"><img alt="PyPI" src="https://img.shields.io/pypi/v/adani"/></a>
 ```bash
 pip install adani
 ```
 
-## Compile a program
+## Compile a C++ program
 
 In order to compile a simple program run
 ```bash
@@ -39,21 +39,17 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/your/installation/path/lib
 ```
 For MacOS users: add the flags ```-std=c++17 -stdlib=libc++```.
 
-## Python module
+## Import the Python module
 
-In order to use the Python module do
+In order to use the Python module add
 ```bash
 import adani
 ```
-remembering to run
-```bash
-export PYTHONPATH=$PYTHONPATH:/your/installation/path/lib/python3.X/site-packages/
-```
-where ```X``` is your Python version.
+to a Python program.
 
 ## Contacts
 
-Contact me at niccolo.laurenti@mi.infn.it.
+Contact me at niclaurenti@gmail.com.
 
 ## Words of our prophet
 
