@@ -2,8 +2,8 @@ name: Wheels
 
 on:
   push:
-    # tags:
-    #   - "*"
+    tags:
+      - "*"
 
 jobs:
   build_sdist:
