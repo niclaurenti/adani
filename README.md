@@ -53,7 +53,7 @@ to a Python program.
 
 ## Contributing
 
-If you want to report a (possible) bug or want to ask for a new feature, please raise an issue: <a href="https://github.com/adani/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/adani"/></a>
+If you want to report a (possible) bug or want to ask for a new feature, please raise an issue: <a href="https://github.com/niclaurenti/adani/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/niclaurenti/adani"/></a>
 
 
 ## Contacts
