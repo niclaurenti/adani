@@ -21,6 +21,10 @@ The Python package is available in the PyPI <a href="https://pypi.org/project/ad
 ```bash
 pip install adani
 ```
+For installing the Python module from source run
+```bash
+pip install .
+```
 
 ## Compile a C++ program
 
