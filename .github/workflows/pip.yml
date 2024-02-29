@@ -2,8 +2,8 @@ name: Wheels
 
 on:
   push:
-    tags:
-      - "*"
+    # tags:
+    #   - "*"
 
 jobs:
   build_sdist:
@@ -50,7 +50,13 @@ jobs:
             cd ..
           CIBW_BEFORE_BUILD_MACOS: >
             brew reinstall gcc &&
-            brew install gsl
+            wget https://mirror.ibcp.fr/pub/gnu/gsl/gsl-2.7.1.tar.gz &&
+            tar -zxvf gsl-2.7.1.tar.gz &&
+            cd gsl-2.7.1 &&
+            ./configure &&
+            make &&
+            make install &&
+            cd ..
       - name: Verify clean directory
         run: git diff --exit-code
         shell: bash
@@ -71,6 +77,6 @@ jobs:
         with:
           name: artifact
           path: dist
-      - uses: pypa/gh-action-pypi-publish@master
-        with:
-          password: ${{ secrets.PYPI_TOKEN }}
+      # - uses: pypa/gh-action-pypi-publish@master
+      #   with:
+      #     password: ${{ secrets.PYPI_TOKEN }}
