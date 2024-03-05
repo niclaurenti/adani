@@ -2,6 +2,10 @@
 
 ADANI (Approximate DIS At N3LO Implementation) is a C++ code that computes an approximation for the DIS coefficient functions at N3LO in heavy quark production, that are not fully known yet.
 
+## Citation Policy
+
+When using this code please cite [![arXiv](https://img.shields.io/badge/arXiv-2401.12139-b31b1b?labelColor=222222)](https://arxiv.org/abs/2401.12139)
+
 ## Dependencies
 
 The code depends on the public library ```gsl```.
