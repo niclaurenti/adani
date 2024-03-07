@@ -1,7 +1,32 @@
 #include "adani/MasslessCoefficientFunctions.h"
 #include "adani/Constants.h"
 #include "adani/SpecialFunctions.h"
+
 #include <cmath>
+#include <iostream>
+
+using std::cout;
+using std::endl;
+
+double MasslessCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int nf) {
+
+    if (GetOrder() == 1 && GetKind() == '2' && GetChannel() == 'g') return C2_g1_massless(x, nf);
+    else if (GetOrder() == 1 && GetKind() == 'L' && GetChannel() == 'g') return CL_g1_massless(x, nf);
+
+    else if (GetOrder() == 2 && GetKind() == '2' && GetChannel() == 'g') return C2_g2_massless(x, nf);
+    else if (GetOrder() == 2 && GetKind() == '2' && GetChannel() == 'q') return C2_ps2_massless(x, nf);
+    else if (GetOrder() == 2 && GetKind() == 'L' && GetChannel() == 'g') return CL_g2_massless(x, nf);
+    else if (GetOrder() == 2 && GetKind() == 'L' && GetChannel() == 'q') return CL_ps2_massless(x, nf);
+
+    else if (GetOrder() == 3 && GetKind() == '2' && GetChannel() == 'g') return C2_g3_massless(x, nf);
+    else if (GetOrder() == 3 && GetKind() == '2' && GetChannel() == 'q') return C2_ps3_massless(x, nf);
+    else if (GetOrder() == 3 && GetKind() == 'L' && GetChannel() == 'g') return CL_g3_massless(x, nf);
+    else if (GetOrder() == 3 && GetKind() == 'L' && GetChannel() == 'q') return CL_ps3_massless(x, nf);
+    else {
+        cout << "Error: something has gone wrong!" << endl;
+        exit(-1);
+    }
+}
 
 //==========================================================================================//
 //  Massless gluon coefficient functions for F2 at

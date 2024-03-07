@@ -18,6 +18,9 @@
 #ifndef HighScale_h
 #define HighScale_h
 
+#include "adani/CoefficientFunction.h"
+#include "adani/MasslessCoefficientFunctions.h"
+
 //==========================================================================================//
 //                      The notation used is the following:
 //                      C^{(k)} = k-th order expansion in
@@ -25,6 +28,14 @@
 //                      k-th order expansion in terms of
 //                      \alpha_s^{[nf+1]}
 //------------------------------------------------------------------------------------------//
+
+class HighScaleCoefficientFunction : public CoefficientFunction {
+    public:
+        HighScaleCoefficientFunction(const int order, const char kind, const char channel) ;
+        ~HighScaleCoefficientFunction() {};
+
+    private:
+        MasslessCoefficientFunction massless_;
 
 //==========================================================================================//
 //                      High scale (Q^2 >> m^2) coefficient
@@ -35,7 +46,7 @@ double C2_g1_highscale(double x, double m2Q2);
 double CL_g1_highscale(double x);
 
 double D2_g1_highscale(double x, double m2Q2);
-double DL_g1_highscale(double x, double m2Q2);
+double DL_g1_highscale(double x);
 
 //==========================================================================================//
 //                      High scale (Q^2 >> m^2) coefficient
@@ -84,5 +95,7 @@ double
 C2_ps3_highscale_klmv_paper(double x, double m2Q2, double m2mu2, int nf, int v);
 double
 D2_ps3_highscale_klmv_paper(double x, double m2Q2, double m2mu2, int nf, int v);
+
+};
 
 #endif

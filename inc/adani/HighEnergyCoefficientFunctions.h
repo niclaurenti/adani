@@ -47,6 +47,7 @@ class HighTmpCoefficientFunction : public CoefficientFunction {
         //                  Color factors O(alpha_s^3)
         //------------------------------------------------------------------------------------------//
 
+    protected:
         double a_10(int nf);
         double a_11();
         double a_21(int nf);

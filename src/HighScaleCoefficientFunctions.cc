@@ -1,11 +1,22 @@
 #include "adani/HighScaleCoefficientFunctions.h"
 #include "adani/Constants.h"
 #include "adani/Convolutions.h"
-#include "adani/MasslessCoefficientFunctions.h"
 #include "adani/MatchingConditions.h"
 #include "adani/SpecialFunctions.h"
 #include <cmath>
 #include <iostream>
+
+HighScaleCoefficientFunction::HighScaleCoefficientFunction(const int order, const char kind, const char channel) : CoefficientFunction(order, kind, channel) {
+      massless_ = MasslessCoefficientFunction(GetOrder(), GetKind(), GetChannel());
+}
+
+//==========================================================================================//
+// OBSERVATION: the highscale coefficient functions depend on the massless coefficient function
+// through C_massless(nf + 1)/(nf + 1).
+// Since up to O(as^2) the massless coefficient functions are proportional to nf, the (nf + 1)
+// dependence cancels and therefore it is equal to putting (nf + 1) = 1 .
+//
+//------------------------------------------------------------------------------------------//
 
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for F2 at
@@ -14,9 +25,11 @@
 //  Eq. (B.4) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
-double C2_g1_highscale(double x, double m2Q2) {
+double HighScaleCoefficientFunction::C2_g1_highscale(double x, double m2Q2) {
 
-    return C2_g1_massless(x, 1) + 2. * K_Qg1(x, m2Q2);
+    double m2mu2 = static_cast<double>(nan(""));
+
+    return massless_.fx(x, m2Q2, m2mu2, 1) + 2. * K_Qg1(x, m2Q2);
 }
 
 //==========================================================================================//
@@ -24,7 +37,13 @@ double C2_g1_highscale(double x, double m2Q2) {
 //  O(alpha_s) expanded in terms of \alpha_s^{[nf]}
 //------------------------------------------------------------------------------------------//
 
-double CL_g1_highscale(double x) { return CL_g1_massless(x, 1); }
+double HighScaleCoefficientFunction::CL_g1_highscale(double x) {
+
+    double m2Q2 = static_cast<double>(nan(""));
+    double m2mu2 = static_cast<double>(nan(""));
+
+    return massless_.fx(x, m2Q2, m2mu2, 1);
+}
 
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for F2 at
@@ -33,7 +52,7 @@ double CL_g1_highscale(double x) { return CL_g1_massless(x, 1); }
 //  Eq. (B.4) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
-double D2_g1_highscale(double x, double m2Q2) {
+double HighScaleCoefficientFunction::D2_g1_highscale(double x, double m2Q2) {
 
     return C2_g1_highscale(x, m2Q2);
 }
@@ -43,7 +62,7 @@ double D2_g1_highscale(double x, double m2Q2) {
 //  O(alpha_s) expanded in terms of \alpha_s^{[nf+1]}
 //------------------------------------------------------------------------------------------//
 
-double DL_g1_highscale(double x) { return CL_g1_highscale(x); }
+double HighScaleCoefficientFunction::DL_g1_highscale(double x) { return CL_g1_highscale(x); }
 
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for F2 at
@@ -52,7 +71,7 @@ double DL_g1_highscale(double x) { return CL_g1_highscale(x); }
 //  Eq. (B.6) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
-double C2_g2_highscale(double x, double m2Q2, double m2mu2) {
+double HighScaleCoefficientFunction::C2_g2_highscale(double x, double m2Q2, double m2mu2) {
 
     double Lmu = log(1. / m2mu2);
 
@@ -67,7 +86,7 @@ double C2_g2_highscale(double x, double m2Q2, double m2mu2) {
 //  Eq. (B.9) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
-double C2_ps2_highscale(double z, double m2Q2, double m2mu2) {
+double HighScaleCoefficientFunction::C2_ps2_highscale(double z, double m2Q2, double m2mu2) {
 
     double z2 = z * z;
     double z3 = z2 * z;
@@ -119,7 +138,7 @@ double C2_ps2_highscale(double z, double m2Q2, double m2mu2) {
 //  O(alpha_s^2) expanded in terms of \alpha_s^{[nf]}
 //------------------------------------------------------------------------------------------//
 
-double CL_g2_highscale(double x, double m2Q2, double m2mu2) {
+double HighScaleCoefficientFunction::CL_g2_highscale(double x, double m2Q2, double m2mu2) {
 
     double Lmu = log(1. / m2mu2);
 
@@ -131,7 +150,7 @@ double CL_g2_highscale(double x, double m2Q2, double m2mu2) {
 //  O(alpha_s^2) expanded in terms of \alpha_s^{[nf]}
 //------------------------------------------------------------------------------------------//
 
-double CL_ps2_highscale(double x, double m2Q2, double m2mu2) {
+double HighScaleCoefficientFunction::CL_ps2_highscale(double x, double m2Q2, double m2mu2) {
 
     return DL_ps2_highscale(x, m2Q2, m2mu2);
 }
@@ -143,7 +162,7 @@ double CL_ps2_highscale(double x, double m2Q2, double m2mu2) {
 //  Eq. (B.5) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
-double D2_g2_highscale(double x, double m2Q2, double m2mu2) {
+double HighScaleCoefficientFunction::D2_g2_highscale(double x, double m2Q2, double m2mu2) {
 
     double x2 = x * x;
 
@@ -234,7 +253,7 @@ double D2_g2_highscale(double x, double m2Q2, double m2mu2) {
            + CA * LQm2
                  * (2 + 8. / 3 / x + 16 * x - 62. / 3 * x2 + 4 * H0
                     + 16 * H0 * x - 4 * H1 + 8 * H1 * x - 8 * H1 * x2)
-           + C2_g2_massless(x, 1);
+           + massless_.fx(x, m2Q2, m2mu2, 1);
 }
 
 //==========================================================================================//
@@ -244,7 +263,7 @@ double D2_g2_highscale(double x, double m2Q2, double m2mu2) {
 //  Eq. (B.6) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
-double D2_ps2_highscale(double x, double m2Q2, double m2mu2) {
+double HighScaleCoefficientFunction::D2_ps2_highscale(double x, double m2Q2, double m2mu2) {
 
     return C2_ps2_highscale(x, m2Q2, m2mu2);
 }
@@ -254,7 +273,7 @@ double D2_ps2_highscale(double x, double m2Q2, double m2mu2) {
 //  O(alpha_s^2) expanded in terms of \alpha_s^{[nf+1]}
 //------------------------------------------------------------------------------------------//
 
-double DL_g2_highscale(double z, double m2Q2, double m2mu2) {
+double HighScaleCoefficientFunction::DL_g2_highscale(double z, double m2Q2, double m2mu2) {
 
     double z2 = z * z;
     double z3 = z2 * z;
@@ -299,7 +318,7 @@ double DL_g2_highscale(double z, double m2Q2, double m2mu2) {
 //  O(alpha_s^2) expanded in terms of \alpha_s^{[nf+1]}
 //------------------------------------------------------------------------------------------//
 
-double DL_ps2_highscale(double z, double m2Q2, double m2mu2) {
+double HighScaleCoefficientFunction::DL_ps2_highscale(double z, double m2Q2, double m2mu2) {
 
     double z2 = z * z;
 
@@ -327,7 +346,7 @@ double DL_ps2_highscale(double z, double m2Q2, double m2mu2) {
 //  Eq. (B.8) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
-double C2_g3_highscale(double x, double m2Q2, double m2mu2, int nf, int v) {
+double HighScaleCoefficientFunction::C2_g3_highscale(double x, double m2Q2, double m2mu2, int nf, int v) {
 
     double Lmu = log(m2mu2);
     double L2mu = Lmu * Lmu;
@@ -346,7 +365,7 @@ double C2_g3_highscale(double x, double m2Q2, double m2mu2, int nf, int v) {
 //  Eq. (B.11) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
-double C2_ps3_highscale(double x, double m2Q2, double m2mu2, int nf) {
+double HighScaleCoefficientFunction::C2_ps3_highscale(double x, double m2Q2, double m2mu2, int nf) {
 
     double Lmu = log(m2mu2);
 
@@ -359,7 +378,7 @@ double C2_ps3_highscale(double x, double m2Q2, double m2mu2, int nf) {
 //  O(alpha_s^3) expanded in terms of \alpha_s^{[nf+1]}
 //------------------------------------------------------------------------------------------//
 
-double DL_g3_highscale(double z, double m2Q2, double m2mu2, int nf) {
+double HighScaleCoefficientFunction::DL_g3_highscale(double z, double m2Q2, double m2mu2, int nf) {
 
     double z2 = z * z;
     double z3 = z2 * z;
@@ -860,7 +879,7 @@ double DL_g3_highscale(double z, double m2Q2, double m2mu2, int nf) {
                                       - 544. / 3 * H01 + 128. * H011
                                       + 384. * H000m1 - 384. * H0001
                                       + (128. * H01 - 128. * H0m1) * zeta2)))
-           + CL_g3_massless(z, nf + 1) / (nf + 1.);
+           + massless_.fx(z, m2Q2, m2mu2, nf + 1) / (nf + 1.);
 }
 
 //==========================================================================================//
@@ -868,7 +887,7 @@ double DL_g3_highscale(double z, double m2Q2, double m2mu2, int nf) {
 //  O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}
 //------------------------------------------------------------------------------------------//
 
-double CL_g3_highscale(double x, double m2Q2, double m2mu2, int nf) {
+double HighScaleCoefficientFunction::CL_g3_highscale(double x, double m2Q2, double m2mu2, int nf) {
 
     double Lmu = log(m2mu2);
     double L2mu = Lmu * Lmu;
@@ -885,7 +904,7 @@ double CL_g3_highscale(double x, double m2Q2, double m2mu2, int nf) {
 //  O(alpha_s^3) expanded in terms of \alpha_s^{[nf+1]}
 //------------------------------------------------------------------------------------------//
 
-double DL_ps3_highscale(double z, double m2Q2, double m2mu2, int nf) {
+double HighScaleCoefficientFunction::DL_ps3_highscale(double z, double m2Q2, double m2mu2, int nf) {
 
     double z2 = z * z;
     double z3 = z2 * z;
@@ -1040,7 +1059,7 @@ double DL_ps3_highscale(double z, double m2Q2, double m2mu2, int nf) {
                                 + 256. * zeta2 * H0 + 512. * H00m1 - 256. * H011
                                 - 128. * zeta3))
                           * L_Q)
-           + CL_ps3_massless(z, nf + 1) / (nf + 1.);
+           + massless_.fx(z, m2Q2, m2mu2, nf + 1) / (nf + 1.);
 }
 
 //==========================================================================================//
@@ -1048,7 +1067,7 @@ double DL_ps3_highscale(double z, double m2Q2, double m2mu2, int nf) {
 //  O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}
 //------------------------------------------------------------------------------------------//
 
-double CL_ps3_highscale(double x, double m2Q2, double m2mu2, int nf) {
+double HighScaleCoefficientFunction::CL_ps3_highscale(double x, double m2Q2, double m2mu2, int nf) {
 
     double Lmu = log(m2mu2);
 
@@ -1065,7 +1084,7 @@ double CL_ps3_highscale(double x, double m2Q2, double m2mu2, int nf) {
 //  Eq. (B.11) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
-double D2_g3_highscale(double x, double m2Q2, double m2mu2, int nf, int v) {
+double HighScaleCoefficientFunction::D2_g3_highscale(double x, double m2Q2, double m2mu2, int nf, int v) {
 
     double x2 = x * x;
     double x3 = x2 * x;
@@ -2953,7 +2972,7 @@ double D2_g3_highscale(double x, double m2Q2, double m2mu2, int nf, int v) {
            + CF * nf * (1. - 2. * x + 2. * x2) * (69. - 28. * zeta2)
            // from erratum
            + 8. / 9 * zeta3 - 16. / 9 * zeta3 * x + 16. / 9 * zeta3 * x2
-           + a_Qg_30(x, v) + C2_g3_massless(x, nf + 1) / (nf + 1.);
+           + a_Qg_30(x, v) + massless_.fx(x, m2Q2, m2mu2, nf + 1) / (nf + 1.);
 }
 
 //==========================================================================================//
@@ -2963,7 +2982,7 @@ double D2_g3_highscale(double x, double m2Q2, double m2mu2, int nf, int v) {
 //  Eq. (B.10) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
-double D2_ps3_highscale(double x, double m2Q2, double m2mu2, int nf, int v) {
+double HighScaleCoefficientFunction::D2_ps3_highscale(double x, double m2Q2, double m2mu2, int nf, int v) {
 
     double x2 = x * x;
     double x3 = x2 * x;
@@ -3773,7 +3792,7 @@ double D2_ps3_highscale(double x, double m2Q2, double m2mu2, int nf, int v) {
                     - 64. / 9 * H0 * x + 16. / 3 * H00 - 32. / 3 * H00 * x
                     - 8. / 3 * H1 - 32. / 9 * H1 / x + 8. / 3 * H1 * x
                     + 32. / 9 * H1 * x2 - 16. / 3 * H01 - 16. / 3 * H01 * x)
-           + a_Qq_PS_30(x, v) + 1. / (1 + nf) * C2_ps3_massless(x, 1 + nf);
+           + a_Qq_PS_30(x, v) + 1. / (1 + nf) * massless_.fx(x, m2Q2, m2mu2, 1 + nf);
 }
 
 //==========================================================================================//
@@ -3787,7 +3806,7 @@ double D2_ps3_highscale(double x, double m2Q2, double m2mu2, int nf, int v) {
 //  Eq. (B.11) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
-double C2_ps3_highscale_klmv_paper(
+double HighScaleCoefficientFunction::C2_ps3_highscale_klmv_paper(
     double x, double m2Q2, double m2mu2, int nf, int v
 ) {
 
@@ -3808,7 +3827,7 @@ double C2_ps3_highscale_klmv_paper(
 //  Eq. (B.10) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
-double D2_ps3_highscale_klmv_paper(
+double HighScaleCoefficientFunction::D2_ps3_highscale_klmv_paper(
     double x, double m2Q2, double m2mu2, int nf, int v
 ) {
 
