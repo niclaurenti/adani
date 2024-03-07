@@ -17,6 +17,8 @@
 #ifndef HighEnergy_h
 #define HighEnergy_h
 
+#include "adani/CoefficientFunction.h"
+
 //==========================================================================================//
 //                      Notation:
 //      High energy: small x limit
@@ -27,126 +29,172 @@
 //          C_highenergy_highscale
 //------------------------------------------------------------------------------------------//
 
-//==========================================================================================//
-//                      High energy coefficient functions
-//                      O(alpha_s^2)
-//------------------------------------------------------------------------------------------//
+class HighTmpCoefficientFunction : public CoefficientFunction {
+    public:
+        HighTmpCoefficientFunction(const int order, const char kind, const char channel, const int NLL = 1) ;
+        ~HighTmpCoefficientFunction() {};
 
-double C2_g2_highenergy(double x, double m2Q2, double m2mu2);
-double C2_ps2_highenergy(double x, double m2Q2, double m2mu2);
-double CL_g2_highenergy(double x, double m2Q2, double m2mu2);
-double CL_ps2_highenergy(double x, double m2Q2, double m2mu2);
+        // get methods
+        bool GetNLL() {return NLL_;};
 
-//==========================================================================================//
-//                      Q>>m limit of the high energy
-//                      coefficient functions O(alpha_s^2)
-//------------------------------------------------------------------------------------------//
+        // set methods
+        void SetNLL(const bool NLL);
 
-double C2_g2_highenergy_highscale(double x, double m2Q2, double m2mu2);
-double C2_ps2_highenergy_highscale(double x, double m2Q2, double m2mu2);
-double CL_g2_highenergy_highscale(double x, double m2Q2, double m2mu2);
-double CL_ps2_highenergy_highscale(double x, double m2Q2, double m2mu2);
+    private:
+        bool NLL_ ;
 
-//==========================================================================================//
-//                  Power terms of the coefficient function
-//                  O(alpha_s^2)
-//------------------------------------------------------------------------------------------//
+        //==========================================================================================//
+        //                  Color factors O(alpha_s^3)
+        //------------------------------------------------------------------------------------------//
 
-double C2_g2_power_terms(double x, double m2Q2, double m2mu2);
-double C2_ps2_power_terms(double x, double m2Q2, double m2mu2);
-double CL_g2_power_terms(double x, double m2Q2, double m2mu2);
-double CL_ps2_power_terms(double x, double m2Q2, double m2mu2);
+        double a_10(int nf);
+        double a_11();
+        double a_21(int nf);
+};
 
-//==========================================================================================//
-//                      High energy coefficient functions
-//                      O(alpha_s^3) at leading log
-//------------------------------------------------------------------------------------------//
+class HighEnergyCoefficientFunction : public HighTmpCoefficientFunction {
 
-double C2_g3_highenergyLL(double x, double m2Q2, double m2mu2);
-double CL_g3_highenergyLL(double x, double m2Q2, double m2mu2);
-double C2_ps3_highenergyLL(double x, double m2Q2, double m2mu2);
-// double CL_ps3_highenergyLL(double x, double m2Q2, double
-// m2mu2);
+    public:
+        HighEnergyCoefficientFunction(const int order, const char kind, const char channel, const int NLL = 1) : HighTmpCoefficientFunction(order, kind, channel, NLL) {};
+        ~HighEnergyCoefficientFunction() {} ;
 
-double C2_g3_highenergyNLL(double x, double m2Q2, double m2mu2, int nf, int v);
-// double C2_ps3_highenergyNLL(double x, double m2Q2, double
-// m2mu2, int nf, int v);
-double CL_g3_highenergyNLL(double x, double m2Q2, double m2mu2, int nf, int v);
-// double CL_ps3_highenergyNLL(double x, double m2Q2, double
-// m2mu2, int nf, int v);
+        double fx(double x, double m2Q2, double m2mu2, int nf) ;
 
-//==========================================================================================//
-//                      High energy coefficient functions
-//                      O(alpha_s^3)
-//------------------------------------------------------------------------------------------//
+    private:
 
-double C2_g3_highenergy(double x, double m2Q2, double m2mu2, int nf, int v);
-double C2_ps3_highenergy(double x, double m2Q2, double m2mu2, int nf, int v);
-double CL_g3_highenergy(double x, double m2Q2, double m2mu2, int nf, int v);
-double CL_ps3_highenergy(double x, double m2Q2, double m2mu2, int nf, int v);
+        //==========================================================================================//
+        //                      High energy coefficient functions
+        //                      O(alpha_s^2)
+        //------------------------------------------------------------------------------------------//
 
-//==========================================================================================//
-//  Q>>m limit of the high energy coefficient functions
-//  O(alpha_s^3) at leading log
-//------------------------------------------------------------------------------------------//
+        double C2_g2_highenergy(double x, double m2Q2, double m2mu2);
+        double C2_ps2_highenergy(double x, double m2Q2, double m2mu2);
+        double CL_g2_highenergy(double x, double m2Q2, double m2mu2);
+        double CL_ps2_highenergy(double x, double m2Q2, double m2mu2);
 
-double C2_g3_highenergy_highscaleLL(double x, double m2Q2, double m2mu2);
-double CL_g3_highenergy_highscaleLL(double x, double m2Q2, double m2mu2);
-// double C2_ps3_highenergy_highscaleLL(double x, double
-// m2Q2, double m2mu2); double
-// CL_ps3_highenergy_highscaleLL(double x, double m2Q2,
-// double m2mu2);
+        //==========================================================================================//
+        //                      High energy coefficient functions
+        //                      O(alpha_s^3) at leading log
+        //------------------------------------------------------------------------------------------//
 
-double C2_g3_highenergy_highscaleNLL(
-    double x, double m2Q2, double m2mu2, int nf, int v
-);
-// double C2_ps3_highenergy_highscaleNLL(double x, double
-// m2Q2, double m2mu2, int nf, int v);
-double CL_g3_highenergy_highscaleNLL(
-    double x, double m2Q2, double m2mu2, int nf, int v
-);
-// double CL_ps3_highenergy_highscaleNLL(double x, double
-// m2Q2, double m2mu2, int nf, int v);
+        double C2_g3_highenergyLL(double x, double m2Q2, double m2mu2);
+        double CL_g3_highenergyLL(double x, double m2Q2, double m2mu2);
+        double C2_ps3_highenergyLL(double x, double m2Q2, double m2mu2);
+        double CL_ps3_highenergyLL(double x, double m2Q2, double m2mu2);
 
-//==========================================================================================//
-//                  Q^2>>m^2 limit of the high energy
-//                  coefficient functions O(alpha_s^3)
-//------------------------------------------------------------------------------------------//
+        double C2_g3_highenergyNLL(double x, double m2Q2, double m2mu2, int nf, int v);
+        double CL_g3_highenergyNLL(double x, double m2Q2, double m2mu2, int nf, int v);
 
-double
-C2_g3_highenergy_highscale(double x, double m2Q2, double m2mu2, int nf, int v);
-double
-C2_ps3_highenergy_highscale(double x, double m2Q2, double m2mu2, int nf, int v);
-double
-CL_g3_highenergy_highscale(double x, double m2Q2, double m2mu2, int nf, int v);
-double
-CL_ps3_highenergy_highscale(double x, double m2Q2, double m2mu2, int nf, int v);
+        //==========================================================================================//
+        //                      High energy coefficient functions
+        //                      O(alpha_s^3)
+        //------------------------------------------------------------------------------------------//
 
-//==========================================================================================//
-//                  Power terms of the coefficient function
-//                  O(alpha_s^3) at leading log
-//------------------------------------------------------------------------------------------//
+        double C2_g3_highenergy(double x, double m2Q2, double m2mu2, int nf, int v);
+        double C2_ps3_highenergy(double x, double m2Q2, double m2mu2, int nf, int v);
+        double CL_g3_highenergy(double x, double m2Q2, double m2mu2, int nf, int v);
+        double CL_ps3_highenergy(double x, double m2Q2, double m2mu2, int nf, int v);
 
-// double C2_g3_power_termsLL(double x, double m2Q2 , double
-// m2mu2); double C2_ps3_power_termsLL(double x, double m2Q2
-// , double m2mu2);
+};
 
-//==========================================================================================//
-//                  Power terms of the coefficient function
-//                  O(alpha_s^3)
-//------------------------------------------------------------------------------------------//
+class HighEnergyHighScaleCoefficientFunction : public HighTmpCoefficientFunction {
 
-double C2_g3_power_terms(double x, double m2Q2, double m2mu2, int nf, int v);
-double C2_ps3_power_terms(double x, double m2Q2, double m2mu2, int nf, int v);
-double CL_g3_power_terms(double x, double m2Q2, double m2mu2, int nf, int v);
-double CL_ps3_power_terms(double x, double m2Q2, double m2mu2, int nf, int v);
+    public:
+        HighEnergyHighScaleCoefficientFunction(const int order, const char kind, const char channel, const int NLL = 1) : HighTmpCoefficientFunction(order, kind, channel, NLL) {};
+        ~HighEnergyHighScaleCoefficientFunction() {} ;
 
-//==========================================================================================//
-//                  Color factors O(alpha_s^3)
-//------------------------------------------------------------------------------------------//
+        double fx(double x, double m2Q2, double m2mu2, int nf) override {return 0.;};
 
-double a_10(int nf);
-double a_11();
-double a_21(int nf);
+    private:
+
+        //==========================================================================================//
+        //                      Q>>m limit of the high energy
+        //                      coefficient functions O(alpha_s^2)
+        //------------------------------------------------------------------------------------------//
+
+        double C2_g2_highenergy_highscale(double x, double m2Q2, double m2mu2);
+        double C2_ps2_highenergy_highscale(double x, double m2Q2, double m2mu2);
+        double CL_g2_highenergy_highscale(double x, double m2Q2, double m2mu2);
+        double CL_ps2_highenergy_highscale(double x, double m2Q2, double m2mu2);
+
+        //==========================================================================================//
+        //  Q>>m limit of the high energy coefficient functions
+        //  O(alpha_s^3) at leading log
+        //------------------------------------------------------------------------------------------//
+
+        double C2_g3_highenergy_highscaleLL(double x, double m2Q2, double m2mu2);
+        double CL_g3_highenergy_highscaleLL(double x, double m2Q2, double m2mu2);
+        double C2_ps3_highenergy_highscaleLL(double x, double m2Q2, double m2mu2);
+        double CL_ps3_highenergy_highscaleLL(double x, double m2Q2, double m2mu2);
+
+        double C2_g3_highenergy_highscaleNLL(
+            double x, double m2Q2, double m2mu2, int nf, int v
+        );
+        // double C2_ps3_highenergy_highscaleNLL(double x, double
+        // m2Q2, double m2mu2, int nf, int v);
+        double CL_g3_highenergy_highscaleNLL(
+            double x, double m2Q2, double m2mu2, int nf, int v
+        );
+        // double CL_ps3_highenergy_highscaleNLL(double x, double
+        // m2Q2, double m2mu2, int nf, int v);
+
+        //==========================================================================================//
+        //                  Q^2>>m^2 limit of the high energy
+        //                  coefficient functions O(alpha_s^3)
+        //------------------------------------------------------------------------------------------//
+
+        double
+        C2_g3_highenergy_highscale(double x, double m2Q2, double m2mu2, int nf, int v);
+        double
+        C2_ps3_highenergy_highscale(double x, double m2Q2, double m2mu2, int nf, int v);
+        double
+        CL_g3_highenergy_highscale(double x, double m2Q2, double m2mu2, int nf, int v);
+        double
+        CL_ps3_highenergy_highscale(double x, double m2Q2, double m2mu2, int nf, int v);
+
+};
+
+class PowerTermsCoefficientFunction : public HighTmpCoefficientFunction {
+
+    public:
+        PowerTermsCoefficientFunction(const int order, const char kind, const char channel, const int NLL = 1);
+        ~PowerTermsCoefficientFunction() {} ;
+
+        double fx(double x, double m2Q2, double m2mu2, int nf);
+
+    private:
+
+        HighEnergyCoefficientFunction highenergy_ ;
+        HighEnergyHighScaleCoefficientFunction highenergyhighscale_ ;
+
+        //==========================================================================================//
+        //                  Power terms of the coefficient function
+        //                  O(alpha_s^2)
+        //------------------------------------------------------------------------------------------//
+
+        double C2_g2_power_terms(double x, double m2Q2, double m2mu2);
+        double C2_ps2_power_terms(double x, double m2Q2, double m2mu2);
+        double CL_g2_power_terms(double x, double m2Q2, double m2mu2);
+        double CL_ps2_power_terms(double x, double m2Q2, double m2mu2);
+
+        //==========================================================================================//
+        //                  Power terms of the coefficient function
+        //                  O(alpha_s^3) at leading log
+        //------------------------------------------------------------------------------------------//
+
+        double C2_g3_power_termsLL(double x, double m2Q2 , double m2mu2);
+        double C2_ps3_power_termsLL(double x, double m2Q2, double m2mu2);
+
+        //==========================================================================================//
+        //                  Power terms of the coefficient function
+        //                  O(alpha_s^3)
+        //------------------------------------------------------------------------------------------//
+
+        double C2_g3_power_terms(double x, double m2Q2, double m2mu2, int nf, int v);
+        double C2_ps3_power_terms(double x, double m2Q2, double m2mu2, int nf, int v);
+        double CL_g3_power_terms(double x, double m2Q2, double m2mu2, int nf, int v);
+        double CL_ps3_power_terms(double x, double m2Q2, double m2mu2, int nf, int v);
+
+};
 
 #endif

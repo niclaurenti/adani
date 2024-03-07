@@ -2,8 +2,33 @@
 #include "adani/Constants.h"
 #include "adani/SpecialFunctions.h"
 #include <cmath>
+#include <iostream>
 
 using namespace std;
+
+SplittingFunction::SplittingFunction(const int order, const char entry1, const char entry2) {
+
+    // check order
+    if (order != 0 && order !=1) {
+        cout << "order must be 0 or 1. Got " << order << endl ;
+        exit(-1) ;
+    }
+    order_ = order ;
+
+    // check entry1
+    if (entry1 != 'g' && entry2 != 'q') {
+        cout << "entry1 must be g or q. Got " << entry1 << endl ;
+        exit(-1) ;
+    }
+    entry1_ = entry1 ;
+
+    // check entry2
+    if (entry2 != 'g' && entry2 != 'q') {
+        cout << "entry2 must be g or q. Got " << entry2 << endl ;
+        exit(-1) ;
+    }
+    entry2_ = entry2 ;
+}
 
 //==========================================================================================//
 //  Gluon-quark splitting functions O(alpha_s) without color factors
@@ -11,7 +36,7 @@ using namespace std;
 //  Eq. (4.11) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
 
-double pgq(double x) { return 2. / x - 2. + x; }
+double SplittingFunction::pgq(double x) { return 2. / x - 2. + x; }
 
 //==========================================================================================//
 //  Quark-gluon splitting functions O(alpha_s) without color factors
@@ -19,7 +44,7 @@ double pgq(double x) { return 2. / x - 2. + x; }
 //  Eq. (4.11) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
 
-double pqg(double x) { return 1. - 2. * x + 2. * x * x; }
+double SplittingFunction::pqg(double x) { return 1. - 2. * x + 2. * x * x; }
 
 //==========================================================================================//
 //  Regular part of the gluon-gluon splitting functions O(alpha_s) without color
@@ -28,7 +53,7 @@ double pqg(double x) { return 1. - 2. * x + 2. * x * x; }
 //  Eq. (4.11) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
 
-double pggreg(double x) { return 1. / x - 2. + x - x * x; }
+double SplittingFunction::pggreg(double x) { return 1. / x - 2. + x - x * x; }
 
 //==========================================================================================//
 //  Singular part of the gluon-gluon splitting functions O(alpha_s) without
@@ -37,7 +62,7 @@ double pggreg(double x) { return 1. / x - 2. + x - x * x; }
 //  Eq. (4.11) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
 
-double pggsing(double x) { return 1. / (1. - x); }
+double SplittingFunction::pggsing(double x) { return 1. / (1. - x); }
 
 //==========================================================================================//
 //  Gluon-quark splitting functions O(alpha_s)
@@ -45,7 +70,7 @@ double pggsing(double x) { return 1. / (1. - x); }
 //  Eq. (4.6) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
 
-double Pgq0(double x) { return 2. * CF * pgq(x); }
+double SplittingFunction::Pgq0(double x) { return 2. * CF * pgq(x); }
 
 //==========================================================================================//
 //  Quark-gluon splitting functions O(alpha_s)
@@ -53,7 +78,7 @@ double Pgq0(double x) { return 2. * CF * pgq(x); }
 //  Eq. (4.6) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
 
-double Pqg0(double x, int nf) { return 2. * nf * pqg(x); }
+double SplittingFunction::Pqg0(double x, int nf) { return 2. * nf * pqg(x); }
 
 //==========================================================================================//
 //  Regular part of the gluon-gluon splitting functions O(alpha_s)
@@ -61,7 +86,7 @@ double Pqg0(double x, int nf) { return 2. * nf * pqg(x); }
 //  Eq. (4.6) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
 
-double Pgg0reg(double x) { return CA * 4. * pggreg(x); }
+double SplittingFunction::Pgg0reg(double x) { return CA * 4. * pggreg(x); }
 
 //==========================================================================================//
 //  Local part of the gluon-gluon splitting functions O(alpha_s)
@@ -69,7 +94,7 @@ double Pgg0reg(double x) { return CA * 4. * pggreg(x); }
 //  Eq. (4.6) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
 
-double Pgg0loc(int nf) { return 11. / 3 * CA - 2. / 3 * nf; }
+double SplittingFunction::Pgg0loc(int nf) { return 11. / 3 * CA - 2. / 3 * nf; }
 
 //==========================================================================================//
 //  Singular part of the gluon-gluon splitting functions O(alpha_s)
@@ -77,7 +102,7 @@ double Pgg0loc(int nf) { return 11. / 3 * CA - 2. / 3 * nf; }
 //  Eq. (4.6) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
 
-double Pgg0sing(double x) { return 4. * CA * pggsing(x); }
+double SplittingFunction::Pgg0sing(double x) { return 4. * CA * pggsing(x); }
 
 //==========================================================================================//
 //  Regular part of the quark-quark splitting functions O(alpha_s)
@@ -85,13 +110,13 @@ double Pgg0sing(double x) { return 4. * CA * pggsing(x); }
 //  Eq. (4.6) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
 
-double Pqq0reg(double x) { return CF * 2. * (-1. - x); }
+double SplittingFunction::Pqq0reg(double x) { return CF * 2. * (-1. - x); }
 
 //==========================================================================================//
 //  Local part of the quark-quark splitting functions O(alpha_s)
 //------------------------------------------------------------------------------------------//
 
-double Pqq0loc() { return CF * 3.; }
+double SplittingFunction::Pqq0loc() { return CF * 3.; }
 
 //==========================================================================================//
 //  Singular part of the quark-quark splitting functions O(alpha_s)
@@ -99,7 +124,7 @@ double Pqq0loc() { return CF * 3.; }
 //  Eq. (4.6) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
 
-double Pqq0sing(double x) { return CF * 2. * 2. / (1. - x); }
+double SplittingFunction::Pqq0sing(double x) { return CF * 2. * 2. / (1. - x); }
 
 //==========================================================================================//
 //  Gluon-quark splitting functions O(alpha_s^2)
@@ -107,7 +132,7 @@ double Pqq0sing(double x) { return CF * 2. * 2. / (1. - x); }
 //  Eq. (4.9) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
 
-double Pgq1(double x, int nf) {
+double SplittingFunction::Pgq1(double x, int nf) {
 
     double H0 = H(x, 0);
     double H1 = H(x, 1);
@@ -142,7 +167,7 @@ double Pgq1(double x, int nf) {
 //  Eq. (4.10) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
 
-double Pgg1reg(double x, int nf) {
+double SplittingFunction::Pgg1reg(double x, int nf) {
 
     double x2 = x * x;
 
@@ -182,7 +207,7 @@ double Pgg1reg(double x, int nf) {
 //  Eq. (4.10) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
 
-double Pgg1loc(int nf) {
+double SplittingFunction::Pgg1loc(int nf) {
 
     double tmp_CAnf = -2. / 3;
     double tmp_CACA = 8. / 3 + 3. * zeta3;
@@ -197,7 +222,7 @@ double Pgg1loc(int nf) {
 //  Eq. (4.10) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
 
-double Pgg1sing(double x, int nf) {
+double SplittingFunction::Pgg1sing(double x, int nf) {
 
     double g1 = 67. / 18 - zeta2;
 

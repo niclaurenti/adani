@@ -17,39 +17,55 @@
 #ifndef Split
 #define Split
 
-//==========================================================================================//
-//                      Splitting functions O(alpha_s)
-//                      without color factors
-//------------------------------------------------------------------------------------------//
+class SplittingFunction {
+    public:
+        SplittingFunction(const int order, const char entry1, const char entry2) ;
+        ~SplittingFunction() {} ;
 
-double pgq(double x);
-double pqg(double x);
-double pggreg(double x);
-double pggsing(double x);
+        double Regular(const double x, const int nf);
+        double Singular(const double x, const int nf);
+        double Local(const int nf);
 
-//==========================================================================================//
-//                      Splitting functions O(alpha_s)
-//------------------------------------------------------------------------------------------//
+    private:
+        int order_;
+        char entry1;
+        char entry2;
 
-double Pgq0(double x);
-double Pqg0(double x, int nf);
+        //==========================================================================================//
+        //                      Splitting functions O(alpha_s)
+        //                      without color factors
+        //------------------------------------------------------------------------------------------//
 
-double Pgg0reg(double x);
-double Pgg0loc(int nf);
-double Pgg0sing(double x);
+        double pgq(double x);
+        double pqg(double x);
+        double pggreg(double x);
+        double pggsing(double x);
 
-double Pqq0reg(double x);
-double Pqq0loc();
-double Pqq0sing(double x);
+        //==========================================================================================//
+        //                      Splitting functions O(alpha_s)
+        //------------------------------------------------------------------------------------------//
 
-//==========================================================================================//
-//                      Splitting functions O(alpha_s^2)
-//------------------------------------------------------------------------------------------//
+        double Pgq0(double x);
+        double Pqg0(double x, int nf);
 
-double Pgq1(double x, int nf);
+        double Pgg0reg(double x);
+        double Pgg0loc(int nf);
+        double Pgg0sing(double x);
 
-double Pgg1reg(double x, int nf);
-double Pgg1sing(double x, int nf);
-double Pgg1loc(int nf);
+        double Pqq0reg(double x);
+        double Pqq0loc();
+        double Pqq0sing(double x);
+
+        //==========================================================================================//
+        //                      Splitting functions O(alpha_s^2)
+        //------------------------------------------------------------------------------------------//
+
+        double Pgq1(double x, int nf);
+
+        double Pgg1reg(double x, int nf);
+        double Pgg1sing(double x, int nf);
+        double Pgg1loc(int nf);
+
+};
 
 #endif

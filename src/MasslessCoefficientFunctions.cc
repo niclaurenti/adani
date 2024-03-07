@@ -10,7 +10,7 @@
 //  Eq. (4.4) of Ref. [hep-ph/0504242v1]
 //------------------------------------------------------------------------------------------//
 
-double C2_g1_massless(double x, int nf) {
+double MasslessCoefficientFunction::C2_g1_massless(double x, int nf) {
 
     return 4. * nf * TR
            * (-8. * x * x + 8. * x - 1.
@@ -24,7 +24,7 @@ double C2_g1_massless(double x, int nf) {
 // Eq. (3) of Ref. [arXiv:hep-ph/0411112v2]
 //------------------------------------------------------------------------------------------//
 
-double CL_g1_massless(double x, int nf) { return 16. * nf * TR * x * (1. - x); }
+double MasslessCoefficientFunction::CL_g1_massless(double x, int nf) { return 16. * nf * TR * x * (1. - x); }
 
 //==========================================================================================//
 //  Massless gluon coefficient functions for F2 at
@@ -33,7 +33,7 @@ double CL_g1_massless(double x, int nf) { return 16. * nf * TR * x * (1. - x); }
 //  Eq. (B.6) of Ref. [hep-ph/0504242v1]
 //------------------------------------------------------------------------------------------//
 
-double C2_g2_massless(double x, int nf) {
+double MasslessCoefficientFunction::C2_g2_massless(double x, int nf) {
 
     double x2 = x * x;
     double x3 = x2 * x;
@@ -118,7 +118,7 @@ double C2_g2_massless(double x, int nf) {
 //  Eq. (B.7) of Ref. [hep-ph/0504242v1]
 //------------------------------------------------------------------------------------------//
 
-double C2_ps2_massless(double x, int nf) {
+double MasslessCoefficientFunction::C2_ps2_massless(double x, int nf) {
 
     double x2 = x * x;
 
@@ -158,7 +158,7 @@ double C2_ps2_massless(double x, int nf) {
 //  Eq. (B.14) of Ref. [hep-ph/0504242v1]
 //------------------------------------------------------------------------------------------//
 
-double CL_g2_massless(double x, int nf) {
+double MasslessCoefficientFunction::CL_g2_massless(double x, int nf) {
 
     double x2 = x * x;
     double x3 = x2 * x;
@@ -197,7 +197,7 @@ double CL_g2_massless(double x, int nf) {
 //  Eq. (B.15) of Ref. [hep-ph/0504242v1]
 //------------------------------------------------------------------------------------------//
 
-double CL_ps2_massless(double x, int nf) {
+double MasslessCoefficientFunction::CL_ps2_massless(double x, int nf) {
 
     double x2 = x * x;
 
@@ -223,7 +223,7 @@ double CL_ps2_massless(double x, int nf) {
 //  Eq. (B.9) of Ref. [hep-ph/0504242v1]
 //------------------------------------------------------------------------------------------//
 
-double C2_g3_massless(double x, int nf) {
+double MasslessCoefficientFunction::C2_g3_massless(double x, int nf) {
 
     // the commented varibles are needed for the flav term
 
@@ -1603,7 +1603,7 @@ double C2_g3_massless(double x, int nf) {
 //  Eq. (B.10) of Ref. [hep-ph/0504242v1]
 //------------------------------------------------------------------------------------------//
 
-double C2_ps3_massless(double x, int nf) {
+double MasslessCoefficientFunction::C2_ps3_massless(double x, int nf) {
 
     // the commented varibles are needed for the flav term
 
@@ -2192,7 +2192,7 @@ double C2_ps3_massless(double x, int nf) {
 //  Eq. (B.17) of Ref. [hep-ph/0504242v1]
 //------------------------------------------------------------------------------------------//
 
-double CL_g3_massless(double x, int nf) {
+double MasslessCoefficientFunction::CL_g3_massless(double x, int nf) {
 
     // the commented varibles are needed for the flav term
 
@@ -2890,7 +2890,7 @@ double CL_g3_massless(double x, int nf) {
 //  Eq. (B.18) of Ref. [hep-ph/0504242v1]
 //------------------------------------------------------------------------------------------//
 
-double CL_ps3_massless(double x, int nf) {
+double MasslessCoefficientFunction::CL_ps3_massless(double x, int nf) {
 
     // the commented varibles are needed for the flav term
 
@@ -3225,7 +3225,7 @@ double CL_ps3_massless(double x, int nf) {
 // u, d, s, c, b, t
 double charges[] = { 2. / 3., -1. / 3., -1. / 3., 2. / 3., -1. / 3., 2. / 3. };
 
-double fl11g(int nf) {
+double MasslessCoefficientFunction::fl11g(int nf) {
 
     double eavg = 0., e2avg = 0.;
 
@@ -3239,7 +3239,7 @@ double fl11g(int nf) {
     return eavg * eavg / e2avg;
 }
 
-double fl11ps(int nf) {
+double MasslessCoefficientFunction::fl11ps(int nf) {
 
     double eavg = 0., e2avg = 0.;
 
@@ -3261,7 +3261,8 @@ double fl11ps(int nf) {
 //  Eq. (4.10) of Ref. [hep-ph/0504242v1]
 //------------------------------------------------------------------------------------------//
 
-double C2_g2_massless_param(double x, int nf) {
+/*
+double MasslessCoefficientFunction::C2_g2_massless_param(double x, int nf) {
 
     double x1 = 1. - x;
     double L0 = log(x);
@@ -3274,7 +3275,7 @@ double C2_g2_massless_param(double x, int nf) {
               + 115.6 * L0 - 7.109 * L0 * L0 + 70. / 9. * L0 * L0 * L0
               + 11.9033 * x1 / x);
 }
-
+*/
 //==========================================================================================//
 //  Massless quark coefficient functions for F2 at O(alpha_s^2) for mu=Q.
 //  Observe that this result is a parameterization of the exact (known but long)
@@ -3282,8 +3283,8 @@ double C2_g2_massless_param(double x, int nf) {
 //
 //  Eq. (4.9) of Ref. [hep-ph/0504242v1]
 //------------------------------------------------------------------------------------------//
-
-double C2_ps2_massless_param(double x, int nf) {
+/*
+double MasslessCoefficientFunction::C2_ps2_massless_param(double x, int nf) {
 
     double x1 = 1 - x;
     double L0 = log(x);
@@ -3300,7 +3301,7 @@ double C2_ps2_massless_param(double x, int nf) {
               - L02 * L1 * (20.26 - 33.93 * x) + 43.36 * x1 * L0 - 1.053 * L02
               + 40. / 9 * L03 + 5.2903 / x * x1 * x1);
 }
-
+*/
 //==========================================================================================//
 //  Massless gluon coefficient functions for FL at O(alpha_s^2) for mu=Q.
 //  Observe that this result is a parameterization of the exact (known but long)
@@ -3308,8 +3309,8 @@ double C2_ps2_massless_param(double x, int nf) {
 //
 //  Eq. (6) of Ref. [arXiv:hep-ph/0411112v2]
 //------------------------------------------------------------------------------------------//
-
-double CL_g2_massless_param(double x, int nf) {
+/*
+double MasslessCoefficientFunction::CL_g2_massless_param(double x, int nf) {
 
     double L0 = log(x);
     double L02 = L0 * L0;
@@ -3323,7 +3324,7 @@ double CL_g2_massless_param(double x, int nf) {
               + 1161 * x * L1 * L0 + 60.06 * x * L02 + 39.66 * x1 * L0
               - 5.333 * (1. / x - 1));
 }
-
+*/
 //==========================================================================================//
 //  Massless gluon coefficient functions for FL at O(alpha_s^2) for mu=Q.
 //  Observe that this result is a parameterization of the exact (known but long)
@@ -3331,8 +3332,8 @@ double CL_g2_massless_param(double x, int nf) {
 //
 //  Eq. (5) of Ref. [arXiv:hep-ph/0411112v2]
 //------------------------------------------------------------------------------------------//
-
-double CL_ps2_massless_param(double x, int nf) {
+/*
+double MasslessCoefficientFunction::CL_ps2_massless_param(double x, int nf) {
 
     double L0 = log(x);
     double L02 = L0 * L0;
@@ -3344,7 +3345,7 @@ double CL_ps2_massless_param(double x, int nf) {
            * ((15.94 - 5.212 * x) * x1 * x1 * L1 + (0.421 + 1.520 * x) * L02
               + 28.09 * x1 * L0 - (2.370 / x - 19.27) * x1 * x1 * x1);
 }
-
+*/
 //==========================================================================================//
 //  Massless gluon coefficient functions for F2 at O(alpha_s^3) for mu=Q.
 //  Observe that this result is a parameterization of the exact (known but long)
@@ -3353,8 +3354,8 @@ double CL_ps2_massless_param(double x, int nf) {
 //
 //  Eq. (4.13) of Ref. [hep-ph/0504242v1]
 //------------------------------------------------------------------------------------------//
-
-double C2_g3_massless_param(
+/*
+double MasslessCoefficientFunction::C2_g3_massless_param(
     double x, int nf
 ) { // remember that there is a delta(x1) that has been omitted
 
@@ -3393,19 +3394,19 @@ double C2_g3_massless_param(
          + 739.0 * L0 + 418.0 * L02 + 104.3 * L03 + 809. / 81. * L04
          + 12. / 9. * L05 + 84.423 / x);
 
-    /*double c_nf_fl = (
-        3.211 * L12 + 19.04 * x * L1 + 0.623 * x1 * L13 - 64.47
-        * x + 121.6 * x2 - 45.82 * x3 - x * L0 * L1 * (31.68 +
-        37.24 * L0) + 11.27 * x2 * L03 - 82.40 * x * L0 - 16.08
-        * x * L02 + 520./81. * x * L03 + 20./27. * x * L04
-    );*/
+    // double c_nf_fl = (
+    //     3.211 * L12 + 19.04 * x * L1 + 0.623 * x1 * L13 - 64.47
+    //     * x + 121.6 * x2 - 45.82 * x3 - x * L0 * L1 * (31.68 +
+    //     37.24 * L0) + 11.27 * x2 * L03 - 82.40 * x * L0 - 16.08
+    //     * x * L02 + 520./81. * x * L03 + 20./27. * x * L04
+    // );
 
     return (
         c_nf * nf + c_nf2 * nf * nf
         //+ c_nf_fl * nf * nf * fl_g_11
     );
 }
-
+*/
 //==========================================================================================//
 //  Massless quark coefficient functions for F2 at O(alpha_s^3) for mu=Q.
 //  Observe that this result is a parameterization of the exact (known but long)
@@ -3414,8 +3415,8 @@ double C2_g3_massless_param(
 //
 //  Eq. (4.12) of Ref. [hep-ph/0504242v1]
 //------------------------------------------------------------------------------------------//
-
-double C2_ps3_massless_param(
+/*
+double MasslessCoefficientFunction::C2_ps3_massless_param(
     double x, int nf
 ) { // remember that there is a delta(x1) that has been omitted
 
@@ -3463,7 +3464,7 @@ double C2_ps3_massless_param(
         //+ c_fl_nf * fl_ps_11 * nf
     );
 }
-
+*/
 //==========================================================================================//
 //  Massless gluon coefficient functions for FL at O(alpha_s^3) for mu=Q.
 //  Observe that this result is a parameterization of the exact (known but long)
@@ -3472,8 +3473,8 @@ double C2_ps3_massless_param(
 //
 //  Eq. (10) of Ref. [arXiv:hep-ph/0411112v2]
 //------------------------------------------------------------------------------------------//
-
-double CL_g3_massless_param(
+/*
+double MasslessCoefficientFunction::CL_g3_massless_param(
     double x, int nf
 ) { // remember that there is a delta(x1) that has been omitted
 
@@ -3506,21 +3507,21 @@ double CL_g3_massless_param(
          + 30.78 * x * L03 + 366. * L0 + 1000. / 9. * L02 + 160. / 9. * L03
          + 88.5037 / x * x1);
 
-    /*double c_nf_fl = (
-        (
-            -0.0105 * L13 + 1.55 * L12 + 19.72 * x * L1 - 66.745 * x
-            + 0.615 * x2
-        ) * x1
-        + 20./27. * x * L04 + (280./81. + 2.26 * x) * x * L03
-        - (15.4 - 2.201 * x) * x * L02 - (71.66 - 0.121 * x) * x * L0
-    ) ;*/
+    // double c_nf_fl = (
+    //     (
+    //         -0.0105 * L13 + 1.55 * L12 + 19.72 * x * L1 - 66.745 * x
+    //         + 0.615 * x2
+    //     ) * x1
+    //     + 20./27. * x * L04 + (280./81. + 2.26 * x) * x * L03
+    //     - (15.4 - 2.201 * x) * x * L02 - (71.66 - 0.121 * x) * x * L0
+    // ) ;
 
     return (
         c_nf * nf + c_nf2 * nf * nf
         //+ c_nf_fl * nf * nf * fl_g_11
     );
 }
-
+*/
 //==========================================================================================//
 //  Massless gluon coefficient functions for FL at O(alpha_s^3) for mu=Q.
 //  Observe that this result is a parameterization of the exact (known but long)
@@ -3529,8 +3530,8 @@ double CL_g3_massless_param(
 //
 //  Eq. (9) of Ref. [arXiv:hep-ph/0411112v2]
 //------------------------------------------------------------------------------------------//
-
-double CL_ps3_massless_param(
+/*
+double MasslessCoefficientFunction::CL_ps3_massless_param(
     double x, int nf
 ) { // remember that there is a delta(x1) that has been omitted
 
@@ -3560,14 +3561,15 @@ double CL_ps3_massless_param(
          - (14.16 - 69.84 * x) * x1 * x1 - 69.41 * x1 * L0 - 128. / 9 * L02
          + 40.239 / x * x1 * x1);
 
-    /*double c_fl_nf = (
-        ((107.0 + 321.05 * x - 54.62 * x2) * x1 - 26.717 + 9.773
-        * L0 + (363.8 + 68.32 * L0) * x * L0 - 320./81 * L02 * (2
-        + L0)) * x
-    );*/
+    // double c_fl_nf = (
+    //     ((107.0 + 321.05 * x - 54.62 * x2) * x1 - 26.717 + 9.773
+    //     * L0 + (363.8 + 68.32 * L0) * x * L0 - 320./81 * L02 * (2
+    //     + L0)) * x
+    // );
 
     return (
         c_nf * nf + c_nf2 * nf * nf
         //+ c_fl_nf * fl_ps_11 * nf
     );
 }
+*/

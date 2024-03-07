@@ -7,13 +7,101 @@
 #include <cmath>
 #include <iostream>
 
+using std::cout ;
+using std::endl ;
+
+ExactCoefficientFunction::ExactCoefficientFunction(const int order, const char kind, const char channel, const int method_flag = 1, const double abserr = 1e-3, const double relerr = 1e-3, const int MCcalls = 25000) : CoefficientFunction(order, kind, channel) {
+
+    if (GetOrder() == 3) {
+        cout <<  "Error: exact coefficient functions are not known at O(as^3)!" << endl;
+        exit(-1);
+    }
+
+    SetMethodFlag(method_flag);
+    SetAbserr(abserr);
+    SetRelerr(relerr);
+    SetMCcalls(MCcalls);
+
+}
+
+double ExactCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int nf) {
+
+    // O(as)
+    if (GetOrder() == 1 && GetKind() == '2') return C2_g1(x, m2Q2) ;
+    if (GetOrder() == 1 && GetKind() == 'L') return CL_g1(x, m2Q2) ;
+
+    // O(as^2)
+    if (GetOrder() == 2 && GetKind() == '2' && GetChannel() == 'g') return C2_g2(x, m2Q2, m2mu2) ;
+    if (GetOrder() == 2 && GetKind() == '2' && GetChannel() == 'q') return C2_ps2(x, m2Q2, m2mu2) ;
+    if (GetOrder() == 2 && GetKind() == 'L' && GetChannel() == 'g') return CL_g2(x, m2Q2, m2mu2) ;
+    if (GetOrder() == 2 && GetKind() == 'L' && GetChannel() == 'q') return CL_ps2(x, m2Q2, m2mu2) ;
+
+    else {
+        cout << "Error: something has gone wrong!" << endl;
+    }
+}
+
+// void ExactCoefficientFunction::Set_fx() {
+
+//     // O(as)
+//     if (GetOrder() == 1 && GetKind() == '2') fx_ = C2_g1 ;
+//     if (GetOrder() == 1 && GetKind() == 'L') fx_ = CL_g1 ;
+
+//     // O(as^2)
+//     if (GetOrder() == 2 && GetKind() == '2' && GetChannel() == 'g') fx_ = C2_g2 ;
+//     if (GetOrder() == 2 && GetKind() == '2' && GetChannel() == 'q') fx_ = C2_q2 ;
+//     if (GetOrder() == 2 && GetKind() == 'L' && GetChannel() == 'g') fx_ = CL_g2 ;
+//     if (GetOrder() == 2 && GetKind() == 'L' && GetChannel() == 'q') fx_ = CL_q2 ;
+
+//     else {
+//         cout << "Error: something has gone wrong!" << endl;
+//     }
+// }
+
+void ExactCoefficientFunction::SetMethodFlag(const int method_flag) {
+    // check method_flag
+    if (method_flag != 0 && method_flag != 1) {
+        cout << "Error: method_flag must be 0 or 1. Got" << method_flag << endl ;
+        exit(-1) ;
+    }
+    method_flag_ = method_flag ;
+
+}
+
+void ExactCoefficientFunction::SetAbserr(const double abserr) {
+    // check abserr
+    if (abserr <= 0) {
+        cout << "Error: abserr must be positive. Got " << abserr << endl;
+        exit(-1);
+    }
+    abserr_ = abserr;
+}
+
+void ExactCoefficientFunction::SetRelerr(const double relerr) {
+    // check abserr
+    if (relerr <= 0) {
+        cout << "Error: relerr must be positive. Got " << relerr << endl;
+        exit(-1);
+    }
+    relerr_ = relerr;
+}
+
+void ExactCoefficientFunction::SetMCcalls(const int MCcalls) {
+    // check abserr
+    if (MCcalls <= 0) {
+        cout << "Error: MCcalls must be positive. Got " << MCcalls << endl;
+        exit(-1);
+    }
+    MCcalls_ = MCcalls;
+}
+
 //==========================================================================================//
 //  Exact massive gluon coefficient functions for F2 at O(alpha_s)
 //
 //  Eq. (50) from Ref. [arXiv:1001.2312]
 //------------------------------------------------------------------------------------------//
 
-double C2_g1(double x, double m2Q2) { // m2Q2=m^2/Q^2
+double ExactCoefficientFunction::C2_g1(double x, double m2Q2) { // m2Q2=m^2/Q^2
 
     double beta = sqrt(1. - 4. * m2Q2 * x / (1 - x));
     double x2 = x * x;
@@ -33,7 +121,7 @@ double C2_g1(double x, double m2Q2) { // m2Q2=m^2/Q^2
 //  Eq. (2.9) from Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double CL_g1(double x, double m2Q2) {
+double ExactCoefficientFunction::CL_g1(double x, double m2Q2) {
 
     double beta = sqrt(1. - 4. * m2Q2 * x / (1. - x));
     double x2 = x * x;
@@ -54,6 +142,27 @@ double CL_g1(double x, double m2Q2) {
 //  only the interpolated result).
 //------------------------------------------------------------------------------------------//
 
+/// @cond UNNECESSARY
+/**
+ * @name Fortran massive coefficient functions
+ * Fortran functions for the O(alpha_s^2)
+ * coefficient functions from 'src/hqcoef.f'.
+ */
+///@{
+extern "C" {
+    double c2log_(double *wr,double *xi);
+    double c2nlog_(double *wr, double *xi);
+    double clnlog_(double *wr, double *xi);
+    double c2nloq_(double *wr, double *xi);
+    double clnloq_(double *wr, double *xi);
+    // double c2nlobarg_(double *wr,double *xi);
+    // double clnlobarg_(double *wr,double *xi);
+    // double c2nlobarq_(double *wr,double *xi);
+    // double clnlobarq_(double *wr,double *xi);
+}
+///@}
+/// \endcond
+
 //==========================================================================================//
 //  Exact massive gluon coefficient functions for F2 at O(alpha_s^2)
 //
@@ -61,7 +170,7 @@ double CL_g1(double x, double m2Q2) {
 //  Taken from the Fortran code 'src/hqcoef.f'
 //------------------------------------------------------------------------------------------//
 
-double C2_g2(double x, double m2Q2, double m2mu2) {
+double ExactCoefficientFunction::C2_g2(double x, double m2Q2, double m2mu2) {
 
     double xi = 1. / m2Q2;
     double eta = 0.25 * xi * (1 - x) / x - 1.;
@@ -79,7 +188,7 @@ double C2_g2(double x, double m2Q2, double m2mu2) {
 //  Taken from the Fortran code 'src/hqcoef.f'
 //------------------------------------------------------------------------------------------//
 
-double C2_ps2(double x, double m2Q2, double m2mu2) {
+double ExactCoefficientFunction::C2_ps2(double x, double m2Q2, double m2mu2) {
 
     double xi = 1. / m2Q2;
     double eta = 0.25 * xi * (1 - x) / x - 1.;
@@ -97,7 +206,7 @@ double C2_ps2(double x, double m2Q2, double m2mu2) {
 //  Taken from the Fortran code 'src/hqcoef.f'
 //------------------------------------------------------------------------------------------//
 
-double CL_g2(double x, double m2Q2, double m2mu2) {
+double ExactCoefficientFunction::CL_g2(double x, double m2Q2, double m2mu2) {
 
     double xi = 1. / m2Q2;
     double eta = 0.25 * xi * (1 - x) / x - 1.;
@@ -115,7 +224,7 @@ double CL_g2(double x, double m2Q2, double m2mu2) {
 //  Taken from the Fortran code 'src/hqcoef.f'
 //------------------------------------------------------------------------------------------//
 
-double CL_ps2(double x, double m2Q2, double m2mu2) {
+double ExactCoefficientFunction::CL_ps2(double x, double m2Q2, double m2mu2) {
 
     double xi = 1. / m2Q2;
     double eta = 0.25 * xi * (1 - x) / x - 1.;
@@ -133,7 +242,7 @@ double CL_ps2(double x, double m2Q2, double m2mu2) {
 //  Eq. (4.4) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double C2_ps20(double x, double m2Q2) {
+double ExactCoefficientFunction::C2_ps20(double x, double m2Q2) {
 
     double xi = 1. / m2Q2;
     double eta = 0.25 * xi * (1 - x) / x - 1.;
@@ -151,7 +260,7 @@ double C2_ps20(double x, double m2Q2) {
 //  Eq. (4.1) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double C2_ps21(double x, double m2Q2) {
+double ExactCoefficientFunction::C2_ps21(double x, double m2Q2) {
 
     return -C2_g1_x_Pgq0(x, m2Q2);
     // The minus sign comes from the fact that in [arXiv:1205.5727]
@@ -167,7 +276,7 @@ double C2_ps21(double x, double m2Q2) {
 //  Eq. (4.4) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double CL_ps20(double x, double m2Q2) {
+double ExactCoefficientFunction::CL_ps20(double x, double m2Q2) {
 
     double xi = 1. / m2Q2;
     double eta = 0.25 * xi * (1 - x) / x - 1.;
@@ -185,7 +294,7 @@ double CL_ps20(double x, double m2Q2) {
 //  Eq. (4.1) of Ref. [arXiv:1205.5727] for FL
 //------------------------------------------------------------------------------------------//
 
-double CL_ps21(double x, double m2Q2) { return -CL_g1_x_Pgq0(x, m2Q2); }
+double ExactCoefficientFunction::CL_ps21(double x, double m2Q2) { return -CL_g1_x_Pgq0(x, m2Q2); }
 
 //==========================================================================================//
 //  Exact massive gluon coefficient functions for F2 at O(alpha_s^2):
@@ -194,7 +303,7 @@ double CL_ps21(double x, double m2Q2) { return -CL_g1_x_Pgq0(x, m2Q2); }
 //  Eq. (4.4) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double C2_g20(double x, double m2Q2) {
+double ExactCoefficientFunction::C2_g20(double x, double m2Q2) {
 
     double xi = 1. / m2Q2;
     double eta = 0.25 * xi * (1 - x) / x - 1.;
@@ -212,7 +321,7 @@ double C2_g20(double x, double m2Q2) {
 //  Eq. (4.4) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double C2_g21(double x, double m2Q2) {
+double ExactCoefficientFunction::C2_g21(double x, double m2Q2) {
 
     int nf = 1;
     // Put nf to 1 since the nf contribution cancels for any value of nf
@@ -227,7 +336,7 @@ double C2_g21(double x, double m2Q2) {
 //  Eq. (4.4) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double CL_g20(double x, double m2Q2) {
+double ExactCoefficientFunction::CL_g20(double x, double m2Q2) {
 
     double xi = 1. / m2Q2;
     double eta = 0.25 * xi * (1 - x) / x - 1.;
@@ -245,7 +354,7 @@ double CL_g20(double x, double m2Q2) {
 //  Eq. (4.4) of Ref. [arXiv:1205.5727] for FL
 //------------------------------------------------------------------------------------------//
 
-double CL_g21(double x, double m2Q2) {
+double ExactCoefficientFunction::CL_g21(double x, double m2Q2) {
 
     int nf = 1;
     // Put nf to 1 since the nf contribution cancels for any value of nf
@@ -260,7 +369,7 @@ double CL_g21(double x, double m2Q2) {
 //  Eq. (4.2) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double C2_ps31(double x, double m2Q2, int nf) {
+double ExactCoefficientFunction::C2_ps31(double x, double m2Q2, int nf) {
 
     return -(
         C2_g1_x_Pgq1(x, m2Q2, nf) + C2_g20_x_Pgq0(x, m2Q2)
@@ -275,7 +384,7 @@ double C2_ps31(double x, double m2Q2, int nf) {
 //  Eq. (4.2) of Ref. [arXiv:1205.5727] for FL
 //------------------------------------------------------------------------------------------//
 
-double CL_ps31(double x, double m2Q2, int nf) {
+double ExactCoefficientFunction::CL_ps31(double x, double m2Q2, int nf) {
 
     return -(
         CL_g1_x_Pgq1(x, m2Q2, nf) + CL_g20_x_Pgq0(x, m2Q2)
@@ -290,7 +399,7 @@ double CL_ps31(double x, double m2Q2, int nf) {
 //  Eq. (4.3) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double C2_ps32(double x, double m2Q2, int nf) {
+double ExactCoefficientFunction::C2_ps32(double x, double m2Q2, int nf) {
 
     return 0.5
                * (C2_g1_x_Pgg0_x_Pgq0(x, m2Q2, nf)
@@ -305,7 +414,7 @@ double C2_ps32(double x, double m2Q2, int nf) {
 //  Eq. (4.3) of Ref. [arXiv:1205.5727] for FL
 //------------------------------------------------------------------------------------------//
 
-double CL_ps32(double x, double m2Q2, int nf) {
+double ExactCoefficientFunction::CL_ps32(double x, double m2Q2, int nf) {
 
     return 0.5
                * (CL_g1_x_Pgg0_x_Pgq0(x, m2Q2, nf)
@@ -320,7 +429,7 @@ double CL_ps32(double x, double m2Q2, int nf) {
 //  Eq. (4.5) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double C2_g31(double x, double m2Q2, int nf) {
+double ExactCoefficientFunction::C2_g31(double x, double m2Q2, int nf) {
 
     return -(
         C2_g1_x_Pgg1(x, m2Q2, nf) - beta(1, nf) * C2_g1(x, m2Q2)
@@ -336,7 +445,7 @@ double C2_g31(double x, double m2Q2, int nf) {
 //  Eq. (4.5) of Ref. [arXiv:1205.5727] for FL
 //------------------------------------------------------------------------------------------//
 
-double CL_g31(double x, double m2Q2, int nf) {
+double ExactCoefficientFunction::CL_g31(double x, double m2Q2, int nf) {
 
     return -(
         CL_g1_x_Pgg1(x, m2Q2, nf) - beta(1, nf) * CL_g1(x, m2Q2)
@@ -352,19 +461,19 @@ double CL_g31(double x, double m2Q2, int nf) {
 //  Eq. (4.6) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double C2_g32(double x, double m2Q2, int nf, int method_flag) {
+double ExactCoefficientFunction::C2_g32(double x, double m2Q2, int nf) {
 
     double C2_g1xPgg0xPgg0;
 
     double beta0 = beta(0, nf);
 
-    if (method_flag == 0)
+    if (method_flag_ == 0)
         C2_g1xPgg0xPgg0 = C2_g1_x_Pgg0_x_Pgg0(x, m2Q2, nf);
-    else if (method_flag == 1)
+    else if (method_flag_ == 1)
         C2_g1xPgg0xPgg0 = C2_g1_x_Pgg0_x_Pgg0_MC(x, m2Q2, nf);
     else {
-        std::cout << "C2_g32: Choose either method_flag = 0 or method_flag = 1"
-                  << std::endl;
+        cout << "C2_g32: Choose either method_flag = 0 or method_flag = 1"
+                  << endl;
         exit(-1);
     }
 
@@ -380,15 +489,15 @@ double C2_g32(double x, double m2Q2, int nf, int method_flag) {
 //  Eq. (4.6) of Ref. [arXiv:1205.5727] for FL
 //------------------------------------------------------------------------------------------//
 
-double CL_g32(double x, double m2Q2, int nf, int method_flag) {
+double ExactCoefficientFunction::CL_g32(double x, double m2Q2, int nf) {
 
     double CL_g1xPgg0xPgg0;
 
     double beta0 = beta(0, nf);
 
-    if (method_flag == 0)
+    if (method_flag_ == 0)
         CL_g1xPgg0xPgg0 = CL_g1_x_Pgg0_x_Pgg0(x, m2Q2, nf);
-    else if (method_flag == 1)
+    else if (method_flag_ == 1)
         CL_g1xPgg0xPgg0 = CL_g1_x_Pgg0_x_Pgg0_MC(x, m2Q2, nf);
     else {
         std::cout << "C2_g32: Choose either method_flag = 0 or method_flag = 1"
