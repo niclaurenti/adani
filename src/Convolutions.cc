@@ -17,6 +17,32 @@
 // TODO : in all the numerical convolutions the gsl default error is first
 // switched off and then swithced on again: see if it can be done once for all
 
+Convolution::Convolution(const CoefficientFunction coefffunc, const SplittingFunction splitfunc) {
+
+}
+
+double Convolution::regular_integrand(double z, void *p) {
+
+    struct function_params *params = (struct function_params *)p;
+
+    double m2Q2 = (params->m2Q2);
+    double x = (params->x);
+    int nf = (params->nf);
+
+    return coefffunc_->fx(z, m2Q2, m2mu2, nf) * splitfunc_ -> Regular(x / z, nf) / z ;
+}
+
+double Convolution::singular_integrand(double z, void *p) {
+    struct function_params *params = (struct function_params *)p;
+
+    double m2Q2 = (params->m2Q2);
+    double x = (params->x);
+    int nf = (params->nf);
+
+    return splitfunc_ -> Regular(z, nf) * (coefffunc_-> fx(x / z, m2Q2, m2mu2, nf) - coefffunc_ -> fx(x, m2Q2, m2mu2, nf) ) ;
+
+}
+
 //==========================================================================================//
 //  Convolution between first order massless quark coefficient functions for F2
 //  and first order matching KQg1

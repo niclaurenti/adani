@@ -4,30 +4,73 @@
 #include <cmath>
 #include <iostream>
 
-using namespace std;
+using std::cout;
+using std::endl;
 
 SplittingFunction::SplittingFunction(const int order, const char entry1, const char entry2) {
 
     // check order
     if (order != 0 && order !=1) {
-        cout << "order must be 0 or 1. Got " << order << endl ;
+        cout << "Error: order must be 0 or 1. Got " << order << endl ;
         exit(-1) ;
     }
     order_ = order ;
 
     // check entry1
     if (entry1 != 'g' && entry2 != 'q') {
-        cout << "entry1 must be g or q. Got " << entry1 << endl ;
+        cout << "Error: entry1 must be g or q. Got " << entry1 << endl ;
         exit(-1) ;
     }
     entry1_ = entry1 ;
 
     // check entry2
     if (entry2 != 'g' && entry2 != 'q') {
-        cout << "entry2 must be g or q. Got " << entry2 << endl ;
+        cout << "Error: entry2 must be g or q. Got " << entry2 << endl ;
         exit(-1) ;
     }
     entry2_ = entry2 ;
+
+    // check for not implemented splitting functions
+    if (order == 1 && entry1_ == 'q') {
+        cout << "Error: Pq" << entry2_ << " is not implemented at O(as)!" << endl ;
+        exit(-1);
+    }
+}
+
+double SplittingFunction::Regular(const double x, const int nf) {
+    if (order_ == 0) {
+        if (entry1_ == 'g' && entry2_ == 'q') return Pgq0(x);
+        else if (entry1_ == 'q' && entry2_ == 'g') return Pqg0(x, nf);
+        else if (entry1_ == 'g' && entry2_ == 'g') return Pgg0reg(x);
+        else if (entry1_ == 'q' && entry2_ == 'q') return Pqq0reg(x);
+    } else if (order_ == 1) {
+        if (entry1_ == 'g' && entry2_ == 'q') return Pgq1(x, nf);
+        else if (entry1_ == 'g' && entry2_ == 'g') return Pgg1reg(x, nf);
+    }
+}
+
+double SplittingFunction::Singular(const double x, const int nf) {
+    if (order_ == 0) {
+        if (entry1_ == 'g' && entry2_ == 'q') return 0.;
+        else if (entry1_ == 'q' && entry2_ == 'g') return 0.;
+        else if (entry1_ == 'g' && entry2_ == 'g') return Pgg0sing(x);
+        else if (entry1_ == 'q' && entry2_ == 'q') return Pqq0sing(x);
+    } else if (order_ == 1) {
+        if (entry1_ == 'g' && entry2_ == 'q') return 0.;
+        else if (entry1_ == 'g' && entry2_ == 'g') return Pgg1sing(x, nf);
+    }
+}
+
+double SplittingFunction::Local(const int nf) {
+    if (order_ == 0) {
+        if (entry1_ == 'g' && entry2_ == 'q') return 0.;
+        else if (entry1_ == 'q' && entry2_ == 'g') return 0.;
+        else if (entry1_ == 'g' && entry2_ == 'g') return Pgg0loc(nf);
+        else if (entry1_ == 'q' && entry2_ == 'q') return Pqq0loc();
+    } else if (order_ == 1) {
+        if (entry1_ == 'g' && entry2_ == 'q') return 0.;
+        else if (entry1_ == 'g' && entry2_ == 'g') return Pgg1loc(nf);
+    }
 }
 
 //==========================================================================================//

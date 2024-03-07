@@ -3,11 +3,36 @@
 #include "adani/Convolutions.h"
 #include "adani/MatchingConditions.h"
 #include "adani/SpecialFunctions.h"
+
 #include <cmath>
 #include <iostream>
 
-HighScaleCoefficientFunction::HighScaleCoefficientFunction(const int order, const char kind, const char channel) : CoefficientFunction(order, kind, channel) {
+using std::cout;
+using std::endl;
+
+HighScaleCoefficientFunction::HighScaleCoefficientFunction(const int order, const char kind, const char channel, const bool NLL) : HighTmpCoefficientFunction(order, kind, channel, NLL) {
       massless_ = MasslessCoefficientFunction(GetOrder(), GetKind(), GetChannel());
+}
+
+double HighScaleCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int nf) {
+
+    if (GetOrder() == 1 && GetKind() == '2' && GetChannel() == 'g') return C2_g1_highscale(x, m2Q2);
+    else if (GetOrder() == 1 && GetKind() == 'L' && GetChannel() == 'g') return CL_g1_highscale(x);
+
+    else if (GetOrder() == 2 && GetKind() == '2' && GetChannel() == 'g') return C2_g2_highscale(x, m2Q2, m2mu2);
+    else if (GetOrder() == 2 && GetKind() == '2' && GetChannel() == 'q') return C2_ps2_highscale(x, m2Q2, m2mu2);
+    else if (GetOrder() == 2 && GetKind() == 'L' && GetChannel() == 'g') return CL_g2_highscale(x, m2Q2, m2mu2);
+    else if (GetOrder() == 2 && GetKind() == 'L' && GetChannel() == 'q') return CL_ps2_highscale(x, m2Q2, m2mu2);
+
+    else if (GetOrder() == 3 && GetKind() == '2' && GetChannel() == 'g') return C2_g3_highscale(x, m2Q2, m2mu2, nf, 0);
+    else if (GetOrder() == 3 && GetKind() == '2' && GetChannel() == 'q') return C2_ps3_highscale(x, m2Q2, m2mu2, nf);
+    else if (GetOrder() == 3 && GetKind() == 'L' && GetChannel() == 'g') return CL_g3_highscale(x, m2Q2, m2mu2, nf);
+    else if (GetOrder() == 3 && GetKind() == 'L' && GetChannel() == 'q') return CL_ps3_highscale(x, m2Q2, m2mu2, nf);
+    else {
+        cout << "Error: something has gone wrong!" << endl;
+        exit(-1);
+    }
+
 }
 
 //==========================================================================================//

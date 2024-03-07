@@ -23,6 +23,9 @@
 #ifndef Convolutions_h
 #define Convolutions_h
 
+#include "adani/CoefficientFunction.h"
+#include "adani/SplittingFunctions.h"
+
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_integration.h>
 #include <gsl/gsl_monte.h>
@@ -32,6 +35,26 @@ struct function_params {
     double x;
     double m2Q2;
     int nf;
+};
+
+class Convolution {
+    public:
+        Convolution(const CoefficientFunction coefffunc, const SplittingFunction splitfunc);
+        Convolution() : Convolution(ExactCoefficientFunction(), SplittingFunction()) {} ;
+
+        ~Convolution();
+
+        double convolute(double x, double m2Q2, int nf);
+
+    private:
+        double abserr_;
+        double relerr_;
+
+        CoefficientFunction *coefffunc_ ;
+        SplittingFunction *splitfunc_ ;
+
+        double regular_integrand(double z, void *p) ;
+        double singular_integrand(double z, void *p) ;
 };
 
 //==========================================================================================//
@@ -115,8 +138,8 @@ double CL_ps20_x_Pqq0(double x, double m2Q2, int nf);
 //  and Pgq0
 //------------------------------------------------------------------------------------------//
 
-double Pgg0_x_Pgq0(double x, int nf);
-double Pqq0_x_Pgq0(double x);
+double Pgg0_x_Pgq0(double x, int nf); // analytical
+double Pqq0_x_Pgq0(double x); // analytical
 
 //==========================================================================================//
 //  Convolution between the first order massive gluon
@@ -176,7 +199,7 @@ double CL_g20_x_Pgg0(double x, double m2Q2, int nf);
 //  splitting functions Pqg0 and Pgq0
 //------------------------------------------------------------------------------------------//
 
-double Pqg0_x_Pgq0(double x, int nf);
+double Pqg0_x_Pgq0(double x, int nf); // analytical
 double C2_g1_x_Pqg0_x_Pgq0_integrand(double z, void *p);
 double C2_g1_x_Pqg0_x_Pgq0(double x, double m2Q2, int nf);
 double CL_g1_x_Pqg0_x_Pgq0_integrand(double z, void *p);

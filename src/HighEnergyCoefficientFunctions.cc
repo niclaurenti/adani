@@ -7,29 +7,23 @@
 using std::cout;
 using std::endl;
 
-HighTmpCoefficientFunction::HighTmpCoefficientFunction(const int order, const char kind, const char channel, const int NLL) : CoefficientFunction(order, kind, channel) {
+HighTmpCoefficientFunction::HighTmpCoefficientFunction(const int order, const char kind, const char channel, const bool NLL) : CoefficientFunction(order, kind, channel) {
 
-    if (GetOrder() == 1) {
-        cout << "Error: highenergy coefficient function is not implemented at O(as) (since it is zero)!" << endl ;
-        exit(-1);
-    }
     SetNLL(NLL);
 
 }
 
-void HighTmpCoefficientFunction::SetNLL(const bool NLL) {
-
-    NLL_ = NLL;
-}
-
 double HighEnergyCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int nf) {
-    if (GetNLL()) {
-        if (GetOrder() == 2 && GetKind() == '2' && GetChannel() == 'g') return C2_g2_highenergy(x, m2Q2, m2mu2);
-        else if (GetOrder() == 2 && GetKind() == '2' && GetChannel() == 'q') return C2_ps2_highenergy(x, m2Q2, m2mu2);
-        else if (GetOrder() == 2 && GetKind() == 'L' && GetChannel() == 'g') return CL_g2_highenergy(x, m2Q2, m2mu2);
-        else if (GetOrder() == 2 && GetKind() == 'L' && GetChannel() == 'q') return CL_ps2_highenergy(x, m2Q2, m2mu2);
 
-        else if (GetOrder() == 3 && GetKind() == '2' && GetChannel() == 'g') return C2_g3_highenergy(x, m2Q2, m2mu2, nf, 0);
+    if (GetOrder() == 1) return 0. ;
+
+    else if (GetOrder() == 2 && GetKind() == '2' && GetChannel() == 'g') return C2_g2_highenergy(x, m2Q2, m2mu2);
+    else if (GetOrder() == 2 && GetKind() == '2' && GetChannel() == 'q') return C2_ps2_highenergy(x, m2Q2, m2mu2);
+    else if (GetOrder() == 2 && GetKind() == 'L' && GetChannel() == 'g') return CL_g2_highenergy(x, m2Q2, m2mu2);
+    else if (GetOrder() == 2 && GetKind() == 'L' && GetChannel() == 'q') return CL_ps2_highenergy(x, m2Q2, m2mu2);
+
+    if (GetNLL()) {
+        if (GetOrder() == 3 && GetKind() == '2' && GetChannel() == 'g') return C2_g3_highenergy(x, m2Q2, m2mu2, nf, 0);
         else if (GetOrder() == 3 && GetKind() == '2' && GetChannel() == 'q') return C2_ps3_highenergy(x, m2Q2, m2mu2, nf, 0);
         else if (GetOrder() == 3 && GetKind() == 'L' && GetChannel() == 'g') return CL_g3_highenergy(x, m2Q2, m2mu2, nf, 0);
         else if (GetOrder() == 3 && GetKind() == 'L' && GetChannel() == 'q') return CL_ps3_highenergy(x, m2Q2, m2mu2, nf, 0);
@@ -39,12 +33,7 @@ double HighEnergyCoefficientFunction::fx(double x, double m2Q2, double m2mu2, in
         }
     }
     else {
-        if (GetOrder() == 2 && GetKind() == '2' && GetChannel() == 'g') return C2_g2_highenergy(x, m2Q2, m2mu2);
-        else if (GetOrder() == 2 && GetKind() == '2' && GetChannel() == 'q') return C2_ps2_highenergy(x, m2Q2, m2mu2);
-        else if (GetOrder() == 2 && GetKind() == 'L' && GetChannel() == 'g') return CL_g2_highenergy(x, m2Q2, m2mu2);
-        else if (GetOrder() == 2 && GetKind() == 'L' && GetChannel() == 'q') return CL_ps2_highenergy(x, m2Q2, m2mu2);
-
-        else if (GetOrder() == 3 && GetKind() == '2' && GetChannel() == 'g') return C2_g3_highenergyLL(x, m2Q2, m2mu2);
+        if (GetOrder() == 3 && GetKind() == '2' && GetChannel() == 'g') return C2_g3_highenergyLL(x, m2Q2, m2mu2);
         else if (GetOrder() == 3 && GetKind() == '2' && GetChannel() == 'q') return C2_ps3_highenergyLL(x, m2Q2, m2mu2);
         else if (GetOrder() == 3 && GetKind() == 'L' && GetChannel() == 'g') return CL_g3_highenergyLL(x, m2Q2, m2mu2);
         else if (GetOrder() == 3 && GetKind() == 'L' && GetChannel() == 'q') return CL_ps3_highenergyLL(x, m2Q2, m2mu2);
@@ -57,13 +46,16 @@ double HighEnergyCoefficientFunction::fx(double x, double m2Q2, double m2mu2, in
 }
 
 double HighEnergyHighScaleCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int nf) {
-    if (GetNLL()) {
-        if (GetOrder() == 2 && GetKind() == '2' && GetChannel() == 'g') return C2_g2_highenergy_highscale(x, m2Q2, m2mu2);
-        else if (GetOrder() == 2 && GetKind() == '2' && GetChannel() == 'q') return C2_ps2_highenergy_highscale(x, m2Q2, m2mu2);
-        else if (GetOrder() == 2 && GetKind() == 'L' && GetChannel() == 'g') return CL_g2_highenergy_highscale(x, m2Q2, m2mu2);
-        else if (GetOrder() == 2 && GetKind() == 'L' && GetChannel() == 'q') return CL_ps2_highenergy_highscale(x, m2Q2, m2mu2);
 
-        else if (GetOrder() == 3 && GetKind() == '2' && GetChannel() == 'g') return C2_g3_highenergy_highscale(x, m2Q2, m2mu2, nf, 0);
+    if (GetOrder() == 1) return 0. ;
+
+    if (GetOrder() == 2 && GetKind() == '2' && GetChannel() == 'g') return C2_g2_highenergy_highscale(x, m2Q2, m2mu2);
+    else if (GetOrder() == 2 && GetKind() == '2' && GetChannel() == 'q') return C2_ps2_highenergy_highscale(x, m2Q2, m2mu2);
+    else if (GetOrder() == 2 && GetKind() == 'L' && GetChannel() == 'g') return CL_g2_highenergy_highscale(x, m2Q2, m2mu2);
+    else if (GetOrder() == 2 && GetKind() == 'L' && GetChannel() == 'q') return CL_ps2_highenergy_highscale(x, m2Q2, m2mu2);
+
+    if (GetNLL()) {
+        if (GetOrder() == 3 && GetKind() == '2' && GetChannel() == 'g') return C2_g3_highenergy_highscale(x, m2Q2, m2mu2, nf, 0);
         else if (GetOrder() == 3 && GetKind() == '2' && GetChannel() == 'q') return C2_ps3_highenergy_highscale(x, m2Q2, m2mu2, nf, 0);
         else if (GetOrder() == 3 && GetKind() == 'L' && GetChannel() == 'g') return CL_g3_highenergy_highscale(x, m2Q2, m2mu2, nf, 0);
         else if (GetOrder() == 3 && GetKind() == 'L' && GetChannel() == 'q') return CL_ps3_highenergy_highscale(x, m2Q2, m2mu2, nf, 0);
@@ -73,12 +65,7 @@ double HighEnergyHighScaleCoefficientFunction::fx(double x, double m2Q2, double 
         }
     }
     else {
-        if (GetOrder() == 2 && GetKind() == '2' && GetChannel() == 'g') return C2_g2_highenergy_highscale(x, m2Q2, m2mu2);
-        else if (GetOrder() == 2 && GetKind() == '2' && GetChannel() == 'q') return C2_ps2_highenergy_highscale(x, m2Q2, m2mu2);
-        else if (GetOrder() == 2 && GetKind() == 'L' && GetChannel() == 'g') return CL_g2_highenergy_highscale(x, m2Q2, m2mu2);
-        else if (GetOrder() == 2 && GetKind() == 'L' && GetChannel() == 'q') return CL_ps2_highenergy_highscale(x, m2Q2, m2mu2);
-
-        else if (GetOrder() == 3 && GetKind() == '2' && GetChannel() == 'g') return C2_g3_highenergy_highscaleLL(x, m2Q2, m2mu2);
+        if (GetOrder() == 3 && GetKind() == '2' && GetChannel() == 'g') return C2_g3_highenergy_highscaleLL(x, m2Q2, m2mu2);
         else if (GetOrder() == 3 && GetKind() == '2' && GetChannel() == 'q') return C2_ps3_highenergy_highscaleLL(x, m2Q2, m2mu2);
         else if (GetOrder() == 3 && GetKind() == 'L' && GetChannel() == 'g') return CL_g3_highenergy_highscaleLL(x, m2Q2, m2mu2);
         else if (GetOrder() == 3 && GetKind() == 'L' && GetChannel() == 'q') return CL_ps3_highenergy_highscaleLL(x, m2Q2, m2mu2);
@@ -90,7 +77,7 @@ double HighEnergyHighScaleCoefficientFunction::fx(double x, double m2Q2, double 
     }
 }
 
-PowerTermsCoefficientFunction::PowerTermsCoefficientFunction(const int order, const char kind, const char channel, const int NLL = 1) : HighTmpCoefficientFunction(order, kind, channel, NLL) {
+PowerTermsCoefficientFunction::PowerTermsCoefficientFunction(const int order, const char kind, const char channel, const bool NLL) : HighTmpCoefficientFunction(order, kind, channel, NLL) {
     highenergy_ = HighEnergyCoefficientFunction(GetOrder(), GetKind(), GetChannel(), GetNLL());
     highenergyhighscale_ = HighEnergyHighScaleCoefficientFunction(GetOrder(), GetKind(), GetChannel(), GetNLL());
 }
@@ -237,49 +224,49 @@ double HighEnergyHighScaleCoefficientFunction::CL_ps2_highenergy_highscale(doubl
     return CF / CA * CL_g2_highenergy_highscale(x, m2Q2, m2mu2);
 }
 
-//==========================================================================================//
-//  Power terms in the small x limit of the gluon coefficient function for F2 at
-//  O(alpha_s^2).
-//------------------------------------------------------------------------------------------//
+// //==========================================================================================//
+// //  Power terms in the small x limit of the gluon coefficient function for F2 at
+// //  O(alpha_s^2).
+// //------------------------------------------------------------------------------------------//
 
-double PowerTermsCoefficientFunction::C2_g2_power_terms(double x, double m2Q2, double m2mu2) {
+// double PowerTermsCoefficientFunction::C2_g2_power_terms(double x, double m2Q2, double m2mu2) {
 
-    highenergy = HighEnergyCoefficientFunction(order_, kind_, channel_, NLL_)
+//     highenergy = HighEnergyCoefficientFunction(order_, kind_, channel_, NLL_)
 
-    return C2_g2_highenergy(x, m2Q2, m2mu2)
-           - C2_g2_highenergy_highscale(x, m2Q2, m2mu2);
-}
+//     return C2_g2_highenergy(x, m2Q2, m2mu2)
+//            - C2_g2_highenergy_highscale(x, m2Q2, m2mu2);
+// }
 
-//==========================================================================================//
-//  Power terms in the small x limit of the quark coefficient function for F2 at
-//  O(alpha_s^2).
-//------------------------------------------------------------------------------------------//
+// //==========================================================================================//
+// //  Power terms in the small x limit of the quark coefficient function for F2 at
+// //  O(alpha_s^2).
+// //------------------------------------------------------------------------------------------//
 
-double PowerTermsCoefficientFunction::C2_ps2_power_terms(double x, double m2Q2, double m2mu2) {
+// double PowerTermsCoefficientFunction::C2_ps2_power_terms(double x, double m2Q2, double m2mu2) {
 
-    return CF / CA * C2_g2_power_terms(x, m2Q2, m2mu2);
-}
+//     return CF / CA * C2_g2_power_terms(x, m2Q2, m2mu2);
+// }
 
-//==========================================================================================//
-//  Power terms in the small x limit the gluon coefficient function for FL at
-//  O(alpha_s^2).
-//------------------------------------------------------------------------------------------//
+// //==========================================================================================//
+// //  Power terms in the small x limit the gluon coefficient function for FL at
+// //  O(alpha_s^2).
+// //------------------------------------------------------------------------------------------//
 
-double PowerTermsCoefficientFunction::CL_g2_power_terms(double x, double m2Q2, double m2mu2) {
+// double PowerTermsCoefficientFunction::CL_g2_power_terms(double x, double m2Q2, double m2mu2) {
 
-    return CL_g2_highenergy(x, m2Q2, m2mu2)
-           - CL_g2_highenergy_highscale(x, m2Q2, m2mu2);
-}
+//     return CL_g2_highenergy(x, m2Q2, m2mu2)
+//            - CL_g2_highenergy_highscale(x, m2Q2, m2mu2);
+// }
 
-//==========================================================================================//
-//  Power terms in the small x limit the quark coefficient function for FL at
-//  O(alpha_s^2).
-//------------------------------------------------------------------------------------------//
+// //==========================================================================================//
+// //  Power terms in the small x limit the quark coefficient function for FL at
+// //  O(alpha_s^2).
+// //------------------------------------------------------------------------------------------//
 
-double PowerTermsCoefficientFunction::CL_ps2_power_terms(double x, double m2Q2, double m2mu2) {
+// double PowerTermsCoefficientFunction::CL_ps2_power_terms(double x, double m2Q2, double m2mu2) {
 
-    return CF / CA * CL_g2_power_terms(x, m2Q2, m2mu2);
-}
+//     return CF / CA * CL_g2_power_terms(x, m2Q2, m2mu2);
+// }
 
 //==========================================================================================//
 //  High energy limit of the gluon coefficient function for F2 at O(alpha_s^3)

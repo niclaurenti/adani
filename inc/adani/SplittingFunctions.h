@@ -20,6 +20,7 @@
 class SplittingFunction {
     public:
         SplittingFunction(const int order, const char entry1, const char entry2) ;
+        SplittingFunction() : SplittingFunction(0, 'q', 'g') {} ;
         ~SplittingFunction() {} ;
 
         double Regular(const double x, const int nf);
@@ -28,8 +29,8 @@ class SplittingFunction {
 
     private:
         int order_;
-        char entry1;
-        char entry2;
+        char entry1_;
+        char entry2_;
 
         //==========================================================================================//
         //                      Splitting functions O(alpha_s)

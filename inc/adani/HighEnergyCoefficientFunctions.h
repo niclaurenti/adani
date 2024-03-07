@@ -31,14 +31,15 @@
 
 class HighTmpCoefficientFunction : public CoefficientFunction {
     public:
-        HighTmpCoefficientFunction(const int order, const char kind, const char channel, const int NLL = 1) ;
+        HighTmpCoefficientFunction(const int order, const char kind, const char channel, const bool NLL = true) ;
+        HighTmpCoefficientFunction() : HighTmpCoefficientFunction(1, '2', 'g', true) {} ;
         ~HighTmpCoefficientFunction() {};
 
         // get methods
         bool GetNLL() {return NLL_;};
 
         // set methods
-        void SetNLL(const bool NLL);
+        void SetNLL(const bool NLL) {NLL_ = NLL ; } ;
 
     private:
         bool NLL_ ;
@@ -56,7 +57,8 @@ class HighTmpCoefficientFunction : public CoefficientFunction {
 class HighEnergyCoefficientFunction : public HighTmpCoefficientFunction {
 
     public:
-        HighEnergyCoefficientFunction(const int order, const char kind, const char channel, const int NLL = 1) : HighTmpCoefficientFunction(order, kind, channel, NLL) {};
+        HighEnergyCoefficientFunction(const int order, const char kind, const char channel, const bool NLL = true) : HighTmpCoefficientFunction(order, kind, channel, NLL) {};
+        HighEnergyCoefficientFunction() : HighTmpCoefficientFunction() {} ;
         ~HighEnergyCoefficientFunction() {} ;
 
         double fx(double x, double m2Q2, double m2mu2, int nf) ;
@@ -101,7 +103,8 @@ class HighEnergyCoefficientFunction : public HighTmpCoefficientFunction {
 class HighEnergyHighScaleCoefficientFunction : public HighTmpCoefficientFunction {
 
     public:
-        HighEnergyHighScaleCoefficientFunction(const int order, const char kind, const char channel, const int NLL = 1) : HighTmpCoefficientFunction(order, kind, channel, NLL) {};
+        HighEnergyHighScaleCoefficientFunction(const int order, const char kind, const char channel, const bool NLL = true) : HighTmpCoefficientFunction(order, kind, channel, NLL) {};
+        HighEnergyHighScaleCoefficientFunction() : HighTmpCoefficientFunction() {} ;
         ~HighEnergyHighScaleCoefficientFunction() {} ;
 
         double fx(double x, double m2Q2, double m2mu2, int nf) override {return 0.;};
@@ -158,7 +161,8 @@ class HighEnergyHighScaleCoefficientFunction : public HighTmpCoefficientFunction
 class PowerTermsCoefficientFunction : public HighTmpCoefficientFunction {
 
     public:
-        PowerTermsCoefficientFunction(const int order, const char kind, const char channel, const int NLL = 1);
+        PowerTermsCoefficientFunction(const int order, const char kind, const char channel, const bool NLL = true);
+        PowerTermsCoefficientFunction() : HighTmpCoefficientFunction() {} ;
         ~PowerTermsCoefficientFunction() {} ;
 
         double fx(double x, double m2Q2, double m2mu2, int nf);
@@ -168,33 +172,33 @@ class PowerTermsCoefficientFunction : public HighTmpCoefficientFunction {
         HighEnergyCoefficientFunction highenergy_ ;
         HighEnergyHighScaleCoefficientFunction highenergyhighscale_ ;
 
-        //==========================================================================================//
-        //                  Power terms of the coefficient function
-        //                  O(alpha_s^2)
-        //------------------------------------------------------------------------------------------//
+        // //==========================================================================================//
+        // //                  Power terms of the coefficient function
+        // //                  O(alpha_s^2)
+        // //------------------------------------------------------------------------------------------//
 
-        double C2_g2_power_terms(double x, double m2Q2, double m2mu2);
-        double C2_ps2_power_terms(double x, double m2Q2, double m2mu2);
-        double CL_g2_power_terms(double x, double m2Q2, double m2mu2);
-        double CL_ps2_power_terms(double x, double m2Q2, double m2mu2);
+        // double C2_g2_power_terms(double x, double m2Q2, double m2mu2);
+        // double C2_ps2_power_terms(double x, double m2Q2, double m2mu2);
+        // double CL_g2_power_terms(double x, double m2Q2, double m2mu2);
+        // double CL_ps2_power_terms(double x, double m2Q2, double m2mu2);
 
-        //==========================================================================================//
-        //                  Power terms of the coefficient function
-        //                  O(alpha_s^3) at leading log
-        //------------------------------------------------------------------------------------------//
+        // //==========================================================================================//
+        // //                  Power terms of the coefficient function
+        // //                  O(alpha_s^3) at leading log
+        // //------------------------------------------------------------------------------------------//
 
-        double C2_g3_power_termsLL(double x, double m2Q2 , double m2mu2);
-        double C2_ps3_power_termsLL(double x, double m2Q2, double m2mu2);
+        // double C2_g3_power_termsLL(double x, double m2Q2 , double m2mu2);
+        // double C2_ps3_power_termsLL(double x, double m2Q2, double m2mu2);
 
-        //==========================================================================================//
-        //                  Power terms of the coefficient function
-        //                  O(alpha_s^3)
-        //------------------------------------------------------------------------------------------//
+        // //==========================================================================================//
+        // //                  Power terms of the coefficient function
+        // //                  O(alpha_s^3)
+        // //------------------------------------------------------------------------------------------//
 
-        double C2_g3_power_terms(double x, double m2Q2, double m2mu2, int nf, int v);
-        double C2_ps3_power_terms(double x, double m2Q2, double m2mu2, int nf, int v);
-        double CL_g3_power_terms(double x, double m2Q2, double m2mu2, int nf, int v);
-        double CL_ps3_power_terms(double x, double m2Q2, double m2mu2, int nf, int v);
+        // double C2_g3_power_terms(double x, double m2Q2, double m2mu2, int nf, int v);
+        // double C2_ps3_power_terms(double x, double m2Q2, double m2mu2, int nf, int v);
+        // double CL_g3_power_terms(double x, double m2Q2, double m2mu2, int nf, int v);
+        // double CL_ps3_power_terms(double x, double m2Q2, double m2mu2, int nf, int v);
 
 };
 

@@ -17,42 +17,60 @@
 #ifndef Asymptotic_h
 #define Asymptotic_h
 
-//==========================================================================================//
-//                      Asymptotic coefficient functions
-//                      O(alpha_s)
-//------------------------------------------------------------------------------------------//
+#include "adani/CoefficientFunction.h"
+#include "adani/HighEnergyCoefficientFunctions.h"
+#include "adani/HighScaleCoefficientFunctions.h"
 
-double C2_g1_asymptotic(double x, double m2Q2);
-double CL_g1_asymptotic(double x);
+class AsymptoticCoefficientFunction : public HighTmpCoefficientFunction {
+    public:
+        AsymptoticCoefficientFunction(const int order, const char kind, const char channel, const bool NLL = true);
+        AsymptoticCoefficientFunction() : AsymptoticCoefficientFunction(1, '2', 'g', true) {} ;
+        ~AsymptoticCoefficientFunction() {} ;
 
-//==========================================================================================//
-//                      Asymptotic coefficient functions
-//                      O(alpha_s^2)
-//------------------------------------------------------------------------------------------//
+        double fx(double x, double m2Q2, double m2mu2, int nf) ;
 
-double C2_g2_asymptotic(double x, double m2Q2, double m2mu2);
-double C2_ps2_asymptotic(double x, double m2Q2, double m2mu2);
+    private:
+        HighScaleCoefficientFunction highscale_ ;
+        PowerTermsCoefficientFunction powerterms_ ;
 
-double CL_g2_asymptotic(double x, double m2Q2, double m2mu2);
-double CL_ps2_asymptotic(double x, double m2Q2, double m2mu2);
+        // //==========================================================================================//
+        // //                      Asymptotic coefficient functions
+        // //                      O(alpha_s)
+        // //------------------------------------------------------------------------------------------//
 
-//==========================================================================================//
-//                      Asymptotic coefficient functions
-//                      O(alpha_s^3) at leading log
-//------------------------------------------------------------------------------------------//
+        // double C2_g1_asymptotic(double x, double m2Q2);
+        // double CL_g1_asymptotic(double x);
 
-// double C2_g3_asymptoticLL(double x, double m2Q2, double
-// m2mu2, int nf, int v);
+        // //==========================================================================================//
+        // //                      Asymptotic coefficient functions
+        // //                      O(alpha_s^2)
+        // //------------------------------------------------------------------------------------------//
 
-//==========================================================================================//
-//                      Asymptotic coefficient functions
-//                      O(alpha_s^3) at leading log
-//------------------------------------------------------------------------------------------//
+        // double C2_g2_asymptotic(double x, double m2Q2, double m2mu2);
+        // double C2_ps2_asymptotic(double x, double m2Q2, double m2mu2);
 
-double
-C2_g3_asymptotic(double x, double m2Q2, double m2mu2, int nf, int v1, int v2);
-double C2_ps3_asymptotic(double x, double m2Q2, double m2mu2, int nf, int v);
-double CL_g3_asymptotic(double x, double m2Q2, double m2mu2, int nf, int v);
-double CL_ps3_asymptotic(double x, double m2Q2, double m2mu2, int nf, int v);
+        // double CL_g2_asymptotic(double x, double m2Q2, double m2mu2);
+        // double CL_ps2_asymptotic(double x, double m2Q2, double m2mu2);
+
+        // //==========================================================================================//
+        // //                      Asymptotic coefficient functions
+        // //                      O(alpha_s^3) at leading log
+        // //------------------------------------------------------------------------------------------//
+
+        // // double C2_g3_asymptoticLL(double x, double m2Q2, double
+        // // m2mu2, int nf, int v);
+
+        // //==========================================================================================//
+        // //                      Asymptotic coefficient functions
+        // //                      O(alpha_s^3) at leading log
+        // //------------------------------------------------------------------------------------------//
+
+        // double
+        // C2_g3_asymptotic(double x, double m2Q2, double m2mu2, int nf, int v1, int v2);
+        // double C2_ps3_asymptotic(double x, double m2Q2, double m2mu2, int nf, int v);
+        // double CL_g3_asymptotic(double x, double m2Q2, double m2mu2, int nf, int v);
+        // double CL_ps3_asymptotic(double x, double m2Q2, double m2mu2, int nf, int v);
+
+};
 
 #endif

@@ -71,6 +71,7 @@ if(PYTHON_ONLY)
     pybind11_add_module(
         _core MODULE
         pywrap/pywrap.cc
+        src/CoefficientFunction.cc
         src/ApproximateCoefficientFunctions.cc
         src/ExactCoefficientFunctions.cc
         src/ThresholdCoefficientFunctions.cc
@@ -94,6 +95,7 @@ if(PYTHON_ONLY)
 else(PYTHON_ONLY)
     add_library(
         adani SHARED
+        src/CoefficientFunction.cc
         src/ApproximateCoefficientFunctions.cc
         src/ExactCoefficientFunctions.cc
         src/ThresholdCoefficientFunctions.cc

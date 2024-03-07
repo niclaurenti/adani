@@ -19,6 +19,7 @@
 #define HighScale_h
 
 #include "adani/CoefficientFunction.h"
+#include "adani/HighEnergyCoefficientFunctions.h"
 #include "adani/MasslessCoefficientFunctions.h"
 
 //==========================================================================================//
@@ -29,10 +30,13 @@
 //                      \alpha_s^{[nf+1]}
 //------------------------------------------------------------------------------------------//
 
-class HighScaleCoefficientFunction : public CoefficientFunction {
+class HighScaleCoefficientFunction : public HighTmpCoefficientFunction {
     public:
-        HighScaleCoefficientFunction(const int order, const char kind, const char channel) ;
+        HighScaleCoefficientFunction(const int order, const char kind, const char channel, const bool NLL = true) ;
+        HighScaleCoefficientFunction() : HighTmpCoefficientFunction() {} ;
         ~HighScaleCoefficientFunction() {};
+
+        double fx(double x, double m2Q2, double m2mu2, int nf) ;
 
     private:
         MasslessCoefficientFunction massless_;

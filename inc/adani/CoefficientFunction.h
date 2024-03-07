@@ -1,11 +1,15 @@
 #ifndef CoeffFunc
 #define CoeffFunc
 
+#include "adani/SplittingFunctions.h"
+
 class CoefficientFunction {
 
     public:
         CoefficientFunction(const int order, const char kind, const char channel) ;
+        CoefficientFunction() : CoefficientFunction(1, '2', 'g') {} ;
         virtual ~CoefficientFunction() = 0 ;
+
         virtual double fx(double x, double m2Q2, double m2mu2, int nf) = 0;
 
         // get methods
@@ -19,6 +23,8 @@ class CoefficientFunction {
         void SetChannel(const char channel) ;
 
         // virtual void Set_fx() = 0;
+
+        double ConvoluteWithSplittingFunction(const SplittingFunction split) ;
 
     private:
         int order_ ; // order = 1, 2, or 3
