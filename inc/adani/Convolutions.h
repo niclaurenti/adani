@@ -39,16 +39,27 @@ struct function_params {
 
 class Convolution {
     public:
-        Convolution(const CoefficientFunction coefffunc, const SplittingFunction splitfunc);
-        Convolution() : Convolution(ExactCoefficientFunction(), SplittingFunction()) {} ;
-
+        Convolution(const CoefficientFunction& coefffunc, const SplittingFunction& splitfunc, const double& abserr = 1e-3, const double& relerr = 1e-3, const int& dim = 1000);
+        Convolution(const CoefficientFunction* coefffunc, const SplittingFunction* splitfunc, const double& abserr = 1e-3, const double& relerr = 1e-3, const int& dim = 1000);
+        // Convolution() : Convolution(ExactCoefficientFunction(), SplittingFunction()) {} ;
         ~Convolution();
 
-        double convolute(double x, double m2Q2, int nf);
+        // get methods
+        int GetAbserr() const {return abserr_;};
+        int GetRelerr() const {return relerr_;};
+        int GetDim() const {return dim_;} ;
+
+        // set methods
+        void SetAbserr(const double& abserr) ;
+        void SetRelerr(const double& relerr);
+        void SetDim(const int& dim);
+
+        double convolute(double x, double m2Q2, int nf) const ;
 
     private:
         double abserr_;
         double relerr_;
+        int dim_;
 
         CoefficientFunction *coefffunc_ ;
         SplittingFunction *splitfunc_ ;
@@ -199,7 +210,6 @@ double CL_g20_x_Pgg0(double x, double m2Q2, int nf);
 //  splitting functions Pqg0 and Pgq0
 //------------------------------------------------------------------------------------------//
 
-double Pqg0_x_Pgq0(double x, int nf); // analytical
 double C2_g1_x_Pqg0_x_Pgq0_integrand(double z, void *p);
 double C2_g1_x_Pqg0_x_Pgq0(double x, double m2Q2, int nf);
 double CL_g1_x_Pqg0_x_Pgq0_integrand(double z, void *p);

@@ -7,13 +7,13 @@
 using std::cout;
 using std::endl;
 
-HighTmpCoefficientFunction::HighTmpCoefficientFunction(const int order, const char kind, const char channel, const bool NLL) : CoefficientFunction(order, kind, channel) {
+HighTmpCoefficientFunction::HighTmpCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL) : CoefficientFunction(order, kind, channel) {
 
     SetNLL(NLL);
 
 }
 
-double HighEnergyCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int nf) {
+double HighEnergyCoefficientFunction::fx(const double x, const double m2Q2, const double m2mu2, const int nf) const {
 
     if (GetOrder() == 1) return 0. ;
 
@@ -45,7 +45,7 @@ double HighEnergyCoefficientFunction::fx(double x, double m2Q2, double m2mu2, in
     }
 }
 
-double HighEnergyHighScaleCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int nf) {
+double HighEnergyHighScaleCoefficientFunction::fx(const double x, const double m2Q2, const double m2mu2, const int nf) const {
 
     if (GetOrder() == 1) return 0. ;
 
@@ -77,14 +77,19 @@ double HighEnergyHighScaleCoefficientFunction::fx(double x, double m2Q2, double 
     }
 }
 
-PowerTermsCoefficientFunction::PowerTermsCoefficientFunction(const int order, const char kind, const char channel, const bool NLL) : HighTmpCoefficientFunction(order, kind, channel, NLL) {
-    highenergy_ = HighEnergyCoefficientFunction(GetOrder(), GetKind(), GetChannel(), GetNLL());
-    highenergyhighscale_ = HighEnergyHighScaleCoefficientFunction(GetOrder(), GetKind(), GetChannel(), GetNLL());
+PowerTermsCoefficientFunction::PowerTermsCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL) : HighTmpCoefficientFunction(order, kind, channel, NLL) {
+    highenergy_ = new HighEnergyCoefficientFunction(GetOrder(), GetKind(), GetChannel(), GetNLL());
+    highenergyhighscale_ = new HighEnergyHighScaleCoefficientFunction(GetOrder(), GetKind(), GetChannel(), GetNLL());
 }
 
-double PowerTermsCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int nf) {
+PowerTermsCoefficientFunction::~PowerTermsCoefficientFunction() {
+    delete highenergy_;
+    delete highenergyhighscale_;
+}
 
-    return highenergy_.fx(x, m2Q2, m2mu2, nf) - highenergyhighscale_.fx(x, m2Q2, m2mu2, nf);
+double PowerTermsCoefficientFunction::fx(const double x, const double m2Q2, const double m2mu2, const int nf) const {
+
+    return highenergy_->fx(x, m2Q2, m2mu2, nf) - highenergyhighscale_->fx(x, m2Q2, m2mu2, nf);
 
 }
 
@@ -94,7 +99,7 @@ double PowerTermsCoefficientFunction::fx(double x, double m2Q2, double m2mu2, in
 //  Eq. (3.38) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double HighEnergyCoefficientFunction::C2_g2_highenergy(double x, double m2Q2, double m2mu2) {
+double HighEnergyCoefficientFunction::C2_g2_highenergy(const double x, const double m2Q2, const double m2mu2) const {
 
     double z = sqrt(1. / (1. + 4. * m2Q2));
 
@@ -119,7 +124,7 @@ double HighEnergyCoefficientFunction::C2_g2_highenergy(double x, double m2Q2, do
 //  High energy limit of the quark coefficient function for F2 at O(alpha_s^2).
 //------------------------------------------------------------------------------------------//
 
-double HighEnergyCoefficientFunction::C2_ps2_highenergy(double x, double m2Q2, double m2mu2) {
+double HighEnergyCoefficientFunction::C2_ps2_highenergy(const double x, const double m2Q2, const double m2mu2) const {
 
     return CF / CA * C2_g2_highenergy(x, m2Q2, m2mu2);
 }
@@ -130,7 +135,7 @@ double HighEnergyCoefficientFunction::C2_ps2_highenergy(double x, double m2Q2, d
 //  Eq. (16, 21) of Ref. [arXiv:hep-ph/9411431]
 //------------------------------------------------------------------------------------------//
 
-double HighEnergyCoefficientFunction::CL_g2_highenergy(double x, double m2Q2, double m2mu2) {
+double HighEnergyCoefficientFunction::CL_g2_highenergy(const double x, const double m2Q2, const double m2mu2) const {
 
     double z = sqrt(1. / (1. + 4. * m2Q2));
 
@@ -159,7 +164,7 @@ double HighEnergyCoefficientFunction::CL_g2_highenergy(double x, double m2Q2, do
 //  High energy limit of the quark coefficient function for FL at O(alpha_s^2).
 //------------------------------------------------------------------------------------------//
 
-double HighEnergyCoefficientFunction::CL_ps2_highenergy(double x, double m2Q2, double m2mu2) {
+double HighEnergyCoefficientFunction::CL_ps2_highenergy(const double x, const double m2Q2, const double m2mu2) const {
 
     return CF / CA * CL_g2_highenergy(x, m2Q2, m2mu2);
 }
@@ -171,7 +176,7 @@ double HighEnergyCoefficientFunction::CL_ps2_highenergy(double x, double m2Q2, d
 //  Eq. (3.40) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double HighEnergyHighScaleCoefficientFunction::C2_g2_highenergy_highscale(double x, double m2Q2, double m2mu2) {
+double HighEnergyHighScaleCoefficientFunction::C2_g2_highenergy_highscale(const double x, const double m2Q2, const double m2mu2) const {
 
     double LQ = log(1. / m2Q2);
     double L2Q = LQ * LQ;
@@ -189,7 +194,7 @@ double HighEnergyHighScaleCoefficientFunction::C2_g2_highenergy_highscale(double
 //  for F2 at O(alpha_s^2).
 //------------------------------------------------------------------------------------------//
 
-double HighEnergyHighScaleCoefficientFunction::C2_ps2_highenergy_highscale(double x, double m2Q2, double m2mu2) {
+double HighEnergyHighScaleCoefficientFunction::C2_ps2_highenergy_highscale(const double x, const double m2Q2, const double m2mu2) const {
 
     return CF / CA * C2_g2_highenergy_highscale(x, m2Q2, m2mu2);
 }
@@ -201,7 +206,7 @@ double HighEnergyHighScaleCoefficientFunction::C2_ps2_highenergy_highscale(doubl
 //  Q^2>>m^2 limit of Eq. (16, 21) of Ref. [arXiv:hep-ph/9411431]
 //------------------------------------------------------------------------------------------//
 
-double HighEnergyHighScaleCoefficientFunction::CL_g2_highenergy_highscale(double x, double m2Q2, double m2mu2) {
+double HighEnergyHighScaleCoefficientFunction::CL_g2_highenergy_highscale(const double x, const double m2Q2, const double m2mu2) const {
 
     double LQ = log(1. / m2Q2);
 
@@ -219,7 +224,7 @@ double HighEnergyHighScaleCoefficientFunction::CL_g2_highenergy_highscale(double
 //  for FL at O(alpha_s^2).
 //------------------------------------------------------------------------------------------//
 
-double HighEnergyHighScaleCoefficientFunction::CL_ps2_highenergy_highscale(double x, double m2Q2, double m2mu2) {
+double HighEnergyHighScaleCoefficientFunction::CL_ps2_highenergy_highscale(const double x, const double m2Q2, const double m2mu2) const {
 
     return CF / CA * CL_g2_highenergy_highscale(x, m2Q2, m2mu2);
 }
@@ -275,7 +280,7 @@ double HighEnergyHighScaleCoefficientFunction::CL_ps2_highenergy_highscale(doubl
 //  Eq. (3.39) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double HighEnergyCoefficientFunction::C2_g3_highenergyLL(double x, double m2Q2, double m2mu2) {
+double HighEnergyCoefficientFunction::C2_g3_highenergyLL(const double x, const double m2Q2, const double m2mu2) const {
 
     double z = sqrt(1. / (1. + 4. * m2Q2));
 
@@ -316,7 +321,7 @@ double HighEnergyCoefficientFunction::C2_g3_highenergyLL(double x, double m2Q2, 
 //  Eq. (3.39) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double HighEnergyCoefficientFunction::C2_g3_highenergyNLL(double x, double m2Q2, double m2mu2, int nf, int v) {
+double HighEnergyCoefficientFunction::C2_g3_highenergyNLL(const double x, const double m2Q2, const double m2mu2, const int nf, const int v) const {
 
     double z = sqrt(1. / (1. + 4. * m2Q2));
 
@@ -430,7 +435,7 @@ double HighEnergyCoefficientFunction::C2_g3_highenergyNLL(double x, double m2Q2,
 //  Eq. (3.39) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double HighEnergyCoefficientFunction::C2_g3_highenergy(double x, double m2Q2, double m2mu2, int nf, int v) {
+double HighEnergyCoefficientFunction::C2_g3_highenergy(const double x, const double m2Q2, const double m2mu2, const int nf, const int v) const {
 
     return C2_g3_highenergyLL(x, m2Q2, m2mu2)
            + C2_g3_highenergyNLL(x, m2Q2, m2mu2, nf, v);
@@ -441,7 +446,7 @@ double HighEnergyCoefficientFunction::C2_g3_highenergy(double x, double m2Q2, do
 //  at leading log.
 //------------------------------------------------------------------------------------------//
 
-double HighEnergyCoefficientFunction::C2_ps3_highenergyLL(double x, double m2Q2, double m2mu2) {
+double HighEnergyCoefficientFunction::C2_ps3_highenergyLL(const double x, const double m2Q2, const double m2mu2) const {
 
     return CF / CA * C2_g3_highenergyLL(x, m2Q2, m2mu2);
 }
@@ -450,7 +455,7 @@ double HighEnergyCoefficientFunction::C2_ps3_highenergyLL(double x, double m2Q2,
 //  High energy limit of the quark coefficient function for F2 at O(alpha_s^3).
 //------------------------------------------------------------------------------------------//
 
-double HighEnergyCoefficientFunction::C2_ps3_highenergy(double x, double m2Q2, double m2mu2, int nf, int v) {
+double HighEnergyCoefficientFunction::C2_ps3_highenergy(const double x, const double m2Q2, const double m2mu2, const int nf, const int v) const {
 
     return CF / CA * C2_g3_highenergy(x, m2Q2, m2mu2, nf, v);
 }
@@ -460,7 +465,7 @@ double HighEnergyCoefficientFunction::C2_ps3_highenergy(double x, double m2Q2, d
 //  at leading log.
 //------------------------------------------------------------------------------------------//
 
-double HighEnergyCoefficientFunction::CL_g3_highenergyLL(double x, double m2Q2, double m2mu2) {
+double HighEnergyCoefficientFunction::CL_g3_highenergyLL(const double x, const double m2Q2, const double m2mu2) const {
 
     double m4Q4 = m2Q2 * m2Q2;
 
@@ -507,7 +512,7 @@ double HighEnergyCoefficientFunction::CL_g3_highenergyLL(double x, double m2Q2, 
 //  at next to leading log.
 //------------------------------------------------------------------------------------------//
 
-double HighEnergyCoefficientFunction::CL_g3_highenergyNLL(double x, double m2Q2, double m2mu2, int nf, int v) {
+double HighEnergyCoefficientFunction::CL_g3_highenergyNLL(const double x, const double m2Q2, const double m2mu2, const int nf, const int v) const {
 
     double m4Q4 = m2Q2 * m2Q2;
 
@@ -643,7 +648,7 @@ double HighEnergyCoefficientFunction::CL_g3_highenergyNLL(double x, double m2Q2,
 //  High energy limit of the gluon coefficient function for FL at O(alpha_s^3).
 //------------------------------------------------------------------------------------------//
 
-double HighEnergyCoefficientFunction::CL_g3_highenergy(double x, double m2Q2, double m2mu2, int nf, int v) {
+double HighEnergyCoefficientFunction::CL_g3_highenergy(const double x, const double m2Q2, const double m2mu2, const int nf, const int v) const {
 
     return CL_g3_highenergyLL(x, m2Q2, m2mu2)
            + CL_g3_highenergyNLL(x, m2Q2, m2mu2, nf, v);
@@ -654,7 +659,7 @@ double HighEnergyCoefficientFunction::CL_g3_highenergy(double x, double m2Q2, do
 //  at leading log.
 //------------------------------------------------------------------------------------------//
 
-double HighEnergyCoefficientFunction::CL_ps3_highenergyLL(double x, double m2Q2, double m2mu2) {
+double HighEnergyCoefficientFunction::CL_ps3_highenergyLL(const double x, const double m2Q2, const double m2mu2) const {
 
     return CF / CA * CL_g3_highenergyLL(x, m2Q2, m2mu2);
 }
@@ -663,7 +668,7 @@ double HighEnergyCoefficientFunction::CL_ps3_highenergyLL(double x, double m2Q2,
 //  High energy limit of the quark coefficient function for FL at O(alpha_s^3).
 //------------------------------------------------------------------------------------------//
 
-double HighEnergyCoefficientFunction::CL_ps3_highenergy(double x, double m2Q2, double m2mu2, int nf, int v) {
+double HighEnergyCoefficientFunction::CL_ps3_highenergy(const double x, const double m2Q2, const double m2mu2, const int nf, const int v) const {
 
     return CF / CA * CL_g3_highenergy(x, m2Q2, m2mu2, nf, v);
 }
@@ -675,7 +680,7 @@ double HighEnergyCoefficientFunction::CL_ps3_highenergy(double x, double m2Q2, d
 //  Eq. (3.41) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double HighEnergyHighScaleCoefficientFunction::C2_g3_highenergy_highscaleLL(double x, double m2Q2, double m2mu2) {
+double HighEnergyHighScaleCoefficientFunction::C2_g3_highenergy_highscaleLL(const double x, const double m2Q2, const double m2mu2) const {
 
     double LQ = log(m2Q2);
     double LQ2 = LQ * LQ;
@@ -700,8 +705,8 @@ double HighEnergyHighScaleCoefficientFunction::C2_g3_highenergy_highscaleLL(doub
 //------------------------------------------------------------------------------------------//
 
 double HighEnergyHighScaleCoefficientFunction::C2_g3_highenergy_highscaleNLL(
-    double x, double m2Q2, double m2mu2, int nf, int v
-) {
+    const double x, const double m2Q2, const double m2mu2, const int nf, const int v
+) const {
 
     double Lmu = log(m2mu2);
     double Lmu2 = Lmu * Lmu;
@@ -791,7 +796,7 @@ double HighEnergyHighScaleCoefficientFunction::C2_g3_highenergy_highscaleNLL(
 //------------------------------------------------------------------------------------------//
 
 double
-HighEnergyHighScaleCoefficientFunction::C2_g3_highenergy_highscale(double x, double m2Q2, double m2mu2, int nf, int v) {
+HighEnergyHighScaleCoefficientFunction::C2_g3_highenergy_highscale(const double x, const double m2Q2, const double m2mu2, const int nf, const int v) const {
 
     return C2_g3_highenergy_highscaleLL(x, m2Q2, m2mu2)
            + C2_g3_highenergy_highscaleNLL(x, m2Q2, m2mu2, nf, v);
@@ -803,8 +808,8 @@ HighEnergyHighScaleCoefficientFunction::C2_g3_highenergy_highscale(double x, dou
 //------------------------------------------------------------------------------------------//
 
 double HighEnergyHighScaleCoefficientFunction::C2_ps3_highenergy_highscale(
-    double x, double m2Q2, double m2mu2, int nf, int v
-) {
+    const double x, const double m2Q2, const double m2mu2, const int nf, const int v
+) const {
 
     return CF / CA * C2_g3_highenergy_highscale(x, m2Q2, m2mu2, nf, v);
 }
@@ -814,7 +819,7 @@ double HighEnergyHighScaleCoefficientFunction::C2_ps3_highenergy_highscale(
 //  for F2 at O(alpha_s^3) at leading log.
 //------------------------------------------------------------------------------------------//
 
-double HighEnergyHighScaleCoefficientFunction::C2_ps3_highenergy_highscaleLL(double x, double m2Q2, double m2mu2) {
+double HighEnergyHighScaleCoefficientFunction::C2_ps3_highenergy_highscaleLL(const double x, const double m2Q2, const double m2mu2) const {
 
     return CF / CA * C2_g3_highenergy_highscaleLL(x, m2Q2, m2mu2);
 }
@@ -824,7 +829,7 @@ double HighEnergyHighScaleCoefficientFunction::C2_ps3_highenergy_highscaleLL(dou
 //  for FL at O(alpha_s^3) at leading log.
 //------------------------------------------------------------------------------------------//
 
-double HighEnergyHighScaleCoefficientFunction::CL_g3_highenergy_highscaleLL(double x, double m2Q2, double m2mu2) {
+double HighEnergyHighScaleCoefficientFunction::CL_g3_highenergy_highscaleLL(const double x, const double m2Q2, const double m2mu2) const {
 
     double Lmu = log(m2mu2);
     double Lmu2 = Lmu * Lmu;
@@ -844,8 +849,8 @@ double HighEnergyHighScaleCoefficientFunction::CL_g3_highenergy_highscaleLL(doub
 //------------------------------------------------------------------------------------------//
 
 double HighEnergyHighScaleCoefficientFunction::CL_g3_highenergy_highscaleNLL(
-    double x, double m2Q2, double m2mu2, int nf, int v
-) {
+    const double x, const double m2Q2, const double m2mu2, const int nf, const int v
+) const {
 
     double Lmu = log(m2mu2);
     double Lmu2 = Lmu * Lmu;
@@ -913,7 +918,7 @@ double HighEnergyHighScaleCoefficientFunction::CL_g3_highenergy_highscaleNLL(
 //------------------------------------------------------------------------------------------//
 
 double
-HighEnergyHighScaleCoefficientFunction::CL_g3_highenergy_highscale(double x, double m2Q2, double m2mu2, int nf, int v) {
+HighEnergyHighScaleCoefficientFunction::CL_g3_highenergy_highscale(const double x, const double m2Q2, const double m2mu2, const int nf, const int v) const {
 
     return CL_g3_highenergy_highscaleLL(x, m2Q2, m2mu2)
            + CL_g3_highenergy_highscaleNLL(x, m2Q2, m2mu2, nf, v);
@@ -925,8 +930,8 @@ HighEnergyHighScaleCoefficientFunction::CL_g3_highenergy_highscale(double x, dou
 //------------------------------------------------------------------------------------------//
 
 double HighEnergyHighScaleCoefficientFunction::CL_ps3_highenergy_highscale(
-    double x, double m2Q2, double m2mu2, int nf, int v
-) {
+    const double x, const double m2Q2, const double m2mu2, const int nf, const int v
+) const {
 
     return CF / CA * CL_g3_highenergy_highscale(x, m2Q2, m2mu2, nf, v);
 }
@@ -936,7 +941,7 @@ double HighEnergyHighScaleCoefficientFunction::CL_ps3_highenergy_highscale(
 //  for F2 at O(alpha_s^3) at leading log.
 //------------------------------------------------------------------------------------------//
 
-double HighEnergyHighScaleCoefficientFunction::CL_ps3_highenergy_highscaleLL(double x, double m2Q2, double m2mu2) {
+double HighEnergyHighScaleCoefficientFunction::CL_ps3_highenergy_highscaleLL(const double x, const double m2Q2, const double m2mu2) const {
 
     return CF / CA * CL_g3_highenergy_highscaleLL(x, m2Q2, m2mu2);
 }
@@ -945,11 +950,11 @@ double HighEnergyHighScaleCoefficientFunction::CL_ps3_highenergy_highscaleLL(dou
 //                  Color factors O(alpha_s^3)
 //------------------------------------------------------------------------------------------//
 
-double HighTmpCoefficientFunction::a_10(int nf) {
+double HighTmpCoefficientFunction::a_10(const int nf) const {
 
     return -(11. * CA + 2. * nf * (1. - 2. * CF / CA)) / 12.;
 }
 
-double HighTmpCoefficientFunction::a_11() { return CA; }
+double HighTmpCoefficientFunction::a_11() const { return CA; }
 
-double HighTmpCoefficientFunction::a_21(int nf) { return nf * (26. * CF - 23. * CA) / 36.; }
+double HighTmpCoefficientFunction::a_21(const int nf) const { return nf * (26. * CF - 23. * CA) / 36.; }

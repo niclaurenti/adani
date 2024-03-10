@@ -9,16 +9,64 @@
 #include <cmath>
 #include <iostream>
 
-#define REL 0.001
-#define ABS 0.001
+// #define REL 0.001
+// #define ABS 0.001
 #define CALLS 25000
-#define DIM 1000
+// #define DIM 1000
 
 // TODO : in all the numerical convolutions the gsl default error is first
 // switched off and then swithced on again: see if it can be done once for all
 
-Convolution::Convolution(const CoefficientFunction coefffunc, const SplittingFunction splitfunc) {
+Convolution::Convolution(const CoefficientFunction& coefffunc, const SplittingFunction& splitfunc, const double& abserr, const double& relerr, const int& dim) {
+    abserr_ = abserr;
+    relerr_ = relerr;
+    dim_ = dim;
+    
+    coefffunc_ = &coefffunc;
+    splitfunc_ = &splitfunc;
+}
 
+Convolution::Convolution(const CoefficientFunction* coefffunc, const SplittingFunction* splitfunc, const double& abserr, const double& relerr, const int& dim) {
+    abserr_ = abserr;
+    relerr_ = relerr;
+    dim_ = dim;
+    
+    coefffunc_ = coefffunc;
+    splitfunc_ = splitfunc;
+}
+
+Convolution::~Convolution() {
+    
+    delete coefffunc_;
+    delete splitfunc_;
+    
+}
+
+void Convolution::SetAbserr(const double& abserr) {
+    // check abserr
+    if (abserr <= 0) {
+        cout << "Error: abserr must be positive. Got " << abserr << endl;
+        exit(-1);
+    }
+    abserr_ = abserr;
+}
+
+void Convolution::SetRelerr(const double& relerr) {
+    // check relerr
+    if (relerr <= 0) {
+        cout << "Error: relerr must be positive. Got " << relerr << endl;
+        exit(-1);
+    }
+    relerr_ = relerr;
+}
+
+void Convolution::SetDim(const int& dim) {
+    // check dim
+    if (dim <= 0) {
+        cout << "Error: MCcalls must be positive. Got " << dim << endl;
+        exit(-1);
+    }
+    dim_ = dim;
 }
 
 double Convolution::regular_integrand(double z, void *p) {
@@ -29,7 +77,7 @@ double Convolution::regular_integrand(double z, void *p) {
     double x = (params->x);
     int nf = (params->nf);
 
-    return coefffunc_->fx(z, m2Q2, m2mu2, nf) * splitfunc_ -> Regular(x / z, nf) / z ;
+    return coefffunc_ -> MuIndependentTerms(z, m2Q2, nf) * splitfunc_ -> Regular(x / z, nf) / z ;
 }
 
 double Convolution::singular_integrand(double z, void *p) {
@@ -39,7 +87,43 @@ double Convolution::singular_integrand(double z, void *p) {
     double x = (params->x);
     int nf = (params->nf);
 
-    return splitfunc_ -> Regular(z, nf) * (coefffunc_-> fx(x / z, m2Q2, m2mu2, nf) - coefffunc_ -> fx(x, m2Q2, m2mu2, nf) ) ;
+    return splitfunc_ -> Regular(z, nf) * (coefffunc_-> MuIndependentTerms(x / z, m2Q2, nf) - coefffunc_ -> MuIndependentTerms(x, m2Q2, nf) ) ;
+
+}
+
+double Convolution::convolute(double x, double m2Q2, int nf) const {
+    
+    double x_max = 1. / (1. + 4 * m2Q2);
+    
+    // TODO: consider moving w in the data members
+    gsl_integration_workspace *w = gsl_integration_workspace_alloc(dim_);
+    
+    double regular, singular, local, error;
+    struct function_params params = { x, m2Q2, nf };
+
+    gsl_function F;
+    F.function = &regular_integrand;
+    F.params = &params;
+
+    gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
+    gsl_set_error_handler_off();
+
+    gsl_integration_qag(
+        &F, x, x_max, abserr_, relerr_, dim_, 4, w, &regular, &error
+    );
+
+    F.function = &singular_integrand;
+    gsl_integration_qag(
+        &F, x / x_max, 1., abserr_, relerr_, dim_, 4, w, &singular, &error
+    );
+
+    gsl_set_error_handler(old_handler);
+
+    local = coefffunc_->MuIndependentTerms(x, m2Q2, m2mu2, nf) * (splitfunc_->Local(nf) - splitfunc_->SingularIntegrated(x / x_max, nf));
+
+    gsl_integration_workspace_free(w);
+
+    return regular + singular + local;
 
 }
 

@@ -3,15 +3,20 @@
 #include "adani/HighScaleCoefficientFunctions.h"
 #include <cmath>
 
-AsymptoticCoefficientFunction::AsymptoticCoefficientFunction(const int order, const char kind, const char channel, const bool NLL) : HighTmpCoefficientFunction(order, kind, channel, NLL) {
+AsymptoticCoefficientFunction::AsymptoticCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL) : HighTmpCoefficientFunction(order, kind, channel, NLL) {
 
-    highscale_ = HighScaleCoefficientFunction(GetOrder(), GetKind(), GetChannel(), GetNLL());
-    powerterms_ = PowerTermsCoefficientFunction(GetOrder(), GetKind(), GetChannel(), GetNLL());
+    highscale_ = new HighScaleCoefficientFunction(GetOrder(), GetKind(), GetChannel());
+    powerterms_ = new PowerTermsCoefficientFunction(GetOrder(), GetKind(), GetChannel(), GetNLL());
 }
 
-double AsymptoticCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int nf) {
+AsymptoticCoefficientFunction::~AsymptoticCoefficientFunction() {
+    delete highscale_;
+    delete powerterms_;
+}
 
-    return highscale_.fx(x, m2Q2, m2mu2, nf) + powerterms_.fx(x, m2Q2, m2mu2, nf) ;
+double AsymptoticCoefficientFunction::fx(const double x, const double m2Q2, const double m2mu2, const int nf) const {
+
+    return highscale_->fx(x, m2Q2, m2mu2, nf) + powerterms_->fx(x, m2Q2, m2mu2, nf) ;
 }
 
 // ==========================================================================================//

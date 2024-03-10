@@ -19,7 +19,6 @@
 #define HighScale_h
 
 #include "adani/CoefficientFunction.h"
-#include "adani/HighEnergyCoefficientFunctions.h"
 #include "adani/MasslessCoefficientFunctions.h"
 
 //==========================================================================================//
@@ -30,61 +29,61 @@
 //                      \alpha_s^{[nf+1]}
 //------------------------------------------------------------------------------------------//
 
-class HighScaleCoefficientFunction : public HighTmpCoefficientFunction {
+class HighScaleCoefficientFunction : public CoefficientFunction {
     public:
-        HighScaleCoefficientFunction(const int order, const char kind, const char channel, const bool NLL = true) ;
-        HighScaleCoefficientFunction() : HighTmpCoefficientFunction() {} ;
-        ~HighScaleCoefficientFunction() {};
+        HighScaleCoefficientFunction(const int& order, const char& kind, const char& channel) ;
+        // HighScaleCoefficientFunction() : CoefficientFunction() {} ;
+        ~HighScaleCoefficientFunction();
 
-        double fx(double x, double m2Q2, double m2mu2, int nf) ;
+        double fx(const double x, const double m2Q2, const double m2mu2, const int nf) const ;
 
     private:
-        MasslessCoefficientFunction massless_;
+        MasslessCoefficientFunction* massless_;
 
 //==========================================================================================//
 //                      High scale (Q^2 >> m^2) coefficient
 //                      functions O(alpha_s)
 //------------------------------------------------------------------------------------------//
 
-double C2_g1_highscale(double x, double m2Q2);
-double CL_g1_highscale(double x);
+double C2_g1_highscale(const double x, const double m2Q2) const ;
+double CL_g1_highscale(const double x) const ;
 
-double D2_g1_highscale(double x, double m2Q2);
-double DL_g1_highscale(double x);
+double D2_g1_highscale(const double x, const double m2Q2) const ;
+double DL_g1_highscale(const double x) const;
 
 //==========================================================================================//
 //                      High scale (Q^2 >> m^2) coefficient
 //                      functions O(alpha_s^2)
 //------------------------------------------------------------------------------------------//
 
-double C2_g2_highscale(double x, double m2Q2, double m2mu2);
-double C2_ps2_highscale(double z, double m2Q2, double m2mu2);
+double C2_g2_highscale(const double x, const double m2Q2, const double m2mu2) const ;
+double C2_ps2_highscale(const double z, const double m2Q2, const double m2mu2) const ;
 
-double CL_g2_highscale(double x, double m2Q2, double m2mu2);
-double CL_ps2_highscale(double x, double m2Q2, double m2mu2);
+double CL_g2_highscale(const double x, const double m2Q2, const double m2mu2) const ;
+double CL_ps2_highscale(const double x, const double m2Q2, const double m2mu2) const ;
 
-double D2_g2_highscale(double x, double m2Q2, double m2mu2);
-double D2_ps2_highscale(double x, double m2Q2, double m2mu2);
+double D2_g2_highscale(const double x, const double m2Q2, const double m2mu2) const ;
+double D2_ps2_highscale(const double x, const double m2Q2, const double m2mu2) const ;
 
-double DL_g2_highscale(double z, double m2Q2, double m2mu2);
-double DL_ps2_highscale(double z, double m2Q2, double m2mu2);
+double DL_g2_highscale(const double z, const double m2Q2, const double m2mu2) const ;
+double DL_ps2_highscale(const double z, const double m2Q2, const double m2mu2) const ;
 
 //==========================================================================================//
 //                      High scale (Q^2 >> m^2) coefficient
 //                      functions O(alpha_s^3)
 //------------------------------------------------------------------------------------------//
 
-double C2_g3_highscale(double x, double m2Q2, double m2mu2, int nf, int v = 0);
-double C2_ps3_highscale(double x, double m2Q2, double m2mu2, int nf);
+double C2_g3_highscale(const double x, const double m2Q2, const double m2mu2, const int nf, const int v = 0) const ;
+double C2_ps3_highscale(const double x, const double m2Q2, const double m2mu2, const int nf) const ;
 
-double CL_g3_highscale(double x, double m2Q2, double m2mu2, int nf);
-double CL_ps3_highscale(double x, double m2Q2, double m2mu2, int nf);
+double CL_g3_highscale(const double x, const double m2Q2, const double m2mu2, const int nf) const ;
+double CL_ps3_highscale(const double x, const double m2Q2, const double m2mu2, const int nf) const ;
 
-double DL_g3_highscale(double z, double m2Q2, double m2mu2, int nf);
-double DL_ps3_highscale(double z, double m2Q2, double m2mu2, int nf);
+double DL_g3_highscale(const double z, const double m2Q2, const double m2mu2, const int nf) const ;
+double DL_ps3_highscale(const double z, const double m2Q2, const double m2mu2, const int nf) const ;
 
-double D2_g3_highscale(double x, double m2Q2, double m2mu2, int nf, int v);
-double D2_ps3_highscale(double x, double m2Q2, double m2mu2, int nf, int v = 0);
+double D2_g3_highscale(const double x, const double m2Q2, const double m2mu2, const int nf, const int v) const ;
+double D2_ps3_highscale(const double x, const double m2Q2, const double m2mu2, const int nf, const int v = 0) const ;
 
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) coefficient functions at
@@ -96,9 +95,9 @@ double D2_ps3_highscale(double x, double m2Q2, double m2mu2, int nf, int v = 0);
 //------------------------------------------------------------------------------------------//
 
 double
-C2_ps3_highscale_klmv_paper(double x, double m2Q2, double m2mu2, int nf, int v);
+C2_ps3_highscale_klmv_paper(const double x, const double m2Q2, const double m2mu2, const int nf, const int v) const ;
 double
-D2_ps3_highscale_klmv_paper(double x, double m2Q2, double m2mu2, int nf, int v);
+D2_ps3_highscale_klmv_paper(const double x, const double m2Q2, const double m2mu2, const int nf, const int v) const ;
 
 };
 

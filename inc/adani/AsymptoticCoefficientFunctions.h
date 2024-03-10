@@ -23,15 +23,15 @@
 
 class AsymptoticCoefficientFunction : public HighTmpCoefficientFunction {
     public:
-        AsymptoticCoefficientFunction(const int order, const char kind, const char channel, const bool NLL = true);
-        AsymptoticCoefficientFunction() : AsymptoticCoefficientFunction(1, '2', 'g', true) {} ;
-        ~AsymptoticCoefficientFunction() {} ;
+        AsymptoticCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL = true);
+        // AsymptoticCoefficientFunction() : AsymptoticCoefficientFunction(1, '2', 'g', true) {} ;
+        ~AsymptoticCoefficientFunction() ;
 
-        double fx(double x, double m2Q2, double m2mu2, int nf) ;
+        double fx(const double x, const double m2Q2, const double m2mu2, const int nf) const ;
 
     private:
-        HighScaleCoefficientFunction highscale_ ;
-        PowerTermsCoefficientFunction powerterms_ ;
+        HighScaleCoefficientFunction* highscale_ ;
+        PowerTermsCoefficientFunction* powerterms_ ;
 
         // //==========================================================================================//
         // //                      Asymptotic coefficient functions

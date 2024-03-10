@@ -8,16 +8,20 @@
 using std::cout ;
 using std::endl ;
 
-ThresholdCoefficientFunction::ThresholdCoefficientFunction(const int order, const char kind, const char channel) : CoefficientFunction(order, kind, channel) {
+ThresholdCoefficientFunction::ThresholdCoefficientFunction(const int& order, const char& kind, const char& channel) : CoefficientFunction(order, kind, channel) {
     if (GetChannel() == 'q') {
         cout << "Error: Cq doesn't have a threshold limit!" << endl;
         exit(-1);
     }
 
-    C_LO_ = ExactCoefficientFunction(1, GetKind(), GetChannel());
+    exactlo_ = new ExactCoefficientFunction(1, GetKind(), GetChannel());
 }
 
-double ThresholdCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int nf) {
+ThresholdCoefficientFunction::~ThresholdCoefficientFunction() {
+    delete exactlo_;
+}
+
+double ThresholdCoefficientFunction::fx(const double x, const double m2Q2, const double m2mu2, const int nf) const {
 
     if (GetOrder() == 1 && GetKind() == '2') return C2_g1_threshold(x, m2Q2) ;
     else if (GetOrder() == 1 && GetKind() == 'L') {
@@ -54,7 +58,7 @@ double ThresholdCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int
 //  Eq. (3.15) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double ThresholdCoefficientFunction::C2_g1_threshold(double x, double m2Q2) {
+double ThresholdCoefficientFunction::C2_g1_threshold(const double x, const double m2Q2) const {
 
     double beta = sqrt(1. - 4. * m2Q2 * x / (1. - x));
     double xi = 1. / m2Q2;
@@ -66,7 +70,7 @@ double ThresholdCoefficientFunction::C2_g1_threshold(double x, double m2Q2) {
 //
 //------------------------------------------------------------------------------------------//
 
-double ThresholdCoefficientFunction::threshold_expansion_g2(double x, double m2Q2, double m2mu2) {
+double ThresholdCoefficientFunction::threshold_expansion_g2(const double x, const double m2Q2, const double m2mu2) const {
 
     double beta = sqrt(1. - 4. * m2Q2 * x / (1. - x));
 
@@ -81,7 +85,7 @@ double ThresholdCoefficientFunction::threshold_expansion_g2(double x, double m2Q
 //
 //------------------------------------------------------------------------------------------//
 
-double ThresholdCoefficientFunction::threshold_expansion_g2_const(double m2Q2, double m2mu2) {
+double ThresholdCoefficientFunction::threshold_expansion_g2_const(const double m2Q2, const double m2mu2) const {
 
     double xi = 1. / m2Q2;
 
@@ -97,12 +101,12 @@ double ThresholdCoefficientFunction::threshold_expansion_g2_const(double m2Q2, d
 //  Eq. (3.16) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double ThresholdCoefficientFunction::C2_g2_threshold(double x, double m2Q2, double m2mu2) {
+double ThresholdCoefficientFunction::C2_g2_threshold(const double x, const double m2Q2, const double m2mu2) const {
 
     // defining nf as nan since they it is not needed
     int nf = static_cast<int>(nan(""));
 
-    return C_LO_.fx(x, m2Q2, m2mu2, nf)
+    return exactlo_->fx(x, m2Q2, m2mu2, nf)
            * (threshold_expansion_g2(x, m2Q2, m2mu2)
               + threshold_expansion_g2_const(m2Q2, m2mu2));
 }
@@ -115,12 +119,12 @@ double ThresholdCoefficientFunction::C2_g2_threshold(double x, double m2Q2, doub
 //  Eq. (3.16) of Ref. [arXiv:1205.5727] with C20 -> CL0
 //------------------------------------------------------------------------------------------//
 
-double ThresholdCoefficientFunction::CL_g2_threshold(double x, double m2Q2, double m2mu2) {
+double ThresholdCoefficientFunction::CL_g2_threshold(const double x, const double m2Q2, const double m2mu2) const {
 
     // defining nf as nan since they it is not needed
     int nf = static_cast<int>(nan(""));
 
-    return C_LO_.fx(x, m2Q2, m2mu2, nf)
+    return exactlo_->fx(x, m2Q2, m2mu2, nf)
            * (threshold_expansion_g2(x, m2Q2, m2mu2)
               + threshold_expansion_g2_const(m2Q2, m2mu2));
 }
@@ -132,12 +136,12 @@ double ThresholdCoefficientFunction::CL_g2_threshold(double x, double m2Q2, doub
 //  Eq. (3.17) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double ThresholdCoefficientFunction::C2_g2_threshold_const(double x, double m2Q2, double m2mu2) {
+double ThresholdCoefficientFunction::C2_g2_threshold_const(const double x, const double m2Q2, const double m2mu2) const {
 
     // defining nf as nan since they it is not needed
     int nf = static_cast<int>(nan(""));
 
-    return C_LO_.fx(x, m2Q2, m2mu2, nf) * threshold_expansion_g2_const(m2Q2, m2mu2);
+    return exactlo_->fx(x, m2Q2, m2mu2, nf) * threshold_expansion_g2_const(m2Q2, m2mu2);
 }
 
 //==========================================================================================//
@@ -147,19 +151,19 @@ double ThresholdCoefficientFunction::C2_g2_threshold_const(double x, double m2Q2
 //  Eq. (3.17) of Ref. [arXiv:1205.5727] with C20 -> CL0
 //------------------------------------------------------------------------------------------//
 
-double ThresholdCoefficientFunction::CL_g2_threshold_const(double x, double m2Q2, double m2mu2) {
+double ThresholdCoefficientFunction::CL_g2_threshold_const(const double x, const double m2Q2, const double m2mu2) const {
 
     // defining nf as nan since they it is not needed
     int nf = static_cast<int>(nan(""));
 
-    return C_LO_.fx(x, m2Q2, m2mu2, nf) * threshold_expansion_g2_const(m2Q2, m2mu2);
+    return exactlo_->fx(x, m2Q2, m2mu2, nf) * threshold_expansion_g2_const(m2Q2, m2mu2);
 }
 
 //==========================================================================================//
 //
 //------------------------------------------------------------------------------------------//
 
-double ThresholdCoefficientFunction::threshold_expansion_g3(double x, double m2Q2, double m2mu2, int nf) {
+double ThresholdCoefficientFunction::threshold_expansion_g3(const double x, const double m2Q2, const double m2mu2, const int nf) const {
 
     double xi = 1. / m2Q2;
     double beta = sqrt(1. - 4. * m2Q2 * x / (1. - x));
@@ -230,7 +234,7 @@ double ThresholdCoefficientFunction::threshold_expansion_g3(double x, double m2Q
 //
 //------------------------------------------------------------------------------------------//
 
-double ThresholdCoefficientFunction::threshold_expansion_g3_const(double m2Q2, double m2mu2) {
+double ThresholdCoefficientFunction::threshold_expansion_g3_const(const double m2Q2, const double m2mu2) const {
 
     double xi = 1. / m2Q2;
     double Lm = log(m2mu2);
@@ -248,9 +252,9 @@ double ThresholdCoefficientFunction::threshold_expansion_g3_const(double m2Q2, d
 //  Eq. (3.18) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double ThresholdCoefficientFunction::C2_g3_threshold(double x, double m2Q2, double m2mu2, int nf) {
+double ThresholdCoefficientFunction::C2_g3_threshold(const double x, const double m2Q2, const double m2mu2, const int nf) const {
 
-    return C_LO_.fx(x, m2Q2, m2mu2, nf)
+    return exactlo_->fx(x, m2Q2, m2mu2, nf)
            * (threshold_expansion_g3(x, m2Q2, m2mu2, nf)
               + threshold_expansion_g3_const(m2Q2, m2mu2));
 }
@@ -262,9 +266,9 @@ double ThresholdCoefficientFunction::C2_g3_threshold(double x, double m2Q2, doub
 //  Eq. (3.18) of Ref. [arXiv:1205.5727] with C20 -> CL0
 //------------------------------------------------------------------------------------------//
 
-double ThresholdCoefficientFunction::CL_g3_threshold(double x, double m2Q2, double m2mu2, int nf) {
+double ThresholdCoefficientFunction::CL_g3_threshold(const double x, const double m2Q2, const double m2mu2, const int nf) const {
 
-    return C_LO_.fx(x, m2Q2, m2mu2, nf)
+    return exactlo_->fx(x, m2Q2, m2mu2, nf)
            * (threshold_expansion_g3(x, m2Q2, m2mu2, nf)
               + threshold_expansion_g3_const(m2Q2, m2mu2));
 }
@@ -276,12 +280,12 @@ double ThresholdCoefficientFunction::CL_g3_threshold(double x, double m2Q2, doub
 //  Eq. (3.19) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double ThresholdCoefficientFunction::C2_g3_threshold_const(double x, double m2Q2, double m2mu2) {
+double ThresholdCoefficientFunction::C2_g3_threshold_const(const double x, const double m2Q2, const double m2mu2) const {
 
     // defining nf as nan since they it is not needed
     int nf = static_cast<int>(nan(""));
 
-    return C_LO_.fx(x, m2Q2, m2mu2, nf) * threshold_expansion_g3_const(m2Q2, m2mu2);
+    return exactlo_->fx(x, m2Q2, m2mu2, nf) * threshold_expansion_g3_const(m2Q2, m2mu2);
 }
 
 //==========================================================================================//
@@ -291,12 +295,12 @@ double ThresholdCoefficientFunction::C2_g3_threshold_const(double x, double m2Q2
 //  Eq. (3.19) of Ref. [arXiv:1205.5727] with C20 -> CL0
 //------------------------------------------------------------------------------------------//
 
-double ThresholdCoefficientFunction::CL_g3_threshold_const(double x, double m2Q2, double m2mu2) {
+double ThresholdCoefficientFunction::CL_g3_threshold_const(const double x, const double m2Q2, const double m2mu2) const {
 
     // defining nf as nan since they it is not needed
     int nf = static_cast<int>(nan(""));
 
-    return C_LO_.fx(x, m2Q2, m2mu2, nf) * threshold_expansion_g3_const(m2Q2, m2mu2);
+    return exactlo_->fx(x, m2Q2, m2mu2, nf) * threshold_expansion_g3_const(m2Q2, m2mu2);
 }
 
 //==========================================================================================//
@@ -305,7 +309,7 @@ double ThresholdCoefficientFunction::CL_g3_threshold_const(double x, double m2Q2
 //  Eq. (3.10) from Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double ThresholdCoefficientFunction::c0(double xi) {
+double ThresholdCoefficientFunction::c0(const double xi) const {
 
     double y = sqrt(1. + 4. / xi);
 
@@ -344,7 +348,7 @@ double ThresholdCoefficientFunction::c0(double xi) {
 //  Eq. (3.11) from Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double ThresholdCoefficientFunction::c0_bar(double xi) {
+double ThresholdCoefficientFunction::c0_bar(const double xi) const {
 
     return 4. * CA * (2. + log(1. + xi / 4.)) - 4. / 3. * TR;
 }

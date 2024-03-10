@@ -6,25 +6,24 @@
 class CoefficientFunction {
 
     public:
-        CoefficientFunction(const int order, const char kind, const char channel) ;
-        CoefficientFunction() : CoefficientFunction(1, '2', 'g') {} ;
+        CoefficientFunction(const int& order, const char& kind, const char& channel) ;
+        // CoefficientFunction() : CoefficientFunction(1, '2', 'g') {} ;
         virtual ~CoefficientFunction() = 0 ;
 
-        virtual double fx(double x, double m2Q2, double m2mu2, int nf) = 0;
+        virtual double fx(const double x, const double m2Q2, const double m2mu2, const int nf) const = 0 ;
+        virtual double MuIndependentTerms(const double x, const double m2Q2, const int nf) const {return fx(x, m2Q2, 1., nf);} ;
 
         // get methods
-        int GetOrder() { return order_; } ;
-        char GetKind() { return kind_; } ;
-        char GetChannel() { return channel_; } ;
+        int GetOrder() const { return order_; } ;
+        char GetKind() const { return kind_; } ;
+        char GetChannel() const { return channel_; } ;
 
         // set methods
-        void SetOrder(const int order) ;
-        void SetKind(const char kind) ;
-        void SetChannel(const char channel) ;
+        void SetOrder(const int& order) ;
+        void SetKind(const char& kind) ;
+        void SetChannel(const char& channel) ;
 
         // virtual void Set_fx() = 0;
-
-        double ConvoluteWithSplittingFunction(const SplittingFunction split) ;
 
     private:
         int order_ ; // order = 1, 2, or 3

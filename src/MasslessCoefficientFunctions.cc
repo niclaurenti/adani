@@ -8,7 +8,7 @@
 using std::cout;
 using std::endl;
 
-double MasslessCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int nf) {
+double MasslessCoefficientFunction::fx(const double x, const double m2Q2, const double m2mu2, const int nf) const {
 
     if (GetOrder() == 1 && GetKind() == '2' && GetChannel() == 'g') return C2_g1_massless(x, nf);
     else if (GetOrder() == 1 && GetKind() == 'L' && GetChannel() == 'g') return CL_g1_massless(x, nf);
@@ -35,7 +35,7 @@ double MasslessCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int 
 //  Eq. (4.4) of Ref. [hep-ph/0504242v1]
 //------------------------------------------------------------------------------------------//
 
-double MasslessCoefficientFunction::C2_g1_massless(double x, int nf) {
+double MasslessCoefficientFunction::C2_g1_massless(const double x, const int nf) const {
 
     return 4. * nf * TR
            * (-8. * x * x + 8. * x - 1.
@@ -49,7 +49,7 @@ double MasslessCoefficientFunction::C2_g1_massless(double x, int nf) {
 // Eq. (3) of Ref. [arXiv:hep-ph/0411112v2]
 //------------------------------------------------------------------------------------------//
 
-double MasslessCoefficientFunction::CL_g1_massless(double x, int nf) { return 16. * nf * TR * x * (1. - x); }
+double MasslessCoefficientFunction::CL_g1_massless(const double x, const int nf) const { return 16. * nf * TR * x * (1. - x); }
 
 //==========================================================================================//
 //  Massless gluon coefficient functions for F2 at
@@ -58,7 +58,7 @@ double MasslessCoefficientFunction::CL_g1_massless(double x, int nf) { return 16
 //  Eq. (B.6) of Ref. [hep-ph/0504242v1]
 //------------------------------------------------------------------------------------------//
 
-double MasslessCoefficientFunction::C2_g2_massless(double x, int nf) {
+double MasslessCoefficientFunction::C2_g2_massless(const double x, const int nf) const {
 
     double x2 = x * x;
     double x3 = x2 * x;
@@ -143,7 +143,7 @@ double MasslessCoefficientFunction::C2_g2_massless(double x, int nf) {
 //  Eq. (B.7) of Ref. [hep-ph/0504242v1]
 //------------------------------------------------------------------------------------------//
 
-double MasslessCoefficientFunction::C2_ps2_massless(double x, int nf) {
+double MasslessCoefficientFunction::C2_ps2_massless(const double x, const int nf) const {
 
     double x2 = x * x;
 
@@ -183,7 +183,7 @@ double MasslessCoefficientFunction::C2_ps2_massless(double x, int nf) {
 //  Eq. (B.14) of Ref. [hep-ph/0504242v1]
 //------------------------------------------------------------------------------------------//
 
-double MasslessCoefficientFunction::CL_g2_massless(double x, int nf) {
+double MasslessCoefficientFunction::CL_g2_massless(const double x, const int nf) const {
 
     double x2 = x * x;
     double x3 = x2 * x;
@@ -222,7 +222,7 @@ double MasslessCoefficientFunction::CL_g2_massless(double x, int nf) {
 //  Eq. (B.15) of Ref. [hep-ph/0504242v1]
 //------------------------------------------------------------------------------------------//
 
-double MasslessCoefficientFunction::CL_ps2_massless(double x, int nf) {
+double MasslessCoefficientFunction::CL_ps2_massless(const double x, const int nf) const {
 
     double x2 = x * x;
 
@@ -248,7 +248,7 @@ double MasslessCoefficientFunction::CL_ps2_massless(double x, int nf) {
 //  Eq. (B.9) of Ref. [hep-ph/0504242v1]
 //------------------------------------------------------------------------------------------//
 
-double MasslessCoefficientFunction::C2_g3_massless(double x, int nf) {
+double MasslessCoefficientFunction::C2_g3_massless(const double x, const int nf) const {
 
     // the commented varibles are needed for the flav term
 
@@ -1628,7 +1628,7 @@ double MasslessCoefficientFunction::C2_g3_massless(double x, int nf) {
 //  Eq. (B.10) of Ref. [hep-ph/0504242v1]
 //------------------------------------------------------------------------------------------//
 
-double MasslessCoefficientFunction::C2_ps3_massless(double x, int nf) {
+double MasslessCoefficientFunction::C2_ps3_massless(const double x, const int nf) const {
 
     // the commented varibles are needed for the flav term
 
@@ -2217,7 +2217,7 @@ double MasslessCoefficientFunction::C2_ps3_massless(double x, int nf) {
 //  Eq. (B.17) of Ref. [hep-ph/0504242v1]
 //------------------------------------------------------------------------------------------//
 
-double MasslessCoefficientFunction::CL_g3_massless(double x, int nf) {
+double MasslessCoefficientFunction::CL_g3_massless(const double x, const int nf) const {
 
     // the commented varibles are needed for the flav term
 
@@ -2915,7 +2915,7 @@ double MasslessCoefficientFunction::CL_g3_massless(double x, int nf) {
 //  Eq. (B.18) of Ref. [hep-ph/0504242v1]
 //------------------------------------------------------------------------------------------//
 
-double MasslessCoefficientFunction::CL_ps3_massless(double x, int nf) {
+double MasslessCoefficientFunction::CL_ps3_massless(const double x, const int nf) const {
 
     // the commented varibles are needed for the flav term
 
@@ -3250,7 +3250,7 @@ double MasslessCoefficientFunction::CL_ps3_massless(double x, int nf) {
 // u, d, s, c, b, t
 double charges[] = { 2. / 3., -1. / 3., -1. / 3., 2. / 3., -1. / 3., 2. / 3. };
 
-double MasslessCoefficientFunction::fl11g(int nf) {
+double MasslessCoefficientFunction::fl11g(const int nf) const {
 
     double eavg = 0., e2avg = 0.;
 
@@ -3264,7 +3264,7 @@ double MasslessCoefficientFunction::fl11g(int nf) {
     return eavg * eavg / e2avg;
 }
 
-double MasslessCoefficientFunction::fl11ps(int nf) {
+double MasslessCoefficientFunction::fl11ps(const int nf) const {
 
     double eavg = 0., e2avg = 0.;
 
@@ -3287,7 +3287,7 @@ double MasslessCoefficientFunction::fl11ps(int nf) {
 //------------------------------------------------------------------------------------------//
 
 /*
-double MasslessCoefficientFunction::C2_g2_massless_param(double x, int nf) {
+double MasslessCoefficientFunction::C2_g2_massless_param(const double x, const int nf) const {
 
     double x1 = 1. - x;
     double L0 = log(x);
@@ -3309,7 +3309,7 @@ double MasslessCoefficientFunction::C2_g2_massless_param(double x, int nf) {
 //  Eq. (4.9) of Ref. [hep-ph/0504242v1]
 //------------------------------------------------------------------------------------------//
 /*
-double MasslessCoefficientFunction::C2_ps2_massless_param(double x, int nf) {
+double MasslessCoefficientFunction::C2_ps2_massless_param(const double x, const int nf) const {
 
     double x1 = 1 - x;
     double L0 = log(x);
@@ -3335,7 +3335,7 @@ double MasslessCoefficientFunction::C2_ps2_massless_param(double x, int nf) {
 //  Eq. (6) of Ref. [arXiv:hep-ph/0411112v2]
 //------------------------------------------------------------------------------------------//
 /*
-double MasslessCoefficientFunction::CL_g2_massless_param(double x, int nf) {
+double MasslessCoefficientFunction::CL_g2_massless_param(const double x, const int nf) const {
 
     double L0 = log(x);
     double L02 = L0 * L0;
@@ -3358,7 +3358,7 @@ double MasslessCoefficientFunction::CL_g2_massless_param(double x, int nf) {
 //  Eq. (5) of Ref. [arXiv:hep-ph/0411112v2]
 //------------------------------------------------------------------------------------------//
 /*
-double MasslessCoefficientFunction::CL_ps2_massless_param(double x, int nf) {
+double MasslessCoefficientFunction::CL_ps2_massless_param(const double x, const int nf) const {
 
     double L0 = log(x);
     double L02 = L0 * L0;
@@ -3381,8 +3381,8 @@ double MasslessCoefficientFunction::CL_ps2_massless_param(double x, int nf) {
 //------------------------------------------------------------------------------------------//
 /*
 double MasslessCoefficientFunction::C2_g3_massless_param(
-    double x, int nf
-) { // remember that there is a delta(x1) that has been omitted
+    const double x, const int nf
+) const { // remember that there is a delta(x1) that has been omitted
 
     // double fl_g_11 = fl11g(nf) ;
 
@@ -3442,8 +3442,8 @@ double MasslessCoefficientFunction::C2_g3_massless_param(
 //------------------------------------------------------------------------------------------//
 /*
 double MasslessCoefficientFunction::C2_ps3_massless_param(
-    double x, int nf
-) { // remember that there is a delta(x1) that has been omitted
+    const double x, const int nf
+) const { // remember that there is a delta(x1) that has been omitted
 
     // double fl_ps_11 = fl11ps(nf) ;
 
@@ -3500,8 +3500,8 @@ double MasslessCoefficientFunction::C2_ps3_massless_param(
 //------------------------------------------------------------------------------------------//
 /*
 double MasslessCoefficientFunction::CL_g3_massless_param(
-    double x, int nf
-) { // remember that there is a delta(x1) that has been omitted
+    const double x, const int nf
+) const { // remember that there is a delta(x1) that has been omitted
 
     // double fl_g_11 = fl11g(nf) ;
 
@@ -3557,8 +3557,8 @@ double MasslessCoefficientFunction::CL_g3_massless_param(
 //------------------------------------------------------------------------------------------//
 /*
 double MasslessCoefficientFunction::CL_ps3_massless_param(
-    double x, int nf
-) { // remember that there is a delta(x1) that has been omitted
+    const double x, const int nf
+) const { // remember that there is a delta(x1) that has been omitted
 
     // double fl_ps_11 = fl11ps(nf) ;
 
