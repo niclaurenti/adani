@@ -29,11 +29,11 @@
 //          C_highenergy_highscale
 //------------------------------------------------------------------------------------------//
 
-class HighTmpCoefficientFunction : public CoefficientFunction {
+class AbstractHighEnergyCoefficientFunction : public CoefficientFunction {
     public:
-        HighTmpCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL = true) ;
-        // HighTmpCoefficientFunction() : HighTmpCoefficientFunction(1, '2', 'g', true) {} ;
-        ~HighTmpCoefficientFunction() {};
+        AbstractHighEnergyCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL = true) ;
+        // AbstractHighEnergyCoefficientFunction() : AbstractHighEnergyCoefficientFunction(1, '2', 'g', true) {} ;
+        ~AbstractHighEnergyCoefficientFunction() {};
 
         // get methods
         bool GetNLL() const {return NLL_;};
@@ -54,11 +54,11 @@ class HighTmpCoefficientFunction : public CoefficientFunction {
         double a_21(const int nf) const;
 };
 
-class HighEnergyCoefficientFunction : public HighTmpCoefficientFunction {
+class HighEnergyCoefficientFunction : public AbstractHighEnergyCoefficientFunction {
 
     public:
-        HighEnergyCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL = true) : HighTmpCoefficientFunction(order, kind, channel, NLL) {};
-        // HighEnergyCoefficientFunction() : HighTmpCoefficientFunction() {} ;
+        HighEnergyCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL = true) : AbstractHighEnergyCoefficientFunction(order, kind, channel, NLL) {};
+        // HighEnergyCoefficientFunction() : AbstractHighEnergyCoefficientFunction() {} ;
         ~HighEnergyCoefficientFunction() {} ;
 
         double fx(const double x, const double m2Q2, const double m2mu2, const int nf) const ;
@@ -100,11 +100,11 @@ class HighEnergyCoefficientFunction : public HighTmpCoefficientFunction {
 
 };
 
-class HighEnergyHighScaleCoefficientFunction : public HighTmpCoefficientFunction {
+class HighEnergyHighScaleCoefficientFunction : public AbstractHighEnergyCoefficientFunction {
 
     public:
-        HighEnergyHighScaleCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL = true) : HighTmpCoefficientFunction(order, kind, channel, NLL) {};
-        // HighEnergyHighScaleCoefficientFunction() : HighTmpCoefficientFunction() {} ;
+        HighEnergyHighScaleCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL = true) : AbstractHighEnergyCoefficientFunction(order, kind, channel, NLL) {};
+        // HighEnergyHighScaleCoefficientFunction() : AbstractHighEnergyCoefficientFunction() {} ;
         ~HighEnergyHighScaleCoefficientFunction() {} ;
 
         double fx(const double x, const double m2Q2, const double m2mu2, const int nf) const ;
@@ -158,11 +158,11 @@ class HighEnergyHighScaleCoefficientFunction : public HighTmpCoefficientFunction
 
 };
 
-class PowerTermsCoefficientFunction : public HighTmpCoefficientFunction {
+class PowerTermsCoefficientFunction : public AbstractHighEnergyCoefficientFunction {
 
     public:
         PowerTermsCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL = true);
-        // PowerTermsCoefficientFunction() : HighTmpCoefficientFunction() {} ;
+        // PowerTermsCoefficientFunction() : AbstractHighEnergyCoefficientFunction() {} ;
         ~PowerTermsCoefficientFunction() ;
 
         double fx(const double x, const double m2Q2, const double m2mu2, const int nf) const;

@@ -12,39 +12,42 @@ using std::endl ;
 
 ExactCoefficientFunction::ExactCoefficientFunction(const int& order, const char& kind, const char& channel, const int& method_flag, const double& abserr, const double& relerr, const int& MCcalls, const int& dim) : CoefficientFunction(order, kind, channel) {
 
-    // if (GetOrder() == 3) {
-    //     cout <<  "Error: exact coefficient functions are not known at O(as^3)!" << endl;
-    //     exit(-1);
-    // }
-
     SetMethodFlag(method_flag);
     SetAbserr(abserr);
     SetRelerr(relerr);
     SetMCcalls(MCcalls);
     SetDim(dim);
 
-    if (GetOrder() == 1) {
-        convolution_ = NULL;
-    } else if (GetOrder() == 2) {
+    gluon_lo_ = nullptr;
+    gluon_nlo_ = nullptr;
+    quark_nlo_ = nullptr;
+
+    if (GetOrder() > 1) gluon_lo_ = new ExactCoefficientFunction(1, GetKind(), 'g');
+    if (GetOrder() > 2) {
+        gluon_nlo_ = new ExactCoefficientFunction(2, GetKind(), 'g');
+        quark_nlo_ = new ExactCoefficientFunction(2, GetKind(), 'q');
+    }
+
+    if (GetOrder() == 2) {
         if (GetChannel() == 'q') {
-            convolutions_.push_back( Convolution(gluon_leadingorder_, &SplittingFunction(0, 'g', 'q')) );
-        } else {
-            convolutions_.push_back( Convolution(gluon_leadingorder_, &SplittingFunction(0, 'g', 'g')) );
+            convolutions_.push_back( &Convolution(gluon_lo_, &SplittingFunction(0, 'g', 'q'), abserr, relerr, dim) );
+        } else if (GetChannel() == 'g'){
+            convolutions_.push_back( new Convolution(gluon_lo_, &SplittingFunction(0, 'g', 'g'), abserr, relerr, dim) );
         }
     } else if (GetOrder() == 3) {
         if (GetChannel() == 'q') {
-            convolutions_.push_back( Convolution(gluon_leadingorder_, &SplittingFunction(1, 'g', 'q')) );
-            convolutions_.push_back( Convolution(ExactCoefficientFunction(2, GetKind(), 'g'), &SplittingFunction(0, 'g', 'q')) );
-            convolutions_.push_back( Convolution(ExactCoefficientFunction(2, GetKind(), 'q'), &SplittingFunction(0, 'q', 'q')) );
-            convolutions_.push_back( Convolution(gluon_leadingorder_, &ConvolutedSplittingFunctions(1, 'g', 'q', 'q')) );
-            convolutions_.push_back( Convolution(gluon_leadingorder_, SplittingFunction(0, 'g', 'q')) );
+            convolutions_.push_back( new Convolution(gluon_lo_, &SplittingFunction(1, 'g', 'q'), abserr, relerr, dim) );
+            convolutions_.push_back( new Convolution(gluon_nlo_, &SplittingFunction(0, 'g', 'q'), abserr, relerr, dim) );
+            convolutions_.push_back( new Convolution(quark_nlo_, &SplittingFunction(0, 'q', 'q'), abserr, relerr, dim) );
+            convolutions_.push_back( new Convolution(gluon_lo_, &ConvolutedSplittingFunctions(1, 'g', 'q', 'q'), abserr, relerr, dim) );
+            convolutions_.push_back( new Convolution(gluon_lo_, &SplittingFunction(0, 'g', 'q'), abserr, relerr, dim) );
         } else {
-            convolutions_.push_back( Convolution(gluon_leadingorder_, SplittingFunction(1, 'g', 'g')) );
-            convolutions_.push_back( Convolution(ExactCoefficientFunction(2, GetKind(), 'q'), &SplittingFunction(0, 'q', 'g')) );
-            convolutions_.push_back( Convolution(ExactCoefficientFunction(2, GetKind(), 'g'), &SplittingFunction(0, 'g', 'g')) );
-            // MC integral
-            convolutions_.push_back( Convolution(gluon_leadingorder_, &ConvolutedSplittingFunctions(0, 'g', 'q', 'g')) );
-            convolutions_.push_back( Convolution(gluon_leadingorder_, &SplittingFunction(0, 'g', 'g')) );
+            convolutions_.push_back( new Convolution(gluon_lo_, &SplittingFunction(1, 'g', 'g'), abserr, relerr, dim) );
+            convolutions_.push_back( new Convolution(quark_nlo_, &SplittingFunction(0, 'q', 'g'), abserr, relerr, dim) );
+            convolutions_.push_back( new Convolution(gluon_nlo_, &SplittingFunction(0, 'g', 'g'), abserr, relerr, dim) );
+            convolutions_.push_back( new MonteCarloDoubleConvolution(gluon_lo_, &SplittingFunction(0, 'g', 'g'), abserr, relerr, dim, MCcalls) );
+            convolutions_.push_back( new Convolution(gluon_lo_, &ConvolutedSplittingFunctions(0, 'g', 'q', 'g'), abserr, relerr, dim) );
+            convolutions_.push_back( new Convolution(gluon_lo_, &SplittingFunction(0, 'g', 'g'), abserr, relerr, dim) );
         }
     }
 
@@ -73,11 +76,11 @@ double ExactCoefficientFunction::MuIndependentTerms(const double x, const double
         else if (GetKind() == 'L') return CL_g1(x, m2Q2) ;
     } else if (GetOrder() == 2) {
         if (GetKind() == '2') {
-            if (GetChannel() == 'g') return return C2_g20(x, m2Q2) ;
-            else if (GetChannel() == 'q') return return C2_ps20(x, m2Q2) ;
+            if (GetChannel() == 'g') return C2_g20(x, m2Q2) ;
+            else if (GetChannel() == 'q') return C2_ps20(x, m2Q2) ;
         } else if (GetKind() == 'L') {
-            if (GetChannel() == 'g') return return CL_g20(x, m2Q2) ;
-            else if (GetChannel() == 'q') return return CL_ps20(x, m2Q2) ;
+            if (GetChannel() == 'g') return CL_g20(x, m2Q2) ;
+            else if (GetChannel() == 'q') return CL_ps20(x, m2Q2) ;
         }
     } else if (GetOrder() == 3){
         cout << "Error: mu independent terms are not known at O(as^3)!" << endl;
@@ -88,8 +91,8 @@ double ExactCoefficientFunction::MuIndependentTerms(const double x, const double
 double ExactCoefficientFunction::MuDependentTerms(const double x, const double m2Q2, const double m2mu2, const int nf) const {
     if (GetOrder() == 1) return 0.;
     else if (GetOrder() == 2) {
-        if (GetChannel() == 'q') return convolutions_[0].convolute(x, m2Q2, nf) * log(1. / m2mu2) ;
-        else return (convolutions_[0].convolute(x, m2Q2, nf) - beta(0, nf) * gluon_leadingorder_ -> fx(x, m2Q2, static_cast<double>(nan("")), nf)) * log(1. / m2mu2) ;
+        if (GetChannel() == 'q') return C2 ;
+        else return (convolutions_[0] -> Convolute(x, m2Q2, nf) - beta(0, nf) * gluon_lo_ -> fx(x, m2Q2, static_cast<double>(nan("")), nf)) * log(1. / m2mu2) ;
     } else if (GetOrder() == 3) {
         if (GetChannel() == 'q') {
 
@@ -327,7 +330,7 @@ double ExactCoefficientFunction::C2_ps20(const double x, const double m2Q2) cons
 
 double ExactCoefficientFunction::C2_ps21(const double x, const double m2Q2) const {
 
-    return -C2_g1_x_Pgq0(x, m2Q2);
+    return - convolutions_[0].Convolute(x, m2Q2, nf) * log(1. / m2mu2);
     // The minus sign comes from the fact that in [arXiv:1205.5727]
     // the expansion is performed in terms of log(m^2/mu^2)
     // (even if it says the opposite) but we are

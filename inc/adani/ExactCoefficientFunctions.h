@@ -38,7 +38,6 @@ class ExactCoefficientFunction : public CoefficientFunction {
 
     public:
         ExactCoefficientFunction(const int& order, const char& kind, const char& channel, const int& method_flag = 1, const double& abserr = 1e-3, const double& relerr = 1e-3, const int& MCcalls = 25000, const int& dim = 1000) ;
-        // ExactCoefficientFunction() : ExactCoefficientFunction(1, '2', 'g') {} ;
         ~ExactCoefficientFunction() {} ;
 
         // get methods
@@ -68,8 +67,11 @@ class ExactCoefficientFunction : public CoefficientFunction {
         int MCcalls_ ;
         int dim_ ;
 
-        std::vector<Convolution> convolutions_;
-        ExactCoefficientFunction* gluon_leadingorder_ = new ExactCoefficientFunction(1, GetKind(), 'g');
+        std::vector<AbstractConvolution*> convolutions_;
+
+        ExactCoefficientFunction* gluon_lo_ ;
+        ExactCoefficientFunction* gluon_nlo_ ;
+        ExactCoefficientFunction* quark_nlo_ ;
 
         //==========================================================================================//
         //                      Exact massive coefficient functions

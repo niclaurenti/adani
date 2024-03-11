@@ -7,7 +7,7 @@
 using std::cout;
 using std::endl;
 
-HighTmpCoefficientFunction::HighTmpCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL) : CoefficientFunction(order, kind, channel) {
+AbstractHighEnergyCoefficientFunction::AbstractHighEnergyCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL) : CoefficientFunction(order, kind, channel) {
 
     SetNLL(NLL);
 
@@ -77,7 +77,7 @@ double HighEnergyHighScaleCoefficientFunction::fx(const double x, const double m
     }
 }
 
-PowerTermsCoefficientFunction::PowerTermsCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL) : HighTmpCoefficientFunction(order, kind, channel, NLL) {
+PowerTermsCoefficientFunction::PowerTermsCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL) : AbstractHighEnergyCoefficientFunction(order, kind, channel, NLL) {
     highenergy_ = new HighEnergyCoefficientFunction(GetOrder(), GetKind(), GetChannel(), GetNLL());
     highenergyhighscale_ = new HighEnergyHighScaleCoefficientFunction(GetOrder(), GetKind(), GetChannel(), GetNLL());
 }
@@ -950,11 +950,11 @@ double HighEnergyHighScaleCoefficientFunction::CL_ps3_highenergy_highscaleLL(con
 //                  Color factors O(alpha_s^3)
 //------------------------------------------------------------------------------------------//
 
-double HighTmpCoefficientFunction::a_10(const int nf) const {
+double AbstractHighEnergyCoefficientFunction::a_10(const int nf) const {
 
     return -(11. * CA + 2. * nf * (1. - 2. * CF / CA)) / 12.;
 }
 
-double HighTmpCoefficientFunction::a_11() const { return CA; }
+double AbstractHighEnergyCoefficientFunction::a_11() const { return CA; }
 
-double HighTmpCoefficientFunction::a_21(const int nf) const { return nf * (26. * CF - 23. * CA) / 36.; }
+double AbstractHighEnergyCoefficientFunction::a_21(const int nf) const { return nf * (26. * CF - 23. * CA) / 36.; }

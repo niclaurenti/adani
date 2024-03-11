@@ -9,40 +9,31 @@
 #include <cmath>
 #include <iostream>
 
-// #define REL 0.001
-// #define ABS 0.001
-#define CALLS 25000
-// #define DIM 1000
+using std::cout;
+using std::endl;
 
 // TODO : in all the numerical convolutions the gsl default error is first
 // switched off and then swithced on again: see if it can be done once for all
 
-Convolution::Convolution(const CoefficientFunction& coefffunc, const SplittingFunction& splitfunc, const double& abserr, const double& relerr, const int& dim) {
-    abserr_ = abserr;
-    relerr_ = relerr;
-    dim_ = dim;
-    
-    coefffunc_ = &coefffunc;
-    splitfunc_ = &splitfunc;
-}
+// AbstractConvolution::AbstractConvolution(const CoefficientFunction& coefffunc, const SplittingFunction& splitfunc, const double& abserr, const double& relerr, const int& dim) {
+//     SetAbserr(abserr);
+//     SetRelerr(relerr);
+//     SetDim(dim);
 
-Convolution::Convolution(const CoefficientFunction* coefffunc, const SplittingFunction* splitfunc, const double& abserr, const double& relerr, const int& dim) {
+//     coefffunc_ = &coefffunc;
+//     splitfunc_ = &splitfunc;
+// }
+
+AbstractConvolution::AbstractConvolution(CoefficientFunction* coefffunc, SplittingFunction* splitfunc, const double& abserr, const double& relerr, const int& dim) {
     abserr_ = abserr;
     relerr_ = relerr;
     dim_ = dim;
-    
+
     coefffunc_ = coefffunc;
     splitfunc_ = splitfunc;
 }
 
-Convolution::~Convolution() {
-    
-    delete coefffunc_;
-    delete splitfunc_;
-    
-}
-
-void Convolution::SetAbserr(const double& abserr) {
+void AbstractConvolution::SetAbserr(const double& abserr) {
     // check abserr
     if (abserr <= 0) {
         cout << "Error: abserr must be positive. Got " << abserr << endl;
@@ -51,7 +42,7 @@ void Convolution::SetAbserr(const double& abserr) {
     abserr_ = abserr;
 }
 
-void Convolution::SetRelerr(const double& relerr) {
+void AbstractConvolution::SetRelerr(const double& relerr) {
     // check relerr
     if (relerr <= 0) {
         cout << "Error: relerr must be positive. Got " << relerr << endl;
@@ -60,16 +51,44 @@ void Convolution::SetRelerr(const double& relerr) {
     relerr_ = relerr;
 }
 
-void Convolution::SetDim(const int& dim) {
+void AbstractConvolution::SetDim(const int& dim) {
     // check dim
     if (dim <= 0) {
-        cout << "Error: MCcalls must be positive. Got " << dim << endl;
+        cout << "Error: dim must be positive. Got " << dim << endl;
         exit(-1);
     }
     dim_ = dim;
 }
 
-double Convolution::regular_integrand(double z, void *p) {
+double AbstractConvolution::Convolute(double x, double m2Q2, int nf) const {
+    return RegularPart(x, m2Q2, nf) + SingularPart(x, m2Q2, nf) + LocalPart(x, m2Q2, nf) ;
+}
+
+
+// double regular_integrand(double z, void *p) {
+
+//     struct function_params *params = (struct function_params *)p;
+
+//     double m2Q2 = (params->m2Q2);
+//     double x = (params->x);
+//     int nf = (params->nf);
+
+//     return coefffunc_ -> MuIndependentTerms(z, m2Q2, nf) * splitfunc_ -> Regular(x / z, nf) / z ;
+// }
+
+// double singular_integrand(double z, void *p) {
+
+//     struct function_params *params = (struct function_params *)p;
+
+//     double m2Q2 = (params->m2Q2);
+//     double x = (params->x);
+//     int nf = (params->nf);
+
+//     return splitfunc_ -> Regular(z, nf) * (coefffunc_-> MuIndependentTerms(x / z, m2Q2, nf) - coefffunc_ -> MuIndependentTerms(x, m2Q2, nf) ) ;
+
+// }
+
+double Convolution::regular_integrand(double z, void *p) const {
 
     struct function_params *params = (struct function_params *)p;
 
@@ -80,7 +99,7 @@ double Convolution::regular_integrand(double z, void *p) {
     return coefffunc_ -> MuIndependentTerms(z, m2Q2, nf) * splitfunc_ -> Regular(x / z, nf) / z ;
 }
 
-double Convolution::singular_integrand(double z, void *p) {
+double Convolution::singular_integrand(double z, void *p) const {
     struct function_params *params = (struct function_params *)p;
 
     double m2Q2 = (params->m2Q2);
@@ -101,14 +120,18 @@ double Convolution::singular_integrand(double z, void *p) {
 //  will not be revealed)
 //------------------------------------------------------------------------------------------//
 
-double Convolution::convolute(double x, double m2Q2, int nf) const {
-    
+double Convolution::RegularPart(double x, double m2Q2, int nf) const {
     double x_max = 1. / (1. + 4 * m2Q2);
-    
+
+    double abserr = GetAbserr();
+    double relerr = GetRelerr();
+    int dim = GetDim();
+
     // TODO: consider moving w in the data members
-    gsl_integration_workspace *w = gsl_integration_workspace_alloc(dim_);
-    
-    double regular, singular, local, error;
+    gsl_integration_workspace *w = gsl_integration_workspace_alloc(dim);
+
+    double regular, error;
+
     struct function_params params = { x, m2Q2, nf };
 
     gsl_function F;
@@ -119,22 +142,186 @@ double Convolution::convolute(double x, double m2Q2, int nf) const {
     gsl_set_error_handler_off();
 
     gsl_integration_qag(
-        &F, x, x_max, abserr_, relerr_, dim_, 4, w, &regular, &error
+        &F, x, x_max, abserr, relerr, dim, 4, w, &regular, &error
     );
 
+    gsl_integration_workspace_free(w);
+
+    return regular;
+}
+
+double Convolution::SingularPart(double x, double m2Q2, int nf) const {
+
+    double x_max = 1. / (1. + 4 * m2Q2);
+
+    double abserr = GetAbserr();
+    double relerr = GetRelerr();
+    int dim = GetDim();
+
+    // TODO: consider moving w in the data members
+    gsl_integration_workspace *w = gsl_integration_workspace_alloc(dim);
+
+    double singular, error;
+
+    struct function_params params = { x, m2Q2, nf };
+
+    gsl_function F;
     F.function = &singular_integrand;
+    F.params = &params;
+
+    gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
+    gsl_set_error_handler_off();
+
     gsl_integration_qag(
-        &F, x / x_max, 1., abserr_, relerr_, dim_, 4, w, &singular, &error
+        &F, x / x_max, 1., abserr, relerr, dim, 4, w, &singular, &error
     );
 
     gsl_set_error_handler(old_handler);
 
-    local = coefffunc_->MuIndependentTerms(x, m2Q2, m2mu2, nf) * (splitfunc_->Local(nf) - splitfunc_->SingularIntegrated(x / x_max, nf));
+    gsl_integration_workspace_free(w);
+
+    return singular;
+}
+
+double Convolution::LocalPart(double x, double m2Q2, int nf) const {
+
+    double x_max = 1. / (1. + 4 * m2Q2);
+
+    double local, error;
+
+    local = coefffunc_->MuIndependentTerms(x, m2Q2, nf) * (splitfunc_->Local(nf) - splitfunc_->SingularIntegrated(x / x_max, nf));
+
+    return local;
+
+}
+
+MonteCarloDoubleConvolution::MonteCarloDoubleConvolution(CoefficientFunction* coefffunc, SplittingFunction* splitfunc, const double& abserr, const double& relerr, const int& dim, const int& MCcalls) : AbstractConvolution(coefffunc, splitfunc, abserr, relerr, dim) {
+
+    SetMCcalls(MCcalls);
+    convolution_ = new Convolution(coefffunc, splitfunc, abserr, relerr, dim);
+}
+
+MonteCarloDoubleConvolution::~MonteCarloDoubleConvolution() {
+
+    delete convolution_;
+}
+
+void MonteCarloDoubleConvolution::SetMCcalls(const int& MCcalls) {
+    // check dim
+    if (MCcalls <= 0) {
+        cout << "Error: MCcalls must be positive. Got " << MCcalls << endl;
+        exit(-1);
+    }
+    MCcalls_ = MCcalls;
+}
+
+double MonteCarloDoubleConvolution::regular1_integrand(double z[], size_t dim, void *p) const {
+
+    struct function_params *params = (struct function_params *)p;
+
+    double m2Q2 = (params->m2Q2);
+    double x = (params->x);
+    int nf = (params->nf);
+
+    double z1 = z[0], z2 = z[1];
+
+    if (z2 > z1) {
+        return 1. / (z1 * z2) * splitfunc_ -> Regular(x / z1, nf) * splitfunc_ -> Regular(z1 / z2, nf)
+               * coefffunc_-> MuIndependentTerms(z2, m2Q2, nf);
+    } else {
+        return 0.;
+    }
+}
+
+double MonteCarloDoubleConvolution::regular2_integrand(double z[], size_t dim, void *p) const {
+    struct function_params *params = (struct function_params *)p;
+
+    double m2Q2 = (params->m2Q2);
+    double x = (params->x);
+    int nf = (params->nf);
+
+    double z1 = z[0], z2 = z[1];
+
+    if (z2 > z1) {
+        return 1. / (z1 * z2) * splitfunc_ -> Regular(x / z1, nf) * splitfunc_ -> Singular(z1 / z2, nf)
+               * (coefffunc_-> MuIndependentTerms(z2, m2Q2, nf) - z1 / z2 * coefffunc_-> MuIndependentTerms(z1, m2Q2, nf));
+    } else {
+        return 0.;
+    }
+}
+
+double MonteCarloDoubleConvolution::regular3_integrand(double z, void *p) const {
+
+    struct function_params *params = (struct function_params *)p;
+
+    double m2Q2 = (params->m2Q2);
+    double x = (params->x);
+    int nf = (params->nf);
+
+    double x_max = 1. / (1. + 4 * m2Q2);
+
+    return -1. / z * splitfunc_ -> Regular(x / z, nf) * coefffunc_-> MuIndependentTerms(z, m2Q2, nf)
+           * splitfunc_ -> SingularIntegrated(z / x_max, nf);
+}
+
+double MonteCarloDoubleConvolution::RegularPart(double x, double m2Q2, int nf) const {
+
+    double x_max = 1. / (1. + 4 * m2Q2);
+    struct function_params params = { x, m2Q2, nf };
+
+    double xl[2] = { x, x };
+    double xu[2] = { x_max, x_max };
+
+    double err, regular1, regular2, regular3, regular4;
+
+    gsl_monte_vegas_state *s = gsl_monte_vegas_alloc(2);
+
+    const gsl_rng_type *T;
+    gsl_rng *r;
+    gsl_rng_env_setup();
+    T = gsl_rng_default;
+    r = gsl_rng_alloc(T);
+
+    gsl_monte_function F;
+
+    F.f = &regular1_integrand;
+    F.dim = 2;
+    F.params = &params;
+
+    gsl_monte_vegas_init(s);
+    gsl_monte_vegas_integrate(&F, xl, xu, 2, MCcalls_, r, s, &regular1, &err);
+
+    F.f = &regular2_integrand;
+    gsl_monte_vegas_init(s);
+    gsl_monte_vegas_integrate(&F, xl, xu, 2, MCcalls_, r, s, &regular2, &err);
+
+    gsl_monte_vegas_free(s);
+    gsl_rng_free(r);
+
+    double abserr = GetAbserr();
+    double relerr = GetRelerr();
+    int dim = GetDim();
+
+    gsl_integration_workspace *w = gsl_integration_workspace_alloc(dim);
+
+    gsl_function f;
+    f.function = &regular3_integrand;
+    f.params = &params;
+
+    gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
+    gsl_set_error_handler_off();
+
+    gsl_integration_qag(
+        &f, x, x_max, abserr, relerr, dim, 4, w, &regular3, &err
+    );
+
+    gsl_set_error_handler(old_handler);
 
     gsl_integration_workspace_free(w);
 
-    return regular + singular + local;
+    regular4 = convolution_ -> RegularPart(x, m2Q2, nf) * splitfunc_ -> Local(nf);
 
+    return regular1 + regular2 + regular3 + regular4;
 }
 
 //==========================================================================================//
@@ -143,156 +330,33 @@ double Convolution::convolute(double x, double m2Q2, int nf) const {
 //  monte carlo methods
 //------------------------------------------------------------------------------------------//
 
-double C2_g1_x_Pgg0_x_Pgg0_reg1_integrand(double z[], size_t dim, void *p) {
+double MonteCarloDoubleConvolution::singular1_integrand(double z[], size_t dim, void *p) const {
 
     struct function_params *params = (struct function_params *)p;
 
     double m2Q2 = (params->m2Q2);
     double x = (params->x);
-    // int nf = (params->nf);
-
-    double z1 = z[0], z2 = z[1];
-
-    if (z2 > z1) {
-        return 1. / (z1 * z2) * Pgg0reg(x / z1) * Pgg0reg(z1 / z2)
-               * C2_g1(z2, m2Q2);
-    } else {
-        return 0.;
-    }
-}
-
-//------------------------------------------------------------------------------------------//
-
-double C2_g1_x_Pgg0_x_Pgg0_reg2_integrand(double z[], size_t dim, void *p) {
-
-    struct function_params *params = (struct function_params *)p;
-
-    double m2Q2 = (params->m2Q2);
-    double x = (params->x);
-    // int nf = (params->nf);
-
-    double z1 = z[0], z2 = z[1];
-
-    if (z2 > z1) {
-        return 1. / (z1 * z2) * Pgg0reg(x / z1) * Pgg0sing(z1 / z2)
-               * (C2_g1(z2, m2Q2) - z1 / z2 * C2_g1(z1, m2Q2));
-    } else {
-        return 0.;
-    }
-}
-
-//------------------------------------------------------------------------------------------//
-
-double C2_g1_x_Pgg0_x_Pgg0_reg3_integrand(double z, void *p) {
-
-    struct function_params *params = (struct function_params *)p;
-
-    double m2Q2 = (params->m2Q2);
-    double x = (params->x);
-    // int nf = (params->nf);
-    double x_max = 1. / (1. + 4 * m2Q2);
-
-    return -1. / z * Pgg0reg(x / z) * C2_g1(z, m2Q2)
-           * Pgg0sing_integrated(z / x_max);
-}
-
-//------------------------------------------------------------------------------------------//
-
-double C2_g1_x_Pgg0_x_Pgg0_reg(double x, double m2Q2, int nf) {
-
-    double x_max = 1. / (1. + 4 * m2Q2);
-    struct function_params params = { x, m2Q2, nf };
-    double xl[2] = { x, x };
-    double xu[2] = { x_max, x_max };
-
-    double err, regular1, regular2, regular3, regular4;
-    size_t calls = CALLS;
-
-    gsl_monte_vegas_state *s = gsl_monte_vegas_alloc(2);
-
-    const gsl_rng_type *T;
-    gsl_rng *r;
-    gsl_rng_env_setup();
-    T = gsl_rng_default;
-    r = gsl_rng_alloc(T);
-
-    gsl_monte_function F;
-
-    F.f = &C2_g1_x_Pgg0_x_Pgg0_reg1_integrand;
-    F.dim = 2;
-    F.params = &params;
-
-    gsl_monte_vegas_init(s);
-    gsl_monte_vegas_integrate(&F, xl, xu, 2, calls, r, s, &regular1, &err);
-
-    F.f = &C2_g1_x_Pgg0_x_Pgg0_reg2_integrand;
-    gsl_monte_vegas_init(s);
-    gsl_monte_vegas_integrate(&F, xl, xu, 2, calls, r, s, &regular2, &err);
-
-    gsl_monte_vegas_free(s);
-    gsl_rng_free(r);
-
-    gsl_integration_workspace *w = gsl_integration_workspace_alloc(DIM);
-
-    double abserr = ABS, relerr = REL;
-
-    gsl_function f;
-    f.function = &C2_g1_x_Pgg0_x_Pgg0_reg3_integrand;
-    f.params = &params;
-
-    gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
-    gsl_set_error_handler_off();
-
-    gsl_integration_qag(
-        &f, x, x_max, abserr, relerr, DIM, 4, w, &regular3, &err
-    );
-
-    f.function = &C2_g1_x_Pgg0_reg_integrand;
-
-    gsl_integration_qag(
-        &f, x, x_max, abserr, relerr, DIM, 4, w, &regular4, &err
-    );
-
-    gsl_set_error_handler(old_handler);
-
-    regular4 *= Pgg0loc(nf);
-
-    gsl_integration_workspace_free(w);
-
-    return regular1 + regular2 + regular3 + regular4;
-}
-
-//------------------------------------------------------------------------------------------//
-
-double C2_g1_x_Pgg0_x_Pgg0_sing1_integrand(double z[], size_t dim, void *p) {
-
-    struct function_params *params = (struct function_params *)p;
-
-    double m2Q2 = (params->m2Q2);
-    double x = (params->x);
-    // int nf = (params->nf);
+    int nf = (params->nf);
 
     double z1 = z[0], z2 = z[1];
 
     double tmp;
     if (z2 > x / z1) {
-        tmp = Pgg0reg(x / (z1 * z2)) / z1;
+        tmp = splitfunc_ -> Regular(x / (z1 * z2), nf) / z1;
     } else {
         tmp = 0.;
     }
 
-    return Pgg0sing(z1) * (tmp - Pgg0reg(x / z2)) * C2_g1(z2, m2Q2) / z2;
+    return splitfunc_ -> Singular(z1, nf) * (tmp - splitfunc_ -> Regular(x / z2, nf)) * coefffunc_ -> MuIndependentTerms(z2, m2Q2, nf) / z2;
 }
 
-//------------------------------------------------------------------------------------------//
-
-double C2_g1_x_Pgg0_x_Pgg0_sing2_integrand(double z[], size_t dim, void *p) {
+double MonteCarloDoubleConvolution::singular2_integrand(double z[], size_t dim, void *p) const {
 
     struct function_params *params = (struct function_params *)p;
 
     double m2Q2 = (params->m2Q2);
     double x = (params->x);
-    // int nf = (params->nf);
+    int nf = (params->nf);
 
     double x_max = 1. / (1. + 4 * m2Q2);
 
@@ -300,37 +364,33 @@ double C2_g1_x_Pgg0_x_Pgg0_sing2_integrand(double z[], size_t dim, void *p) {
 
     double tmp;
     if (z2 > x / (x_max * z1)) {
-        tmp = (C2_g1(x / (z1 * z2), m2Q2) / z2 - C2_g1(x / z1, m2Q2)) / z1;
+        tmp = (coefffunc_ -> MuIndependentTerms(x / (z1 * z2), m2Q2, nf) / z2 - coefffunc_ -> MuIndependentTerms(x / z1, m2Q2, nf)) / z1;
     } else {
         tmp = 0.;
     }
 
-    return Pgg0sing(z1) * Pgg0sing(z2)
-           * (tmp - (C2_g1(x / z2, m2Q2) / z2 - C2_g1(x, m2Q2)));
+    return splitfunc_ -> Singular(z1, nf) * splitfunc_ -> Singular(z2, nf)
+           * (tmp - (coefffunc_ -> MuIndependentTerms(x / z2, m2Q2, nf) / z2 - coefffunc_ -> MuIndependentTerms(x, m2Q2, nf)));
 }
 
-//------------------------------------------------------------------------------------------//
-
-double C2_g1_x_Pgg0_x_Pgg0_sing3_integrand(double z, void *p) {
+double MonteCarloDoubleConvolution::singular3_integrand(double z, void *p) const {
 
     struct function_params *params = (struct function_params *)p;
 
     double m2Q2 = (params->m2Q2);
     double x = (params->x);
-    // int nf = (params->nf);
+    int nf = (params->nf);
 
     double x_max = 1. / (1. + 4 * m2Q2);
 
     return -(
-        Pgg0sing(z)
-        * (C2_g1(x / z, m2Q2) * Pgg0sing_integrated(x / (x_max * z)) / z
-           - C2_g1(x, m2Q2) * Pgg0sing_integrated(x / x_max))
+        splitfunc_ -> Singular(z, nf)
+        * (coefffunc_ -> MuIndependentTerms(x / z, m2Q2, nf) * splitfunc_ -> SingularIntegrated(x / (x_max * z), nf) / z
+           - coefffunc_ -> MuIndependentTerms(x, m2Q2, nf) * splitfunc_ -> SingularIntegrated(x / x_max, nf))
     );
 }
 
-//------------------------------------------------------------------------------------------//
-
-double C2_g1_x_Pgg0_x_Pgg0_sing(double x, double m2Q2, int nf) {
+double MonteCarloDoubleConvolution::SingularPart(double x, double m2Q2, int nf) const {
 
     double x_max = 1. / (1. + 4 * m2Q2);
     struct function_params params = { x, m2Q2, nf };
@@ -339,7 +399,6 @@ double C2_g1_x_Pgg0_x_Pgg0_sing(double x, double m2Q2, int nf) {
     double xu[2] = { 1, x_max };
 
     double err, singular1, singular2, singular3, singular4;
-    size_t calls = CALLS;
 
     gsl_monte_vegas_state *s = gsl_monte_vegas_alloc(2);
 
@@ -351,334 +410,54 @@ double C2_g1_x_Pgg0_x_Pgg0_sing(double x, double m2Q2, int nf) {
 
     gsl_monte_function F;
 
-    F.f = &C2_g1_x_Pgg0_x_Pgg0_sing1_integrand;
+    F.f = &singular1_integrand;
     F.dim = 2;
     F.params = &params;
 
     gsl_monte_vegas_init(s);
-    gsl_monte_vegas_integrate(&F, xl, xu, 2, calls, r, s, &singular1, &err);
+    gsl_monte_vegas_integrate(&F, xl, xu, 2, MCcalls_, r, s, &singular1, &err);
 
     xl[1] = x / x_max;
     xu[1] = 1;
 
-    F.f = &C2_g1_x_Pgg0_x_Pgg0_sing2_integrand;
+    F.f = &singular2_integrand;
     gsl_monte_vegas_init(s);
-    gsl_monte_vegas_integrate(&F, xl, xu, 2, calls, r, s, &singular2, &err);
+    gsl_monte_vegas_integrate(&F, xl, xu, 2, MCcalls_, r, s, &singular2, &err);
 
     gsl_monte_vegas_free(s);
     gsl_rng_free(r);
 
-    gsl_integration_workspace *w = gsl_integration_workspace_alloc(DIM);
+    double abserr = GetAbserr();
+    double relerr = GetRelerr();
+    int dim = GetDim();
 
-    double abserr = ABS, relerr = REL;
+    gsl_integration_workspace *w = gsl_integration_workspace_alloc(dim);
 
     gsl_function f;
-    f.function = &C2_g1_x_Pgg0_x_Pgg0_sing3_integrand;
+    f.function = &singular3_integrand;
     f.params = &params;
 
     gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
     gsl_set_error_handler_off();
 
     gsl_integration_qag(
-        &f, x / x_max, 1, abserr, relerr, DIM, 4, w, &singular3, &err
-    );
-
-    f.function = &C2_g1_x_Pgg0_sing_integrand;
-
-    gsl_integration_qag(
-        &f, x / x_max, 1, abserr, relerr, DIM, 4, w, &singular4, &err
+        &f, x / x_max, 1, abserr, relerr, dim, 4, w, &singular3, &err
     );
 
     gsl_set_error_handler(old_handler);
 
-    singular4 *= Pgg0loc(nf);
+    singular4 = convolution_ -> SingularPart(x, m2Q2, nf) * splitfunc_ -> Local(nf);
 
     gsl_integration_workspace_free(w);
 
     return singular1 + singular2 + singular3 + singular4;
 }
 
-//------------------------------------------------------------------------------------------//
-
-double C2_g1_x_Pgg0_x_Pgg0_MC(double x, double m2Q2, int nf) {
+double MonteCarloDoubleConvolution::LocalPart(double x, double m2Q2, int nf) const {
 
     double x_max = 1. / (1. + 4 * m2Q2);
 
-    return C2_g1_x_Pgg0_x_Pgg0_reg(x, m2Q2, nf)
-           + C2_g1_x_Pgg0_x_Pgg0_sing(x, m2Q2, nf)
-           + C2_g1_x_Pgg0(x, m2Q2, nf)
-                 * (Pgg0loc(nf) - Pgg0sing_integrated(x / x_max));
-}
-
-//==========================================================================================//
-//  Convolution between the first order massive gluon coefficient functions for
-//  FL and the convolution between the splitting functions Pgg0 and Pgg0 using
-//  monte carlo mathods
-//------------------------------------------------------------------------------------------//
-
-double CL_g1_x_Pgg0_x_Pgg0_reg1_integrand(double z[], size_t dim, void *p) {
-
-    struct function_params *params = (struct function_params *)p;
-
-    double m2Q2 = (params->m2Q2);
-    double x = (params->x);
-    // int nf = (params->nf);
-
-    double z1 = z[0], z2 = z[1];
-
-    if (z2 > z1) {
-        return 1. / (z1 * z2) * Pgg0reg(x / z1) * Pgg0reg(z1 / z2)
-               * CL_g1(z2, m2Q2);
-    } else {
-        return 0.;
-    }
+    return convolution_ -> Convolute(x, m2Q2, nf) * (splitfunc_ -> Local(nf) - splitfunc_ -> SingularIntegrated(x / x_max, nf));
 }
 
 //------------------------------------------------------------------------------------------//
-
-double CL_g1_x_Pgg0_x_Pgg0_reg2_integrand(double z[], size_t dim, void *p) {
-
-    struct function_params *params = (struct function_params *)p;
-
-    double m2Q2 = (params->m2Q2);
-    double x = (params->x);
-    // int nf = (params->nf);
-
-    double z1 = z[0], z2 = z[1];
-
-    if (z2 > z1) {
-        return 1. / (z1 * z2) * Pgg0reg(x / z1) * Pgg0sing(z1 / z2)
-               * (CL_g1(z2, m2Q2) - z1 / z2 * CL_g1(z1, m2Q2));
-    } else {
-        return 0.;
-    }
-}
-
-//------------------------------------------------------------------------------------------//
-
-double CL_g1_x_Pgg0_x_Pgg0_reg3_integrand(double z, void *p) {
-
-    struct function_params *params = (struct function_params *)p;
-
-    double m2Q2 = (params->m2Q2);
-    double x = (params->x);
-    // int nf = (params->nf);
-    double x_max = 1. / (1. + 4 * m2Q2);
-
-    return -1. / z * Pgg0reg(x / z) * CL_g1(z, m2Q2)
-           * Pgg0sing_integrated(z / x_max);
-}
-
-//------------------------------------------------------------------------------------------//
-
-double CL_g1_x_Pgg0_x_Pgg0_reg(double x, double m2Q2, int nf) {
-
-    double x_max = 1. / (1. + 4 * m2Q2);
-    struct function_params params = { x, m2Q2, nf };
-    double xl[2] = { x, x };
-    double xu[2] = { x_max, x_max };
-
-    double err, regular1, regular2, regular3, regular4;
-    size_t calls = CALLS;
-
-    gsl_monte_vegas_state *s = gsl_monte_vegas_alloc(2);
-
-    const gsl_rng_type *T;
-    gsl_rng *r;
-    gsl_rng_env_setup();
-    T = gsl_rng_default;
-    r = gsl_rng_alloc(T);
-
-    gsl_monte_function F;
-
-    F.f = &CL_g1_x_Pgg0_x_Pgg0_reg1_integrand;
-    F.dim = 2;
-    F.params = &params;
-
-    gsl_monte_vegas_init(s);
-    gsl_monte_vegas_integrate(&F, xl, xu, 2, calls, r, s, &regular1, &err);
-
-    F.f = &CL_g1_x_Pgg0_x_Pgg0_reg2_integrand;
-    gsl_monte_vegas_init(s);
-    gsl_monte_vegas_integrate(&F, xl, xu, 2, calls, r, s, &regular2, &err);
-
-    gsl_monte_vegas_free(s);
-    gsl_rng_free(r);
-
-    gsl_integration_workspace *w = gsl_integration_workspace_alloc(DIM);
-
-    double abserr = ABS, relerr = REL;
-
-    gsl_function f;
-    f.function = &CL_g1_x_Pgg0_x_Pgg0_reg3_integrand;
-    f.params = &params;
-
-    gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
-    gsl_set_error_handler_off();
-
-    gsl_integration_qag(
-        &f, x, x_max, abserr, relerr, DIM, 4, w, &regular3, &err
-    );
-
-    f.function = &CL_g1_x_Pgg0_reg_integrand;
-
-    gsl_integration_qag(
-        &f, x, x_max, abserr, relerr, DIM, 4, w, &regular4, &err
-    );
-
-    gsl_set_error_handler(old_handler);
-
-    regular4 *= Pgg0loc(nf);
-
-    gsl_integration_workspace_free(w);
-
-    return regular1 + regular2 + regular3 + regular4;
-}
-
-//------------------------------------------------------------------------------------------//
-
-double CL_g1_x_Pgg0_x_Pgg0_sing1_integrand(double z[], size_t dim, void *p) {
-
-    struct function_params *params = (struct function_params *)p;
-
-    double m2Q2 = (params->m2Q2);
-    double x = (params->x);
-    // int nf = (params->nf);
-
-    double z1 = z[0], z2 = z[1];
-
-    double tmp;
-    if (z2 > x / z1) {
-        tmp = Pgg0reg(x / (z1 * z2)) / z1;
-    } else {
-        tmp = 0.;
-    }
-
-    return Pgg0sing(z1) * (tmp - Pgg0reg(x / z2)) * CL_g1(z2, m2Q2) / z2;
-}
-
-//------------------------------------------------------------------------------------------//
-
-double CL_g1_x_Pgg0_x_Pgg0_sing2_integrand(double z[], size_t dim, void *p) {
-
-    struct function_params *params = (struct function_params *)p;
-
-    double m2Q2 = (params->m2Q2);
-    double x = (params->x);
-    // int nf = (params->nf);
-
-    double x_max = 1. / (1. + 4 * m2Q2);
-
-    double z1 = z[0], z2 = z[1];
-
-    double tmp;
-    if (z2 > x / (x_max * z1)) {
-        tmp = (CL_g1(x / (z1 * z2), m2Q2) / z2 - CL_g1(x / z1, m2Q2)) / z1;
-    } else {
-        tmp = 0.;
-    }
-
-    return Pgg0sing(z1) * Pgg0sing(z2)
-           * (tmp - (CL_g1(x / z2, m2Q2) / z2 - CL_g1(x, m2Q2)));
-}
-
-//------------------------------------------------------------------------------------------//
-
-double CL_g1_x_Pgg0_x_Pgg0_sing3_integrand(double z, void *p) {
-
-    struct function_params *params = (struct function_params *)p;
-
-    double m2Q2 = (params->m2Q2);
-    double x = (params->x);
-    // int nf = (params->nf);
-
-    double x_max = 1. / (1. + 4 * m2Q2);
-
-    return -(
-        Pgg0sing(z)
-        * (CL_g1(x / z, m2Q2) * Pgg0sing_integrated(x / (x_max * z)) / z
-           - CL_g1(x, m2Q2) * Pgg0sing_integrated(x / x_max))
-    );
-}
-
-//------------------------------------------------------------------------------------------//
-
-double CL_g1_x_Pgg0_x_Pgg0_sing(double x, double m2Q2, int nf) {
-
-    double x_max = 1. / (1. + 4 * m2Q2);
-    struct function_params params = { x, m2Q2, nf };
-
-    double xl[2] = { x / x_max, x };
-    double xu[2] = { 1, x_max };
-
-    double err, singular1, singular2, singular3, singular4;
-    size_t calls = CALLS;
-
-    gsl_monte_vegas_state *s = gsl_monte_vegas_alloc(2);
-
-    const gsl_rng_type *T;
-    gsl_rng *r;
-    gsl_rng_env_setup();
-    T = gsl_rng_default;
-    r = gsl_rng_alloc(T);
-
-    gsl_monte_function F;
-
-    F.f = &CL_g1_x_Pgg0_x_Pgg0_sing1_integrand;
-    F.dim = 2;
-    F.params = &params;
-
-    gsl_monte_vegas_init(s);
-    gsl_monte_vegas_integrate(&F, xl, xu, 2, calls, r, s, &singular1, &err);
-
-    xl[1] = x / x_max;
-    xu[1] = 1;
-
-    F.f = &CL_g1_x_Pgg0_x_Pgg0_sing2_integrand;
-    gsl_monte_vegas_init(s);
-    gsl_monte_vegas_integrate(&F, xl, xu, 2, calls, r, s, &singular2, &err);
-
-    gsl_monte_vegas_free(s);
-    gsl_rng_free(r);
-
-    gsl_integration_workspace *w = gsl_integration_workspace_alloc(DIM);
-
-    double abserr = ABS, relerr = REL;
-
-    gsl_function f;
-    f.function = &CL_g1_x_Pgg0_x_Pgg0_sing3_integrand;
-    f.params = &params;
-
-    gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
-    gsl_set_error_handler_off();
-
-    gsl_integration_qag(
-        &f, x / x_max, 1, abserr, relerr, DIM, 4, w, &singular3, &err
-    );
-
-    f.function = &CL_g1_x_Pgg0_sing_integrand;
-
-    gsl_integration_qag(
-        &f, x / x_max, 1, abserr, relerr, DIM, 4, w, &singular4, &err
-    );
-
-    gsl_set_error_handler(old_handler);
-
-    singular4 *= Pgg0loc(nf);
-
-    gsl_integration_workspace_free(w);
-
-    return singular1 + singular2 + singular3 + singular4;
-}
-
-//------------------------------------------------------------------------------------------//
-
-double CL_g1_x_Pgg0_x_Pgg0_MC(double x, double m2Q2, int nf) {
-
-    double x_max = 1. / (1. + 4 * m2Q2);
-
-    return CL_g1_x_Pgg0_x_Pgg0_reg(x, m2Q2, nf)
-           + CL_g1_x_Pgg0_x_Pgg0_sing(x, m2Q2, nf)
-           + CL_g1_x_Pgg0(x, m2Q2, nf)
-                 * (Pgg0loc(nf) - Pgg0sing_integrated(x / x_max));
-}
