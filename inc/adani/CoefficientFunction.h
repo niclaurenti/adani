@@ -3,6 +3,12 @@
 
 #include "adani/SplittingFunctions.h"
 
+struct result {
+    double central;
+    double higher;
+    double lower; 
+};
+
 class CoefficientFunction {
 
     public:

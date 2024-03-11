@@ -27,24 +27,24 @@ ExactCoefficientFunction::ExactCoefficientFunction(const int& order, const char&
         convolution_ = NULL;
     } else if (GetOrder() == 2) {
         if (GetChannel() == 'q') {
-            convolutions_.push_back( Convolution(&gluon_leadingorder_, SplittingFunction(0, 'g', 'q')) );
+            convolutions_.push_back( Convolution(gluon_leadingorder_, &SplittingFunction(0, 'g', 'q')) );
         } else {
-            convolutions_.push_back( Convolution(&gluon_leadingorder_, SplittingFunction(0, 'g', 'g')) );
+            convolutions_.push_back( Convolution(gluon_leadingorder_, &SplittingFunction(0, 'g', 'g')) );
         }
     } else if (GetOrder() == 3) {
         if (GetChannel() == 'q') {
-            convolutions_.push_back( Convolution(&gluon_leadingorder_, SplittingFunction(1, 'g', 'q')) );
-            convolutions_.push_back( Convolution(ExactCoefficientFunction(2, GetKind(), 'g'), SplittingFunction(0, 'g', 'q')) );
-            convolutions_.push_back( Convolution(ExactCoefficientFunction(2, GetKind(), 'q'), SplittingFunction(0, 'q', 'q')) );
-            convolutions_.push_back( Convolution(ExactCoefficientFunction(1, GetKind(), 'g'), ConvolutedSplittingFunctions(1, 'g', 'q', 'q')) );
-            convolutions_.push_back( Convolution(&gluon_leadingorder_, SplittingFunction(0, 'g', 'q')) );
+            convolutions_.push_back( Convolution(gluon_leadingorder_, &SplittingFunction(1, 'g', 'q')) );
+            convolutions_.push_back( Convolution(ExactCoefficientFunction(2, GetKind(), 'g'), &SplittingFunction(0, 'g', 'q')) );
+            convolutions_.push_back( Convolution(ExactCoefficientFunction(2, GetKind(), 'q'), &SplittingFunction(0, 'q', 'q')) );
+            convolutions_.push_back( Convolution(gluon_leadingorder_, &ConvolutedSplittingFunctions(1, 'g', 'q', 'q')) );
+            convolutions_.push_back( Convolution(gluon_leadingorder_, SplittingFunction(0, 'g', 'q')) );
         } else {
-            convolutions_.push_back( Convolution(&gluon_leadingorder_, SplittingFunction(1, 'g', 'g')) );
-            convolutions_.push_back( Convolution(ExactCoefficientFunction(2, GetKind(), 'q'), SplittingFunction(0, 'q', 'g')) );
-            convolutions_.push_back( Convolution(ExactCoefficientFunction(2, GetKind(), 'g'), SplittingFunction(0, 'g', 'g')) );
+            convolutions_.push_back( Convolution(gluon_leadingorder_, SplittingFunction(1, 'g', 'g')) );
+            convolutions_.push_back( Convolution(ExactCoefficientFunction(2, GetKind(), 'q'), &SplittingFunction(0, 'q', 'g')) );
+            convolutions_.push_back( Convolution(ExactCoefficientFunction(2, GetKind(), 'g'), &SplittingFunction(0, 'g', 'g')) );
             // MC integral
-            convolutions_.push_back( Convolution(ExactCoefficientFunction(1, GetKind(), 'g'), ConvolutedSplittingFunctions(0, 'g', 'q', 'g')) );
-            convolutions_.push_back( Convolution(ExactCoefficientFunction(1, GetKind(), 'g'), SplittingFunction(0, 'g', 'g')) );
+            convolutions_.push_back( Convolution(gluon_leadingorder_, &ConvolutedSplittingFunctions(0, 'g', 'q', 'g')) );
+            convolutions_.push_back( Convolution(gluon_leadingorder_, &SplittingFunction(0, 'g', 'g')) );
         }
     }
 
