@@ -6,7 +6,7 @@
  *    Description:  Header file for the
  * SplittingFunctions.cc file.
  *
- *         Author:  Al livello di servilismo come siamo
+ *         Author:  A livello di servilismo come siamo
  * messi?
  *
  *  In this file there are the splitting functions.
@@ -17,10 +17,22 @@
 #ifndef Split
 #define Split
 
-class SplittingFunction {
+class Function {
+    public:
+        virtual double Regular(const double x, const int nf) const = 0;
+        virtual double Singular(const double x, const int nf) const = 0;
+        virtual double Local(const int nf) const = 0;
+        virtual double SingularIntegrated(const double x, const int nf) const = 0;
+
+    double GetMultFact() const {return mult_factor_;};
+
+    private:
+        double mult_factor_;
+};
+
+class SplittingFunction : public Function{
     public:
         SplittingFunction(const int& order, const char& entry1, const char& entry2) ;
-        // SplittingFunction() : SplittingFunction(0, 'q', 'g') {} ;
         ~SplittingFunction() {} ;
 
         double Regular(const double x, const int nf) const ;
@@ -83,7 +95,7 @@ class SplittingFunction {
 class ConvolutedSplittingFunctions : public SplittingFunction {
     public:
         ConvolutedSplittingFunctions(const int& order, const char& entry1, const char& entry2, const char& entry3);
-        
+
         char GetEntry3() const {return entry3_;} ;
 
         double Regular(const double x, const int nf) const ;
@@ -109,5 +121,13 @@ class ConvolutedSplittingFunctions : public SplittingFunction {
 
         double Pgq0_x_Pqg0(const double x, const int nf) const ;
 };
+
+class Delta : Function {
+    public:
+        double Regular(const double x, const int nf) const {return 0.;};
+        double Singular(const double x, const int nf) const {return 0.;};
+        double Local(const int nf) const {return 1.;};
+        double SingularIntegrated(const double x, const int nf) const {return 0.;};
+}
 
 #endif

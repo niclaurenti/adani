@@ -86,11 +86,11 @@ class ExactCoefficientFunction : public CoefficientFunction {
         //                      O(alpha_s^2)
         //------------------------------------------------------------------------------------------//
 
-        double C2_g2(const double x, const double m2Q2, const double m2mu2) const;
-        double C2_ps2(const double x, const double m2Q2, const double m2mu2) const;
+        // double C2_g2(const double x, const double m2Q2, const double m2mu2) const;
+        // double C2_ps2(const double x, const double m2Q2, const double m2mu2) const;
 
-        double CL_g2(const double x, const double m2Q2, const double m2mu2) const;
-        double CL_ps2(const double x, const double m2Q2, const double m2mu2) const;
+        // double CL_g2(const double x, const double m2Q2, const double m2mu2) const;
+        // double CL_ps2(const double x, const double m2Q2, const double m2mu2) const;
 
         //==========================================================================================//
         //  Exact massive coefficient functions O(alpha_s^2):
@@ -107,34 +107,34 @@ class ExactCoefficientFunction : public CoefficientFunction {
         //  proportional to log(mu^2/m^2)
         //------------------------------------------------------------------------------------------//
 
-        double C2_g21(const double x, const double m2Q2) const;
-        double CL_g21(const double x, const double m2Q2) const;
-        double C2_ps21(const double x, const double m2Q2) const;
-        double CL_ps21(const double x, const double m2Q2) const;
+        double C_g21(const double x, const double m2Q2) const;
+        double C_ps21(const double x, const double m2Q2) const;
+
+        double C_ps2_MuDep(const double x, const double m2Q2, const double m2mu2) const ;
+        double C_g2_MuDep(const double x, const double m2Q2, const double m2mu2) const ;
 
         //==========================================================================================//
         //  Exact massive coefficient functions O(alpha_s^3): terms
         //  proportional to log(mu^2/m^2)
         //------------------------------------------------------------------------------------------//
 
-        double C2_ps31(const double x, const double m2Q2, const int nf) const;
-        double CL_ps31(const double x, const double m2Q2, const int nf) const;
-        double C2_g31(const double x, const double m2Q2, const int nf) const;
-        double CL_g31(const double x, const double m2Q2, const int nf) const;
+        double C_ps31(const double x, const double m2Q2, const int nf) const;
+        double C_g31(const double x, const double m2Q2, const int nf) const;
 
         //==========================================================================================//
         //  Exact massive coefficient functions O(alpha_s^3): terms
         //  proportional to log(mu^2/m^2)^2
         //------------------------------------------------------------------------------------------//
 
-        double C2_ps32(const double x, const double m2Q2, const int nf) const;
-        double CL_ps32(const double x, const double m2Q2, const int nf) const;
+        double C_ps32(const double x, const double m2Q2, const int nf) const;
 
         // These two expressions are integrated with montcarlo
         // methods
 
-        double C2_g32(const double x, const double m2Q2, const int nf) const;
-        double CL_g32(const double x, const double m2Q2, const int nf) const;
+        double C_g32(const double x, const double m2Q2, const int nf) const;
+
+        double C_ps3_MuDep(const double x, const double m2Q2, const double m2mu2, const int nf) const ;
+        double C_g3_MuDep(const double x, const double m2Q2, const double m2mu2, const int nf) const ;
 
 };
 

@@ -106,7 +106,7 @@ double Convolution::singular_integrand(double z, void *p) const {
     double x = (params->x);
     int nf = (params->nf);
 
-    return splitfunc_ -> Regular(z, nf) * (coefffunc_-> MuIndependentTerms(x / z, m2Q2, nf) - coefffunc_ -> MuIndependentTerms(x, m2Q2, nf) ) ;
+    return splitfunc_ -> Singular(z, nf) * (coefffunc_-> MuIndependentTerms(x / z, m2Q2, nf) - coefffunc_ -> MuIndependentTerms(x, m2Q2, nf) ) ;
 
 }
 
@@ -189,7 +189,7 @@ double Convolution::LocalPart(double x, double m2Q2, int nf) const {
 
     double local, error;
 
-    local = coefffunc_->MuIndependentTerms(x, m2Q2, nf) * (splitfunc_->Local(nf) - splitfunc_->SingularIntegrated(x / x_max, nf));
+    local = coefffunc_ -> MuIndependentTerms(x, m2Q2, nf) * (splitfunc_ -> Local(nf) - splitfunc_ -> SingularIntegrated(x / x_max, nf));
 
     return local;
 
