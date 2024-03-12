@@ -30,92 +30,84 @@ ExactCoefficientFunction::ExactCoefficientFunction(const int& order, const char&
 
     if (GetOrder() == 2) {
         if (GetChannel() == 'q') {
-            convolutions_.push_back( &Convolution(gluon_lo_, &SplittingFunction(0, 'g', 'q'), abserr, relerr, dim) );
+            convolutions_lmu1.push_back( &Convolution(gluon_lo_, &SplittingFunction(0, 'g', 'q'), abserr, relerr, dim) );
         } else if (GetChannel() == 'g'){
-            convolutions_.push_back( new Convolution(gluon_lo_, &SplittingFunction(0, 'g', 'g'), abserr, relerr, dim) );
+            convolutions_lmu1.push_back( new Convolution(gluon_lo_, &SplittingFunction(0, 'g', 'g'), abserr, relerr, dim) );
+            convolutions_lmu1.push_back( new Convolution(gluon_lo_, &((-1)*Delta())) );
         }
     } else if (GetOrder() == 3) {
         if (GetChannel() == 'q') {
-            convolutions_.push_back( new Convolution(gluon_lo_, &SplittingFunction(1, 'g', 'q'), abserr, relerr, dim) );
-            convolutions_.push_back( new Convolution(gluon_nlo_, &SplittingFunction(0, 'g', 'q'), abserr, relerr, dim) );
-            convolutions_.push_back( new Convolution(quark_nlo_, &SplittingFunction(0, 'q', 'q'), abserr, relerr, dim) );
-            convolutions_.push_back( new Convolution(gluon_lo_, &ConvolutedSplittingFunctions(1, 'g', 'q', 'q'), abserr, relerr, dim) );
-            convolutions_.push_back( new Convolution(gluon_lo_, &SplittingFunction(0, 'g', 'q'), abserr, relerr, dim) );
+            convolutions_lmu1.push_back( new Convolution(gluon_lo_, &SplittingFunction(1, 'g', 'q'), abserr, relerr, dim) );
+            convolutions_lmu1.push_back( new Convolution(gluon_nlo_, &SplittingFunction(0, 'g', 'q'), abserr, relerr, dim) );
+            convolutions_lmu1.push_back( new Convolution(quark_nlo_, &SplittingFunction(0, 'q', 'q'), abserr, relerr, dim) );
+            convolutions_lmu1.push_back( new Convolution(quark_nlo_, &(-2*Delta())) );
+
+            convolutions_lmu2.push_back( new Convolution(gluon_lo_, &(0.5*ConvolutedSplittingFunctions(1, 'g', 'g', 'g', 'q')), abserr, relerr, dim) );
+            convolutions_lmu2.push_back( new Convolution(gluon_lo_, &(0.5*ConvolutedSplittingFunctions(1, 'q', 'q', 'g', 'q')), abserr, relerr, dim) );
+            convolutions_lmu2.push_back( new Convolution(gluon_lo_, &(-3./2*SplittingFunction(0, 'g', 'q')), abserr, relerr, dim) );
         } else {
-            convolutions_.push_back( new Convolution(gluon_lo_, &SplittingFunction(1, 'g', 'g'), abserr, relerr, dim) );
-            convolutions_.push_back( new Convolution(quark_nlo_, &SplittingFunction(0, 'q', 'g'), abserr, relerr, dim) );
-            convolutions_.push_back( new Convolution(gluon_nlo_, &SplittingFunction(0, 'g', 'g'), abserr, relerr, dim) );
-            convolutions_.push_back( new MonteCarloDoubleConvolution(gluon_lo_, &SplittingFunction(0, 'g', 'g'), abserr, relerr, dim, MCcalls) );
-            convolutions_.push_back( new Convolution(gluon_lo_, &ConvolutedSplittingFunctions(0, 'g', 'q', 'g'), abserr, relerr, dim) );
-            convolutions_.push_back( new Convolution(gluon_lo_, &SplittingFunction(0, 'g', 'g'), abserr, relerr, dim) );
+            convolutions_lmu1.push_back( new Convolution(gluon_lo_, &SplittingFunction(1, 'g', 'g'), abserr, relerr, dim) );
+            convolutions_lmu1.push_back( new Convolution(gluon_lo_, &Delta()) );
+            convolutions_lmu1.push_back( new Convolution(quark_nlo_, &SplittingFunction(0, 'q', 'g'), abserr, relerr, dim) );
+            convolutions_lmu1.push_back( new Convolution(gluon_nlo_, &SplittingFunction(0, 'g', 'g'), abserr, relerr, dim) );
+            convolutions_lmu1.push_back( new Convolution(gluon_nlo_, &Delta()) );
+
+            convolutions_lmu2.push_back( new MonteCarloDoubleConvolution(gluon_lo_, &SplittingFunction(0, 'g', 'g'), abserr, relerr, dim, MCcalls) );
+            convolutions_lmu2.push_back( new Convolution(gluon_lo_, &ConvolutedSplittingFunctions(0, 'g', 'q', 'q', 'g'), abserr, relerr, dim) );
+            convolutions_lmu2.push_back( new Convolution(gluon_lo_, &SplittingFunction(0, 'g', 'g'), abserr, relerr, dim) );
+            convolutions_lmu1.push_back( new Convolution(gluon_lo_, &Delta()) );
         }
     }
+
+    SetFunctions();
 
 }
 
 double ExactCoefficientFunction::fx(const double x, const double m2Q2, const double m2mu2, const int nf) const {
-
-    // O(as)
-    if (GetOrder() == 1 && GetKind() == '2') return C2_g1(x, m2Q2) ;
-    if (GetOrder() == 1 && GetKind() == 'L') return CL_g1(x, m2Q2) ;
-
-    // O(as^2)
-    if (GetOrder() == 2 && GetKind() == '2' && GetChannel() == 'g') return C2_g2(x, m2Q2, m2mu2) ;
-    if (GetOrder() == 2 && GetKind() == '2' && GetChannel() == 'q') return C2_ps2(x, m2Q2, m2mu2) ;
-    if (GetOrder() == 2 && GetKind() == 'L' && GetChannel() == 'g') return CL_g2(x, m2Q2, m2mu2) ;
-    if (GetOrder() == 2 && GetKind() == 'L' && GetChannel() == 'q') return CL_ps2(x, m2Q2, m2mu2) ;
-
-    else {
-        cout << "Error: something has gone wrong!" << endl;
-    }
+    return MuIndependentTerms(x, m2Q2, nf) + MuDependentTerms(x, m2Q2, m2mu2, nf);
 }
 
 double ExactCoefficientFunction::MuIndependentTerms(const double x, const double m2Q2, const int nf) const {
-    if (GetOrder() == 1) {
-        if (GetKind() == '2') return C2_g1(x, m2Q2) ;
-        else if (GetKind() == 'L') return CL_g1(x, m2Q2) ;
-    } else if (GetOrder() == 2) {
-        if (GetKind() == '2') {
-            if (GetChannel() == 'g') return C2_g20(x, m2Q2) ;
-            else if (GetChannel() == 'q') return C2_ps20(x, m2Q2) ;
-        } else if (GetKind() == 'L') {
-            if (GetChannel() == 'g') return CL_g20(x, m2Q2) ;
-            else if (GetChannel() == 'q') return CL_ps20(x, m2Q2) ;
-        }
-    } else if (GetOrder() == 3){
-        cout << "Error: mu independent terms are not known at O(as^3)!" << endl;
-        exit(-1);
-    }
+    return (this->*mu_indep_)(x, m2Q2, nf);
 }
 
 double ExactCoefficientFunction::MuDependentTerms(const double x, const double m2Q2, const double m2mu2, const int nf) const {
-    if (GetOrder() == 1) return 0.;
-    else if (GetOrder() == 2) {
-        if (GetChannel() == 'q') return C2 ;
-        else return (convolutions_[0] -> Convolute(x, m2Q2, nf) - beta(0, nf) * gluon_lo_ -> fx(x, m2Q2, static_cast<double>(nan("")), nf)) * log(1. / m2mu2) ;
-    } else if (GetOrder() == 3) {
-        if (GetChannel() == 'q') {
-
-        }
-    }
+    return (this->*mu_dep_)(x, m2Q2, m2mu2, nf);
 }
 
-// void ExactCoefficientFunction::Set_fx() {
-
-//     // O(as)
-//     if (GetOrder() == 1 && GetKind() == '2') fx_ = C2_g1 ;
-//     if (GetOrder() == 1 && GetKind() == 'L') fx_ = CL_g1 ;
-
-//     // O(as^2)
-//     if (GetOrder() == 2 && GetKind() == '2' && GetChannel() == 'g') fx_ = C2_g2 ;
-//     if (GetOrder() == 2 && GetKind() == '2' && GetChannel() == 'q') fx_ = C2_q2 ;
-//     if (GetOrder() == 2 && GetKind() == 'L' && GetChannel() == 'g') fx_ = CL_g2 ;
-//     if (GetOrder() == 2 && GetKind() == 'L' && GetChannel() == 'q') fx_ = CL_q2 ;
-
-//     else {
-//         cout << "Error: something has gone wrong!" << endl;
-//     }
-// }
+void ExactCoefficientFunction::SetFunctions() {
+    if (GetOrder() == 1) {
+        if (GetKind() == '2') {
+            mu_indep_ = &ExactCoefficientFunction::C2_g1 ;
+        } else if (GetKind() =='L') {
+            mu_indep_ = &ExactCoefficientFunction::CL_g1 ;
+        }
+        mu_dep_ = &ExactCoefficientFunction::ZeroFunction ;
+    } else if (GetOrder() == 2) {
+        if (GetChannel() == 'q') {
+            if (GetKind() == '2') {
+                mu_indep_ = &ExactCoefficientFunction::C2_ps20 ;
+            } else if (GetKind() == 'L') {
+                mu_indep_ = &ExactCoefficientFunction::CL_ps20 ;
+            }
+            mu_dep_ = &ExactCoefficientFunction::C_ps2_MuDep ;
+        } else if (GetChannel() == 'g') {
+            if (GetKind() == '2') {
+                mu_indep_ = &ExactCoefficientFunction::C2_g20 ;
+            } else if (GetKind() == 'L') {
+                mu_indep_ = &ExactCoefficientFunction::CL_g20 ;
+            }
+            mu_dep_ = &ExactCoefficientFunction::C_g2_MuDep ;
+        }
+    } else if (GetOrder() == 3) {
+        if (GetChannel() == 'q') {
+            mu_dep_ = &ExactCoefficientFunction::C_ps3_MuDep ;
+        } else if (GetChannel() == 'g') {
+            mu_dep_ = &ExactCoefficientFunction::C_g3_MuDep ;
+        }
+        mu_indep_ = nullptr;
+    }
+}
 
 void ExactCoefficientFunction::SetMethodFlag(const int& method_flag) {
     // check method_flag
@@ -332,7 +324,7 @@ double ExactCoefficientFunction::C_ps21(const double x, const double m2Q2) const
 
     int nf = static_cast<int>(nan(""));
 
-    return - convolutions_[0] -> Convolute(x, m2Q2, nf);
+    return - convolutions_lmu1[0] -> Convolute(x, m2Q2, nf);
     // The minus sign comes from the fact that in [arXiv:1205.5727]
     // the expansion is performed in terms of log(m^2/mu^2)
     // (even if it says the opposite) but we are
@@ -396,7 +388,7 @@ double ExactCoefficientFunction::C_g21(const double x, const double m2Q2) const 
     int nf = 1;
     // Put nf to 1 since the nf contribution cancels for any value of nf
 
-    return -(convolutions_[0] -> Convolute(x, m2Q2, nf) - gluon_lo_ -> MuIndependentTerms(x, m2Q2, nf) * beta(0, nf));
+    return -(convolutions_lmu1[0] -> Convolute(x, m2Q2, nf) + convolutions_lmu1[1] -> Convolute(x, m2Q2, nf) * beta(0, nf));
 }
 
 //==========================================================================================//
@@ -452,8 +444,8 @@ double ExactCoefficientFunction::C_ps2_MuDep(const double x, const double m2Q2, 
 double ExactCoefficientFunction::C_ps31(const double x, const double m2Q2, const int nf) const {
 
     return -(
-        convolutions_[0] -> Convolute(x, m2Q2, nf) + convolutions_[1] -> Convolute(x, m2Q2, nf)
-        + convolutions_[2] -> Convolute(x, m2Q2, nf) - 2. * beta(0, nf) * quark_nlo_ -> MuIndependentTerms(x, m2Q2, nf)
+        convolutions_lmu1[0] -> Convolute(x, m2Q2, nf) + convolutions_lmu1[1] -> Convolute(x, m2Q2, nf)
+        + convolutions_lmu1[2] -> Convolute(x, m2Q2, nf) + beta(0, nf) * convolutions_lmu1[3] -> Convolute(x, m2Q2, nf)
     );
 }
 
@@ -481,8 +473,8 @@ double ExactCoefficientFunction::C_ps31(const double x, const double m2Q2, const
 
 double ExactCoefficientFunction::C_ps32(const double x, const double m2Q2, const int nf) const {
 
-    return 0.5 * convolutions_[3] -> Convolute(x, m2Q2, nf)
-           - 3. / 2 * beta(0, nf) * convolutions_[4] -> Convolute(x, m2Q2, nf);
+    return convolutions_lmu2[0] -> Convolute(x, m2Q2, nf) + convolutions_lmu2[1] -> Convolute(x, m2Q2, nf)
+           + beta(0, nf) * convolutions_lmu2[2] -> Convolute(x, m2Q2, nf);
 }
 
 //==========================================================================================//
@@ -510,9 +502,9 @@ double ExactCoefficientFunction::C_ps32(const double x, const double m2Q2, const
 double ExactCoefficientFunction::C_g31(const double x, const double m2Q2, const int nf) const {
 
     return -(
-        convolutions_[0] -> Convolute(x, m2Q2, nf) - beta(1, nf) * gluon_lo_ -> MuIndependentTerms(x, m2Q2, nf)
-        + convolutions_[1] -> Convolute(x, m2Q2, nf) + convolutions_[2] -> Convolute(x, m2Q2, nf)
-        - 2. * beta(0, nf) * gluon_nlo_ -> MuIndependentTerms(x, m2Q2, nf)
+        convolutions_lmu1[0] -> Convolute(x, m2Q2, nf) + beta(1, nf) * convolutions_lmu1[1] -> Convolute(x, m2Q2, nf)
+        + convolutions_lmu1[2] -> Convolute(x, m2Q2, nf) + convolutions_lmu1[3] -> Convolute(x, m2Q2, nf)
+        + beta(0, nf) * convolutions_lmu1[4] -> Convolute(x, m2Q2, nf)
     );
 }
 
@@ -555,9 +547,9 @@ double ExactCoefficientFunction::C_g32(const double x, const double m2Q2, const 
     //     exit(-1);
     // }
 
-    return 0.5 * convolutions_[3] -> Convolute(x, m2Q2, nf) + 0.5 * convolutions_[4] -> Convolute(x, m2Q2, nf)
-           - 3. / 2 * beta0 * convolutions_[5] -> Convolute(x, m2Q2, nf)
-           + beta0 * beta0 * gluon_lo_ -> MuIndependentTerms(x, m2Q2, nf);
+    return convolutions_lmu2[0] -> Convolute(x, m2Q2, nf) + convolutions_lmu2[1] -> Convolute(x, m2Q2, nf)
+           + beta0 * convolutions_lmu2[2] -> Convolute(x, m2Q2, nf)
+           + beta0 * beta0 * convolutions_lmu2[3] -> Convolute(x, m2Q2, nf);
 }
 
 //==========================================================================================//

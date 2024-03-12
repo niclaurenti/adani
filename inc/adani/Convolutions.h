@@ -35,12 +35,12 @@ struct function_params {
     double x;
     double m2Q2;
     int nf;
+    const AbstractConvolution* conv;
 };
 
 class AbstractConvolution {
     public:
-        // AbstractConvolution(const CoefficientFunction& coefffunc, const SplittingFunction& splitfunc, const double& abserr = 1e-3, const double& relerr = 1e-3, const int& dim = 1000);
-        AbstractConvolution(CoefficientFunction* coefffunc, SplittingFunction* splitfunc, const double& abserr = 1e-3, const double& relerr = 1e-3, const int& dim = 1000);
+        AbstractConvolution(CoefficientFunction* coefffunc, AbstractSplittingFunction* splitfunc, const double& abserr = 1e-3, const double& relerr = 1e-3, const int& dim = 1000);
         ~AbstractConvolution() {} ;
 
         double Convolute(double x, double m2Q2, int nf) const ;
@@ -54,8 +54,8 @@ class AbstractConvolution {
         int GetRelerr() const {return relerr_;};
         int GetDim() const {return dim_;} ;
 
-        // CoefficientFunction* GetCoeffFunc() const {return coefffunc_;};
-        // SplittingFunction* GetSplitFunc() const {return splitfunc_;};
+        CoefficientFunction* GetCoeffFunc() const {return coefffunc_;};
+        AbstractSplittingFunction* GetSplitFunc() const {return splitfunc_;};
 
         // set methods
         void SetAbserr(const double& abserr) ;
@@ -69,38 +69,27 @@ class AbstractConvolution {
 
     protected:
         CoefficientFunction *coefffunc_ ;
-        SplittingFunction *splitfunc_ ;
+        AbstractSplittingFunction *splitfunc_ ;
 
 };
 
 class Convolution : public AbstractConvolution {
     public:
-        Convolution(CoefficientFunction* coefffunc, SplittingFunction* splitfunc, const double& abserr = 1e-3, const double& relerr = 1e-3, const int& dim = 1000) : AbstractConvolution(coefffunc, splitfunc, abserr, relerr, dim) {} ;
+        Convolution(CoefficientFunction* coefffunc, AbstractSplittingFunction* splitfunc, const double& abserr = 1e-3, const double& relerr = 1e-3, const int& dim = 1000) : AbstractConvolution(coefffunc, splitfunc, abserr, relerr, dim) {} ;
         ~Convolution() {} ;
-
-        // double Convolute(double x, double m2Q2, int nf) const ;
 
         double RegularPart(double x, double m2Q2, int nf) const override;
         double SingularPart(double x, double m2Q2, int nf) const override;
         double LocalPart(double x, double m2Q2, int nf) const override;
 
-        // friend double regular_integrand(double z, void *p) ;
-        // friend double singular_integrand(double z, void *p) ;
-
-    private:
-        double regular_integrand(double z, void *p) const ;
-        double singular_integrand(double z, void *p) const ;
-
-        // static double static_regular_integrand(double z, void *params) {
-        //     // Call the member function through the params pointer
-        //     return static_cast<Convolution*>(params)->regular_integrand(z, nullptr);
-        // }
+        static double regular_integrand(double z, void *p) ;
+        static double singular_integrand(double z, void *p) ;
 
 };
 
 class MonteCarloDoubleConvolution : public AbstractConvolution {
     public:
-        MonteCarloDoubleConvolution(CoefficientFunction* coefffunc, SplittingFunction* splitfunc, const double& abserr = 1e-3, const double& relerr = 1e-3, const int& dim = 1000, const int& MCcalls = 25000) ;
+        MonteCarloDoubleConvolution(CoefficientFunction* coefffunc, AbstractSplittingFunction* splitfunc, const double& abserr = 1e-3, const double& relerr = 1e-3, const int& dim = 1000, const int& MCcalls = 25000) ;
         ~MonteCarloDoubleConvolution() ;
 
         double RegularPart(double x, double m2Q2, int nf) const override;
@@ -118,13 +107,13 @@ class MonteCarloDoubleConvolution : public AbstractConvolution {
 
         Convolution* convolution_;
 
-        double regular1_integrand(double z[], size_t dim, void *p) const ;
-        double regular2_integrand(double z[], size_t dim, void *p) const ;
-        double regular3_integrand(double z, void *p) const ;
+        static double regular1_integrand(double z[], size_t dim, void *p) ;
+        static double regular2_integrand(double z[], size_t dim, void *p) ;
+        static double regular3_integrand(double z, void *p) ;
 
-        double singular1_integrand(double z[], size_t dim, void *p) const ;
-        double singular2_integrand(double z[], size_t dim, void *p) const ;
-        double singular3_integrand(double z, void *p) const ;
+        static double singular1_integrand(double z[], size_t dim, void *p) ;
+        static double singular2_integrand(double z[], size_t dim, void *p) ;
+        static double singular3_integrand(double z, void *p) ;
 };
 
 //==========================================================================================//

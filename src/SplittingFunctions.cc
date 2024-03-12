@@ -1,23 +1,12 @@
 #include "adani/SplittingFunctions.h"
 #include "adani/Constants.h"
 #include "adani/SpecialFunctions.h"
+
 #include <cmath>
 #include <iostream>
 
 using std::cout;
 using std::endl;
-
-SplittingFunction SplittingFunction::operator*(const double& rhs) const {
-    SplittingFunction res(order_, entry1_, entry2_);
-    res.SetMultFact(GetMultFact() * rhs);
-    return res;
-}
-
-SplittingFunction operator*(const double& lhs, const SplittingFunction& rhs){
-    SplittingFunction res(rhs.order_, res.entry1_, res.entry2_);
-    res.SetMultFact(rhs.GetMultFact() * lhs);
-    return res;
-}
 
 SplittingFunction::SplittingFunction(const int& order, const char& entry1, const char& entry2) : AbstractSplittingFunction(){
 
@@ -42,91 +31,197 @@ SplittingFunction::SplittingFunction(const int& order, const char& entry1, const
     }
     entry2_ = entry2 ;
 
-    // check for not implemented splitting functions
-    if (order == 1 && entry1_ == 'q') {
-        cout << "Error: Pq" << entry2_ << " is not implemented at O(as)!" << endl ;
+    SetFunctions();
+}
+
+double SplittingFunction::Regular(const double x, const int nf) const {
+    return GetMultFact() * (this->*reg_)(x, nf);
+}
+
+double SplittingFunction::Singular(const double x, const int nf) const {
+    return GetMultFact() * (this->*sing_)(x, nf);
+}
+
+double SplittingFunction::SingularIntegrated(const double x, const int nf) const {
+    return GetMultFact() * (this->*sing_int_)(x, nf);
+}
+
+double SplittingFunction::Local(const int nf) const {
+    return GetMultFact() * (this->*loc_)(nf);
+}
+
+SplittingFunction SplittingFunction::operator*(const double& rhs) const {
+    SplittingFunction res(order_, entry1_, entry2_);
+    res.SetMultFact(GetMultFact() * rhs);
+    return res;
+}
+
+SplittingFunction operator*(const double& lhs, const SplittingFunction& rhs){
+    SplittingFunction res(rhs.order_, res.entry1_, res.entry2_);
+    res.SetMultFact(rhs.GetMultFact() * lhs);
+    return res;
+}
+
+SplittingFunction SplittingFunction::operator/(const double& rhs) const {
+    SplittingFunction res(order_, entry1_, entry2_);
+    res.SetMultFact(GetMultFact() / rhs);
+    return res;
+}
+
+void SplittingFunction::SetFunctions() {
+
+    if  (order_ == 0) {
+        if (entry1_ == 'g' && entry2_ == 'q') {
+
+            reg_ = &SplittingFunction::Pgq0;
+            sing_ = &ZeroFunction_x_nf;
+            loc_ = &ZeroFunction_nf;
+            sing_int_ = &ZeroFunction_x_nf;
+
+        } else if (entry1_ == 'q' && entry2_ == 'g') {
+
+            reg_ = &SplittingFunction::Pqg0;
+
+            sing_ = &ZeroFunction_x_nf;
+            loc_ = &ZeroFunction_nf;
+            sing_int_ = &ZeroFunction_x_nf;
+
+        } else if (entry1_ == 'g' && entry2_ == 'g') {
+
+            reg_ = &SplittingFunction::Pgg0reg;
+            sing_ = &SplittingFunction::Pgg0sing;
+            loc_ = &SplittingFunction::Pgg0loc;
+            sing_int_ = &SplittingFunction::Pgg0sing_integrated;
+
+        } else if (entry1_ == 'q' && entry2_ == 'q') {
+
+            reg_ = &SplittingFunction::Pqq0reg;
+            sing_ = &SplittingFunction::Pqq0sing;
+            loc_ = &SplittingFunction::Pqq0loc;
+            sing_int_ = &SplittingFunction::Pqq0sing_integrated;
+
+        }
+    } else if (order_ == 1) {
+        if (entry1_ == 'g' && entry2_ == 'q') {
+
+            reg_ = &SplittingFunction::Pgq1;
+            sing_ = &ZeroFunction_x_nf;
+            loc_ = &ZeroFunction_nf;
+            sing_int_ = &ZeroFunction_x_nf;
+
+        } else if (entry1_ == 'g' && entry2_ == 'g') {
+
+            reg_ = &SplittingFunction::Pgg1reg;
+            sing_ = &SplittingFunction::Pgg1sing;
+            loc_ = &SplittingFunction::Pgg1loc;
+            sing_int_ = &SplittingFunction::Pgg1sing_integrated;
+
+        }
+    } else {
+        cout << "Error: P" << entry1_ << entry2_ << order_ << " is not implemented!" << endl ;
         exit(-1);
     }
 
 }
 
-double SplittingFunction::Regular(const double x, const int nf) const {
-    if (order_ == 0) {
-        if (entry1_ == 'g' && entry2_ == 'q') return Pgq0(x);
-        else if (entry1_ == 'q' && entry2_ == 'g') return Pqg0(x, nf);
-        else if (entry1_ == 'g' && entry2_ == 'g') return Pgg0reg(x);
-        else if (entry1_ == 'q' && entry2_ == 'q') return Pqq0reg(x);
-    } else if (order_ == 1) {
-        if (entry1_ == 'g' && entry2_ == 'q') return Pgq1(x, nf);
-        else if (entry1_ == 'g' && entry2_ == 'g') return Pgg1reg(x, nf);
+ConvolutedSplittingFunctions::ConvolutedSplittingFunctions(const int& order, const char& entry1, const char& entry2, const char& entry3, const char& entry4) : AbstractSplittingFunction() {
+
+    // check order
+    if (order != 0 && order !=1) {
+        cout << "Error: order must be 0 or 1. Got " << order << endl ;
+        exit(-1) ;
     }
-}
+    order_ = order ;
 
-double SplittingFunction::Singular(const double x, const int nf) const {
-    if (order_ == 0) {
-        if (entry1_ == 'g' && entry2_ == 'q') return 0.;
-        else if (entry1_ == 'q' && entry2_ == 'g') return 0.;
-        else if (entry1_ == 'g' && entry2_ == 'g') return Pgg0sing(x);
-        else if (entry1_ == 'q' && entry2_ == 'q') return Pqq0sing(x);
-    } else if (order_ == 1) {
-        if (entry1_ == 'g' && entry2_ == 'q') return 0.;
-        else if (entry1_ == 'g' && entry2_ == 'g') return Pgg1sing(x, nf);
+    // check entry1
+    if (entry1 != 'g' && entry2 != 'q') {
+        cout << "Error: entry1 must be g or q. Got " << entry1 << endl ;
+        exit(-1) ;
     }
-}
+    entry1_ = entry1 ;
 
-double SplittingFunction::Local(const int nf) const {
-    if (order_ == 0) {
-        if (entry1_ == 'g' && entry2_ == 'q') return 0.;
-        else if (entry1_ == 'q' && entry2_ == 'g') return 0.;
-        else if (entry1_ == 'g' && entry2_ == 'g') return Pgg0loc(nf);
-        else if (entry1_ == 'q' && entry2_ == 'q') return Pqq0loc();
-    } else if (order_ == 1) {
-        if (entry1_ == 'g' && entry2_ == 'q') return 0.;
-        else if (entry1_ == 'g' && entry2_ == 'g') return Pgg1loc(nf);
+    // check entry2
+    if (entry2 != 'g' && entry2 != 'q') {
+        cout << "Error: entry2 must be g or q. Got " << entry2 << endl ;
+        exit(-1) ;
     }
-}
+    entry2_ = entry2 ;
 
-double SplittingFunction::SingularIntegrated(const double x, const int nf) const {
-    if (order_ == 0) {
-        if (entry1_ == 'g' && entry2_ == 'q') return 0.;
-        else if (entry1_ == 'q' && entry2_ == 'g') return 0.;
-        else if (entry1_ == 'g' && entry2_ == 'g') return Pgg0sing_integrated(x);
-        else if (entry1_ == 'q' && entry2_ == 'q') return Pqq0sing_integrated(x);
-    } else if (order_ == 1) {
-        if (entry1_ == 'g' && entry2_ == 'q') return 0.;
-        else if (entry1_ == 'g' && entry2_ == 'g') return Pgg1sing_integrated(x, nf);
-    }
-}
-
-// SplittingFunction SplittingFunction::operator+(const SplittingFunction& splitfunc) const {
-    
-// }
-
-ConvolutedSplittingFunctions::ConvolutedSplittingFunctions(const int& order, const char& entry1, const char& entry2, const char& entry3) : SplittingFunction(order, entry1, entry2) {
     // check entry3
     if (entry3 != 'g' && entry3 != 'q') {
         cout << "Error: entry3 must be g or q. Got " << entry3 << endl ;
         exit(-1) ;
     }
     entry3_ = entry3;
+
+    // check entry3
+    if (entry3 != 'g' && entry3 != 'q') {
+        cout << "Error: entry3 must be g or q. Got " << entry3 << endl ;
+        exit(-1) ;
+    }
+    entry3_ = entry3;
+
+    SetFunctions();
 }
 
 double ConvolutedSplittingFunctions::Regular(const double x, const int nf) const {
-    
-    if (GetEntry1() == 'g' && GetEntry2() == 'q' && GetEntry3() == 'g') return Pgq0_x_Pqg0(x, nf) ;
-    if (GetEntry1() == 'g' && GetEntry2() == 'q' && GetEntry3() == 'q') return Pgg0_x_Pgq0(x, nf) + Pqq0_x_Pgq0(x) ;
-
+    return GetMultFact() * (this->*reg_)(x, nf);
 }
 
 ConvolutedSplittingFunctions ConvolutedSplittingFunctions::operator*(const double& rhs) const {
-    ConvolutedSplittingFunctions res(GetOrder(), GetEntry1(), GetEntry2(), entry3_);
+    ConvolutedSplittingFunctions res(order_, entry1_, entry2_, entry3_, entry4_);
     res.SetMultFact(GetMultFact() * rhs);
     return res;
 }
 
 ConvolutedSplittingFunctions operator*(const double& lhs, const ConvolutedSplittingFunctions& rhs){
-    ConvolutedSplittingFunctions res(rhs.GetOrder(), res.GetEntry1(), res.GetEntry2(), res.entry3_);
+    ConvolutedSplittingFunctions res(rhs.order_, res.entry1_, res.entry2_, res.entry3_, res.entry4_);
     res.SetMultFact(rhs.GetMultFact() * lhs);
+    return res;
+}
+
+ConvolutedSplittingFunctions ConvolutedSplittingFunctions::operator/(const double& rhs) const {
+    ConvolutedSplittingFunctions res(order_, entry1_, entry2_, entry3_, entry4_);
+    res.SetMultFact(GetMultFact() / rhs);
+    return res;
+}
+
+void ConvolutedSplittingFunctions::SetFunctions() {
+
+    if (entry1_ == 'g' && entry2_ == 'q' && entry3_ == 'q' && entry4_ == 'g') {
+
+        reg_ = &ConvolutedSplittingFunctions::Pgq0_x_Pqg0;
+
+    } else if (entry1_ == 'g' && entry2_ == 'g' && entry3_ == 'g' && entry4_ == 'q') {
+
+        reg_ = &ConvolutedSplittingFunctions::Pgg0_x_Pgq0;
+
+    } else if (entry1_ == 'q' && entry2_ == 'q' && entry3_ == 'g' && entry4_ == 'q') {
+
+        reg_ = &ConvolutedSplittingFunctions::Pqq0_x_Pgq0;
+
+    } else {
+        cout << "Error: P" << entry1_ << entry2_ << " x P" << entry3_ << entry4_ << " is not implemented!" << endl ;
+        exit(-1);
+    }
+
+}
+
+Delta Delta::operator*(const double& rhs) const {
+    Delta res = Delta();
+    res.SetMultFact(GetMultFact() * rhs);
+    return res;
+}
+
+Delta operator*(const double& lhs, const Delta& rhs){
+    Delta res = Delta();
+    res.SetMultFact(rhs.GetMultFact() * lhs);
+    return res;
+}
+
+Delta Delta::operator/(const double& rhs) const {
+    Delta res = Delta();
+    res.SetMultFact(GetMultFact() / rhs);
     return res;
 }
 

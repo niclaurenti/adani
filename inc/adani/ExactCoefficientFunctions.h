@@ -59,6 +59,8 @@ class ExactCoefficientFunction : public CoefficientFunction {
         double MuIndependentTerms(const double x, const double m2Q2, const int nf) const override ;
         double MuDependentTerms(const double x, const double m2Q2, const double m2mu2, const int nf) const ;
 
+        void SetFunctions();
+
     private:
 
         int method_flag_ ;
@@ -67,7 +69,11 @@ class ExactCoefficientFunction : public CoefficientFunction {
         int MCcalls_ ;
         int dim_ ;
 
-        std::vector<AbstractConvolution*> convolutions_;
+        double (ExactCoefficientFunction::*mu_indep_)(double, double, int) const;
+        double (ExactCoefficientFunction::*mu_dep_)(double, double, double, int) const;
+
+        std::vector<AbstractConvolution*> convolutions_lmu1;
+        std::vector<AbstractConvolution*> convolutions_lmu2;
 
         ExactCoefficientFunction* gluon_lo_ ;
         ExactCoefficientFunction* gluon_nlo_ ;
@@ -135,6 +141,8 @@ class ExactCoefficientFunction : public CoefficientFunction {
 
         double C_ps3_MuDep(const double x, const double m2Q2, const double m2mu2, const int nf) const ;
         double C_g3_MuDep(const double x, const double m2Q2, const double m2mu2, const int nf) const ;
+
+        double ZeroFunction(double x, double m2mu2, int nf) const {return 0.;};
 
 };
 
