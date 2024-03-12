@@ -31,13 +31,6 @@
 #include <gsl/gsl_monte.h>
 #include <gsl/gsl_monte_vegas.h>
 
-struct function_params {
-    double x;
-    double m2Q2;
-    int nf;
-    const AbstractConvolution* conv;
-};
-
 class AbstractConvolution {
     public:
         AbstractConvolution(CoefficientFunction* coefffunc, AbstractSplittingFunction* splitfunc, const double& abserr = 1e-3, const double& relerr = 1e-3, const int& dim = 1000);
@@ -87,6 +80,20 @@ class Convolution : public AbstractConvolution {
 
 };
 
+
+class ConvolutedCoefficientFunction : public CoefficientFunction {
+    public:
+        ConvolutedCoefficientFunction(Convolution* conv) : CoefficientFunction(conv -> GetCoeffFunc()) {conv_ = conv;};
+        ~ConvolutedCoefficientFunction() {} ;
+
+        double MuIndependentTerms(double x, double m2Q2, int nf) const override {return conv_ -> Convolute(x, m2Q2, nf);};
+        // double MuDependentTerms(double x, double m2Q2, double m2mu2, int nf) const {return 0.;};
+        double fx(double x, double m2Q2, double m2mu2, int nf) const override {return MuIndependentTerms(x, m2Q2, nf);};
+    private:
+        Convolution* conv_;
+
+};
+
 class MonteCarloDoubleConvolution : public AbstractConvolution {
     public:
         MonteCarloDoubleConvolution(CoefficientFunction* coefffunc, AbstractSplittingFunction* splitfunc, const double& abserr = 1e-3, const double& relerr = 1e-3, const int& dim = 1000, const int& method_flag = 1, const int& MCcalls = 25000) ;
@@ -121,17 +128,11 @@ class MonteCarloDoubleConvolution : public AbstractConvolution {
 
 };
 
-class ConvolutedCoefficientFunction : public CoefficientFunction {
-    public:
-        ConvolutedCoefficientFunction(Convolution* conv) : CoefficientFunction(conv -> GetCoeffFunc()) {conv_ = conv;};
-        ~ConvolutedCoefficientFunction() {} ;
-
-        double MuIndependentTerms(double x, double m2Q2, int nf) const override {return conv_ -> Convolute(x, m2Q2, nf);};
-        // double MuDependentTerms(double x, double m2Q2, double m2mu2, int nf) const {return 0.;};
-        double fx(double x, double m2Q2, double m2mu2, int nf) const {return MuIndependentTerms(x, m2Q2, nf);};
-    private:
-        Convolution* conv_;
-
+struct function_params {
+    double x;
+    double m2Q2;
+    int nf;
+    const AbstractConvolution* conv;
 };
 
 //==========================================================================================//

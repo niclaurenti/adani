@@ -74,17 +74,17 @@ void SplittingFunction::SetFunctions() {
         if (entry1_ == 'g' && entry2_ == 'q') {
 
             reg_ = &SplittingFunction::Pgq0;
-            sing_ = &ZeroFunction_x_nf;
-            loc_ = &ZeroFunction_nf;
-            sing_int_ = &ZeroFunction_x_nf;
+            sing_ = &SplittingFunction::ZeroFunction_x_nf;
+            loc_ = &SplittingFunction::ZeroFunction_nf;
+            sing_int_ = &SplittingFunction::ZeroFunction_x_nf;
 
         } else if (entry1_ == 'q' && entry2_ == 'g') {
 
             reg_ = &SplittingFunction::Pqg0;
 
-            sing_ = &ZeroFunction_x_nf;
-            loc_ = &ZeroFunction_nf;
-            sing_int_ = &ZeroFunction_x_nf;
+            sing_ = &SplittingFunction::ZeroFunction_x_nf;
+            loc_ = &SplittingFunction::ZeroFunction_nf;
+            sing_int_ = &SplittingFunction::ZeroFunction_x_nf;
 
         } else if (entry1_ == 'g' && entry2_ == 'g') {
 
@@ -105,9 +105,9 @@ void SplittingFunction::SetFunctions() {
         if (entry1_ == 'g' && entry2_ == 'q') {
 
             reg_ = &SplittingFunction::Pgq1;
-            sing_ = &ZeroFunction_x_nf;
-            loc_ = &ZeroFunction_nf;
-            sing_int_ = &ZeroFunction_x_nf;
+            sing_ = &SplittingFunction::ZeroFunction_x_nf;
+            loc_ = &SplittingFunction::ZeroFunction_nf;
+            sing_int_ = &SplittingFunction::ZeroFunction_x_nf;
 
         } else if (entry1_ == 'g' && entry2_ == 'g') {
 
@@ -265,7 +265,7 @@ double SplittingFunction::pggsing(double x) const { return 1. / (1. - x); }
 //  Eq. (4.6) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
 
-double SplittingFunction::Pgq0(double x) const { return 2. * CF * pgq(x); }
+double SplittingFunction::Pgq0(double x, int nf) const { return 2. * CF * pgq(x); }
 
 //==========================================================================================//
 //  Quark-gluon splitting functions O(alpha_s)
@@ -281,7 +281,7 @@ double SplittingFunction::Pqg0(double x, int nf) const { return 2. * nf * pqg(x)
 //  Eq. (4.6) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
 
-double SplittingFunction::Pgg0reg(double x) const { return CA * 4. * pggreg(x); }
+double SplittingFunction::Pgg0reg(double x, int nf) const { return CA * 4. * pggreg(x); }
 
 //==========================================================================================//
 //  Local part of the gluon-gluon splitting functions O(alpha_s)
@@ -297,13 +297,13 @@ double SplittingFunction::Pgg0loc(int nf) const { return 11. / 3 * CA - 2. / 3 *
 //  Eq. (4.6) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
 
-double SplittingFunction::Pgg0sing(double x) const { return 4. * CA * pggsing(x); }
+double SplittingFunction::Pgg0sing(double x, int nf) const { return 4. * CA * pggsing(x); }
 
 //==========================================================================================//
 //  Integral from 0 to x of the Singular part of the gluon-gluon splitting functions O(alpha_s)
 //------------------------------------------------------------------------------------------//
 
-double SplittingFunction::Pgg0sing_integrated(double x) const { return -Pgg0sing(0.) * log(1. - x); }
+double SplittingFunction::Pgg0sing_integrated(double x, int nf) const { return -Pgg0sing(0., 0) * log(1. - x); }
 
 //==========================================================================================//
 //  Regular part of the quark-quark splitting functions O(alpha_s)
@@ -311,13 +311,13 @@ double SplittingFunction::Pgg0sing_integrated(double x) const { return -Pgg0sing
 //  Eq. (4.6) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
 
-double SplittingFunction::Pqq0reg(double x) const { return CF * 2. * (-1. - x); }
+double SplittingFunction::Pqq0reg(double x, int nf) const { return CF * 2. * (-1. - x); }
 
 //==========================================================================================//
 //  Local part of the quark-quark splitting functions O(alpha_s)
 //------------------------------------------------------------------------------------------//
 
-double SplittingFunction::Pqq0loc() const { return CF * 3.; }
+double SplittingFunction::Pqq0loc(int nf) const { return CF * 3.; }
 
 //==========================================================================================//
 //  Singular part of the quark-quark splitting functions O(alpha_s)
@@ -325,13 +325,13 @@ double SplittingFunction::Pqq0loc() const { return CF * 3.; }
 //  Eq. (4.6) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
 
-double SplittingFunction::Pqq0sing(double x) const { return CF * 2. * 2. / (1. - x); }
+double SplittingFunction::Pqq0sing(double x, int nf) const { return CF * 2. * 2. / (1. - x); }
 
 //==========================================================================================//
 //  Integral from 0 to x of the Singular part of the quark-quark splitting functions O(alpha_s)
 //------------------------------------------------------------------------------------------//
 
-double SplittingFunction::Pqq0sing_integrated(double x) const { return -Pqq0sing(0.) * log(1. - x); }
+double SplittingFunction::Pqq0sing_integrated(double x, int nf) const { return -Pqq0sing(0., 0) * log(1. - x); }
 
 //==========================================================================================//
 //  Gluon-quark splitting functions O(alpha_s^2)
@@ -468,7 +468,7 @@ double ConvolutedSplittingFunctions::Pgg0_x_Pgq0(double x, int nf) const {
 //  Analytical onvolution between the splitting functions Pqq0 and Pgq0
 //------------------------------------------------------------------------------------------//
 
-double ConvolutedSplittingFunctions::Pqq0_x_Pgq0(double x) const {
+double ConvolutedSplittingFunctions::Pqq0_x_Pgq0(double x, int nf) const {
 
     return (2. * CF * CF
             * (4. * (2. + (-2. + x) * x) * log(1. - x)

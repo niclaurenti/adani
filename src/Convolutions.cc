@@ -399,7 +399,6 @@ double MonteCarloDoubleConvolution::SingularPart(double x, double m2Q2, int nf) 
 
     if (method_flag_ == 0) return convolution_ -> SingularPart(x, m2Q2, nf);
 
-
     double x_max = 1. / (1. + 4 * m2Q2);
     struct function_params params = { x, m2Q2, nf, this };
 

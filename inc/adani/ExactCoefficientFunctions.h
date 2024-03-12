@@ -38,7 +38,7 @@ class ExactCoefficientFunction : public CoefficientFunction {
 
     public:
         ExactCoefficientFunction(const int& order, const char& kind, const char& channel, const double& abserr = 1e-3, const double& relerr = 1e-3, const int& dim = 1000, const int& method_flag = 1, const int& MCcalls = 25000) ;
-        ~ExactCoefficientFunction() {} ;
+        ~ExactCoefficientFunction() ;
 
         // get methods
         int GetMethodFlag() const {return method_flag_;};
@@ -54,10 +54,10 @@ class ExactCoefficientFunction : public CoefficientFunction {
         void SetMCcalls(const int& MCcalls);
         void SetDim(const int& dim);
 
-        double fx(double x, double m2Q2, double m2mu2, int nf) const ;
+        double fx(double x, double m2Q2, double m2mu2, int nf) const override ;
 
         double MuIndependentTerms(double x, double m2Q2, int nf) const override ;
-        double MuDependentTerms(double x, double m2Q2, double m2mu2, int nf) const ;
+        double MuDependentTerms(double x, double m2Q2, double m2mu2, int nf) const override ;
 
         void SetFunctions();
 
@@ -79,13 +79,25 @@ class ExactCoefficientFunction : public CoefficientFunction {
         ExactCoefficientFunction* gluon_nlo_ ;
         ExactCoefficientFunction* quark_nlo_ ;
 
+        SplittingFunction* Pgq0_;
+        SplittingFunction* Pgg0_;
+        SplittingFunction* Pgq1_;
+        SplittingFunction* Pqq0_;
+        ConvolutedSplittingFunctions* Pgg0Pgq0_;
+        ConvolutedSplittingFunctions* Pqq0Pgq0_;
+        SplittingFunction* Pgg1_;
+        SplittingFunction* Pqg0_;
+        ConvolutedSplittingFunctions* Pgq0Pqg0_;
+
+        Delta* delta_;
+
         //==========================================================================================//
         //                      Exact massive coefficient functions
         //                      O(alpha_s)
         //------------------------------------------------------------------------------------------//
 
-        double C2_g1(double x, double m2Q2) const;
-        double CL_g1(double x, double m2Q2) const;
+        double C2_g1(double x, double m2Q2, int nf) const;
+        double CL_g1(double x, double m2Q2, int nf) const;
 
         //==========================================================================================//
         //                      Exact massive coefficient functions
@@ -103,10 +115,10 @@ class ExactCoefficientFunction : public CoefficientFunction {
         //  mu-independent terms
         //------------------------------------------------------------------------------------------//
 
-        double C2_g20(double x, double m2Q2) const;
-        double CL_g20(double x, double m2Q2) const;
-        double C2_ps20(double x, double m2Q2) const;
-        double CL_ps20(double x, double m2Q2) const;
+        double C2_g20(double x, double m2Q2, int nf) const;
+        double CL_g20(double x, double m2Q2, int nf) const;
+        double C2_ps20(double x, double m2Q2, int nf) const;
+        double CL_ps20(double x, double m2Q2, int nf) const;
 
         //==========================================================================================//
         //  Exact massive coefficient functions O(alpha_s^2): terms
@@ -116,8 +128,8 @@ class ExactCoefficientFunction : public CoefficientFunction {
         double C_g21(double x, double m2Q2) const;
         double C_ps21(double x, double m2Q2) const;
 
-        double C_ps2_MuDep(double x, double m2Q2, double m2mu2) const ;
-        double C_g2_MuDep(double x, double m2Q2, double m2mu2) const ;
+        double C_ps2_MuDep(double x, double m2Q2, double m2mu2, int nf) const ;
+        double C_g2_MuDep(double x, double m2Q2, double m2mu2, int nf) const ;
 
         //==========================================================================================//
         //  Exact massive coefficient functions O(alpha_s^3): terms
@@ -142,7 +154,7 @@ class ExactCoefficientFunction : public CoefficientFunction {
         double C_ps3_MuDep(double x, double m2Q2, double m2mu2, int nf) const ;
         double C_g3_MuDep(double x, double m2Q2, double m2mu2, int nf) const ;
 
-        double ZeroFunction(double x, double m2mu2, int nf) const {return 0.;};
+        double ZeroFunction(double x, double m2Q2, double m2mu2, int nf) const {return 0.;};
         double WarningFunc(double x, double m2Q2, int nf) const ;
 
 };

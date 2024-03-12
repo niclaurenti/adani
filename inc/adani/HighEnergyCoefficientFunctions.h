@@ -60,7 +60,7 @@ class HighEnergyCoefficientFunction : public AbstractHighEnergyCoefficientFuncti
         // HighEnergyCoefficientFunction() : AbstractHighEnergyCoefficientFunction() {} ;
         ~HighEnergyCoefficientFunction() {} ;
 
-        double fx(double x, double m2Q2, double m2mu2, int nf) const ;
+        double fx(double x, double m2Q2, double m2mu2, int nf) const override ;
 
     private:
 
@@ -106,7 +106,7 @@ class HighEnergyHighScaleCoefficientFunction : public AbstractHighEnergyCoeffici
         // HighEnergyHighScaleCoefficientFunction() : AbstractHighEnergyCoefficientFunction() {} ;
         ~HighEnergyHighScaleCoefficientFunction() {} ;
 
-        double fx(double x, double m2Q2, double m2mu2, int nf) const ;
+        double fx(double x, double m2Q2, double m2mu2, int nf) const override ;
 
     private:
 
@@ -164,7 +164,7 @@ class PowerTermsCoefficientFunction : public AbstractHighEnergyCoefficientFuncti
         // PowerTermsCoefficientFunction() : AbstractHighEnergyCoefficientFunction() {} ;
         ~PowerTermsCoefficientFunction() ;
 
-        double fx(double x, double m2Q2, double m2mu2, int nf) const;
+        double fx(double x, double m2Q2, double m2mu2, int nf) const override ;
 
     private:
 

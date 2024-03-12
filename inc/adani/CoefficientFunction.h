@@ -1,3 +1,19 @@
+/*
+ * =====================================================================================
+ *
+ *       Filename:  CoefficientFunctions.h
+ *
+ *    Description:  Header file for the
+ *                  CoefficientFunctions.cc file.
+ *
+ *         Author:  La tigre e il leone saranno anche più forti,
+ *                  ma non vedrete mai un lupo al circo
+ *
+ *  In this file there is the abstract class CoefficientFunction
+ *
+ * =====================================================================================
+ */
+
 #ifndef CoeffFunc
 #define CoeffFunc
 

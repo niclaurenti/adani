@@ -72,7 +72,7 @@ if(PYTHON_ONLY)
         _core MODULE
         pywrap/pywrap.cc
         src/CoefficientFunction.cc
-        src/ApproximateCoefficientFunctions.cc
+        # src/ApproximateCoefficientFunctions.cc
         src/ExactCoefficientFunctions.cc
         src/ThresholdCoefficientFunctions.cc
         src/AsymptoticCoefficientFunctions.cc
@@ -84,7 +84,7 @@ if(PYTHON_ONLY)
         src/SpecialFunctions.cc
         src/hqcoef.f
         src/HighScaleCoefficientFunctions.cc
-        src/HighScaleSplitLogs.cc
+        # src/HighScaleSplitLogs.cc
         src/SplittingFunctions.cc
     )
     target_link_libraries(_core PRIVATE GSL::gsl GSL::gslcblas)
@@ -96,7 +96,7 @@ else(PYTHON_ONLY)
     add_library(
         adani SHARED
         src/CoefficientFunction.cc
-        src/ApproximateCoefficientFunctions.cc
+        # src/ApproximateCoefficientFunctions.cc
         src/ExactCoefficientFunctions.cc
         src/ThresholdCoefficientFunctions.cc
         src/AsymptoticCoefficientFunctions.cc
@@ -108,7 +108,7 @@ else(PYTHON_ONLY)
         src/SpecialFunctions.cc
         src/hqcoef.f
         src/HighScaleCoefficientFunctions.cc
-        src/HighScaleSplitLogs.cc
+        # src/HighScaleSplitLogs.cc
         src/SplittingFunctions.cc
     )
 

@@ -34,7 +34,7 @@ class HighScaleCoefficientFunction : public CoefficientFunction {
         HighScaleCoefficientFunction(const int& order, const char& kind, const char& channel) ;
         ~HighScaleCoefficientFunction();
 
-        double fx(double x, double m2Q2, double m2mu2, int nf) const ;
+        double fx(double x, double m2Q2, double m2mu2, int nf) const override ;
 
     private:
         MasslessCoefficientFunction* massless_;

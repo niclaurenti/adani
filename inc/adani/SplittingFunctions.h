@@ -39,10 +39,10 @@ class SplittingFunction : public AbstractSplittingFunction{
         SplittingFunction(const int& order, const char& entry1, const char& entry2) ;
         ~SplittingFunction() {} ;
 
-        double Regular(double x, int nf) const ;
-        double Singular(double x, int nf) const ;
-        double Local(int nf) const ;
-        double SingularIntegrated(double x, int nf) const;
+        double Regular(double x, int nf) const override;
+        double Singular(double x, int nf) const override;
+        double Local(int nf) const override ;
+        double SingularIntegrated(double x, int nf) const override;
 
         SplittingFunction operator*(const double& rhs) const;
         friend SplittingFunction operator*(const double& lhs, const SplittingFunction& rhs);
@@ -80,18 +80,18 @@ class SplittingFunction : public AbstractSplittingFunction{
         //                      Splitting functions O(alpha_s)
         //------------------------------------------------------------------------------------------//
 
-        double Pgq0(double x) const ;
+        double Pgq0(double x, int nf) const ;
         double Pqg0(double x, int nf) const ;
 
-        double Pgg0reg(double x) const ;
+        double Pgg0reg(double x, int nf) const ;
         double Pgg0loc(int nf) const ;
-        double Pgg0sing(double x) const ;
-        double Pgg0sing_integrated(double x) const;
+        double Pgg0sing(double x, int nf) const ;
+        double Pgg0sing_integrated(double x, int nf) const;
 
-        double Pqq0reg(double x) const ;
-        double Pqq0loc() const ;
-        double Pqq0sing(double x) const ;
-        double Pqq0sing_integrated(double x) const;
+        double Pqq0reg(double x, int nf) const ;
+        double Pqq0loc(int nf) const ;
+        double Pqq0sing(double x, int nf) const ;
+        double Pqq0sing_integrated(double x, int nf) const;
 
         //==========================================================================================//
         //                      Splitting functions O(alpha_s^2)
@@ -114,9 +114,7 @@ class ConvolutedSplittingFunctions : public AbstractSplittingFunction {
         ConvolutedSplittingFunctions(const int& order, const char& entry1, const char& entry2, const char& entry3, const char& entry4);
         ~ConvolutedSplittingFunctions() {};
 
-        char GetEntry3() const {return entry3_;} ;
-
-        double Regular(double x, int nf) const ;
+        double Regular(double x, int nf) const override;
 
         double Singular(double x, int nf) const override {return 0.;} ;
         double Local(int nf) const override {return 0.;} ;
@@ -150,7 +148,7 @@ class ConvolutedSplittingFunctions : public AbstractSplittingFunction {
         //------------------------------------------------------------------------------------------//
 
         double Pgg0_x_Pgq0(double x, int nf) const ;
-        double Pqq0_x_Pgq0(double x) const ;
+        double Pqq0_x_Pgq0(double x, int nf) const ;
 
         //==========================================================================================//
         //  Convolution between the splitting functions Pgq0 and Pqg0
