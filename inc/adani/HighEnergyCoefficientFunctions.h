@@ -32,7 +32,6 @@
 class AbstractHighEnergyCoefficientFunction : public CoefficientFunction {
     public:
         AbstractHighEnergyCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL = true) ;
-        // AbstractHighEnergyCoefficientFunction() : AbstractHighEnergyCoefficientFunction(1, '2', 'g', true) {} ;
         ~AbstractHighEnergyCoefficientFunction() {};
 
         // get methods

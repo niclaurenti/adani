@@ -31,12 +31,12 @@
 #include <gsl/gsl_monte.h>
 #include <gsl/gsl_monte_vegas.h>
 
-struct function_params {
-    double x;
-    double m2Q2;
-    int nf;
-    const AbstractConvolution* conv;
-};
+// struct function_params {
+//     double x;
+//     double m2Q2;
+//     int nf;
+//     const AbstractConvolution* conv;
+// };
 
 class AbstractConvolution {
     public:
@@ -89,7 +89,7 @@ class Convolution : public AbstractConvolution {
 
 class MonteCarloDoubleConvolution : public AbstractConvolution {
     public:
-        MonteCarloDoubleConvolution(CoefficientFunction* coefffunc, AbstractSplittingFunction* splitfunc, const double& abserr = 1e-3, const double& relerr = 1e-3, const int& dim = 1000, const int& MCcalls = 25000) ;
+        MonteCarloDoubleConvolution(CoefficientFunction* coefffunc, AbstractSplittingFunction* splitfunc, const double& abserr = 1e-3, const double& relerr = 1e-3, const int& dim = 1000, const int& method_flag = 1, const int& MCcalls = 25000) ;
         ~MonteCarloDoubleConvolution() ;
 
         double RegularPart(double x, double m2Q2, int nf) const override;
@@ -97,15 +97,12 @@ class MonteCarloDoubleConvolution : public AbstractConvolution {
         double LocalPart(double x, double m2Q2, int nf) const override;
 
         // get methods
+        int GetMethodFlag() const {return method_flag_;};
         int GetMCcalls() const {return MCcalls_;};
 
         // set methods
+        void SetMethodFlag(const int& method_flag) ;
         void SetMCcalls(const int& MCcalls) ;
-
-    private:
-        int MCcalls_;
-
-        Convolution* convolution_;
 
         static double regular1_integrand(double z[], size_t dim, void *p) ;
         static double regular2_integrand(double z[], size_t dim, void *p) ;
@@ -114,6 +111,27 @@ class MonteCarloDoubleConvolution : public AbstractConvolution {
         static double singular1_integrand(double z[], size_t dim, void *p) ;
         static double singular2_integrand(double z[], size_t dim, void *p) ;
         static double singular3_integrand(double z, void *p) ;
+
+    private:
+        int method_flag_;
+        int MCcalls_;
+
+        Convolution* convolution_;
+        ConvolutedCoefficientFunction* conv_coeff_;
+
+};
+
+class ConvolutedCoefficientFunction : public CoefficientFunction {
+    public:
+        ConvolutedCoefficientFunction(Convolution* conv) : CoefficientFunction(conv -> GetCoeffFunc()) {conv_ = conv;};
+        ~ConvolutedCoefficientFunction() {} ;
+
+        double MuIndependentTerms(const double x, const double m2Q2, const int nf) const override {return conv_ -> Convolute(x, m2Q2, nf);};
+        // double MuDependentTerms(const double x, const double m2Q2, const double m2mu2, const int nf) const {return 0.;};
+        double fx(const double x, const double m2Q2, const double m2mu2, const int nf) const {return MuIndependentTerms(x, m2Q2, nf);};
+    private:
+        Convolution* conv_;
+
 };
 
 //==========================================================================================//

@@ -385,10 +385,10 @@ double ExactCoefficientFunction::C2_g20(const double x, const double m2Q2) const
 
 double ExactCoefficientFunction::C_g21(const double x, const double m2Q2) const {
 
-    int nf = 1;
+    int nf_one = 1;
     // Put nf to 1 since the nf contribution cancels for any value of nf
 
-    return -(convolutions_lmu1[0] -> Convolute(x, m2Q2, nf) + convolutions_lmu1[1] -> Convolute(x, m2Q2, nf) * beta(0, nf));
+    return -(convolutions_lmu1[0] -> Convolute(x, m2Q2, nf_one) + convolutions_lmu1[1] -> Convolute(x, m2Q2, nf_one) * beta(0, nf_one));
 }
 
 //==========================================================================================//
@@ -579,3 +579,18 @@ double ExactCoefficientFunction::C_g32(const double x, const double m2Q2, const 
 //            - 3. / 2 * beta0 * CL_g1_x_Pgg0(x, m2Q2, nf)
 //            + beta0 * beta0 * CL_g1(x, m2Q2);
 // }
+
+
+double ExactCoefficientFunction::C_g3_MuDep(const double x, const double m2Q2, const double m2mu2, int nf) const {
+
+    double lmu = log(1. / m2mu2) ;
+
+    return C_g31(x, m2Q2, nf) * lmu + C_g32(x, m2Q2, nf) * lmu * lmu ;
+}
+
+double ExactCoefficientFunction::C_ps3_MuDep(const double x, const double m2Q2, const double m2mu2, int nf) const {
+
+    double lmu = log(1. / m2mu2) ;
+
+    return C_ps31(x, m2Q2, nf) * lmu + C_ps32(x, m2Q2, nf) * lmu * lmu ;
+}

@@ -18,7 +18,8 @@ class CoefficientFunction {
 
     public:
         CoefficientFunction(const int& order, const char& kind, const char& channel) ;
-        // CoefficientFunction() : CoefficientFunction(1, '2', 'g') {} ;
+        CoefficientFunction(CoefficientFunction* coeff) : CoefficientFunction(coeff -> GetOrder(), coeff -> GetKind(), coeff -> GetChannel()) {};
+
         virtual ~CoefficientFunction() = 0 ;
 
         virtual double fx(const double x, const double m2Q2, const double m2mu2, const int nf) const = 0 ;

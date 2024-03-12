@@ -112,6 +112,7 @@ class SplittingFunction : public AbstractSplittingFunction{
 class ConvolutedSplittingFunctions : public AbstractSplittingFunction {
     public:
         ConvolutedSplittingFunctions(const int& order, const char& entry1, const char& entry2, const char& entry3, const char& entry4);
+        ~ConvolutedSplittingFunctions() {};
 
         char GetEntry3() const {return entry3_;} ;
 

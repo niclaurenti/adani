@@ -162,15 +162,33 @@ double Convolution::LocalPart(double x, double m2Q2, int nf) const {
 
 }
 
-MonteCarloDoubleConvolution::MonteCarloDoubleConvolution(CoefficientFunction* coefffunc, AbstractSplittingFunction* splitfunc, const double& abserr, const double& relerr, const int& dim, const int& MCcalls) : AbstractConvolution(coefffunc, splitfunc, abserr, relerr, dim) {
+MonteCarloDoubleConvolution::MonteCarloDoubleConvolution(CoefficientFunction* coefffunc, AbstractSplittingFunction* splitfunc, const double& abserr, const double& relerr, const int& dim, const int& method_flag, const int& MCcalls) : AbstractConvolution(coefffunc, splitfunc, abserr, relerr, dim) {
 
+    SetMethodFlag(method_flag);
     SetMCcalls(MCcalls);
-    convolution_ = new Convolution(coefffunc, splitfunc, abserr, relerr, dim);
+
+    if (method_flag == 1) {
+        convolution_ = new Convolution(coefffunc, splitfunc, abserr, relerr, dim);
+        conv_coeff_ = nullptr;
+    } else {
+        conv_coeff_ = new ConvolutedCoefficientFunction( new Convolution(coefffunc, splitfunc, abserr, relerr, dim) );
+        convolution_ = new Convolution(conv_coeff_, splitfunc, abserr, relerr, dim);
+    }
 }
 
 MonteCarloDoubleConvolution::~MonteCarloDoubleConvolution() {
 
     delete convolution_;
+    delete conv_coeff_;
+}
+
+void MonteCarloDoubleConvolution::SetMethodFlag(const int& method_flag) {
+    // check dim
+    if (method_flag != 0 && method_flag != 1) {
+        cout << "Error: method_flag must be 0 or 1. Got " << method_flag << endl;
+        exit(-1);
+    }
+    method_flag_ = method_flag;
 }
 
 void MonteCarloDoubleConvolution::SetMCcalls(const int& MCcalls) {
@@ -241,6 +259,8 @@ double regular3_integrand(double z, void *p) {
 }
 
 double MonteCarloDoubleConvolution::RegularPart(double x, double m2Q2, int nf) const {
+
+    if (method_flag_ == 0) return convolution_ -> RegularPart(x, m2Q2, nf);
 
     double x_max = 1. / (1. + 4 * m2Q2);
     struct function_params params = { x, m2Q2, nf, this };
@@ -377,6 +397,9 @@ double singular3_integrand(double z, void *p) {
 
 double MonteCarloDoubleConvolution::SingularPart(double x, double m2Q2, int nf) const {
 
+    if (method_flag_ == 0) return convolution_ -> SingularPart(x, m2Q2, nf);
+
+
     double x_max = 1. / (1. + 4 * m2Q2);
     struct function_params params = { x, m2Q2, nf, this };
 
@@ -439,6 +462,8 @@ double MonteCarloDoubleConvolution::SingularPart(double x, double m2Q2, int nf) 
 }
 
 double MonteCarloDoubleConvolution::LocalPart(double x, double m2Q2, int nf) const {
+
+    if (method_flag_ == 0) return convolution_ -> LocalPart(x, m2Q2, nf);
 
     double x_max = 1. / (1. + 4 * m2Q2);
 

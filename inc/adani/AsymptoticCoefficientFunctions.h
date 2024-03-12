@@ -24,7 +24,6 @@
 class AsymptoticCoefficientFunction : public AbstractHighEnergyCoefficientFunction {
     public:
         AsymptoticCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL = true);
-        // AsymptoticCoefficientFunction() : AsymptoticCoefficientFunction(1, '2', 'g', true) {} ;
         ~AsymptoticCoefficientFunction() ;
 
         double fx(const double x, const double m2Q2, const double m2mu2, const int nf) const ;

@@ -32,7 +32,6 @@
 class HighScaleCoefficientFunction : public CoefficientFunction {
     public:
         HighScaleCoefficientFunction(const int& order, const char& kind, const char& channel) ;
-        // HighScaleCoefficientFunction() : CoefficientFunction() {} ;
         ~HighScaleCoefficientFunction();
 
         double fx(const double x, const double m2Q2, const double m2mu2, const int nf) const ;
