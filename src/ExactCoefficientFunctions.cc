@@ -10,13 +10,13 @@
 using std::cout ;
 using std::endl ;
 
-ExactCoefficientFunction::ExactCoefficientFunction(const int& order, const char& kind, const char& channel, const int& method_flag, const double& abserr, const double& relerr, const int& MCcalls, const int& dim) : CoefficientFunction(order, kind, channel) {
+ExactCoefficientFunction::ExactCoefficientFunction(const int& order, const char& kind, const char& channel, const double& abserr, const double& relerr, const int& dim, const int& method_flag, const int& MCcalls) : CoefficientFunction(order, kind, channel) {
 
-    SetMethodFlag(method_flag);
     SetAbserr(abserr);
     SetRelerr(relerr);
-    SetMCcalls(MCcalls);
     SetDim(dim);
+    SetMethodFlag(method_flag);
+    SetMCcalls(MCcalls);
 
     gluon_lo_ = nullptr;
     gluon_nlo_ = nullptr;
