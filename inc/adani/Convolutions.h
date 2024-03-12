@@ -31,12 +31,12 @@
 #include <gsl/gsl_monte.h>
 #include <gsl/gsl_monte_vegas.h>
 
-// struct function_params {
-//     double x;
-//     double m2Q2;
-//     int nf;
-//     const AbstractConvolution* conv;
-// };
+struct function_params {
+    double x;
+    double m2Q2;
+    int nf;
+    const AbstractConvolution* conv;
+};
 
 class AbstractConvolution {
     public:
