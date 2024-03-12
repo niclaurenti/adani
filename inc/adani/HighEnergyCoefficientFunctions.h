@@ -48,9 +48,9 @@ class AbstractHighEnergyCoefficientFunction : public CoefficientFunction {
     //------------------------------------------------------------------------------------------//
 
     protected:
-        double a_10(const int nf) const;
+        double a_10(int nf) const;
         double a_11() const;
-        double a_21(const int nf) const;
+        double a_21(int nf) const;
 };
 
 class HighEnergyCoefficientFunction : public AbstractHighEnergyCoefficientFunction {
@@ -60,7 +60,7 @@ class HighEnergyCoefficientFunction : public AbstractHighEnergyCoefficientFuncti
         // HighEnergyCoefficientFunction() : AbstractHighEnergyCoefficientFunction() {} ;
         ~HighEnergyCoefficientFunction() {} ;
 
-        double fx(const double x, const double m2Q2, const double m2mu2, const int nf) const ;
+        double fx(double x, double m2Q2, double m2mu2, int nf) const ;
 
     private:
 
@@ -69,33 +69,33 @@ class HighEnergyCoefficientFunction : public AbstractHighEnergyCoefficientFuncti
         //                      O(alpha_s^2)
         //------------------------------------------------------------------------------------------//
 
-        double C2_g2_highenergy(const double x, const double m2Q2, const double m2mu2) const ;
-        double C2_ps2_highenergy(const double x, const double m2Q2, const double m2mu2) const ;
-        double CL_g2_highenergy(const double x, const double m2Q2, const double m2mu2) const ;
-        double CL_ps2_highenergy(const double x, const double m2Q2, const double m2mu2) const ;
+        double C2_g2_highenergy(double x, double m2Q2, double m2mu2) const ;
+        double C2_ps2_highenergy(double x, double m2Q2, double m2mu2) const ;
+        double CL_g2_highenergy(double x, double m2Q2, double m2mu2) const ;
+        double CL_ps2_highenergy(double x, double m2Q2, double m2mu2) const ;
 
         //==========================================================================================//
         //                      High energy coefficient functions
         //                      O(alpha_s^3) at leading log
         //------------------------------------------------------------------------------------------//
 
-        double C2_g3_highenergyLL(const double x, const double m2Q2, const double m2mu2) const ;
-        double CL_g3_highenergyLL(const double x, const double m2Q2, const double m2mu2) const ;
-        double C2_ps3_highenergyLL(const double x, const double m2Q2, const double m2mu2) const ;
-        double CL_ps3_highenergyLL(const double x, const double m2Q2, const double m2mu2) const ;
+        double C2_g3_highenergyLL(double x, double m2Q2, double m2mu2) const ;
+        double CL_g3_highenergyLL(double x, double m2Q2, double m2mu2) const ;
+        double C2_ps3_highenergyLL(double x, double m2Q2, double m2mu2) const ;
+        double CL_ps3_highenergyLL(double x, double m2Q2, double m2mu2) const ;
 
-        double C2_g3_highenergyNLL(const double x, const double m2Q2, const double m2mu2, const int nf, const int v) const ;
-        double CL_g3_highenergyNLL(const double x, const double m2Q2, const double m2mu2, const int nf, const int v) const ;
+        double C2_g3_highenergyNLL(double x, double m2Q2, double m2mu2, int nf, int v) const ;
+        double CL_g3_highenergyNLL(double x, double m2Q2, double m2mu2, int nf, int v) const ;
 
         //==========================================================================================//
         //                      High energy coefficient functions
         //                      O(alpha_s^3)
         //------------------------------------------------------------------------------------------//
 
-        double C2_g3_highenergy(const double x, const double m2Q2, const double m2mu2, const int nf, const int v) const ;
-        double C2_ps3_highenergy(const double x, const double m2Q2, const double m2mu2, const int nf, const int v) const ;
-        double CL_g3_highenergy(const double x, const double m2Q2, const double m2mu2, const int nf, const int v) const ;
-        double CL_ps3_highenergy(const double x, const double m2Q2, const double m2mu2, const int nf, const int v) const ;
+        double C2_g3_highenergy(double x, double m2Q2, double m2mu2, int nf, int v) const ;
+        double C2_ps3_highenergy(double x, double m2Q2, double m2mu2, int nf, int v) const ;
+        double CL_g3_highenergy(double x, double m2Q2, double m2mu2, int nf, int v) const ;
+        double CL_ps3_highenergy(double x, double m2Q2, double m2mu2, int nf, int v) const ;
 
 };
 
@@ -106,7 +106,7 @@ class HighEnergyHighScaleCoefficientFunction : public AbstractHighEnergyCoeffici
         // HighEnergyHighScaleCoefficientFunction() : AbstractHighEnergyCoefficientFunction() {} ;
         ~HighEnergyHighScaleCoefficientFunction() {} ;
 
-        double fx(const double x, const double m2Q2, const double m2mu2, const int nf) const ;
+        double fx(double x, double m2Q2, double m2mu2, int nf) const ;
 
     private:
 
@@ -115,28 +115,28 @@ class HighEnergyHighScaleCoefficientFunction : public AbstractHighEnergyCoeffici
         //                      coefficient functions O(alpha_s^2)
         //------------------------------------------------------------------------------------------//
 
-        double C2_g2_highenergy_highscale(const double x, const double m2Q2, const double m2mu2) const ;
-        double C2_ps2_highenergy_highscale(const double x, const double m2Q2, const double m2mu2) const ;
-        double CL_g2_highenergy_highscale(const double x, const double m2Q2, const double m2mu2) const ;
-        double CL_ps2_highenergy_highscale(const double x, const double m2Q2, const double m2mu2) const ;
+        double C2_g2_highenergy_highscale(double x, double m2Q2, double m2mu2) const ;
+        double C2_ps2_highenergy_highscale(double x, double m2Q2, double m2mu2) const ;
+        double CL_g2_highenergy_highscale(double x, double m2Q2, double m2mu2) const ;
+        double CL_ps2_highenergy_highscale(double x, double m2Q2, double m2mu2) const ;
 
         //==========================================================================================//
         //  Q>>m limit of the high energy coefficient functions
         //  O(alpha_s^3) at leading log
         //------------------------------------------------------------------------------------------//
 
-        double C2_g3_highenergy_highscaleLL(const double x, const double m2Q2, const double m2mu2) const;
-        double CL_g3_highenergy_highscaleLL(const double x, const double m2Q2, const double m2mu2) const;
-        double C2_ps3_highenergy_highscaleLL(const double x, const double m2Q2, const double m2mu2) const;
-        double CL_ps3_highenergy_highscaleLL(const double x, const double m2Q2, const double m2mu2) const;
+        double C2_g3_highenergy_highscaleLL(double x, double m2Q2, double m2mu2) const;
+        double CL_g3_highenergy_highscaleLL(double x, double m2Q2, double m2mu2) const;
+        double C2_ps3_highenergy_highscaleLL(double x, double m2Q2, double m2mu2) const;
+        double CL_ps3_highenergy_highscaleLL(double x, double m2Q2, double m2mu2) const;
 
         double C2_g3_highenergy_highscaleNLL(
-            const double x, const double m2Q2, const double m2mu2, const int nf, const int v
+            double x, double m2Q2, double m2mu2, int nf, int v
         ) const;
         // double C2_ps3_highenergy_highscaleNLL(double x, double
         // m2Q2, double m2mu2, int nf, int v);
         double CL_g3_highenergy_highscaleNLL(
-            const double x, const double m2Q2, const double m2mu2, const int nf, const int v
+            double x, double m2Q2, double m2mu2, int nf, int v
         ) const;
         // double CL_ps3_highenergy_highscaleNLL(double x, double
         // m2Q2, double m2mu2, int nf, int v);
@@ -147,13 +147,13 @@ class HighEnergyHighScaleCoefficientFunction : public AbstractHighEnergyCoeffici
         //------------------------------------------------------------------------------------------//
 
         double
-        C2_g3_highenergy_highscale(const double x, const double m2Q2, const double m2mu2, const int nf, const int v) const;
+        C2_g3_highenergy_highscale(double x, double m2Q2, double m2mu2, int nf, int v) const;
         double
-        C2_ps3_highenergy_highscale(const double x, const double m2Q2, const double m2mu2, const int nf, const int v) const;
+        C2_ps3_highenergy_highscale(double x, double m2Q2, double m2mu2, int nf, int v) const;
         double
-        CL_g3_highenergy_highscale(const double x, const double m2Q2, const double m2mu2, const int nf, const int v) const;
+        CL_g3_highenergy_highscale(double x, double m2Q2, double m2mu2, int nf, int v) const;
         double
-        CL_ps3_highenergy_highscale(const double x, const double m2Q2, const double m2mu2, const int nf, const int v) const;
+        CL_ps3_highenergy_highscale(double x, double m2Q2, double m2mu2, int nf, int v) const;
 
 };
 
@@ -164,7 +164,7 @@ class PowerTermsCoefficientFunction : public AbstractHighEnergyCoefficientFuncti
         // PowerTermsCoefficientFunction() : AbstractHighEnergyCoefficientFunction() {} ;
         ~PowerTermsCoefficientFunction() ;
 
-        double fx(const double x, const double m2Q2, const double m2mu2, const int nf) const;
+        double fx(double x, double m2Q2, double m2mu2, int nf) const;
 
     private:
 

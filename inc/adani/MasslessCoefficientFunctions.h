@@ -27,7 +27,7 @@ class MasslessCoefficientFunction : public CoefficientFunction {
         MasslessCoefficientFunction(const int& order, const char& kind, const char& channel) : CoefficientFunction(order, kind, channel) {} ;
         ~MasslessCoefficientFunction() {} ;
 
-        double fx(const double x, const double m2Q2, const double m2mu2, const int nf) const ;
+        double fx(double x, double m2Q2, double m2mu2, int nf) const ;
 
     private:
 
@@ -36,55 +36,55 @@ class MasslessCoefficientFunction : public CoefficientFunction {
         //                      O(alpha_s)
         //------------------------------------------------------------------------------------------//
 
-        double C2_g1_massless(const double x, const int nf) const;
-        double CL_g1_massless(const double x, const int nf) const;
+        double C2_g1_massless(double x, int nf) const;
+        double CL_g1_massless(double x, int nf) const;
 
         //==========================================================================================//
         //                      Massless coefficient functions
         //                      O(alpha_s^2)
         //------------------------------------------------------------------------------------------//
 
-        double C2_g2_massless(const double x, const int nf) const;
-        double C2_ps2_massless(const double x, const int nf) const ;
-        double CL_g2_massless(const double x, const int nf) const ;
-        double CL_ps2_massless(const double x, const int nf) const;
+        double C2_g2_massless(double x, int nf) const;
+        double C2_ps2_massless(double x, int nf) const ;
+        double CL_g2_massless(double x, int nf) const ;
+        double CL_ps2_massless(double x, int nf) const;
 
         //==========================================================================================//
         //                      Massless coefficient functions
         //                      O(alpha_s^3)
         //------------------------------------------------------------------------------------------//
 
-        double C2_g3_massless(const double x, const int nf) const;
-        double C2_ps3_massless(const double x, const int nf) const;
-        double CL_g3_massless(const double x, const int nf) const;
-        double CL_ps3_massless(const double x, const int nf) const ;
+        double C2_g3_massless(double x, int nf) const;
+        double C2_ps3_massless(double x, int nf) const;
+        double CL_g3_massless(double x, int nf) const;
+        double CL_ps3_massless(double x, int nf) const ;
 
         //==========================================================================================//
         //                      Charge factors
         //------------------------------------------------------------------------------------------//
 
-        double fl11g(const int nf) const;
-        double fl11ps(const int nf) const;
+        double fl11g(int nf) const;
+        double fl11ps(int nf) const;
 
         //==========================================================================================//
         //                      Massless coefficient functions (parametrization)
         //                      O(alpha_s^2)
         //------------------------------------------------------------------------------------------//
 
-        // double C2_g2_massless_param(const double x, const int nf) const;
-        // double C2_ps2_massless_param(const double x, const int nf) const;
-        // double CL_g2_massless_param(const double x, const int nf) const;
-        // double CL_ps2_massless_param(const double x, const int nf) const;
+        // double C2_g2_massless_param(double x, int nf) const;
+        // double C2_ps2_massless_param(double x, int nf) const;
+        // double CL_g2_massless_param(double x, int nf) const;
+        // double CL_ps2_massless_param(double x, int nf) const;
 
         //==========================================================================================//
         //                      Massless coefficient functions (parametrization)
         //                      O(alpha_s^3)
         //------------------------------------------------------------------------------------------//
 
-        // double C2_g3_massless_param(const double x, const int nf) const;
-        // double C2_ps3_massless_param(const double x, const int nf) const;
-        // double CL_g3_massless_param(const double x, const int nf) const;
-        // double CL_ps3_massless_param(const double x, const int nf) const;
+        // double C2_g3_massless_param(double x, int nf) const;
+        // double C2_ps3_massless_param(double x, int nf) const;
+        // double CL_g3_massless_param(double x, int nf) const;
+        // double CL_ps3_massless_param(double x, int nf) const;
 
 };
 

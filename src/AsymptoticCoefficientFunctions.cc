@@ -14,7 +14,7 @@ AsymptoticCoefficientFunction::~AsymptoticCoefficientFunction() {
     delete powerterms_;
 }
 
-double AsymptoticCoefficientFunction::fx(const double x, const double m2Q2, const double m2mu2, const int nf) const {
+double AsymptoticCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int nf) const {
 
     return highscale_->fx(x, m2Q2, m2mu2, nf) + powerterms_->fx(x, m2Q2, m2mu2, nf) ;
 }

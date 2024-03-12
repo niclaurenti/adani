@@ -126,9 +126,9 @@ class ConvolutedCoefficientFunction : public CoefficientFunction {
         ConvolutedCoefficientFunction(Convolution* conv) : CoefficientFunction(conv -> GetCoeffFunc()) {conv_ = conv;};
         ~ConvolutedCoefficientFunction() {} ;
 
-        double MuIndependentTerms(const double x, const double m2Q2, const int nf) const override {return conv_ -> Convolute(x, m2Q2, nf);};
-        // double MuDependentTerms(const double x, const double m2Q2, const double m2mu2, const int nf) const {return 0.;};
-        double fx(const double x, const double m2Q2, const double m2mu2, const int nf) const {return MuIndependentTerms(x, m2Q2, nf);};
+        double MuIndependentTerms(double x, double m2Q2, int nf) const override {return conv_ -> Convolute(x, m2Q2, nf);};
+        // double MuDependentTerms(double x, double m2Q2, double m2mu2, int nf) const {return 0.;};
+        double fx(double x, double m2Q2, double m2mu2, int nf) const {return MuIndependentTerms(x, m2Q2, nf);};
     private:
         Convolution* conv_;
 
