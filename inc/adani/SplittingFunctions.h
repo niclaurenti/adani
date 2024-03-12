@@ -17,20 +17,24 @@
 #ifndef Split
 #define Split
 
-class Function {
+class AbstractSplittingFunction {
     public:
+        AbstractSplittingFunction() {mult_factor_ = 1.;} ;
+        ~AbstractSplittingFunction() {};
+
         virtual double Regular(const double x, const int nf) const = 0;
         virtual double Singular(const double x, const int nf) const = 0;
         virtual double Local(const int nf) const = 0;
         virtual double SingularIntegrated(const double x, const int nf) const = 0;
 
-    double GetMultFact() const {return mult_factor_;};
+        double GetMultFact() const {return mult_factor_;};
+        void SetMultFact(const double& mult_factor) {mult_factor_ = mult_factor;};
 
     private:
         double mult_factor_;
 };
 
-class SplittingFunction : public Function{
+class SplittingFunction : public AbstractSplittingFunction{
     public:
         SplittingFunction(const int& order, const char& entry1, const char& entry2) ;
         ~SplittingFunction() {} ;
@@ -40,7 +44,8 @@ class SplittingFunction : public Function{
         double Local(const int nf) const ;
         double SingularIntegrated(const double x, const int nf) const;
 
-        // SplittingFunction operator+(const SplittingFunction& splitfunc) const;
+        SplittingFunction operator*(const double& rhs) const;
+        friend SplittingFunction operator*(const double& lhs, const SplittingFunction& rhs);
 
         // get methods
         double GetOrder() const {return order_ ;} ;
@@ -104,6 +109,9 @@ class ConvolutedSplittingFunctions : public SplittingFunction {
         double Local(const int nf) const {return 0.;} ;
         double SingularIntegrated(const double x, const int nf) const {return 0.;};
 
+        ConvolutedSplittingFunctions operator*(const double& rhs) const;
+        friend ConvolutedSplittingFunctions operator*(const double& lhs, const ConvolutedSplittingFunctions& rhs);
+
     private:
         char entry3_;
 
@@ -122,12 +130,12 @@ class ConvolutedSplittingFunctions : public SplittingFunction {
         double Pgq0_x_Pqg0(const double x, const int nf) const ;
 };
 
-class Delta : Function {
+class Delta : AbstractSplittingFunction {
     public:
         double Regular(const double x, const int nf) const {return 0.;};
         double Singular(const double x, const int nf) const {return 0.;};
         double Local(const int nf) const {return 1.;};
         double SingularIntegrated(const double x, const int nf) const {return 0.;};
-}
+};
 
 #endif

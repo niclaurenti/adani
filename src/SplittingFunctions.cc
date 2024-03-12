@@ -7,7 +7,19 @@
 using std::cout;
 using std::endl;
 
-SplittingFunction::SplittingFunction(const int& order, const char& entry1, const char& entry2) {
+SplittingFunction SplittingFunction::operator*(const double& rhs) const {
+    SplittingFunction res(order_, entry1_, entry2_);
+    res.SetMultFact(GetMultFact() * rhs);
+    return res;
+}
+
+SplittingFunction operator*(const double& lhs, const SplittingFunction& rhs){
+    SplittingFunction res(rhs.order_, res.entry1_, res.entry2_);
+    res.SetMultFact(rhs.GetMultFact() * lhs);
+    return res;
+}
+
+SplittingFunction::SplittingFunction(const int& order, const char& entry1, const char& entry2) : AbstractSplittingFunction(){
 
     // check order
     if (order != 0 && order !=1) {
@@ -35,6 +47,7 @@ SplittingFunction::SplittingFunction(const int& order, const char& entry1, const
         cout << "Error: Pq" << entry2_ << " is not implemented at O(as)!" << endl ;
         exit(-1);
     }
+
 }
 
 double SplittingFunction::Regular(const double x, const int nf) const {
@@ -103,6 +116,18 @@ double ConvolutedSplittingFunctions::Regular(const double x, const int nf) const
     if (GetEntry1() == 'g' && GetEntry2() == 'q' && GetEntry3() == 'g') return Pgq0_x_Pqg0(x, nf) ;
     if (GetEntry1() == 'g' && GetEntry2() == 'q' && GetEntry3() == 'q') return Pgg0_x_Pgq0(x, nf) + Pqq0_x_Pgq0(x) ;
 
+}
+
+ConvolutedSplittingFunctions ConvolutedSplittingFunctions::operator*(const double& rhs) const {
+    ConvolutedSplittingFunctions res(GetOrder(), GetEntry1(), GetEntry2(), entry3_);
+    res.SetMultFact(GetMultFact() * rhs);
+    return res;
+}
+
+ConvolutedSplittingFunctions operator*(const double& lhs, const ConvolutedSplittingFunctions& rhs){
+    ConvolutedSplittingFunctions res(rhs.GetOrder(), res.GetEntry1(), res.GetEntry2(), res.entry3_);
+    res.SetMultFact(rhs.GetMultFact() * lhs);
+    return res;
 }
 
 //==========================================================================================//
