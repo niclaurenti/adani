@@ -8,7 +8,7 @@
 using std::cout;
 using std::endl;
 
-double MasslessCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int nf) const {
+double MasslessCoefficientFunction::fx(double x, double /*m2Q2*/, double /*m2mu2*/, int nf) const {
 
     if (GetOrder() == 1 && GetKind() == '2' && GetChannel() == 'g') return C2_g1_massless(x, nf);
     else if (GetOrder() == 1 && GetKind() == 'L' && GetChannel() == 'g') return CL_g1_massless(x, nf);

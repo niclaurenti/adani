@@ -34,7 +34,7 @@
 class AbstractConvolution {
     public:
         AbstractConvolution(CoefficientFunction* coefffunc, AbstractSplittingFunction* splitfunc, const double& abserr = 1e-3, const double& relerr = 1e-3, const int& dim = 1000);
-        ~AbstractConvolution() {} ;
+        virtual ~AbstractConvolution() = 0;
 
         double Convolute(double x, double m2Q2, int nf) const ;
 
@@ -88,7 +88,7 @@ class ConvolutedCoefficientFunction : public CoefficientFunction {
 
         double MuIndependentTerms(double x, double m2Q2, int nf) const override {return conv_ -> Convolute(x, m2Q2, nf);};
         // double MuDependentTerms(double x, double m2Q2, double m2mu2, int nf) const {return 0.;};
-        double fx(double x, double m2Q2, double m2mu2, int nf) const override {return MuIndependentTerms(x, m2Q2, nf);};
+        double fx(double x, double m2Q2, double /*m2mu2*/, int nf) const override {return MuIndependentTerms(x, m2Q2, nf);};
     private:
         Convolution* conv_;
 
@@ -111,12 +111,12 @@ class MonteCarloDoubleConvolution : public AbstractConvolution {
         void SetMethodFlag(const int& method_flag) ;
         void SetMCcalls(const int& MCcalls) ;
 
-        static double regular1_integrand(double z[], size_t dim, void *p) ;
-        static double regular2_integrand(double z[], size_t dim, void *p) ;
+        static double regular1_integrand(double z[], size_t /*dim*/, void *p) ;
+        static double regular2_integrand(double z[], size_t /*dim*/, void *p) ;
         static double regular3_integrand(double z, void *p) ;
 
-        static double singular1_integrand(double z[], size_t dim, void *p) ;
-        static double singular2_integrand(double z[], size_t dim, void *p) ;
+        static double singular1_integrand(double z[], size_t /*dim*/, void *p) ;
+        static double singular2_integrand(double z[], size_t /*dim*/, void *p) ;
         static double singular3_integrand(double z, void *p) ;
 
     private:

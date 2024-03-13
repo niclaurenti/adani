@@ -26,6 +26,7 @@ double ThresholdCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int
     if (GetOrder() == 1 && GetKind() == '2') return C2_g1_threshold(x, m2Q2) ;
     else if (GetOrder() == 1 && GetKind() == 'L') {
         cout << "Error: CL doesn't have the threshold limit at O(as)!" << endl;
+        exit(-1);
     }
     else if (GetOrder() == 2 && GetKind() == '2') return C2_g2_threshold(x, m2Q2, m2mu2) ;
     else if (GetOrder() == 2 && GetKind() == 'L') return CL_g2_threshold(x, m2Q2, m2mu2) ;
@@ -33,6 +34,7 @@ double ThresholdCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int
     else if (GetOrder() == 3 && GetKind() == 'L') return CL_g3_threshold(x, m2Q2, m2mu2, nf) ;
     else {
         cout << "Error: something has gone wrong!" << endl;
+        exit(-1);
     }
 }
 

@@ -112,6 +112,8 @@ double Convolution::RegularPart(double x, double m2Q2, int nf) const {
         &F, x, x_max, abserr, relerr, dim, 4, w, &regular, &error
     );
 
+    gsl_set_error_handler(old_handler);
+
     gsl_integration_workspace_free(w);
 
     return regular;
@@ -154,11 +156,7 @@ double Convolution::LocalPart(double x, double m2Q2, int nf) const {
 
     double x_max = 1. / (1. + 4 * m2Q2);
 
-    double local, error;
-
-    local = coefffunc_ -> MuIndependentTerms(x, m2Q2, nf) * (splitfunc_ -> Local(nf) - splitfunc_ -> SingularIntegrated(x / x_max, nf));
-
-    return local;
+    return coefffunc_ -> MuIndependentTerms(x, m2Q2, nf) * (splitfunc_ -> Local(nf) - splitfunc_ -> SingularIntegrated(x / x_max, nf));
 
 }
 
@@ -200,7 +198,7 @@ void MonteCarloDoubleConvolution::SetMCcalls(const int& MCcalls) {
     MCcalls_ = MCcalls;
 }
 
-double regular1_integrand(double z[], size_t dim, void *p) {
+double regular1_integrand(double z[], size_t /*dim*/, void *p) {
 
     struct function_params *params = (struct function_params *)p;
 
@@ -221,7 +219,7 @@ double regular1_integrand(double z[], size_t dim, void *p) {
     }
 }
 
-double regular2_integrand(double z[], size_t dim, void *p)  {
+double regular2_integrand(double z[], size_t /*dim*/, void *p)  {
     struct function_params *params = (struct function_params *)p;
 
     double m2Q2 = (params->m2Q2);
@@ -326,7 +324,7 @@ double MonteCarloDoubleConvolution::RegularPart(double x, double m2Q2, int nf) c
 //  monte carlo methods
 //------------------------------------------------------------------------------------------//
 
-double singular1_integrand(double z[], size_t dim, void *p) {
+double singular1_integrand(double z[], size_t /*dim*/, void *p) {
 
     struct function_params *params = (struct function_params *)p;
 
@@ -349,7 +347,7 @@ double singular1_integrand(double z[], size_t dim, void *p) {
     return splitfunc -> Singular(z1, nf) * (tmp - splitfunc -> Regular(x / z2, nf)) * coefffunc -> MuIndependentTerms(z2, m2Q2, nf) / z2;
 }
 
-double singular2_integrand(double z[], size_t dim, void *p) {
+double singular2_integrand(double z[], size_t /*dim*/, void *p) {
 
     struct function_params *params = (struct function_params *)p;
 

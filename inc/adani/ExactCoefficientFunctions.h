@@ -72,8 +72,8 @@ class ExactCoefficientFunction : public CoefficientFunction {
         double (ExactCoefficientFunction::*mu_indep_)(double, double, int) const;
         double (ExactCoefficientFunction::*mu_dep_)(double, double, double, int) const;
 
-        std::vector<AbstractConvolution*> convolutions_lmu1;
-        std::vector<AbstractConvolution*> convolutions_lmu2;
+        std::vector<AbstractConvolution*> convolutions_lmu1_;
+        std::vector<AbstractConvolution*> convolutions_lmu2_;
 
         ExactCoefficientFunction* gluon_lo_ ;
         ExactCoefficientFunction* gluon_nlo_ ;
@@ -96,8 +96,8 @@ class ExactCoefficientFunction : public CoefficientFunction {
         //                      O(alpha_s)
         //------------------------------------------------------------------------------------------//
 
-        double C2_g1(double x, double m2Q2, int nf) const;
-        double CL_g1(double x, double m2Q2, int nf) const;
+        double C2_g1(double x, double m2Q2, int /*nf*/) const;
+        double CL_g1(double x, double m2Q2, int /*nf*/) const;
 
         //==========================================================================================//
         //                      Exact massive coefficient functions
@@ -115,10 +115,10 @@ class ExactCoefficientFunction : public CoefficientFunction {
         //  mu-independent terms
         //------------------------------------------------------------------------------------------//
 
-        double C2_g20(double x, double m2Q2, int nf) const;
-        double CL_g20(double x, double m2Q2, int nf) const;
-        double C2_ps20(double x, double m2Q2, int nf) const;
-        double CL_ps20(double x, double m2Q2, int nf) const;
+        double C2_g20(double x, double m2Q2, int /*nf*/) const;
+        double CL_g20(double x, double m2Q2, int /*nf*/) const;
+        double C2_ps20(double x, double m2Q2, int /*nf*/) const;
+        double CL_ps20(double x, double m2Q2, int /*nf*/) const;
 
         //==========================================================================================//
         //  Exact massive coefficient functions O(alpha_s^2): terms
@@ -128,8 +128,8 @@ class ExactCoefficientFunction : public CoefficientFunction {
         double C_g21(double x, double m2Q2) const;
         double C_ps21(double x, double m2Q2) const;
 
-        double C_ps2_MuDep(double x, double m2Q2, double m2mu2, int nf) const ;
-        double C_g2_MuDep(double x, double m2Q2, double m2mu2, int nf) const ;
+        double C_ps2_MuDep(double x, double m2Q2, double m2mu2, int /*nf*/) const ;
+        double C_g2_MuDep(double x, double m2Q2, double m2mu2, int /*nf*/) const ;
 
         //==========================================================================================//
         //  Exact massive coefficient functions O(alpha_s^3): terms
@@ -154,8 +154,8 @@ class ExactCoefficientFunction : public CoefficientFunction {
         double C_ps3_MuDep(double x, double m2Q2, double m2mu2, int nf) const ;
         double C_g3_MuDep(double x, double m2Q2, double m2mu2, int nf) const ;
 
-        double ZeroFunction(double x, double m2Q2, double m2mu2, int nf) const {return 0.;};
-        double WarningFunc(double x, double m2Q2, int nf) const ;
+        double ZeroFunction(double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const {return 0.;};
+        double WarningFunc(double /*x*/, double /*m2Q2*/, int /*nf*/) const ;
 
 };
 
