@@ -33,7 +33,8 @@ class HighScaleSplitLogs : public CoefficientFunction {
         HighScaleSplitLogs(const int& order, const char& kind, const char& channel) ;
         ~HighScaleSplitLogs() override ;
 
-        double fx(double x, double m2Q2, double /*m2mu2*/, int nf) const override ;
+        double fx(double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const override ;
+        double fx(double x, double m2Q2, int nf, int v) const;
 
         double LL(double x, int nf) const {
             return (this->*LL_)(x, nf);

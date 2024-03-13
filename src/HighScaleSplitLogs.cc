@@ -27,11 +27,17 @@ HighScaleSplitLogs::~HighScaleSplitLogs() {
    delete massless_lo_;
 }
 
-double HighScaleSplitLogs::fx(double x, double m2Q2, double /*m2mu2*/, int nf) const {
+double HighScaleSplitLogs::fx(double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const {
+   cout << "Error: HighScaleSplitLogs is implemented only in the case mu=Q!" << endl;
+   cout << "Use HighScaleSplitLogs::fx(double x, double m2Q2, int nf)" << endl;
+   exit(-1);
+}
+
+double HighScaleSplitLogs::fx(double x, double m2Q2, int nf, int v) const {
     double Log = log(m2Q2);
     double Log2 = Log * Log;
     double Log3 = Log2 * Log;
-    return LL(x, nf) + NLL(x, nf) * Log + N2LL(x, nf) * Log2 + N3LL(x, nf, 0) * Log3;
+    return LL(x, nf) + NLL(x, nf) * Log + N2LL(x, nf) * Log2 + N3LL(x, nf, v) * Log3;
 }
 
 void HighScaleSplitLogs::SetFunctions() {
