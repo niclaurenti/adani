@@ -168,10 +168,10 @@ class Delta : public AbstractSplittingFunction {
         Delta() : AbstractSplittingFunction() {};
         ~Delta() override {} ;
 
-        double Regular(double /*x*/, int /*nf*/) const {return 0.;};
-        double Singular(double /*x*/, int /*nf*/) const {return 0.;};
-        double Local(int /*nf*/) const {return GetMultFact() * 1.;};
-        double SingularIntegrated(double /*x*/, int /*nf*/) const {return 0.;};
+        double Regular(double /*x*/, int /*nf*/) const override {return 0.;};
+        double Singular(double /*x*/, int /*nf*/) const override {return 0.;};
+        double Local(int /*nf*/) const override {return GetMultFact() * 1.;};
+        double SingularIntegrated(double /*x*/, int /*nf*/) const override {return 0.;};
 
         Delta operator*(const double& rhs) const;
         friend Delta operator*(const double& lhs, const Delta& rhs);
