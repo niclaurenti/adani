@@ -1,11 +1,68 @@
 #include "adani/HighScaleSplitLogs.h"
 #include "adani/Constants.h"
 #include "adani/Convolutions.h"
-#include "adani/MasslessCoefficientFunctions.h"
 #include "adani/MatchingConditions.h"
 #include "adani/SpecialFunctions.h"
+
 #include <cmath>
 #include <iostream>
+
+using std::cout ;
+using std::endl;
+
+HighScaleSplitLogs::HighScaleSplitLogs(const int& order, const char& kind, const char& channel) : CoefficientFunction(order, kind, channel) {
+   if (order != 3) {
+      cout << "Error: HighScaleSplitLogs is implemented only for order = 3. Got " << order << endl;
+      exit(-1);
+   }
+
+   massless_lo_ = new MasslessCoefficientFunction(1, GetKind(), GetChannel());
+   massless_ = new MasslessCoefficientFunction(GetOrder(), GetKind(), GetChannel());
+
+   SetFunctions();
+}
+
+HighScaleSplitLogs::~HighScaleSplitLogs() {
+   delete massless_;
+   delete massless_lo_;
+}
+
+double HighScaleSplitLogs::fx(double x, double m2Q2, double /*m2mu2*/, int nf) const {
+    double Log = log(m2Q2);
+    double Log2 = Log * Log;
+    double Log3 = Log2 * Log;
+    return LL(x, nf) + NLL(x, nf) * Log + N2LL(x, nf) * Log2 + N3LL(x, nf, 0) * Log3;
+}
+
+void HighScaleSplitLogs::SetFunctions() {
+
+   if (GetKind() == '2') {
+      if (GetChannel() == 'q') {
+         LL_ = &HighScaleSplitLogs::C2_ps3_highscale_LL;
+         NLL_ = &HighScaleSplitLogs::C2_ps3_highscale_NLL;
+         N2LL_ = &HighScaleSplitLogs::C2_ps3_highscale_N2LL;
+         N3LL_ = &HighScaleSplitLogs::C2_ps3_highscale_N3LL;
+      } else if (GetChannel() == 'g') {
+         LL_ = &HighScaleSplitLogs::C2_g3_highscale_LL;
+         NLL_ = &HighScaleSplitLogs::C2_g3_highscale_NLL;
+         N2LL_ = &HighScaleSplitLogs::C2_g3_highscale_N2LL;
+         N3LL_ = &HighScaleSplitLogs::C2_g3_highscale_N3LL;
+      }
+   } else if (GetKind() == 'L') {
+      if (GetChannel() == 'q') {
+         LL_ = &HighScaleSplitLogs::ZeroFunction;
+         NLL_ = &HighScaleSplitLogs::CL_ps3_highscale_NLL;
+         N2LL_ = &HighScaleSplitLogs::CL_ps3_highscale_N2LL;
+         N3LL_ = &HighScaleSplitLogs::CL_ps3_highscale_N3LL;
+      } else if (GetChannel() == 'g') {
+         LL_ = &HighScaleSplitLogs::ZeroFunction;
+         NLL_ = &HighScaleSplitLogs::CL_g3_highscale_NLL;
+         N2LL_ = &HighScaleSplitLogs::CL_g3_highscale_N2LL;
+         N3LL_ = &HighScaleSplitLogs::CL_g3_highscale_N3LL;
+      }
+   }
+    
+}
 
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for F2 at
@@ -14,7 +71,7 @@
 //  Coefficient of log(m^2/Q^2)^3
 //------------------------------------------------------------------------------------------//
 
-double C2_g3_highscale_LL(double x, int nf) {
+double HighScaleSplitLogs::C2_g3_highscale_LL(double x, int nf) const {
 
     double x2 = x * x;
 
@@ -160,9 +217,9 @@ double C2_g3_highscale_LL(double x, int nf) {
 //  Coefficient of log(m^2/Q^2)^2
 //------------------------------------------------------------------------------------------//
 
-double C2_g3_highscale_NLL(double x, int nf) {
+double HighScaleSplitLogs::C2_g3_highscale_NLL(double x, int nf) const {
 
-    double x2 = x * x;
+   double x2 = x * x;
 
     // weight 1
     const double Hm1 = H(x, -1);
@@ -558,7 +615,7 @@ double C2_g3_highscale_NLL(double x, int nf) {
                              + 16. * H01 * x2 + 89.33333333333333 * H1 * x2
                              + 16. * H10 * x2 + 16. * H11 * x2
                              - 16. * Hm10 * x2))
-           + 0.4444444444444444 * C2_g1_massless(x, 1);
+           + 0.4444444444444444 * massless_lo_->MuIndependentTerms(x, 1);
 }
 
 //==========================================================================================//
@@ -568,7 +625,7 @@ double C2_g3_highscale_NLL(double x, int nf) {
 //  Coefficient of log(m^2/Q^2)^1
 //------------------------------------------------------------------------------------------//
 
-double C2_g3_highscale_N2LL(double x, int nf) {
+double HighScaleSplitLogs::C2_g3_highscale_N2LL(double x, int nf) const {
 
     double x2 = x * x;
     double x3 = x2 * x;
@@ -1506,7 +1563,7 @@ double C2_g3_highscale_N2LL(double x, int nf) {
                              + 31.582734083485946 * x3
                              - 19.200000000000003 * H00 * x3
                              + 19.200000000000003 * Hm10 * x3))
-           - 12.666666666666666 * C2_g1_massless(x, 1);
+           - 12.666666666666666 * massless_lo_->MuIndependentTerms(x, 1);
 }
 
 //==========================================================================================//
@@ -1516,7 +1573,7 @@ double C2_g3_highscale_N2LL(double x, int nf) {
 //  Coefficient of log(m^2/Q^2)^0
 //------------------------------------------------------------------------------------------//
 
-double C2_g3_highscale_N3LL(double x, int nf, int v) {
+double HighScaleSplitLogs::C2_g3_highscale_N3LL(double x, int nf, int v) const {
 
     double x2 = x * x;
 
@@ -2315,8 +2372,8 @@ double C2_g3_highscale_N3LL(double x, int nf, int v) {
                     - 64. * Hm1m1011 * x2 + 157.91367041742973 * Hm1m1m1 * x2
                     + 96. * Hm1m1m10 * x2 - 96. * Hm1m1m100 * x2
                     + 192. * Hm1m1m1m10 * x2)
-           + a_Qg_30(x, v) + 4.666666666666667 * C2_g1_massless(x, 1)
-           + C2_g3_massless(x, 1 + nf) / (1. + nf);
+           + a_Qg_30(x, v) + 4.666666666666667 * massless_lo_->MuIndependentTerms(x, 1)
+           + massless_->MuIndependentTerms(x, nf + 1) / (1. + nf);
 }
 
 //==========================================================================================//
@@ -2326,7 +2383,7 @@ double C2_g3_highscale_N3LL(double x, int nf, int v) {
 //  Coefficient of log(m^2/Q^2)^3
 //------------------------------------------------------------------------------------------//
 
-double C2_ps3_highscale_LL(double x, int nf) {
+double HighScaleSplitLogs::C2_ps3_highscale_LL(double x, int nf) const {
 
     double x2 = x * x;
 
@@ -2395,7 +2452,7 @@ double C2_ps3_highscale_LL(double x, int nf) {
 //  Coefficient of log(m^2/Q^2)^2
 //------------------------------------------------------------------------------------------//
 
-double C2_ps3_highscale_NLL(double x, int nf) {
+double HighScaleSplitLogs::C2_ps3_highscale_NLL(double x, int nf) const {
 
     double x2 = x * x;
 
@@ -2587,7 +2644,7 @@ double C2_ps3_highscale_NLL(double x, int nf) {
 //  Coefficient of log(m^2/Q^2)^1
 //------------------------------------------------------------------------------------------//
 
-double C2_ps3_highscale_N2LL(double x, int nf) {
+double HighScaleSplitLogs::C2_ps3_highscale_N2LL(double x, int nf) const {
 
     double x2 = x * x;
     double x3 = x2 * x;
@@ -2987,7 +3044,7 @@ double C2_ps3_highscale_N2LL(double x, int nf) {
 //  Coefficient of log(m^2/Q^2)^0
 //------------------------------------------------------------------------------------------//
 
-double C2_ps3_highscale_N3LL(double x, int nf) {
+double HighScaleSplitLogs::C2_ps3_highscale_N3LL(double x, int nf, int /*v*/) const {
 
     double x2 = x * x;
 
@@ -3352,7 +3409,7 @@ double C2_ps3_highscale_N3LL(double x, int nf) {
                     - 67.55555555555556 * Hm1m10 * x2
                     - 21.333333333333332 * Hm1m100 * x2
                     + 42.666666666666664 * Hm1m1m10 * x2)
-           + a_Qq_PS_30(x, 0) + C2_ps3_massless(x, 1 + nf) / (1. + nf);
+           + a_Qq_PS_30(x, 0) + massless_->MuIndependentTerms(x, nf + 1) / (1. + nf);
 }
 
 //==========================================================================================//
@@ -3362,7 +3419,7 @@ double C2_ps3_highscale_N3LL(double x, int nf) {
 //  Coefficient of log(m^2/Q^2)^2
 //------------------------------------------------------------------------------------------//
 
-double CL_g3_highscale_NLL(double x) {
+double HighScaleSplitLogs::CL_g3_highscale_NLL(double x, int /*v*/) const {
 
     double x2 = x * x;
 
@@ -3379,7 +3436,7 @@ double CL_g3_highscale_NLL(double x) {
            + 71.11111111111111 * H01 * x + 3.555555555555557 * H1 * x
            - 298.0740740740741 * x2 + 28.444444444444443 * H0 * x2
            - 39.111111111111114 * H1 * x2
-           + 0.4444444444444444 * CL_g1_massless(x, 1);
+           + 0.4444444444444444 * massless_lo_->MuIndependentTerms(x, 1);
 }
 
 //==========================================================================================//
@@ -3389,7 +3446,7 @@ double CL_g3_highscale_NLL(double x) {
 //  Coefficient of log(m^2/Q^2)^1
 //------------------------------------------------------------------------------------------//
 
-double CL_g3_highscale_N2LL(double x, int nf) {
+double HighScaleSplitLogs::CL_g3_highscale_N2LL(double x, int nf) const {
 
     double x2 = x * x;
     double x3 = x2 * x;
@@ -3488,7 +3545,7 @@ double CL_g3_highscale_N2LL(double x, int nf) {
            - 7.105427357601002e-15 * H0 * H0 * x3
            - 1.4210854715202004e-14 * H0m1 * x3
            + 1.4210854715202004e-14 * H0 * Hm1 * x3
-           - 12.666666666666666 * CL_g1_massless(x, 1);
+           - 12.666666666666666 * massless_lo_->MuIndependentTerms(x, 1);
 }
 
 //==========================================================================================//
@@ -3498,7 +3555,7 @@ double CL_g3_highscale_N2LL(double x, int nf) {
 //  Coefficient of log(m^2/Q^2)^0
 //------------------------------------------------------------------------------------------//
 
-double CL_g3_highscale_N3LL(double x, int nf) {
+double HighScaleSplitLogs::CL_g3_highscale_N3LL(double x, int nf, int /*v*/) const {
 
     double x2 = x * x;
 
@@ -3588,8 +3645,8 @@ double CL_g3_highscale_N3LL(double x, int nf) {
            + 210.55156055657295 * Hm1 * x2 - 384. * H0 * Hm1 * x2
            - 64. * H0 * H0 * Hm1 * x2 - 256. * H0m1 * Hm1 * x2
            + 128. * H0 * Hm1 * Hm1 * x2
-           + 4.666666666666667 * CL_g1_massless(x, 1)
-           + CL_g3_massless(x, 1 + nf) / (1. + nf);
+           + 4.666666666666667 * massless_lo_->MuIndependentTerms(x, 1)
+           + massless_->MuIndependentTerms(x, nf + 1) / (1. + nf);
 }
 
 //==========================================================================================//
@@ -3599,7 +3656,7 @@ double CL_g3_highscale_N3LL(double x, int nf) {
 //  Coefficient of log(m^2/Q^2)^2
 //------------------------------------------------------------------------------------------//
 
-double CL_ps3_highscale_NLL(double x) {
+double HighScaleSplitLogs::CL_ps3_highscale_NLL(double x, int /*nf*/) const {
 
     double x2 = x * x;
 
@@ -3618,7 +3675,7 @@ double CL_ps3_highscale_NLL(double x) {
 //  Coefficient of log(m^2/Q^2)^1
 //------------------------------------------------------------------------------------------//
 
-double CL_ps3_highscale_N2LL(double x) {
+double HighScaleSplitLogs::CL_ps3_highscale_N2LL(double x, int /*nf*/) const {
 
     double x2 = x * x;
 
@@ -3638,7 +3695,7 @@ double CL_ps3_highscale_N2LL(double x) {
 //  Coefficient of log(m^2/Q^2)^0
 //------------------------------------------------------------------------------------------//
 
-double CL_ps3_highscale_N3LL(double x, int nf) {
+double HighScaleSplitLogs::CL_ps3_highscale_N3LL(double x, int nf, int /*v*/) const {
 
     double x2 = x * x;
 
@@ -3695,5 +3752,5 @@ double CL_ps3_highscale_N3LL(double x, int nf) {
            - 18.962962962962962 * H0 * H0 * x2 - 28.444444444444443 * H01 * x2
            - 30.02469135802469 * H1 * x2 + 37.925925925925924 * H0 * H1 * x2
            + 4.7407407407407405 * H1 * H1 * x2
-           + CL_ps3_massless(x, 1 + nf) / (1. + nf);
+           + massless_->MuIndependentTerms(x, nf + 1) / (1. + nf);
 }

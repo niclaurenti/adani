@@ -8,7 +8,24 @@
 using std::cout;
 using std::endl;
 
-double MasslessCoefficientFunction::fx(double x, double /*m2Q2*/, double /*m2mu2*/, int nf) const {
+double MasslessCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int nf) const {
+    return MuIndependentTerms(x, nf) + MuDependentTerms(x, m2Q2, m2mu2, nf) ;
+}
+
+double MasslessCoefficientFunction::MuDependentTerms(double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const {
+
+    cout << "Error: mu dependent terms of the massless coefficient functions are not implemented!" << endl;
+    exit(-1);
+}
+
+double MasslessCoefficientFunction::MuIndependentTerms(double /*x*/, double /*m2Q2*/, int /*nf*/) const {
+    cout << "Error: mu independent terms of the massless coefficient functions do not depend on m^2/Q^2!" << endl;
+    cout << "Call MasslessCoefficientFunction::MuIndependentTerms(double x, int nf)" << endl;
+    exit(-1);
+}
+
+
+double MasslessCoefficientFunction::MuIndependentTerms(double x, int nf) const {
 
     if (GetOrder() == 1 && GetKind() == '2' && GetChannel() == 'g') return C2_g1_massless(x, nf);
     else if (GetOrder() == 1 && GetKind() == 'L' && GetChannel() == 'g') return CL_g1_massless(x, nf);

@@ -57,6 +57,17 @@ PYBIND11_MODULE(_core, m) {
         .def("MuDependentTerms", &HighScaleCoefficientFunction::MuDependentTerms)
         .def("fx", &HighScaleCoefficientFunction::fx);
 
+    // HighScaleSplitLogs
+    py::class_<HighScaleSplitLogs>(m, "HighScaleSplitLogs")
+        .def(py::init<const int&, const char&, const char&>())
+        .def("MuIndependentTerms", &HighScaleSplitLogs::MuIndependentTerms)
+        .def("MuDependentTerms", &HighScaleSplitLogs::MuDependentTerms)
+        .def("fx", &HighScaleSplitLogs::fx)
+        .def("LL", &HighScaleSplitLogs::LL)
+        .def("NLL", &HighScaleSplitLogs::NLL)
+        .def("N2LL", &HighScaleSplitLogs::N2LL)
+        .def("N3LL", &HighScaleSplitLogs::N3LL);
+
     // MasslessCoefficientFunction
     py::class_<MasslessCoefficientFunction>(m, "MasslessCoefficientFunction")
         .def(py::init<const int&, const char&, const char&>())

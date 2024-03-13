@@ -18,6 +18,9 @@
 #ifndef HighScaleLogs_h
 #define HighScaleLogs_h
 
+#include "adani/CoefficientFunction.h"
+#include "adani/MasslessCoefficientFunctions.h"
+
 //==========================================================================================//
 //           Legend:
 //           at order O(alpha_s^n)
@@ -25,38 +28,74 @@
 //           (The expressions do not contain the log)
 //------------------------------------------------------------------------------------------//
 
-//==========================================================================================//
-//           Gluon channel, F2
-//------------------------------------------------------------------------------------------//
+class HighScaleSplitLogs : public CoefficientFunction {
+    public:
+        HighScaleSplitLogs(const int& order, const char& kind, const char& channel) ;
+        ~HighScaleSplitLogs() override ;
 
-double C2_g3_highscale_LL(double x, int nf);
-double C2_g3_highscale_NLL(double x, int nf);
-double C2_g3_highscale_N2LL(double x, int nf);
-double C2_g3_highscale_N3LL(double x, int nf, int v);
+        double fx(double x, double m2Q2, double /*m2mu2*/, int nf) const override ;
 
-//==========================================================================================//
-//           Pure singlet channel, F2
-//------------------------------------------------------------------------------------------//
+        double LL(double x, int nf) const {
+            return (this->*LL_)(x, nf);
+        }
+        double NLL(double x, int nf) const {
+            return (this->*NLL_)(x, nf);
+        }
+        double N2LL(double x, int nf) const {
+            return (this->*N2LL_)(x, nf);
+        }
+        double N3LL(double x, int nf, int v) const {
+            return (this->*N3LL_)(x, nf, v);
+        }
 
-double C2_ps3_highscale_LL(double x, int nf);
-double C2_ps3_highscale_NLL(double x, int nf);
-double C2_ps3_highscale_N2LL(double x, int nf);
-double C2_ps3_highscale_N3LL(double x, int nf);
+        void SetFunctions();
 
-//==========================================================================================//
-//           Gluon channel, FL
-//------------------------------------------------------------------------------------------//
+    private:
 
-double CL_g3_highscale_NLL(double x);
-double CL_g3_highscale_N2LL(double x, int nf);
-double CL_g3_highscale_N3LL(double x, int nf);
+        MasslessCoefficientFunction* massless_lo_;
+        MasslessCoefficientFunction* massless_;
 
-//==========================================================================================//
-//           Pure singlet channel, FL
-//------------------------------------------------------------------------------------------//
+        double (HighScaleSplitLogs::*LL_)(double, int) const;
+        double (HighScaleSplitLogs::*NLL_)(double, int) const;
+        double (HighScaleSplitLogs::*N2LL_)(double, int) const;
+        double (HighScaleSplitLogs::*N3LL_)(double, int, int) const;
 
-double CL_ps3_highscale_NLL(double x);
-double CL_ps3_highscale_N2LL(double x);
-double CL_ps3_highscale_N3LL(double x, int nf);
+        //==========================================================================================//
+        //           Gluon channel, F2
+        //------------------------------------------------------------------------------------------//
+
+        double C2_g3_highscale_LL(double x, int nf) const;
+        double C2_g3_highscale_NLL(double x, int nf) const;
+        double C2_g3_highscale_N2LL(double x, int nf) const;
+        double C2_g3_highscale_N3LL(double x, int nf, int v) const;
+
+        //==========================================================================================//
+        //           Pure singlet channel, F2
+        //------------------------------------------------------------------------------------------//
+
+        double C2_ps3_highscale_LL(double x, int nf) const;
+        double C2_ps3_highscale_NLL(double x, int nf) const;
+        double C2_ps3_highscale_N2LL(double x, int nf) const;
+        double C2_ps3_highscale_N3LL(double x, int nf, int /*v*/) const;
+
+        //==========================================================================================//
+        //           Gluon channel, FL
+        //------------------------------------------------------------------------------------------//
+
+        double CL_g3_highscale_NLL(double x, int /*nf*/) const;
+        double CL_g3_highscale_N2LL(double x, int nf) const;
+        double CL_g3_highscale_N3LL(double x, int nf, int /*v*/) const;
+
+        //==========================================================================================//
+        //           Pure singlet channel, FL
+        //------------------------------------------------------------------------------------------//
+
+        double CL_ps3_highscale_NLL(double x, int /*nf*/) const;
+        double CL_ps3_highscale_N2LL(double x, int /*nf*/) const;
+        double CL_ps3_highscale_N3LL(double x, int nf, int /*v*/) const;
+
+        double ZeroFunction(double /*x*/, int /*nf*/) const {return 0.;};
+
+};
 
 #endif
