@@ -12,6 +12,8 @@ CoefficientFunction::CoefficientFunction(const int& order, const char& kind, con
 
 }
 
+CoefficientFunction::~CoefficientFunction() {};
+
 void CoefficientFunction::SetOrder(const int& order) {
     // check order
     if (order < 1 || order > 3) {

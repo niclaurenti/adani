@@ -69,7 +69,7 @@ class AbstractConvolution {
 class Convolution : public AbstractConvolution {
     public:
         Convolution(CoefficientFunction* coefffunc, AbstractSplittingFunction* splitfunc, const double& abserr = 1e-3, const double& relerr = 1e-3, const int& dim = 1000) : AbstractConvolution(coefffunc, splitfunc, abserr, relerr, dim) {} ;
-        ~Convolution() {} ;
+        ~Convolution() override {} ;
 
         double RegularPart(double x, double m2Q2, int nf) const override;
         double SingularPart(double x, double m2Q2, int nf) const override;
@@ -84,7 +84,7 @@ class Convolution : public AbstractConvolution {
 class ConvolutedCoefficientFunction : public CoefficientFunction {
     public:
         ConvolutedCoefficientFunction(Convolution* conv) : CoefficientFunction(conv -> GetCoeffFunc()) {conv_ = conv;};
-        ~ConvolutedCoefficientFunction() {} ;
+        ~ConvolutedCoefficientFunction() override {} ;
 
         double MuIndependentTerms(double x, double m2Q2, int nf) const override {return conv_ -> Convolute(x, m2Q2, nf);};
         // double MuDependentTerms(double x, double m2Q2, double m2mu2, int nf) const {return 0.;};
@@ -97,7 +97,7 @@ class ConvolutedCoefficientFunction : public CoefficientFunction {
 class MonteCarloDoubleConvolution : public AbstractConvolution {
     public:
         MonteCarloDoubleConvolution(CoefficientFunction* coefffunc, AbstractSplittingFunction* splitfunc, const double& abserr = 1e-3, const double& relerr = 1e-3, const int& dim = 1000, const int& method_flag = 1, const int& MCcalls = 25000) ;
-        ~MonteCarloDoubleConvolution() ;
+        ~MonteCarloDoubleConvolution() override ;
 
         double RegularPart(double x, double m2Q2, int nf) const override;
         double SingularPart(double x, double m2Q2, int nf) const override;

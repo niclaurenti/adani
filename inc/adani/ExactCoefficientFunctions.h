@@ -38,7 +38,7 @@ class ExactCoefficientFunction : public CoefficientFunction {
 
     public:
         ExactCoefficientFunction(const int& order, const char& kind, const char& channel, const double& abserr = 1e-3, const double& relerr = 1e-3, const int& dim = 1000, const int& method_flag = 1, const int& MCcalls = 25000) ;
-        ~ExactCoefficientFunction() ;
+        ~ExactCoefficientFunction() override ;
 
         // get methods
         int GetMethodFlag() const {return method_flag_;};

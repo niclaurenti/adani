@@ -32,7 +32,7 @@
 class AbstractHighEnergyCoefficientFunction : public CoefficientFunction {
     public:
         AbstractHighEnergyCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL = true) ;
-        ~AbstractHighEnergyCoefficientFunction() {};
+        ~AbstractHighEnergyCoefficientFunction() override {};
 
         // get methods
         bool GetNLL() const {return NLL_;};
@@ -58,7 +58,7 @@ class HighEnergyCoefficientFunction : public AbstractHighEnergyCoefficientFuncti
     public:
         HighEnergyCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL = true) : AbstractHighEnergyCoefficientFunction(order, kind, channel, NLL) {};
         // HighEnergyCoefficientFunction() : AbstractHighEnergyCoefficientFunction() {} ;
-        ~HighEnergyCoefficientFunction() {} ;
+        ~HighEnergyCoefficientFunction() override {} ;
 
         double fx(double x, double m2Q2, double m2mu2, int nf) const override ;
 
@@ -104,7 +104,7 @@ class HighEnergyHighScaleCoefficientFunction : public AbstractHighEnergyCoeffici
     public:
         HighEnergyHighScaleCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL = true) : AbstractHighEnergyCoefficientFunction(order, kind, channel, NLL) {};
         // HighEnergyHighScaleCoefficientFunction() : AbstractHighEnergyCoefficientFunction() {} ;
-        ~HighEnergyHighScaleCoefficientFunction() {} ;
+        ~HighEnergyHighScaleCoefficientFunction() override {} ;
 
         double fx(double x, double m2Q2, double m2mu2, int nf) const override ;
 
@@ -162,7 +162,7 @@ class PowerTermsCoefficientFunction : public AbstractHighEnergyCoefficientFuncti
     public:
         PowerTermsCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL = true);
         // PowerTermsCoefficientFunction() : AbstractHighEnergyCoefficientFunction() {} ;
-        ~PowerTermsCoefficientFunction() ;
+        ~PowerTermsCoefficientFunction() override ;
 
         double fx(double x, double m2Q2, double m2mu2, int nf) const override ;
 

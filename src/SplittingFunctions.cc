@@ -8,6 +8,8 @@
 using std::cout;
 using std::endl;
 
+AbstractSplittingFunction::~AbstractSplittingFunction() {};
+
 SplittingFunction::SplittingFunction(const int& order, const char& entry1, const char& entry2) : AbstractSplittingFunction(){
 
     // check order
@@ -18,7 +20,7 @@ SplittingFunction::SplittingFunction(const int& order, const char& entry1, const
     order_ = order ;
 
     // check entry1
-    if (entry1 != 'g' && entry2 != 'q') {
+    if (entry1 != 'g' && entry1 != 'q') {
         cout << "Error: entry1 must be g or q. Got " << entry1 << endl ;
         exit(-1) ;
     }
@@ -141,7 +143,7 @@ ConvolutedSplittingFunctions::ConvolutedSplittingFunctions(const int& order1, co
     order2_ = order2 ;
 
     // check entry1
-    if (entry1 != 'g' && entry2 != 'q') {
+    if (entry1 != 'g' && entry1 != 'q') {
         cout << "Error: entry1 must be g or q. Got " << entry1 << endl ;
         exit(-1) ;
     }
@@ -153,13 +155,6 @@ ConvolutedSplittingFunctions::ConvolutedSplittingFunctions(const int& order1, co
         exit(-1) ;
     }
     entry2_ = entry2 ;
-
-    // check entry3
-    if (entry3 != 'g' && entry3 != 'q') {
-        cout << "Error: entry3 must be g or q. Got " << entry3 << endl ;
-        exit(-1) ;
-    }
-    entry3_ = entry3;
 
     // check entry3
     if (entry3 != 'g' && entry3 != 'q') {

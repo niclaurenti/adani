@@ -24,6 +24,8 @@ AbstractConvolution::AbstractConvolution(CoefficientFunction* coefffunc, Abstrac
     splitfunc_ = splitfunc;
 }
 
+AbstractConvolution::~AbstractConvolution() {};
+
 void AbstractConvolution::SetAbserr(const double& abserr) {
     // check abserr
     if (abserr <= 0) {
@@ -55,7 +57,7 @@ double AbstractConvolution::Convolute(double x, double m2Q2, int nf) const {
     return RegularPart(x, m2Q2, nf) + SingularPart(x, m2Q2, nf) + LocalPart(x, m2Q2, nf) ;
 }
 
-double regular_integrand(double z, void *p) {
+double Convolution::regular_integrand(double z, void *p) {
 
     struct function_params *params = (struct function_params *)p;
 
@@ -66,7 +68,7 @@ double regular_integrand(double z, void *p) {
     return ((params->conv) -> GetCoeffFunc()) -> MuIndependentTerms(z, m2Q2, nf) * ((params->conv) -> GetSplitFunc()) -> Regular(x / z, nf) / z ;
 }
 
-double singular_integrand(double z, void *p) {
+double Convolution::singular_integrand(double z, void *p) {
     struct function_params *params = (struct function_params *)p;
 
     double m2Q2 = (params->m2Q2);
@@ -198,7 +200,7 @@ void MonteCarloDoubleConvolution::SetMCcalls(const int& MCcalls) {
     MCcalls_ = MCcalls;
 }
 
-double regular1_integrand(double z[], size_t /*dim*/, void *p) {
+double MonteCarloDoubleConvolution::regular1_integrand(double z[], size_t /*dim*/, void *p) {
 
     struct function_params *params = (struct function_params *)p;
 
@@ -219,7 +221,7 @@ double regular1_integrand(double z[], size_t /*dim*/, void *p) {
     }
 }
 
-double regular2_integrand(double z[], size_t /*dim*/, void *p)  {
+double MonteCarloDoubleConvolution::regular2_integrand(double z[], size_t /*dim*/, void *p)  {
     struct function_params *params = (struct function_params *)p;
 
     double m2Q2 = (params->m2Q2);
@@ -239,7 +241,7 @@ double regular2_integrand(double z[], size_t /*dim*/, void *p)  {
     }
 }
 
-double regular3_integrand(double z, void *p) {
+double MonteCarloDoubleConvolution::regular3_integrand(double z, void *p) {
 
     struct function_params *params = (struct function_params *)p;
 
@@ -324,7 +326,7 @@ double MonteCarloDoubleConvolution::RegularPart(double x, double m2Q2, int nf) c
 //  monte carlo methods
 //------------------------------------------------------------------------------------------//
 
-double singular1_integrand(double z[], size_t /*dim*/, void *p) {
+double MonteCarloDoubleConvolution::singular1_integrand(double z[], size_t /*dim*/, void *p) {
 
     struct function_params *params = (struct function_params *)p;
 
@@ -347,7 +349,7 @@ double singular1_integrand(double z[], size_t /*dim*/, void *p) {
     return splitfunc -> Singular(z1, nf) * (tmp - splitfunc -> Regular(x / z2, nf)) * coefffunc -> MuIndependentTerms(z2, m2Q2, nf) / z2;
 }
 
-double singular2_integrand(double z[], size_t /*dim*/, void *p) {
+double MonteCarloDoubleConvolution::singular2_integrand(double z[], size_t /*dim*/, void *p) {
 
     struct function_params *params = (struct function_params *)p;
 
@@ -373,7 +375,7 @@ double singular2_integrand(double z[], size_t /*dim*/, void *p) {
            * (tmp - (coefffunc -> MuIndependentTerms(x / z2, m2Q2, nf) / z2 - coefffunc -> MuIndependentTerms(x, m2Q2, nf)));
 }
 
-double singular3_integrand(double z, void *p) {
+double MonteCarloDoubleConvolution::singular3_integrand(double z, void *p) {
 
     struct function_params *params = (struct function_params *)p;
 

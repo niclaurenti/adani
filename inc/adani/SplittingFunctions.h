@@ -37,7 +37,7 @@ class AbstractSplittingFunction {
 class SplittingFunction : public AbstractSplittingFunction{
     public:
         SplittingFunction(const int& order, const char& entry1, const char& entry2) ;
-        ~SplittingFunction() {} ;
+        ~SplittingFunction() override {} ;
 
         double Regular(double x, int nf) const override;
         double Singular(double x, int nf) const override;
@@ -112,7 +112,7 @@ class SplittingFunction : public AbstractSplittingFunction{
 class ConvolutedSplittingFunctions : public AbstractSplittingFunction {
     public:
         ConvolutedSplittingFunctions(const int& order1, const char& entry1, const char& entry2, const int& order2, const char& entry3, const char& entry4);
-        ~ConvolutedSplittingFunctions() {};
+        ~ConvolutedSplittingFunctions() override {};
 
         double Regular(double x, int nf) const override;
 
@@ -166,7 +166,7 @@ class ConvolutedSplittingFunctions : public AbstractSplittingFunction {
 class Delta : public AbstractSplittingFunction {
     public:
         Delta() : AbstractSplittingFunction() {};
-        ~Delta() {} ;
+        ~Delta() override {} ;
 
         double Regular(double /*x*/, int /*nf*/) const {return 0.;};
         double Singular(double /*x*/, int /*nf*/) const {return 0.;};

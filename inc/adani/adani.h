@@ -2,6 +2,7 @@
 #define adani_h
 
 #include "adani/ApproximateCoefficientFunctions.h"
+#include "adani/CoefficientFunction.h"
 #include "adani/AsymptoticCoefficientFunctions.h"
 #include "adani/Constants.h"
 #include "adani/Convolutions.h"
