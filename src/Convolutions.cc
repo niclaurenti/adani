@@ -65,7 +65,10 @@ double Convolution::regular_integrand(double z, void *p) {
     double x = (params->x);
     int nf = (params->nf);
 
-    return ((params->conv) -> GetCoeffFunc()) -> MuIndependentTerms(z, m2Q2, nf) * ((params->conv) -> GetSplitFunc()) -> Regular(x / z, nf) / z ;
+    CoefficientFunction* cf = (params->conv) -> GetCoeffFunc() ;
+    AbstractSplittingFunction* sf = (params->conv) -> GetSplitFunc() ;
+
+    return cf -> MuIndependentTerms(z, m2Q2, nf) * sf -> Regular(x / z, nf) / z ;
 }
 
 double Convolution::singular_integrand(double z, void *p) {
@@ -75,7 +78,10 @@ double Convolution::singular_integrand(double z, void *p) {
     double x = (params->x);
     int nf = (params->nf);
 
-    return ((params->conv) -> GetSplitFunc()) -> Singular(z, nf) * (((params->conv) -> GetCoeffFunc())-> MuIndependentTerms(x / z, m2Q2, nf) - ((params->conv) -> GetCoeffFunc()) -> MuIndependentTerms(x, m2Q2, nf) ) ;
+    CoefficientFunction* cf = (params->conv) -> GetCoeffFunc() ;
+    AbstractSplittingFunction* sf = (params->conv) -> GetSplitFunc() ;
+
+    return sf -> Singular(z, nf) * (cf -> MuIndependentTerms(x / z, m2Q2, nf) / z - cf -> MuIndependentTerms(x, m2Q2, nf) ) ;
 
 }
 
