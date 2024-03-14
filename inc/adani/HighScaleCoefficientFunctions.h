@@ -37,7 +37,9 @@ class HighScaleCoefficientFunction : public CoefficientFunction {
         double fx(double x, double m2Q2, double m2mu2, int nf) const override ;
 
     private:
-        MasslessCoefficientFunction* massless_;
+        MasslessCoefficientFunction* massless_lo_;
+        MasslessCoefficientFunction* massless_nlo_;
+        MasslessCoefficientFunction* massless_nnlo_;
 
 //==========================================================================================//
 //                      High scale (Q^2 >> m^2) coefficient

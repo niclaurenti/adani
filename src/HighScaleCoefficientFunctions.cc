@@ -11,11 +11,19 @@ using std::cout;
 using std::endl;
 
 HighScaleCoefficientFunction::HighScaleCoefficientFunction(const int& order, const char& kind, const char& channel) : CoefficientFunction(order, kind, channel) {
-      massless_ = new MasslessCoefficientFunction(GetOrder(), GetKind(), GetChannel());
+      massless_nlo_ = nullptr;
+      massless_nnlo_ = nullptr;
+      
+      massless_lo_ = new MasslessCoefficientFunction(1, GetKind(), GetChannel());
+
+      if (order > 1) massless_nlo_ = new MasslessCoefficientFunction(2, GetKind(), GetChannel());
+      if (order > 2) massless_nnlo_ = new MasslessCoefficientFunction(3, GetKind(), GetChannel());
 }
 
 HighScaleCoefficientFunction::~HighScaleCoefficientFunction() {
-      delete massless_;
+      delete massless_lo_;
+      delete massless_nlo_;
+      delete massless_nnlo_;
 }
 
 double HighScaleCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int nf) const {
@@ -56,7 +64,7 @@ double HighScaleCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int
 
 double HighScaleCoefficientFunction::C2_g1_highscale(double x, double m2Q2) const {
 
-    return massless_->MuIndependentTerms(x, 1) + 2. * K_Qg1(x, m2Q2);
+    return massless_lo_->MuIndependentTerms(x, 1) + 2. * K_Qg1(x, m2Q2);
 }
 
 //==========================================================================================//
@@ -66,7 +74,7 @@ double HighScaleCoefficientFunction::C2_g1_highscale(double x, double m2Q2) cons
 
 double HighScaleCoefficientFunction::CL_g1_highscale(double x) const {
 
-    return massless_->MuIndependentTerms(x, 1);
+    return massless_lo_->MuIndependentTerms(x, 1);
 }
 
 //==========================================================================================//
@@ -277,7 +285,7 @@ double HighScaleCoefficientFunction::D2_g2_highscale(double x, double m2Q2, doub
            + CA * LQm2
                  * (2 + 8. / 3 / x + 16 * x - 62. / 3 * x2 + 4 * H0
                     + 16 * H0 * x - 4 * H1 + 8 * H1 * x - 8 * H1 * x2)
-           + massless_->MuIndependentTerms(x, 1);
+           + massless_nlo_ -> MuIndependentTerms(x, 1);
 }
 
 //==========================================================================================//
@@ -903,7 +911,7 @@ double HighScaleCoefficientFunction::DL_g3_highscale(double z, double m2Q2, doub
                                       - 544. / 3 * H01 + 128. * H011
                                       + 384. * H000m1 - 384. * H0001
                                       + (128. * H01 - 128. * H0m1) * zeta2)))
-           + massless_->MuIndependentTerms(z, nf + 1) / (nf + 1.);
+           + massless_nnlo_ -> MuIndependentTerms(z, nf + 1) / (nf + 1.);
 }
 
 //==========================================================================================//
@@ -1083,7 +1091,7 @@ double HighScaleCoefficientFunction::DL_ps3_highscale(double z, double m2Q2, dou
                                 + 256. * zeta2 * H0 + 512. * H00m1 - 256. * H011
                                 - 128. * zeta3))
                           * L_Q)
-           + massless_->MuIndependentTerms(z, nf + 1) / (nf + 1.);
+           + massless_nnlo_ -> MuIndependentTerms(z, nf + 1) / (nf + 1.);
 }
 
 //==========================================================================================//
@@ -2996,7 +3004,7 @@ double HighScaleCoefficientFunction::D2_g3_highscale(double x, double m2Q2, doub
            + CF * nf * (1. - 2. * x + 2. * x2) * (69. - 28. * zeta2)
            // from erratum
            + 8. / 9 * zeta3 - 16. / 9 * zeta3 * x + 16. / 9 * zeta3 * x2
-           + a_Qg_30(x, v) + massless_->MuIndependentTerms(x, nf + 1) / (nf + 1.);
+           + a_Qg_30(x, v) + massless_nnlo_ -> MuIndependentTerms(x, nf + 1) / (nf + 1.);
 }
 
 //==========================================================================================//
@@ -3816,7 +3824,7 @@ double HighScaleCoefficientFunction::D2_ps3_highscale(double x, double m2Q2, dou
                     - 64. / 9 * H0 * x + 16. / 3 * H00 - 32. / 3 * H00 * x
                     - 8. / 3 * H1 - 32. / 9 * H1 / x + 8. / 3 * H1 * x
                     + 32. / 9 * H1 * x2 - 16. / 3 * H01 - 16. / 3 * H01 * x)
-           + a_Qq_PS_30(x, v) + 1. / (1 + nf) * massless_->MuIndependentTerms(x, 1 + nf);
+           + a_Qq_PS_30(x, v) + 1. / (1 + nf) * massless_nnlo_->MuIndependentTerms(x, 1 + nf);
 }
 
 //==========================================================================================//
