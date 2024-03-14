@@ -97,4 +97,12 @@ PYBIND11_MODULE(_core, m) {
         .def("MuIndependentTerms", &ThresholdCoefficientFunction::MuIndependentTerms)
         .def("MuDependentTerms", &ThresholdCoefficientFunction::MuDependentTerms)
         .def("fx", &ThresholdCoefficientFunction::fx);
+
+    // for tests
+    
+    m.def("c2nlog_", (double (*)(double*, double*)) &c2nlog_);
+    m.def("clnlog_", (double (*)(double*, double*)) &clnlog_);
+    m.def("c2nloq_", (double (*)(double*, double*)) &c2nloq_);
+    m.def("clnloq_", (double (*)(double*, double*)) &clnloq_);
+
 }

@@ -159,4 +159,25 @@ class ExactCoefficientFunction : public CoefficientFunction {
 
 };
 
+/// @cond UNNECESSARY
+/**
+ * @name Fortran massive coefficient functions
+ * Fortran functions for the O(alpha_s^2)
+ * coefficient functions from 'src/hqcoef.f'.
+ */
+///@{
+extern "C" {
+    // double c2log_(double *wr,double *xi);
+    double c2nlog_(double *wr, double *xi);
+    double clnlog_(double *wr, double *xi);
+    double c2nloq_(double *wr, double *xi);
+    double clnloq_(double *wr, double *xi);
+    // double c2nlobarg_(double *wr,double *xi);
+    // double clnlobarg_(double *wr,double *xi);
+    // double c2nlobarq_(double *wr,double *xi);
+    // double clnlobarq_(double *wr,double *xi);
+}
+///@}
+/// \endcond
+
 #endif
