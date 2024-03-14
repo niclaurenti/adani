@@ -78,10 +78,10 @@ ExactCoefficientFunction::ExactCoefficientFunction(const int& order, const char&
             convolutions_lmu1_.push_back( new Convolution(gluon_nlo_, Pgg0_, abserr, relerr, dim) );
             convolutions_lmu1_.push_back( new Convolution(gluon_nlo_, delta_) );
 
-            convolutions_lmu2_.push_back( new MonteCarloDoubleConvolution(gluon_lo_, Pgg0_, abserr, relerr, dim, MCcalls) );
+            convolutions_lmu2_.push_back( new MonteCarloDoubleConvolution(gluon_lo_, Pgg0_, abserr, relerr, dim, method_flag, MCcalls) );
             convolutions_lmu2_.push_back( new Convolution(gluon_lo_, Pgq0Pqg0_, abserr, relerr, dim) );
             convolutions_lmu2_.push_back( new Convolution(gluon_lo_, Pgg0_, abserr, relerr, dim) );
-            convolutions_lmu1_.push_back( new Convolution(gluon_lo_, delta_) );
+            convolutions_lmu2_.push_back( new Convolution(gluon_lo_, delta_) );
         }
     }
 
