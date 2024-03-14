@@ -43,8 +43,8 @@ class AbstractConvolution {
         virtual double LocalPart(double x, double m2Q2, int nf) const = 0;
 
         // get methods
-        int GetAbserr() const {return abserr_;};
-        int GetRelerr() const {return relerr_;};
+        double GetAbserr() const {return abserr_;};
+        double GetRelerr() const {return relerr_;};
         int GetDim() const {return dim_;} ;
 
         CoefficientFunction* GetCoeffFunc() const {return coefffunc_;};

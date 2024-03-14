@@ -172,10 +172,10 @@ extern "C" {
     double clnlog_(double *wr, double *xi);
     double c2nloq_(double *wr, double *xi);
     double clnloq_(double *wr, double *xi);
-    // double c2nlobarg_(double *wr,double *xi);
-    // double clnlobarg_(double *wr,double *xi);
-    // double c2nlobarq_(double *wr,double *xi);
-    // double clnlobarq_(double *wr,double *xi);
+    double c2nlobarg_(double *wr,double *xi);
+    double clnlobarg_(double *wr,double *xi);
+    double c2nlobarq_(double *wr,double *xi);
+    double clnlobarq_(double *wr,double *xi);
 }
 ///@}
 /// \endcond
