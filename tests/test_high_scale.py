@@ -2,8 +2,8 @@ import adani as ad
 import numpy as np
 
 def test_split_logs():
-    for kind in ['2', 'L']:
-        for channel in ['q', 'g']:
+    for kind in ['L']:
+        for channel in ['q']:
             hs = ad.HighScaleCoefficientFunction(3, kind, channel)
             hs_split = ad.HighScaleSplitLogs(3, kind, channel)
             

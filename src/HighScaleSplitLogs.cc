@@ -37,7 +37,7 @@ double HighScaleSplitLogs::fx(double x, double m2Q2, int nf, int v) const {
     double Log = log(m2Q2);
     double Log2 = Log * Log;
     double Log3 = Log2 * Log;
-    return LL(x, nf) + NLL(x, nf) * Log + N2LL(x, nf) * Log2 + N3LL(x, nf, v) * Log3;
+    return  LL(x, nf) * Log3 + NLL(x, nf) * Log2 + N2LL(x, nf) * Log + N3LL(x, nf, v);
 }
 
 void HighScaleSplitLogs::SetFunctions() {
