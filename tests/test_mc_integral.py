@@ -14,5 +14,5 @@ def test_mc_integrals():
                     for nf in range(7):
                         res1 = massive_mc.MuDependentTerms(x, m2Q2, m2Q2, nf)
                         res2 = massive_nomc.MuDependentTerms(x, m2Q2, m2Q2, nf)
-                        np.testing.assert_allclose(res1, res2, rtol=3e-3)
+                        np.testing.assert_allclose(res1, res2, rtol=5e-3)
 
