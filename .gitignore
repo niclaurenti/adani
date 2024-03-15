@@ -19,3 +19,6 @@ docs/*.synctex.gz
 
 dist/
 MANIFEST.in
+
+env/
+venv/

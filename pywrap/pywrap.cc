@@ -14,7 +14,12 @@ PYBIND11_MODULE(_core, m) {
     m.doc() = "Python wrapper of libadani";
 
     // ApproximateCoefficientFunction
-    // ...
+    py::class_<ApproximateCoefficientFunction>(m, "ApproximateCoefficientFunction")
+        .def(py::init<const int&, const char&, const char&, const bool&, const double&, const double&, const int&, const int&, const int&>())
+        .def("MuIndependentTerms", &ApproximateCoefficientFunction::MuIndependentTerms)
+        .def("MuDependentTerms", &ApproximateCoefficientFunction::MuDependentTerms)
+        .def("fx", &ApproximateCoefficientFunction::fx);
+
     // AsymptoticCoefficientFunction
     py::class_<AsymptoticCoefficientFunction>(m, "AsymptoticCoefficientFunction")
         .def(py::init<const int&, const char&, const char&, const bool&>())

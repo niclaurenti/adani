@@ -17,19 +17,10 @@
 #ifndef Approximate_h
 #define Approximate_h
 
-//==========================================================================================//
-//                      Approximate coefficient functions
-//                      O(alpha_s)
-//------------------------------------------------------------------------------------------//
-
-double C2_g1_approximation_implicit(double x, double m2Q2, double k, double h);
-double C2_g1_approximation(double x, double m2Q2);
-double CL_g1_approximation(double x, double m2Q2);
-
-//==========================================================================================//
-//                      Approximate coefficient functions
-//                      O(alpha_s^2)
-//------------------------------------------------------------------------------------------//
+#include "adani/CoefficientFunction.h"
+#include "adani/ThresholdCoefficientFunctions.h"
+#include "adani/AsymptoticCoefficientFunctions.h"
+#include "adani/ExactCoefficientFunctions.h"
 
 struct approximation_parameters {
     double A;
@@ -40,150 +31,196 @@ struct approximation_parameters {
     double b;
 };
 
-double C2_g2_approximation(double x, double m2Q2, double m2mu2, int v = 0);
-double C2_g20_approximation(double x, double m2Q2);
-double C2_g20_approximation_implicit(
-    double x, double m2Q2, double A, double B, double C, double D, double a,
-    double b
-);
-double C2_g20_approximation_BAND(
-    double x, double m2Q2, int v, double var, double fact
-);
+struct variation_parameters {
+    double var;
+    double fact;
+};
 
-double C2_ps2_approximation(double x, double m2Q2, double m2mu2, int v = 0);
-double C2_ps20_approximation(double x, double m2Q2);
-double C2_ps20_approximation_implicit(
-    double x, double m2Q2, double A, double B, double C, double D, double a,
-    double b
-);
-double C2_ps20_approximation_BAND(
-    double x, double m2Q2, int v, double var, double fact
-);
+class ApproximateCoefficientFunction : public CoefficientFunction {
+    public:
+        ApproximateCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL = true, const double& abserr = 1e-3, const double& relerr = 1e-3, const int& dim = 1000, const int& method_flag = 1, const int& MCcalls = 25000) ;
+        ~ApproximateCoefficientFunction() override ;
 
-double CL_g2_approximation(double x, double m2Q2, double m2mu2, int v = 0);
-double CL_g20_approximation(double x, double m2Q2);
-double CL_g20_approximation_implicit(
-    double x, double m2Q2, double A, double B, double C, double D, double a,
-    double b
-);
-double CL_g20_approximation_BAND(
-    double x, double m2Q2, int v, double var, double fact
-);
 
-double CL_ps2_approximation(double x, double m2Q2, double m2mu2, int v = 0);
-double CL_ps20_approximation(double x, double m2Q2);
-double CL_ps20_approximation_implicit(
-    double x, double m2Q2, double A, double B, double C, double D, double a,
-    double b
-);
-double CL_ps20_approximation_BAND(
-    double x, double m2Q2, int v, double var, double fact
-);
+        double fx(double x, double m2Q2, double m2mu2, int nf) const override {
+            return MuIndependentTerms(x, m2Q2, nf) + MuDependentTerms(x, m2Q2, m2mu2, nf);
+        }
 
-//==========================================================================================//
-//                      Approximate coefficient functions
-//                      O(alpha_s^3)
-//------------------------------------------------------------------------------------------//
+        double MuIndependentTerms(double x, double m2Q2, int nf) const override ;
+        double MuDependentTerms(double x, double m2Q2, double m2mu2, int nf) const override {
+            return muterms_ -> MuDependentTerms(x, m2Q2, m2mu2, nf);
+        }
 
-#define default_method 0
+    private:
+        ThresholdCoefficientFunction* threshold_;
+        AsymptoticCoefficientFunction* asymptotic_;
 
-double C2_g3_approximation(
-    double x, double m2Q2, double m2mu2, int nf, int v = 0,
-    int method_flag = default_method
-);
-double C2_g30_approximation(double x, double m2Q2, int nf);
-double C2_g30_approximation_implicit(
-    double x, double m2Q2, int nf, double A, double B, double C, double D,
-    double a, double b, int v1, int v2
-);
-double C2_g30_approximation_BAND(
-    double x, double m2Q2, int nf, int v, double var, double fact
-);
-double
-C2_ps3_approximation(double x, double m2Q2, double m2mu2, int nf, int v = 0);
-double C2_ps30_approximation(double x, double m2Q2, int nf);
-double C2_ps30_approximation_implicit(
-    double x, double m2Q2, int nf, double A, double B, double C, double D,
-    double a, double b, int v
-);
-double C2_ps30_approximation_BAND(
-    double x, double m2Q2, int nf, int v, double var, double fact
-);
+        ExactCoefficientFunction* muterms_;
 
-double CL_g3_approximation(
-    double x, double m2Q2, double m2mu2, int nf, int v = 0,
-    int method_flag = default_method
-);
-double CL_g30_approximation(double x, double m2Q2, int nf);
-double CL_g30_approximation_implicit(
-    double x, double m2Q2, int nf, double A, double B, double C, double D,
-    double a, double b, int v
-);
-double CL_g30_approximation_BAND(
-    double x, double m2Q2, int nf, int v, double var, double fact
-);
+        struct approximation_parameters approximation_;
+        struct variation_parameters variation_;
 
-double
-CL_ps3_approximation(double x, double m2Q2, double m2mu2, int nf, int v = 0);
-double CL_ps30_approximation(double x, double m2Q2, int nf);
-double CL_ps30_approximation_implicit(
-    double x, double m2Q2, int nf, double A, double B, double C, double D,
-    double a, double b, int v
-);
-double CL_ps30_approximation_BAND(
-    double x, double m2Q2, int nf, int v, double var, double fact
-);
 
-//==========================================================================================//
-//              Approximate coefficient functions
-//              O(alpha_s^2) from [arXiv:1205.5727] klmv =
-//              Kawamura, Lo Presti, Moch, Vogt
-//------------------------------------------------------------------------------------------//
+};
 
-double C2_g2_approximationA_klmv(double x, double m2Q2, double m2mu2);
-double C2_g2_approximationB_klmv(double x, double m2Q2, double m2mu2);
+// //==========================================================================================//
+// //                      Approximate coefficient functions
+// //                      O(alpha_s)
+// //------------------------------------------------------------------------------------------//
 
-double C2_ps2_approximationA_klmv(double x, double m2Q2, double m2mu2);
-double C2_ps2_approximationB_klmv(double x, double m2Q2, double m2mu2);
+// double C2_g1_approximation_implicit(double x, double m2Q2, double k, double h);
+// double C2_g1_approximation(double x, double m2Q2);
+// double CL_g1_approximation(double x, double m2Q2);
 
-//==========================================================================================//
-//              Approximate coefficient functions
-//              O(alpha_s^3) from [arXiv:1205.5727] klmv =
-//              Kawamura, Lo Presti, Moch, Vogt
-//------------------------------------------------------------------------------------------//
+// //==========================================================================================//
+// //                      Approximate coefficient functions
+// //                      O(alpha_s^2)
+// //------------------------------------------------------------------------------------------//
 
-//==========================================================================================//
-// the functions labeled with 'paper' use some approximate
-// results for which at the time of the paper
-// [arXiv:1205.5727] the exact result was not known (like
-// aQqPS30) or for which now we have a better approximation
-// (aQg30_B). They are only used as a benchmark against the
-// plots of the paper
-//------------------------------------------------------------------------------------------//
+// double C2_g2_approximation(double x, double m2Q2, double m2mu2, int v = 0);
+// double C2_g20_approximation(double x, double m2Q2);
+// double C2_g20_approximation_implicit(
+//     double x, double m2Q2, double A, double B, double C, double D, double a,
+//     double b
+// );
+// double C2_g20_approximation_BAND(
+//     double x, double m2Q2, int v, double var, double fact
+// );
 
-double C2_g3_approximationA_klmv(
-    double x, double m2Q2, double m2mu2, int nf,
-    int method_flag = default_method
-);
-double C2_g3_approximationB_klmv(
-    double x, double m2Q2, double m2mu2, int nf,
-    int method_flag = default_method
-);
-double C2_g3_approximationB_klmv_paper(
-    double x, double m2Q2, double m2mu2, int nf,
-    int method_flag = default_method
-);
-double C2_g3_approximationBlowxi_klmv(
-    double x, double m2Q2, double m2mu2, int nf,
-    int method_flag = default_method
-);
+// double C2_ps2_approximation(double x, double m2Q2, double m2mu2, int v = 0);
+// double C2_ps20_approximation(double x, double m2Q2);
+// double C2_ps20_approximation_implicit(
+//     double x, double m2Q2, double A, double B, double C, double D, double a,
+//     double b
+// );
+// double C2_ps20_approximation_BAND(
+//     double x, double m2Q2, int v, double var, double fact
+// );
 
-double C2_ps3_approximationA_klmv(double x, double m2Q2, double m2mu2, int nf);
-double C2_ps3_approximationB_klmv(double x, double m2Q2, double m2mu2, int nf);
+// double CL_g2_approximation(double x, double m2Q2, double m2mu2, int v = 0);
+// double CL_g20_approximation(double x, double m2Q2);
+// double CL_g20_approximation_implicit(
+//     double x, double m2Q2, double A, double B, double C, double D, double a,
+//     double b
+// );
+// double CL_g20_approximation_BAND(
+//     double x, double m2Q2, int v, double var, double fact
+// );
 
-double
-C2_ps3_approximationA_klmv_paper(double x, double m2Q2, double m2mu2, int nf);
-double
-C2_ps3_approximationB_klmv_paper(double x, double m2Q2, double m2mu2, int nf);
+// double CL_ps2_approximation(double x, double m2Q2, double m2mu2, int v = 0);
+// double CL_ps20_approximation(double x, double m2Q2);
+// double CL_ps20_approximation_implicit(
+//     double x, double m2Q2, double A, double B, double C, double D, double a,
+//     double b
+// );
+// double CL_ps20_approximation_BAND(
+//     double x, double m2Q2, int v, double var, double fact
+// );
+
+// //==========================================================================================//
+// //                      Approximate coefficient functions
+// //                      O(alpha_s^3)
+// //------------------------------------------------------------------------------------------//
+
+// #define default_method 0
+
+// double C2_g3_approximation(
+//     double x, double m2Q2, double m2mu2, int nf, int v = 0,
+//     int method_flag = default_method
+// );
+// double C2_g30_approximation(double x, double m2Q2, int nf);
+// double C2_g30_approximation_implicit(
+//     double x, double m2Q2, int nf, double A, double B, double C, double D,
+//     double a, double b, int v1, int v2
+// );
+// double C2_g30_approximation_BAND(
+//     double x, double m2Q2, int nf, int v, double var, double fact
+// );
+// double
+// C2_ps3_approximation(double x, double m2Q2, double m2mu2, int nf, int v = 0);
+// double C2_ps30_approximation(double x, double m2Q2, int nf);
+// double C2_ps30_approximation_implicit(
+//     double x, double m2Q2, int nf, double A, double B, double C, double D,
+//     double a, double b, int v
+// );
+// double C2_ps30_approximation_BAND(
+//     double x, double m2Q2, int nf, int v, double var, double fact
+// );
+
+// double CL_g3_approximation(
+//     double x, double m2Q2, double m2mu2, int nf, int v = 0,
+//     int method_flag = default_method
+// );
+// double CL_g30_approximation(double x, double m2Q2, int nf);
+// double CL_g30_approximation_implicit(
+//     double x, double m2Q2, int nf, double A, double B, double C, double D,
+//     double a, double b, int v
+// );
+// double CL_g30_approximation_BAND(
+//     double x, double m2Q2, int nf, int v, double var, double fact
+// );
+
+// double
+// CL_ps3_approximation(double x, double m2Q2, double m2mu2, int nf, int v = 0);
+// double CL_ps30_approximation(double x, double m2Q2, int nf);
+// double CL_ps30_approximation_implicit(
+//     double x, double m2Q2, int nf, double A, double B, double C, double D,
+//     double a, double b, int v
+// );
+// double CL_ps30_approximation_BAND(
+//     double x, double m2Q2, int nf, int v, double var, double fact
+// );
+
+// //==========================================================================================//
+// //              Approximate coefficient functions
+// //              O(alpha_s^2) from [arXiv:1205.5727] klmv =
+// //              Kawamura, Lo Presti, Moch, Vogt
+// //------------------------------------------------------------------------------------------//
+
+// double C2_g2_approximationA_klmv(double x, double m2Q2, double m2mu2);
+// double C2_g2_approximationB_klmv(double x, double m2Q2, double m2mu2);
+
+// double C2_ps2_approximationA_klmv(double x, double m2Q2, double m2mu2);
+// double C2_ps2_approximationB_klmv(double x, double m2Q2, double m2mu2);
+
+// //==========================================================================================//
+// //              Approximate coefficient functions
+// //              O(alpha_s^3) from [arXiv:1205.5727] klmv =
+// //              Kawamura, Lo Presti, Moch, Vogt
+// //------------------------------------------------------------------------------------------//
+
+// //==========================================================================================//
+// // the functions labeled with 'paper' use some approximate
+// // results for which at the time of the paper
+// // [arXiv:1205.5727] the exact result was not known (like
+// // aQqPS30) or for which now we have a better approximation
+// // (aQg30_B). They are only used as a benchmark against the
+// // plots of the paper
+// //------------------------------------------------------------------------------------------//
+
+// double C2_g3_approximationA_klmv(
+//     double x, double m2Q2, double m2mu2, int nf,
+//     int method_flag = default_method
+// );
+// double C2_g3_approximationB_klmv(
+//     double x, double m2Q2, double m2mu2, int nf,
+//     int method_flag = default_method
+// );
+// double C2_g3_approximationB_klmv_paper(
+//     double x, double m2Q2, double m2mu2, int nf,
+//     int method_flag = default_method
+// );
+// double C2_g3_approximationBlowxi_klmv(
+//     double x, double m2Q2, double m2mu2, int nf,
+//     int method_flag = default_method
+// );
+
+// double C2_ps3_approximationA_klmv(double x, double m2Q2, double m2mu2, int nf);
+// double C2_ps3_approximationB_klmv(double x, double m2Q2, double m2mu2, int nf);
+
+// double
+// C2_ps3_approximationA_klmv_paper(double x, double m2Q2, double m2mu2, int nf);
+// double
+// C2_ps3_approximationB_klmv_paper(double x, double m2Q2, double m2mu2, int nf);
 
 #endif

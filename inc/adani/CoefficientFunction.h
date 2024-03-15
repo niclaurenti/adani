@@ -23,11 +23,20 @@ class Value {
     public:
         Value(const double& central, const double& higher, const double& lower) ;
 
+        double GetCentral() const {return central_;};
+        double GetHigher() const {return higher_;};
+        double GetLower() const {return lower_;};
+
+        Value operator*(const double& rhs) const;
+        friend Value operator*(const double& lhs, const Value& rhs);
+
+        Value operator/(const double& rhs) const;
+        friend Value operator/(const double& lhs, const Value& rhs);
 
     private:
-        double central;
-        double higher;
-        double lower;
+        double central_;
+        double higher_;
+        double lower_;
 };
 
 class CoefficientFunction {

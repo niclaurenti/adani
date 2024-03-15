@@ -72,7 +72,7 @@ if(PYTHON_ONLY)
         _core MODULE
         pywrap/pywrap.cc
         src/CoefficientFunction.cc
-        # src/ApproximateCoefficientFunctions.cc
+        src/ApproximateCoefficientFunctions.cc
         src/ExactCoefficientFunctions.cc
         src/ThresholdCoefficientFunctions.cc
         src/AsymptoticCoefficientFunctions.cc
@@ -96,7 +96,7 @@ else(PYTHON_ONLY)
     add_library(
         adani SHARED
         src/CoefficientFunction.cc
-        # src/ApproximateCoefficientFunctions.cc
+        src/ApproximateCoefficientFunctions.cc
         src/ExactCoefficientFunctions.cc
         src/ThresholdCoefficientFunctions.cc
         src/AsymptoticCoefficientFunctions.cc

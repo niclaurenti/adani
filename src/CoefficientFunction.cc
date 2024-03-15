@@ -4,6 +4,39 @@
 using std::cout ;
 using std::endl ;
 
+Value::Value(const double& central, const double& higher, const double& lower) {
+    central_ = central;
+
+    if (higher < central) {
+        cout << "Error: class Value initialized with higher < central!" << endl;
+        exit(-1);
+    }
+    higher_ = higher;
+
+    if (lower > central) {
+        cout << "Error: class Value initialized with lower > central!" << endl;
+        exit(-1);
+    }
+    lower_ = lower;
+
+}
+
+Value Value::operator*(const double& rhs) const {
+    return Value(rhs * central_, rhs * higher_, rhs * lower_);
+}
+
+Value operator*(const double& lhs, const Value& rhs){
+    return Value(lhs * rhs.central_, lhs * rhs.higher_, lhs * rhs.lower_);
+}
+
+Value Value::operator/(const double& rhs) const {
+    return Value(central_ / rhs, higher_ / rhs, lower_ / rhs);
+}
+
+Value operator/(const double& lhs, const Value& rhs){
+    return Value(rhs.central_ / lhs, rhs.higher_ / lhs, rhs.lower_ / lhs);
+}
+
 CoefficientFunction::CoefficientFunction(const int& order, const char& kind, const char& channel) {
 
     SetOrder(order);
