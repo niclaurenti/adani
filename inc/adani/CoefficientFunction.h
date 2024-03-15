@@ -22,16 +22,34 @@
 class Value {
     public:
         Value(const double& central, const double& higher, const double& lower) ;
+        Value(const double& central);
+        Value(const Value& value) ;
 
         double GetCentral() const {return central_;};
         double GetHigher() const {return higher_;};
         double GetLower() const {return lower_;};
+
+        double* ToArray() const ;
+
+        Value operator+(const Value& rhs) const;
+        // Value operator-(const Value& rhs) const;
+
+        Value operator+(const double& rhs) const;
+        friend Value operator+(const double& lhs, const Value& rhs);
+
+        Value operator-(const double& rhs) const;
+        friend Value operator-(const double& lhs, const Value& rhs);
 
         Value operator*(const double& rhs) const;
         friend Value operator*(const double& lhs, const Value& rhs);
 
         Value operator/(const double& rhs) const;
         friend Value operator/(const double& lhs, const Value& rhs);
+
+        const Value& operator=(const Value& rhs);
+
+        const Value& operator*=(const double& rhs);
+        const Value& operator/=(const double& rhs);
 
     private:
         double central_;
@@ -47,11 +65,11 @@ class CoefficientFunction {
 
         virtual ~CoefficientFunction() = 0 ;
 
-        virtual double fx(double x, double m2Q2, double m2mu2, int nf) const = 0 ;
-        virtual double MuIndependentTerms(double x, double m2Q2, int nf) const {return fx(x, m2Q2, 1., nf);} ;
-        virtual double MuDependentTerms(double x, double m2Q2, double m2mu2, int nf) const {
-            return fx(x, m2Q2, m2mu2, nf) - fx(x, m2Q2, 1., nf);
-        }
+        // virtual Value fx(double x, double m2Q2, double m2mu2, int nf) const = 0 ;
+        // virtual Value MuIndependentTerms(double x, double m2Q2, int nf) const {return fx(x, m2Q2, 1., nf);} ;
+        // virtual Value MuDependentTerms(double x, double m2Q2, double m2mu2, int nf) const {
+        //     return fx(x, m2Q2, m2mu2, nf) - fx(x, m2Q2, 1., nf);
+        // }
 
         // get methods
         int GetOrder() const { return order_; } ;

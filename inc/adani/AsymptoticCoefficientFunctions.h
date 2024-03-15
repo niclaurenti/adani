@@ -23,10 +23,10 @@
 
 class AsymptoticCoefficientFunction : public AbstractHighEnergyCoefficientFunction {
     public:
-        AsymptoticCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL = true);
+        AsymptoticCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL = true, const bool& exact_highscale = false, const bool& revised_approx_highscale = true);
         ~AsymptoticCoefficientFunction() ;
 
-        double fx(double x, double m2Q2, double m2mu2, int nf) const override ;
+        Value fx(double x, double m2Q2, double m2mu2, int nf) const ;
 
     private:
         HighScaleCoefficientFunction* highscale_ ;

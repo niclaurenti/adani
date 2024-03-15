@@ -1,7 +1,6 @@
 #include "adani/HighScaleCoefficientFunctions.h"
 #include "adani/Constants.h"
 #include "adani/MasslessCoefficientFunctions.h"
-#include "adani/MatchingConditions.h"
 #include "adani/SpecialFunctions.h"
 
 #include <cmath>
@@ -10,36 +9,60 @@
 using std::cout;
 using std::endl;
 
-HighScaleCoefficientFunction::HighScaleCoefficientFunction(const int& order, const char& kind, const char& channel) : CoefficientFunction(order, kind, channel) {
+HighScaleCoefficientFunction::HighScaleCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& exact, const bool& revised_approx) : CoefficientFunction(order, kind, channel) {
       massless_nlo_ = nullptr;
       massless_nnlo_ = nullptr;
+      a_muindep_ = nullptr;
       
       massless_lo_ = new MasslessCoefficientFunction(1, GetKind(), GetChannel());
 
       if (order > 1) massless_nlo_ = new MasslessCoefficientFunction(2, GetKind(), GetChannel());
       if (order > 2) massless_nnlo_ = new MasslessCoefficientFunction(3, GetKind(), GetChannel());
+
+      if (GetOrder() == 3 && GetKind() == '2' && GetChannel() == 'g') {
+            a_muindep_ = new MatchingCondition(3, 'Q', 'g', exact, revised_approx);
+      }
+      if (GetOrder() == 3 && GetKind() == '2' && GetChannel() == 'q') {
+            a_muindep_ = new MatchingCondition(3, 'Q', 'q', exact, revised_approx);
+      }
+
 }
 
 HighScaleCoefficientFunction::~HighScaleCoefficientFunction() {
       delete massless_lo_;
       delete massless_nlo_;
       delete massless_nnlo_;
+      delete a_muindep_;
 }
 
-double HighScaleCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int nf) const {
+Value HighScaleCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int nf) const {
+    
+    double tmp;
 
-    if (GetOrder() == 1 && GetKind() == '2' && GetChannel() == 'g') return C2_g1_highscale(x, m2Q2);
-    else if (GetOrder() == 1 && GetKind() == 'L' && GetChannel() == 'g') return CL_g1_highscale(x);
+    if (GetOrder() == 1) {
+        if (GetKind() == '2' && GetChannel() == 'g') tmp = C2_g1_highscale(x, m2Q2);
+        else if (GetKind() == 'L' && GetChannel() == 'g') tmp = CL_g1_highscale(x);
 
-    else if (GetOrder() == 2 && GetKind() == '2' && GetChannel() == 'g') return C2_g2_highscale(x, m2Q2, m2mu2);
-    else if (GetOrder() == 2 && GetKind() == '2' && GetChannel() == 'q') return C2_ps2_highscale(x, m2Q2, m2mu2);
-    else if (GetOrder() == 2 && GetKind() == 'L' && GetChannel() == 'g') return CL_g2_highscale(x, m2Q2, m2mu2);
-    else if (GetOrder() == 2 && GetKind() == 'L' && GetChannel() == 'q') return CL_ps2_highscale(x, m2Q2, m2mu2);
+        return Value(tmp, tmp, tmp);
+    } else if (GetOrder() == 2) {
+      if (GetOrder() == 2 && GetKind() == '2' && GetChannel() == 'g') tmp = C2_g2_highscale(x, m2Q2, m2mu2);
+      else if (GetOrder() == 2 && GetKind() == '2' && GetChannel() == 'q') tmp = C2_ps2_highscale(x, m2Q2, m2mu2);
+      else if (GetOrder() == 2 && GetKind() == 'L' && GetChannel() == 'g') tmp = CL_g2_highscale(x, m2Q2, m2mu2);
+      else if (GetOrder() == 2 && GetKind() == 'L' && GetChannel() == 'q') tmp = CL_ps2_highscale(x, m2Q2, m2mu2);
 
-    else if (GetOrder() == 3 && GetKind() == '2' && GetChannel() == 'g') return C2_g3_highscale(x, m2Q2, m2mu2, nf, 0);
+      return Value(tmp);
+    }
+
+    else if (GetOrder() == 3 && GetKind() == '2' && GetChannel() == 'g') return C2_g3_highscale(x, m2Q2, m2mu2, nf);
     else if (GetOrder() == 3 && GetKind() == '2' && GetChannel() == 'q') return C2_ps3_highscale(x, m2Q2, m2mu2, nf);
-    else if (GetOrder() == 3 && GetKind() == 'L' && GetChannel() == 'g') return CL_g3_highscale(x, m2Q2, m2mu2, nf);
-    else if (GetOrder() == 3 && GetKind() == 'L' && GetChannel() == 'q') return CL_ps3_highscale(x, m2Q2, m2mu2, nf);
+    else if (GetOrder() == 3 && GetKind() == 'L' && GetChannel() == 'g') {
+        tmp = CL_g3_highscale(x, m2Q2, m2mu2, nf);
+        return Value(tmp);
+    }
+    else if (GetOrder() == 3 && GetKind() == 'L' && GetChannel() == 'q') {
+        double tmp = CL_ps3_highscale(x, m2Q2, m2mu2, nf);
+        return Value(tmp);
+    }
     else {
         cout << "Error: something has gone wrong!" << endl;
         exit(-1);
@@ -378,12 +401,12 @@ double HighScaleCoefficientFunction::DL_ps2_highscale(double z, double m2Q2, dou
 //  Eq. (B.8) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
-double HighScaleCoefficientFunction::C2_g3_highscale(double x, double m2Q2, double m2mu2, int nf, int v) const {
+Value HighScaleCoefficientFunction::C2_g3_highscale(double x, double m2Q2, double m2mu2, int nf) const {
 
     double Lmu = log(m2mu2);
     double L2mu = Lmu * Lmu;
 
-    return D2_g3_highscale(x, m2Q2, m2mu2, nf, v)
+    return D2_g3_highscale(x, m2Q2, m2mu2, nf)
            - 4. / 3 * Lmu * D2_g2_highscale(x, m2Q2, m2mu2)
            - ((16. / 9 * CA - 15. / 2 * CF) + (10. / 3 * CA + 2 * CF) * Lmu
               - 4. / 9 * L2mu)
@@ -397,7 +420,7 @@ double HighScaleCoefficientFunction::C2_g3_highscale(double x, double m2Q2, doub
 //  Eq. (B.11) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
-double HighScaleCoefficientFunction::C2_ps3_highscale(double x, double m2Q2, double m2mu2, int nf) const {
+Value HighScaleCoefficientFunction::C2_ps3_highscale(double x, double m2Q2, double m2mu2, int nf) const {
 
     double Lmu = log(m2mu2);
 
@@ -1116,7 +1139,7 @@ double HighScaleCoefficientFunction::CL_ps3_highscale(double x, double m2Q2, dou
 //  Eq. (B.11) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
-double HighScaleCoefficientFunction::D2_g3_highscale(double x, double m2Q2, double m2mu2, int nf, int v) const {
+Value HighScaleCoefficientFunction::D2_g3_highscale(double x, double m2Q2, double m2mu2, int nf) const {
 
     double x2 = x * x;
     double x3 = x2 * x;
@@ -3004,7 +3027,7 @@ double HighScaleCoefficientFunction::D2_g3_highscale(double x, double m2Q2, doub
            + CF * nf * (1. - 2. * x + 2. * x2) * (69. - 28. * zeta2)
            // from erratum
            + 8. / 9 * zeta3 - 16. / 9 * zeta3 * x + 16. / 9 * zeta3 * x2
-           + a_Qg_30(x, v) + massless_nnlo_ -> MuIndependentTerms(x, nf + 1) / (nf + 1.);
+           + a_muindep_ ->MuIndependentNfIndependentTerm(x) + massless_nnlo_ -> MuIndependentTerms(x, nf + 1) / (nf + 1.);
 }
 
 //==========================================================================================//
@@ -3014,7 +3037,7 @@ double HighScaleCoefficientFunction::D2_g3_highscale(double x, double m2Q2, doub
 //  Eq. (B.10) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
-double HighScaleCoefficientFunction::D2_ps3_highscale(double x, double m2Q2, double m2mu2, int nf, int v) const {
+Value HighScaleCoefficientFunction::D2_ps3_highscale(double x, double m2Q2, double m2mu2, int nf) const {
 
     double x2 = x * x;
     double x3 = x2 * x;
@@ -3824,7 +3847,7 @@ double HighScaleCoefficientFunction::D2_ps3_highscale(double x, double m2Q2, dou
                     - 64. / 9 * H0 * x + 16. / 3 * H00 - 32. / 3 * H00 * x
                     - 8. / 3 * H1 - 32. / 9 * H1 / x + 8. / 3 * H1 * x
                     + 32. / 9 * H1 * x2 - 16. / 3 * H01 - 16. / 3 * H01 * x)
-           + a_Qq_PS_30(x, v) + 1. / (1 + nf) * massless_nnlo_->MuIndependentTerms(x, 1 + nf);
+           + a_muindep_ ->MuIndependentNfIndependentTerm(x) + 1. / (1 + nf) * massless_nnlo_->MuIndependentTerms(x, 1 + nf);
 }
 
 //==========================================================================================//
@@ -3838,15 +3861,15 @@ double HighScaleCoefficientFunction::D2_ps3_highscale(double x, double m2Q2, dou
 //  Eq. (B.11) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
-double HighScaleCoefficientFunction::C2_ps3_highscale_klmv_paper(
-    double x, double m2Q2, double m2mu2, int nf, int v
-) const {
+// double HighScaleCoefficientFunction::C2_ps3_highscale_klmv_paper(
+//     double x, double m2Q2, double m2mu2, int nf, int v
+// ) const {
 
-    double Lmu = log(m2mu2);
+//     double Lmu = log(m2mu2);
 
-    return D2_ps3_highscale_klmv_paper(x, m2Q2, m2mu2, nf, v)
-           - 4. / 3 * Lmu * D2_ps2_highscale(x, m2Q2, m2mu2);
-}
+//     return D2_ps3_highscale_klmv_paper(x, m2Q2, m2mu2, nf, v)
+//            - 4. / 3 * Lmu * D2_ps2_highscale(x, m2Q2, m2mu2);
+// }
 
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the quark coefficient functions for F2 at
@@ -3859,14 +3882,14 @@ double HighScaleCoefficientFunction::C2_ps3_highscale_klmv_paper(
 //  Eq. (B.10) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
-double HighScaleCoefficientFunction::D2_ps3_highscale_klmv_paper(
-    double x, double m2Q2, double m2mu2, int nf, int v
-) const {
+// double HighScaleCoefficientFunction::D2_ps3_highscale_klmv_paper(
+//     double x, double m2Q2, double m2mu2, int nf, int v
+// ) const {
 
-    if (v == 1 || v == -1) {
-        return D2_ps3_highscale(x, m2Q2, m2mu2, nf, v);
-    } else {
-        std::cout << "D2_ps3_highscale_klmv_paper: Choose either v=1, v=-1!!\nExiting!!\n" << std::endl;
-        exit(-1);
-    }
-}
+//     if (v == 1 || v == -1) {
+//         return D2_ps3_highscale(x, m2Q2, m2mu2, nf, v);
+//     } else {
+//         std::cout << "D2_ps3_highscale_klmv_paper: Choose either v=1, v=-1!!\nExiting!!\n" << std::endl;
+//         exit(-1);
+//     }
+// }

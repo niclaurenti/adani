@@ -1,4 +1,5 @@
 #include "adani/CoefficientFunction.h"
+
 #include <iostream>
 
 using std::cout ;
@@ -18,7 +19,61 @@ Value::Value(const double& central, const double& higher, const double& lower) {
         exit(-1);
     }
     lower_ = lower;
+}
 
+Value::Value(const double& central) {
+    central_ = central;
+    higher_ = central;
+    lower_ = central;
+}
+
+Value::Value(const Value& value) {
+    central_ = value.central_;
+    higher_ = value.higher_;
+    lower_ = value.lower_;
+}
+
+double* Value::ToArray() const {
+    double res[] = {central_, higher_, lower_};
+    return res;
+}
+
+Value Value::operator+(const Value& rhs) const {
+    double res_central = central_ + rhs.central_;
+    double res_higher = res_central, res_lower = res_central;
+    
+    double vec_lhs[3] = {central_, higher_, lower_};
+    double vec_rhs[3] = {rhs.central_, rhs.higher_, rhs.lower_};
+
+    double tmp;
+    for (int i=0; i<3; i++) {
+        for(int j=0; j<3; j++) {
+            tmp = vec_lhs[i] + vec_rhs[j];
+            if (tmp > res_higher) res_higher = tmp;
+            if (tmp < res_lower) res_higher = tmp;
+        }
+    }
+    return Value(res_central, res_higher, res_lower);
+}
+
+// Value Value::operator-(const Value& rhs) const {
+    
+// }
+
+Value Value::operator+(const double& rhs) const {
+    return Value(rhs + central_, rhs + higher_, rhs + lower_);
+}
+
+Value operator+(const double& lhs, const Value& rhs){
+    return Value(lhs + rhs.central_, lhs + rhs.higher_, lhs + rhs.lower_);
+}
+
+Value Value::operator-(const double& rhs) const {
+    return Value(rhs - central_, rhs - higher_, rhs - lower_);
+}
+
+Value operator-(const double& lhs, const Value& rhs){
+    return Value(lhs - rhs.central_, lhs - rhs.higher_, lhs - rhs.lower_);
 }
 
 Value Value::operator*(const double& rhs) const {
@@ -35,6 +90,30 @@ Value Value::operator/(const double& rhs) const {
 
 Value operator/(const double& lhs, const Value& rhs){
     return Value(rhs.central_ / lhs, rhs.higher_ / lhs, rhs.lower_ / lhs);
+}
+
+const Value& Value::operator=(const Value& rhs) {
+    central_ = rhs.central_;
+    higher_ = rhs.higher_;
+    lower_ = rhs.lower_;
+    
+    return *this;
+}
+
+const Value& Value::operator*=(const double& rhs) {
+    central_ *= rhs;
+    higher_ *= rhs;
+    lower_ *= rhs;
+
+    return *this;
+}
+
+const Value& Value::operator/=(const double& rhs) {
+    central_ /= rhs;
+    higher_ /= rhs;
+    lower_ /= rhs;
+
+    return *this;
 }
 
 CoefficientFunction::CoefficientFunction(const int& order, const char& kind, const char& channel) {

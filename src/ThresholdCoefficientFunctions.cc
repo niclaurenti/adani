@@ -9,10 +9,6 @@ using std::cout ;
 using std::endl ;
 
 ThresholdCoefficientFunction::ThresholdCoefficientFunction(const int& order, const char& kind, const char& channel) : CoefficientFunction(order, kind, channel) {
-    if (GetChannel() == 'q') {
-        cout << "Error: Cq doesn't have a threshold limit!" << endl;
-        exit(-1);
-    }
 
     exactlo_ = new ExactCoefficientFunction(1, GetKind(), GetChannel());
 }
@@ -21,21 +17,30 @@ ThresholdCoefficientFunction::~ThresholdCoefficientFunction() {
     delete exactlo_;
 }
 
-double ThresholdCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int nf) const {
+Value ThresholdCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int nf) const {
 
-    if (GetOrder() == 1 && GetKind() == '2') return C2_g1_threshold(x, m2Q2) ;
+    if (GetChannel() == 'q') return Value(0.);
+
+    double res;
+
+    if (GetOrder() == 1 && GetKind() == '2') res = C2_g1_threshold(x, m2Q2) ;
     else if (GetOrder() == 1 && GetKind() == 'L') {
         cout << "Error: CL doesn't have the threshold limit at O(as)!" << endl;
         exit(-1);
     }
-    else if (GetOrder() == 2 && GetKind() == '2') return C2_g2_threshold(x, m2Q2, m2mu2) ;
-    else if (GetOrder() == 2 && GetKind() == 'L') return CL_g2_threshold(x, m2Q2, m2mu2) ;
-    else if (GetOrder() == 3 && GetKind() == '2') return C2_g3_threshold(x, m2Q2, m2mu2, nf) ;
-    else if (GetOrder() == 3 && GetKind() == 'L') return CL_g3_threshold(x, m2Q2, m2mu2, nf) ;
+    else if (GetOrder() == 2 && GetKind() == '2') res = C2_g2_threshold(x, m2Q2, m2mu2) ;
+    else if (GetOrder() == 2 && GetKind() == 'L') res = CL_g2_threshold(x, m2Q2, m2mu2) ;
+    else if (GetOrder() == 3 && GetKind() == '2') res = C2_g3_threshold(x, m2Q2, m2mu2, nf) ;
+    else if (GetOrder() == 3 && GetKind() == 'L') res = CL_g3_threshold(x, m2Q2, m2mu2, nf) ;
     else {
         cout << "Error: something has gone wrong!" << endl;
         exit(-1);
     }
+    return Value(res); // no uncertainty band known (but in principle there should be)
+}
+
+double ThresholdCoefficientFunction::MuDependentTerms(double x, double m2Q2, double m2mu2, int nf) const {
+    return fx(x, m2Q2, m2mu2, nf).GetCentral() - fx(x, m2Q2, 1., nf).GetCentral();
 }
 
 // void ThresholdCoefficientFunction::Set_fx() {

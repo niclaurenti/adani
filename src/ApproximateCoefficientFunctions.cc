@@ -12,26 +12,40 @@
 using std::cout;
 using std::endl;
 
-struct approximation_parameters C2_g2_params = { 1.7, 2.5, 2.5, 1.2, 2.5, 5. };
-struct approximation_parameters CL_g2_params = { 20., 11., 3., 2., 2.5, 5. };
-struct approximation_parameters C2_ps2_params = { 1.7, 2.5, 2.5, 1.2, 2.5, 5. };
-struct approximation_parameters CL_ps2_params = { 20., 11., 3., 2., 2.5, 5. };
+#define a 2.5
+#define b 5.
 
-struct approximation_parameters C2_g3_params = { 0.3, 2.5, 2.5, 1.2, 2.5, 5. };
-struct approximation_parameters CL_g3_params = { 10., 11., 3., 2., 2.5, 5. };
-struct approximation_parameters C2_ps3_params = { 0.3, 2.5, 2.5, 1.2, 2.5, 5. };
-struct approximation_parameters CL_ps3_params = { 20., 11., 3., 2., 2.5, 5. };
+struct approximation_parameters C2_g1_params = {0.2, 2.5, 2.5, 1.2};
+struct approximation_parameters CL_g1_params = {20., 11., 3., 2.};
+
+struct approximation_parameters C2_g2_params = {1.7, 2.5, 2.5, 1.2};
+struct approximation_parameters CL_g2_params = {20., 11., 3., 2.};
+struct approximation_parameters C2_ps2_params = {1.7, 2.5, 2.5, 1.2};
+struct approximation_parameters CL_ps2_params = {20., 11., 3., 2.};
+
+struct approximation_parameters C2_g3_params = {0.3, 2.5, 2.5, 1.2};
+struct approximation_parameters CL_g3_params = {10., 11., 3., 2.};
+struct approximation_parameters C2_ps3_params = {0.3, 2.5, 2.5, 1.2};
+struct approximation_parameters CL_ps3_params = {20., 11., 3., 2.};
 
 struct variation_parameters C2_var = {0.3, 3.};
 struct variation_parameters CL_var = {0.2, 2.};
 
-ApproximateCoefficientFunction::ApproximateCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL, const double& abserr, const double& relerr, const int& dim, const int& method_flag, const int& MCcalls) : CoefficientFunction(order, kind, channel) {
+ApproximateCoefficientFunction::ApproximateCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL, const bool& exact_highscale, const bool& revised_approx_highscale, const double& abserr, const double& relerr, const int& dim, const int& method_flag, const int& MCcalls) : CoefficientFunction(order, kind, channel) {
     
     threshold_ = new ThresholdCoefficientFunction(order, kind, channel);
-    asymptotic_ = new AsymptoticCoefficientFunction(order, kind, channel, NLL);
+    asymptotic_ = new AsymptoticCoefficientFunction(order, kind, channel, NLL, exact_highscale, revised_approx_highscale);
 
     muterms_ = new ExactCoefficientFunction(order, kind, channel, abserr, relerr, dim, method_flag, MCcalls);
-
+    if (order == 1) {
+        if (kind == '2'){
+            if (channel == 'g') approximation_ = C2_g1_params;
+            variation_ = C2_var ;
+        } else if (kind == 'L'){
+            if (channel == 'g') approximation_ = CL_g2_params;
+            variation_ = CL_var ;
+        } 
+    }
     if (order == 2) {
         if (kind == '2'){
             if (channel == 'g') approximation_ = C2_g2_params;
@@ -63,6 +77,59 @@ ApproximateCoefficientFunction::~ApproximateCoefficientFunction() {
     delete threshold_;
     delete asymptotic_;
     delete muterms_;
+}
+
+Value ApproximateCoefficientFunction::MuIndependentTerms(double x, double m2Q2, int nf) const {
+
+    double A = approximation_.A, B = approximation_.B, C = approximation_.C, D = approximation_.D; 
+    double var = variation_.var, fact = variation_.fact;
+
+    double Amax = fact * A, Amin = A / fact, Bmax = B * fact, Bmin = B / fact;
+    double Cmax = (1. + var) * C, Cmin = (1. - var) * C, Dmax = (1. + var) * D, Dmin = (1. - var) * D;
+
+    double Avec[3] = { A, Amin, Amax };
+    double Bvec[3] = { B, Bmax, Bmin };
+    double Cvec[3] = { C, Cmax, Cmin };
+    double Dvec[3] = { D, Dmax, Dmin };
+
+    double* asy = (asymptotic_ -> MuIndependentTerms(x, m2Q2, nf)).ToArray();
+    double* thresh = (threshold_ -> MuIndependentTerms(x, m2Q2, nf)).ToArray();
+
+    double central = Approximation(x, m2Q2, nf, asy[0], thresh[0], A, B, C, D);
+    double higher = central, lower = central, tmp;
+
+    for(int i = 0; i<3; i++) {
+        for(int j = 0; j<3; j++) {
+            for(int k = 0; k<3; k++) {
+                for(int l = 0; l<3; l++) {
+                    for(int m = 0; m<3; m++) {
+                        for(int n = 0; n<3; n++) {
+                            tmp = Approximation(x, m2Q2, nf, asy[i], thresh[j], Avec[k], Bvec[l], Cvec[m], Dvec[n]) ;
+                            if (tmp > higher) higher = tmp;
+                            if (tmp < lower) lower = tmp;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return Value(central, higher, lower);
+
+}
+
+double ApproximateCoefficientFunction::Approximation(double x, double m2Q2, int nf, double asy, double thresh, double A, double B, double C, double D) const {
+    
+    double eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
+    double xi = 1. / m2Q2;
+
+    double h = A + (B - A) / (1. + exp(a * (log(xi) - b)));
+    double k = C + (D - C) / (1. + exp(a * (log(xi) - b)));
+
+    double damp_thr = 1. / (1. + pow(eta / h, k));
+    double damp_asy = 1. - damp_thr;
+
+    return asy * damp_asy + thresh * damp_thr;
 }
 
 // //==========================================================================================//
@@ -103,8 +170,8 @@ ApproximateCoefficientFunction::~ApproximateCoefficientFunction() {
 
 //     eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
 
-//     double k = 2.5 - 1.3 / (1. + exp(2.5 * (log(xi) - 5.)));
 //     double h = 0.2 + 2.3 / (1. + exp(2.5 * (log(xi) - 5.)));
+//     double k = 2.5 - 1.3 / (1. + exp(2.5 * (log(xi) - 5.)));
 
 //     double damp_thr = 1. / (1 + pow(eta / h, k));
 //     double damp_asy = 1. - damp_thr;
@@ -133,8 +200,8 @@ ApproximateCoefficientFunction::~ApproximateCoefficientFunction() {
 
 //     eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
 
-//     double k = 3. - (3. - 2.) / (1. + exp(2.5 * (log(xi) - 5.)));
 //     double h = 20. + (11. - 20.) / (1. + exp(2.5 * (log(xi) - 5.))); //the 20 must be retuned
+//     double k = 3. - (3. - 2.) / (1. + exp(2.5 * (log(xi) - 5.)));
 
 //     double damp_thr = 1. / (1. + pow(eta / h, k));
 //     double damp_asy = 1. - damp_thr;

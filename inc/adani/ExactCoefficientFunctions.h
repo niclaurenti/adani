@@ -54,10 +54,10 @@ class ExactCoefficientFunction : public CoefficientFunction {
         void SetMCcalls(const int& MCcalls);
         void SetDim(const int& dim);
 
-        double fx(double x, double m2Q2, double m2mu2, int nf) const override ;
+        double fx(double x, double m2Q2, double m2mu2, int nf) const ;
 
-        double MuIndependentTerms(double x, double m2Q2, int nf) const override ;
-        double MuDependentTerms(double x, double m2Q2, double m2mu2, int nf) const override ;
+        double MuIndependentTerms(double x, double m2Q2, int nf) const ;
+        double MuDependentTerms(double x, double m2Q2, double m2mu2, int nf) const ;
 
         void SetFunctions();
 

@@ -27,8 +27,6 @@ struct approximation_parameters {
     double B;
     double C;
     double D;
-    double a;
-    double b;
 };
 
 struct variation_parameters {
@@ -38,16 +36,16 @@ struct variation_parameters {
 
 class ApproximateCoefficientFunction : public CoefficientFunction {
     public:
-        ApproximateCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL = true, const double& abserr = 1e-3, const double& relerr = 1e-3, const int& dim = 1000, const int& method_flag = 1, const int& MCcalls = 25000) ;
+        ApproximateCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL = true, const bool& exact_highscale = false, const bool& revised_approx_highscale = true, const double& abserr = 1e-3, const double& relerr = 1e-3, const int& dim = 1000, const int& method_flag = 1, const int& MCcalls = 25000) ;
         ~ApproximateCoefficientFunction() override ;
 
 
-        double fx(double x, double m2Q2, double m2mu2, int nf) const override {
+        Value fx(double x, double m2Q2, double m2mu2, int nf) const {
             return MuIndependentTerms(x, m2Q2, nf) + MuDependentTerms(x, m2Q2, m2mu2, nf);
         }
 
-        double MuIndependentTerms(double x, double m2Q2, int nf) const override ;
-        double MuDependentTerms(double x, double m2Q2, double m2mu2, int nf) const override {
+        Value MuIndependentTerms(double x, double m2Q2, int nf) const ;
+        double MuDependentTerms(double x, double m2Q2, double m2mu2, int nf) const {
             return muterms_ -> MuDependentTerms(x, m2Q2, m2mu2, nf);
         }
 
@@ -59,6 +57,8 @@ class ApproximateCoefficientFunction : public CoefficientFunction {
 
         struct approximation_parameters approximation_;
         struct variation_parameters variation_;
+
+        double Approximation(double x, double m2Q2, int nf, double asy, double thresh, double A, double B, double C, double D) const;
 
 
 };

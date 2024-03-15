@@ -27,10 +27,10 @@ class MasslessCoefficientFunction : public CoefficientFunction {
         MasslessCoefficientFunction(const int& order, const char& kind, const char& channel) : CoefficientFunction(order, kind, channel) {} ;
         ~MasslessCoefficientFunction() override {} ;
 
-        double fx(double x, double m2Q2, double m2mu2, int nf) const override ;
-        double MuIndependentTerms(double /*x*/, double /*m2Q2*/, int /*nf*/) const override ;
+        double fx(double x, double m2Q2, double m2mu2, int nf) const ;
+        // double MuIndependentTerms(double /*x*/, double /*m2Q2*/, int /*nf*/) const ;
         double MuIndependentTerms(double x, int nf) const;
-        double MuDependentTerms(double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const override ;
+        double MuDependentTerms(double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const ;
 
     private:
 
