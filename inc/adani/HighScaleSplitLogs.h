@@ -20,6 +20,7 @@
 
 #include "adani/CoefficientFunction.h"
 #include "adani/MasslessCoefficientFunctions.h"
+#include "adani/MatchingConditions.h"
 
 //==========================================================================================//
 //           Legend:
@@ -30,11 +31,11 @@
 
 class HighScaleSplitLogs : public CoefficientFunction {
     public:
-        HighScaleSplitLogs(const int& order, const char& kind, const char& channel) ;
+        HighScaleSplitLogs(const int& order, const char& kind, const char& channel, const bool& exact, const bool& revised_approx) ;
         ~HighScaleSplitLogs() override ;
 
         Value fxBand(double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const override ;
-        Value fx(double x, double m2Q2, int nf, int v) const;
+        Value fxBand(double x, double m2Q2, int nf) const;
 
         double LL(double x, int nf) const {
             return (this->*LL_)(x, nf);
@@ -45,8 +46,8 @@ class HighScaleSplitLogs : public CoefficientFunction {
         double N2LL(double x, int nf) const {
             return (this->*N2LL_)(x, nf);
         }
-        double N3LL(double x, int nf, int v) const {
-            return (this->*N3LL_)(x, nf, v);
+        Value N3LL(double x, int nf) const {
+            return (this->*N3LL_)(x, nf);
         }
 
         void SetFunctions();
@@ -55,11 +56,12 @@ class HighScaleSplitLogs : public CoefficientFunction {
 
         MasslessCoefficientFunction* massless_lo_;
         MasslessCoefficientFunction* massless_;
+        MatchingCondition* a_muindep_;
 
         double (HighScaleSplitLogs::*LL_)(double, int) const;
         double (HighScaleSplitLogs::*NLL_)(double, int) const;
         double (HighScaleSplitLogs::*N2LL_)(double, int) const;
-        double (HighScaleSplitLogs::*N3LL_)(double, int, int) const;
+        Value (HighScaleSplitLogs::*N3LL_)(double, int) const;
 
         //==========================================================================================//
         //           Gluon channel, F2
@@ -68,7 +70,7 @@ class HighScaleSplitLogs : public CoefficientFunction {
         double C2_g3_highscale_LL(double x, int nf) const;
         double C2_g3_highscale_NLL(double x, int nf) const;
         double C2_g3_highscale_N2LL(double x, int nf) const;
-        double C2_g3_highscale_N3LL(double x, int nf, int v) const;
+        Value C2_g3_highscale_N3LL(double x, int nf) const;
 
         //==========================================================================================//
         //           Pure singlet channel, F2
@@ -77,7 +79,7 @@ class HighScaleSplitLogs : public CoefficientFunction {
         double C2_ps3_highscale_LL(double x, int nf) const;
         double C2_ps3_highscale_NLL(double x, int nf) const;
         double C2_ps3_highscale_N2LL(double x, int nf) const;
-        double C2_ps3_highscale_N3LL(double x, int nf, int /*v*/) const;
+        Value C2_ps3_highscale_N3LL(double x, int nf) const;
 
         //==========================================================================================//
         //           Gluon channel, FL
@@ -85,7 +87,7 @@ class HighScaleSplitLogs : public CoefficientFunction {
 
         double CL_g3_highscale_NLL(double x, int /*nf*/) const;
         double CL_g3_highscale_N2LL(double x, int nf) const;
-        double CL_g3_highscale_N3LL(double x, int nf, int /*v*/) const;
+        Value CL_g3_highscale_N3LL(double x, int nf) const;
 
         //==========================================================================================//
         //           Pure singlet channel, FL
@@ -93,7 +95,7 @@ class HighScaleSplitLogs : public CoefficientFunction {
 
         double CL_ps3_highscale_NLL(double x, int /*nf*/) const;
         double CL_ps3_highscale_N2LL(double x, int /*nf*/) const;
-        double CL_ps3_highscale_N3LL(double x, int nf, int /*v*/) const;
+        Value CL_ps3_highscale_N3LL(double x, int nf) const;
 
         double ZeroFunction(double /*x*/, int /*nf*/) const {return 0.;};
 

@@ -42,7 +42,7 @@ Value MatchingCondition::MuIndependentNfIndependentTerm(double x) const {
       if (entry2_ == 'q') {
             if (exact_) {
                   central = a_Qq_PS_30(x, 0);
-                  return Value(central, central, central);
+                  return Value(central);
             } else {
                   higher = a_Qq_PS_30(x, 1);
                   lower = a_Qq_PS_30(x, -1);
@@ -53,7 +53,7 @@ Value MatchingCondition::MuIndependentNfIndependentTerm(double x) const {
             int low_id;
             if (exact_) {
                   central = a_Qg_30(x, 0);
-                  return Value(central, central, central);
+                  return Value(central);
             } else {
                   if (revised_approx_) low_id = -1;
                   else low_id = -12;
@@ -202,7 +202,8 @@ double MatchingCondition::a_Qg_30(double x, int v) const {
     double L13 = L12 * L1;
 
     if (v == 0) {
-        return 0.5 * (a_Qg_30(x, 1) + a_Qg_30(x, -1));
+        cout << "A_Qg exact is not known/implemented yet!" << endl;
+        exit(-1);
     } else if (v == 1) {
         return (
             354.1002 * L13 + 479.3838 * L12 - 7856.784 * (2. - x)

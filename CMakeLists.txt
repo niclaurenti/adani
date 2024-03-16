@@ -84,7 +84,7 @@ if(PYTHON_ONLY)
         src/SpecialFunctions.cc
         src/hqcoef.f
         src/HighScaleCoefficientFunctions.cc
-        # src/HighScaleSplitLogs.cc
+        src/HighScaleSplitLogs.cc
         src/SplittingFunctions.cc
     )
     target_link_libraries(_core PRIVATE GSL::gsl GSL::gslcblas)
@@ -108,7 +108,7 @@ else(PYTHON_ONLY)
         src/SpecialFunctions.cc
         src/hqcoef.f
         src/HighScaleCoefficientFunctions.cc
-        # src/HighScaleSplitLogs.cc
+        src/HighScaleSplitLogs.cc
         src/SplittingFunctions.cc
     )
 

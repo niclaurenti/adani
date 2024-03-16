@@ -19,11 +19,8 @@ HighScaleCoefficientFunction::HighScaleCoefficientFunction(const int& order, con
       if (order > 1) massless_nlo_ = new MasslessCoefficientFunction(2, GetKind(), GetChannel());
       if (order > 2) massless_nnlo_ = new MasslessCoefficientFunction(3, GetKind(), GetChannel());
 
-      if (GetOrder() == 3 && GetKind() == '2' && GetChannel() == 'g') {
-            a_muindep_ = new MatchingCondition(3, 'Q', 'g', exact, revised_approx);
-      }
-      if (GetOrder() == 3 && GetKind() == '2' && GetChannel() == 'q') {
-            a_muindep_ = new MatchingCondition(3, 'Q', 'q', exact, revised_approx);
+      if (GetOrder() == 3 && GetKind() == '2') {
+            a_muindep_ = new MatchingCondition(3, 'Q', GetChannel(), exact, revised_approx);
       }
 
 }
