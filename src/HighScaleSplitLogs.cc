@@ -32,9 +32,19 @@ HighScaleSplitLogs::~HighScaleSplitLogs() {
    delete massless_lo_;
 }
 
-Value HighScaleSplitLogs::fxBand(double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const {
+double HighScaleSplitLogs::fx(double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const {
    cout << "Error: HighScaleSplitLogs is implemented only in the case mu=Q!" << endl;
    cout << "Use HighScaleSplitLogs::fx(double x, double m2Q2, int nf)" << endl;
+   exit(-1);
+}
+
+double HighScaleSplitLogs::fx(double x, double m2Q2, int nf) const {
+    return fxBand(x, m2Q2, nf).GetCentral();
+}
+
+Value HighScaleSplitLogs::fxBand(double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const {
+   cout << "Error: HighScaleSplitLogs is implemented only in the case mu=Q!" << endl;
+   cout << "Use HighScaleSplitLogs::fxBand(double x, double m2Q2, int nf)" << endl;
    exit(-1);
 }
 

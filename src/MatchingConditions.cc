@@ -30,7 +30,7 @@ MatchingCondition::MatchingCondition(const int& order, const char& entry1, const
 
     exact_ = exact;
 
-    if (!exact && revised_approx) {
+    if (exact && revised_approx) {
         cout << "Error: revised_approx = true is meaningfull only if exact = false!" << endl;
         exit(-1);
     }
@@ -47,6 +47,7 @@ Value MatchingCondition::MuIndependentNfIndependentTerm(double x) const {
                   higher = a_Qq_PS_30(x, 1);
                   lower = a_Qq_PS_30(x, -1);
                   central = 0.5 * (higher + lower);
+                  if (higher < lower) return Value(central, lower, higher);
                   return Value(central, higher, lower);
             }
       } else {
@@ -61,7 +62,7 @@ Value MatchingCondition::MuIndependentNfIndependentTerm(double x) const {
                   higher = a_Qg_30(x, 1);
                   lower = a_Qg_30(x, low_id);
                   central = 0.5 * (higher + lower);
-
+                  if (higher < lower) return Value(central, lower, higher);
                   return Value(central, higher, lower);
             }
       }

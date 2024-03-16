@@ -45,6 +45,7 @@ class MatchingCondition {
         int order_;
         char entry1_;
         char entry2_;
+        
         bool exact_;
         bool revised_approx_;
 

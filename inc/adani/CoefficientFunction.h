@@ -18,9 +18,12 @@
 #define CoeffFunc
 
 #include "adani/SplittingFunctions.h"
+
 #include <vector>
+#include <iostream>
 
 using std::vector;
+using std::ostream;
 
 class Value {
     public:
@@ -41,7 +44,7 @@ class Value {
         friend Value operator+(const double& lhs, const Value& rhs);
 
         Value operator-(const double& rhs) const;
-        friend Value operator-(const double& lhs, const Value& rhs);
+        // friend Value operator-(const double& lhs, const Value& rhs);
 
         Value operator*(const double& rhs) const;
         friend Value operator*(const double& lhs, const Value& rhs);
@@ -53,6 +56,8 @@ class Value {
 
         const Value& operator*=(const double& rhs);
         const Value& operator/=(const double& rhs);
+
+        friend ostream& operator<<(ostream& os, const Value& rhs);
 
     private:
         double central_;

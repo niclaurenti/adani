@@ -1,7 +1,5 @@
 #include "adani/CoefficientFunction.h"
 
-#include <iostream>
-
 using std::cout ;
 using std::endl ;
 
@@ -10,12 +8,14 @@ Value::Value(const double& central, const double& higher, const double& lower) {
 
     if (higher < central) {
         cout << "Error: class Value initialized with higher < central!" << endl;
+        cout << "Got: central=" << central << ", higher=" << higher << endl;
         exit(-1);
     }
     higher_ = higher;
 
     if (lower > central) {
         cout << "Error: class Value initialized with lower > central!" << endl;
+        cout << "Got: central=" << central << ", lower=" << lower << endl;
         exit(-1);
     }
     lower_ = lower;
@@ -68,27 +68,29 @@ Value operator+(const double& lhs, const Value& rhs){
 }
 
 Value Value::operator-(const double& rhs) const {
-    return Value(rhs - central_, rhs - higher_, rhs - lower_);
+    return Value(central_ - rhs, higher_ - rhs, lower_ - rhs);
 }
 
-Value operator-(const double& lhs, const Value& rhs){
-    return Value(lhs - rhs.central_, lhs - rhs.higher_, lhs - rhs.lower_);
-}
+// Value operator-(const double& lhs, const Value& rhs){
+//     return Value(lhs - rhs.central_, lhs - rhs.higher_, lhs - rhs.lower_);
+// }
 
 Value Value::operator*(const double& rhs) const {
-    return Value(rhs * central_, rhs * higher_, rhs * lower_);
+    if (rhs > 0) return Value(rhs * central_, rhs * higher_, rhs * lower_);
+    else return Value(rhs * central_, rhs * lower_, rhs * higher_);
 }
 
 Value operator*(const double& lhs, const Value& rhs){
-    return Value(lhs * rhs.central_, lhs * rhs.higher_, lhs * rhs.lower_);
+    return Value(rhs.central_, rhs.higher_, rhs.lower_) * lhs;
 }
 
 Value Value::operator/(const double& rhs) const {
-    return Value(central_ / rhs, higher_ / rhs, lower_ / rhs);
+    if (rhs > 0) return Value(central_ / rhs, higher_ / rhs, lower_ / rhs);
+    else return Value(central_ / rhs, lower_ / rhs, higher_ / rhs);
 }
 
 Value operator/(const double& lhs, const Value& rhs){
-    return Value(rhs.central_ / lhs, rhs.higher_ / lhs, rhs.lower_ / lhs);
+    return Value(rhs.central_, rhs.higher_, rhs.lower_) / lhs ;
 }
 
 const Value& Value::operator=(const Value& rhs) {
@@ -100,19 +102,36 @@ const Value& Value::operator=(const Value& rhs) {
 }
 
 const Value& Value::operator*=(const double& rhs) {
-    central_ *= rhs;
-    higher_ *= rhs;
-    lower_ *= rhs;
+    if (rhs > 0) {
+        central_ *= rhs;
+        higher_ *= rhs;
+        lower_ *= rhs;
+    } else {
+        central_ *= rhs;
+        higher_ = lower_ * rhs;
+        lower_ = higher_ * rhs;  
+    }
 
     return *this;
 }
 
 const Value& Value::operator/=(const double& rhs) {
-    central_ /= rhs;
-    higher_ /= rhs;
-    lower_ /= rhs;
+    if (rhs > 0) {
+        central_ /= rhs;
+        higher_ /= rhs;
+        lower_ /= rhs;
+    } else {
+        central_ /= rhs;
+        higher_ = lower_ / rhs;
+        lower_ = higher_ / rhs;  
+    }
 
     return *this;
+}
+
+ostream& operator<<(ostream& os, const Value& rhs){
+    os << "(" << rhs.central_ << ", " << rhs.higher_ << ", " << rhs.lower_ << ")" ;
+    return os;
 }
 
 CoefficientFunction::CoefficientFunction(const int& order, const char& kind, const char& channel) {

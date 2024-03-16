@@ -34,6 +34,9 @@ class HighScaleSplitLogs : public CoefficientFunction {
         HighScaleSplitLogs(const int& order, const char& kind, const char& channel, const bool& exact, const bool& revised_approx) ;
         ~HighScaleSplitLogs() override ;
 
+        double fx(double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const override;
+        double fx(double x, double m2Q2, int nf) const;
+
         Value fxBand(double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const override ;
         Value fxBand(double x, double m2Q2, int nf) const;
 
