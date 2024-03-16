@@ -10,7 +10,7 @@
 using std::cout ;
 using std::endl;
 
-HighScaleSplitLogs::HighScaleSplitLogs(const int& order, const char& kind, const char& channel) : CoefficientFunction(order, kind, channel) {
+HighScaleSplitLogs::HighScaleSplitLogs(const int& order, const char& kind, const char& channel, const bool& exact, const bool& revised_approx) : CoefficientFunction(order, kind, channel) {
    if (order != 3) {
       cout << "Error: HighScaleSplitLogs is implemented only for order = 3. Got " << order << endl;
       exit(-1);
@@ -27,7 +27,7 @@ HighScaleSplitLogs::~HighScaleSplitLogs() {
    delete massless_lo_;
 }
 
-double HighScaleSplitLogs::fx(double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const {
+Value HighScaleSplitLogs::fxBand(double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const {
    cout << "Error: HighScaleSplitLogs is implemented only in the case mu=Q!" << endl;
    cout << "Use HighScaleSplitLogs::fx(double x, double m2Q2, int nf)" << endl;
    exit(-1);

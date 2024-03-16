@@ -35,7 +35,11 @@ HighScaleCoefficientFunction::~HighScaleCoefficientFunction() {
       delete a_muindep_;
 }
 
-Value HighScaleCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int nf) const {
+double HighScaleCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int nf) const {
+      return fxBand(x, m2Q2, m2mu2, nf).GetCentral();
+}
+
+Value HighScaleCoefficientFunction::fxBand(double x, double m2Q2, double m2mu2, int nf) const {
     
     double tmp;
 

@@ -18,11 +18,11 @@ double MasslessCoefficientFunction::MuDependentTerms(double /*x*/, double /*m2Q2
     exit(-1);
 }
 
-// double MasslessCoefficientFunction::MuIndependentTerms(double /*x*/, double /*m2Q2*/, int /*nf*/) const {
-//     cout << "Error: massless coefficient functions do not depend on m^2/Q^2!" << endl;
-//     cout << "Call MasslessCoefficientFunction::MuIndependentTerms(double x, int nf)" << endl;
-//     exit(-1);
-// }
+double MasslessCoefficientFunction::MuIndependentTerms(double /*x*/, double /*m2Q2*/, int /*nf*/) const {
+    cout << "Error: massless coefficient functions do not depend on m^2/Q^2!" << endl;
+    cout << "Call MasslessCoefficientFunction::MuIndependentTerms(double x, int nf)" << endl;
+    exit(-1);
+}
 
 
 double MasslessCoefficientFunction::MuIndependentTerms(double x, int nf) const {
@@ -43,6 +43,10 @@ double MasslessCoefficientFunction::MuIndependentTerms(double x, int nf) const {
         cout << "Error: something has gone wrong!" << endl;
         exit(-1);
     }
+}
+
+Value MasslessCoefficientFunction::fxBand(double x, double m2Q2, double m2mu2, int nf) const {
+    return Value(fx(x, m2Q2, m2mu2, nf));
 }
 
 //==========================================================================================//

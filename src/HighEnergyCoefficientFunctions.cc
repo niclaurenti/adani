@@ -13,22 +13,13 @@ AbstractHighEnergyCoefficientFunction::AbstractHighEnergyCoefficientFunction(con
 
 }
 
-Value AbstractHighEnergyCoefficientFunction::MuDependentTerms(double x, double m2Q2, double m2mu2, int nf) const {
-    
-    double central = fx(x, m2Q2, m2mu2, nf).GetCentral() - fx(x, m2Q2, 1., nf).GetCentral();
-    double higher = fx(x, m2Q2, m2mu2, nf).GetCentral() - fx(x, m2Q2, 1., nf).GetHigher();
-    double lower = fx(x, m2Q2, m2mu2, nf).GetCentral() - fx(x, m2Q2, 1., nf).GetLower();
-    
-    return Value(central, higher, lower);
-}
-
-Value HighEnergyCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int nf) const {
+Value HighEnergyCoefficientFunction::fxBand(double x, double m2Q2, double m2mu2, int nf) const {
 
     if (GetOrder() == 1) return Value(0., 0., 0.) ;
 
-    else if (GetOrder() == 2) {
+    double tmp;
 
-        double tmp;
+    if (GetOrder() == 2) {
 
         if (GetKind() == '2' && GetChannel() == 'g') tmp = C2_g2_highenergy(x, m2Q2, m2mu2);
         else if (GetKind() == '2' && GetChannel() == 'q') tmp = C2_ps2_highenergy(x, m2Q2, m2mu2);
@@ -49,7 +40,6 @@ Value HighEnergyCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int
             }
         }
         else {
-            double tmp ;
 
             if (GetKind() == '2' && GetChannel() == 'g') tmp = C2_g3_highenergyLL(x, m2Q2, m2mu2);
             else if (GetKind() == '2' && GetChannel() == 'q') tmp = C2_ps3_highenergyLL(x, m2Q2, m2mu2);
@@ -59,18 +49,21 @@ Value HighEnergyCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int
                 cout << "Error: something has gone wrong!" << endl;
                 exit(-1);
             }
-            return Value(tmp, tmp, tmp);
         }
+    } else {
+        cout << "Error: something has bone wrong in HighEnergyCoefficientFunction::fxBand!" << endl;
+        exit(-1);
     }
+    return Value(tmp, tmp, tmp);
 }
 
-Value HighEnergyHighScaleCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int nf) const {
+Value HighEnergyHighScaleCoefficientFunction::fxBand(double x, double m2Q2, double m2mu2, int nf) const {
 
     if (GetOrder() == 1) return Value(0., 0., 0.) ;
 
-    else if (GetOrder() == 2) {
+    double tmp;
 
-        double tmp;
+    if (GetOrder() == 2) {
 
         if (GetKind() == '2' && GetChannel() == 'g') tmp = C2_g2_highenergy_highscale(x, m2Q2, m2mu2);
         else if (GetKind() == '2' && GetChannel() == 'q') tmp = C2_ps2_highenergy_highscale(x, m2Q2, m2mu2);
@@ -91,7 +84,6 @@ Value HighEnergyHighScaleCoefficientFunction::fx(double x, double m2Q2, double m
             }
         }
         else {
-            double tmp ;
 
             if (GetKind() == '2' && GetChannel() == 'g') tmp = C2_g3_highenergy_highscaleLL(x, m2Q2, m2mu2);
             else if (GetKind() == '2' && GetChannel() == 'q') tmp = C2_ps3_highenergy_highscaleLL(x, m2Q2, m2mu2);
@@ -101,9 +93,12 @@ Value HighEnergyHighScaleCoefficientFunction::fx(double x, double m2Q2, double m
                 cout << "Error: something has gone wrong!" << endl;
                 exit(-1);
             }
-            return Value(tmp, tmp, tmp);
         }
+    } else {
+        cout << "Error: something has bone wrong in HighEnergyHighScaleCoefficientFunction::fxBand!" << endl;
+        exit(-1);
     }
+    return Value(tmp, tmp, tmp);
 }
 
 PowerTermsCoefficientFunction::PowerTermsCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL) : AbstractHighEnergyCoefficientFunction(order, kind, channel, NLL) {
@@ -116,11 +111,11 @@ PowerTermsCoefficientFunction::~PowerTermsCoefficientFunction() {
     delete highenergyhighscale_;
 }
 
-Value PowerTermsCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int nf) const {
+Value PowerTermsCoefficientFunction::fxBand(double x, double m2Q2, double m2mu2, int nf) const {
     // TODO: in this way the error is very small: should take all the compbinations
-    double central = (highenergy_->fx(x, m2Q2, m2mu2, nf)).GetCentral() - (highenergyhighscale_->fx(x, m2Q2, m2mu2, nf)).GetCentral();
-    double higher = (highenergy_->fx(x, m2Q2, m2mu2, nf)).GetHigher() - (highenergyhighscale_->fx(x, m2Q2, m2mu2, nf)).GetHigher();
-    double lower = (highenergy_->fx(x, m2Q2, m2mu2, nf)).GetLower() - (highenergyhighscale_->fx(x, m2Q2, m2mu2, nf)).GetLower();
+    double central = (highenergy_->fx(x, m2Q2, m2mu2, nf)) - (highenergyhighscale_->fx(x, m2Q2, m2mu2, nf));
+    double higher = (highenergy_->fxBand(x, m2Q2, m2mu2, nf)).GetHigher() - (highenergyhighscale_->fxBand(x, m2Q2, m2mu2, nf)).GetHigher();
+    double lower = (highenergy_->fxBand(x, m2Q2, m2mu2, nf)).GetLower() - (highenergyhighscale_->fxBand(x, m2Q2, m2mu2, nf)).GetLower();
 
     return Value(central, higher, lower);
 

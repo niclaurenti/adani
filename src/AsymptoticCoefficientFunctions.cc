@@ -14,7 +14,12 @@ AsymptoticCoefficientFunction::~AsymptoticCoefficientFunction() {
     delete powerterms_;
 }
 
-Value AsymptoticCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int nf) const {
+double AsymptoticCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int nf) const {
 
     return highscale_->fx(x, m2Q2, m2mu2, nf) + powerterms_->fx(x, m2Q2, m2mu2, nf) ;
+}
+
+Value AsymptoticCoefficientFunction::fxBand(double x, double m2Q2, double m2mu2, int nf) const {
+
+    return highscale_->fxBand(x, m2Q2, m2mu2, nf) + powerterms_->fxBand(x, m2Q2, m2mu2, nf) ;
 }

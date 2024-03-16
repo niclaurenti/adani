@@ -17,9 +17,9 @@ ThresholdCoefficientFunction::~ThresholdCoefficientFunction() {
     delete exactlo_;
 }
 
-Value ThresholdCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int nf) const {
+Value ThresholdCoefficientFunction::fxBand(double x, double m2Q2, double m2mu2, int nf) const {
 
-    if (GetChannel() == 'q') return Value(0.);
+    if (GetChannel() == 'q') return 0.;
 
     double res;
 
@@ -36,26 +36,8 @@ Value ThresholdCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int 
         cout << "Error: something has gone wrong!" << endl;
         exit(-1);
     }
-    return Value(res); // no uncertainty band known (but in principle there should be)
+    return Value(res);
 }
-
-double ThresholdCoefficientFunction::MuDependentTerms(double x, double m2Q2, double m2mu2, int nf) const {
-    return fx(x, m2Q2, m2mu2, nf).GetCentral() - fx(x, m2Q2, 1., nf).GetCentral();
-}
-
-// void ThresholdCoefficientFunction::Set_fx() {
-//     if (GetOrder() == 1 && GetKind() == '2') fx_ = C2_g1_threshold ;
-//     else if (GetOrder() == 1 && GetKind() == 'L') {
-//         cout << "Error: CL doesn't have the threshold limit at O(as)!" << endl;
-//     }
-//     else if (GetOrder() == 2 && GetKind() == '2') fx_ = C2_g2_threshold ;
-//     else if (GetOrder() == 2 && GetKind() == 'L') fx_ = CL_g2_threshold ;
-//     else if (GetOrder() == 3 && GetKind() == '2') fx_ = C2_g3_threshold ;
-//     else if (GetOrder() == 3 && GetKind() == 'L') fx_ = CL_g3_threshold ;
-//     else {
-//         cout << "Error: something has gone wrong!" << endl;
-//     }
-// }
 
 //==========================================================================================//
 //  Threshold limit (x->xmax) of the gluon coefficient function for F2 at

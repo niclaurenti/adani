@@ -33,9 +33,8 @@ Value::Value(const Value& value) {
     lower_ = value.lower_;
 }
 
-double* Value::ToArray() const {
-    double res[] = {central_, higher_, lower_};
-    return res;
+vector<double> Value::ToVect() const {
+    return {central_, higher_, lower_};
 }
 
 Value Value::operator+(const Value& rhs) const {
@@ -155,4 +154,29 @@ void CoefficientFunction::SetChannel(const char& channel) {
         exit(-1);
     }
     channel_ = channel ;
+}
+
+double CoefficientFunction::fx(double x, double m2Q2, double m2mu2, int nf) const {
+    return fxBand(x, m2Q2, m2mu2, nf).GetCentral();
+}
+
+double CoefficientFunction::MuIndependentTerms(double x, double m2Q2, int nf) const {
+    return fx(x, m2Q2, 1., nf);
+}
+
+double CoefficientFunction::MuDependentTerms(double x, double m2Q2, double m2mu2, int nf) const {
+    return fx(x, m2Q2, m2mu2, nf) - MuIndependentTerms(x, m2Q2, nf);
+}
+
+Value CoefficientFunction::MuIndependentTermsBand(double x, double m2Q2, int nf) const {
+    return fxBand(x, m2Q2, 1., nf);;
+}
+
+Value CoefficientFunction::MuDependentTermsBand(double x, double m2Q2, double m2mu2, int nf) const {
+    
+    double central = fxBand(x, m2Q2, m2mu2, nf).GetCentral() -  MuIndependentTermsBand(x, m2Q2, nf).GetCentral();
+    double higher = fxBand(x, m2Q2, m2mu2, nf).GetHigher() -  MuIndependentTermsBand(x, m2Q2, nf).GetHigher();
+    double lower = fxBand(x, m2Q2, m2mu2, nf).GetLower() -  MuIndependentTermsBand(x, m2Q2, nf).GetLower();
+
+    return Value(central, higher, lower);
 }

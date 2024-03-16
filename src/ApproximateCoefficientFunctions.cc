@@ -11,6 +11,7 @@
 
 using std::cout;
 using std::endl;
+using std::vector;
 
 #define a 2.5
 #define b 5.
@@ -79,7 +80,19 @@ ApproximateCoefficientFunction::~ApproximateCoefficientFunction() {
     delete muterms_;
 }
 
-Value ApproximateCoefficientFunction::MuIndependentTerms(double x, double m2Q2, int nf) const {
+double ApproximateCoefficientFunction::MuIndependentTerms(double x, double m2Q2, int nf) const {
+    return MuIndependentTermsBand(x, m2Q2, nf).GetCentral();
+}
+
+double ApproximateCoefficientFunction::MuDependentTerms(double x, double m2Q2, double m2mu2, int nf) const {
+    return muterms_ -> MuDependentTerms(x, m2Q2, m2mu2, nf);
+}
+
+Value ApproximateCoefficientFunction::fxBand(double x, double m2Q2, double m2mu2, int nf) const  {
+    return MuIndependentTermsBand(x, m2Q2, nf) + MuDependentTerms(x, m2Q2, m2mu2, nf);
+}
+
+Value ApproximateCoefficientFunction::MuIndependentTermsBand(double x, double m2Q2, int nf) const {
 
     double A = approximation_.A, B = approximation_.B, C = approximation_.C, D = approximation_.D; 
     double var = variation_.var, fact = variation_.fact;
@@ -92,10 +105,10 @@ Value ApproximateCoefficientFunction::MuIndependentTerms(double x, double m2Q2, 
     double Cvec[3] = { C, Cmax, Cmin };
     double Dvec[3] = { D, Dmax, Dmin };
 
-    double* asy = (asymptotic_ -> MuIndependentTerms(x, m2Q2, nf)).ToArray();
-    double* thresh = (threshold_ -> MuIndependentTerms(x, m2Q2, nf)).ToArray();
+    vector<double> asy = (asymptotic_ -> MuIndependentTermsBand(x, m2Q2, nf)).ToVect();
+    vector<double> thresh  = (threshold_ -> MuIndependentTermsBand(x, m2Q2, nf)).ToVect();
 
-    double central = Approximation(x, m2Q2, nf, asy[0], thresh[0], A, B, C, D);
+    double central = Approximation(x, m2Q2, asy[0], thresh[0], A, B, C, D);
     double higher = central, lower = central, tmp;
 
     for(int i = 0; i<3; i++) {
@@ -104,7 +117,7 @@ Value ApproximateCoefficientFunction::MuIndependentTerms(double x, double m2Q2, 
                 for(int l = 0; l<3; l++) {
                     for(int m = 0; m<3; m++) {
                         for(int n = 0; n<3; n++) {
-                            tmp = Approximation(x, m2Q2, nf, asy[i], thresh[j], Avec[k], Bvec[l], Cvec[m], Dvec[n]) ;
+                            tmp = Approximation(x, m2Q2, asy[i], thresh[j], Avec[k], Bvec[l], Cvec[m], Dvec[n]) ;
                             if (tmp > higher) higher = tmp;
                             if (tmp < lower) lower = tmp;
                         }
@@ -118,7 +131,7 @@ Value ApproximateCoefficientFunction::MuIndependentTerms(double x, double m2Q2, 
 
 }
 
-double ApproximateCoefficientFunction::Approximation(double x, double m2Q2, int nf, double asy, double thresh, double A, double B, double C, double D) const {
+double ApproximateCoefficientFunction::Approximation(double x, double m2Q2, double asy, double thresh, double A, double B, double C, double D) const {
     
     double eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
     double xi = 1. / m2Q2;

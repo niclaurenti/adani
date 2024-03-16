@@ -27,9 +27,7 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
         ThresholdCoefficientFunction(const int& order, const char& kind, const char& channel) ;
         ~ThresholdCoefficientFunction() override ;
 
-        Value fx(double x, double m2Q2, double m2mu2, int nf) const ;
-        Value MuIndependentTerms(double x, double m2Q2, int nf) const {return fx(x, m2Q2, 1., nf);} ;
-        double MuDependentTerms(double x, double m2Q2, double m2mu2, int nf) const ;
+        Value fxBand(double x, double m2Q2, double m2mu2, int nf) const override ;
 
     private:
 

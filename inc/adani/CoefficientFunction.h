@@ -18,6 +18,9 @@
 #define CoeffFunc
 
 #include "adani/SplittingFunctions.h"
+#include <vector>
+
+using std::vector;
 
 class Value {
     public:
@@ -29,7 +32,7 @@ class Value {
         double GetHigher() const {return higher_;};
         double GetLower() const {return lower_;};
 
-        double* ToArray() const ;
+        vector<double> ToVect() const ;
 
         Value operator+(const Value& rhs) const;
         // Value operator-(const Value& rhs) const;
@@ -65,11 +68,13 @@ class CoefficientFunction {
 
         virtual ~CoefficientFunction() = 0 ;
 
-        // virtual Value fx(double x, double m2Q2, double m2mu2, int nf) const = 0 ;
-        // virtual Value MuIndependentTerms(double x, double m2Q2, int nf) const {return fx(x, m2Q2, 1., nf);} ;
-        // virtual Value MuDependentTerms(double x, double m2Q2, double m2mu2, int nf) const {
-        //     return fx(x, m2Q2, m2mu2, nf) - fx(x, m2Q2, 1., nf);
-        // }
+
+        virtual double MuIndependentTerms(double x, double m2Q2, int nf) const;
+        virtual double fx(double x, double m2Q2, double m2mu2, int nf) const ;
+        virtual double MuDependentTerms(double x, double m2Q2, double m2mu2, int nf) const;
+        virtual Value fxBand(double x, double m2Q2, double m2mu2, int nf) const  = 0;
+        virtual Value MuIndependentTermsBand(double x, double m2Q2, int nf) const ;
+        virtual Value MuDependentTermsBand(double x, double m2Q2, double m2mu2, int nf) const ;
 
         // get methods
         int GetOrder() const { return order_; } ;

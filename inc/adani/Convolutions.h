@@ -87,8 +87,13 @@ class ConvolutedCoefficientFunction : public CoefficientFunction {
         ~ConvolutedCoefficientFunction() override {} ;
 
         double MuIndependentTerms(double x, double m2Q2, int nf) const override {return conv_ -> Convolute(x, m2Q2, nf);};
-        // double MuDependentTerms(double x, double m2Q2, double m2mu2, int nf) const {return 0.;};
-        double fx(double x, double m2Q2, double /*m2mu2*/, int nf) const override {return MuIndependentTerms(x, m2Q2, nf);};
+        double MuDependentTerms(double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const override {return 0.;};
+        double fx(double x, double m2Q2, double m2mu2, int nf) const override {
+            return MuIndependentTerms(x, m2Q2, nf) + MuDependentTerms(x, m2Q2, m2mu2, nf);
+        }
+        Value fxBand(double x, double m2Q2, double m2mu2, int nf) const override {
+            return Value(fx(x, m2Q2, m2mu2, nf));
+        }
     private:
         Convolution* conv_;
 

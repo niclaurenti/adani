@@ -40,10 +40,6 @@ class AbstractHighEnergyCoefficientFunction : public CoefficientFunction {
         // set methods
         void SetNLL(const bool& NLL) {NLL_ = NLL ; } ;
 
-        virtual Value fx(double x, double m2Q2, double m2mu2, int nf) const = 0;
-        Value MuIndependentTerms(double x, double m2Q2, int nf) const {return fx(x, m2Q2, 1., nf);} ;
-        Value MuDependentTerms(double x, double m2Q2, double m2mu2, int nf) const ;
-
     private:
         bool NLL_ ;
 
@@ -63,7 +59,7 @@ class HighEnergyCoefficientFunction : public AbstractHighEnergyCoefficientFuncti
         HighEnergyCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL = true) : AbstractHighEnergyCoefficientFunction(order, kind, channel, NLL) {};
         ~HighEnergyCoefficientFunction() override {} ;
 
-        Value fx(double x, double m2Q2, double m2mu2, int nf) const override ;
+        Value fxBand(double x, double m2Q2, double m2mu2, int nf) const override ;
 
     private:
 
@@ -108,7 +104,7 @@ class HighEnergyHighScaleCoefficientFunction : public AbstractHighEnergyCoeffici
         HighEnergyHighScaleCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL = true) : AbstractHighEnergyCoefficientFunction(order, kind, channel, NLL) {};
         ~HighEnergyHighScaleCoefficientFunction() override {} ;
 
-        Value fx(double x, double m2Q2, double m2mu2, int nf) const override ;
+        Value fxBand(double x, double m2Q2, double m2mu2, int nf) const override ;
 
     private:
 
@@ -165,7 +161,7 @@ class PowerTermsCoefficientFunction : public AbstractHighEnergyCoefficientFuncti
         PowerTermsCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL = true);
         ~PowerTermsCoefficientFunction() override ;
 
-        Value fx(double x, double m2Q2, double m2mu2, int nf) const ;
+        Value fxBand(double x, double m2Q2, double m2mu2, int nf) const override ;
 
     private:
 
