@@ -11,6 +11,7 @@ using std::endl ;
 ThresholdCoefficientFunction::ThresholdCoefficientFunction(const int& order, const char& kind, const char& channel) : CoefficientFunction(order, kind, channel) {
 
     exactlo_ = new ExactCoefficientFunction(1, GetKind(), GetChannel());
+    SetFunctions();
 }
 
 ThresholdCoefficientFunction::~ThresholdCoefficientFunction() {
@@ -18,25 +19,23 @@ ThresholdCoefficientFunction::~ThresholdCoefficientFunction() {
 }
 
 Value ThresholdCoefficientFunction::fxBand(double x, double m2Q2, double m2mu2, int nf) const {
+    return Value((this->*fx_)(x, m2Q2, m2mu2, nf));
+}
 
-    if (GetChannel() == 'q') return 0.;
-
-    double res;
-
-    if (GetOrder() == 1 && GetKind() == '2') res = C2_g1_threshold(x, m2Q2) ;
-    else if (GetOrder() == 1 && GetKind() == 'L') {
-        cout << "Error: CL doesn't have the threshold limit at O(as)!" << endl;
-        exit(-1);
+void ThresholdCoefficientFunction::SetFunctions() {
+    if (GetChannel() == 'q') fx_ = &ThresholdCoefficientFunction::ZeroFunction;
+    else if (GetChannel() == 'g') {
+        if (GetOrder() == 1 && GetKind() == '2') fx_ = &ThresholdCoefficientFunction::C2_g1_threshold ;
+        else if (GetOrder() == 1 && GetKind() == 'L') fx_ = &ThresholdCoefficientFunction::ZeroFunction;
+        else if (GetOrder() == 2 && GetKind() == '2') fx_ = &ThresholdCoefficientFunction::C2_g2_threshold ;
+        else if (GetOrder() == 2 && GetKind() == 'L') fx_ = &ThresholdCoefficientFunction::CL_g2_threshold ;
+        else if (GetOrder() == 3 && GetKind() == '2') fx_ = &ThresholdCoefficientFunction::C2_g3_threshold ;
+        else if (GetOrder() == 3 && GetKind() == 'L') fx_ = &ThresholdCoefficientFunction::CL_g3_threshold ;
+        else {
+            cout << "Error: something has gone wrong in ThresholdCoefficientFunction::SetFunctions!" << endl;
+            exit(-1);
+        }
     }
-    else if (GetOrder() == 2 && GetKind() == '2') res = C2_g2_threshold(x, m2Q2, m2mu2) ;
-    else if (GetOrder() == 2 && GetKind() == 'L') res = CL_g2_threshold(x, m2Q2, m2mu2) ;
-    else if (GetOrder() == 3 && GetKind() == '2') res = C2_g3_threshold(x, m2Q2, m2mu2, nf) ;
-    else if (GetOrder() == 3 && GetKind() == 'L') res = CL_g3_threshold(x, m2Q2, m2mu2, nf) ;
-    else {
-        cout << "Error: something has gone wrong!" << endl;
-        exit(-1);
-    }
-    return Value(res);
 }
 
 //==========================================================================================//
@@ -47,7 +46,7 @@ Value ThresholdCoefficientFunction::fxBand(double x, double m2Q2, double m2mu2, 
 //  Eq. (3.15) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double ThresholdCoefficientFunction::C2_g1_threshold(double x, double m2Q2) const {
+double ThresholdCoefficientFunction::C2_g1_threshold(double x, double m2Q2, double /*m2mu2*/, int /*nf*/) const {
 
     double beta = sqrt(1. - 4. * m2Q2 * x / (1. - x));
     double xi = 1. / m2Q2;
@@ -90,7 +89,7 @@ double ThresholdCoefficientFunction::threshold_expansion_g2_const(double m2Q2, d
 //  Eq. (3.16) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double ThresholdCoefficientFunction::C2_g2_threshold(double x, double m2Q2, double m2mu2) const {
+double ThresholdCoefficientFunction::C2_g2_threshold(double x, double m2Q2, double m2mu2, int /*nf*/) const {
 
     // defining nf as nan since they it is not needed
     int nf = static_cast<int>(nan(""));
@@ -108,7 +107,7 @@ double ThresholdCoefficientFunction::C2_g2_threshold(double x, double m2Q2, doub
 //  Eq. (3.16) of Ref. [arXiv:1205.5727] with C20 -> CL0
 //------------------------------------------------------------------------------------------//
 
-double ThresholdCoefficientFunction::CL_g2_threshold(double x, double m2Q2, double m2mu2) const {
+double ThresholdCoefficientFunction::CL_g2_threshold(double x, double m2Q2, double m2mu2, int /*nf*/) const {
 
     // defining nf as nan since they it is not needed
     int nf = static_cast<int>(nan(""));

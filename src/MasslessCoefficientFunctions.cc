@@ -13,7 +13,6 @@ double MasslessCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int 
 }
 
 double MasslessCoefficientFunction::MuDependentTerms(double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const {
-
     cout << "Error: mu dependent terms of the massless coefficient functions are not implemented!" << endl;
     exit(-1);
 }
@@ -27,26 +26,30 @@ double MasslessCoefficientFunction::MuIndependentTerms(double /*x*/, double /*m2
 
 double MasslessCoefficientFunction::MuIndependentTerms(double x, int nf) const {
 
-    if (GetOrder() == 1 && GetKind() == '2' && GetChannel() == 'g') return C2_g1_massless(x, nf);
-    else if (GetOrder() == 1 && GetKind() == 'L' && GetChannel() == 'g') return CL_g1_massless(x, nf);
-
-    else if (GetOrder() == 2 && GetKind() == '2' && GetChannel() == 'g') return C2_g2_massless(x, nf);
-    else if (GetOrder() == 2 && GetKind() == '2' && GetChannel() == 'q') return C2_ps2_massless(x, nf);
-    else if (GetOrder() == 2 && GetKind() == 'L' && GetChannel() == 'g') return CL_g2_massless(x, nf);
-    else if (GetOrder() == 2 && GetKind() == 'L' && GetChannel() == 'q') return CL_ps2_massless(x, nf);
-
-    else if (GetOrder() == 3 && GetKind() == '2' && GetChannel() == 'g') return C2_g3_massless(x, nf);
-    else if (GetOrder() == 3 && GetKind() == '2' && GetChannel() == 'q') return C2_ps3_massless(x, nf);
-    else if (GetOrder() == 3 && GetKind() == 'L' && GetChannel() == 'g') return CL_g3_massless(x, nf);
-    else if (GetOrder() == 3 && GetKind() == 'L' && GetChannel() == 'q') return CL_ps3_massless(x, nf);
-    else {
-        cout << "Error: something has gone wrong!" << endl;
-        exit(-1);
-    }
+    return (this->*mu_indep_)(x, nf);
 }
 
 Value MasslessCoefficientFunction::fxBand(double x, double m2Q2, double m2mu2, int nf) const {
     return Value(fx(x, m2Q2, m2mu2, nf));
+}
+
+void MasslessCoefficientFunction::SetFunctions() {
+    if (GetOrder() == 1 && GetKind() == '2' && GetChannel() == 'g') mu_indep_ = &MasslessCoefficientFunction::C2_g1_massless;
+    else if (GetOrder() == 1 && GetKind() == 'L' && GetChannel() == 'g') mu_indep_ = &MasslessCoefficientFunction::CL_g1_massless;
+
+    else if (GetOrder() == 2 && GetKind() == '2' && GetChannel() == 'g') mu_indep_ = &MasslessCoefficientFunction::C2_g2_massless;
+    else if (GetOrder() == 2 && GetKind() == '2' && GetChannel() == 'q') mu_indep_ = &MasslessCoefficientFunction::C2_ps2_massless;
+    else if (GetOrder() == 2 && GetKind() == 'L' && GetChannel() == 'g') mu_indep_ = &MasslessCoefficientFunction::CL_g2_massless;
+    else if (GetOrder() == 2 && GetKind() == 'L' && GetChannel() == 'q') mu_indep_ = &MasslessCoefficientFunction::CL_ps2_massless;
+
+    else if (GetOrder() == 3 && GetKind() == '2' && GetChannel() == 'g') mu_indep_ = &MasslessCoefficientFunction::C2_g3_massless;
+    else if (GetOrder() == 3 && GetKind() == '2' && GetChannel() == 'q') mu_indep_ = &MasslessCoefficientFunction::C2_ps3_massless;
+    else if (GetOrder() == 3 && GetKind() == 'L' && GetChannel() == 'g') mu_indep_ = &MasslessCoefficientFunction::CL_g3_massless;
+    else if (GetOrder() == 3 && GetKind() == 'L' && GetChannel() == 'q') mu_indep_ = &MasslessCoefficientFunction::CL_ps3_massless;
+    else {
+        cout << "Error: something has gone wrong in MasslessCoefficientFunction::SetFunctions!" << endl;
+        exit(-1);
+    }
 }
 
 //==========================================================================================//

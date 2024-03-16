@@ -29,7 +29,11 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
 
         Value fxBand(double x, double m2Q2, double m2mu2, int nf) const override ;
 
+        void SetFunctions() ;
+
     private:
+
+        double (ThresholdCoefficientFunction::*fx_)(double, double, double, int) const;
 
         ExactCoefficientFunction *exactlo_ ;
 
@@ -38,15 +42,15 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
         //                      functions O(alpha_s)
         //------------------------------------------------------------------------------------------//
 
-        double C2_g1_threshold(double x, double m2Q2) const;
+        double C2_g1_threshold(double x, double m2Q2, double /*m2mu2*/, int /*nf*/) const;
 
         //==========================================================================================//
         //                      Threshold (s -> 4m^2) coefficient
         //                      functions O(alpha_s^2)
         //------------------------------------------------------------------------------------------//
 
-        double C2_g2_threshold(double x, double m2Q2, double m2mu2) const;
-        double CL_g2_threshold(double x, double m2Q2, double m2mu2) const;
+        double C2_g2_threshold(double x, double m2Q2, double m2mu2, int /*nf*/) const;
+        double CL_g2_threshold(double x, double m2Q2, double m2mu2, int /*nf*/) const;
 
         double threshold_expansion_g2(double x, double m2Q2, double m2mu2) const;
         double threshold_expansion_g2_const(double m2Q2, double m2mu2) const;
@@ -74,6 +78,8 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
 
         double c0(double xi) const;
         double c0_bar(double xi) const;
+
+        double ZeroFunction(double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const {return 0.;};
 
 };
 

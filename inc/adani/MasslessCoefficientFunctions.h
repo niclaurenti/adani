@@ -34,7 +34,10 @@ class MasslessCoefficientFunction : public CoefficientFunction {
 
         Value fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
 
+        void SetFunctions() ;
+
     private:
+        double (MasslessCoefficientFunction::*mu_indep_)(double, int) const;
 
         //==========================================================================================//
         //                      Massless coefficient functions
