@@ -129,6 +129,10 @@ double ExactCoefficientFunction::MuDependentTerms(double x, double m2Q2, double 
     return (this->*mu_dep_)(x, m2Q2, m2mu2, nf);
 }
 
+Value ExactCoefficientFunction::fxBand(double x, double m2Q2, double m2mu2, int nf) const {
+    return Value(fx(x, m2Q2, m2mu2, nf));
+}
+
 void ExactCoefficientFunction::SetFunctions() {
     if (GetOrder() == 1) {
         if (GetKind() == '2') {

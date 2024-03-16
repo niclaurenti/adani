@@ -28,9 +28,11 @@ class MasslessCoefficientFunction : public CoefficientFunction {
         ~MasslessCoefficientFunction() override {} ;
 
         double fx(double x, double m2Q2, double m2mu2, int nf) const override ;
-        double MuIndependentTerms(double /*x*/, double /*m2Q2*/, int /*nf*/) const override ;
+        double MuIndependentTerms(double /*x*/, double /*m2Q2*/, int /*nf*/) const override;
         double MuIndependentTerms(double x, int nf) const;
         double MuDependentTerms(double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const override ;
+
+        Value fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
 
     private:
 

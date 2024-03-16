@@ -27,7 +27,7 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
         ThresholdCoefficientFunction(const int& order, const char& kind, const char& channel) ;
         ~ThresholdCoefficientFunction() override ;
 
-        double fx(double x, double m2Q2, double m2mu2, int nf) const override ;
+        Value fxBand(double x, double m2Q2, double m2mu2, int nf) const override ;
 
     private:
 

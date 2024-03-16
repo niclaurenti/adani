@@ -19,19 +19,45 @@
 
 #include "adani/SplittingFunctions.h"
 
+#include <vector>
+#include <iostream>
+
+using std::vector;
+using std::ostream;
+
 class Value {
     public:
         Value(const double& central, const double& higher, const double& lower) ;
+        Value(const double& central);
+        Value(const Value& value) ;
 
         double GetCentral() const {return central_;};
         double GetHigher() const {return higher_;};
         double GetLower() const {return lower_;};
+
+        vector<double> ToVect() const ;
+
+        Value operator+(const Value& rhs) const;
+        // Value operator-(const Value& rhs) const;
+
+        Value operator+(const double& rhs) const;
+        friend Value operator+(const double& lhs, const Value& rhs);
+
+        Value operator-(const double& rhs) const;
+        // friend Value operator-(const double& lhs, const Value& rhs);
 
         Value operator*(const double& rhs) const;
         friend Value operator*(const double& lhs, const Value& rhs);
 
         Value operator/(const double& rhs) const;
         friend Value operator/(const double& lhs, const Value& rhs);
+
+        const Value& operator=(const Value& rhs);
+
+        const Value& operator*=(const double& rhs);
+        const Value& operator/=(const double& rhs);
+
+        friend ostream& operator<<(ostream& os, const Value& rhs);
 
     private:
         double central_;
@@ -47,11 +73,13 @@ class CoefficientFunction {
 
         virtual ~CoefficientFunction() = 0 ;
 
-        virtual double fx(double x, double m2Q2, double m2mu2, int nf) const = 0 ;
-        virtual double MuIndependentTerms(double x, double m2Q2, int nf) const {return fx(x, m2Q2, 1., nf);} ;
-        virtual double MuDependentTerms(double x, double m2Q2, double m2mu2, int nf) const {
-            return fx(x, m2Q2, m2mu2, nf) - fx(x, m2Q2, 1., nf);
-        }
+
+        virtual double MuIndependentTerms(double x, double m2Q2, int nf) const;
+        virtual double fx(double x, double m2Q2, double m2mu2, int nf) const ;
+        virtual double MuDependentTerms(double x, double m2Q2, double m2mu2, int nf) const;
+        virtual Value fxBand(double x, double m2Q2, double m2mu2, int nf) const  = 0;
+        virtual Value MuIndependentTermsBand(double x, double m2Q2, int nf) const ;
+        virtual Value MuDependentTermsBand(double x, double m2Q2, double m2mu2, int nf) const ;
 
         // get methods
         int GetOrder() const { return order_; } ;

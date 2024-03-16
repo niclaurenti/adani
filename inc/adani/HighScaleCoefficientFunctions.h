@@ -20,6 +20,7 @@
 
 #include "adani/CoefficientFunction.h"
 #include "adani/MasslessCoefficientFunctions.h"
+#include "adani/MatchingConditions.h"
 
 //==========================================================================================//
 //                      The notation used is the following:
@@ -31,15 +32,19 @@
 
 class HighScaleCoefficientFunction : public CoefficientFunction {
     public:
-        HighScaleCoefficientFunction(const int& order, const char& kind, const char& channel) ;
+        HighScaleCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& exact, const bool& revised_approx) ;
         ~HighScaleCoefficientFunction() override ;
 
-        double fx(double x, double m2Q2, double m2mu2, int nf) const override ;
+        double fx(double x, double m2Q2, double m2mu2, int nf) const override;
+        // double MuIndependentTerms(double x, double m2Q2, int nf) const override ;
+        // double MuDependentTerms(double x, double m2Q2, double m2mu2, int nf) const override ;
+        Value fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
 
     private:
         MasslessCoefficientFunction* massless_lo_;
         MasslessCoefficientFunction* massless_nlo_;
         MasslessCoefficientFunction* massless_nnlo_;
+        MatchingCondition* a_muindep_;
 
 //==========================================================================================//
 //                      High scale (Q^2 >> m^2) coefficient
@@ -74,8 +79,8 @@ double DL_ps2_highscale(double z, double m2Q2, double m2mu2) const ;
 //                      functions O(alpha_s^3)
 //------------------------------------------------------------------------------------------//
 
-double C2_g3_highscale(double x, double m2Q2, double m2mu2, int nf, int v = 0) const ;
-double C2_ps3_highscale(double x, double m2Q2, double m2mu2, int nf) const ;
+Value C2_g3_highscale(double x, double m2Q2, double m2mu2, int nf) const ;
+Value C2_ps3_highscale(double x, double m2Q2, double m2mu2, int nf) const ;
 
 double CL_g3_highscale(double x, double m2Q2, double m2mu2, int nf) const ;
 double CL_ps3_highscale(double x, double m2Q2, double m2mu2, int nf) const ;
@@ -83,8 +88,8 @@ double CL_ps3_highscale(double x, double m2Q2, double m2mu2, int nf) const ;
 double DL_g3_highscale(double z, double m2Q2, double m2mu2, int nf) const ;
 double DL_ps3_highscale(double z, double m2Q2, double m2mu2, int nf) const ;
 
-double D2_g3_highscale(double x, double m2Q2, double m2mu2, int nf, int v) const ;
-double D2_ps3_highscale(double x, double m2Q2, double m2mu2, int nf, int v = 0) const ;
+Value D2_g3_highscale(double x, double m2Q2, double m2mu2, int nf) const ;
+Value D2_ps3_highscale(double x, double m2Q2, double m2mu2, int nf) const ;
 
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) coefficient functions at
@@ -95,10 +100,10 @@ double D2_ps3_highscale(double x, double m2Q2, double m2mu2, int nf, int v = 0) 
 //  benchmark against the plots on the paper
 //------------------------------------------------------------------------------------------//
 
-double
-C2_ps3_highscale_klmv_paper(double x, double m2Q2, double m2mu2, int nf, int v) const ;
-double
-D2_ps3_highscale_klmv_paper(double x, double m2Q2, double m2mu2, int nf, int v) const ;
+// double
+// C2_ps3_highscale_klmv_paper(double x, double m2Q2, double m2mu2, int nf, int v) const ;
+// double
+// D2_ps3_highscale_klmv_paper(double x, double m2Q2, double m2mu2, int nf, int v) const ;
 
 };
 

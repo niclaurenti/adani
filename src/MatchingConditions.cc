@@ -6,6 +6,68 @@
 
 using namespace std;
 
+MatchingCondition::MatchingCondition(const int& order, const char& entry1, const char& entry2, const bool& exact, const bool& revised_approx) {
+    // check order
+    if (order !=3) {
+        cout << "Error: only order = 3 is implemented. Got " << order << endl ;
+        exit(-1) ;
+    }
+    order_ = order ;
+
+    // check entry1
+    if (entry1 != 'Q') {
+        cout << "Error: only entry1 = 'Q' is implemented. Got " << entry1 << endl ;
+        exit(-1) ;
+    }
+    entry1_ = entry1 ;
+
+    // check entry2
+    if (entry2 != 'g' && entry2 != 'q') {
+        cout << "Error: entry2 must be g or q. Got " << entry2 << endl ;
+        exit(-1) ;
+    }
+    entry2_ = entry2 ;
+
+    exact_ = exact;
+
+    if (exact && revised_approx) {
+        cout << "Error: revised_approx = true is meaningfull only if exact = false!" << endl;
+        exit(-1);
+    }
+    revised_approx_ = revised_approx ;
+}
+
+Value MatchingCondition::MuIndependentNfIndependentTerm(double x) const {
+      double central, higher, lower;
+      if (entry2_ == 'q') {
+            if (exact_) {
+                  central = a_Qq_PS_30(x, 0);
+                  return Value(central);
+            } else {
+                  higher = a_Qq_PS_30(x, 1);
+                  lower = a_Qq_PS_30(x, -1);
+                  central = 0.5 * (higher + lower);
+                  if (higher < lower) return Value(central, lower, higher);
+                  return Value(central, higher, lower);
+            }
+      } else {
+            int low_id;
+            if (exact_) {
+                  central = a_Qg_30(x, 0);
+                  return Value(central);
+            } else {
+                  if (revised_approx_) low_id = -1;
+                  else low_id = -12;
+                  
+                  higher = a_Qg_30(x, 1);
+                  lower = a_Qg_30(x, low_id);
+                  central = 0.5 * (higher + lower);
+                  if (higher < lower) return Value(central, lower, higher);
+                  return Value(central, higher, lower);
+            }
+      }
+}
+
 //==========================================================================================//
 //  Matching condition Qg O(alpha_s)
 //
@@ -129,7 +191,7 @@ double K_Qg2(double x, double m2mu2) {
 //  v = -12 : Eq. (3.50) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double a_Qg_30(double x, int v) {
+double MatchingCondition::a_Qg_30(double x, int v) const {
 
     double L = log(x);
     double L2 = L * L;
@@ -141,7 +203,8 @@ double a_Qg_30(double x, int v) {
     double L13 = L12 * L1;
 
     if (v == 0) {
-        return 0.5 * (a_Qg_30(x, 1) + a_Qg_30(x, -1));
+        cout << "A_Qg exact is not known/implemented yet!" << endl;
+        exit(-1);
     } else if (v == 1) {
         return (
             354.1002 * L13 + 479.3838 * L12 - 7856.784 * (2. - x)
@@ -177,7 +240,7 @@ double a_Qg_30(double x, int v) {
 //  v = 2 : approximation from Eq. (3.53) of [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double a_Qq_PS_30(double x, int v) {
+double MatchingCondition::a_Qq_PS_30(double x, int v) const {
 
     double x2 = x * x;
 

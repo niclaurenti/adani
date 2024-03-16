@@ -45,6 +45,10 @@ double MasslessCoefficientFunction::MuIndependentTerms(double x, int nf) const {
     }
 }
 
+Value MasslessCoefficientFunction::fxBand(double x, double m2Q2, double m2mu2, int nf) const {
+    return Value(fx(x, m2Q2, m2mu2, nf));
+}
+
 //==========================================================================================//
 //  Massless gluon coefficient functions for F2 at
 //  O(alpha_s) for mu=Q.
