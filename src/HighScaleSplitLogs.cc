@@ -3622,7 +3622,7 @@ Value HighScaleSplitLogs::CL_g3_highscale_N3LL(double x, int nf) const {
     delete[] Hr4;
     delete[] Hr5;
 
-    return 547.6343796175224 + 40.888888888888886 * H0
+    double tmp = 547.6343796175224 + 40.888888888888886 * H0
            + 27.555555555555557 * H0 * H0 - 4.7407407407407405 * H0 * H0 * H0
            - 170.66666666666669 * H001 + 64. * H00m1 - 181.33333333333334 * H01
            + 71.11111111111111 * H0 * H01 + 35.55555555555556 * H011
@@ -3668,6 +3668,7 @@ Value HighScaleSplitLogs::CL_g3_highscale_N3LL(double x, int nf) const {
            + 128. * H0 * Hm1 * Hm1 * x2
            + 4.666666666666667 * massless_lo_->MuIndependentTerms(x, 1)
            + massless_->MuIndependentTerms(x, nf + 1) / (1. + nf);
+    return Value(tmp);
 }
 
 //==========================================================================================//
@@ -3755,7 +3756,7 @@ Value HighScaleSplitLogs::CL_ps3_highscale_N3LL(double x, int nf) const {
     delete[] Hr4;
     delete[] Hr5;
 
-    return 10.347610117516318 - 61.62962962962962 * H0
+    double tmp = 10.347610117516318 - 61.62962962962962 * H0
            - 7.111111111111111 * H0 * H0 - 4.7407407407407405 * H0 * H0 * H0
            - 113.77777777777777 * H001 - 85.33333333333333 * H01
            + 56.888888888888886 * H0 * H01 + 33.185185185185176 * H1
@@ -3774,4 +3775,6 @@ Value HighScaleSplitLogs::CL_ps3_highscale_N3LL(double x, int nf) const {
            - 30.02469135802469 * H1 * x2 + 37.925925925925924 * H0 * H1 * x2
            + 4.7407407407407405 * H1 * H1 * x2
            + massless_->MuIndependentTerms(x, nf + 1) / (1. + nf);
+
+    return Value(tmp);
 }

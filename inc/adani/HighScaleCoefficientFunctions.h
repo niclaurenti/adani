@@ -40,7 +40,11 @@ class HighScaleCoefficientFunction : public CoefficientFunction {
         // double MuDependentTerms(double x, double m2Q2, double m2mu2, int nf) const override ;
         Value fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
 
+        void SetFunctions();
+
     private:
+        Value (HighScaleCoefficientFunction::*fx_)(double, double, double, int) const;
+
         MasslessCoefficientFunction* massless_lo_;
         MasslessCoefficientFunction* massless_nlo_;
         MasslessCoefficientFunction* massless_nnlo_;
@@ -51,8 +55,8 @@ class HighScaleCoefficientFunction : public CoefficientFunction {
 //                      functions O(alpha_s)
 //------------------------------------------------------------------------------------------//
 
-double C2_g1_highscale(double x, double m2Q2) const ;
-double CL_g1_highscale(double x) const ;
+Value C2_g1_highscale(double x, double m2Q2, double /*m2mu2*/, int /*nf*/) const ;
+Value CL_g1_highscale(double x, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const ;
 
 double D2_g1_highscale(double x, double m2Q2) const ;
 double DL_g1_highscale(double x) const;
@@ -62,11 +66,11 @@ double DL_g1_highscale(double x) const;
 //                      functions O(alpha_s^2)
 //------------------------------------------------------------------------------------------//
 
-double C2_g2_highscale(double x, double m2Q2, double m2mu2) const ;
-double C2_ps2_highscale(double z, double m2Q2, double m2mu2) const ;
+Value C2_g2_highscale(double x, double m2Q2, double m2mu2, int /*nf*/) const ;
+Value C2_ps2_highscale(double z, double m2Q2, double m2mu2, int /*nf*/) const ;
 
-double CL_g2_highscale(double x, double m2Q2, double m2mu2) const ;
-double CL_ps2_highscale(double x, double m2Q2, double m2mu2) const ;
+Value CL_g2_highscale(double x, double m2Q2, double m2mu2, int /*nf*/) const ;
+Value CL_ps2_highscale(double x, double m2Q2, double m2mu2, int /*nf*/) const ;
 
 double D2_g2_highscale(double x, double m2Q2, double m2mu2) const ;
 double D2_ps2_highscale(double x, double m2Q2, double m2mu2) const ;
@@ -82,8 +86,8 @@ double DL_ps2_highscale(double z, double m2Q2, double m2mu2) const ;
 Value C2_g3_highscale(double x, double m2Q2, double m2mu2, int nf) const ;
 Value C2_ps3_highscale(double x, double m2Q2, double m2mu2, int nf) const ;
 
-double CL_g3_highscale(double x, double m2Q2, double m2mu2, int nf) const ;
-double CL_ps3_highscale(double x, double m2Q2, double m2mu2, int nf) const ;
+Value CL_g3_highscale(double x, double m2Q2, double m2mu2, int nf) const ;
+Value CL_ps3_highscale(double x, double m2Q2, double m2mu2, int nf) const ;
 
 double DL_g3_highscale(double z, double m2Q2, double m2mu2, int nf) const ;
 double DL_ps3_highscale(double z, double m2Q2, double m2mu2, int nf) const ;
