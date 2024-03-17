@@ -13,92 +13,94 @@ AbstractHighEnergyCoefficientFunction::AbstractHighEnergyCoefficientFunction(con
 
 }
 
+HighEnergyCoefficientFunction::HighEnergyCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL) : AbstractHighEnergyCoefficientFunction(order, kind, channel, NLL) {
+    SetFunctions();
+}
+
 Value HighEnergyCoefficientFunction::fxBand(double x, double m2Q2, double m2mu2, int nf) const {
+    return (this->*LL_)(x, m2Q2, m2mu2) + (this->*NLL_)(x, m2Q2, m2mu2, nf) ;
+}
 
-    if (GetOrder() == 1) return Value(0., 0., 0.) ;
+void HighEnergyCoefficientFunction::SetFunctions() {
 
-    double tmp;
-
-    if (GetOrder() == 2) {
-
-        if (GetKind() == '2' && GetChannel() == 'g') tmp = C2_g2_highenergy(x, m2Q2, m2mu2);
-        else if (GetKind() == '2' && GetChannel() == 'q') tmp = C2_ps2_highenergy(x, m2Q2, m2mu2);
-        else if (GetKind() == 'L' && GetChannel() == 'g') tmp = CL_g2_highenergy(x, m2Q2, m2mu2);
-        else if (GetKind() == 'L' && GetChannel() == 'q') tmp = CL_ps2_highenergy(x, m2Q2, m2mu2);
-
-        return Value(tmp, tmp, tmp);
+    if (GetOrder() == 1) {
+        LL_ = &HighEnergyCoefficientFunction::ZeroFunction;
+        NLL_ = &HighEnergyCoefficientFunction::ZeroFunctionBand;
+    } else if (GetOrder() == 2) {
+        
+        NLL_ = &HighEnergyCoefficientFunction::ZeroFunctionBand;
+        if (GetKind() == '2' && GetChannel() == 'g') LL_ = &HighEnergyCoefficientFunction::C2_g2_highenergy;
+        else if (GetKind() == '2' && GetChannel() == 'q') LL_ = &HighEnergyCoefficientFunction::C2_ps2_highenergy;
+        else if (GetKind() == 'L' && GetChannel() == 'g') LL_ = &HighEnergyCoefficientFunction::CL_g2_highenergy;
+        else if (GetKind() == 'L' && GetChannel() == 'q') LL_ = &HighEnergyCoefficientFunction::CL_ps2_highenergy;
 
     } else if (GetOrder() == 3) {
-        if (GetNLL()) {
-            if (GetKind() == '2' && GetChannel() == 'g') return C2_g3_highenergy(x, m2Q2, m2mu2, nf);
-            else if (GetKind() == '2' && GetChannel() == 'q') return C2_ps3_highenergy(x, m2Q2, m2mu2, nf);
-            else if (GetKind() == 'L' && GetChannel() == 'g') return CL_g3_highenergy(x, m2Q2, m2mu2, nf);
-            else if (GetKind() == 'L' && GetChannel() == 'q') return CL_ps3_highenergy(x, m2Q2, m2mu2, nf);
-            else {
-                cout << "Error: something has gone wrong!" << endl;
-                exit(-1);
-            }
-        }
-        else {
-
-            if (GetKind() == '2' && GetChannel() == 'g') tmp = C2_g3_highenergyLL(x, m2Q2, m2mu2);
-            else if (GetKind() == '2' && GetChannel() == 'q') tmp = C2_ps3_highenergyLL(x, m2Q2, m2mu2);
-            else if (GetKind() == 'L' && GetChannel() == 'g') tmp = CL_g3_highenergyLL(x, m2Q2, m2mu2);
-            else if (GetKind() == 'L' && GetChannel() == 'q') tmp = CL_ps3_highenergyLL(x, m2Q2, m2mu2);
-            else {
-                cout << "Error: something has gone wrong!" << endl;
-                exit(-1);
-            }
+        if (GetKind() == '2' && GetChannel() == 'g') {
+            LL_ = &HighEnergyCoefficientFunction::C2_g3_highenergyLL;
+            NLL_ = &HighEnergyCoefficientFunction::C2_g3_highenergyNLL;
+        } else if (GetKind() == '2' && GetChannel() == 'q') {
+            LL_ = &HighEnergyCoefficientFunction::C2_ps3_highenergyLL;
+            NLL_ = &HighEnergyCoefficientFunction::C2_ps3_highenergyNLL;
+        } else if (GetKind() == 'L' && GetChannel() == 'g') {
+            LL_ = &HighEnergyCoefficientFunction::CL_g3_highenergyLL;
+            NLL_ = &HighEnergyCoefficientFunction::CL_g3_highenergyNLL;
+        } else if (GetKind() == 'L' && GetChannel() == 'q') {
+            LL_ = &HighEnergyCoefficientFunction::CL_ps3_highenergyLL;
+            NLL_ = &HighEnergyCoefficientFunction::CL_ps3_highenergyNLL;
+        } else {
+            cout << "Error: something has gone wrong in HighEnergyCoefficientFunction::SetFunctions!" << endl;
+            exit(-1);
         }
     } else {
-        cout << "Error: something has bone wrong in HighEnergyCoefficientFunction::fxBand!" << endl;
+        cout << "Error: something has bone wrong in HighEnergyCoefficientFunction::SetFunctions!" << endl;
         exit(-1);
     }
-    return Value(tmp, tmp, tmp);
+    if (!GetNLL()) NLL_ = &HighEnergyCoefficientFunction::ZeroFunctionBand;
+}
+
+HighEnergyHighScaleCoefficientFunction::HighEnergyHighScaleCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL) : AbstractHighEnergyCoefficientFunction(order, kind, channel, NLL) {
+    SetFunctions();
 }
 
 Value HighEnergyHighScaleCoefficientFunction::fxBand(double x, double m2Q2, double m2mu2, int nf) const {
+    return (this->*LL_)(x, m2Q2, m2mu2) + (this->*NLL_)(x, m2Q2, m2mu2, nf) ;
+}
 
-    if (GetOrder() == 1) return Value(0., 0., 0.) ;
+void HighEnergyHighScaleCoefficientFunction::SetFunctions() {
 
-    double tmp;
-
-    if (GetOrder() == 2) {
-
-        if (GetKind() == '2' && GetChannel() == 'g') tmp = C2_g2_highenergy_highscale(x, m2Q2, m2mu2);
-        else if (GetKind() == '2' && GetChannel() == 'q') tmp = C2_ps2_highenergy_highscale(x, m2Q2, m2mu2);
-        else if (GetKind() == 'L' && GetChannel() == 'g') tmp = CL_g2_highenergy_highscale(x, m2Q2, m2mu2);
-        else if (GetKind() == 'L' && GetChannel() == 'q') tmp = CL_ps2_highenergy_highscale(x, m2Q2, m2mu2);
-
-        return Value(tmp, tmp, tmp);
+    if (GetOrder() == 1) {
+        LL_ = &HighEnergyHighScaleCoefficientFunction::ZeroFunction;
+        NLL_ = &HighEnergyHighScaleCoefficientFunction::ZeroFunctionBand;
+    } else if (GetOrder() == 2) {
+        
+        NLL_ = &HighEnergyHighScaleCoefficientFunction::ZeroFunctionBand;
+        if (GetKind() == '2' && GetChannel() == 'g') LL_ = &HighEnergyHighScaleCoefficientFunction::C2_g2_highenergy_highscale;
+        else if (GetKind() == '2' && GetChannel() == 'q') LL_ = &HighEnergyHighScaleCoefficientFunction::C2_ps2_highenergy_highscale;
+        else if (GetKind() == 'L' && GetChannel() == 'g') LL_ = &HighEnergyHighScaleCoefficientFunction::CL_g2_highenergy_highscale;
+        else if (GetKind() == 'L' && GetChannel() == 'q') LL_ = &HighEnergyHighScaleCoefficientFunction::CL_ps2_highenergy_highscale;
 
     } else if (GetOrder() == 3) {
-        if (GetNLL()) {
-            if (GetKind() == '2' && GetChannel() == 'g') return C2_g3_highenergy_highscale(x, m2Q2, m2mu2, nf);
-            else if (GetKind() == '2' && GetChannel() == 'q') return C2_ps3_highenergy_highscale(x, m2Q2, m2mu2, nf);
-            else if (GetKind() == 'L' && GetChannel() == 'g') return CL_g3_highenergy_highscale(x, m2Q2, m2mu2, nf);
-            else if (GetKind() == 'L' && GetChannel() == 'q') return CL_ps3_highenergy_highscale(x, m2Q2, m2mu2, nf);
-            else {
-                cout << "Error: something has gone wrong!" << endl;
-                exit(-1);
-            }
-        }
-        else {
-
-            if (GetKind() == '2' && GetChannel() == 'g') tmp = C2_g3_highenergy_highscaleLL(x, m2Q2, m2mu2);
-            else if (GetKind() == '2' && GetChannel() == 'q') tmp = C2_ps3_highenergy_highscaleLL(x, m2Q2, m2mu2);
-            else if (GetKind() == 'L' && GetChannel() == 'g') tmp = CL_g3_highenergy_highscaleLL(x, m2Q2, m2mu2);
-            else if (GetKind() == 'L' && GetChannel() == 'q') tmp = CL_ps3_highenergy_highscaleLL(x, m2Q2, m2mu2);
-            else {
-                cout << "Error: something has gone wrong!" << endl;
-                exit(-1);
-            }
+        if (GetKind() == '2' && GetChannel() == 'g') {
+            LL_ = &HighEnergyHighScaleCoefficientFunction::C2_g3_highenergy_highscaleLL;
+            NLL_ = &HighEnergyHighScaleCoefficientFunction::C2_g3_highenergy_highscaleNLL;
+        } else if (GetKind() == '2' && GetChannel() == 'q') {
+            LL_ = &HighEnergyHighScaleCoefficientFunction::C2_ps3_highenergy_highscaleLL;
+            NLL_ = &HighEnergyHighScaleCoefficientFunction::C2_ps3_highenergy_highscaleNLL;
+        } else if (GetKind() == 'L' && GetChannel() == 'g') {
+            LL_ = &HighEnergyHighScaleCoefficientFunction::CL_g3_highenergy_highscaleLL;
+            NLL_ = &HighEnergyHighScaleCoefficientFunction::CL_g3_highenergy_highscaleNLL;
+        } else if (GetKind() == 'L' && GetChannel() == 'q') {
+            LL_ = &HighEnergyHighScaleCoefficientFunction::CL_ps3_highenergy_highscaleLL;
+            NLL_ = &HighEnergyHighScaleCoefficientFunction::CL_ps3_highenergy_highscaleNLL;
+        } else {
+            cout << "Error: something has gone wrong in HighEnergyHighScaleCoefficientFunction::SetFunctions!" << endl;
+            exit(-1);
         }
     } else {
-        cout << "Error: something has bone wrong in HighEnergyHighScaleCoefficientFunction::fxBand!" << endl;
+        cout << "Error: something has bone wrong in HighEnergyHighScaleCoefficientFunction::SetFunctions!" << endl;
         exit(-1);
     }
-    return Value(tmp, tmp, tmp);
+    if (!GetNLL()) NLL_ = &HighEnergyHighScaleCoefficientFunction::ZeroFunctionBand;
 }
 
 PowerTermsCoefficientFunction::PowerTermsCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL) : AbstractHighEnergyCoefficientFunction(order, kind, channel, NLL) {
@@ -470,6 +472,11 @@ double HighEnergyCoefficientFunction::C2_ps3_highenergyLL(double x, double m2Q2,
     return CF / CA * C2_g3_highenergyLL(x, m2Q2, m2mu2);
 }
 
+Value HighEnergyCoefficientFunction::C2_ps3_highenergyNLL(double x, double m2Q2, double m2mu2, int nf) const {
+
+    return CF / CA * C2_g3_highenergyNLL(x, m2Q2, m2mu2, nf);
+}
+
 //==========================================================================================//
 //  High energy limit of the quark coefficient function for F2 at O(alpha_s^3).
 //------------------------------------------------------------------------------------------//
@@ -672,6 +679,11 @@ double HighEnergyCoefficientFunction::CL_ps3_highenergyLL(double x, double m2Q2,
     return CF / CA * CL_g3_highenergyLL(x, m2Q2, m2mu2);
 }
 
+Value HighEnergyCoefficientFunction::CL_ps3_highenergyNLL(double x, double m2Q2, double m2mu2, int nf) const {
+
+    return CF / CA * CL_g3_highenergyNLL(x, m2Q2, m2mu2, nf);
+}
+
 //==========================================================================================//
 //  High energy limit of the quark coefficient function for FL at O(alpha_s^3).
 //------------------------------------------------------------------------------------------//
@@ -821,6 +833,11 @@ double HighEnergyHighScaleCoefficientFunction::C2_ps3_highenergy_highscaleLL(dou
     return CF / CA * C2_g3_highenergy_highscaleLL(x, m2Q2, m2mu2);
 }
 
+Value HighEnergyHighScaleCoefficientFunction::C2_ps3_highenergy_highscaleNLL(double x, double m2Q2, double m2mu2, int nf) const {
+
+    return CF / CA * C2_g3_highenergy_highscaleNLL(x, m2Q2, m2mu2, nf);
+}
+
 //==========================================================================================//
 //  High scale limit of the high energy limit of the gluon coefficient function
 //  for FL at O(alpha_s^3) at leading log.
@@ -930,6 +947,11 @@ Value HighEnergyHighScaleCoefficientFunction::CL_ps3_highenergy_highscale(
 double HighEnergyHighScaleCoefficientFunction::CL_ps3_highenergy_highscaleLL(double x, double m2Q2, double m2mu2) const {
 
     return CF / CA * CL_g3_highenergy_highscaleLL(x, m2Q2, m2mu2);
+}
+
+Value HighEnergyHighScaleCoefficientFunction::CL_ps3_highenergy_highscaleNLL(double x, double m2Q2, double m2mu2, int nf) const {
+
+    return CF / CA * CL_g3_highenergy_highscaleNLL(x, m2Q2, m2mu2, nf);
 }
 
 //==========================================================================================//

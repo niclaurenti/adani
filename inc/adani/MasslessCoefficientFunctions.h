@@ -24,7 +24,7 @@
 class MasslessCoefficientFunction : public CoefficientFunction {
 
     public:
-        MasslessCoefficientFunction(const int& order, const char& kind, const char& channel) : CoefficientFunction(order, kind, channel) {} ;
+        MasslessCoefficientFunction(const int& order, const char& kind, const char& channel) ;
         ~MasslessCoefficientFunction() override {} ;
 
         double fx(double x, double m2Q2, double m2mu2, int nf) const override ;

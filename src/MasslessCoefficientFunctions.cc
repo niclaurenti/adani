@@ -8,6 +8,10 @@
 using std::cout;
 using std::endl;
 
+MasslessCoefficientFunction::MasslessCoefficientFunction(const int& order, const char& kind, const char& channel) : CoefficientFunction(order, kind, channel) {
+    SetFunctions();
+}
+
 double MasslessCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int nf) const {
     return MuIndependentTerms(x, nf) + MuDependentTerms(x, m2Q2, m2mu2, nf) ;
 }

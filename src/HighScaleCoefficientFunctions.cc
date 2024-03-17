@@ -23,6 +23,8 @@ HighScaleCoefficientFunction::HighScaleCoefficientFunction(const int& order, con
             a_muindep_ = new MatchingCondition(3, 'Q', GetChannel(), exact, revised_approx);
       }
 
+      SetFunctions();
+
 }
 
 HighScaleCoefficientFunction::~HighScaleCoefficientFunction() {
