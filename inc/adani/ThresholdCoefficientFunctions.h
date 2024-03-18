@@ -29,6 +29,8 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
 
         Value fxBand(double x, double m2Q2, double m2mu2, int nf) const override ;
 
+        double BetaIndependentTerms(double x, double m2Q2, double m2mu2) const;
+
         void SetFunctions() ;
 
     private:

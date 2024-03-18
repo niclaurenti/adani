@@ -34,22 +34,37 @@ struct variation_parameters {
     double fact;
 };
 
+struct klmv_params {
+    double gamma;
+    double C;
+    double log_coeff;
+    double log_pow;
+    double const_coeff;
+};
+
+class AbstractApproximate : public CoefficientFunction {
+    public:
+        AbstractApproximate(const int& order, const char& kind, const char& channel, const double& abserr = 1e-3, const double& relerr = 1e-3, const int& dim = 1000, const int& method_flag = 1, const int& MCcalls = 25000);
+        
+        double MuIndependentTerms(double x, double m2Q2, int nf) const override ;
+
+        Value fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
+        double MuDependentTerms(double x, double m2Q2, double m2mu2, int nf) const override;
+
+    private:
+        ExactCoefficientFunction* muterms_;
+};
+
 class ApproximateCoefficientFunction : public CoefficientFunction {
     public:
         ApproximateCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL = true, const bool& exact_highscale = false, const bool& revised_approx_highscale = true, const double& abserr = 1e-3, const double& relerr = 1e-3, const int& dim = 1000, const int& method_flag = 1, const int& MCcalls = 25000) ;
         ~ApproximateCoefficientFunction() override ;
 
-        double MuIndependentTerms(double x, double m2Q2, int nf) const override ;
-        double MuDependentTerms(double x, double m2Q2, double m2mu2, int nf) const override;
-
-        Value fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
         Value MuIndependentTermsBand(double x, double m2Q2, int nf) const override ;
 
     private:
         ThresholdCoefficientFunction* threshold_;
         AsymptoticCoefficientFunction* asymptotic_;
-
-        ExactCoefficientFunction* muterms_;
 
         struct approximation_parameters approximation_;
         struct variation_parameters variation_;
@@ -57,6 +72,27 @@ class ApproximateCoefficientFunction : public CoefficientFunction {
         double Approximation(double x, double m2Q2, double asy, double thresh, double A, double B, double C, double D) const;
 
 
+};
+
+class ApproximateCoefficientFunctionKLMV : public CoefficientFunction {
+    public:
+        ApproximateCoefficientFunctionKLMV(const int& order, const char& kind, const char& channel, const bool& revised_approx_highscale = true, const double& abserr = 1e-3, const double& relerr = 1e-3, const int& dim = 1000, const int& method_flag = 1, const int& MCcalls = 25000) ;
+        ~ApproximateCoefficientFunctionKLMV() override ;
+
+        Value MuIndependentTermsBand(double x, double m2Q2, int nf) const override ;
+
+    private:
+
+        ThresholdCoefficientFunction* threshold_;
+        HighScaleCoefficientFunction* highscale_;
+        HighEnergyCoefficientFunction* highenergy_;
+
+        struct klmv_params params_A_;
+        struct klmv_params params_B_;
+
+        double ApproximationA(double x, double m2Q2, double he_ll, double he_nll, double hs, double thr, double thr_const, double gamma, double C) const ;
+        double ApproximationB(double x, double m2Q2, double he_ll, double he_nll, double hs, double thr, double thr_const, double delta, double D) const ;
+        Value ApproximateNLL(double x, double m2Q2) const ;
 };
 
 // //==========================================================================================//

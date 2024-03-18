@@ -29,6 +29,7 @@ class Value {
     public:
         Value(const double& central, const double& higher, const double& lower) ;
         Value(const double& central);
+        Value(const double& higher, const double& lower) ;
         Value(const Value& value) ;
 
         double GetCentral() const {return central_;};

@@ -38,6 +38,22 @@ void ThresholdCoefficientFunction::SetFunctions() {
     }
 }
 
+double ThresholdCoefficientFunction::BetaIndependentTerms(double x, double m2Q2, double m2mu2) const {
+    if (GetChannel() == 'q') return 0.;
+    else if (GetChannel() == 'g') {
+        if (GetOrder() == 1 && GetKind() == '2') return 0. ;
+        else if (GetOrder() == 1 && GetKind() == 'L') return 0.;
+        else if (GetOrder() == 2 && GetKind() == '2') return C2_g2_threshold_const(x, m2Q2, m2mu2) ;
+        else if (GetOrder() == 2 && GetKind() == 'L') return CL_g2_threshold_const(x, m2Q2, m2mu2) ;
+        else if (GetOrder() == 3 && GetKind() == '2') return C2_g3_threshold_const(x, m2Q2, m2mu2) ;
+        else if (GetOrder() == 3 && GetKind() == 'L') return C2_g3_threshold_const(x, m2Q2, m2mu2) ;
+        else {
+            cout << "Error: something has gone wrong in ThresholdCoefficientFunction::SetFunctions!" << endl;
+            exit(-1);
+        }
+    }
+}
+
 //==========================================================================================//
 //  Threshold limit (x->xmax) of the gluon coefficient function for F2 at
 //  O(alpha_s). In order to pass to klmv normalization multiply

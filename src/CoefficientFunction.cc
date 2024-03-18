@@ -27,6 +27,18 @@ Value::Value(const double& central) {
     lower_ = central;
 }
 
+Value::Value(const double& higher, const double& lower) {
+
+    if (higher < lower) {
+        cout << "Error: class Value initialized with higher < lower!" << endl;
+        cout << "Got: higher=" << higher << ", lower=" << lower << endl;
+        exit(-1);
+    }
+    higher_ = higher;
+    lower_ = lower;
+    central_ = (higher + lower) / 2;
+}
+
 Value::Value(const Value& value) {
     central_ = value.central_;
     higher_ = value.higher_;
