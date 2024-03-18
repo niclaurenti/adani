@@ -38,7 +38,8 @@ double K_Qg2(double x, double m2mu2);
 class MatchingCondition {
     public:
         MatchingCondition(const int& order, const char& entry1, const char& entry2, const bool& exact, const bool& revised_approx) ;
-
+        ~MatchingCondition() {};
+        
         Value MuIndependentNfIndependentTerm(double x) const ;
 
     private:

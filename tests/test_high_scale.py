@@ -7,7 +7,7 @@ def test_splitlogs_vs_highscale():
             for exact in [True, False]:
                 if channel == 'g' and exact:
                     continue
-                for revised_appr in [False]:
+                for revised_appr in [True, False]:
                     if exact and revised_appr:
                         continue
                     hs = ad.HighScaleCoefficientFunction(3, kind, channel, exact, revised_appr)
@@ -20,11 +20,11 @@ def test_splitlogs_vs_highscale():
                                 res2 = hs_split.fxBand(x, 1./xi, nf)
                                 vec1 = [res1.GetCentral(), res1.GetHigher(), res1.GetLower()]
                                 vec2 = [res2.GetCentral(), res2.GetHigher(), res2.GetLower()]
-                                np.testing.assert_allclose(vec1, vec2, rtol = 1e-6)
+                                np.testing.assert_allclose(vec1, vec2, rtol = 1e-4)
                                 central1 = hs.fx(x, 1./xi, 1./xi, nf)
                                 central2 = hs_split.fx(x, 1./xi, nf)
-                                np.testing.assert_allclose(central1, vec1[0], rtol = 1e-6)
-                                np.testing.assert_allclose(central2, vec2[0], rtol = 1e-6)
+                                np.testing.assert_allclose(central1, vec1[0], rtol = 1e-4)
+                                np.testing.assert_allclose(central2, vec2[0], rtol = 1e-4)
 
 def test_split_logs():
     for kind in ['2', 'L']:

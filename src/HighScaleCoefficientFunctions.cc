@@ -10,11 +10,13 @@ using std::cout;
 using std::endl;
 
 HighScaleCoefficientFunction::HighScaleCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& exact, const bool& revised_approx) : CoefficientFunction(order, kind, channel) {
+      massless_lo_ = nullptr;
       massless_nlo_ = nullptr;
       massless_nnlo_ = nullptr;
       a_muindep_ = nullptr;
       
-      massless_lo_ = new MasslessCoefficientFunction(1, GetKind(), GetChannel());
+      if (GetChannel() == 'g')
+            massless_lo_ = new MasslessCoefficientFunction(1, GetKind(), GetChannel());
 
       if (order > 1) massless_nlo_ = new MasslessCoefficientFunction(2, GetKind(), GetChannel());
       if (order > 2) massless_nnlo_ = new MasslessCoefficientFunction(3, GetKind(), GetChannel());
@@ -47,19 +49,29 @@ void HighScaleCoefficientFunction::SetFunctions() {
     if (GetOrder() == 1) {
         if (GetKind() == '2' && GetChannel() == 'g') fx_ = &HighScaleCoefficientFunction::C2_g1_highscale;
         else if (GetKind() == 'L' && GetChannel() == 'g') fx_ = &HighScaleCoefficientFunction::CL_g1_highscale;
-
+        else {
+            cout << "Error: something has gone wrong in HighScaleCoefficientFunction::SetFunctions, GetOrder() == 1!" << endl;
+            exit(-1);
+        }
     } else if (GetOrder() == 2) {
-      if (GetOrder() == 2 && GetKind() == '2' && GetChannel() == 'g') fx_ = &HighScaleCoefficientFunction::C2_g2_highscale;
-      else if (GetOrder() == 2 && GetKind() == '2' && GetChannel() == 'q') fx_ = &HighScaleCoefficientFunction::C2_ps2_highscale;
-      else if (GetOrder() == 2 && GetKind() == 'L' && GetChannel() == 'g') fx_ = &HighScaleCoefficientFunction::CL_g2_highscale;
-      else if (GetOrder() == 2 && GetKind() == 'L' && GetChannel() == 'q') fx_ = &HighScaleCoefficientFunction::CL_ps2_highscale;
-    }
-
-    else if (GetOrder() == 3 && GetKind() == '2' && GetChannel() == 'g') fx_ = &HighScaleCoefficientFunction::C2_g3_highscale;
-    else if (GetOrder() == 3 && GetKind() == '2' && GetChannel() == 'q') fx_ = &HighScaleCoefficientFunction::C2_ps3_highscale;
-    else if (GetOrder() == 3 && GetKind() == 'L' && GetChannel() == 'g') fx_ = &HighScaleCoefficientFunction::CL_g3_highscale;
-    else if (GetOrder() == 3 && GetKind() == 'L' && GetChannel() == 'q') fx_ = &HighScaleCoefficientFunction::CL_ps3_highscale;
-    else {
+      if (GetKind() == '2' && GetChannel() == 'g') fx_ = &HighScaleCoefficientFunction::C2_g2_highscale;
+      else if (GetKind() == '2' && GetChannel() == 'q') fx_ = &HighScaleCoefficientFunction::C2_ps2_highscale;
+      else if (GetKind() == 'L' && GetChannel() == 'g') fx_ = &HighScaleCoefficientFunction::CL_g2_highscale;
+      else if (GetKind() == 'L' && GetChannel() == 'q') fx_ = &HighScaleCoefficientFunction::CL_ps2_highscale;
+      else {
+          cout << "Error: something has gone wrong in HighScaleCoefficientFunction::SetFunctions, GetOrder() == 2!" << endl;
+          exit(-1);
+        }
+    } else if (GetOrder() == 3) {
+      if (GetKind() == '2' && GetChannel() == 'g') fx_ = &HighScaleCoefficientFunction::C2_g3_highscale;
+      else if (GetKind() == '2' && GetChannel() == 'q') fx_ = &HighScaleCoefficientFunction::C2_ps3_highscale;
+      else if (GetKind() == 'L' && GetChannel() == 'g') fx_ = &HighScaleCoefficientFunction::CL_g3_highscale;
+      else if (GetKind() == 'L' && GetChannel() == 'q') fx_ = &HighScaleCoefficientFunction::CL_ps3_highscale;
+      else {
+          cout << "Error: something has gone wrong in HighScaleCoefficientFunction::SetFunctions, GetOrder() == 3!" << endl;
+          exit(-1);
+        }
+    } else {
         cout << "Error: something has gone wrong in HighScaleCoefficientFunction::SetFunctions!" << endl;
         exit(-1);
     }
@@ -104,7 +116,7 @@ Value HighScaleCoefficientFunction::CL_g1_highscale(double x, double /*m2Q2*/, d
 
 double HighScaleCoefficientFunction::D2_g1_highscale(double x, double m2Q2) const {
 
-    return massless_lo_->MuIndependentTerms(x, 1) + 2. * K_Qg1(x, m2Q2);
+    return massless_lo_ -> MuIndependentTerms(x, 1) + 2. * K_Qg1(x, m2Q2);
 }
 
 //==========================================================================================//
@@ -113,7 +125,7 @@ double HighScaleCoefficientFunction::D2_g1_highscale(double x, double m2Q2) cons
 //------------------------------------------------------------------------------------------//
 
 double HighScaleCoefficientFunction::DL_g1_highscale(double x) const {
-    return massless_lo_->MuIndependentTerms(x, 1);
+    return massless_lo_ -> MuIndependentTerms(x, 1);
 }
 
 //==========================================================================================//

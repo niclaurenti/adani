@@ -51,6 +51,9 @@ double ThresholdCoefficientFunction::BetaIndependentTerms(double x, double m2Q2,
             cout << "Error: something has gone wrong in ThresholdCoefficientFunction::SetFunctions!" << endl;
             exit(-1);
         }
+    } else {
+        cout << "Error: something has gone wrong in ThresholdCoefficientFunction::SetFunctions!" << endl;
+        exit(-1);
     }
 }
 

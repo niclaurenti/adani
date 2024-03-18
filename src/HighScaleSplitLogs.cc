@@ -15,14 +15,17 @@ HighScaleSplitLogs::HighScaleSplitLogs(const int& order, const char& kind, const
       exit(-1);
    }
 
+   massless_lo_ = nullptr;
    a_muindep_ = nullptr;
 
-   massless_lo_ = new MasslessCoefficientFunction(1, GetKind(), GetChannel());
+   if (GetChannel() == 'g')
+      massless_lo_ = new MasslessCoefficientFunction(1, GetKind(), GetChannel());
+   
    massless_ = new MasslessCoefficientFunction(GetOrder(), GetKind(), GetChannel());
    
-   if (GetOrder() == 3 && GetKind() == '2') {
-            a_muindep_ = new MatchingCondition(3, 'Q', GetChannel(), exact, revised_approx);
-   }
+    if (GetOrder() == 3 && GetKind() == '2') {
+        a_muindep_ = new MatchingCondition(3, 'Q', GetChannel(), exact, revised_approx);
+    }
 
    SetFunctions();
 }
@@ -30,6 +33,7 @@ HighScaleSplitLogs::HighScaleSplitLogs(const int& order, const char& kind, const
 HighScaleSplitLogs::~HighScaleSplitLogs() {
    delete massless_;
    delete massless_lo_;
+   delete a_muindep_;
 }
 
 double HighScaleSplitLogs::fx(double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const {

@@ -57,7 +57,7 @@ struct approximation_parameters CL_ps3_params = {20., 11., 3., 2.};
 struct variation_parameters C2_var = {0.3, 3.};
 struct variation_parameters CL_var = {0.2, 2.};
 
-ApproximateCoefficientFunction::ApproximateCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL, const bool& exact_highscale, const bool& revised_approx_highscale, const double& abserr, const double& relerr, const int& dim, const int& method_flag, const int& MCcalls) : CoefficientFunction(order, kind, channel) {
+ApproximateCoefficientFunction::ApproximateCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL, const bool& exact_highscale, const bool& revised_approx_highscale, const double& abserr, const double& relerr, const int& dim, const int& method_flag, const int& MCcalls) : AbstractApproximate(order, kind, channel, abserr, relerr, dim, method_flag, MCcalls) {
     
     threshold_ = new ThresholdCoefficientFunction(order, kind, channel);
     asymptotic_ = new AsymptoticCoefficientFunction(order, kind, channel, NLL, exact_highscale, revised_approx_highscale);
@@ -167,7 +167,7 @@ struct klmv_params klmv_C2q3A = {1., 20., 0.004, 4, 0.125};
 struct klmv_params klmv_C2q3B = {0.8, 10.7, 0.0245, 2, 0.17};
 // struct klmv_params klmv_C2gB_lowxi = {0.8, 10.7, 0.055, 2, 0.423};
 
-ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(const int& order, const char& kind, const char& channel, const bool& revised_approx_highscale, const double& abserr, const double& relerr, const int& dim, const int& method_flag, const int& MCcalls) : CoefficientFunction(order, kind, channel) {
+ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(const int& order, const char& kind, const char& channel, const bool& revised_approx_highscale, const double& abserr, const double& relerr, const int& dim, const int& method_flag, const int& MCcalls) : AbstractApproximate(order, kind, channel, abserr, relerr, dim, method_flag, MCcalls) {
     if (GetOrder() == 1) {
         cout << "Error: KLMV approximation is not implemented at O(as)!" << endl;
         exit(-1);
