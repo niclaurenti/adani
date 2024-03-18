@@ -4,10 +4,8 @@ on: push
 
 jobs:
   build:
-    strategy:
-      matrix:
-        os: [ubunt-lastest, macos-14]
-    runs-on: ${{matrix.os}}
+
+    runs-on: ubuntu-latest
     container:
           image: ghcr.io/nnpdf/lhapdf:v2.2.8
           # image: ghcr.io/catthehacker/ubuntu:full-latest
