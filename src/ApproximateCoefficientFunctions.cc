@@ -28,7 +28,7 @@ double AbstractApproximate::MuIndependentTerms(double x, double m2Q2, int nf) co
 
 Value AbstractApproximate::fxBand(double x, double m2Q2, double m2mu2, int nf) const  {
     double x_max = 1. / (1. + 4 * m2Q2);
-    if (x >= x_max || x < 0)
+    if (x >= x_max || x <= 0)
         return 0;
 
     return MuIndependentTermsBand(x, m2Q2, nf) + MuDependentTerms(x, m2Q2, m2mu2, nf);
@@ -111,7 +111,7 @@ Value ApproximateCoefficientFunction::MuIndependentTermsBand(double x, double m2
     double Amax = fact * A, Amin = A / fact, Bmax = B * fact, Bmin = B / fact;
     double Cmax = (1. + var) * C, Cmin = (1. - var) * C, Dmax = (1. + var) * D, Dmin = (1. - var) * D;
 
-    double Avec[3] = { A, Amin, Amax };
+    double Avec[3] = { A, Amax, Amin };
     double Bvec[3] = { B, Bmax, Bmin };
     double Cvec[3] = { C, Cmax, Cmin };
     double Dvec[3] = { D, Dmax, Dmin };

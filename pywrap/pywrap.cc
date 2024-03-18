@@ -31,6 +31,16 @@ PYBIND11_MODULE(_core, m) {
         .def("MuDependentTermsBand", &ApproximateCoefficientFunction::MuDependentTermsBand)
         .def("fxBand", &ApproximateCoefficientFunction::fxBand);
 
+    // ApproximateCoefficientFunctionKLMV
+    py::class_<ApproximateCoefficientFunctionKLMV>(m, "ApproximateCoefficientFunctionKLMV")
+        .def(py::init<const int&, const char&, const char&, const bool&, const double&, const double&, const int&, const int&, const int&>())
+        .def("MuIndependentTerms", &ApproximateCoefficientFunctionKLMV::MuIndependentTerms)
+        .def("MuDependentTerms", &ApproximateCoefficientFunctionKLMV::MuDependentTerms)
+        .def("fx", &ApproximateCoefficientFunctionKLMV::fx)
+        .def("MuIndependentTermsBand", &ApproximateCoefficientFunctionKLMV::MuIndependentTermsBand)
+        .def("MuDependentTermsBand", &ApproximateCoefficientFunctionKLMV::MuDependentTermsBand)
+        .def("fxBand", &ApproximateCoefficientFunctionKLMV::fxBand);
+
     // AsymptoticCoefficientFunction
     py::class_<AsymptoticCoefficientFunction>(m, "AsymptoticCoefficientFunction")
         .def(py::init<const int&, const char&, const char&, const bool&, const bool&, const bool&>())

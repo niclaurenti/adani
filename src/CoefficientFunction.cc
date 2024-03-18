@@ -50,21 +50,7 @@ vector<double> Value::ToVect() const {
 }
 
 Value Value::operator+(const Value& rhs) const {
-    double res_central = central_ + rhs.central_;
-    double res_higher = res_central, res_lower = res_central;
-    
-    double vec_lhs[3] = {central_, higher_, lower_};
-    double vec_rhs[3] = {rhs.central_, rhs.higher_, rhs.lower_};
-
-    double tmp;
-    for (int i=0; i<3; i++) {
-        for(int j=0; j<3; j++) {
-            tmp = vec_lhs[i] + vec_rhs[j];
-            if (tmp > res_higher) res_higher = tmp;
-            if (tmp < res_lower) res_higher = tmp;
-        }
-    }
-    return Value(res_central, res_higher, res_lower);
+    return Value(central_ + rhs.central_, higher_ + rhs.higher_, lower_ + rhs.lower_);
 }
 
 // Value Value::operator-(const Value& rhs) const {
