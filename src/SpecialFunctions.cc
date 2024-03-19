@@ -158,9 +158,10 @@ double S12(double x) {
     }
 
     else if ((0 < x) && (x < 1)) {
+        double logxm = log(1. - x);
         return (
-            -Li3(1. - x) + zeta3 + log(1. - x) * Li2(1. - x)
-            + 0.5 * log(x) * log(1. - x) * log(1. - x)
+            -Li3(1. - x) + zeta3 + logxm * Li2(1. - x)
+            + 0.5 * log(x) * logxm * logxm
         );
     }
 
