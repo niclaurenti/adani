@@ -277,7 +277,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 }
 
 // //==========================================================================================//
-// //  Approximate gluon coefficient function for F2 at O(alpha_s) with implicit
+// //  Approximate gluon coefficient function for F2 at O(as) with implicit
 // //  parameters.
 // //------------------------------------------------------------------------------------------//
 
@@ -297,7 +297,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 // }
 
 // //==========================================================================================//
-// //  Approximate gluon coefficient function for F2 at O(alpha_s).
+// //  Approximate gluon coefficient function for F2 at O(as).
 // //  Used for validation of the method.
 // //------------------------------------------------------------------------------------------//
 
@@ -327,7 +327,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 // }
 
 // //==========================================================================================//
-// //  Approximate gluon coefficient function for FL at O(alpha_s).
+// //  Approximate gluon coefficient function for FL at O(as).
 // //  Used for validation of the method.
 // //------------------------------------------------------------------------------------------//
 
@@ -357,7 +357,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 // }
 
 // //==========================================================================================//
-// //  Approximate gluon coefficient function for F2 at O(alpha_s^2).
+// //  Approximate gluon coefficient function for F2 at O(as^2).
 // //  Used for validation of the method.
 // //------------------------------------------------------------------------------------------//
 
@@ -377,7 +377,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 
 // //==========================================================================================//
 // //  Approximate mu-independent term of the gluon coefficient function for F2 at
-// //  O(alpha_s^2).
+// //  O(as^2).
 // //------------------------------------------------------------------------------------------//
 
 // double C2_g20_approximation(double x, double m2Q2) {
@@ -394,7 +394,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 
 // //==========================================================================================//
 // //  Approximate mu-independent term of the gluon coefficient function for F2 at
-// //  O(alpha_s) with implicit parameters.
+// //  O(as) with implicit parameters.
 // //------------------------------------------------------------------------------------------//
 
 // double C2_g20_approximation_implicit(
@@ -420,7 +420,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 
 // //==========================================================================================//
 // //  Band of the approximate mu-independent term of the gluon coefficient
-// //  function for F2 at O(alpha_s^2).
+// //  function for F2 at O(as^2).
 // //------------------------------------------------------------------------------------------//
 
 // double C2_g20_approximation_BAND(
@@ -484,7 +484,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 // }
 
 // //==========================================================================================//
-// //  Approximate quark coefficient function for F2 at O(alpha_s^2).
+// //  Approximate quark coefficient function for F2 at O(as^2).
 // //  Used for validation of the method.
 // //------------------------------------------------------------------------------------------//
 
@@ -504,7 +504,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 
 // //==========================================================================================//
 // //  Approximate mu-independent term of the quark coefficient function for F2 at
-// //  O(alpha_s^2).
+// //  O(as^2).
 // //------------------------------------------------------------------------------------------//
 
 // double C2_ps20_approximation(double x, double m2Q2) {
@@ -521,7 +521,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 
 // //==========================================================================================//
 // //  Approximate mu-independent term of the quark coefficient function for F2 at
-// //  O(alpha_s^2) with implicit parameters.
+// //  O(as^2) with implicit parameters.
 // //------------------------------------------------------------------------------------------//
 
 // double C2_ps20_approximation_implicit(
@@ -547,7 +547,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 
 // //==========================================================================================//
 // //  Band of the approximate mu-independent term of the quark coefficient
-// //  function for F2 at O(alpha_s^2).
+// //  function for F2 at O(as^2).
 // //------------------------------------------------------------------------------------------//
 
 // double C2_ps20_approximation_BAND(
@@ -611,7 +611,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 // }
 
 // //==========================================================================================//
-// //  Approximate gluon coefficient function for FL at O(alpha_s^2).
+// //  Approximate gluon coefficient function for FL at O(as^2).
 // //  Used for validation of the method.
 // //------------------------------------------------------------------------------------------//
 
@@ -631,7 +631,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 
 // //==========================================================================================//
 // //  Approximate mu-independent term of the gluon coefficient function for FL at
-// //  O(alpha_s^2).
+// //  O(as^2).
 // //------------------------------------------------------------------------------------------//
 
 // double CL_g20_approximation(double x, double m2Q2) {
@@ -648,7 +648,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 
 // //==========================================================================================//
 // //  Approximate mu-independent term of the gluon coefficient function for FL at
-// //  O(alpha_s) with implicit parameters.
+// //  O(as) with implicit parameters.
 // //------------------------------------------------------------------------------------------//
 
 // double CL_g20_approximation_implicit(
@@ -674,7 +674,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 
 // //==========================================================================================//
 // //  Band of the approximate mu-independent term of the gluon coefficient
-// //  function for FL at O(alpha_s^2).
+// //  function for FL at O(as^2).
 // //------------------------------------------------------------------------------------------//
 
 // double CL_g20_approximation_BAND(
@@ -738,7 +738,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 // }
 
 // //==========================================================================================//
-// //  Approximate quark coefficient function for FL at O(alpha_s^2).
+// //  Approximate quark coefficient function for FL at O(as^2).
 // //  Used for validation of the method.
 // //------------------------------------------------------------------------------------------//
 
@@ -758,7 +758,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 
 // //==========================================================================================//
 // //  Approximate mu-independent term of the quark coefficient function for FL at
-// //  O(alpha_s^2).
+// //  O(as^2).
 // //------------------------------------------------------------------------------------------//
 
 // double CL_ps20_approximation(double x, double m2Q2) {
@@ -775,7 +775,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 
 // //==========================================================================================//
 // //  Approximate mu-independent term of the quark coefficient function for FL at
-// //  O(alpha_s^2) with implicit parameters.
+// //  O(as^2) with implicit parameters.
 // //------------------------------------------------------------------------------------------//
 
 // double CL_ps20_approximation_implicit(
@@ -799,7 +799,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 
 // //==========================================================================================//
 // //  Band of the approximate mu-independent term of the quark coefficient
-// //  function for FL at O(alpha_s^2).
+// //  function for FL at O(as^2).
 // //------------------------------------------------------------------------------------------//
 
 // double CL_ps20_approximation_BAND(
@@ -862,7 +862,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 //     }
 // }
 // //==========================================================================================//
-// //  Approximate gluon coefficient function for F2 at O(alpha_s^3).
+// //  Approximate gluon coefficient function for F2 at O(as^3).
 // //------------------------------------------------------------------------------------------//
 
 // double C2_g3_approximation(
@@ -888,7 +888,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 
 // //==========================================================================================//
 // //  Approximate mu-independent term of the gluon coefficient function for F2 at
-// //  O(alpha_s^3).
+// //  O(as^3).
 // //------------------------------------------------------------------------------------------//
 
 // double C2_g30_approximation(double x, double m2Q2, int nf) {
@@ -906,7 +906,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 
 // //==========================================================================================//
 // //  Approximate mu-independent term of the gluon coefficient function for F2 at
-// //  O(alpha_s^3) with implicit parameters.
+// //  O(as^3) with implicit parameters.
 // //------------------------------------------------------------------------------------------//
 
 // double C2_g30_approximation_implicit(
@@ -930,7 +930,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 
 // //==========================================================================================//
 // //  Band of the approximate mu-independent term of the gluon coefficient
-// //  function for F2 at O(alpha_s^3).
+// //  function for F2 at O(as^3).
 // //------------------------------------------------------------------------------------------//
 
 // double C2_g30_approximation_BAND(
@@ -1000,7 +1000,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 // }
 
 // //==========================================================================================//
-// //  Approximate quark coefficient function for F2 at O(alpha_s^3).
+// //  Approximate quark coefficient function for F2 at O(as^3).
 // //------------------------------------------------------------------------------------------//
 
 // double
@@ -1024,7 +1024,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 
 // //==========================================================================================//
 // //  Approximate mu-independent term of the quark coefficient function for F2 at
-// //  O(alpha_s^3).
+// //  O(as^3).
 // //------------------------------------------------------------------------------------------//
 
 // double C2_ps30_approximation(double x, double m2Q2, int nf) {
@@ -1041,7 +1041,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 
 // //==========================================================================================//
 // //  Approximate mu-independent term of the quark coefficient function for F2 at
-// //  O(alpha_s^3) with implicit parameters.
+// //  O(as^3) with implicit parameters.
 // //------------------------------------------------------------------------------------------//
 
 // double C2_ps30_approximation_implicit(
@@ -1064,7 +1064,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 
 // //==========================================================================================//
 // //  Band of the approximate mu-independent term of the quark coefficient
-// //  function for F2 at O(alpha_s^3).
+// //  function for F2 at O(as^3).
 // //------------------------------------------------------------------------------------------//
 
 // double C2_ps30_approximation_BAND(
@@ -1132,7 +1132,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 // }
 
 // //==========================================================================================//
-// //  Approximate gluon coefficient function for FL at O(alpha_s^3).
+// //  Approximate gluon coefficient function for FL at O(as^3).
 // //------------------------------------------------------------------------------------------//
 
 // double CL_g3_approximation(
@@ -1158,7 +1158,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 
 // //==========================================================================================//
 // //  Approximate mu-independent term of the gluon coefficient function for F2 at
-// //  O(alpha_s^3).
+// //  O(as^3).
 // //------------------------------------------------------------------------------------------//
 
 // double CL_g30_approximation(double x, double m2Q2, int nf) {
@@ -1175,7 +1175,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 
 // //==========================================================================================//
 // //  Approximate mu-independent term of the gluon coefficient function for FL at
-// //  O(alpha_s^3) with implicit parameters.
+// //  O(as^3) with implicit parameters.
 // //------------------------------------------------------------------------------------------//
 
 // double CL_g30_approximation_implicit(
@@ -1199,7 +1199,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 
 // //==========================================================================================//
 // //  Band of the approximate mu-independent term of the gluon coefficient
-// //  function for FL at O(alpha_s^3).
+// //  function for FL at O(as^3).
 // //------------------------------------------------------------------------------------------//
 
 // double CL_g30_approximation_BAND(
@@ -1267,7 +1267,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 // }
 
 // //==========================================================================================//
-// //  Approximate quark coefficient funtcions for FL at O(alpha_s^3).
+// //  Approximate quark coefficient funtcions for FL at O(as^3).
 // //------------------------------------------------------------------------------------------//
 
 // double
@@ -1291,7 +1291,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 
 // //==========================================================================================//
 // //  Approximate mu-independent term of the quark coefficient function for F2 at
-// //  O(alpha_s^3).
+// //  O(as^3).
 // //------------------------------------------------------------------------------------------//
 
 // double CL_ps30_approximation(double x, double m2Q2, int nf) {
@@ -1308,7 +1308,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 
 // //==========================================================================================//
 // //  Approximate mu-independent term of the quark coefficient function for FL at
-// //  O(alpha_s^3) with implicit parameters.
+// //  O(as^3) with implicit parameters.
 // //------------------------------------------------------------------------------------------//
 
 // double CL_ps30_approximation_implicit(
@@ -1331,7 +1331,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 
 // //==========================================================================================//
 // //  Band of the approximate mu-independent term of the quark coefficient
-// //  function for FL at O(alpha_s^3).
+// //  function for FL at O(as^3).
 // //------------------------------------------------------------------------------------------//
 
 // double CL_ps30_approximation_BAND(
@@ -1399,7 +1399,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 // }
 
 // //==========================================================================================//
-// //  Approximate gluon coefficient funtcions for F2 at O(alpha_s^2) from
+// //  Approximate gluon coefficient funtcions for F2 at O(as^2) from
 // //  [arXiv:1205.5727]. klmv = Kawamura, Lo Presti, Moch, Vogt. Upper band (i.e.
 // //  approximation A)
 // //
@@ -1439,7 +1439,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 // }
 
 // //==========================================================================================//
-// //  Approximate gluon coefficient funtcions for F2 at O(alpha_s^2) from
+// //  Approximate gluon coefficient funtcions for F2 at O(as^2) from
 // //  [arXiv:1205.5727]. klmv = Kawamura, Lo Presti, Moch, Vogt Lower band (i.e.
 // //  approximation B)
 // //
@@ -1478,7 +1478,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 // }
 
 // //==========================================================================================//
-// //  Approximate quark coefficient funtcions for F2 at O(alpha_s^2) from
+// //  Approximate quark coefficient funtcions for F2 at O(as^2) from
 // //  [arXiv:1205.5727]. klmv = Kawamura, Lo Presti, Moch, Vogt. Upper band (i.e.
 // //  approximation A)
 // //
@@ -1516,7 +1516,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 // }
 
 // //==========================================================================================//
-// //  Approximate quark coefficient funtcions for F2 at O(alpha_s^2) from
+// //  Approximate quark coefficient funtcions for F2 at O(as^2) from
 // //  [arXiv:1205.5727]. klmv = Kawamura, Lo Presti, Moch, Vogt. Lower band (i.e.
 // //  approximation B)
 // //
@@ -1554,7 +1554,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 // }
 
 // //==========================================================================================//
-// //  Approximate gluon coefficient funtcions for F2 at O(alpha_s^3) from
+// //  Approximate gluon coefficient funtcions for F2 at O(as^3) from
 // //  [arXiv:1205.5727]. klmv = Kawamura, Lo Presti, Moch, Vogt. Upper band (i.e.
 // //  approximation A)
 // //
@@ -1610,7 +1610,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 // }
 
 // //==========================================================================================//
-// //  Approximate gluon coefficient funtcions for F2 at O(alpha_s^3) from
+// //  Approximate gluon coefficient funtcions for F2 at O(as^3) from
 // //  [arXiv:1205.5727]. klmv = Kawamura, Lo Presti, Moch, Vogt. Lower band (i.e.
 // //  approximation B)
 // //
@@ -1667,7 +1667,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 // }
 
 // //==========================================================================================//
-// //  Approximate gluon coefficient funtcions for F2 at O(alpha_s^3) from
+// //  Approximate gluon coefficient funtcions for F2 at O(as^3) from
 // //  [arXiv:1205.5727]. klmv = Kawamura, Lo Presti, Moch, Vogt. Lower band (i.e.
 // //  approximation B).
 // //
@@ -1725,7 +1725,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 // }
 
 // //==========================================================================================//
-// //  Approximate gluon coefficient funtcions for F2 at O(alpha_s^3) from
+// //  Approximate gluon coefficient funtcions for F2 at O(as^3) from
 // //  [arXiv:1205.5727]. klmv = Kawamura, Lo Presti, Moch, Vogt. Lower band (i.e.
 // //  approximation B) with the low xi limit.
 // //
@@ -1784,7 +1784,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 // }
 
 // //==========================================================================================//
-// //  Approximate quark coefficient funtcions for F2 at O(alpha_s^3) from
+// //  Approximate quark coefficient funtcions for F2 at O(as^3) from
 // //  [arXiv:1205.5727]. klmv = Kawamura, Lo Presti, Moch, Vogt. Upper band (i.e.
 // //  approximation A).
 // //
@@ -1836,7 +1836,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 // }
 
 // //==========================================================================================//
-// //  Approximate quark coefficient funtcions for F2 at O(alpha_s^3) from
+// //  Approximate quark coefficient funtcions for F2 at O(as^3) from
 // //  [arXiv:1205.5727]. klmv = Kawamura, Lo Presti, Moch, Vogt. Lower band (i.e.
 // //  approximation B).
 // //
@@ -1888,7 +1888,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 // }
 
 // //==========================================================================================//
-// //  Approximate quark coefficient funtcions for F2 at O(alpha_s^3) from
+// //  Approximate quark coefficient funtcions for F2 at O(as^3) from
 // //  [arXiv:1205.5727]. klmv = Kawamura, Lo Presti, Moch, Vogt. Upper band (i.e.
 // //  approximation A).
 // //
@@ -1943,7 +1943,7 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(double x, double m2Q2) 
 // }
 
 // //==========================================================================================//
-// //  Approximate quark coefficient funtcions for F2 at O(alpha_s^3) from
+// //  Approximate quark coefficient funtcions for F2 at O(as^3) from
 // //  [arXiv:1205.5727]. klmv = Kawamura, Lo Presti, Moch, Vogt. Lower band (i.e.
 // //  approximation B).
 // //

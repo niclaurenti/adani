@@ -85,7 +85,7 @@ if(PYTHON_ONLY)
         src/hqcoef.f
         src/HighScaleCoefficientFunctions.cc
         src/HighScaleSplitLogs.cc
-        src/SplittingFunctions.cc
+        src/SplittingFunction.cc
     )
     target_link_libraries(_core PRIVATE GSL::gsl GSL::gslcblas)
     # target_link_libraries(_core PRIVATE gsl gslcblas)
@@ -109,7 +109,7 @@ else(PYTHON_ONLY)
         src/hqcoef.f
         src/HighScaleCoefficientFunctions.cc
         src/HighScaleSplitLogs.cc
-        src/SplittingFunctions.cc
+        src/SplittingFunction.cc
     )
 
     # define libraries to be linked

@@ -9,7 +9,7 @@
  *         Author:  L'artiglio che graffia
  *
  *  In this file there is the approximation for the unknown
- * O(alpha_s^3) DIS massive coefficient functions.
+ * O(as^3) DIS massive coefficient functions.
  *
  * =====================================================================================
  */
@@ -98,7 +98,7 @@ class ApproximateCoefficientFunctionKLMV : public AbstractApproximate {
 
 // //==========================================================================================//
 // //                      Approximate coefficient functions
-// //                      O(alpha_s)
+// //                      O(as)
 // //------------------------------------------------------------------------------------------//
 
 // double C2_g1_approximation_implicit(double x, double m2Q2, double k, double h);
@@ -107,7 +107,7 @@ class ApproximateCoefficientFunctionKLMV : public AbstractApproximate {
 
 // //==========================================================================================//
 // //                      Approximate coefficient functions
-// //                      O(alpha_s^2)
+// //                      O(as^2)
 // //------------------------------------------------------------------------------------------//
 
 // double C2_g2_approximation(double x, double m2Q2, double m2mu2, int v = 0);
@@ -152,7 +152,7 @@ class ApproximateCoefficientFunctionKLMV : public AbstractApproximate {
 
 // //==========================================================================================//
 // //                      Approximate coefficient functions
-// //                      O(alpha_s^3)
+// //                      O(as^3)
 // //------------------------------------------------------------------------------------------//
 
 // #define default_method 0
@@ -206,7 +206,7 @@ class ApproximateCoefficientFunctionKLMV : public AbstractApproximate {
 
 // //==========================================================================================//
 // //              Approximate coefficient functions
-// //              O(alpha_s^2) from [arXiv:1205.5727] klmv =
+// //              O(as^2) from [arXiv:1205.5727] klmv =
 // //              Kawamura, Lo Presti, Moch, Vogt
 // //------------------------------------------------------------------------------------------//
 
@@ -218,7 +218,7 @@ class ApproximateCoefficientFunctionKLMV : public AbstractApproximate {
 
 // //==========================================================================================//
 // //              Approximate coefficient functions
-// //              O(alpha_s^3) from [arXiv:1205.5727] klmv =
+// //              O(as^3) from [arXiv:1205.5727] klmv =
 // //              Kawamura, Lo Presti, Moch, Vogt
 // //------------------------------------------------------------------------------------------//
 

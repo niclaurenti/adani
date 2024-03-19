@@ -13,7 +13,7 @@
 #include "adani/MasslessCoefficientFunctions.h"
 #include "adani/MatchingConditions.h"
 #include "adani/SpecialFunctions.h"
-#include "adani/SplittingFunctions.h"
+#include "adani/SplittingFunction.h"
 #include "adani/ThresholdCoefficientFunction.h"
 
 #endif

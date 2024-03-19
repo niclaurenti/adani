@@ -44,7 +44,7 @@ class AbstractHighEnergyCoefficientFunction : public CoefficientFunction {
         bool NLL_ ;
 
     //==========================================================================================//
-    //                  Color factors O(alpha_s^3)
+    //                  Color factors O(as^3)
     //------------------------------------------------------------------------------------------//
 
     protected:
@@ -69,7 +69,7 @@ class HighEnergyCoefficientFunction : public AbstractHighEnergyCoefficientFuncti
 
         //==========================================================================================//
         //                      High energy coefficient functions
-        //                      O(alpha_s^2)
+        //                      O(as^2)
         //------------------------------------------------------------------------------------------//
 
         double C2_g2_highenergy(double x, double m2Q2, double m2mu2) const ;
@@ -79,7 +79,7 @@ class HighEnergyCoefficientFunction : public AbstractHighEnergyCoefficientFuncti
 
         //==========================================================================================//
         //                      High energy coefficient functions
-        //                      O(alpha_s^3) at leading log
+        //                      O(as^3) at leading log
         //------------------------------------------------------------------------------------------//
 
         double C2_g3_highenergyLL(double x, double m2Q2, double m2mu2) const ;
@@ -94,7 +94,7 @@ class HighEnergyCoefficientFunction : public AbstractHighEnergyCoefficientFuncti
 
         //==========================================================================================//
         //                      High energy coefficient functions
-        //                      O(alpha_s^3)
+        //                      O(as^3)
         //------------------------------------------------------------------------------------------//
 
         Value C2_g3_highenergy(double x, double m2Q2, double m2mu2, int nf) const ;
@@ -124,7 +124,7 @@ class HighEnergyHighScaleCoefficientFunction : public AbstractHighEnergyCoeffici
 
         //==========================================================================================//
         //                      Q>>m limit of the high energy
-        //                      coefficient functions O(alpha_s^2)
+        //                      coefficient functions O(as^2)
         //------------------------------------------------------------------------------------------//
 
         double C2_g2_highenergy_highscale(double x, double m2Q2, double m2mu2) const ;
@@ -134,7 +134,7 @@ class HighEnergyHighScaleCoefficientFunction : public AbstractHighEnergyCoeffici
 
         //==========================================================================================//
         //  Q>>m limit of the high energy coefficient functions
-        //  O(alpha_s^3) at leading log
+        //  O(as^3) at leading log
         //------------------------------------------------------------------------------------------//
 
         double C2_g3_highenergy_highscaleLL(double x, double m2Q2, double m2mu2) const;
@@ -149,7 +149,7 @@ class HighEnergyHighScaleCoefficientFunction : public AbstractHighEnergyCoeffici
 
         //==========================================================================================//
         //                  Q^2>>m^2 limit of the high energy
-        //                  coefficient functions O(alpha_s^3)
+        //                  coefficient functions O(as^3)
         //------------------------------------------------------------------------------------------//
 
         Value

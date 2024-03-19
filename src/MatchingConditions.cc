@@ -69,7 +69,7 @@ Value MatchingCondition::MuIndependentNfIndependentTerm(double x) const {
 }
 
 //==========================================================================================//
-//  Matching condition Qg O(alpha_s)
+//  Matching condition Qg O(as)
 //
 //  Eq. (B.2) from Ref. [arXiv:hep-ph/9612398v1]
 //------------------------------------------------------------------------------------------//
@@ -80,7 +80,7 @@ double K_Qg1(double x, double m2mu2) {
 }
 
 //==========================================================================================//
-//  Local part of the matching condition gg O(alpha_s)
+//  Local part of the matching condition gg O(as)
 //
 //  Eq. (B.6) from Ref. [arXiv:hep-ph/9612398v1]
 //------------------------------------------------------------------------------------------//
@@ -88,7 +88,7 @@ double K_Qg1(double x, double m2mu2) {
 double K_gg1_local(double m2mu2) { return -4. / 3. * TR * log(1. / m2mu2); }
 
 //==========================================================================================//
-//  Matching condition Qg O(alpha_s^2)
+//  Matching condition Qg O(as^2)
 //
 //  Eq. (B.3) from Ref. [arXiv:hep-ph/9612398v1]
 //------------------------------------------------------------------------------------------//
@@ -183,7 +183,7 @@ double K_Qg2(double x, double m2mu2) {
 
 //==========================================================================================//
 //  Approximation of the nf-independent part of the mu-independent part of the
-//  unrenormalized matching condition Qg at O(alpha_s^3).
+//  unrenormalized matching condition Qg at O(as^3).
 //
 //  v = 0 : center of the band given by v = 1 and v = 2
 //  v = 1 : Eq. (3.49) of Ref. [arXiv:1205.5727]
@@ -231,7 +231,7 @@ double MatchingCondition::a_Qg_30(double x, int v) const {
 
 //==========================================================================================//
 //  nf-independent part of the mu-independent part of the unrenormalized
-//  matching condition Qq at O(alpha_s^3). Both the exact resul and the
+//  matching condition Qq at O(as^3). Both the exact resul and the
 //  approximate one are implemented. The latter is used just as benchmark for
 //  the plots of the paper.
 //

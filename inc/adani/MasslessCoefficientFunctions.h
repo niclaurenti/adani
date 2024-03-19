@@ -9,8 +9,8 @@
  *         Author:  Viva el Futbol
  *
  *  In this file there are the massless coefficient
- * functions. Observe that for the O(alpha_s^2) and
- * O(alpha_s^3) it is used a parameterization of the exact
+ * functions. Observe that for the O(as^2) and
+ * O(as^3) it is used a parameterization of the exact
  * result, being the latter a very long equation.
  *
  * =====================================================================================
@@ -41,7 +41,7 @@ class MasslessCoefficientFunction : public CoefficientFunction {
 
         //==========================================================================================//
         //                      Massless coefficient functions
-        //                      O(alpha_s)
+        //                      O(as)
         //------------------------------------------------------------------------------------------//
 
         double C2_g1_massless(double x, int nf) const;
@@ -49,7 +49,7 @@ class MasslessCoefficientFunction : public CoefficientFunction {
 
         //==========================================================================================//
         //                      Massless coefficient functions
-        //                      O(alpha_s^2)
+        //                      O(as^2)
         //------------------------------------------------------------------------------------------//
 
         double C2_g2_massless(double x, int nf) const;
@@ -59,7 +59,7 @@ class MasslessCoefficientFunction : public CoefficientFunction {
 
         //==========================================================================================//
         //                      Massless coefficient functions
-        //                      O(alpha_s^3)
+        //                      O(as^3)
         //------------------------------------------------------------------------------------------//
 
         double C2_g3_massless(double x, int nf) const;
@@ -76,7 +76,7 @@ class MasslessCoefficientFunction : public CoefficientFunction {
 
         //==========================================================================================//
         //                      Massless coefficient functions (parametrization)
-        //                      O(alpha_s^2)
+        //                      O(as^2)
         //------------------------------------------------------------------------------------------//
 
         // double C2_g2_massless_param(double x, int nf) const;
@@ -86,7 +86,7 @@ class MasslessCoefficientFunction : public CoefficientFunction {
 
         //==========================================================================================//
         //                      Massless coefficient functions (parametrization)
-        //                      O(alpha_s^3)
+        //                      O(as^3)
         //------------------------------------------------------------------------------------------//
 
         // double C2_g3_massless_param(double x, int nf) const;

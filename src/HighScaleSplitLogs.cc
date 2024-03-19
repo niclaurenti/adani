@@ -91,7 +91,7 @@ void HighScaleSplitLogs::SetFunctions() {
 
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for F2 at
-//  O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//  O(as^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
 //
 //  Coefficient of log(m^2/Q^2)^3
 //------------------------------------------------------------------------------------------//
@@ -237,7 +237,7 @@ double HighScaleSplitLogs::C2_g3_highscale_LL(double x, int nf) const {
 
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for F2 at
-//  O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//  O(as^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
 //
 //  Coefficient of log(m^2/Q^2)^2
 //------------------------------------------------------------------------------------------//
@@ -645,7 +645,7 @@ double HighScaleSplitLogs::C2_g3_highscale_NLL(double x, int nf) const {
 
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for F2 at
-//  O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//  O(as^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
 //
 //  Coefficient of log(m^2/Q^2)^1
 //------------------------------------------------------------------------------------------//
@@ -1593,7 +1593,7 @@ double HighScaleSplitLogs::C2_g3_highscale_N2LL(double x, int nf) const {
 
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for F2 at
-//  O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//  O(as^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
 //
 //  Coefficient of log(m^2/Q^2)^0
 //------------------------------------------------------------------------------------------//
@@ -2403,7 +2403,7 @@ Value HighScaleSplitLogs::C2_g3_highscale_N3LL(double x, int nf) const {
 
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the pure singlet coefficient functions for
-//  F2 at O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//  F2 at O(as^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
 //
 //  Coefficient of log(m^2/Q^2)^3
 //------------------------------------------------------------------------------------------//
@@ -2472,7 +2472,7 @@ double HighScaleSplitLogs::C2_ps3_highscale_LL(double x, int nf) const {
 
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the pure singlet coefficient functions for
-//  F2 at O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//  F2 at O(as^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
 //
 //  Coefficient of log(m^2/Q^2)^2
 //------------------------------------------------------------------------------------------//
@@ -2664,7 +2664,7 @@ double HighScaleSplitLogs::C2_ps3_highscale_NLL(double x, int nf) const {
 
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the pure singlet coefficient functions for
-//  F2 at O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//  F2 at O(as^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
 //
 //  Coefficient of log(m^2/Q^2)^1
 //------------------------------------------------------------------------------------------//
@@ -3064,7 +3064,7 @@ double HighScaleSplitLogs::C2_ps3_highscale_N2LL(double x, int nf) const {
 
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the pure singlet coefficient functions for
-//  F2 at O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//  F2 at O(as^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
 //
 //  Coefficient of log(m^2/Q^2)^0
 //------------------------------------------------------------------------------------------//
@@ -3439,7 +3439,7 @@ Value HighScaleSplitLogs::C2_ps3_highscale_N3LL(double x, int nf) const {
 
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for FL at
-//  O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//  O(as^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
 //
 //  Coefficient of log(m^2/Q^2)^2
 //------------------------------------------------------------------------------------------//
@@ -3466,7 +3466,7 @@ double HighScaleSplitLogs::CL_g3_highscale_NLL(double x, int /*v*/) const {
 
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for FL at
-//  O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//  O(as^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
 //
 //  Coefficient of log(m^2/Q^2)^1
 //------------------------------------------------------------------------------------------//
@@ -3575,7 +3575,7 @@ double HighScaleSplitLogs::CL_g3_highscale_N2LL(double x, int nf) const {
 
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for FL at
-//  O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//  O(as^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
 //
 //  Coefficient of log(m^2/Q^2)^0
 //------------------------------------------------------------------------------------------//
@@ -3677,7 +3677,7 @@ Value HighScaleSplitLogs::CL_g3_highscale_N3LL(double x, int nf) const {
 
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the pure singlet coefficient functions for
-//  FL at O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//  FL at O(as^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
 //
 //  Coefficient of log(m^2/Q^2)^2
 //------------------------------------------------------------------------------------------//
@@ -3696,7 +3696,7 @@ double HighScaleSplitLogs::CL_ps3_highscale_NLL(double x, int /*nf*/) const {
 
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the pure singlet coefficient functions for
-//  FL at O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//  FL at O(as^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
 //
 //  Coefficient of log(m^2/Q^2)^1
 //------------------------------------------------------------------------------------------//
@@ -3716,7 +3716,7 @@ double HighScaleSplitLogs::CL_ps3_highscale_N2LL(double x, int /*nf*/) const {
 
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the pure singlet coefficient functions for
-//  FL at O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//  FL at O(as^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
 //
 //  Coefficient of log(m^2/Q^2)^0
 //------------------------------------------------------------------------------------------//

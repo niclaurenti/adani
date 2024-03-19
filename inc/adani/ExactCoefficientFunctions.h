@@ -94,7 +94,7 @@ class ExactCoefficientFunction : public CoefficientFunction {
 
         //==========================================================================================//
         //                      Exact massive coefficient functions
-        //                      O(alpha_s)
+        //                      O(as)
         //------------------------------------------------------------------------------------------//
 
         double C2_g1(double x, double m2Q2, int /*nf*/) const;
@@ -102,7 +102,7 @@ class ExactCoefficientFunction : public CoefficientFunction {
 
         //==========================================================================================//
         //                      Exact massive coefficient functions
-        //                      O(alpha_s^2)
+        //                      O(as^2)
         //------------------------------------------------------------------------------------------//
 
         // double C2_g2(double x, double m2Q2, double m2mu2) const;
@@ -112,7 +112,7 @@ class ExactCoefficientFunction : public CoefficientFunction {
         // double CL_ps2(double x, double m2Q2, double m2mu2) const;
 
         //==========================================================================================//
-        //  Exact massive coefficient functions O(alpha_s^2):
+        //  Exact massive coefficient functions O(as^2):
         //  mu-independent terms
         //------------------------------------------------------------------------------------------//
 
@@ -122,7 +122,7 @@ class ExactCoefficientFunction : public CoefficientFunction {
         double CL_ps20(double x, double m2Q2, int /*nf*/) const;
 
         //==========================================================================================//
-        //  Exact massive coefficient functions O(alpha_s^2): terms
+        //  Exact massive coefficient functions O(as^2): terms
         //  proportional to log(mu^2/m^2)
         //------------------------------------------------------------------------------------------//
 
@@ -133,7 +133,7 @@ class ExactCoefficientFunction : public CoefficientFunction {
         double C_g2_MuDep(double x, double m2Q2, double m2mu2, int /*nf*/) const ;
 
         //==========================================================================================//
-        //  Exact massive coefficient functions O(alpha_s^3): terms
+        //  Exact massive coefficient functions O(as^3): terms
         //  proportional to log(mu^2/m^2)
         //------------------------------------------------------------------------------------------//
 
@@ -141,7 +141,7 @@ class ExactCoefficientFunction : public CoefficientFunction {
         double C_g31(double x, double m2Q2, int nf) const;
 
         //==========================================================================================//
-        //  Exact massive coefficient functions O(alpha_s^3): terms
+        //  Exact massive coefficient functions O(as^3): terms
         //  proportional to log(mu^2/m^2)^2
         //------------------------------------------------------------------------------------------//
 
@@ -163,7 +163,7 @@ class ExactCoefficientFunction : public CoefficientFunction {
 /// @cond UNNECESSARY
 /**
  * @name Fortran massive coefficient functions
- * Fortran functions for the O(alpha_s^2)
+ * Fortran functions for the O(as^2)
  * coefficient functions from 'src/hqcoef.f'.
  */
 ///@{

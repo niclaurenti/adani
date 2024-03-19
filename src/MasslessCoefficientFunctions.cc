@@ -58,7 +58,7 @@ void MasslessCoefficientFunction::SetFunctions() {
 
 //==========================================================================================//
 //  Massless gluon coefficient functions for F2 at
-//  O(alpha_s) for mu=Q.
+//  O(as) for mu=Q.
 //
 //  Eq. (4.4) of Ref. [hep-ph/0504242v1]
 //------------------------------------------------------------------------------------------//
@@ -72,7 +72,7 @@ double MasslessCoefficientFunction::C2_g1_massless(double x, int nf) const {
 
 //==========================================================================================//
 //  Massless gluon coefficient functions for FL at
-//  O(alpha_s) for mu=Q.
+//  O(as) for mu=Q.
 //
 // Eq. (3) of Ref. [arXiv:hep-ph/0411112v2]
 //------------------------------------------------------------------------------------------//
@@ -81,7 +81,7 @@ double MasslessCoefficientFunction::CL_g1_massless(double x, int nf) const { ret
 
 //==========================================================================================//
 //  Massless gluon coefficient functions for F2 at
-//  O(alpha_s^2) for mu=Q.
+//  O(as^2) for mu=Q.
 //
 //  Eq. (B.6) of Ref. [hep-ph/0504242v1]
 //------------------------------------------------------------------------------------------//
@@ -166,7 +166,7 @@ double MasslessCoefficientFunction::C2_g2_massless(double x, int nf) const {
 
 //==========================================================================================//
 //  Massless quark coefficient functions for F2 at
-//  O(alpha_s^2) for mu=Q.
+//  O(as^2) for mu=Q.
 //
 //  Eq. (B.7) of Ref. [hep-ph/0504242v1]
 //------------------------------------------------------------------------------------------//
@@ -206,7 +206,7 @@ double MasslessCoefficientFunction::C2_ps2_massless(double x, int nf) const {
 
 //==========================================================================================//
 //  Massless gluon coefficient functions for FL at
-//  O(alpha_s^2) for mu=Q.
+//  O(as^2) for mu=Q.
 //
 //  Eq. (B.14) of Ref. [hep-ph/0504242v1]
 //------------------------------------------------------------------------------------------//
@@ -245,7 +245,7 @@ double MasslessCoefficientFunction::CL_g2_massless(double x, int nf) const {
 
 //==========================================================================================//
 //  Massless gluon coefficient functions for FL at
-//  O(alpha_s^2) for mu=Q.
+//  O(as^2) for mu=Q.
 //
 //  Eq. (B.15) of Ref. [hep-ph/0504242v1]
 //------------------------------------------------------------------------------------------//
@@ -269,7 +269,7 @@ double MasslessCoefficientFunction::CL_ps2_massless(double x, int nf) const {
 
 //==========================================================================================//
 //  Massless gluon coefficient functions for F2 at
-//  O(alpha_s^3) for mu=Q.
+//  O(as^3) for mu=Q.
 //  The term fl_g_11 is put to zero for the reason explained
 //  in page 15 of arXiv:1205.5727
 //
@@ -1649,7 +1649,7 @@ double MasslessCoefficientFunction::C2_g3_massless(double x, int nf) const {
 
 //==========================================================================================//
 //  Massless quark coefficient functions for F2 at
-//  O(alpha_s^3) for mu=Q.
+//  O(as^3) for mu=Q.
 //  The term fl_ps_11 is put to zero for the reason
 //  explained in page 15 of arXiv:1205.5727
 //
@@ -2238,7 +2238,7 @@ double MasslessCoefficientFunction::C2_ps3_massless(double x, int nf) const {
 
 //==========================================================================================//
 //  Massless gluon coefficient functions for FL at
-//  O(alpha_s^3) for mu=Q.
+//  O(as^3) for mu=Q.
 //  The term fl_ps_11 is put to zero for the reason
 //  explained in page 15 of arXiv:1205.5727
 //
@@ -2936,7 +2936,7 @@ double MasslessCoefficientFunction::CL_g3_massless(double x, int nf) const {
 
 //==========================================================================================//
 //  Massless gluon coefficient functions for FL at
-//  O(alpha_s^3) for mu=Q.
+//  O(as^3) for mu=Q.
 //  The term fl_ps_11 is put to zero for the reason
 //  explained in page 15 of arXiv:1205.5727
 //
@@ -3307,7 +3307,7 @@ double MasslessCoefficientFunction::fl11ps(int nf) const {
 }
 
 //==========================================================================================//
-//  Massless gluon coefficient functions for F2 at O(alpha_s^2) for mu=Q.
+//  Massless gluon coefficient functions for F2 at O(as^2) for mu=Q.
 //  Observe that this result is a parameterization of the exact (known but long)
 //  result
 //
@@ -3330,7 +3330,7 @@ double MasslessCoefficientFunction::C2_g2_massless_param(double x, int nf) const
 }
 */
 //==========================================================================================//
-//  Massless quark coefficient functions for F2 at O(alpha_s^2) for mu=Q.
+//  Massless quark coefficient functions for F2 at O(as^2) for mu=Q.
 //  Observe that this result is a parameterization of the exact (known but long)
 //  result
 //
@@ -3356,7 +3356,7 @@ double MasslessCoefficientFunction::C2_ps2_massless_param(double x, int nf) cons
 }
 */
 //==========================================================================================//
-//  Massless gluon coefficient functions for FL at O(alpha_s^2) for mu=Q.
+//  Massless gluon coefficient functions for FL at O(as^2) for mu=Q.
 //  Observe that this result is a parameterization of the exact (known but long)
 //  result
 //
@@ -3379,7 +3379,7 @@ double MasslessCoefficientFunction::CL_g2_massless_param(double x, int nf) const
 }
 */
 //==========================================================================================//
-//  Massless gluon coefficient functions for FL at O(alpha_s^2) for mu=Q.
+//  Massless gluon coefficient functions for FL at O(as^2) for mu=Q.
 //  Observe that this result is a parameterization of the exact (known but long)
 //  result
 //
@@ -3400,7 +3400,7 @@ double MasslessCoefficientFunction::CL_ps2_massless_param(double x, int nf) cons
 }
 */
 //==========================================================================================//
-//  Massless gluon coefficient functions for F2 at O(alpha_s^3) for mu=Q.
+//  Massless gluon coefficient functions for F2 at O(as^3) for mu=Q.
 //  Observe that this result is a parameterization of the exact (known but long)
 //  result. The term fl_g_11 is put to zero for the reason explained in page 15
 //  of arXiv:1205.5727
@@ -3461,7 +3461,7 @@ double MasslessCoefficientFunction::C2_g3_massless_param(
 }
 */
 //==========================================================================================//
-//  Massless quark coefficient functions for F2 at O(alpha_s^3) for mu=Q.
+//  Massless quark coefficient functions for F2 at O(as^3) for mu=Q.
 //  Observe that this result is a parameterization of the exact (known but long)
 //  result. The term fl_ps_11 is put to zero for the reason explained in page 15
 //  of arXiv:1205.5727
@@ -3519,7 +3519,7 @@ double MasslessCoefficientFunction::C2_ps3_massless_param(
 }
 */
 //==========================================================================================//
-//  Massless gluon coefficient functions for FL at O(alpha_s^3) for mu=Q.
+//  Massless gluon coefficient functions for FL at O(as^3) for mu=Q.
 //  Observe that this result is a parameterization of the exact (known but long)
 //  result. The term fl_ps_11 is put to zero for the reason explained in page 15
 //  of arXiv:1205.5727
@@ -3576,7 +3576,7 @@ double MasslessCoefficientFunction::CL_g3_massless_param(
 }
 */
 //==========================================================================================//
-//  Massless gluon coefficient functions for FL at O(alpha_s^3) for mu=Q.
+//  Massless gluon coefficient functions for FL at O(as^3) for mu=Q.
 //  Observe that this result is a parameterization of the exact (known but long)
 //  result. The term fl_ps_11 is put to zero for the reason explained in page 15
 //  of arXiv:1205.5727

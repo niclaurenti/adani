@@ -1,4 +1,4 @@
-#include "adani/SplittingFunctions.h"
+#include "adani/SplittingFunction.h"
 #include "adani/Constants.h"
 #include "adani/SpecialFunctions.h"
 
@@ -8,7 +8,15 @@
 using std::cout;
 using std::endl;
 
+//==========================================================================================//
+//  AbstractSplittingFunction: destructor
+//------------------------------------------------------------------------------------------//
+
 AbstractSplittingFunction::~AbstractSplittingFunction() {};
+
+//==========================================================================================//
+//  SplittingFunction: constructor
+//------------------------------------------------------------------------------------------//
 
 SplittingFunction::SplittingFunction(const int& order, const char& entry1, const char& entry2) : AbstractSplittingFunction(){
 
@@ -36,21 +44,41 @@ SplittingFunction::SplittingFunction(const int& order, const char& entry1, const
     SetFunctions();
 }
 
+//==========================================================================================//
+//  SplittingFunction: Regular part
+//------------------------------------------------------------------------------------------//
+
 double SplittingFunction::Regular(double x, int nf) const {
     return GetMultFact() * (this->*reg_)(x, nf);
 }
+
+//==========================================================================================//
+//  SplittingFunction: Singular part
+//------------------------------------------------------------------------------------------//
 
 double SplittingFunction::Singular(double x, int nf) const {
     return GetMultFact() * (this->*sing_)(x, nf);
 }
 
+//==========================================================================================//
+//  SplittingFunction: Integral from 0 to x of the singular part
+//------------------------------------------------------------------------------------------//
+
 double SplittingFunction::SingularIntegrated(double x, int nf) const {
     return GetMultFact() * (this->*sing_int_)(x, nf);
 }
 
+//==========================================================================================//
+//  SplittingFunction: Local part
+//------------------------------------------------------------------------------------------//
+
 double SplittingFunction::Local(int nf) const {
     return GetMultFact() * (this->*loc_)(nf);
 }
+
+//==========================================================================================//
+//  SplittingFunction: overload of operator * double
+//-------------------------------------------------------------constructor-----------------------------//
 
 SplittingFunction SplittingFunction::operator*(const double& rhs) const {
     SplittingFunction res(order_, entry1_, entry2_);
@@ -58,17 +86,29 @@ SplittingFunction SplittingFunction::operator*(const double& rhs) const {
     return res;
 }
 
+//==========================================================================================//
+//  SplittingFunction: overload of operator double *
+//------------------------------------------------------------------------------------------//
+
 SplittingFunction operator*(const double& lhs, const SplittingFunction& rhs){
     SplittingFunction res(rhs.order_, res.entry1_, res.entry2_);
     res.SetMultFact(rhs.GetMultFact() * lhs);
     return res;
 }
 
+//==========================================================================================//
+//  SplittingFunction: overload of operator / double
+//------------------------------------------------------------------------------------------//
+
 SplittingFunction SplittingFunction::operator/(const double& rhs) const {
     SplittingFunction res(order_, entry1_, entry2_);
     res.SetMultFact(GetMultFact() / rhs);
     return res;
 }
+
+//==========================================================================================//
+//  SplittingFunction: function that sets all pointers to the right function
+//------------------------------------------------------------------------------------------//
 
 void SplittingFunction::SetFunctions() {
 
@@ -102,6 +142,9 @@ void SplittingFunction::SetFunctions() {
             loc_ = &SplittingFunction::Pqq0loc;
             sing_int_ = &SplittingFunction::Pqq0sing_integrated;
 
+        } else {
+            cout << "Error: something has gone wrong in SplittingFunction::SetFunctions!" << endl;
+            exit(-1);
         }
     } else if (order_ == 1) {
         if (entry1_ == 'g' && entry2_ == 'q') {
@@ -118,13 +161,19 @@ void SplittingFunction::SetFunctions() {
             loc_ = &SplittingFunction::Pgg1loc;
             sing_int_ = &SplittingFunction::Pgg1sing_integrated;
 
+        } else {
+            cout << "Error: something has gone wrong in SplittingFunction::SetFunctions!" << endl;
+            exit(-1);
         }
     } else {
         cout << "Error: P" << entry1_ << entry2_ << order_ << " is not implemented!" << endl ;
         exit(-1);
     }
-
 }
+
+//==========================================================================================//
+//  ConvolutedSplittingFunctions: constructor
+//------------------------------------------------------------------------------------------//
 
 ConvolutedSplittingFunctions::ConvolutedSplittingFunctions(const int& order1, const char& entry1, const char& entry2, const int& order2, const char& entry3, const char& entry4) : AbstractSplittingFunction() {
 
@@ -173,9 +222,17 @@ ConvolutedSplittingFunctions::ConvolutedSplittingFunctions(const int& order1, co
     SetFunctions();
 }
 
+//==========================================================================================//
+//  ConvolutedSplittingFunctions: regular part
+//------------------------------------------------------------------------------------------//
+
 double ConvolutedSplittingFunctions::Regular(double x, int nf) const {
     return GetMultFact() * (this->*reg_)(x, nf);
 }
+
+//==========================================================================================//
+//  ConvolutedSplittingFunctions: overload of operator * double
+//------------------------------------------------------------------------------------------//
 
 ConvolutedSplittingFunctions ConvolutedSplittingFunctions::operator*(const double& rhs) const {
     ConvolutedSplittingFunctions res(order1_, entry1_, entry2_, order2_, entry3_, entry4_);
@@ -183,17 +240,29 @@ ConvolutedSplittingFunctions ConvolutedSplittingFunctions::operator*(const doubl
     return res;
 }
 
+//==========================================================================================//
+//  ConvolutedSplittingFunctions: overload of operator double *
+//------------------------------------------------------------------------------------------//
+
 ConvolutedSplittingFunctions operator*(const double& lhs, const ConvolutedSplittingFunctions& rhs){
     ConvolutedSplittingFunctions res(rhs.order1_, rhs.entry1_, rhs.entry2_, rhs.order2_, rhs.entry3_, rhs.entry4_);
     res.SetMultFact(rhs.GetMultFact() * lhs);
     return res;
 }
 
+//==========================================================================================//
+//  ConvolutedSplittingFunctions: overload of operator / double
+//------------------------------------------------------------------------------------------//
+
 ConvolutedSplittingFunctions ConvolutedSplittingFunctions::operator/(const double& rhs) const {
     ConvolutedSplittingFunctions res(order1_, entry1_, entry2_, order2_, entry3_, entry4_);
     res.SetMultFact(GetMultFact() / rhs);
     return res;
 }
+
+//==========================================================================================//
+//  ConvolutedSplittingFunctions: function that sets all pointers to the right function
+//------------------------------------------------------------------------------------------//
 
 void ConvolutedSplittingFunctions::SetFunctions() {
 
@@ -209,8 +278,11 @@ void ConvolutedSplittingFunctions::SetFunctions() {
         cout << "Error: P" << entry1_ << entry2_ << order1_ << " x P" << entry3_ << entry4_ << order2_ << " is not implemented!" << endl ;
         exit(-1);
     }
-
 }
+
+//==========================================================================================//
+//  Delta: overload of operator * double
+//------------------------------------------------------------------------------------------//
 
 Delta Delta::operator*(const double& rhs) const {
     Delta res = Delta();
@@ -218,11 +290,19 @@ Delta Delta::operator*(const double& rhs) const {
     return res;
 }
 
+//==========================================================================================//
+//  Delta: overload of operator double *
+//------------------------------------------------------------------------------------------//
+
 Delta operator*(const double& lhs, const Delta& rhs){
     Delta res = Delta();
     res.SetMultFact(rhs.GetMultFact() * lhs);
     return res;
 }
+
+//==========================================================================================//
+//  Delta: overload of operator double /
+//------------------------------------------------------------------------------------------//
 
 Delta Delta::operator/(const double& rhs) const {
     Delta res = Delta();
@@ -231,7 +311,7 @@ Delta Delta::operator/(const double& rhs) const {
 }
 
 //==========================================================================================//
-//  Gluon-quark splitting functions O(alpha_s) without color factors
+//  Gluon-quark splitting functions O(as) without color factors
 //
 //  Eq. (4.11) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
@@ -239,7 +319,7 @@ Delta Delta::operator/(const double& rhs) const {
 double SplittingFunction::pgq(double x) const { return 2. / x - 2. + x; }
 
 //==========================================================================================//
-//  Quark-gluon splitting functions O(alpha_s) without color factors
+//  Quark-gluon splitting functions O(as) without color factors
 //
 //  Eq. (4.11) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
@@ -247,7 +327,7 @@ double SplittingFunction::pgq(double x) const { return 2. / x - 2. + x; }
 double SplittingFunction::pqg(double x) const { return 1. - 2. * x + 2. * x * x; }
 
 //==========================================================================================//
-//  Regular part of the gluon-gluon splitting functions O(alpha_s) without color
+//  Regular part of the gluon-gluon splitting functions O(as) without color
 //  factors
 //
 //  Eq. (4.11) from Ref. [arXiv:hep-ph/0404111]
@@ -256,7 +336,7 @@ double SplittingFunction::pqg(double x) const { return 1. - 2. * x + 2. * x * x;
 double SplittingFunction::pggreg(double x) const { return 1. / x - 2. + x - x * x; }
 
 //==========================================================================================//
-//  Singular part of the gluon-gluon splitting functions O(alpha_s) without
+//  Singular part of the gluon-gluon splitting functions O(as) without
 //  color factors
 //
 //  Eq. (4.11) from Ref. [arXiv:hep-ph/0404111]
@@ -265,7 +345,7 @@ double SplittingFunction::pggreg(double x) const { return 1. / x - 2. + x - x * 
 double SplittingFunction::pggsing(double x) const { return 1. / (1. - x); }
 
 //==========================================================================================//
-//  Gluon-quark splitting functions O(alpha_s)
+//  Gluon-quark splitting functions O(as)
 //
 //  Eq. (4.6) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
@@ -273,7 +353,7 @@ double SplittingFunction::pggsing(double x) const { return 1. / (1. - x); }
 double SplittingFunction::Pgq0(double x, int /*nf*/) const { return 2. * CF * pgq(x); }
 
 //==========================================================================================//
-//  Quark-gluon splitting functions O(alpha_s)
+//  Quark-gluon splitting functions O(as)
 //
 //  Eq. (4.6) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
@@ -281,7 +361,7 @@ double SplittingFunction::Pgq0(double x, int /*nf*/) const { return 2. * CF * pg
 double SplittingFunction::Pqg0(double x, int nf) const { return 2. * nf * pqg(x); }
 
 //==========================================================================================//
-//  Regular part of the gluon-gluon splitting functions O(alpha_s)
+//  Regular part of the gluon-gluon splitting functions O(as)
 //
 //  Eq. (4.6) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
@@ -289,7 +369,7 @@ double SplittingFunction::Pqg0(double x, int nf) const { return 2. * nf * pqg(x)
 double SplittingFunction::Pgg0reg(double x, int /*nf*/) const { return CA * 4. * pggreg(x); }
 
 //==========================================================================================//
-//  Local part of the gluon-gluon splitting functions O(alpha_s)
+//  Local part of the gluon-gluon splitting functions O(as)
 //
 //  Eq. (4.6) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
@@ -297,7 +377,7 @@ double SplittingFunction::Pgg0reg(double x, int /*nf*/) const { return CA * 4. *
 double SplittingFunction::Pgg0loc(int nf) const { return 11. / 3 * CA - 2. / 3 * nf; }
 
 //==========================================================================================//
-//  Singular part of the gluon-gluon splitting functions O(alpha_s)
+//  Singular part of the gluon-gluon splitting functions O(as)
 //
 //  Eq. (4.6) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
@@ -305,13 +385,13 @@ double SplittingFunction::Pgg0loc(int nf) const { return 11. / 3 * CA - 2. / 3 *
 double SplittingFunction::Pgg0sing(double x, int /*nf*/) const { return 4. * CA * pggsing(x); }
 
 //==========================================================================================//
-//  Integral from 0 to x of the Singular part of the gluon-gluon splitting functions O(alpha_s)
+//  Integral from 0 to x of the Singular part of the gluon-gluon splitting functions O(as)
 //------------------------------------------------------------------------------------------//
 
 double SplittingFunction::Pgg0sing_integrated(double x, int /*nf*/) const { return -Pgg0sing(0., 0) * log(1. - x); }
 
 //==========================================================================================//
-//  Regular part of the quark-quark splitting functions O(alpha_s)
+//  Regular part of the quark-quark splitting functions O(as)
 //
 //  Eq. (4.6) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
@@ -319,13 +399,13 @@ double SplittingFunction::Pgg0sing_integrated(double x, int /*nf*/) const { retu
 double SplittingFunction::Pqq0reg(double x, int /*nf*/) const { return CF * 2. * (-1. - x); }
 
 //==========================================================================================//
-//  Local part of the quark-quark splitting functions O(alpha_s)
+//  Local part of the quark-quark splitting functions O(as)
 //------------------------------------------------------------------------------------------//
 
 double SplittingFunction::Pqq0loc(int /*nf*/) const { return CF * 3.; }
 
 //==========================================================================================//
-//  Singular part of the quark-quark splitting functions O(alpha_s)
+//  Singular part of the quark-quark splitting functions O(as)
 //
 //  Eq. (4.6) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
@@ -333,13 +413,13 @@ double SplittingFunction::Pqq0loc(int /*nf*/) const { return CF * 3.; }
 double SplittingFunction::Pqq0sing(double x, int /*nf*/) const { return CF * 2. * 2. / (1. - x); }
 
 //==========================================================================================//
-//  Integral from 0 to x of the Singular part of the quark-quark splitting functions O(alpha_s)
+//  Integral from 0 to x of the Singular part of the quark-quark splitting functions O(as)
 //------------------------------------------------------------------------------------------//
 
 double SplittingFunction::Pqq0sing_integrated(double x, int /*nf*/) const { return -Pqq0sing(0., 0) * log(1. - x); }
 
 //==========================================================================================//
-//  Gluon-quark splitting functions O(alpha_s^2)
+//  Gluon-quark splitting functions O(as^2)
 //
 //  Eq. (4.9) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
@@ -374,7 +454,7 @@ double SplittingFunction::Pgq1(double x, int nf) const {
 }
 
 //==========================================================================================//
-//  Regular part of the gluon-gluon splitting functions O(alpha_s^2)
+//  Regular part of the gluon-gluon splitting functions O(as^2)
 //
 //  Eq. (4.10) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
@@ -414,7 +494,7 @@ double SplittingFunction::Pgg1reg(double x, int nf) const {
 }
 
 //==========================================================================================//
-//  Local part of the gluon-gluon splitting functions O(alpha_s^2)
+//  Local part of the gluon-gluon splitting functions O(as^2)
 //
 //  Eq. (4.10) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
@@ -429,7 +509,7 @@ double SplittingFunction::Pgg1loc(int nf) const {
 }
 
 //==========================================================================================//
-//  Singular part of the gluon-gluon splitting functions O(alpha_s^2)
+//  Singular part of the gluon-gluon splitting functions O(as^2)
 //
 //  Eq. (4.10) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
@@ -445,7 +525,7 @@ double SplittingFunction::Pgg1sing(double x, int nf) const {
 }
 
 //==========================================================================================//
-//  Integral from o to x of the Singular part of the gluon-gluon splitting functions O(alpha_s^2)
+//  Integral from o to x of the Singular part of the gluon-gluon splitting functions O(as^2)
 //
 //  Eq. (4.10) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//

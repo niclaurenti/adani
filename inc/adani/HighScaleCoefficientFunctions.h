@@ -52,7 +52,7 @@ class HighScaleCoefficientFunction : public CoefficientFunction {
 
 //==========================================================================================//
 //                      High scale (Q^2 >> m^2) coefficient
-//                      functions O(alpha_s)
+//                      functions O(as)
 //------------------------------------------------------------------------------------------//
 
 Value C2_g1_highscale(double x, double m2Q2, double /*m2mu2*/, int /*nf*/) const ;
@@ -63,7 +63,7 @@ double DL_g1_highscale(double x) const;
 
 //==========================================================================================//
 //                      High scale (Q^2 >> m^2) coefficient
-//                      functions O(alpha_s^2)
+//                      functions O(as^2)
 //------------------------------------------------------------------------------------------//
 
 Value C2_g2_highscale(double x, double m2Q2, double m2mu2, int /*nf*/) const ;
@@ -80,7 +80,7 @@ double DL_ps2_highscale(double z, double m2Q2, double m2mu2) const ;
 
 //==========================================================================================//
 //                      High scale (Q^2 >> m^2) coefficient
-//                      functions O(alpha_s^3)
+//                      functions O(as^3)
 //------------------------------------------------------------------------------------------//
 
 Value C2_g3_highscale(double x, double m2Q2, double m2mu2, int nf) const ;
@@ -97,7 +97,7 @@ Value D2_ps3_highscale(double x, double m2Q2, double m2mu2, int nf) const ;
 
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) coefficient functions at
-//  O(alpha_s^3) used in [arXiv:1205.5727] klmv = Kawamura,
+//  O(as^3) used in [arXiv:1205.5727] klmv = Kawamura,
 //  Lo Presti, Moch, Vogt This functions uses the
 //  approximation for aQqPS30 (that now is exactly known)
 //  from Eq. ?? of [arXiv:1205.5727]. It is only used for

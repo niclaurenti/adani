@@ -21,6 +21,10 @@
 #include "adani/CoefficientFunction.h"
 #include "adani/ExactCoefficientFunctions.h"
 
+//==========================================================================================//
+//  class ThresholdCoefficientFunction
+//------------------------------------------------------------------------------------------//
+
 class ThresholdCoefficientFunction : public CoefficientFunction {
 
     public:
@@ -42,14 +46,14 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
 
         //==========================================================================================//
         //                      Threshold (s -> 4m^2) coefficient
-        //                      functions O(alpha_s)
+        //                      functions O(as)
         //------------------------------------------------------------------------------------------//
 
         double C2_g1_threshold(double x, double m2Q2, double /*m2mu2*/, int /*nf*/) const;
 
         //==========================================================================================//
         //                      Threshold (s -> 4m^2) coefficient
-        //                      functions O(alpha_s^2)
+        //                      functions O(as^2)
         //------------------------------------------------------------------------------------------//
 
         double C2_g2_threshold(double x, double m2Q2, double m2mu2, int /*nf*/) const;
@@ -63,7 +67,7 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
 
         //==========================================================================================//
         //                      Threshold (s -> 4m^2) coefficient
-        //                      functions O(alpha_s^3)
+        //                      functions O(as^3)
         //------------------------------------------------------------------------------------------//
 
         double C2_g3_threshold(double x, double m2Q2, double m2mu2, int nf) const;
@@ -81,6 +85,10 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
 
         double c0(double xi) const;
         double c0_bar(double xi) const;
+
+        //==========================================================================================//
+        //  Function needed to make fx_ point to a zero function
+        //------------------------------------------------------------------------------------------//
 
         double ZeroFunction(double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const {return 0.;};
 

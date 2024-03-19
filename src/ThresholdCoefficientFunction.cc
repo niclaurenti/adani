@@ -130,7 +130,7 @@ double ThresholdCoefficientFunction::threshold_expansion_g2_const(double m2Q2, d
 
 //==========================================================================================//
 //  Threshold limit (x->xmax) of the gluon coefficient function for F2 at
-//  O(alpha_s^2). In order to pass to klmv normalization multiply m2Q2*M_PI*x
+//  O(as^2). In order to pass to klmv normalization multiply m2Q2*M_PI*x
 //  and put mu^2=Q^2+4m^2
 //
 //  Eq. (3.16) of Ref. [arXiv:1205.5727]
@@ -148,7 +148,7 @@ double ThresholdCoefficientFunction::C2_g2_threshold(double x, double m2Q2, doub
 
 //==========================================================================================//
 //  Threshold limit (x->xmax) of the gluon coefficient function for FL at
-//  O(alpha_s^2). In order to pass to klmv normalization multiply m2Q2*M_PI*x
+//  O(as^2). In order to pass to klmv normalization multiply m2Q2*M_PI*x
 //  and put mu^2=Q^2+4m^2
 //
 //  Eq. (3.16) of Ref. [arXiv:1205.5727] with C20 -> CL0
@@ -166,7 +166,7 @@ double ThresholdCoefficientFunction::CL_g2_threshold(double x, double m2Q2, doub
 
 //==========================================================================================//
 //  beta independent term of the threshold limit (x->xmax) of the gluon
-//  coefficient function for F2 at O(alpha_s^2).
+//  coefficient function for F2 at O(as^2).
 //
 //  Eq. (3.17) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
@@ -181,7 +181,7 @@ double ThresholdCoefficientFunction::C2_g2_threshold_const(double x, double m2Q2
 
 //==========================================================================================//
 //  beta independent term of the threshold limit (x->xmax) of the gluon
-//  coefficient function for FL at O(alpha_s^2).
+//  coefficient function for FL at O(as^2).
 //
 //  Eq. (3.17) of Ref. [arXiv:1205.5727] with C20 -> CL0
 //------------------------------------------------------------------------------------------//
@@ -282,7 +282,7 @@ double ThresholdCoefficientFunction::threshold_expansion_g3_const(double m2Q2, d
 
 //==========================================================================================//
 //  Threshold limit (x->xmax) of the gluon coefficient function for F2 at
-//  O(alpha_s^3).
+//  O(as^3).
 //
 //  Eq. (3.18) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
@@ -296,7 +296,7 @@ double ThresholdCoefficientFunction::C2_g3_threshold(double x, double m2Q2, doub
 
 //==========================================================================================//
 //  Threshold limit (x->xmax) of the gluon coefficient function for FL at
-//  O(alpha_s^3).
+//  O(as^3).
 //
 //  Eq. (3.18) of Ref. [arXiv:1205.5727] with C20 -> CL0
 //------------------------------------------------------------------------------------------//
@@ -310,7 +310,7 @@ double ThresholdCoefficientFunction::CL_g3_threshold(double x, double m2Q2, doub
 
 //==========================================================================================//
 //  Approximation for the beta independent term of the threshold limit (x->xmax)
-//  of the gluon coefficient function for F2 at O(alpha_s^3).
+//  of the gluon coefficient function for F2 at O(as^3).
 //
 //  Eq. (3.19) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
@@ -325,7 +325,7 @@ double ThresholdCoefficientFunction::C2_g3_threshold_const(double x, double m2Q2
 
 //==========================================================================================//
 //  Approximation for the beta independent term of the threshold limit (x->xmax)
-//  of the gluon coefficient function for FL at O(alpha_s^3).
+//  of the gluon coefficient function for FL at O(as^3).
 //
 //  Eq. (3.19) of Ref. [arXiv:1205.5727] with C20 -> CL0
 //------------------------------------------------------------------------------------------//

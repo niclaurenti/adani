@@ -17,7 +17,7 @@
 #ifndef CoeffFunc
 #define CoeffFunc
 
-#include "adani/SplittingFunctions.h"
+#include "adani/SplittingFunction.h"
 
 #include <vector>
 #include <iostream>
