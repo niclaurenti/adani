@@ -1,4 +1,4 @@
-#include "adani/HighEnergyCoefficientFunctions.h"
+#include "adani/HighEnergyCoefficientFunction.h"
 #include "adani/Constants.h"
 #include "adani/SpecialFunctions.h"
 #include <cmath>

@@ -1,6 +1,6 @@
-#include "adani/HighScaleCoefficientFunctions.h"
+#include "adani/HighScaleCoefficientFunction.h"
 #include "adani/Constants.h"
-#include "adani/MasslessCoefficientFunctions.h"
+#include "adani/MasslessCoefficientFunction.h"
 #include "adani/SpecialFunctions.h"
 
 #include <cmath>
@@ -116,7 +116,8 @@ Value HighScaleCoefficientFunction::CL_g1_highscale(double x, double /*m2Q2*/, d
 
 double HighScaleCoefficientFunction::D2_g1_highscale(double x, double m2Q2) const {
 
-    return massless_lo_ -> MuIndependentTerms(x, 1) + 2. * K_Qg1(x, m2Q2);
+    return 2 * TR * (x * x + (x - 1) * (x - 1)) * log(1. / m2Q2)
+            + massless_lo_ -> MuIndependentTerms(x, 1) ;
 }
 
 //==========================================================================================//

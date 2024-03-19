@@ -1,10 +1,10 @@
 /*
  * =====================================================================================
  *
- *       Filename:  MasslessCoefficientFunctions.h
+ *       Filename:  MasslessCoefficientFunction.h
  *
  *    Description:  Header file for the
- * MasslessCoefficientFunctions.cc file.
+ * MasslessCoefficientFunction.cc file.
  *
  *         Author:  Viva el Futbol
  *

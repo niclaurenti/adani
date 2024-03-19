@@ -1,6 +1,6 @@
-#include "adani/ExactCoefficientFunctions.h"
+#include "adani/ExactCoefficientFunction.h"
 #include "adani/Constants.h"
-#include "adani/MatchingConditions.h"
+#include "adani/MatchingCondition.h"
 #include "adani/SpecialFunctions.h"
 #include "adani/SplittingFunction.h"
 

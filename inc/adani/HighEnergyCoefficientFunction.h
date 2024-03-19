@@ -1,10 +1,10 @@
 /*
  * =====================================================================================
  *
- *       Filename:  HighEnergyCoefficientFunctions.h
+ *       Filename:  HighEnergyCoefficientFunction.h
  *
  *    Description:  Header file for the
- * HighEnergyCoefficientFunctions.cc file.
+ * HighEnergyCoefficientFunction.cc file.
  *
  *         Author:  L'allenamento si fa!
  *

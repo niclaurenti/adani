@@ -19,7 +19,7 @@
 #define Threshold_h
 
 #include "adani/CoefficientFunction.h"
-#include "adani/ExactCoefficientFunctions.h"
+#include "adani/ExactCoefficientFunction.h"
 
 //==========================================================================================//
 //  class ThresholdCoefficientFunction

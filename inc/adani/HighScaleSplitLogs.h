@@ -19,8 +19,8 @@
 #define HighScaleLogs_h
 
 #include "adani/CoefficientFunction.h"
-#include "adani/MasslessCoefficientFunctions.h"
-#include "adani/MatchingConditions.h"
+#include "adani/MasslessCoefficientFunction.h"
+#include "adani/MatchingCondition.h"
 
 //==========================================================================================//
 //           Legend:

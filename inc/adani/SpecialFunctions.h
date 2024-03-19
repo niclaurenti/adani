@@ -49,6 +49,10 @@ double H(double x, int i);
 double H(double x, int i, int j);
 double H(double x, int i, int j, int k);
 
+//==========================================================================================//
+//  Harmonic polylogarithms up to weight 5.
+//------------------------------------------------------------------------------------------//
+
 /**
  * @name Fortran harmonic polylogarithms
  * @brief Harmonic polylogarithms up to weight five

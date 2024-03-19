@@ -1,9 +1,9 @@
 /*
  * =====================================================================================
  *
- *       Filename:  Convolutions.h
+ *       Filename:  Convolution.h
  *
- *    Description:  Header file for the Convolutions.cc
+ *    Description:  Header file for the Convolution.cc
  * file.
  *
  *         Author:  Dribbla tutti, anche i cammelli del

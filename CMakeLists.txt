@@ -71,21 +71,22 @@ if(PYTHON_ONLY)
     pybind11_add_module(
         _core MODULE
         pywrap/pywrap.cc
+        src/ApproximateCoefficientFunction.cc
+        src/AsymptoticCoefficientFunction.cc
         src/CoefficientFunction.cc
-        src/ApproximateCoefficientFunctions.cc
-        src/ExactCoefficientFunctions.cc
-        src/ThresholdCoefficientFunction.cc
-        src/AsymptoticCoefficientFunctions.cc
-        src/MasslessCoefficientFunctions.cc
-        src/Convolutions.cc
-        src/MatchingConditions.cc
-        src/hplog.f
-        src/HighEnergyCoefficientFunctions.cc
-        src/SpecialFunctions.cc
-        src/hqcoef.f
-        src/HighScaleCoefficientFunctions.cc
+        src/Convolution.cc
+        src/ExactCoefficientFunction.cc
+        src/HighEnergyCoefficientFunction.cc
+        src/HighScaleCoefficientFunction.cc
         src/HighScaleSplitLogs.cc
+        src/hplog.f
+        src/hqcoef.f
+        src/MasslessCoefficientFunction.cc
+        src/MatchingCondition.cc
+        src/SpecialFunctions.cc
         src/SplittingFunction.cc
+        src/ThresholdCoefficientFunction.cc
+        src/Value.cc
     )
     target_link_libraries(_core PRIVATE GSL::gsl GSL::gslcblas)
     # target_link_libraries(_core PRIVATE gsl gslcblas)
@@ -95,21 +96,22 @@ if(PYTHON_ONLY)
 else(PYTHON_ONLY)
     add_library(
         adani SHARED
+        src/ApproximateCoefficientFunction.cc
+        src/AsymptoticCoefficientFunction.cc
         src/CoefficientFunction.cc
-        src/ApproximateCoefficientFunctions.cc
-        src/ExactCoefficientFunctions.cc
-        src/ThresholdCoefficientFunction.cc
-        src/AsymptoticCoefficientFunctions.cc
-        src/MasslessCoefficientFunctions.cc
-        src/Convolutions.cc
-        src/MatchingConditions.cc
-        src/hplog.f
-        src/HighEnergyCoefficientFunctions.cc
-        src/SpecialFunctions.cc
-        src/hqcoef.f
-        src/HighScaleCoefficientFunctions.cc
+        src/Convolution.cc
+        src/ExactCoefficientFunction.cc
+        src/HighEnergyCoefficientFunction.cc
+        src/HighScaleCoefficientFunction.cc
         src/HighScaleSplitLogs.cc
+        src/hplog.f
+        src/hqcoef.f
+        src/MasslessCoefficientFunction.cc
+        src/MatchingCondition.cc
+        src/SpecialFunctions.cc
         src/SplittingFunction.cc
+        src/ThresholdCoefficientFunction.cc
+        src/Value.cc
     )
 
     # define libraries to be linked

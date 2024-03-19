@@ -1,10 +1,16 @@
-#include "adani/MatchingConditions.h"
+#include "adani/MatchingCondition.h"
 #include "adani/Constants.h"
 #include "adani/SpecialFunctions.h"
+
 #include <cmath>
 #include <iostream>
 
-using namespace std;
+using std::cout;
+using std::endl;
+
+//==========================================================================================//
+//  MatchingCondition: constructor
+//------------------------------------------------------------------------------------------//
 
 MatchingCondition::MatchingCondition(const int& order, const char& entry1, const char& entry2, const bool& exact, const bool& revised_approx) {
     // check order
@@ -36,6 +42,11 @@ MatchingCondition::MatchingCondition(const int& order, const char& entry1, const
     }
     revised_approx_ = revised_approx ;
 }
+
+//==========================================================================================//
+//  MatchingCondition: nf independent part of the a_Qi (i=q,q) term.
+//  a_Qi is the mu independent part of the unrenormalized OMA
+//------------------------------------------------------------------------------------------//
 
 Value MatchingCondition::MuIndependentNfIndependentTerm(double x) const {
       double central, higher, lower;
@@ -74,10 +85,10 @@ Value MatchingCondition::MuIndependentNfIndependentTerm(double x) const {
 //  Eq. (B.2) from Ref. [arXiv:hep-ph/9612398v1]
 //------------------------------------------------------------------------------------------//
 
-double K_Qg1(double x, double m2mu2) {
+// double MatchingCondition::K_Qg1(double x, double m2mu2) const {
 
-    return 2 * TR * (x * x + (x - 1) * (x - 1)) * log(1. / m2mu2);
-}
+//     return 2 * TR * (x * x + (x - 1) * (x - 1)) * log(1. / m2mu2);
+// }
 
 //==========================================================================================//
 //  Local part of the matching condition gg O(as)
@@ -85,7 +96,7 @@ double K_Qg1(double x, double m2mu2) {
 //  Eq. (B.6) from Ref. [arXiv:hep-ph/9612398v1]
 //------------------------------------------------------------------------------------------//
 
-double K_gg1_local(double m2mu2) { return -4. / 3. * TR * log(1. / m2mu2); }
+// double MatchingCondition::K_gg1_local(double m2mu2) const { return -4. / 3. * TR * log(1. / m2mu2); }
 
 //==========================================================================================//
 //  Matching condition Qg O(as^2)
@@ -93,99 +104,99 @@ double K_gg1_local(double m2mu2) { return -4. / 3. * TR * log(1. / m2mu2); }
 //  Eq. (B.3) from Ref. [arXiv:hep-ph/9612398v1]
 //------------------------------------------------------------------------------------------//
 
-double K_Qg2(double x, double m2mu2) {
+// double MatchingCondition::K_Qg2(double x, double m2mu2) const {
 
-    double x2 = x * x;
+//     double x2 = x * x;
 
-    double L = log(x);
-    double L2 = L * L;
-    double L3 = L2 * L;
+//     double L = log(x);
+//     double L2 = L * L;
+//     double L3 = L2 * L;
 
-    double Lm = log(1. - x);
-    double Lm2 = Lm * Lm;
-    double Lm3 = Lm2 * Lm;
+//     double Lm = log(1. - x);
+//     double Lm2 = Lm * Lm;
+//     double Lm3 = Lm2 * Lm;
 
-    double Lp = log(1. + x);
-    double Lp2 = Lp * Lp;
+//     double Lp = log(1. + x);
+//     double Lp2 = Lp * Lp;
 
-    double Li2xm = Li2(1. - x);
-    double Li3xm = Li3(1. - x);
-    double Li2minus = Li2(-x);
-    double Li3minus = Li3(-x);
-    double S12xm = S12(1. - x);
-    double S12minus = S12(-x);
+//     double Li2xm = Li2(1. - x);
+//     double Li3xm = Li3(1. - x);
+//     double Li2minus = Li2(-x);
+//     double Li3minus = Li3(-x);
+//     double S12xm = S12(1. - x);
+//     double S12minus = S12(-x);
 
-    double Lmu = log(m2mu2);
-    double Lmu2 = Lmu * Lmu;
+//     double Lmu = log(m2mu2);
+//     double Lmu2 = Lmu * Lmu;
 
-    double logmu2_CFTR =
-        (Lm * (8. - 16. * x + 16 * x2) - L * (4. - 8. * x + 16. * x2)
-         - (2. - 8. * x));
+//     double logmu2_CFTR =
+//         (Lm * (8. - 16. * x + 16 * x2) - L * (4. - 8. * x + 16. * x2)
+//          - (2. - 8. * x));
 
-    double logmu2_CATR =
-        (-Lm * (8. - 16. * x + 16. * x2) - (8. + 32. * x) * L - 16. / 3. / x
-         - 4. - 32. * x + 124. / 3. * x2);
+//     double logmu2_CATR =
+//         (-Lm * (8. - 16. * x + 16. * x2) - (8. + 32. * x) * L - 16. / 3. / x
+//          - 4. - 32. * x + 124. / 3. * x2);
 
-    double logmu2_TR2 = -16. / 3. * (2. * x2 - 2. * x + 1.);
+//     double logmu2_TR2 = -16. / 3. * (2. * x2 - 2. * x + 1.);
 
-    double logmu2 =
-        CF * TR * logmu2_CFTR + CA * TR * logmu2_CATR + TR * TR * logmu2_TR2;
+//     double logmu2 =
+//         CF * TR * logmu2_CFTR + CA * TR * logmu2_CATR + TR * TR * logmu2_TR2;
 
-    double logmu_CFTR =
-        ((8. - 16. * x + 16. * x2) * (2. * L * Lm - Lm2 + 2. * zeta2)
-         - (4. - 8. * x + 16. * x2) * L2 - 32. * x * (1. - x) * Lm
-         - (12. - 16. * x + 32. * x2) * L - 56. + 116. * x - 80. * x2);
+//     double logmu_CFTR =
+//         ((8. - 16. * x + 16. * x2) * (2. * L * Lm - Lm2 + 2. * zeta2)
+//          - (4. - 8. * x + 16. * x2) * L2 - 32. * x * (1. - x) * Lm
+//          - (12. - 16. * x + 32. * x2) * L - 56. + 116. * x - 80. * x2);
 
-    double logmu_CATR =
-        ((16. + 32. * x + 32. * x2) * (Li2minus + L * Lp)
-         + (8. - 16. * x + 16. * x2) * Lm2 + (8. + 16. * x) * L2
-         + 32. * x * zeta2 + 32. * x * (1. - x) * Lm
-         - (8. + 64. * x + 352. / 3. * x2) * L - 160. / 9. / x + 16. - 200. * x
-         + 1744. / 9. * x2);
+//     double logmu_CATR =
+//         ((16. + 32. * x + 32. * x2) * (Li2minus + L * Lp)
+//          + (8. - 16. * x + 16. * x2) * Lm2 + (8. + 16. * x) * L2
+//          + 32. * x * zeta2 + 32. * x * (1. - x) * Lm
+//          - (8. + 64. * x + 352. / 3. * x2) * L - 160. / 9. / x + 16. - 200. * x
+//          + 1744. / 9. * x2);
 
-    double logmu = CF * TR * logmu_CFTR + CA * TR * logmu_CATR;
+//     double logmu = CF * TR * logmu_CFTR + CA * TR * logmu_CATR;
 
-    double const_CFTR =
-        ((1. - 2. * x + 2. * x2)
-             * (8. * zeta3 + 4. / 3. * Lm3 - 8. * Lm * Li2xm + 8. * zeta2 * L
-                - 4. * L * Lm2 + 2. / 3. * L3 - 8. * L * Li2xm + 8. * Li3xm
-                - 24. * S12xm)
-         + x2 * (-16. * zeta2 * L + 4. / 3. * L3 + 16 * L * Li2xm + 32 * S12xm)
-         - (4. + 96. * x - 64. * x2) * Li2xm - (4. - 48. * x + 40. * x2) * zeta2
-         - (8. + 48. * x - 24. * x2) * L * Lm + (4. + 8. * x - 12. * x2) * Lm2
-         - (1. + 12. * x - 20. * x2) * L2 - (52. * x - 48. * x2) * Lm
-         - (16. + 18. * x + 48. * x2) * L + 26. - 82. * x + 80. * x2);
+//     double const_CFTR =
+//         ((1. - 2. * x + 2. * x2)
+//              * (8. * zeta3 + 4. / 3. * Lm3 - 8. * Lm * Li2xm + 8. * zeta2 * L
+//                 - 4. * L * Lm2 + 2. / 3. * L3 - 8. * L * Li2xm + 8. * Li3xm
+//                 - 24. * S12xm)
+//          + x2 * (-16. * zeta2 * L + 4. / 3. * L3 + 16 * L * Li2xm + 32 * S12xm)
+//          - (4. + 96. * x - 64. * x2) * Li2xm - (4. - 48. * x + 40. * x2) * zeta2
+//          - (8. + 48. * x - 24. * x2) * L * Lm + (4. + 8. * x - 12. * x2) * Lm2
+//          - (1. + 12. * x - 20. * x2) * L2 - (52. * x - 48. * x2) * Lm
+//          - (16. + 18. * x + 48. * x2) * L + 26. - 82. * x + 80. * x2);
 
-    double const_CATR =
-        ((1. - 2. * x + 2. * x2) * (-4. / 3. * Lm3 + 8 * Lm * Li2xm - 8 * Li3xm)
-         + (1. + 2. * x + 2. * x2)
-               * (-8. * zeta2 * Lp - 16 * Lp * Li2minus - 8 * L * Lp2
-                  + 4 * L2 * Lp + 8 * L * Li2minus - 8 * Li3minus
-                  - 16 * S12minus)
-         + (16. + 64. * x) * (2. * S12xm + L * Li2xm)
-         - (4. / 3. + 8. / 3. * x) * L3 + (8. - 32. * x + 16. * x2) * zeta3
-         - (16. + 64. * x) * zeta2 * L
-         + (16. * x + 16. * x2) * (Li2minus + L * Lp)
-         // there is a typo here in the e-Print (16+16*x2 -> 16*x+16*x2)
-         + (32. / 3. / x + 12. + 64. * x - 272. / 3. * x2) * Li2xm
-         - (12 + 48 * x - 260. / 3. * x2 + 32. / 3. / x) * zeta2
-         - 4 * x2 * L * Lm - (2 + 8 * x - 10 * x2) * Lm2
-         + (2 + 8 * x + 46. / 3. * x2) * L2 + (4 + 16 * x - 16 * x2) * Lm
-         - (56. / 3. + 172. / 3. * x + 1600. / 9. * x2) * L - 448. / 27. / x
-         - 4. / 3. - 628. / 3. * x + 6352. / 27. * x2);
+//     double const_CATR =
+//         ((1. - 2. * x + 2. * x2) * (-4. / 3. * Lm3 + 8 * Lm * Li2xm - 8 * Li3xm)
+//          + (1. + 2. * x + 2. * x2)
+//                * (-8. * zeta2 * Lp - 16 * Lp * Li2minus - 8 * L * Lp2
+//                   + 4 * L2 * Lp + 8 * L * Li2minus - 8 * Li3minus
+//                   - 16 * S12minus)
+//          + (16. + 64. * x) * (2. * S12xm + L * Li2xm)
+//          - (4. / 3. + 8. / 3. * x) * L3 + (8. - 32. * x + 16. * x2) * zeta3
+//          - (16. + 64. * x) * zeta2 * L
+//          + (16. * x + 16. * x2) * (Li2minus + L * Lp)
+//          // there is a typo here in the e-Print (16+16*x2 -> 16*x+16*x2)
+//          + (32. / 3. / x + 12. + 64. * x - 272. / 3. * x2) * Li2xm
+//          - (12 + 48 * x - 260. / 3. * x2 + 32. / 3. / x) * zeta2
+//          - 4 * x2 * L * Lm - (2 + 8 * x - 10 * x2) * Lm2
+//          + (2 + 8 * x + 46. / 3. * x2) * L2 + (4 + 16 * x - 16 * x2) * Lm
+//          - (56. / 3. + 172. / 3. * x + 1600. / 9. * x2) * L - 448. / 27. / x
+//          - 4. / 3. - 628. / 3. * x + 6352. / 27. * x2);
 
-    double const_tot = CF * TR * const_CFTR + CA * TR * const_CATR;
+//     double const_tot = CF * TR * const_CFTR + CA * TR * const_CATR;
 
-    double tmp = const_tot + logmu * Lmu + logmu2 * Lmu2;
+//     double tmp = const_tot + logmu * Lmu + logmu2 * Lmu2;
 
-    return 0.5 * tmp;
-}
+//     return 0.5 * tmp;
+// }
 
 //==========================================================================================//
 //  Approximation of the nf-independent part of the mu-independent part of the
 //  unrenormalized matching condition Qg at O(as^3).
 //
-//  v = 0 : center of the band given by v = 1 and v = 2
+//  v = 0 : exact result
 //  v = 1 : Eq. (3.49) of Ref. [arXiv:1205.5727]
 //  v = 2 : Eq. (16) Ref. of [arXiv:1701.05838]
 //  v = -12 : Eq. (3.50) of Ref. [arXiv:1205.5727]
@@ -203,7 +214,7 @@ double MatchingCondition::a_Qg_30(double x, int v) const {
     double L13 = L12 * L1;
 
     if (v == 0) {
-        cout << "A_Qg exact is not known/implemented yet!" << endl;
+        cout << "a_Qg_30 exact is not known/implemented yet!" << endl;
         exit(-1);
     } else if (v == 1) {
         return (
@@ -222,8 +233,7 @@ double MatchingCondition::a_Qg_30(double x, int v) const {
             + 3178.819 * L2 + 4710.725 / x + 1548.891 / x * L
         );
     } else {
-        cout << "a_Qg_30: Choose either v=0, v=1, v=-1 or v=-12"
-                "!!\nExiting!!\n"
+        cout << "Error in MatchingCondition::a_Qg_30: Choose either v=0, v=1, v=-1 or v=-12"
              << endl;
         exit(-1);
     }

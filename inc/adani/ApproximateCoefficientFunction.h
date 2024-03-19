@@ -1,10 +1,10 @@
 /*
  * =====================================================================================
  *
- *       Filename:  ApproximateCoefficientFunctions.h
+ *       Filename:  ApproximateCoefficientFunction.h
  *
  *    Description:  Header file for the
- * ApproximateCoefficientFunctions.cc file.
+ * ApproximateCoefficientFunction.cc file.
  *
  *         Author:  L'artiglio che graffia
  *
@@ -19,8 +19,8 @@
 
 #include "adani/CoefficientFunction.h"
 #include "adani/ThresholdCoefficientFunction.h"
-#include "adani/AsymptoticCoefficientFunctions.h"
-#include "adani/ExactCoefficientFunctions.h"
+#include "adani/AsymptoticCoefficientFunction.h"
+#include "adani/ExactCoefficientFunction.h"
 
 struct approximation_parameters {
     double A;

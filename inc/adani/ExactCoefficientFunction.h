@@ -1,10 +1,10 @@
 /*
  * =====================================================================================
  *
- *       Filename:  ExactCoefficientFunctions.h
+ *       Filename:  ExactCoefficientFunction.h
  *
  *    Description:  Header file for the
- * ExactCoefficientFunctions.cc file.
+ * ExactCoefficientFunction.cc file.
  *
  *         Author:  Hanno un cuore differente
  *
@@ -18,7 +18,7 @@
 #define Exact_h
 
 #include "adani/CoefficientFunction.h"
-#include "adani/Convolutions.h"
+#include "adani/Convolution.h"
 
 #include <vector>
 

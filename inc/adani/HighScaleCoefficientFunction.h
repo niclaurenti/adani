@@ -1,10 +1,10 @@
 /*
  * =====================================================================================
  *
- *       Filename:  HighScaleCoefficientFunctions.h
+ *       Filename:  HighScaleCoefficientFunction.h
  *
  *    Description:  Header file for the
- * HighScaleCoefficientFunctions.cc file.
+ * HighScaleCoefficientFunction.cc file.
  *
  *         Author:  Da quella posizione trasforma l'acqua in
  * vino
@@ -19,8 +19,8 @@
 #define HighScale_h
 
 #include "adani/CoefficientFunction.h"
-#include "adani/MasslessCoefficientFunctions.h"
-#include "adani/MatchingConditions.h"
+#include "adani/MasslessCoefficientFunction.h"
+#include "adani/MatchingCondition.h"
 
 //==========================================================================================//
 //                      The notation used is the following:

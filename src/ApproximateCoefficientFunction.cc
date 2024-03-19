@@ -1,8 +1,8 @@
-#include "adani/ApproximateCoefficientFunctions.h"
+#include "adani/ApproximateCoefficientFunction.h"
 #include "adani/Constants.h"
 
-#include "adani/HighEnergyCoefficientFunctions.h"
-#include "adani/HighScaleCoefficientFunctions.h"
+#include "adani/HighEnergyCoefficientFunction.h"
+#include "adani/HighScaleCoefficientFunction.h"
 #include "adani/SpecialFunctions.h"
 
 #include <cmath>

@@ -51,7 +51,7 @@ PYBIND11_MODULE(_core, m) {
         .def("MuDependentTermsBand", &AsymptoticCoefficientFunction::MuDependentTermsBand)
         .def("fxBand", &AsymptoticCoefficientFunction::fxBand);
 
-    // ExactCoefficientFunctions
+    // ExactCoefficientFunction
     py::class_<ExactCoefficientFunction>(m, "ExactCoefficientFunction")
         .def(py::init<const int&, const char&, const char&, const double&, const double&, const int&, const int&, const int&>())
         .def("MuIndependentTerms", &ExactCoefficientFunction::MuIndependentTerms)

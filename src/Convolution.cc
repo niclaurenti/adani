@@ -1,8 +1,8 @@
-#include "adani/Convolutions.h"
+#include "adani/Convolution.h"
 #include "adani/Constants.h"
-#include "adani/ExactCoefficientFunctions.h"
-#include "adani/MasslessCoefficientFunctions.h"
-#include "adani/MatchingConditions.h"
+#include "adani/ExactCoefficientFunction.h"
+#include "adani/MasslessCoefficientFunction.h"
+#include "adani/MatchingCondition.h"
 #include "adani/SpecialFunctions.h"
 #include "adani/SplittingFunction.h"
 

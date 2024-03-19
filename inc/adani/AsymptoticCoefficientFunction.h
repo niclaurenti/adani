@@ -1,10 +1,10 @@
 /*
  * =====================================================================================
  *
- *       Filename:  AsymptoticCoefficientFunctions.h
+ *       Filename:  AsymptoticCoefficientFunction.h
  *
  *    Description:  Header file for the
- * AsymptoticCoefficientFunctions.cc file.
+ * AsymptoticCoefficientFunction.cc file.
  *
  *         Author:  Anche tu sei un teorico Max
  *
@@ -18,8 +18,8 @@
 #define Asymptotic_h
 
 #include "adani/CoefficientFunction.h"
-#include "adani/HighEnergyCoefficientFunctions.h"
-#include "adani/HighScaleCoefficientFunctions.h"
+#include "adani/HighEnergyCoefficientFunction.h"
+#include "adani/HighScaleCoefficientFunction.h"
 
 class AsymptoticCoefficientFunction : public AbstractHighEnergyCoefficientFunction {
     public:
