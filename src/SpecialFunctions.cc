@@ -146,7 +146,6 @@ double Li3(double x) {
 
 double S12(double x) {
 
-    double c;
     if (x > 1) {
         return (
             -Li3(1. - x) + zeta3 + log(x - 1.) * Li2(1. - x)
@@ -170,11 +169,12 @@ double S12(double x) {
     }
 
     else if (x < 0) {
-        c = 1. / (1. - x);
+        double c = 1. / (1. - x);
+        double logc = log(c);
         return (
-            -Li3(c) + zeta3 + log(c) * Li2(c)
-            + 0.5 * log(c) * log(c) * log(1. - c)
-            - 1. / 6. * log(c) * log(c) * log(c)
+            -Li3(c) + zeta3 + logc * Li2(c)
+            + 0.5 * logc * logc * log(1. - c)
+            - 1. / 6. * logc * logc * logc
         );
     }
 
