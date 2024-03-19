@@ -31,6 +31,7 @@ jobs:
           pip install setuptools
           pip install numpy
           pip install scipy
+          pip install mpmath
           pip install versioneer
           pip install .
       - name: Lint with flake8
