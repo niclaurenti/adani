@@ -3,7 +3,8 @@
 #include <cmath>
 #include <iostream>
 
-using namespace std;
+using std::cout;
+using std::endl;
 
 #define Li2_1_2 0.5822405265
 #define Li3_1_2 0.5372131936
