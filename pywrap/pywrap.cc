@@ -142,6 +142,7 @@ PYBIND11_MODULE(_core, m) {
         .def("MuDependentTerms", &ThresholdCoefficientFunction::MuDependentTerms)
         .def("fx", &ThresholdCoefficientFunction::fx)
         .def("MuIndependentTermsBand", &ThresholdCoefficientFunction::MuIndependentTermsBand)
+        .def("BetaIndependentTerms", &ThresholdCoefficientFunction::BetaIndependentTerms)
         .def("MuDependentTermsBand", &ThresholdCoefficientFunction::MuDependentTermsBand)
         .def("fxBand", &ThresholdCoefficientFunction::fxBand);
 
