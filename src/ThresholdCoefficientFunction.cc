@@ -1,4 +1,4 @@
-#include "adani/ThresholdCoefficientFunctions.h"
+#include "adani/ThresholdCoefficientFunction.h"
 #include "adani/Constants.h"
 #include "adani/SpecialFunctions.h"
 
@@ -8,35 +8,43 @@
 using std::cout ;
 using std::endl ;
 
+//==========================================================================================//
+//  ThresholdCoefficientFunction: constructor
+//------------------------------------------------------------------------------------------//
+
 ThresholdCoefficientFunction::ThresholdCoefficientFunction(const int& order, const char& kind, const char& channel) : CoefficientFunction(order, kind, channel) {
 
     exactlo_ = new ExactCoefficientFunction(1, GetKind(), GetChannel());
     SetFunctions();
 }
 
+//==========================================================================================//
+//  ThresholdCoefficientFunction: destructor
+//------------------------------------------------------------------------------------------//
+
 ThresholdCoefficientFunction::~ThresholdCoefficientFunction() {
     delete exactlo_;
 }
 
-Value ThresholdCoefficientFunction::fxBand(double x, double m2Q2, double m2mu2, int nf) const {
-    return Value((this->*fx_)(x, m2Q2, m2mu2, nf));
+//==========================================================================================//
+//  ThresholdCoefficientFunction: contral value of the full contribution
+//------------------------------------------------------------------------------------------//
+
+double ThresholdCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int nf) const {
+    return (this->*fx_)(x, m2Q2, m2mu2, nf);
 }
 
-void ThresholdCoefficientFunction::SetFunctions() {
-    if (GetChannel() == 'q') fx_ = &ThresholdCoefficientFunction::ZeroFunction;
-    else if (GetChannel() == 'g') {
-        if (GetOrder() == 1 && GetKind() == '2') fx_ = &ThresholdCoefficientFunction::C2_g1_threshold ;
-        else if (GetOrder() == 1 && GetKind() == 'L') fx_ = &ThresholdCoefficientFunction::ZeroFunction;
-        else if (GetOrder() == 2 && GetKind() == '2') fx_ = &ThresholdCoefficientFunction::C2_g2_threshold ;
-        else if (GetOrder() == 2 && GetKind() == 'L') fx_ = &ThresholdCoefficientFunction::CL_g2_threshold ;
-        else if (GetOrder() == 3 && GetKind() == '2') fx_ = &ThresholdCoefficientFunction::C2_g3_threshold ;
-        else if (GetOrder() == 3 && GetKind() == 'L') fx_ = &ThresholdCoefficientFunction::CL_g3_threshold ;
-        else {
-            cout << "Error: something has gone wrong in ThresholdCoefficientFunction::SetFunctions!" << endl;
-            exit(-1);
-        }
-    }
+//==========================================================================================//
+//  ThresholdCoefficientFunction: band of the full contribution
+//------------------------------------------------------------------------------------------//
+
+Value ThresholdCoefficientFunction::fxBand(double x, double m2Q2, double m2mu2, int nf) const {
+    return Value(fx(x, m2Q2, m2mu2, nf));
 }
+
+//==========================================================================================//
+//  ThresholdCoefficientFunction: central value of the beta-independent terms
+//------------------------------------------------------------------------------------------//
 
 double ThresholdCoefficientFunction::BetaIndependentTerms(double x, double m2Q2, double m2mu2) const {
     if (GetChannel() == 'q') return 0.;
@@ -58,8 +66,28 @@ double ThresholdCoefficientFunction::BetaIndependentTerms(double x, double m2Q2,
 }
 
 //==========================================================================================//
+//  ThresholdCoefficientFunction: function that sets the pointer for fx
+//------------------------------------------------------------------------------------------//
+
+void ThresholdCoefficientFunction::SetFunctions() {
+    if (GetChannel() == 'q') fx_ = &ThresholdCoefficientFunction::ZeroFunction;
+    else if (GetChannel() == 'g') {
+        if (GetOrder() == 1 && GetKind() == '2') fx_ = &ThresholdCoefficientFunction::C2_g1_threshold ;
+        else if (GetOrder() == 1 && GetKind() == 'L') fx_ = &ThresholdCoefficientFunction::ZeroFunction;
+        else if (GetOrder() == 2 && GetKind() == '2') fx_ = &ThresholdCoefficientFunction::C2_g2_threshold ;
+        else if (GetOrder() == 2 && GetKind() == 'L') fx_ = &ThresholdCoefficientFunction::CL_g2_threshold ;
+        else if (GetOrder() == 3 && GetKind() == '2') fx_ = &ThresholdCoefficientFunction::C2_g3_threshold ;
+        else if (GetOrder() == 3 && GetKind() == 'L') fx_ = &ThresholdCoefficientFunction::CL_g3_threshold ;
+        else {
+            cout << "Error: something has gone wrong in ThresholdCoefficientFunction::SetFunctions!" << endl;
+            exit(-1);
+        }
+    }
+}
+
+//==========================================================================================//
 //  Threshold limit (x->xmax) of the gluon coefficient function for F2 at
-//  O(alpha_s). In order to pass to klmv normalization multiply
+//  O(as). In order to pass to klmv normalization multiply
 //  m2Q2*4*M_PI*M_PI*x
 //
 //  Eq. (3.15) of Ref. [arXiv:1205.5727]

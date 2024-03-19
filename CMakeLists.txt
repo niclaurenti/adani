@@ -74,7 +74,7 @@ if(PYTHON_ONLY)
         src/CoefficientFunction.cc
         src/ApproximateCoefficientFunctions.cc
         src/ExactCoefficientFunctions.cc
-        src/ThresholdCoefficientFunctions.cc
+        src/ThresholdCoefficientFunction.cc
         src/AsymptoticCoefficientFunctions.cc
         src/MasslessCoefficientFunctions.cc
         src/Convolutions.cc
@@ -98,7 +98,7 @@ else(PYTHON_ONLY)
         src/CoefficientFunction.cc
         src/ApproximateCoefficientFunctions.cc
         src/ExactCoefficientFunctions.cc
-        src/ThresholdCoefficientFunctions.cc
+        src/ThresholdCoefficientFunction.cc
         src/AsymptoticCoefficientFunctions.cc
         src/MasslessCoefficientFunctions.cc
         src/Convolutions.cc

@@ -14,6 +14,6 @@
 #include "adani/MatchingConditions.h"
 #include "adani/SpecialFunctions.h"
 #include "adani/SplittingFunctions.h"
-#include "adani/ThresholdCoefficientFunctions.h"
+#include "adani/ThresholdCoefficientFunction.h"
 
 #endif

@@ -18,7 +18,7 @@
 #define Approximate_h
 
 #include "adani/CoefficientFunction.h"
-#include "adani/ThresholdCoefficientFunctions.h"
+#include "adani/ThresholdCoefficientFunction.h"
 #include "adani/AsymptoticCoefficientFunctions.h"
 #include "adani/ExactCoefficientFunctions.h"
 
