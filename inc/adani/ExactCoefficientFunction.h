@@ -18,20 +18,13 @@
 #define Exact_h
 
 #include "adani/CoefficientFunction.h"
+#include "adani/SplittingFunction.h"
 #include "adani/Convolution.h"
 
 #include <vector>
 
 //==========================================================================================//
-//                      The notation used is the following:
-//                      C^{(k)} = k-th order expansion in
-//                      terms of a_s^{[nf]}
-//
-//------------------------------------------------------------------------------------------//
-//==========================================================================================//
-//                      Notation:
-//                      m2Q2 = m^2/Q^2
-//                      m2mu2 = m^2/mu^2
+//  class ExactCoefficientFunction
 //------------------------------------------------------------------------------------------//
 
 class ExactCoefficientFunction : public CoefficientFunction {
@@ -63,7 +56,6 @@ class ExactCoefficientFunction : public CoefficientFunction {
         void SetFunctions();
 
     private:
-
         int method_flag_ ;
         double abserr_ ;
         double relerr_ ;
@@ -101,17 +93,6 @@ class ExactCoefficientFunction : public CoefficientFunction {
         double CL_g1(double x, double m2Q2, int /*nf*/) const;
 
         //==========================================================================================//
-        //                      Exact massive coefficient functions
-        //                      O(as^2)
-        //------------------------------------------------------------------------------------------//
-
-        // double C2_g2(double x, double m2Q2, double m2mu2) const;
-        // double C2_ps2(double x, double m2Q2, double m2mu2) const;
-
-        // double CL_g2(double x, double m2Q2, double m2mu2) const;
-        // double CL_ps2(double x, double m2Q2, double m2mu2) const;
-
-        //==========================================================================================//
         //  Exact massive coefficient functions O(as^2):
         //  mu-independent terms
         //------------------------------------------------------------------------------------------//
@@ -128,6 +109,11 @@ class ExactCoefficientFunction : public CoefficientFunction {
 
         double C_g21(double x, double m2Q2) const;
         double C_ps21(double x, double m2Q2) const;
+
+        //==========================================================================================//
+        //  Exact massive coefficient functions O(as^2):
+        //  mu-dependent terms
+        //------------------------------------------------------------------------------------------//
 
         double C_ps2_MuDep(double x, double m2Q2, double m2mu2, int /*nf*/) const ;
         double C_g2_MuDep(double x, double m2Q2, double m2mu2, int /*nf*/) const ;
@@ -146,11 +132,12 @@ class ExactCoefficientFunction : public CoefficientFunction {
         //------------------------------------------------------------------------------------------//
 
         double C_ps32(double x, double m2Q2, int nf) const;
-
-        // These two expressions are integrated with montcarlo
-        // methods
-
         double C_g32(double x, double m2Q2, int nf) const;
+
+        //==========================================================================================//
+        //  Exact massive coefficient functions O(as^3):
+        //  mu-dependent terms
+        //------------------------------------------------------------------------------------------//
 
         double C_ps3_MuDep(double x, double m2Q2, double m2mu2, int nf) const ;
         double C_g3_MuDep(double x, double m2Q2, double m2mu2, int nf) const ;

@@ -7,19 +7,35 @@
 using std::cout;
 using std::endl;
 
+//==========================================================================================//
+//  AbstractHighEnergyCoefficientFunction: constructor
+//------------------------------------------------------------------------------------------//
+
 AbstractHighEnergyCoefficientFunction::AbstractHighEnergyCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL) : CoefficientFunction(order, kind, channel) {
 
     SetNLL(NLL);
 
 }
 
+//==========================================================================================//
+//  HighEnergyCoefficientFunction: constructor
+//------------------------------------------------------------------------------------------//
+
 HighEnergyCoefficientFunction::HighEnergyCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL) : AbstractHighEnergyCoefficientFunction(order, kind, channel, NLL) {
     SetFunctions();
 }
 
+//==========================================================================================//
+//  HighEnergyCoefficientFunction: band of the high energy coefficient function
+//------------------------------------------------------------------------------------------//
+
 Value HighEnergyCoefficientFunction::fxBand(double x, double m2Q2, double m2mu2, int nf) const {
     return (this->*LL_)(x, m2Q2, m2mu2) + (this->*NLL_)(x, m2Q2, m2mu2, nf) ;
 }
+
+//==========================================================================================//
+//  HighEnergyCoefficientFunction: function that sets the pointer for LL_ and NLL_
+//------------------------------------------------------------------------------------------//
 
 void HighEnergyCoefficientFunction::SetFunctions() {
 
@@ -58,13 +74,25 @@ void HighEnergyCoefficientFunction::SetFunctions() {
     if (!GetNLL()) NLL_ = &HighEnergyCoefficientFunction::ZeroFunctionBand;
 }
 
+//==========================================================================================//
+//  HighEnergyHighScaleCoefficientFunction: constructor
+//------------------------------------------------------------------------------------------//
+
 HighEnergyHighScaleCoefficientFunction::HighEnergyHighScaleCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL) : AbstractHighEnergyCoefficientFunction(order, kind, channel, NLL) {
     SetFunctions();
 }
 
+//==========================================================================================//
+//  HighEnergyHighScaleCoefficientFunction: band of the high scale limit of the high energy
+//------------------------------------------------------------------------------------------//
+
 Value HighEnergyHighScaleCoefficientFunction::fxBand(double x, double m2Q2, double m2mu2, int nf) const {
     return (this->*LL_)(x, m2Q2, m2mu2) + (this->*NLL_)(x, m2Q2, m2mu2, nf) ;
 }
+
+//==========================================================================================//
+//  HighEnergyHighScaleCoefficientFunction: function that sets the pointer for LL_ and NLL_
+//------------------------------------------------------------------------------------------//
 
 void HighEnergyHighScaleCoefficientFunction::SetFunctions() {
 
@@ -103,18 +131,30 @@ void HighEnergyHighScaleCoefficientFunction::SetFunctions() {
     if (!GetNLL()) NLL_ = &HighEnergyHighScaleCoefficientFunction::ZeroFunctionBand;
 }
 
+//==========================================================================================//
+//  HighEnergyHighScaleCoefficientFunction: constructor
+//------------------------------------------------------------------------------------------//
+
 PowerTermsCoefficientFunction::PowerTermsCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL) : AbstractHighEnergyCoefficientFunction(order, kind, channel, NLL) {
     highenergy_ = new HighEnergyCoefficientFunction(GetOrder(), GetKind(), GetChannel(), GetNLL());
     highenergyhighscale_ = new HighEnergyHighScaleCoefficientFunction(GetOrder(), GetKind(), GetChannel(), GetNLL());
 }
+
+//==========================================================================================//
+//  HighEnergyHighScaleCoefficientFunction: destructor
+//------------------------------------------------------------------------------------------//
 
 PowerTermsCoefficientFunction::~PowerTermsCoefficientFunction() {
     delete highenergy_;
     delete highenergyhighscale_;
 }
 
+//==========================================================================================//
+//  PowerTermsCoefficientFunction: band of the power terms
+//------------------------------------------------------------------------------------------//
+
 Value PowerTermsCoefficientFunction::fxBand(double x, double m2Q2, double m2mu2, int nf) const {
-    // TODO: in this way the error is very small: should take all the compbinations
+    // TODO: in this way the error is very small: should take all the combinations
     double central = (highenergy_->fx(x, m2Q2, m2mu2, nf)) - (highenergyhighscale_->fx(x, m2Q2, m2mu2, nf));
     double higher = (highenergy_->fxBand(x, m2Q2, m2mu2, nf)).GetHigher() - (highenergyhighscale_->fxBand(x, m2Q2, m2mu2, nf)).GetHigher();
     double lower = (highenergy_->fxBand(x, m2Q2, m2mu2, nf)).GetLower() - (highenergyhighscale_->fxBand(x, m2Q2, m2mu2, nf)).GetLower();

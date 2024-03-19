@@ -22,6 +22,10 @@
 #include "adani/AsymptoticCoefficientFunction.h"
 #include "adani/ExactCoefficientFunction.h"
 
+//==========================================================================================//
+//  struct approximation_parameters: parameters of the damping functions
+//------------------------------------------------------------------------------------------//
+
 struct approximation_parameters {
     double A;
     double B;
@@ -29,10 +33,18 @@ struct approximation_parameters {
     double D;
 };
 
+//==========================================================================================//
+//  struct variation_parameters: parameters of the variation of the damping functions
+//------------------------------------------------------------------------------------------//
+
 struct variation_parameters {
     double var;
     double fact;
 };
+
+//==========================================================================================//
+//  struct klmv_params: parameters for klmv approximation
+//------------------------------------------------------------------------------------------//
 
 struct klmv_params {
     double gamma;
@@ -41,6 +53,10 @@ struct klmv_params {
     double log_pow;
     double const_coeff;
 };
+
+//==========================================================================================//
+//  class AbstractApproximate
+//------------------------------------------------------------------------------------------//
 
 class AbstractApproximate : public CoefficientFunction {
     public:
@@ -55,6 +71,10 @@ class AbstractApproximate : public CoefficientFunction {
     private:
         ExactCoefficientFunction* muterms_;
 };
+
+//==========================================================================================//
+//  class ApproximateCoefficientFunction
+//------------------------------------------------------------------------------------------//
 
 class ApproximateCoefficientFunction : public AbstractApproximate {
     public:
@@ -74,6 +94,11 @@ class ApproximateCoefficientFunction : public AbstractApproximate {
 
 
 };
+
+//==========================================================================================//
+//  class ApproximateCoefficientFunctionKLMV: Approximate coefficient functions from [arXiv:1205.5727]
+//  klmv = Kawamura, Lo Presti, Moch, Vogt
+//------------------------------------------------------------------------------------------//
 
 class ApproximateCoefficientFunctionKLMV : public AbstractApproximate {
     public:

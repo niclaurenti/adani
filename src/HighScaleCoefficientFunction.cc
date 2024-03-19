@@ -1,6 +1,5 @@
 #include "adani/HighScaleCoefficientFunction.h"
 #include "adani/Constants.h"
-#include "adani/MasslessCoefficientFunction.h"
 #include "adani/SpecialFunctions.h"
 
 #include <cmath>
@@ -8,6 +7,10 @@
 
 using std::cout;
 using std::endl;
+
+//==========================================================================================//
+//  HighScaleCoefficientFunction: constructor
+//------------------------------------------------------------------------------------------//
 
 HighScaleCoefficientFunction::HighScaleCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& exact, const bool& revised_approx) : CoefficientFunction(order, kind, channel) {
       massless_lo_ = nullptr;
@@ -29,6 +32,10 @@ HighScaleCoefficientFunction::HighScaleCoefficientFunction(const int& order, con
 
 }
 
+//==========================================================================================//
+//  HighScaleCoefficientFunction: destructor
+//------------------------------------------------------------------------------------------//
+
 HighScaleCoefficientFunction::~HighScaleCoefficientFunction() {
       delete massless_lo_;
       delete massless_nlo_;
@@ -36,13 +43,25 @@ HighScaleCoefficientFunction::~HighScaleCoefficientFunction() {
       delete a_muindep_;
 }
 
+//==========================================================================================//
+//  HighScaleCoefficientFunction: central value of the highscale coefficient function
+//------------------------------------------------------------------------------------------//
+
 double HighScaleCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int nf) const {
       return fxBand(x, m2Q2, m2mu2, nf).GetCentral();
 }
 
+//==========================================================================================//
+//  HighScaleCoefficientFunction: band of the highscale coefficient function
+//------------------------------------------------------------------------------------------//
+
 Value HighScaleCoefficientFunction::fxBand(double x, double m2Q2, double m2mu2, int nf) const {
     return (this->*fx_)(x, m2Q2, m2mu2, nf);
 }
+
+//==========================================================================================//
+//  HighScaleCoefficientFunction: function that sets the pointer for fxBand
+//------------------------------------------------------------------------------------------//
 
 void HighScaleCoefficientFunction::SetFunctions() {
 

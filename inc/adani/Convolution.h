@@ -9,8 +9,7 @@
  *         Author:  Dribbla tutti, anche i cammelli del
  * deserto
  *
- *  In this file there are the convolutions between the
- * functions defined in this library.
+ *  In this file there are the convolutions between the coefficeint functions and splitting functions.
  *
  *  For the convolution between a regular function and a
  * function containing regular, singular (plus distribution)
@@ -31,13 +30,19 @@
 #include <gsl/gsl_monte.h>
 #include <gsl/gsl_monte_vegas.h>
 
+//==========================================================================================//
+//  class AbstractConvolution
+//------------------------------------------------------------------------------------------//
+
 class AbstractConvolution {
     public:
         AbstractConvolution(CoefficientFunction* coefffunc, AbstractSplittingFunction* splitfunc, const double& abserr = 1e-3, const double& relerr = 1e-3, const int& dim = 1000);
         virtual ~AbstractConvolution() = 0;
 
+        // result of the convolution
         double Convolute(double x, double m2Q2, int nf) const ;
 
+        // integrals of the reular, singular and local parts of the splittings
         virtual double RegularPart(double x, double m2Q2, int nf) const = 0;
         virtual double SingularPart(double x, double m2Q2, int nf) const = 0;
         virtual double LocalPart(double x, double m2Q2, int nf) const = 0;
@@ -46,7 +51,6 @@ class AbstractConvolution {
         double GetAbserr() const {return abserr_;};
         double GetRelerr() const {return relerr_;};
         int GetDim() const {return dim_;} ;
-
         CoefficientFunction* GetCoeffFunc() const {return coefffunc_;};
         AbstractSplittingFunction* GetSplitFunc() const {return splitfunc_;};
 
@@ -66,6 +70,10 @@ class AbstractConvolution {
 
 };
 
+//==========================================================================================//
+//  class Convolution
+//------------------------------------------------------------------------------------------//
+
 class Convolution : public AbstractConvolution {
     public:
         Convolution(CoefficientFunction* coefffunc, AbstractSplittingFunction* splitfunc, const double& abserr = 1e-3, const double& relerr = 1e-3, const int& dim = 1000) : AbstractConvolution(coefffunc, splitfunc, abserr, relerr, dim) {} ;
@@ -75,11 +83,15 @@ class Convolution : public AbstractConvolution {
         double SingularPart(double x, double m2Q2, int nf) const override;
         double LocalPart(double x, double m2Q2, int nf) const override;
 
+        // support function for the integral. it is static in order to be passed to gsl
         static double regular_integrand(double z, void *p) ;
         static double singular_integrand(double z, void *p) ;
 
 };
 
+//==========================================================================================//
+//  class ConvolutedCoefficientFunction: convolution between a CoefficientFunction and a SplittingFunction
+//------------------------------------------------------------------------------------------//
 
 class ConvolutedCoefficientFunction : public CoefficientFunction {
     public:
@@ -99,10 +111,14 @@ class ConvolutedCoefficientFunction : public CoefficientFunction {
 
 };
 
-class MonteCarloDoubleConvolution : public AbstractConvolution {
+//==========================================================================================//
+//  class DoubleConvolution
+//------------------------------------------------------------------------------------------//
+
+class DoubleConvolution : public AbstractConvolution {
     public:
-        MonteCarloDoubleConvolution(CoefficientFunction* coefffunc, AbstractSplittingFunction* splitfunc, const double& abserr = 1e-3, const double& relerr = 1e-3, const int& dim = 1000, const int& method_flag = 1, const int& MCcalls = 25000) ;
-        ~MonteCarloDoubleConvolution() override ;
+        DoubleConvolution(CoefficientFunction* coefffunc, AbstractSplittingFunction* splitfunc, const double& abserr = 1e-3, const double& relerr = 1e-3, const int& dim = 1000, const int& method_flag = 1, const int& MCcalls = 25000) ;
+        ~DoubleConvolution() override ;
 
         double RegularPart(double x, double m2Q2, int nf) const override;
         double SingularPart(double x, double m2Q2, int nf) const override;
@@ -116,6 +132,7 @@ class MonteCarloDoubleConvolution : public AbstractConvolution {
         void SetMethodFlag(const int& method_flag) ;
         void SetMCcalls(const int& MCcalls) ;
 
+        // support function for the integral. it is static in order to be passed to gsl
         static double regular1_integrand(double z[], size_t /*dim*/, void *p) ;
         static double regular2_integrand(double z[], size_t /*dim*/, void *p) ;
         static double regular3_integrand(double z, void *p) ;
@@ -133,18 +150,15 @@ class MonteCarloDoubleConvolution : public AbstractConvolution {
 
 };
 
+//==========================================================================================//
+//  struct function_params to be passed to gsl
+//------------------------------------------------------------------------------------------//
+
 struct function_params {
     double x;
     double m2Q2;
     int nf;
     const AbstractConvolution* conv;
 };
-
-//==========================================================================================//
-//  Convolution between the first order massive gluon
-//  coefficient functions and the convolution between the
-//  splitting functions Pgg0 and Pgg0 using monte carlo
-//  mathods
-//------------------------------------------------------------------------------------------//
 
 #endif

@@ -30,6 +30,10 @@
 //                      \alpha_s^{[nf+1]}
 //------------------------------------------------------------------------------------------//
 
+//==========================================================================================//
+//  class HighScaleCoefficientFunction
+//------------------------------------------------------------------------------------------//
+
 class HighScaleCoefficientFunction : public CoefficientFunction {
     public:
         HighScaleCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& exact, const bool& revised_approx) ;

@@ -1,14 +1,16 @@
 #include "adani/ExactCoefficientFunction.h"
 #include "adani/Constants.h"
-#include "adani/MatchingCondition.h"
 #include "adani/SpecialFunctions.h"
-#include "adani/SplittingFunction.h"
 
 #include <cmath>
 #include <iostream>
 
 using std::cout ;
 using std::endl ;
+
+//==========================================================================================//
+//  ExactCoefficientFunction: constructor
+//------------------------------------------------------------------------------------------//
 
 ExactCoefficientFunction::ExactCoefficientFunction(const int& order, const char& kind, const char& channel, const double& abserr, const double& relerr, const int& dim, const int& method_flag, const int& MCcalls) : CoefficientFunction(order, kind, channel) {
 
@@ -78,7 +80,7 @@ ExactCoefficientFunction::ExactCoefficientFunction(const int& order, const char&
             convolutions_lmu1_.push_back( new Convolution(gluon_nlo_, Pgg0_, abserr, relerr, dim) );
             convolutions_lmu1_.push_back( new Convolution(gluon_nlo_, delta_) );
 
-            convolutions_lmu2_.push_back( new MonteCarloDoubleConvolution(gluon_lo_, Pgg0_, abserr, relerr, dim, method_flag, MCcalls) );
+            convolutions_lmu2_.push_back( new DoubleConvolution(gluon_lo_, Pgg0_, abserr, relerr, dim, method_flag, MCcalls) );
             convolutions_lmu2_.push_back( new Convolution(gluon_lo_, Pgq0Pqg0_, abserr, relerr, dim) );
             convolutions_lmu2_.push_back( new Convolution(gluon_lo_, Pgg0_, abserr, relerr, dim) );
             convolutions_lmu2_.push_back( new Convolution(gluon_lo_, delta_) );
@@ -88,6 +90,10 @@ ExactCoefficientFunction::ExactCoefficientFunction(const int& order, const char&
     SetFunctions();
 
 }
+
+//==========================================================================================//
+//  ExactCoefficientFunction: destructor
+//------------------------------------------------------------------------------------------//
 
 ExactCoefficientFunction::~ExactCoefficientFunction() {
 
@@ -117,21 +123,42 @@ ExactCoefficientFunction::~ExactCoefficientFunction() {
 
 }
 
+//==========================================================================================//
+//  ExactCoefficientFunction: central value of the exact coefficient function
+//------------------------------------------------------------------------------------------//
+
 double ExactCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int nf) const {
     return MuIndependentTerms(x, m2Q2, nf) + MuDependentTerms(x, m2Q2, m2mu2, nf);
 }
+
+//==========================================================================================//
+//  ExactCoefficientFunction: mu-independent terms
+//------------------------------------------------------------------------------------------//
 
 double ExactCoefficientFunction::MuIndependentTerms(double x, double m2Q2, int nf) const {
     return (this->*mu_indep_)(x, m2Q2, nf);
 }
 
+//==========================================================================================//
+//  ExactCoefficientFunction: mu dependent terms
+//------------------------------------------------------------------------------------------//
+
 double ExactCoefficientFunction::MuDependentTerms(double x, double m2Q2, double m2mu2, int nf) const {
     return (this->*mu_dep_)(x, m2Q2, m2mu2, nf);
 }
 
+//==========================================================================================//
+//  ExactCoefficientFunction: implemented only because it is pure virtual in base class.
+//  Returning three identical values
+//------------------------------------------------------------------------------------------//
+
 Value ExactCoefficientFunction::fxBand(double x, double m2Q2, double m2mu2, int nf) const {
     return Value(fx(x, m2Q2, m2mu2, nf));
 }
+
+//==========================================================================================//
+//  ExactCoefficientFunction: function that sets the pointer for mu_indep_ and mu_dep_
+//------------------------------------------------------------------------------------------//
 
 void ExactCoefficientFunction::SetFunctions() {
     if (GetOrder() == 1) {
@@ -167,6 +194,10 @@ void ExactCoefficientFunction::SetFunctions() {
     }
 }
 
+//==========================================================================================//
+//  ExactCoefficientFunction: set method for method_flag
+//------------------------------------------------------------------------------------------//
+
 void ExactCoefficientFunction::SetMethodFlag(const int& method_flag) {
     // check method_flag
     if (method_flag != 0 && method_flag != 1) {
@@ -177,6 +208,10 @@ void ExactCoefficientFunction::SetMethodFlag(const int& method_flag) {
 
 }
 
+//==========================================================================================//
+//  ExactCoefficientFunction: set method for abserr
+//------------------------------------------------------------------------------------------//
+
 void ExactCoefficientFunction::SetAbserr(const double& abserr) {
     // check abserr
     if (abserr <= 0) {
@@ -185,6 +220,10 @@ void ExactCoefficientFunction::SetAbserr(const double& abserr) {
     }
     abserr_ = abserr;
 }
+
+//==========================================================================================//
+//  ExactCoefficientFunction: set method for relerr
+//------------------------------------------------------------------------------------------//
 
 void ExactCoefficientFunction::SetRelerr(const double& relerr) {
     // check relerr
@@ -195,6 +234,10 @@ void ExactCoefficientFunction::SetRelerr(const double& relerr) {
     relerr_ = relerr;
 }
 
+//==========================================================================================//
+//  ExactCoefficientFunction: set method for MCcalls
+//------------------------------------------------------------------------------------------//
+
 void ExactCoefficientFunction::SetMCcalls(const int& MCcalls) {
     // check MCcalls
     if (MCcalls <= 0) {
@@ -203,6 +246,10 @@ void ExactCoefficientFunction::SetMCcalls(const int& MCcalls) {
     }
     MCcalls_ = MCcalls;
 }
+
+//==========================================================================================//
+//  ExactCoefficientFunction: set method for dim
+//------------------------------------------------------------------------------------------//
 
 void ExactCoefficientFunction::SetDim(const int& dim) {
     // check dim
@@ -261,82 +308,10 @@ double ExactCoefficientFunction::CL_g1(double x, double m2Q2, int /*nf*/) const 
 //------------------------------------------------------------------------------------------//
 
 //==========================================================================================//
-//  Exact massive gluon coefficient functions for F2 at O(as^2)
+//  mu independent part of the exact massive quark coefficient functions for F2 at O(as^2)
 //
 //  Exact (but numerical) result from [arXiv:hep-ph/9411431].
 //  Taken from the Fortran code 'src/hqcoef.f'
-//------------------------------------------------------------------------------------------//
-
-// double ExactCoefficientFunction::C2_g2(double x, double m2Q2, double m2mu2) const {
-
-//     double xi = 1. / m2Q2;
-//     double eta = 0.25 * xi * (1 - x) / x - 1.;
-
-//     if (eta > 1e6 || eta < 1e-6 || xi < 1e-3 || xi > 1e5)
-//         return 0.;
-
-//     return C2_g20(x, m2Q2) + C2_g21(x, m2Q2) * log(1. / m2mu2);
-// }
-
-//==========================================================================================//
-//  Exact massive quark coefficient functions for F2 at O(as)
-//
-//  Exact (but numerical) result from [arXiv:hep-ph/9411431].
-//  Taken from the Fortran code 'src/hqcoef.f'
-//------------------------------------------------------------------------------------------//
-
-// double ExactCoefficientFunction::C2_ps2(double x, double m2Q2, double m2mu2) const {
-
-//     double xi = 1. / m2Q2;
-//     double eta = 0.25 * xi * (1 - x) / x - 1.;
-
-//     if (eta > 1e6 || eta < 1e-6 || xi < 1e-3 || xi > 1e5)
-//         return 0.;
-
-//     return C2_ps20(x, m2Q2) + C2_ps21(x, m2Q2) * log(1. / m2mu2);
-// }
-
-//==========================================================================================//
-//  Exact massive gluon coefficient functions for FL at O(as)
-//
-//  Exact (but numerical) result from [arXiv:hep-ph/9411431].
-//  Taken from the Fortran code 'src/hqcoef.f'
-//------------------------------------------------------------------------------------------//
-
-// double ExactCoefficientFunction::CL_g2(double x, double m2Q2, double m2mu2) const {
-
-//     double xi = 1. / m2Q2;
-//     double eta = 0.25 * xi * (1 - x) / x - 1.;
-
-//     if (eta > 1e6 || eta < 1e-6 || xi < 1e-3 || xi > 1e5)
-//         return 0.;
-
-//     return CL_g20(x, m2Q2) + CL_g21(x, m2Q2) * log(1. / m2mu2);
-// }
-
-//==========================================================================================//
-//  Exact massive quarkk coefficient functions for FL at O(as)
-//
-//  Exact (but numerical) result from [arXiv:hep-ph/9411431].
-//  Taken from the Fortran code 'src/hqcoef.f'
-//------------------------------------------------------------------------------------------//
-
-// double ExactCoefficientFunction::CL_ps2(double x, double m2Q2, double m2mu2) const {
-
-//     double xi = 1. / m2Q2;
-//     double eta = 0.25 * xi * (1 - x) / x - 1.;
-
-//     if (eta > 1e6 || eta < 1e-6 || xi < 1e-3 || xi > 1e5)
-//         return 0.;
-
-//     return CL_ps20(x, m2Q2) + CL_ps21(x, m2Q2) * log(1. / m2mu2);
-// }
-
-//==========================================================================================//
-//  Exact massive quark coefficient functions for F2 at O(as^2):
-//  mu independent term.
-//
-//  Eq. (4.4) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
 double ExactCoefficientFunction::C2_ps20(double x, double m2Q2, int /*nf*/) const {
@@ -351,7 +326,7 @@ double ExactCoefficientFunction::C2_ps20(double x, double m2Q2, int /*nf*/) cons
 }
 
 //==========================================================================================//
-//  Exact massive quark coefficient functions for F2 at O(as^2):
+//  Exact massive quark coefficient functions at O(as^2):
 //  Term proportional to log(mu^2/m^2)
 //
 //  Eq. (4.1) of Ref. [arXiv:1205.5727]
@@ -369,10 +344,10 @@ double ExactCoefficientFunction::C_ps21(double x, double m2Q2) const {
 }
 
 //==========================================================================================//
-//  Exact massive quark coefficient functions for FL at O(as^2):
-//  mu independent term.
+//  mu independent part of the exact massive quark coefficient functions for FL at O(as)
 //
-//  Eq. (4.4) of Ref. [arXiv:1205.5727]
+//  Exact (but numerical) result from [arXiv:hep-ph/9411431].
+//  Taken from the Fortran code 'src/hqcoef.f'
 //------------------------------------------------------------------------------------------//
 
 double ExactCoefficientFunction::CL_ps20(double x, double m2Q2, int /*nf*/) const {
@@ -387,19 +362,10 @@ double ExactCoefficientFunction::CL_ps20(double x, double m2Q2, int /*nf*/) cons
 }
 
 //==========================================================================================//
-//  Exact massive quark coefficient functions for FL at O(as^2):
-//  Term proportional to log(mu^2/m^2)
+//  mu independent part of the exact massive gluon coefficient functions for F2 at O(as^2)
 //
-//  Eq. (4.1) of Ref. [arXiv:1205.5727] for FL
-//------------------------------------------------------------------------------------------//
-
-// double ExactCoefficientFunction::CL_ps21(double x, double m2Q2) const { return -CL_g1_x_Pgq0(x, m2Q2); }
-
-//==========================================================================================//
-//  Exact massive gluon coefficient functions for F2 at O(as^2):
-//  mu independent term.
-//
-//  Eq. (4.4) of Ref. [arXiv:1205.5727]
+//  Exact (but numerical) result from [arXiv:hep-ph/9411431].
+//  Taken from the Fortran code 'src/hqcoef.f'
 //------------------------------------------------------------------------------------------//
 
 double ExactCoefficientFunction::C2_g20(double x, double m2Q2, int /*nf*/) const {
@@ -414,7 +380,7 @@ double ExactCoefficientFunction::C2_g20(double x, double m2Q2, int /*nf*/) const
 }
 
 //==========================================================================================//
-//  Exact massive gluon coefficient functions for F2 at O(as^2):
+//  Exact massive gluon coefficient functions at O(as^2):
 //  Term proportional to log(mu^2/m^2)
 //
 //  Eq. (4.4) of Ref. [arXiv:1205.5727]
@@ -429,10 +395,10 @@ double ExactCoefficientFunction::C_g21(double x, double m2Q2) const {
 }
 
 //==========================================================================================//
-//  Exact massive gluon coefficient functions for FL at O(as^2):
-//  mu independent term.
+//  mu independent part of the exact massive gluon coefficient functions for FL at O(as^2)
 //
-//  Eq. (4.4) of Ref. [arXiv:1205.5727]
+//  Exact (but numerical) result from [arXiv:hep-ph/9411431].
+//  Taken from the Fortran code 'src/hqcoef.f'
 //------------------------------------------------------------------------------------------//
 
 double ExactCoefficientFunction::CL_g20(double x, double m2Q2, int /*nf*/) const {
@@ -447,24 +413,18 @@ double ExactCoefficientFunction::CL_g20(double x, double m2Q2, int /*nf*/) const
 }
 
 //==========================================================================================//
-//  Exact massive gluon coefficient functions for FL at O(as^2):
-//  Term proportional to log(mu^2/m^2)
-//
-//  Eq. (4.4) of Ref. [arXiv:1205.5727] for FL
+//  ExactCoefficientFunction: mu dependent part of the exact massive gluon coefficient function at O(as^2):
 //------------------------------------------------------------------------------------------//
 
-// double ExactCoefficientFunction::CL_g21(double x, double m2Q2) const {
-
-//     int nf = 1;
-//     // Put nf to 1 since the nf contribution cancels for any value of nf
-
-//     return -(CL_g1_x_Pgg0(x, m2Q2, nf) - CL_g1(x, m2Q2) * beta(0, nf));
-// }
 
 double ExactCoefficientFunction::C_g2_MuDep(double x, double m2Q2, double m2mu2, int /*nf*/) const {
 
     return C_g21(x, m2Q2) * log(1./m2mu2) ;
 }
+
+//==========================================================================================//
+//  ExactCoefficientFunction: mu dependent part of the exact massive quark coefficient function at O(as^2):
+//------------------------------------------------------------------------------------------//
 
 double ExactCoefficientFunction::C_ps2_MuDep(double x, double m2Q2, double m2mu2, int /*nf*/) const {
 
@@ -472,7 +432,7 @@ double ExactCoefficientFunction::C_ps2_MuDep(double x, double m2Q2, double m2mu2
 }
 
 //==========================================================================================//
-//  Exact massive quark coefficient functions for F2 at O(as^3):
+//  Exact massive quark coefficient functions at O(as^3):
 //  Term proportional to log(mu^2/m^2)
 //
 //  Eq. (4.2) of Ref. [arXiv:1205.5727]
@@ -487,22 +447,7 @@ double ExactCoefficientFunction::C_ps31(double x, double m2Q2, int nf) const {
 }
 
 //==========================================================================================//
-//  Exact massive quark coefficient functions for FL at O(as^3):
-//  Term proportional to log(mu^2/m^2)
-//
-//  Eq. (4.2) of Ref. [arXiv:1205.5727] for FL
-//------------------------------------------------------------------------------------------//
-
-// double ExactCoefficientFunction::CL_ps31(double x, double m2Q2, int nf) const {
-
-//     return -(
-//         CL_g1_x_Pgq1(x, m2Q2, nf) + CL_g20_x_Pgq0(x, m2Q2)
-//         + CL_ps20_x_Pqq0(x, m2Q2, nf) - 2. * beta(0, nf) * CL_ps20(x, m2Q2)
-//     );
-// }
-
-//==========================================================================================//
-//  Exact massive quark coefficient functions for F2 at O(as^3):
+//  Exact massive quark coefficient functions at O(as^3):
 //  Term proportional to log(mu^2/m^2)^2
 //
 //  Eq. (4.3) of Ref. [arXiv:1205.5727]
@@ -513,21 +458,6 @@ double ExactCoefficientFunction::C_ps32(double x, double m2Q2, int nf) const {
     return 0.5 * (convolutions_lmu2_[0] -> Convolute(x, m2Q2, nf) + convolutions_lmu2_[1] -> Convolute(x, m2Q2, nf))
            - 3./2 * beta(0, nf) * convolutions_lmu2_[2] -> Convolute(x, m2Q2, nf);
 }
-
-//==========================================================================================//
-//  Exact massive quark coefficient functions for FL at O(as^3):
-//  Term proportional to log(mu^2/m^2)^2
-//
-//  Eq. (4.3) of Ref. [arXiv:1205.5727] for FL
-//------------------------------------------------------------------------------------------//
-
-// double ExactCoefficientFunction::CL_ps32(double x, double m2Q2, int nf) const {
-
-//     return 0.5
-//                * (CL_g1_x_Pgg0_x_Pgq0(x, m2Q2, nf)
-//                   + CL_g1_x_Pqq0_x_Pgq0(x, m2Q2, nf))
-//            - 3. / 2 * beta(0, nf) * CL_g1_x_Pgq0(x, m2Q2);
-// }
 
 //==========================================================================================//
 //  Exact massive gluon coefficient functions for F2 at O(as^3):
@@ -546,23 +476,7 @@ double ExactCoefficientFunction::C_g31(double x, double m2Q2, int nf) const {
 }
 
 //==========================================================================================//
-//  Exact massive gluon coefficient functions for FL at O(as^3):
-//  Term proportional to log(mu^2/m^2)
-//
-//  Eq. (4.5) of Ref. [arXiv:1205.5727] for FL
-//------------------------------------------------------------------------------------------//
-
-// double ExactCoefficientFunction::CL_g31(double x, double m2Q2, int nf) const {
-
-//     return -(
-//         CL_g1_x_Pgg1(x, m2Q2, nf) - beta(1, nf) * CL_g1(x, m2Q2)
-//         + CL_ps20_x_Pqg0(x, m2Q2, nf) + CL_g20_x_Pgg0(x, m2Q2, nf)
-//         - 2 * beta(0, nf) * CL_g20(x, m2Q2)
-//     );
-// }
-
-//==========================================================================================//
-//  Exact massive gluon coefficient functions for F2 at O(as^3):
+//  Exact massive gluon coefficient functions at O(as^3):
 //  Term proportional to log(mu^2/m^2)^2
 //
 //  Eq. (4.6) of Ref. [arXiv:1205.5727]
@@ -570,19 +484,7 @@ double ExactCoefficientFunction::C_g31(double x, double m2Q2, int nf) const {
 
 double ExactCoefficientFunction::C_g32(double x, double m2Q2, int nf) const {
 
-    // double C2_g1xPgg0xPgg0;
-
     double beta0 = beta(0, nf);
-
-    // if (method_flag_ == 0)
-    //     C2_g1xPgg0xPgg0 = C2_g1_x_Pgg0_x_Pgg0(x, m2Q2, nf);
-    // else if (method_flag_ == 1)
-    //     C2_g1xPgg0xPgg0 = C2_g1_x_Pgg0_x_Pgg0_MC(x, m2Q2, nf);
-    // else {
-    //     cout << "C2_g32: Choose either method_flag = 0 or method_flag = 1"
-    //               << endl;
-    //     exit(-1);
-    // }
 
     return 0.5 * (convolutions_lmu2_[0] -> Convolute(x, m2Q2, nf) + convolutions_lmu2_[1] -> Convolute(x, m2Q2, nf))
            - 3./2 * beta0 * convolutions_lmu2_[2] -> Convolute(x, m2Q2, nf)
@@ -590,33 +492,8 @@ double ExactCoefficientFunction::C_g32(double x, double m2Q2, int nf) const {
 }
 
 //==========================================================================================//
-//  Exact massive gluon coefficient functions for FL at O(as^3):
-//  Term proportional to log(mu^2/m^2)^2
-//
-//  Eq. (4.6) of Ref. [arXiv:1205.5727] for FL
+//  ExactCoefficientFunction: mu dependent part of the exact massive gluon coefficient function at O(as^3):
 //------------------------------------------------------------------------------------------//
-
-// double ExactCoefficientFunction::CL_g32(double x, double m2Q2, int nf) const {
-
-//     double CL_g1xPgg0xPgg0;
-
-//     double beta0 = beta(0, nf);
-
-//     if (method_flag_ == 0)
-//         CL_g1xPgg0xPgg0 = CL_g1_x_Pgg0_x_Pgg0(x, m2Q2, nf);
-//     else if (method_flag_ == 1)
-//         CL_g1xPgg0xPgg0 = CL_g1_x_Pgg0_x_Pgg0_MC(x, m2Q2, nf);
-//     else {
-//         std::cout << "C2_g32: Choose either method_flag = 0 or method_flag = 1"
-//                   << std::endl;
-//         exit(-1);
-//     }
-
-//     return 0.5 * CL_g1xPgg0xPgg0 + 0.5 * CL_g1_x_Pqg0_x_Pgq0(x, m2Q2, nf)
-//            - 3. / 2 * beta0 * CL_g1_x_Pgg0(x, m2Q2, nf)
-//            + beta0 * beta0 * CL_g1(x, m2Q2);
-// }
-
 
 double ExactCoefficientFunction::C_g3_MuDep(double x, double m2Q2, double m2mu2, int nf) const {
 
@@ -625,12 +502,20 @@ double ExactCoefficientFunction::C_g3_MuDep(double x, double m2Q2, double m2mu2,
     return C_g31(x, m2Q2, nf) * lmu + C_g32(x, m2Q2, nf) * lmu * lmu ;
 }
 
+//==========================================================================================//
+//  ExactCoefficientFunction: mu dependent part of the exact massive quark coefficient function at O(as^3):
+//------------------------------------------------------------------------------------------//
+
 double ExactCoefficientFunction::C_ps3_MuDep(double x, double m2Q2, double m2mu2, int nf) const {
 
     double lmu = log(1. / m2mu2) ;
 
     return C_ps31(x, m2Q2, nf) * lmu + C_ps32(x, m2Q2, nf) * lmu * lmu ;
 }
+
+//==========================================================================================//
+//  ExactCoefficientFunction: print warning for mu independent part of O(as^3)
+//------------------------------------------------------------------------------------------//
 
 double ExactCoefficientFunction::WarningFunc(double /*x*/, double /*m2Q2*/, int /*nf*/) const {
     cout << "Error: mu-independent terms of the exact coefficient function at O(a_s^3) are not known!" << endl;

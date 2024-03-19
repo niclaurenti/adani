@@ -3,6 +3,10 @@
 using std::cout ;
 using std::endl ;
 
+//==========================================================================================//
+//  CoefficientFunction: constructor
+//------------------------------------------------------------------------------------------//
+
 CoefficientFunction::CoefficientFunction(const int& order, const char& kind, const char& channel) {
 
     SetOrder(order);
@@ -11,7 +15,15 @@ CoefficientFunction::CoefficientFunction(const int& order, const char& kind, con
 
 }
 
+//==========================================================================================//
+//  CoefficientFunction: destructor
+//------------------------------------------------------------------------------------------//
+
 CoefficientFunction::~CoefficientFunction() {};
+
+//==========================================================================================//
+//  CoefficientFunction: set method for order: order = 1, 2, 3
+//------------------------------------------------------------------------------------------//
 
 void CoefficientFunction::SetOrder(const int& order) {
     // check order
@@ -22,6 +34,10 @@ void CoefficientFunction::SetOrder(const int& order) {
     order_ = order ;
 }
 
+//==========================================================================================//
+//  CoefficientFunction: set method for kind: kind = '2', 'L'
+//------------------------------------------------------------------------------------------//
+
 void CoefficientFunction::SetKind(const char& kind) {
     // check kind
     if (kind != '2' && kind !='L') {
@@ -30,6 +46,10 @@ void CoefficientFunction::SetKind(const char& kind) {
     }
     kind_ = kind ;
 }
+
+//==========================================================================================//
+//  CoefficientFunction: set method for channel: channel = 'g', 'q'
+//------------------------------------------------------------------------------------------//
 
 void CoefficientFunction::SetChannel(const char& channel) {
     //check channel
@@ -44,21 +64,41 @@ void CoefficientFunction::SetChannel(const char& channel) {
     channel_ = channel ;
 }
 
+//==========================================================================================//
+//  CoefficientFunction: central value of fx
+//------------------------------------------------------------------------------------------//
+
 double CoefficientFunction::fx(double x, double m2Q2, double m2mu2, int nf) const {
     return fxBand(x, m2Q2, m2mu2, nf).GetCentral();
 }
+
+//==========================================================================================//
+//  CoefficientFunction: central value of mu independent terms
+//------------------------------------------------------------------------------------------//
 
 double CoefficientFunction::MuIndependentTerms(double x, double m2Q2, int nf) const {
     return fx(x, m2Q2, 1., nf);
 }
 
+//==========================================================================================//
+//  CoefficientFunction: central value mu dependent terms
+//------------------------------------------------------------------------------------------//
+
 double CoefficientFunction::MuDependentTerms(double x, double m2Q2, double m2mu2, int nf) const {
     return fx(x, m2Q2, m2mu2, nf) - MuIndependentTerms(x, m2Q2, nf);
 }
 
+//==========================================================================================//
+//  CoefficientFunction: band for mu independent terms
+//------------------------------------------------------------------------------------------//
+
 Value CoefficientFunction::MuIndependentTermsBand(double x, double m2Q2, int nf) const {
     return fxBand(x, m2Q2, 1., nf);;
 }
+
+//==========================================================================================//
+//  CoefficientFunction: band for mu dependent terms
+//------------------------------------------------------------------------------------------//
 
 Value CoefficientFunction::MuDependentTermsBand(double x, double m2Q2, double m2mu2, int nf) const {
     

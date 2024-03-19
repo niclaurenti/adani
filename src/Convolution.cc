@@ -1,10 +1,4 @@
 #include "adani/Convolution.h"
-#include "adani/Constants.h"
-#include "adani/ExactCoefficientFunction.h"
-#include "adani/MasslessCoefficientFunction.h"
-#include "adani/MatchingCondition.h"
-#include "adani/SpecialFunctions.h"
-#include "adani/SplittingFunction.h"
 
 #include <cmath>
 #include <iostream>
@@ -15,6 +9,10 @@ using std::endl;
 // TODO : in all the numerical convolutions the gsl default error is first
 // switched off and then swithced on again: see if it can be done once for all
 
+//==========================================================================================//
+//  AbstractConvolution: constructor
+//------------------------------------------------------------------------------------------//
+
 AbstractConvolution::AbstractConvolution(CoefficientFunction* coefffunc, AbstractSplittingFunction* splitfunc, const double& abserr, const double& relerr, const int& dim) {
     abserr_ = abserr;
     relerr_ = relerr;
@@ -24,7 +22,15 @@ AbstractConvolution::AbstractConvolution(CoefficientFunction* coefffunc, Abstrac
     splitfunc_ = splitfunc;
 }
 
+//==========================================================================================//
+//  AbstractConvolution: destructor
+//------------------------------------------------------------------------------------------//
+
 AbstractConvolution::~AbstractConvolution() {};
+
+//==========================================================================================//
+//  AbstractConvolution: set method for abserr
+//------------------------------------------------------------------------------------------//
 
 void AbstractConvolution::SetAbserr(const double& abserr) {
     // check abserr
@@ -35,6 +41,10 @@ void AbstractConvolution::SetAbserr(const double& abserr) {
     abserr_ = abserr;
 }
 
+//==========================================================================================//
+//  AbstractConvolution: set method for relerr
+//------------------------------------------------------------------------------------------//
+
 void AbstractConvolution::SetRelerr(const double& relerr) {
     // check relerr
     if (relerr <= 0) {
@@ -43,6 +53,10 @@ void AbstractConvolution::SetRelerr(const double& relerr) {
     }
     relerr_ = relerr;
 }
+
+//==========================================================================================//
+//  AbstractConvolution: set method for dim
+//------------------------------------------------------------------------------------------//
 
 void AbstractConvolution::SetDim(const int& dim) {
     // check dim
@@ -53,9 +67,17 @@ void AbstractConvolution::SetDim(const int& dim) {
     dim_ = dim;
 }
 
+//==========================================================================================//
+//  AbstractConvolution: convolute splitting function with coefficient function
+//------------------------------------------------------------------------------------------//
+
 double AbstractConvolution::Convolute(double x, double m2Q2, int nf) const {
     return RegularPart(x, m2Q2, nf) + SingularPart(x, m2Q2, nf) + LocalPart(x, m2Q2, nf) ;
 }
+
+//==========================================================================================//
+//  AbstractConvolution: integrand of the regular part
+//------------------------------------------------------------------------------------------//
 
 double Convolution::regular_integrand(double z, void *p) {
 
@@ -70,6 +92,10 @@ double Convolution::regular_integrand(double z, void *p) {
 
     return cf -> MuIndependentTerms(z, m2Q2, nf) * sf -> Regular(x / z, nf) / z ;
 }
+
+//==========================================================================================//
+//  AbstractConvolution: integrand of the singular part
+//------------------------------------------------------------------------------------------//
 
 double Convolution::singular_integrand(double z, void *p) {
     struct function_params *params = (struct function_params *)p;
@@ -93,6 +119,10 @@ double Convolution::singular_integrand(double z, void *p) {
 //  "If one has no better options, then he has sex even with
 //  his own wife" (the identity of this enlightened person
 //  will not be revealed)
+//------------------------------------------------------------------------------------------//
+
+//==========================================================================================//
+//  AbstractConvolution: regular part
 //------------------------------------------------------------------------------------------//
 
 double Convolution::RegularPart(double x, double m2Q2, int nf) const {
@@ -127,6 +157,10 @@ double Convolution::RegularPart(double x, double m2Q2, int nf) const {
     return regular;
 }
 
+//==========================================================================================//
+//  AbstractConvolution: singular part
+//------------------------------------------------------------------------------------------//
+
 double Convolution::SingularPart(double x, double m2Q2, int nf) const {
 
     double x_max = 1. / (1. + 4 * m2Q2);
@@ -160,6 +194,10 @@ double Convolution::SingularPart(double x, double m2Q2, int nf) const {
     return singular;
 }
 
+//==========================================================================================//
+//  AbstractConvolution: local part
+//------------------------------------------------------------------------------------------//
+
 double Convolution::LocalPart(double x, double m2Q2, int nf) const {
 
     double x_max = 1. / (1. + 4 * m2Q2);
@@ -168,7 +206,11 @@ double Convolution::LocalPart(double x, double m2Q2, int nf) const {
 
 }
 
-MonteCarloDoubleConvolution::MonteCarloDoubleConvolution(CoefficientFunction* coefffunc, AbstractSplittingFunction* splitfunc, const double& abserr, const double& relerr, const int& dim, const int& method_flag, const int& MCcalls) : AbstractConvolution(coefffunc, splitfunc, abserr, relerr, dim) {
+//==========================================================================================//
+//  DoubleConvolution: constructor
+//------------------------------------------------------------------------------------------//
+
+DoubleConvolution::DoubleConvolution(CoefficientFunction* coefffunc, AbstractSplittingFunction* splitfunc, const double& abserr, const double& relerr, const int& dim, const int& method_flag, const int& MCcalls) : AbstractConvolution(coefffunc, splitfunc, abserr, relerr, dim) {
 
     SetMethodFlag(method_flag);
     SetMCcalls(MCcalls);
@@ -182,13 +224,21 @@ MonteCarloDoubleConvolution::MonteCarloDoubleConvolution(CoefficientFunction* co
     }
 }
 
-MonteCarloDoubleConvolution::~MonteCarloDoubleConvolution() {
+//==========================================================================================//
+//  DoubleConvolution: destructor
+//------------------------------------------------------------------------------------------//
+
+DoubleConvolution::~DoubleConvolution() {
 
     delete convolution_;
     delete conv_coeff_;
 }
 
-void MonteCarloDoubleConvolution::SetMethodFlag(const int& method_flag) {
+//==========================================================================================//
+//  DoubleConvolution: set method for method_flag
+//------------------------------------------------------------------------------------------//
+
+void DoubleConvolution::SetMethodFlag(const int& method_flag) {
     // check dim
     if (method_flag != 0 && method_flag != 1) {
         cout << "Error: method_flag must be 0 or 1. Got " << method_flag << endl;
@@ -197,7 +247,11 @@ void MonteCarloDoubleConvolution::SetMethodFlag(const int& method_flag) {
     method_flag_ = method_flag;
 }
 
-void MonteCarloDoubleConvolution::SetMCcalls(const int& MCcalls) {
+//==========================================================================================//
+//  DoubleConvolution: set method for MCcalls
+//------------------------------------------------------------------------------------------//
+
+void DoubleConvolution::SetMCcalls(const int& MCcalls) {
     // check dim
     if (MCcalls <= 0) {
         cout << "Error: MCcalls must be positive. Got " << MCcalls << endl;
@@ -206,7 +260,11 @@ void MonteCarloDoubleConvolution::SetMCcalls(const int& MCcalls) {
     MCcalls_ = MCcalls;
 }
 
-double MonteCarloDoubleConvolution::regular1_integrand(double z[], size_t /*dim*/, void *p) {
+//==========================================================================================//
+//  DoubleConvolution: integrand of the first regular part
+//------------------------------------------------------------------------------------------//
+
+double DoubleConvolution::regular1_integrand(double z[], size_t /*dim*/, void *p) {
 
     struct function_params *params = (struct function_params *)p;
 
@@ -227,7 +285,11 @@ double MonteCarloDoubleConvolution::regular1_integrand(double z[], size_t /*dim*
     }
 }
 
-double MonteCarloDoubleConvolution::regular2_integrand(double z[], size_t /*dim*/, void *p)  {
+//==========================================================================================//
+//  DoubleConvolution: integrand of the second regular part
+//------------------------------------------------------------------------------------------//
+
+double DoubleConvolution::regular2_integrand(double z[], size_t /*dim*/, void *p)  {
     struct function_params *params = (struct function_params *)p;
 
     double m2Q2 = (params->m2Q2);
@@ -247,7 +309,11 @@ double MonteCarloDoubleConvolution::regular2_integrand(double z[], size_t /*dim*
     }
 }
 
-double MonteCarloDoubleConvolution::regular3_integrand(double z, void *p) {
+//==========================================================================================//
+//  DoubleConvolution: integrand of the third regular part
+//------------------------------------------------------------------------------------------//
+
+double DoubleConvolution::regular3_integrand(double z, void *p) {
 
     struct function_params *params = (struct function_params *)p;
 
@@ -264,7 +330,11 @@ double MonteCarloDoubleConvolution::regular3_integrand(double z, void *p) {
            * splitfunc -> SingularIntegrated(z / x_max, nf);
 }
 
-double MonteCarloDoubleConvolution::RegularPart(double x, double m2Q2, int nf) const {
+//==========================================================================================//
+//  DoubleConvolution: regular part
+//------------------------------------------------------------------------------------------//
+
+double DoubleConvolution::RegularPart(double x, double m2Q2, int nf) const {
 
     if (method_flag_ == 0) return convolution_ -> RegularPart(x, m2Q2, nf);
 
@@ -327,12 +397,10 @@ double MonteCarloDoubleConvolution::RegularPart(double x, double m2Q2, int nf) c
 }
 
 //==========================================================================================//
-//  Convolution between the first order massive gluon coefficient functions for
-//  F2 and the convolution between the splitting functions Pgg0 and Pgg0 using
-//  monte carlo methods
+//  DoubleConvolution: integrand of the first singular part
 //------------------------------------------------------------------------------------------//
 
-double MonteCarloDoubleConvolution::singular1_integrand(double z[], size_t /*dim*/, void *p) {
+double DoubleConvolution::singular1_integrand(double z[], size_t /*dim*/, void *p) {
 
     struct function_params *params = (struct function_params *)p;
 
@@ -355,7 +423,11 @@ double MonteCarloDoubleConvolution::singular1_integrand(double z[], size_t /*dim
     return splitfunc -> Singular(z1, nf) * (tmp - splitfunc -> Regular(x / z2, nf)) * coefffunc -> MuIndependentTerms(z2, m2Q2, nf) / z2;
 }
 
-double MonteCarloDoubleConvolution::singular2_integrand(double z[], size_t /*dim*/, void *p) {
+//==========================================================================================//
+//  DoubleConvolution: integrand of the second singular part
+//------------------------------------------------------------------------------------------//
+
+double DoubleConvolution::singular2_integrand(double z[], size_t /*dim*/, void *p) {
 
     struct function_params *params = (struct function_params *)p;
 
@@ -381,7 +453,11 @@ double MonteCarloDoubleConvolution::singular2_integrand(double z[], size_t /*dim
            * (tmp - (coefffunc -> MuIndependentTerms(x / z2, m2Q2, nf) / z2 - coefffunc -> MuIndependentTerms(x, m2Q2, nf)));
 }
 
-double MonteCarloDoubleConvolution::singular3_integrand(double z, void *p) {
+//==========================================================================================//
+//  DoubleConvolution: integrand of the third singular part
+//------------------------------------------------------------------------------------------//
+
+double DoubleConvolution::singular3_integrand(double z, void *p) {
 
     struct function_params *params = (struct function_params *)p;
 
@@ -401,7 +477,11 @@ double MonteCarloDoubleConvolution::singular3_integrand(double z, void *p) {
     );
 }
 
-double MonteCarloDoubleConvolution::SingularPart(double x, double m2Q2, int nf) const {
+//==========================================================================================//
+//  DoubleConvolution: singular part
+//------------------------------------------------------------------------------------------//
+
+double DoubleConvolution::SingularPart(double x, double m2Q2, int nf) const {
 
     if (method_flag_ == 0) return convolution_ -> SingularPart(x, m2Q2, nf);
 
@@ -466,7 +546,11 @@ double MonteCarloDoubleConvolution::SingularPart(double x, double m2Q2, int nf) 
     return singular1 + singular2 + singular3 + singular4;
 }
 
-double MonteCarloDoubleConvolution::LocalPart(double x, double m2Q2, int nf) const {
+//==========================================================================================//
+//  DoubleConvolution: local part
+//------------------------------------------------------------------------------------------//
+
+double DoubleConvolution::LocalPart(double x, double m2Q2, int nf) const {
 
     if (method_flag_ == 0) return convolution_ -> LocalPart(x, m2Q2, nf);
 
@@ -474,5 +558,3 @@ double MonteCarloDoubleConvolution::LocalPart(double x, double m2Q2, int nf) con
 
     return convolution_ -> Convolute(x, m2Q2, nf) * (splitfunc_ -> Local(nf) - splitfunc_ -> SingularIntegrated(x / x_max, nf));
 }
-
-//------------------------------------------------------------------------------------------//

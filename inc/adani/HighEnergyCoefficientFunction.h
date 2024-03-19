@@ -29,6 +29,10 @@
 //          C_highenergy_highscale
 //------------------------------------------------------------------------------------------//
 
+//==========================================================================================//
+//  class AbstractHighEnergyCoefficientFunction
+//------------------------------------------------------------------------------------------//
+
 class AbstractHighEnergyCoefficientFunction : public CoefficientFunction {
     public:
         AbstractHighEnergyCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL = true) ;
@@ -52,6 +56,10 @@ class AbstractHighEnergyCoefficientFunction : public CoefficientFunction {
         double a_11() const;
         double a_21(int nf) const;
 };
+
+//==========================================================================================//
+//  class HighEnergyCoefficientFunction
+//------------------------------------------------------------------------------------------//
 
 class HighEnergyCoefficientFunction : public AbstractHighEnergyCoefficientFunction {
 
@@ -102,10 +110,18 @@ class HighEnergyCoefficientFunction : public AbstractHighEnergyCoefficientFuncti
         Value CL_g3_highenergy(double x, double m2Q2, double m2mu2, int nf) const ;
         Value CL_ps3_highenergy(double x, double m2Q2, double m2mu2, int nf) const ;
 
+        //==========================================================================================//
+        //  Function needed to make LL_ and NLL_ point to a zero function
+        //------------------------------------------------------------------------------------------//
+
         double ZeroFunction(double /*x*/, double /*m2Q2*/, double /*m2mu2*/) const {return 0.;};
         Value ZeroFunctionBand(double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const {return Value(0.);};
 
 };
+
+//==========================================================================================//
+//  class HighEnergyHighScaleCoefficientFunction
+//------------------------------------------------------------------------------------------//
 
 class HighEnergyHighScaleCoefficientFunction : public AbstractHighEnergyCoefficientFunction {
 
@@ -118,7 +134,6 @@ class HighEnergyHighScaleCoefficientFunction : public AbstractHighEnergyCoeffici
         void SetFunctions();
 
     private:
-    
         double (HighEnergyHighScaleCoefficientFunction::*LL_)(double, double, double) const;
         Value (HighEnergyHighScaleCoefficientFunction::*NLL_)(double, double, double, int) const;
 
@@ -161,10 +176,18 @@ class HighEnergyHighScaleCoefficientFunction : public AbstractHighEnergyCoeffici
         Value
         CL_ps3_highenergy_highscale(double x, double m2Q2, double m2mu2, int nf) const;
 
+        //==========================================================================================//
+        //  Function needed to make LL_ and NLL_ point to a zero function
+        //------------------------------------------------------------------------------------------//
+
         double ZeroFunction(double /*x*/, double /*m2Q2*/, double /*m2mu2*/) const {return 0.;};
         Value ZeroFunctionBand(double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const {return Value(0.);};
 
 };
+
+//==========================================================================================//
+//  class PowerTermsCoefficientFunction
+//------------------------------------------------------------------------------------------//
 
 class PowerTermsCoefficientFunction : public AbstractHighEnergyCoefficientFunction {
 
@@ -175,7 +198,6 @@ class PowerTermsCoefficientFunction : public AbstractHighEnergyCoefficientFuncti
         Value fxBand(double x, double m2Q2, double m2mu2, int nf) const override ;
 
     private:
-
         HighEnergyCoefficientFunction *highenergy_ ;
         HighEnergyHighScaleCoefficientFunction *highenergyhighscale_ ;
 
