@@ -21,6 +21,10 @@
 
 #include "adani/CoefficientFunction.h"
 
+//==========================================================================================//
+//  class MasslessCoefficientFunction
+//------------------------------------------------------------------------------------------//
+
 class MasslessCoefficientFunction : public CoefficientFunction {
 
     public:

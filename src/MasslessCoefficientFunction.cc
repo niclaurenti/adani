@@ -8,18 +8,35 @@
 using std::cout;
 using std::endl;
 
+//==========================================================================================//
+//  MasslessCoefficientFunction: constructor
+//------------------------------------------------------------------------------------------//
+
 MasslessCoefficientFunction::MasslessCoefficientFunction(const int& order, const char& kind, const char& channel) : CoefficientFunction(order, kind, channel) {
     SetFunctions();
 }
+
+//==========================================================================================//
+//  MasslessCoefficientFunction: mu-dependent + mu-independent terms
+//------------------------------------------------------------------------------------------//
 
 double MasslessCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int nf) const {
     return MuIndependentTerms(x, nf) + MuDependentTerms(x, m2Q2, m2mu2, nf) ;
 }
 
+//==========================================================================================//
+//  MasslessCoefficientFunction: mu-dependent terms
+//------------------------------------------------------------------------------------------//
+
 double MasslessCoefficientFunction::MuDependentTerms(double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const {
     cout << "Error: mu dependent terms of the massless coefficient functions are not implemented!" << endl;
     exit(-1);
 }
+
+//==========================================================================================//
+//  MasslessCoefficientFunction: done beacuse it is required by the abstract base class
+//  CoefficientFunction
+//------------------------------------------------------------------------------------------//
 
 double MasslessCoefficientFunction::MuIndependentTerms(double /*x*/, double /*m2Q2*/, int /*nf*/) const {
     cout << "Error: massless coefficient functions do not depend on m^2/Q^2!" << endl;
@@ -27,15 +44,28 @@ double MasslessCoefficientFunction::MuIndependentTerms(double /*x*/, double /*m2
     exit(-1);
 }
 
+//==========================================================================================//
+//  MasslessCoefficientFunction: mu-independent terms
+//------------------------------------------------------------------------------------------//
+
 
 double MasslessCoefficientFunction::MuIndependentTerms(double x, int nf) const {
 
     return (this->*mu_indep_)(x, nf);
 }
 
+//==========================================================================================//
+//  MasslessCoefficientFunction: done beacuse it is required by the abstract base class
+//  CoefficientFunction. It returns three identical values
+//------------------------------------------------------------------------------------------//
+
 Value MasslessCoefficientFunction::fxBand(double x, double m2Q2, double m2mu2, int nf) const {
     return Value(fx(x, m2Q2, m2mu2, nf));
 }
+
+//==========================================================================================//
+//  MasslessCoefficientFunction: function that sets the pointer mu_indep_ to the correct function
+//------------------------------------------------------------------------------------------//
 
 void MasslessCoefficientFunction::SetFunctions() {
     if (GetOrder() == 1 && GetKind() == '2' && GetChannel() == 'g') mu_indep_ = &MasslessCoefficientFunction::C2_g1_massless;
