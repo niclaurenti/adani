@@ -49,7 +49,6 @@ class Value {
         friend Value operator+(const double& lhs, const Value& rhs);
 
         Value operator-(const double& rhs) const;
-        // friend Value operator-(const double& lhs, const Value& rhs);
 
         Value operator*(const double& rhs) const;
         friend Value operator*(const double& lhs, const Value& rhs);
