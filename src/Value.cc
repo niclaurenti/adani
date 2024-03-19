@@ -1,13 +1,13 @@
 #include "adani/Value.h"
 
-using std::cout ;
-using std::endl ;
+using std::cout;
+using std::endl;
 
 //==========================================================================================//
 //  Value: constructor
 //------------------------------------------------------------------------------------------//
 
-Value::Value(const double& central, const double& higher, const double& lower) {
+Value::Value(const double &central, const double &higher, const double &lower) {
     central_ = central;
 
     if (higher < central) {
@@ -29,7 +29,7 @@ Value::Value(const double& central, const double& higher, const double& lower) {
 //  Value: constructor
 //------------------------------------------------------------------------------------------//
 
-Value::Value(const double& central) {
+Value::Value(const double &central) {
     central_ = central;
     higher_ = central;
     lower_ = central;
@@ -39,7 +39,7 @@ Value::Value(const double& central) {
 //  Value: constructor
 //------------------------------------------------------------------------------------------//
 
-Value::Value(const double& higher, const double& lower) {
+Value::Value(const double &higher, const double &lower) {
 
     if (higher < lower) {
         cout << "Error: class Value initialized with higher < lower!" << endl;
@@ -55,7 +55,7 @@ Value::Value(const double& higher, const double& lower) {
 //  Value: constructor
 //------------------------------------------------------------------------------------------//
 
-Value::Value(const Value& value) {
+Value::Value(const Value &value) {
     central_ = value.central_;
     higher_ = value.higher_;
     lower_ = value.lower_;
@@ -65,16 +65,16 @@ Value::Value(const Value& value) {
 //  Value: export to vector<double>
 //------------------------------------------------------------------------------------------//
 
-vector<double> Value::ToVect() const {
-    return {central_, higher_, lower_};
-}
+vector<double> Value::ToVect() const { return { central_, higher_, lower_ }; }
 
 //==========================================================================================//
 //  Value: overload of operator + double
 //------------------------------------------------------------------------------------------//
 
-Value Value::operator+(const Value& rhs) const {
-    return Value(central_ + rhs.central_, higher_ + rhs.higher_, lower_ + rhs.lower_);
+Value Value::operator+(const Value &rhs) const {
+    return Value(
+        central_ + rhs.central_, higher_ + rhs.higher_, lower_ + rhs.lower_
+    );
 }
 
 //==========================================================================================//
@@ -82,14 +82,14 @@ Value Value::operator+(const Value& rhs) const {
 //------------------------------------------------------------------------------------------//
 
 // Value Value::operator-(const Value& rhs) const {
-    
+
 // }
 
 //==========================================================================================//
 //  Value: overload of operator double +
 //------------------------------------------------------------------------------------------//
 
-Value Value::operator+(const double& rhs) const {
+Value Value::operator+(const double &rhs) const {
     return Value(rhs + central_, rhs + higher_, rhs + lower_);
 }
 
@@ -97,7 +97,7 @@ Value Value::operator+(const double& rhs) const {
 //  Value: overload of operator + Value
 //------------------------------------------------------------------------------------------//
 
-Value operator+(const double& lhs, const Value& rhs){
+Value operator+(const double &lhs, const Value &rhs) {
     return Value(lhs + rhs.central_, lhs + rhs.higher_, lhs + rhs.lower_);
 }
 
@@ -105,7 +105,7 @@ Value operator+(const double& lhs, const Value& rhs){
 //  Value: overload of operator - double
 //------------------------------------------------------------------------------------------//
 
-Value Value::operator-(const double& rhs) const {
+Value Value::operator-(const double &rhs) const {
     return Value(central_ - rhs, higher_ - rhs, lower_ - rhs);
 }
 
@@ -113,16 +113,18 @@ Value Value::operator-(const double& rhs) const {
 //  Value: overload of operator * double
 //------------------------------------------------------------------------------------------//
 
-Value Value::operator*(const double& rhs) const {
-    if (rhs > 0) return Value(rhs * central_, rhs * higher_, rhs * lower_);
-    else return Value(rhs * central_, rhs * lower_, rhs * higher_);
+Value Value::operator*(const double &rhs) const {
+    if (rhs > 0)
+        return Value(rhs * central_, rhs * higher_, rhs * lower_);
+    else
+        return Value(rhs * central_, rhs * lower_, rhs * higher_);
 }
 
 //==========================================================================================//
 //  Value: overload of operator double *
 //------------------------------------------------------------------------------------------//
 
-Value operator*(const double& lhs, const Value& rhs){
+Value operator*(const double &lhs, const Value &rhs) {
     return Value(rhs.central_, rhs.higher_, rhs.lower_) * lhs;
 }
 
@@ -130,20 +132,22 @@ Value operator*(const double& lhs, const Value& rhs){
 //  Value: overload of operator / double
 //------------------------------------------------------------------------------------------//
 
-Value Value::operator/(const double& rhs) const {
-    if (rhs > 0) return Value(central_ / rhs, higher_ / rhs, lower_ / rhs);
-    else return Value(central_ / rhs, lower_ / rhs, higher_ / rhs);
+Value Value::operator/(const double &rhs) const {
+    if (rhs > 0)
+        return Value(central_ / rhs, higher_ / rhs, lower_ / rhs);
+    else
+        return Value(central_ / rhs, lower_ / rhs, higher_ / rhs);
 }
 
 //==========================================================================================//
 //  Value: overload of operator =
 //------------------------------------------------------------------------------------------//
 
-const Value& Value::operator=(const Value& rhs) {
+const Value &Value::operator=(const Value &rhs) {
     central_ = rhs.central_;
     higher_ = rhs.higher_;
     lower_ = rhs.lower_;
-    
+
     return *this;
 }
 
@@ -151,7 +155,7 @@ const Value& Value::operator=(const Value& rhs) {
 //  Value: overload of operator *= double
 //------------------------------------------------------------------------------------------//
 
-const Value& Value::operator*=(const double& rhs) {
+const Value &Value::operator*=(const double &rhs) {
     if (rhs > 0) {
         central_ *= rhs;
         higher_ *= rhs;
@@ -159,7 +163,7 @@ const Value& Value::operator*=(const double& rhs) {
     } else {
         central_ *= rhs;
         higher_ = lower_ * rhs;
-        lower_ = higher_ * rhs;  
+        lower_ = higher_ * rhs;
     }
 
     return *this;
@@ -169,7 +173,7 @@ const Value& Value::operator*=(const double& rhs) {
 //  Value: overload of operator /= double
 //------------------------------------------------------------------------------------------//
 
-const Value& Value::operator/=(const double& rhs) {
+const Value &Value::operator/=(const double &rhs) {
     if (rhs > 0) {
         central_ /= rhs;
         higher_ /= rhs;
@@ -177,7 +181,7 @@ const Value& Value::operator/=(const double& rhs) {
     } else {
         central_ /= rhs;
         higher_ = lower_ / rhs;
-        lower_ = higher_ / rhs;  
+        lower_ = higher_ / rhs;
     }
 
     return *this;
@@ -187,7 +191,8 @@ const Value& Value::operator/=(const double& rhs) {
 //  Value: overload of operator <<
 //------------------------------------------------------------------------------------------//
 
-ostream& operator<<(ostream& os, const Value& rhs){
-    os << "(" << rhs.central_ << ", " << rhs.higher_ << ", " << rhs.lower_ << ")" ;
+ostream &operator<<(ostream &os, const Value &rhs) {
+    os << "(" << rhs.central_ << ", " << rhs.higher_ << ", " << rhs.lower_
+       << ")";
     return os;
 }

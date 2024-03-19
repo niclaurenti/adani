@@ -12,7 +12,10 @@ using std::endl;
 //  MasslessCoefficientFunction: constructor
 //------------------------------------------------------------------------------------------//
 
-MasslessCoefficientFunction::MasslessCoefficientFunction(const int& order, const char& kind, const char& channel) : CoefficientFunction(order, kind, channel) {
+MasslessCoefficientFunction::MasslessCoefficientFunction(
+    const int &order, const char &kind, const char &channel
+)
+    : CoefficientFunction(order, kind, channel) {
     SetFunctions();
 }
 
@@ -20,27 +23,37 @@ MasslessCoefficientFunction::MasslessCoefficientFunction(const int& order, const
 //  MasslessCoefficientFunction: mu-dependent + mu-independent terms
 //------------------------------------------------------------------------------------------//
 
-double MasslessCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int nf) const {
-    return MuIndependentTerms(x, nf) + MuDependentTerms(x, m2Q2, m2mu2, nf) ;
+double MasslessCoefficientFunction::fx(
+    double x, double m2Q2, double m2mu2, int nf
+) const {
+    return MuIndependentTerms(x, nf) + MuDependentTerms(x, m2Q2, m2mu2, nf);
 }
 
 //==========================================================================================//
 //  MasslessCoefficientFunction: mu-dependent terms
 //------------------------------------------------------------------------------------------//
 
-double MasslessCoefficientFunction::MuDependentTerms(double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const {
-    cout << "Error: mu dependent terms of the massless coefficient functions are not implemented!" << endl;
+double MasslessCoefficientFunction::MuDependentTerms(
+    double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/
+) const {
+    cout << "Error: mu dependent terms of the massless coefficient functions "
+            "are not implemented!"
+         << endl;
     exit(-1);
 }
 
 //==========================================================================================//
-//  MasslessCoefficientFunction: done beacuse it is required by the abstract base class
-//  CoefficientFunction
+//  MasslessCoefficientFunction: done beacuse it is required by the abstract
+//  base class CoefficientFunction
 //------------------------------------------------------------------------------------------//
 
-double MasslessCoefficientFunction::MuIndependentTerms(double /*x*/, double /*m2Q2*/, int /*nf*/) const {
-    cout << "Error: massless coefficient functions do not depend on m^2/Q^2!" << endl;
-    cout << "Call MasslessCoefficientFunction::MuIndependentTerms(double x, int nf)" << endl;
+double MasslessCoefficientFunction::
+    MuIndependentTerms(double /*x*/, double /*m2Q2*/, int /*nf*/) const {
+    cout << "Error: massless coefficient functions do not depend on m^2/Q^2!"
+         << endl;
+    cout << "Call MasslessCoefficientFunction::MuIndependentTerms(double x, "
+            "int nf)"
+         << endl;
     exit(-1);
 }
 
@@ -48,40 +61,54 @@ double MasslessCoefficientFunction::MuIndependentTerms(double /*x*/, double /*m2
 //  MasslessCoefficientFunction: mu-independent terms
 //------------------------------------------------------------------------------------------//
 
-
 double MasslessCoefficientFunction::MuIndependentTerms(double x, int nf) const {
 
     return (this->*mu_indep_)(x, nf);
 }
 
 //==========================================================================================//
-//  MasslessCoefficientFunction: done beacuse it is required by the abstract base class
-//  CoefficientFunction. It returns three identical values
+//  MasslessCoefficientFunction: done beacuse it is required by the abstract
+//  base class CoefficientFunction. It returns three identical values
 //------------------------------------------------------------------------------------------//
 
-Value MasslessCoefficientFunction::fxBand(double x, double m2Q2, double m2mu2, int nf) const {
+Value MasslessCoefficientFunction::fxBand(
+    double x, double m2Q2, double m2mu2, int nf
+) const {
     return Value(fx(x, m2Q2, m2mu2, nf));
 }
 
 //==========================================================================================//
-//  MasslessCoefficientFunction: function that sets the pointer mu_indep_ to the correct function
+//  MasslessCoefficientFunction: function that sets the pointer mu_indep_ to the
+//  correct function
 //------------------------------------------------------------------------------------------//
 
 void MasslessCoefficientFunction::SetFunctions() {
-    if (GetOrder() == 1 && GetKind() == '2' && GetChannel() == 'g') mu_indep_ = &MasslessCoefficientFunction::C2_g1_massless;
-    else if (GetOrder() == 1 && GetKind() == 'L' && GetChannel() == 'g') mu_indep_ = &MasslessCoefficientFunction::CL_g1_massless;
+    if (GetOrder() == 1 && GetKind() == '2' && GetChannel() == 'g')
+        mu_indep_ = &MasslessCoefficientFunction::C2_g1_massless;
+    else if (GetOrder() == 1 && GetKind() == 'L' && GetChannel() == 'g')
+        mu_indep_ = &MasslessCoefficientFunction::CL_g1_massless;
 
-    else if (GetOrder() == 2 && GetKind() == '2' && GetChannel() == 'g') mu_indep_ = &MasslessCoefficientFunction::C2_g2_massless;
-    else if (GetOrder() == 2 && GetKind() == '2' && GetChannel() == 'q') mu_indep_ = &MasslessCoefficientFunction::C2_ps2_massless;
-    else if (GetOrder() == 2 && GetKind() == 'L' && GetChannel() == 'g') mu_indep_ = &MasslessCoefficientFunction::CL_g2_massless;
-    else if (GetOrder() == 2 && GetKind() == 'L' && GetChannel() == 'q') mu_indep_ = &MasslessCoefficientFunction::CL_ps2_massless;
+    else if (GetOrder() == 2 && GetKind() == '2' && GetChannel() == 'g')
+        mu_indep_ = &MasslessCoefficientFunction::C2_g2_massless;
+    else if (GetOrder() == 2 && GetKind() == '2' && GetChannel() == 'q')
+        mu_indep_ = &MasslessCoefficientFunction::C2_ps2_massless;
+    else if (GetOrder() == 2 && GetKind() == 'L' && GetChannel() == 'g')
+        mu_indep_ = &MasslessCoefficientFunction::CL_g2_massless;
+    else if (GetOrder() == 2 && GetKind() == 'L' && GetChannel() == 'q')
+        mu_indep_ = &MasslessCoefficientFunction::CL_ps2_massless;
 
-    else if (GetOrder() == 3 && GetKind() == '2' && GetChannel() == 'g') mu_indep_ = &MasslessCoefficientFunction::C2_g3_massless;
-    else if (GetOrder() == 3 && GetKind() == '2' && GetChannel() == 'q') mu_indep_ = &MasslessCoefficientFunction::C2_ps3_massless;
-    else if (GetOrder() == 3 && GetKind() == 'L' && GetChannel() == 'g') mu_indep_ = &MasslessCoefficientFunction::CL_g3_massless;
-    else if (GetOrder() == 3 && GetKind() == 'L' && GetChannel() == 'q') mu_indep_ = &MasslessCoefficientFunction::CL_ps3_massless;
+    else if (GetOrder() == 3 && GetKind() == '2' && GetChannel() == 'g')
+        mu_indep_ = &MasslessCoefficientFunction::C2_g3_massless;
+    else if (GetOrder() == 3 && GetKind() == '2' && GetChannel() == 'q')
+        mu_indep_ = &MasslessCoefficientFunction::C2_ps3_massless;
+    else if (GetOrder() == 3 && GetKind() == 'L' && GetChannel() == 'g')
+        mu_indep_ = &MasslessCoefficientFunction::CL_g3_massless;
+    else if (GetOrder() == 3 && GetKind() == 'L' && GetChannel() == 'q')
+        mu_indep_ = &MasslessCoefficientFunction::CL_ps3_massless;
     else {
-        cout << "Error: something has gone wrong in MasslessCoefficientFunction::SetFunctions!" << endl;
+        cout << "Error: something has gone wrong in "
+                "MasslessCoefficientFunction::SetFunctions!"
+             << endl;
         exit(-1);
     }
 }
@@ -107,7 +134,9 @@ double MasslessCoefficientFunction::C2_g1_massless(double x, int nf) const {
 // Eq. (3) of Ref. [arXiv:hep-ph/0411112v2]
 //------------------------------------------------------------------------------------------//
 
-double MasslessCoefficientFunction::CL_g1_massless(double x, int nf) const { return 16. * nf * TR * x * (1. - x); }
+double MasslessCoefficientFunction::CL_g1_massless(double x, int nf) const {
+    return 16. * nf * TR * x * (1. - x);
+}
 
 //==========================================================================================//
 //  Massless gluon coefficient functions for F2 at
@@ -3345,7 +3374,8 @@ double MasslessCoefficientFunction::fl11ps(int nf) const {
 //------------------------------------------------------------------------------------------//
 
 /*
-double MasslessCoefficientFunction::C2_g2_massless_param(double x, int nf) const {
+double MasslessCoefficientFunction::C2_g2_massless_param(double x, int nf) const
+{
 
     double x1 = 1. - x;
     double L0 = log(x);
@@ -3367,7 +3397,8 @@ double MasslessCoefficientFunction::C2_g2_massless_param(double x, int nf) const
 //  Eq. (4.9) of Ref. [hep-ph/0504242v1]
 //------------------------------------------------------------------------------------------//
 /*
-double MasslessCoefficientFunction::C2_ps2_massless_param(double x, int nf) const {
+double MasslessCoefficientFunction::C2_ps2_massless_param(double x, int nf)
+const {
 
     double x1 = 1 - x;
     double L0 = log(x);
@@ -3393,7 +3424,8 @@ double MasslessCoefficientFunction::C2_ps2_massless_param(double x, int nf) cons
 //  Eq. (6) of Ref. [arXiv:hep-ph/0411112v2]
 //------------------------------------------------------------------------------------------//
 /*
-double MasslessCoefficientFunction::CL_g2_massless_param(double x, int nf) const {
+double MasslessCoefficientFunction::CL_g2_massless_param(double x, int nf) const
+{
 
     double L0 = log(x);
     double L02 = L0 * L0;
@@ -3416,7 +3448,8 @@ double MasslessCoefficientFunction::CL_g2_massless_param(double x, int nf) const
 //  Eq. (5) of Ref. [arXiv:hep-ph/0411112v2]
 //------------------------------------------------------------------------------------------//
 /*
-double MasslessCoefficientFunction::CL_ps2_massless_param(double x, int nf) const {
+double MasslessCoefficientFunction::CL_ps2_massless_param(double x, int nf)
+const {
 
     double L0 = log(x);
     double L02 = L0 * L0;

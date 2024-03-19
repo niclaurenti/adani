@@ -27,71 +27,81 @@
 
 class ThresholdCoefficientFunction : public CoefficientFunction {
 
-    public:
-        ThresholdCoefficientFunction(const int& order, const char& kind, const char& channel) ;
-        ~ThresholdCoefficientFunction() override ;
+  public:
+    ThresholdCoefficientFunction(
+        const int &order, const char &kind, const char &channel
+    );
+    ~ThresholdCoefficientFunction() override;
 
-        double fx(double x, double m2Q2, double m2mu2, int nf) const override ;
-        Value fxBand(double x, double m2Q2, double m2mu2, int nf) const override ;
+    double fx(double x, double m2Q2, double m2mu2, int nf) const override;
+    Value fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
 
-        double BetaIndependentTerms(double x, double m2Q2, double m2mu2) const;
+    double BetaIndependentTerms(double x, double m2Q2, double m2mu2) const;
 
-        void SetFunctions() ;
+    void SetFunctions();
 
-    private:
+  private:
+    double (ThresholdCoefficientFunction::*fx_)(
+        double, double, double, int
+    ) const;
 
-        double (ThresholdCoefficientFunction::*fx_)(double, double, double, int) const;
+    ExactCoefficientFunction *exactlo_;
 
-        ExactCoefficientFunction *exactlo_ ;
+    //==========================================================================================//
+    //                      Threshold (s -> 4m^2) coefficient
+    //                      functions O(as)
+    //------------------------------------------------------------------------------------------//
 
-        //==========================================================================================//
-        //                      Threshold (s -> 4m^2) coefficient
-        //                      functions O(as)
-        //------------------------------------------------------------------------------------------//
+    double
+    C2_g1_threshold(double x, double m2Q2, double /*m2mu2*/, int /*nf*/) const;
 
-        double C2_g1_threshold(double x, double m2Q2, double /*m2mu2*/, int /*nf*/) const;
+    //==========================================================================================//
+    //                      Threshold (s -> 4m^2) coefficient
+    //                      functions O(as^2)
+    //------------------------------------------------------------------------------------------//
 
-        //==========================================================================================//
-        //                      Threshold (s -> 4m^2) coefficient
-        //                      functions O(as^2)
-        //------------------------------------------------------------------------------------------//
+    double
+    C2_g2_threshold(double x, double m2Q2, double m2mu2, int /*nf*/) const;
+    double
+    CL_g2_threshold(double x, double m2Q2, double m2mu2, int /*nf*/) const;
 
-        double C2_g2_threshold(double x, double m2Q2, double m2mu2, int /*nf*/) const;
-        double CL_g2_threshold(double x, double m2Q2, double m2mu2, int /*nf*/) const;
+    double threshold_expansion_g2(double x, double m2Q2, double m2mu2) const;
+    double threshold_expansion_g2_const(double m2Q2, double m2mu2) const;
 
-        double threshold_expansion_g2(double x, double m2Q2, double m2mu2) const;
-        double threshold_expansion_g2_const(double m2Q2, double m2mu2) const;
+    double C2_g2_threshold_const(double x, double m2Q2, double m2mu2) const;
+    double CL_g2_threshold_const(double x, double m2Q2, double m2mu2) const;
 
-        double C2_g2_threshold_const(double x, double m2Q2, double m2mu2) const;
-        double CL_g2_threshold_const(double x, double m2Q2, double m2mu2) const;
+    //==========================================================================================//
+    //                      Threshold (s -> 4m^2) coefficient
+    //                      functions O(as^3)
+    //------------------------------------------------------------------------------------------//
 
-        //==========================================================================================//
-        //                      Threshold (s -> 4m^2) coefficient
-        //                      functions O(as^3)
-        //------------------------------------------------------------------------------------------//
+    double C2_g3_threshold(double x, double m2Q2, double m2mu2, int nf) const;
+    double CL_g3_threshold(double x, double m2Q2, double m2mu2, int nf) const;
 
-        double C2_g3_threshold(double x, double m2Q2, double m2mu2, int nf) const;
-        double CL_g3_threshold(double x, double m2Q2, double m2mu2, int nf) const;
+    double
+    threshold_expansion_g3(double x, double m2Q2, double m2mu2, int nf) const;
+    double threshold_expansion_g3_const(double m2Q2, double m2mu2) const;
 
-        double threshold_expansion_g3(double x, double m2Q2, double m2mu2, int nf) const;
-        double threshold_expansion_g3_const(double m2Q2, double m2mu2) const;
+    double C2_g3_threshold_const(double x, double m2Q2, double m2mu2) const;
+    double CL_g3_threshold_const(double x, double m2Q2, double m2mu2) const;
 
-        double C2_g3_threshold_const(double x, double m2Q2, double m2mu2) const;
-        double CL_g3_threshold_const(double x, double m2Q2, double m2mu2) const;
+    //==========================================================================================//
+    //  Functions needed for the threshold limit.
+    //------------------------------------------------------------------------------------------//
 
-        //==========================================================================================//
-        //  Functions needed for the threshold limit.
-        //------------------------------------------------------------------------------------------//
+    double c0(double xi) const;
+    double c0_bar(double xi) const;
 
-        double c0(double xi) const;
-        double c0_bar(double xi) const;
+    //==========================================================================================//
+    //  Function needed to make fx_ point to a zero function
+    //------------------------------------------------------------------------------------------//
 
-        //==========================================================================================//
-        //  Function needed to make fx_ point to a zero function
-        //------------------------------------------------------------------------------------------//
-
-        double ZeroFunction(double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const {return 0.;};
-
+    double
+    ZeroFunction(double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/)
+        const {
+        return 0.;
+    };
 };
 
 #endif

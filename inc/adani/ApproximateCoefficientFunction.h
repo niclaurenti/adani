@@ -17,10 +17,10 @@
 #ifndef Approximate_h
 #define Approximate_h
 
-#include "adani/CoefficientFunction.h"
-#include "adani/ThresholdCoefficientFunction.h"
 #include "adani/AsymptoticCoefficientFunction.h"
+#include "adani/CoefficientFunction.h"
 #include "adani/ExactCoefficientFunction.h"
+#include "adani/ThresholdCoefficientFunction.h"
 
 //==========================================================================================//
 //  struct approximation_parameters: parameters of the damping functions
@@ -34,7 +34,8 @@ struct approximation_parameters {
 };
 
 //==========================================================================================//
-//  struct variation_parameters: parameters of the variation of the damping functions
+//  struct variation_parameters: parameters of the variation of the damping
+//  functions
 //------------------------------------------------------------------------------------------//
 
 struct variation_parameters {
@@ -59,17 +60,24 @@ struct klmv_params {
 //------------------------------------------------------------------------------------------//
 
 class AbstractApproximate : public CoefficientFunction {
-    public:
-        AbstractApproximate(const int& order, const char& kind, const char& channel, const double& abserr = 1e-3, const double& relerr = 1e-3, const int& dim = 1000, const int& method_flag = 1, const int& MCcalls = 25000);
-        ~AbstractApproximate();
-        
-        double MuIndependentTerms(double x, double m2Q2, int nf) const override ;
+  public:
+    AbstractApproximate(
+        const int &order, const char &kind, const char &channel,
+        const double &abserr = 1e-3, const double &relerr = 1e-3,
+        const int &dim = 1000, const int &method_flag = 1,
+        const int &MCcalls = 25000
+    );
+    ~AbstractApproximate();
 
-        Value fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
-        double MuDependentTerms(double x, double m2Q2, double m2mu2, int nf) const override;
+    double MuIndependentTerms(double x, double m2Q2, int nf) const override;
 
-    private:
-        ExactCoefficientFunction* muterms_;
+    Value fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
+    double MuDependentTerms(
+        double x, double m2Q2, double m2mu2, int nf
+    ) const override;
+
+  private:
+    ExactCoefficientFunction *muterms_;
 };
 
 //==========================================================================================//
@@ -77,48 +85,67 @@ class AbstractApproximate : public CoefficientFunction {
 //------------------------------------------------------------------------------------------//
 
 class ApproximateCoefficientFunction : public AbstractApproximate {
-    public:
-        ApproximateCoefficientFunction(const int& order, const char& kind, const char& channel, const bool& NLL = true, const bool& exact_highscale = false, const bool& revised_approx_highscale = true, const double& abserr = 1e-3, const double& relerr = 1e-3, const int& dim = 1000, const int& method_flag = 1, const int& MCcalls = 25000) ;
-        ~ApproximateCoefficientFunction() override ;
+  public:
+    ApproximateCoefficientFunction(
+        const int &order, const char &kind, const char &channel,
+        const bool &NLL = true, const bool &exact_highscale = false,
+        const bool &revised_approx_highscale = true,
+        const double &abserr = 1e-3, const double &relerr = 1e-3,
+        const int &dim = 1000, const int &method_flag = 1,
+        const int &MCcalls = 25000
+    );
+    ~ApproximateCoefficientFunction() override;
 
-        Value MuIndependentTermsBand(double x, double m2Q2, int nf) const override ;
+    Value MuIndependentTermsBand(double x, double m2Q2, int nf) const override;
 
-    private:
-        ThresholdCoefficientFunction* threshold_;
-        AsymptoticCoefficientFunction* asymptotic_;
+  private:
+    ThresholdCoefficientFunction *threshold_;
+    AsymptoticCoefficientFunction *asymptotic_;
 
-        struct approximation_parameters approximation_;
-        struct variation_parameters variation_;
+    struct approximation_parameters approximation_;
+    struct variation_parameters variation_;
 
-        double Approximation(double x, double m2Q2, double asy, double thresh, double A, double B, double C, double D) const;
-
-
+    double Approximation(
+        double x, double m2Q2, double asy, double thresh, double A, double B,
+        double C, double D
+    ) const;
 };
 
 //==========================================================================================//
-//  class ApproximateCoefficientFunctionKLMV: Approximate coefficient functions from [arXiv:1205.5727]
-//  klmv = Kawamura, Lo Presti, Moch, Vogt
+//  class ApproximateCoefficientFunctionKLMV: Approximate coefficient functions
+//  from [arXiv:1205.5727] klmv = Kawamura, Lo Presti, Moch, Vogt
 //------------------------------------------------------------------------------------------//
 
 class ApproximateCoefficientFunctionKLMV : public AbstractApproximate {
-    public:
-        ApproximateCoefficientFunctionKLMV(const int& order, const char& kind, const char& channel, const bool& revised_approx_highscale = true, const double& abserr = 1e-3, const double& relerr = 1e-3, const int& dim = 1000, const int& method_flag = 1, const int& MCcalls = 25000) ;
-        ~ApproximateCoefficientFunctionKLMV() override ;
+  public:
+    ApproximateCoefficientFunctionKLMV(
+        const int &order, const char &kind, const char &channel,
+        const bool &revised_approx_highscale = true,
+        const double &abserr = 1e-3, const double &relerr = 1e-3,
+        const int &dim = 1000, const int &method_flag = 1,
+        const int &MCcalls = 25000
+    );
+    ~ApproximateCoefficientFunctionKLMV() override;
 
-        Value MuIndependentTermsBand(double x, double m2Q2, int nf) const override ;
+    Value MuIndependentTermsBand(double x, double m2Q2, int nf) const override;
 
-    private:
+  private:
+    ThresholdCoefficientFunction *threshold_;
+    HighScaleCoefficientFunction *highscale_;
+    HighEnergyCoefficientFunction *highenergy_;
 
-        ThresholdCoefficientFunction* threshold_;
-        HighScaleCoefficientFunction* highscale_;
-        HighEnergyCoefficientFunction* highenergy_;
+    struct klmv_params params_A_;
+    struct klmv_params params_B_;
 
-        struct klmv_params params_A_;
-        struct klmv_params params_B_;
-
-        double ApproximationA(double x, double m2Q2, double he_ll, double he_nll, double hs, double thr, double thr_const, double gamma, double C) const ;
-        double ApproximationB(double x, double m2Q2, double he_ll, double he_nll, double hs, double thr, double thr_const, double delta, double D) const ;
-        Value ApproximateNLL(double x, double m2Q2) const ;
+    double ApproximationA(
+        double x, double m2Q2, double he_ll, double he_nll, double hs,
+        double thr, double thr_const, double gamma, double C
+    ) const;
+    double ApproximationB(
+        double x, double m2Q2, double he_ll, double he_nll, double hs,
+        double thr, double thr_const, double delta, double D
+    ) const;
+    Value ApproximateNLL(double x, double m2Q2) const;
 };
 
 // //==========================================================================================//
@@ -126,9 +153,9 @@ class ApproximateCoefficientFunctionKLMV : public AbstractApproximate {
 // //                      O(as)
 // //------------------------------------------------------------------------------------------//
 
-// double C2_g1_approximation_implicit(double x, double m2Q2, double k, double h);
-// double C2_g1_approximation(double x, double m2Q2);
-// double CL_g1_approximation(double x, double m2Q2);
+// double C2_g1_approximation_implicit(double x, double m2Q2, double k, double
+// h); double C2_g1_approximation(double x, double m2Q2); double
+// CL_g1_approximation(double x, double m2Q2);
 
 // //==========================================================================================//
 // //                      Approximate coefficient functions
@@ -273,12 +300,13 @@ class ApproximateCoefficientFunctionKLMV : public AbstractApproximate {
 //     int method_flag = default_method
 // );
 
-// double C2_ps3_approximationA_klmv(double x, double m2Q2, double m2mu2, int nf);
-// double C2_ps3_approximationB_klmv(double x, double m2Q2, double m2mu2, int nf);
+// double C2_ps3_approximationA_klmv(double x, double m2Q2, double m2mu2, int
+// nf); double C2_ps3_approximationB_klmv(double x, double m2Q2, double m2mu2,
+// int nf);
 
 // double
-// C2_ps3_approximationA_klmv_paper(double x, double m2Q2, double m2mu2, int nf);
-// double
-// C2_ps3_approximationB_klmv_paper(double x, double m2Q2, double m2mu2, int nf);
+// C2_ps3_approximationA_klmv_paper(double x, double m2Q2, double m2mu2, int
+// nf); double C2_ps3_approximationB_klmv_paper(double x, double m2Q2, double
+// m2mu2, int nf);
 
 #endif

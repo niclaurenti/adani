@@ -174,8 +174,7 @@ double S12(double x) {
         double c = 1. / (1. - x);
         double logc = log(c);
         return (
-            -Li3(c) + zeta3 + logc * Li2(c)
-            + 0.5 * logc * logc * log(1. - c)
+            -Li3(c) + zeta3 + logc * Li2(c) + 0.5 * logc * logc * log(1. - c)
             - 1. / 6. * logc * logc * logc
         );
     }

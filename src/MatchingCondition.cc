@@ -12,35 +12,41 @@ using std::endl;
 //  MatchingCondition: constructor
 //------------------------------------------------------------------------------------------//
 
-MatchingCondition::MatchingCondition(const int& order, const char& entry1, const char& entry2, const bool& exact, const bool& revised_approx) {
+MatchingCondition::MatchingCondition(
+    const int &order, const char &entry1, const char &entry2, const bool &exact,
+    const bool &revised_approx
+) {
     // check order
-    if (order !=3) {
-        cout << "Error: only order = 3 is implemented. Got " << order << endl ;
-        exit(-1) ;
+    if (order != 3) {
+        cout << "Error: only order = 3 is implemented. Got " << order << endl;
+        exit(-1);
     }
-    order_ = order ;
+    order_ = order;
 
     // check entry1
     if (entry1 != 'Q') {
-        cout << "Error: only entry1 = 'Q' is implemented. Got " << entry1 << endl ;
-        exit(-1) ;
+        cout << "Error: only entry1 = 'Q' is implemented. Got " << entry1
+             << endl;
+        exit(-1);
     }
-    entry1_ = entry1 ;
+    entry1_ = entry1;
 
     // check entry2
     if (entry2 != 'g' && entry2 != 'q') {
-        cout << "Error: entry2 must be g or q. Got " << entry2 << endl ;
-        exit(-1) ;
+        cout << "Error: entry2 must be g or q. Got " << entry2 << endl;
+        exit(-1);
     }
-    entry2_ = entry2 ;
+    entry2_ = entry2;
 
     exact_ = exact;
 
     if (exact && revised_approx) {
-        cout << "Error: revised_approx = true is meaningfull only if exact = false!" << endl;
+        cout << "Error: revised_approx = true is meaningfull only if exact = "
+                "false!"
+             << endl;
         exit(-1);
     }
-    revised_approx_ = revised_approx ;
+    revised_approx_ = revised_approx;
 }
 
 //==========================================================================================//
@@ -49,34 +55,38 @@ MatchingCondition::MatchingCondition(const int& order, const char& entry1, const
 //------------------------------------------------------------------------------------------//
 
 Value MatchingCondition::MuIndependentNfIndependentTerm(double x) const {
-      double central, higher, lower;
-      if (entry2_ == 'q') {
-            if (exact_) {
-                  central = a_Qq_PS_30(x, 0);
-                  return Value(central);
-            } else {
-                  higher = a_Qq_PS_30(x, 1);
-                  lower = a_Qq_PS_30(x, -1);
-                  central = 0.5 * (higher + lower);
-                  if (higher < lower) return Value(central, lower, higher);
-                  return Value(central, higher, lower);
-            }
-      } else {
-            int low_id;
-            if (exact_) {
-                  central = a_Qg_30(x, 0);
-                  return Value(central);
-            } else {
-                  if (revised_approx_) low_id = -1;
-                  else low_id = -12;
-                  
-                  higher = a_Qg_30(x, 1);
-                  lower = a_Qg_30(x, low_id);
-                  central = 0.5 * (higher + lower);
-                  if (higher < lower) return Value(central, lower, higher);
-                  return Value(central, higher, lower);
-            }
-      }
+    double central, higher, lower;
+    if (entry2_ == 'q') {
+        if (exact_) {
+            central = a_Qq_PS_30(x, 0);
+            return Value(central);
+        } else {
+            higher = a_Qq_PS_30(x, 1);
+            lower = a_Qq_PS_30(x, -1);
+            central = 0.5 * (higher + lower);
+            if (higher < lower)
+                return Value(central, lower, higher);
+            return Value(central, higher, lower);
+        }
+    } else {
+        int low_id;
+        if (exact_) {
+            central = a_Qg_30(x, 0);
+            return Value(central);
+        } else {
+            if (revised_approx_)
+                low_id = -1;
+            else
+                low_id = -12;
+
+            higher = a_Qg_30(x, 1);
+            lower = a_Qg_30(x, low_id);
+            central = 0.5 * (higher + lower);
+            if (higher < lower)
+                return Value(central, lower, higher);
+            return Value(central, higher, lower);
+        }
+    }
 }
 
 //==========================================================================================//
@@ -96,7 +106,8 @@ Value MatchingCondition::MuIndependentNfIndependentTerm(double x) const {
 //  Eq. (B.6) from Ref. [arXiv:hep-ph/9612398v1]
 //------------------------------------------------------------------------------------------//
 
-// double MatchingCondition::K_gg1_local(double m2mu2) const { return -4. / 3. * TR * log(1. / m2mu2); }
+// double MatchingCondition::K_gg1_local(double m2mu2) const { return -4. / 3. *
+// TR * log(1. / m2mu2); }
 
 //==========================================================================================//
 //  Matching condition Qg O(as^2)
@@ -151,7 +162,8 @@ Value MatchingCondition::MuIndependentNfIndependentTerm(double x) const {
 //         ((16. + 32. * x + 32. * x2) * (Li2minus + L * Lp)
 //          + (8. - 16. * x + 16. * x2) * Lm2 + (8. + 16. * x) * L2
 //          + 32. * x * zeta2 + 32. * x * (1. - x) * Lm
-//          - (8. + 64. * x + 352. / 3. * x2) * L - 160. / 9. / x + 16. - 200. * x
+//          - (8. + 64. * x + 352. / 3. * x2) * L - 160. / 9. / x + 16. - 200. *
+//          x
 //          + 1744. / 9. * x2);
 
 //     double logmu = CF * TR * logmu_CFTR + CA * TR * logmu_CATR;
@@ -161,14 +173,18 @@ Value MatchingCondition::MuIndependentNfIndependentTerm(double x) const {
 //              * (8. * zeta3 + 4. / 3. * Lm3 - 8. * Lm * Li2xm + 8. * zeta2 * L
 //                 - 4. * L * Lm2 + 2. / 3. * L3 - 8. * L * Li2xm + 8. * Li3xm
 //                 - 24. * S12xm)
-//          + x2 * (-16. * zeta2 * L + 4. / 3. * L3 + 16 * L * Li2xm + 32 * S12xm)
-//          - (4. + 96. * x - 64. * x2) * Li2xm - (4. - 48. * x + 40. * x2) * zeta2
-//          - (8. + 48. * x - 24. * x2) * L * Lm + (4. + 8. * x - 12. * x2) * Lm2
+//          + x2 * (-16. * zeta2 * L + 4. / 3. * L3 + 16 * L * Li2xm + 32 *
+//          S12xm)
+//          - (4. + 96. * x - 64. * x2) * Li2xm - (4. - 48. * x + 40. * x2) *
+//          zeta2
+//          - (8. + 48. * x - 24. * x2) * L * Lm + (4. + 8. * x - 12. * x2) *
+//          Lm2
 //          - (1. + 12. * x - 20. * x2) * L2 - (52. * x - 48. * x2) * Lm
 //          - (16. + 18. * x + 48. * x2) * L + 26. - 82. * x + 80. * x2);
 
 //     double const_CATR =
-//         ((1. - 2. * x + 2. * x2) * (-4. / 3. * Lm3 + 8 * Lm * Li2xm - 8 * Li3xm)
+//         ((1. - 2. * x + 2. * x2) * (-4. / 3. * Lm3 + 8 * Lm * Li2xm - 8 *
+//         Li3xm)
 //          + (1. + 2. * x + 2. * x2)
 //                * (-8. * zeta2 * Lp - 16 * Lp * Li2minus - 8 * L * Lp2
 //                   + 4 * L2 * Lp + 8 * L * Li2minus - 8 * Li3minus
@@ -233,7 +249,8 @@ double MatchingCondition::a_Qg_30(double x, int v) const {
             + 3178.819 * L2 + 4710.725 / x + 1548.891 / x * L
         );
     } else {
-        cout << "Error in MatchingCondition::a_Qg_30: Choose either v=0, v=1, v=-1 or v=-12"
+        cout << "Error in MatchingCondition::a_Qg_30: Choose either v=0, v=1, "
+                "v=-1 or v=-12"
              << endl;
         exit(-1);
     }
@@ -952,7 +969,8 @@ double MatchingCondition::a_Qq_PS_30(double x, int v) const {
             + 8571.165 * x * L - 2346.893 * L * L + 688.396 / x * L
         );
     } else {
-        std::cout << "a_Qq_PS_30: Choose either v=0, v=1 or v=-1!!\nExiting!!\n" << std::endl;
+        std::cout << "a_Qq_PS_30: Choose either v=0, v=1 or v=-1!!\nExiting!!\n"
+                  << std::endl;
         exit(-1);
     }
 }
