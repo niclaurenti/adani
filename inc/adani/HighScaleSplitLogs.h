@@ -29,6 +29,10 @@
 //           (The expressions do not contain the log)
 //------------------------------------------------------------------------------------------//
 
+//==========================================================================================//
+//  class HighScaleSplitLogs
+//------------------------------------------------------------------------------------------//
+
 class HighScaleSplitLogs : public CoefficientFunction {
   public:
     HighScaleSplitLogs(
@@ -46,6 +50,7 @@ class HighScaleSplitLogs : public CoefficientFunction {
         const override;
     Value fxBand(double x, double m2Q2, int nf) const;
 
+    // division of the total result in the log terms
     double LL(double x, int nf) const { return (this->*LL_)(x, nf); }
     double NLL(double x, int nf) const { return (this->*NLL_)(x, nf); }
     double N2LL(double x, int nf) const { return (this->*N2LL_)(x, nf); }

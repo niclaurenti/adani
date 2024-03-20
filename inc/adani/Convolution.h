@@ -105,30 +105,24 @@ class Convolution : public AbstractConvolution {
 
 class ConvolutedCoefficientFunction : public CoefficientFunction {
   public:
-    ConvolutedCoefficientFunction(Convolution *conv)
-        : CoefficientFunction(conv->GetCoeffFunc()) {
-        conv_ = conv;
-    };
-    ~ConvolutedCoefficientFunction() override{};
+    ConvolutedCoefficientFunction(CoefficientFunction* coefffunc, AbstractSplittingFunction* splitfunc, const double &abserr = 1e-3, const double &relerr = 1e-3, const int &dim = 1000);
+    ~ConvolutedCoefficientFunction() override;
 
-    double MuIndependentTerms(double x, double m2Q2, int nf) const override {
-        return conv_->Convolute(x, m2Q2, nf);
-    };
+    // get method
+    Convolution* GetConv() const {return conv_;};
+
+    double MuIndependentTerms(double x, double m2Q2, int nf) const override;
     double MuDependentTerms(
         double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/
     ) const override {
         return 0.;
     };
-    double fx(double x, double m2Q2, double m2mu2, int nf) const override {
-        return MuIndependentTerms(x, m2Q2, nf)
-               + MuDependentTerms(x, m2Q2, m2mu2, nf);
-    }
-    Value fxBand(double x, double m2Q2, double m2mu2, int nf) const override {
-        return Value(fx(x, m2Q2, m2mu2, nf));
-    }
+    double fx(double x, double m2Q2, double m2mu2, int nf) const override;
+    Value fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
 
   private:
-    Convolution *conv_;
+    Convolution* conv_;
+
 };
 
 //==========================================================================================//

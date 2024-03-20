@@ -98,7 +98,7 @@ double Convolution::regular_integrand(double z, void *p) {
 }
 
 //==========================================================================================//
-//  AbstractConvolution: integrand of the singular part
+//  Convolution: integrand of the singular part
 //------------------------------------------------------------------------------------------//
 
 double Convolution::singular_integrand(double z, void *p) {
@@ -127,7 +127,7 @@ double Convolution::singular_integrand(double z, void *p) {
 //------------------------------------------------------------------------------------------//
 
 //==========================================================================================//
-//  AbstractConvolution: regular part
+//  Convolution: regular part
 //------------------------------------------------------------------------------------------//
 
 double Convolution::RegularPart(double x, double m2Q2, int nf) const {
@@ -163,7 +163,7 @@ double Convolution::RegularPart(double x, double m2Q2, int nf) const {
 }
 
 //==========================================================================================//
-//  AbstractConvolution: singular part
+//  Convolution: singular part
 //------------------------------------------------------------------------------------------//
 
 double Convolution::SingularPart(double x, double m2Q2, int nf) const {
@@ -200,7 +200,7 @@ double Convolution::SingularPart(double x, double m2Q2, int nf) const {
 }
 
 //==========================================================================================//
-//  AbstractConvolution: local part
+//  Convolution: local part
 //------------------------------------------------------------------------------------------//
 
 double Convolution::LocalPart(double x, double m2Q2, int nf) const {
@@ -210,6 +210,52 @@ double Convolution::LocalPart(double x, double m2Q2, int nf) const {
     return coefffunc_->MuIndependentTerms(x, m2Q2, nf)
            * (splitfunc_->Local(nf)
               - splitfunc_->SingularIntegrated(x / x_max, nf));
+}
+
+//==========================================================================================//
+//  ConvolutedCoefficientFunction: constructor
+//------------------------------------------------------------------------------------------//
+
+ConvolutedCoefficientFunction::ConvolutedCoefficientFunction(CoefficientFunction* coefffunc, AbstractSplittingFunction* splitfunc, const double &abserr, const double &relerr, const int &dim) : CoefficientFunction(coefffunc) {
+    
+    conv_ = new Convolution(coefffunc, splitfunc, abserr, relerr, dim);
+}
+
+//==========================================================================================//
+//  ConvolutedCoefficientFunction: destructor
+//------------------------------------------------------------------------------------------//
+
+ConvolutedCoefficientFunction::~ConvolutedCoefficientFunction() {
+
+    delete conv_;
+}
+
+//==========================================================================================//
+//  ConvolutedCoefficientFunction: mu independent terms
+//------------------------------------------------------------------------------------------//
+
+double ConvolutedCoefficientFunction::MuIndependentTerms(double x, double m2Q2, int nf) const {
+    
+    return conv_->Convolute(x, m2Q2, nf);
+}
+
+//==========================================================================================//
+//  ConvolutedCoefficientFunction: central value of fx
+//------------------------------------------------------------------------------------------//
+
+double ConvolutedCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int nf) const {
+    
+    return MuIndependentTerms(x, m2Q2, nf)
+           + MuDependentTerms(x, m2Q2, m2mu2, nf);
+}
+
+//==========================================================================================//
+//  ConvolutedCoefficientFunction: band of fx
+//------------------------------------------------------------------------------------------//
+
+Value ConvolutedCoefficientFunction::fxBand(double x, double m2Q2, double m2mu2, int nf) const {
+    
+    return Value(fx(x, m2Q2, m2mu2, nf));
 }
 
 //==========================================================================================//
@@ -232,7 +278,7 @@ DoubleConvolution::DoubleConvolution(
         conv_coeff_ = nullptr;
     } else {
         conv_coeff_ = new ConvolutedCoefficientFunction(
-            new Convolution(coefffunc, splitfunc, abserr, relerr, dim)
+            coefffunc, splitfunc, abserr, relerr, dim
         );
         convolution_ =
             new Convolution(conv_coeff_, splitfunc, abserr, relerr, dim);

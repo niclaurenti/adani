@@ -1,6 +1,5 @@
 #include "adani/HighScaleSplitLogs.h"
 #include "adani/Constants.h"
-#include "adani/Convolution.h"
 #include "adani/SpecialFunctions.h"
 
 #include <cmath>
@@ -8,6 +7,10 @@
 
 using std::cout;
 using std::endl;
+
+//==========================================================================================//
+//  HighScaleSplitLogs: constructor
+//------------------------------------------------------------------------------------------//
 
 HighScaleSplitLogs::HighScaleSplitLogs(
     const int &order, const char &kind, const char &channel, const bool &exact,
@@ -39,11 +42,19 @@ HighScaleSplitLogs::HighScaleSplitLogs(
     SetFunctions();
 }
 
+//==========================================================================================//
+//  HighScaleSplitLogs: destructor
+//------------------------------------------------------------------------------------------//
+
 HighScaleSplitLogs::~HighScaleSplitLogs() {
     delete massless_;
     delete massless_lo_;
     delete a_muindep_;
 }
+
+//==========================================================================================//
+//  HighScaleSplitLogs: warning function that prevents from calling fx with Q != mu.
+//------------------------------------------------------------------------------------------//
 
 double HighScaleSplitLogs::
     fx(double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const {
@@ -53,9 +64,17 @@ double HighScaleSplitLogs::
     exit(-1);
 }
 
+//==========================================================================================//
+//  HighScaleSplitLogs: central value of the band 
+//------------------------------------------------------------------------------------------//
+
 double HighScaleSplitLogs::fx(double x, double m2Q2, int nf) const {
     return fxBand(x, m2Q2, nf).GetCentral();
 }
+
+//==========================================================================================//
+//  HighScaleSplitLogs: warning function that prevents from calling fxBand with Q != mu.
+//------------------------------------------------------------------------------------------//
 
 Value HighScaleSplitLogs::
     fxBand(double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const {
@@ -66,6 +85,10 @@ Value HighScaleSplitLogs::
     exit(-1);
 }
 
+//==========================================================================================//
+//  HighScaleSplitLogs: band of the total result
+//------------------------------------------------------------------------------------------//
+
 Value HighScaleSplitLogs::fxBand(double x, double m2Q2, int nf) const {
     double Log = log(m2Q2);
     double Log2 = Log * Log;
@@ -73,6 +96,10 @@ Value HighScaleSplitLogs::fxBand(double x, double m2Q2, int nf) const {
     return LL(x, nf) * Log3 + NLL(x, nf) * Log2 + N2LL(x, nf) * Log
            + N3LL(x, nf);
 }
+
+//==========================================================================================//
+//  HighScaleSplitLogs: function that sets the pointers to the correct function
+//------------------------------------------------------------------------------------------//
 
 void HighScaleSplitLogs::SetFunctions() {
 
