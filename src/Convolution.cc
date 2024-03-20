@@ -216,8 +216,12 @@ double Convolution::LocalPart(double x, double m2Q2, int nf) const {
 //  ConvolutedCoefficientFunction: constructor
 //------------------------------------------------------------------------------------------//
 
-ConvolutedCoefficientFunction::ConvolutedCoefficientFunction(CoefficientFunction* coefffunc, AbstractSplittingFunction* splitfunc, const double &abserr, const double &relerr, const int &dim) : CoefficientFunction(coefffunc) {
-    
+ConvolutedCoefficientFunction::ConvolutedCoefficientFunction(
+    CoefficientFunction *coefffunc, AbstractSplittingFunction *splitfunc,
+    const double &abserr, const double &relerr, const int &dim
+)
+    : CoefficientFunction(coefffunc) {
+
     conv_ = new Convolution(coefffunc, splitfunc, abserr, relerr, dim);
 }
 
@@ -234,8 +238,10 @@ ConvolutedCoefficientFunction::~ConvolutedCoefficientFunction() {
 //  ConvolutedCoefficientFunction: mu independent terms
 //------------------------------------------------------------------------------------------//
 
-double ConvolutedCoefficientFunction::MuIndependentTerms(double x, double m2Q2, int nf) const {
-    
+double ConvolutedCoefficientFunction::MuIndependentTerms(
+    double x, double m2Q2, int nf
+) const {
+
     return conv_->Convolute(x, m2Q2, nf);
 }
 
@@ -243,8 +249,10 @@ double ConvolutedCoefficientFunction::MuIndependentTerms(double x, double m2Q2, 
 //  ConvolutedCoefficientFunction: central value of fx
 //------------------------------------------------------------------------------------------//
 
-double ConvolutedCoefficientFunction::fx(double x, double m2Q2, double m2mu2, int nf) const {
-    
+double ConvolutedCoefficientFunction::fx(
+    double x, double m2Q2, double m2mu2, int nf
+) const {
+
     return MuIndependentTerms(x, m2Q2, nf)
            + MuDependentTerms(x, m2Q2, m2mu2, nf);
 }
@@ -253,8 +261,10 @@ double ConvolutedCoefficientFunction::fx(double x, double m2Q2, double m2mu2, in
 //  ConvolutedCoefficientFunction: band of fx
 //------------------------------------------------------------------------------------------//
 
-Value ConvolutedCoefficientFunction::fxBand(double x, double m2Q2, double m2mu2, int nf) const {
-    
+Value ConvolutedCoefficientFunction::fxBand(
+    double x, double m2Q2, double m2mu2, int nf
+) const {
+
     return Value(fx(x, m2Q2, m2mu2, nf));
 }
 

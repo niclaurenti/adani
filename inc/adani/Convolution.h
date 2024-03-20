@@ -105,11 +105,15 @@ class Convolution : public AbstractConvolution {
 
 class ConvolutedCoefficientFunction : public CoefficientFunction {
   public:
-    ConvolutedCoefficientFunction(CoefficientFunction* coefffunc, AbstractSplittingFunction* splitfunc, const double &abserr = 1e-3, const double &relerr = 1e-3, const int &dim = 1000);
+    ConvolutedCoefficientFunction(
+        CoefficientFunction *coefffunc, AbstractSplittingFunction *splitfunc,
+        const double &abserr = 1e-3, const double &relerr = 1e-3,
+        const int &dim = 1000
+    );
     ~ConvolutedCoefficientFunction() override;
 
     // get method
-    Convolution* GetConv() const {return conv_;};
+    Convolution *GetConv() const { return conv_; };
 
     double MuIndependentTerms(double x, double m2Q2, int nf) const override;
     double MuDependentTerms(
@@ -121,8 +125,7 @@ class ConvolutedCoefficientFunction : public CoefficientFunction {
     Value fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
 
   private:
-    Convolution* conv_;
-
+    Convolution *conv_;
 };
 
 //==========================================================================================//

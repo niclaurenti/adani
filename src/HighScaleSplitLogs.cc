@@ -53,7 +53,8 @@ HighScaleSplitLogs::~HighScaleSplitLogs() {
 }
 
 //==========================================================================================//
-//  HighScaleSplitLogs: warning function that prevents from calling fx with Q != mu.
+//  HighScaleSplitLogs: warning function that prevents from calling fx with Q !=
+//  mu.
 //------------------------------------------------------------------------------------------//
 
 double HighScaleSplitLogs::
@@ -65,7 +66,7 @@ double HighScaleSplitLogs::
 }
 
 //==========================================================================================//
-//  HighScaleSplitLogs: central value of the band 
+//  HighScaleSplitLogs: central value of the band
 //------------------------------------------------------------------------------------------//
 
 double HighScaleSplitLogs::fx(double x, double m2Q2, int nf) const {
@@ -73,7 +74,8 @@ double HighScaleSplitLogs::fx(double x, double m2Q2, int nf) const {
 }
 
 //==========================================================================================//
-//  HighScaleSplitLogs: warning function that prevents from calling fxBand with Q != mu.
+//  HighScaleSplitLogs: warning function that prevents from calling fxBand with
+//  Q != mu.
 //------------------------------------------------------------------------------------------//
 
 Value HighScaleSplitLogs::
