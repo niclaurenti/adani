@@ -19,11 +19,17 @@ PYBIND11_MODULE(_core, m) {
             py::init<const double &, const double &, const double &>(),
             py::arg("central"), py::arg("higher"), py::arg("lower")
         )
-        .def(
-            "__add__",
-            (Value(Value::*)(const double &) const) & Value::operator+,
-            py::is_operator()
-        )
+        .def(py::init<const double &, const double &>(), py::arg("higher"), py::arg("lower"))
+        .def(py::init<const double &>(), py::arg("central"))
+        .def(py::self + py::self)
+        .def(py::self + float())
+        .def(float() + py::self)
+        .def(py::self - float())
+        .def(py::self * float())
+        .def(float() * py::self)
+        .def(py::self / float())
+        .def(py::self *= float())
+        .def(py::self /= float())
         .def("GetCentral", &Value::GetCentral)
         .def("GetHigher", &Value::GetHigher)
         .def("GetLower", &Value::GetLower);

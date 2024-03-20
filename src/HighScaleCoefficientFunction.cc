@@ -85,9 +85,7 @@ void HighScaleCoefficientFunction::SetFunctions() {
         else if (GetKind() == 'L' && GetChannel() == 'g')
             fx_ = &HighScaleCoefficientFunction::CL_g1_highscale;
         else {
-            cout << "Error: something has gone wrong in "
-                    "HighScaleCoefficientFunction::SetFunctions, GetOrder() == "
-                    "1!"
+            cout << "Error: quark coefficient function is not present at O(as)!"
                  << endl;
             exit(-1);
         }
