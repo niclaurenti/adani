@@ -40,11 +40,14 @@ MatchingCondition::MatchingCondition(
 
     exact_ = exact;
 
-    if (exact && revised_approx) {
-        cout << "Error: revised_approx = true is meaningfull only if exact = "
-                "false!"
-             << endl;
-        exit(-1);
+    // checking only for g since revised_approximation is not present for q
+    if (entry2_ == 'g') {
+        if (exact && revised_approx) {
+            cout << "Error: revised_approx = true is meaningfull only if exact = "
+                    "false!"
+                 << endl;
+            exit(-1);
+        }
     }
     revised_approx_ = revised_approx;
 }
