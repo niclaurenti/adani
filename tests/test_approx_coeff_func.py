@@ -19,7 +19,7 @@ def test_C2_g3_old_version():
         np.testing.assert_allclose(newres, value, 1e-5)
 
 def test_mudependent_terms():
-    for order in [3]:
+    for order in [2, 3]:
         for channel in ['g', 'q']:
             for kind in ['2', 'L']:
                 for dim in [100, 1000]:

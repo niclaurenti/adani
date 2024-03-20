@@ -15,7 +15,7 @@ PYBIND11_MODULE(_core, m) {
 
     // Value
     py::class_<Value>(m, "Value")
-        .def(py::init<const double &, const double &, const double &>())
+        .def(py::init<const double &, const double &, const double &>(), py::arg("central"), py::arg("higher"), py::arg("lower"))
         .def(
             "__add__",
             (Value(Value::*)(const double &) const) & Value::operator+,
@@ -32,7 +32,7 @@ PYBIND11_MODULE(_core, m) {
         .def(py::init<
              const int &, const char &, const char &, const bool &,
              const bool &, const bool &, const double &, const double &,
-             const int &, const int &, const int &>())
+             const int &, const int &, const int &>(), py::arg("order"), py::arg("kind"), py::arg("channel"), py::arg("NLL")=true, py::arg("exact_highscale")=false, py::arg("revised_approx_highscale")=true, py::arg("abserr")=1e-3, py::arg("relerr")=1e-3, py::arg("dim")=1000, py::arg("method_flag")=1, py::arg("MCcalls")=25000)
         .def(
             "MuIndependentTerms",
             &ApproximateCoefficientFunction::MuIndependentTerms
@@ -59,7 +59,7 @@ PYBIND11_MODULE(_core, m) {
         .def(py::init<
              const int &, const char &, const char &, const bool &,
              const double &, const double &, const int &, const int &,
-             const int &>())
+             const int &>(), py::arg("order"), py::arg("kind"), py::arg("channel"), py::arg("revised_approx_highscale")=true, py::arg("abserr")=1e-3, py::arg("relerr")=1e-3, py::arg("dim")=1000, py::arg("method_flag")=1, py::arg("MCcalls")=25000)
         .def(
             "MuIndependentTerms",
             &ApproximateCoefficientFunctionKLMV::MuIndependentTerms
@@ -85,7 +85,7 @@ PYBIND11_MODULE(_core, m) {
     )
         .def(py::init<
              const int &, const char &, const char &, const bool &,
-             const bool &, const bool &>())
+             const bool &, const bool &>(), py::arg("order"), py::arg("kind"), py::arg("channel"), py::arg("NLL")=true, py::arg("exact_highscale")=false, py::arg("revised_approx_highscale")=true)
         .def(
             "MuIndependentTerms",
             &AsymptoticCoefficientFunction::MuIndependentTerms
@@ -108,7 +108,7 @@ PYBIND11_MODULE(_core, m) {
     py::class_<ExactCoefficientFunction>(m, "ExactCoefficientFunction")
         .def(py::init<
              const int &, const char &, const char &, const double &,
-             const double &, const int &, const int &, const int &>())
+             const double &, const int &, const int &, const int &>(), py::arg("order"), py::arg("kind"), py::arg("channel"), py::arg("abserr")=1e-3, py::arg("relerr")=1e-3, py::arg("dim")=1000, py::arg("method_flag")=1, py::arg("MCcalls")=25000)
         .def(
             "MuIndependentTerms", &ExactCoefficientFunction::MuIndependentTerms
         )
@@ -128,7 +128,7 @@ PYBIND11_MODULE(_core, m) {
     py::class_<HighEnergyCoefficientFunction>(
         m, "HighEnergyCoefficientFunction"
     )
-        .def(py::init<const int &, const char &, const char &, const bool &>())
+        .def(py::init<const int &, const char &, const char &, const bool &>(), py::arg("order"), py::arg("kind"), py::arg("channel"), py::arg("NLL")=true)
         .def(
             "MuIndependentTerms",
             &HighEnergyCoefficientFunction::MuIndependentTerms
@@ -151,7 +151,7 @@ PYBIND11_MODULE(_core, m) {
     py::class_<HighEnergyHighScaleCoefficientFunction>(
         m, "HighEnergyHighScaleCoefficientFunction"
     )
-        .def(py::init<const int &, const char &, const char &, const bool &>())
+        .def(py::init<const int &, const char &, const char &, const bool &>(), py::arg("order"), py::arg("kind"), py::arg("channel"), py::arg("NLL")=true)
         .def(
             "MuIndependentTerms",
             &HighEnergyHighScaleCoefficientFunction::MuIndependentTerms
@@ -175,7 +175,7 @@ PYBIND11_MODULE(_core, m) {
     py::class_<PowerTermsCoefficientFunction>(
         m, "PowerTermsCoefficientFunction"
     )
-        .def(py::init<const int &, const char &, const char &, const bool &>())
+        .def(py::init<const int &, const char &, const char &, const bool &>(), py::arg("order"), py::arg("kind"), py::arg("channel"), py::arg("NLL")=true)
         .def(
             "MuIndependentTerms",
             &PowerTermsCoefficientFunction::MuIndependentTerms
@@ -198,7 +198,7 @@ PYBIND11_MODULE(_core, m) {
     py::class_<HighScaleCoefficientFunction>(m, "HighScaleCoefficientFunction")
         .def(py::init<
              const int &, const char &, const char &, const bool &,
-             const bool &>())
+             const bool &>(), py::arg("order"), py::arg("kind"), py::arg("channel"), py::arg("exact")=false, py::arg("revised_approx")=true)
         .def(
             "MuIndependentTerms",
             &HighScaleCoefficientFunction::MuIndependentTerms
@@ -221,7 +221,7 @@ PYBIND11_MODULE(_core, m) {
     py::class_<HighScaleSplitLogs>(m, "HighScaleSplitLogs")
         .def(py::init<
              const int &, const char &, const char &, const bool &,
-             const bool &>())
+             const bool &>(), py::arg("order"), py::arg("kind"), py::arg("channel"), py::arg("exact")=false, py::arg("revised_approx")=true)
         .def(
             "fx", (double(HighScaleSplitLogs::*)(double, double, int) const)
                       & HighScaleSplitLogs::fx
@@ -237,7 +237,7 @@ PYBIND11_MODULE(_core, m) {
 
     // MasslessCoefficientFunction
     py::class_<MasslessCoefficientFunction>(m, "MasslessCoefficientFunction")
-        .def(py::init<const int &, const char &, const char &>())
+        .def(py::init<const int &, const char &, const char &>(), py::arg("order"), py::arg("kind"), py::arg("channel"))
         .def(
             "MuIndependentTerms",
             (double(MasslessCoefficientFunction::*)(double, int) const)
@@ -248,7 +248,7 @@ PYBIND11_MODULE(_core, m) {
 
     // SplittingFunction
     py::class_<SplittingFunction>(m, "SplittingFunction")
-        .def(py::init<const int &, const char &, const char &>())
+        .def(py::init<const int &, const char &, const char &>(), py::arg("order"), py::arg("entry1"), py::arg("entry2"))
         .def("Regular", &SplittingFunction::Regular)
         .def("Singular", &SplittingFunction::Singular)
         .def("SingularIntegrated", &SplittingFunction::SingularIntegrated)
@@ -258,7 +258,7 @@ PYBIND11_MODULE(_core, m) {
     py::class_<ConvolutedSplittingFunctions>(m, "ConvolutedSplittingFunctions")
         .def(py::init<
              const int &, const char &, const char &, const int &, const char &,
-             const char &>())
+             const char &>(), py::arg("order1"), py::arg("entry1"), py::arg("entry2"), py::arg("order2"), py::arg("entry3"), py::arg("entry4"))
         .def("Regular", &ConvolutedSplittingFunctions::Regular)
         .def("Singular", &ConvolutedSplittingFunctions::Singular)
         .def(
@@ -269,7 +269,7 @@ PYBIND11_MODULE(_core, m) {
 
     // ThresholdCoefficientFunction
     py::class_<ThresholdCoefficientFunction>(m, "ThresholdCoefficientFunction")
-        .def(py::init<const int &, const char &, const char &>())
+        .def(py::init<const int &, const char &, const char &>(), py::arg("order"), py::arg("kind"), py::arg("channel"))
         .def(
             "MuIndependentTerms",
             &ThresholdCoefficientFunction::MuIndependentTerms
