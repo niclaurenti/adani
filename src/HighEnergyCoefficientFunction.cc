@@ -177,7 +177,7 @@ void HighEnergyHighScaleCoefficientFunction::SetFunctions() {
 }
 
 //==========================================================================================//
-//  HighEnergyHighScaleCoefficientFunction: constructor
+//  PowerTermsCoefficientFunction: constructor
 //------------------------------------------------------------------------------------------//
 
 PowerTermsCoefficientFunction::PowerTermsCoefficientFunction(
@@ -193,7 +193,7 @@ PowerTermsCoefficientFunction::PowerTermsCoefficientFunction(
 }
 
 //==========================================================================================//
-//  HighEnergyHighScaleCoefficientFunction: destructor
+//  PowerTermsCoefficientFunction: destructor
 //------------------------------------------------------------------------------------------//
 
 PowerTermsCoefficientFunction::~PowerTermsCoefficientFunction() {
@@ -219,7 +219,8 @@ Value PowerTermsCoefficientFunction::fxBand(
         (highenergy_->fxBand(x, m2Q2, m2mu2, nf)).GetLower()
         - (highenergyhighscale_->fxBand(x, m2Q2, m2mu2, nf)).GetLower();
 
-    return Value(central, higher, lower);
+    if (higher > lower) return Value(central, higher, lower);
+    else return Value(central, lower, higher);
 }
 
 //==========================================================================================//

@@ -116,8 +116,9 @@ Value Value::operator-(const double &rhs) const {
 Value Value::operator*(const double &rhs) const {
     if (rhs > 0)
         return Value(rhs * central_, rhs * higher_, rhs * lower_);
-    else
+    else if (rhs < 0)
         return Value(rhs * central_, rhs * lower_, rhs * higher_);
+    else return Value(0.);
 }
 
 //==========================================================================================//
