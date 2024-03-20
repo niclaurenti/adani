@@ -12,7 +12,7 @@ def test_splitlogs_vs_highscale():
                         continue
                     hs = ad.HighScaleCoefficientFunction(3, kind, channel, exact, revised_appr)
                     hs_split = ad.HighScaleSplitLogs(3, kind, channel, exact, revised_appr)
-            
+
                     for x in np.geomspace(1e-5, 1, 100, endpoint=False):
                         for xi in np.geomspace(1e-2, 1e4, 10, endpoint=True):
                             for nf in range(1, 6 + 1):
@@ -32,11 +32,11 @@ def test_split_logs():
             for exact in [True, False]:
                 if channel == 'g' and exact:
                     continue
-                for revised_appr in [False]:
+                for revised_appr in [True, False]:
                     if exact and revised_appr:
                         continue
                     hs_split = ad.HighScaleSplitLogs(3, kind, channel, exact, revised_appr)
-                    
+
                     for x in np.geomspace(1e-5, 1, 100, endpoint=False):
                         for xi in np.geomspace(1e-2, 1e4, 10, endpoint=True):
                             for nf in range(1, 6 + 1):

@@ -24,6 +24,11 @@ def test_asy():
                                             res1 = pt.fxBand(x, m2Q2, m2mu2, nf) + hs.fxBand(x, m2Q2, m2mu2, nf)
                                             res2 = asy.fxBand(x, m2Q2, m2mu2, nf)
 
+                                            res1_c = pt.fx(x, m2Q2, m2mu2, nf) + hs.fx(x, m2Q2, m2mu2, nf)
+                                            res2_c = asy.fx(x, m2Q2, m2mu2, nf)
+
                                             np.testing.assert_allclose(res1.GetCentral(), res2.GetCentral(), rtol=1e-7)
                                             np.testing.assert_allclose(res1.GetHigher(), res2.GetHigher(), rtol=1e-7)
                                             np.testing.assert_allclose(res1.GetLower(), res2.GetLower(), rtol=1e-7)
+                                            np.testing.assert_allclose(res1_c, res1.GetCentral(), rtol=1e-7)
+                                            np.testing.assert_allclose(res2_c, res2.GetCentral(), rtol=1e-7)
