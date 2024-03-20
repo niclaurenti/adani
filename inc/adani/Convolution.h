@@ -56,6 +56,7 @@ class AbstractConvolution {
         double GetAbserr() const { return abserr_; };
         double GetRelerr() const { return relerr_; };
         int GetDim() const { return dim_; };
+        gsl_integration_workspace *GetWorkspace() const {return w_; };
         CoefficientFunction *GetCoeffFunc() const { return coefffunc_; };
         AbstractSplittingFunction *GetSplitFunc() const { return splitfunc_; };
 
@@ -68,6 +69,7 @@ class AbstractConvolution {
         double abserr_;
         double relerr_;
         int dim_;
+        gsl_integration_workspace *w_;
 
     protected:
         CoefficientFunction *coefffunc_;
@@ -168,6 +170,9 @@ class DoubleConvolution : public AbstractConvolution {
     private:
         int method_flag_;
         int MCcalls_;
+        gsl_monte_vegas_state *s_;
+        const gsl_rng_type *T_;
+        gsl_rng *r_;
 
         Convolution *convolution_;
         ConvolutedCoefficientFunction *conv_coeff_;
