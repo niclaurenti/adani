@@ -1,6 +1,6 @@
 ---
 Language:        Cpp
-AccessModifierOffset: -2
+AccessModifierOffset: 0
 AlignAfterOpenBracket: BlockIndent ####
 AlignArrayOfStructures: None
 AlignConsecutiveAssignments:
@@ -117,7 +117,7 @@ IncludeCategories:
     CaseSensitive:   false
 IncludeIsMainRegex: '(Test)?$'
 IncludeIsMainSourceRegex: ''
-IndentAccessModifiers: false
+IndentAccessModifiers: true
 IndentCaseBlocks: false
 IndentCaseLabels: false
 IndentExternBlock: Indent
