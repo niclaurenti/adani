@@ -162,7 +162,7 @@ Value ApproximateCoefficientFunction::MuIndependentTermsBand(
     double central = Approximation(x, m2Q2, asy[0], thresh[0], A, B, C, D);
     double higher = central, lower = central, tmp;
 
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < int(asy.size()); i++) {
         for (int j = 0; j < 3; j++) {
             for (int k = 0; k < 3; k++) {
                 for (int l = 0; l < 3; l++) {

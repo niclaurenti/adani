@@ -3,7 +3,7 @@
 #include <cmath>
 
 //==========================================================================================//
-//  ExactCoefficientFunction: constructor
+//  AsymptoticCoefficientFunction: constructor
 //------------------------------------------------------------------------------------------//
 
 AsymptoticCoefficientFunction::AsymptoticCoefficientFunction(
@@ -22,7 +22,7 @@ AsymptoticCoefficientFunction::AsymptoticCoefficientFunction(
 }
 
 //==========================================================================================//
-//  ExactCoefficientFunction: destructor
+//  AsymptoticCoefficientFunction: destructor
 //------------------------------------------------------------------------------------------//
 
 AsymptoticCoefficientFunction::~AsymptoticCoefficientFunction() {
@@ -31,7 +31,7 @@ AsymptoticCoefficientFunction::~AsymptoticCoefficientFunction() {
 }
 
 //==========================================================================================//
-//  ExactCoefficientFunction: central value of fx
+//  AsymptoticCoefficientFunction: central value of fx
 //------------------------------------------------------------------------------------------//
 
 double AsymptoticCoefficientFunction::fx(
@@ -43,7 +43,7 @@ double AsymptoticCoefficientFunction::fx(
 }
 
 //==========================================================================================//
-//  ExactCoefficientFunction: band of fx
+//  AsymptoticCoefficientFunction: band of fx
 //------------------------------------------------------------------------------------------//
 
 Value AsymptoticCoefficientFunction::fxBand(
@@ -52,4 +52,25 @@ Value AsymptoticCoefficientFunction::fxBand(
 
     return highscale_->fxBand(x, m2Q2, m2mu2, nf)
            + powerterms_->fxBand(x, m2Q2, m2mu2, nf);
+}
+
+//==========================================================================================//
+//  AsymptoticCoefficientFunction: all possible variation (3x3=9) of the combination between
+//  high scale and power terms
+//------------------------------------------------------------------------------------------//
+
+vector<double> AsymptoticCoefficientFunction::AllVariations(double x, double m2Q2, double m2mu2, int nf) const {
+
+    vector<double> hs_vec = (highscale_->fxBand(x, m2Q2, m2mu2, nf)).ToVect();
+    vector<double> pt_vec = (powerterms_->fxBand(x, m2Q2, m2mu2, nf)).ToVect();
+
+    vector<double> res;
+
+    for (double hs : hs_vec) {
+        for (double pt : pt_vec) {
+            res.push_back(hs + pt);
+        }
+    }
+
+    return res;
 }

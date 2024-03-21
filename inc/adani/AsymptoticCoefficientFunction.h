@@ -43,6 +43,8 @@ class AsymptoticCoefficientFunction
         Value
         fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
 
+        vector<double> AllVariations(double x, double m2Q2, double m2mu2, int nf) const;
+
     private:
         HighScaleCoefficientFunction *highscale_;
         PowerTermsCoefficientFunction *powerterms_;
