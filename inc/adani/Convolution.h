@@ -141,7 +141,7 @@ class DoubleConvolution : public AbstractConvolution {
             CoefficientFunction *coefffunc,
             AbstractSplittingFunction *splitfunc, const double &abserr = 1e-3,
             const double &relerr = 1e-3, const int &dim = 1000,
-            const int &method_flag = 1, const int &MCcalls = 25000
+            const int &method_flag = 0, const int &MCcalls = 25000
         );
         ~DoubleConvolution() override;
 
@@ -171,7 +171,6 @@ class DoubleConvolution : public AbstractConvolution {
         int method_flag_;
         int MCcalls_;
         gsl_monte_vegas_state *s_;
-        const gsl_rng_type *T_;
         gsl_rng *r_;
 
         Convolution *convolution_;

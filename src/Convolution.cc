@@ -286,8 +286,7 @@ DoubleConvolution::DoubleConvolution(
 
         s_ = gsl_monte_vegas_alloc(2);
         gsl_rng_env_setup();
-        T_ = gsl_rng_default;
-        r_ = gsl_rng_alloc(T_);
+        r_ = gsl_rng_alloc(gsl_rng_default);
 
     } else {
         conv_coeff_ = new ConvolutedCoefficientFunction(

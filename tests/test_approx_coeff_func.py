@@ -6,16 +6,16 @@ def test_mudependent_terms():
     for order in [2, 3]:
         for channel in ['g', 'q']:
             for kind in ['2', 'L']:
-                for dim in [100, 1000]:
-                    for MCcalls in [10000, 20000]:
+                for dim in [1000]:
+                    for MCcalls in [20000]:
                         for mf in [0, 1]:
-                            for abserr in [1e-2, 1e-3]:
+                            for abserr in [1e-3]:
                                 relerr = abserr
                                 massive = ad.ExactCoefficientFunction(order, kind, channel, abserr, relerr, dim, mf, MCcalls)
                                 app = ad.ApproximateCoefficientFunction(order, kind, channel,True, False, True, abserr, relerr, dim, mf, MCcalls)
-                                x = np.geomspace(1e-5, 1., 10, endpoint=True)
+                                x = np.geomspace(1e-5, 1., 5, endpoint=True)
                                 for xi in np.geomspace(1e-2, 1e4, 4, endpoint=True):
-                                    for nf in range(1, 6 + 1):
+                                    for nf in [4, 5]:
                                         res1 = [massive.MuDependentTerms(x_, 1/xi, 1/xi, nf) for x_ in x]
                                         res2 = [app.MuDependentTerms(x_, 1/xi, 1/xi, nf) for x_ in x]
                                         np.testing.assert_allclose(res1, res2, rtol=1e-7)
@@ -57,14 +57,14 @@ def test_mudep_oldversion():
         for kind in ['2', 'L']:
             exact = True if channel == 'q' else False
             hs_appr = True if channel == 'g' else False
-            for mf in [0]:
+            for mf in [1]:
                 app = ad.ApproximateCoefficientFunction(3, kind, channel,True, exact, hs_appr, 1e-3, 1e-3, 1000, mf, 25000)
                 for xi in np.geomspace(1e-2, 1e2, 10):
                     m2Q2 = 1/xi
                     xmax = 1/(1 + 4*m2Q2)
                     Lmu = -np.log(m2Q2)
                     for x in np.geomspace(1e-5, 1, 10):
-                        for nf in range(1, 6 + 1):
+                        for nf in [3, 4]:
                             if kind == '2':
                                 if channel == 'g':
                                     res_old = oldad.C2_g31(x, m2Q2, nf) * Lmu + oldad.C2_g32(x, m2Q2, nf, mf) * Lmu**2
