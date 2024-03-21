@@ -22,6 +22,33 @@ def test_mudependent_terms():
                                 del massive
                                 del app
 
+def test_C20_oldversion():
+    for channel in ['g', 'q']:
+        for kind in ['2', 'L']:
+            app = ad.ApproximateCoefficientFunction(2, kind, channel)
+            for xi in np.geomspace(1e-2, 1e2, 10):
+                m2Q2 = 1/xi
+                for x in np.geomspace(1e-5, 1, 10):
+                    for v in [0, 1, -1]:
+                        if kind == '2':
+                            if channel == 'g':
+                                res_old = oldad.C2_g2_approximation(x, m2Q2, 1., v)
+                            if channel == 'q':
+                                res_old = oldad.C2_ps2_approximation(x, m2Q2, 1., v)
+                        if kind == 'L':
+                            if channel == 'g':
+                                res_old = oldad.CL_g2_approximation(x, m2Q2, 1., v)
+                            if channel == 'q':
+                                res_old = oldad.CL_ps2_approximation(x, m2Q2, 1., v)
+                        tmp = app.MuIndependentTermsBand(x, m2Q2, 1)
+                        if v == 0:
+                            res_new = tmp.GetCentral()
+                        if v == -1:
+                            res_new = tmp.GetLower()
+                        if v == 1:
+                            res_new = tmp.GetHigher()
+                        np.testing.assert_allclose(res_old, res_new, rtol=1e-7)
+
 def test_C30_oldversion():
     for channel in ['g', 'q']:
         for kind in ['2', 'L']:
@@ -57,7 +84,7 @@ def test_mudep_oldversion_as3():
         for kind in ['2', 'L']:
             exact = True if channel == 'q' else False
             hs_appr = True if channel == 'g' else False
-            for mf in [1]:
+            for mf in [0]:
                 app = ad.ApproximateCoefficientFunction(3, kind, channel,True, exact, hs_appr, 1e-3, 1e-3, 1000, mf, 25000)
                 for xi in np.geomspace(1e-2, 1e2, 10):
                     m2Q2 = 1/xi
@@ -93,14 +120,14 @@ def test_mudep_oldversion_as2():
                     for nf in [3, 4]:
                         if kind == '2':
                             if channel == 'g':
-                                res_old = oldad.C2_g21(x, m2Q2, nf) * Lmu
+                                res_old = oldad.C2_g21(x, m2Q2) * Lmu
                             if channel == 'q':
-                                res_old = oldad.C2_ps21(x, m2Q2, nf) * Lmu
+                                res_old = oldad.C2_ps21(x, m2Q2) * Lmu
                         if kind == 'L':
                             if channel == 'g':
-                                res_old = oldad.CL_g21(x, m2Q2, nf) * Lmu
+                                res_old = oldad.CL_g21(x, m2Q2) * Lmu
                             if channel == 'q':
-                                res_old = oldad.CL_ps21(x, m2Q2, nf) * Lmu
+                                res_old = oldad.CL_ps21(x, m2Q2) * Lmu
                         if x > xmax:
                             res_old = 0.
                         res_new = app.MuDependentTerms(x, m2Q2, m2Q2, nf)
