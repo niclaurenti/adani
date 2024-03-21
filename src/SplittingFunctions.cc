@@ -1,6 +1,6 @@
-#include "adani/SplittingFunctions.h"
-#include "adani/Constants.h"
-#include "adani/SpecialFunctions.h"
+#include "oldadani/SplittingFunctions.h"
+#include "oldadani/Constants.h"
+#include "oldadani/SpecialFunctions.h"
 #include <cmath>
 
 using namespace std;

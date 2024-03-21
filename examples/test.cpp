@@ -1,6 +1,6 @@
 // See README.md for compilation suggestions
 
-#include <adani/adani.h>
+#include <oldadani/oldadani.h>
 #include <iostream>
 #include <cmath>
 

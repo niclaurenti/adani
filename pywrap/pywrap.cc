@@ -3,7 +3,7 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
-#include <adani/adani.h>
+#include <oldadani/oldadani.h>
 
 namespace py = pybind11;
 

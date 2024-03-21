@@ -1,10 +1,10 @@
-#include "adani/Convolutions.h"
-#include "adani/Constants.h"
-#include "adani/ExactCoefficientFunctions.h"
-#include "adani/MasslessCoefficientFunctions.h"
-#include "adani/MatchingConditions.h"
-#include "adani/SpecialFunctions.h"
-#include "adani/SplittingFunctions.h"
+#include "oldadani/Convolutions.h"
+#include "oldadani/Constants.h"
+#include "oldadani/ExactCoefficientFunctions.h"
+#include "oldadani/MasslessCoefficientFunctions.h"
+#include "oldadani/MatchingConditions.h"
+#include "oldadani/SpecialFunctions.h"
+#include "oldadani/SplittingFunctions.h"
 
 #include <cmath>
 #include <iostream>

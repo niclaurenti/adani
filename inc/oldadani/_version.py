@@ -52,8 +52,8 @@ def get_config() -> VersioneerConfig:
     cfg.VCS = "git"
     cfg.style = "pep440"
     cfg.tag_prefix = "v"
-    cfg.parentdir_prefix = "adani-"
-    cfg.versionfile_source = "inc/adani/_version.py"
+    cfg.parentdir_prefix = "oldadani-"
+    cfg.versionfile_source = "inc/oldadani/_version.py"
     cfg.verbose = False
     return cfg
 

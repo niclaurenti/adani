@@ -1,6 +1,6 @@
-#include "adani/AsymptoticCoefficientFunctions.h"
-#include "adani/HighEnergyCoefficientFunctions.h"
-#include "adani/HighScaleCoefficientFunctions.h"
+#include "oldadani/AsymptoticCoefficientFunctions.h"
+#include "oldadani/HighEnergyCoefficientFunctions.h"
+#include "oldadani/HighScaleCoefficientFunctions.h"
 #include <cmath>
 
 //==========================================================================================//

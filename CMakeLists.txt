@@ -12,7 +12,7 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 endif()
 
 # define project name and its language
-project(adani)
+project(oldadani)
 
 # define c++ standard and issue all the warning demanded by this standard
 set(CMAKE_CXX_STANDARD 14)
@@ -34,17 +34,17 @@ set(libdir "${prefix}/lib")
 
 # export version to file
 configure_file(
-    "${PROJECT_SOURCE_DIR}/inc/adani/version.h.in"
-    "${PROJECT_SOURCE_DIR}/inc/adani/version.h"
+    "${PROJECT_SOURCE_DIR}/inc/oldadani/version.h.in"
+    "${PROJECT_SOURCE_DIR}/inc/oldadani/version.h"
 )
 
 configure_file(
-    "${PROJECT_SOURCE_DIR}/bin/adani-config.in"
-    "${PROJECT_SOURCE_DIR}/bin/adani-config"
+    "${PROJECT_SOURCE_DIR}/bin/oldadani-config.in"
+    "${PROJECT_SOURCE_DIR}/bin/oldadani-config"
 )
 configure_file(
-    "${PROJECT_SOURCE_DIR}/bin/adani.pc.in"
-    "${PROJECT_SOURCE_DIR}/bin/adani.pc"
+    "${PROJECT_SOURCE_DIR}/bin/oldadani.pc.in"
+    "${PROJECT_SOURCE_DIR}/bin/oldadani.pc"
 )
 
 include_directories(inc)
@@ -93,7 +93,7 @@ if(PYTHON_ONLY)
 
 else(PYTHON_ONLY)
     add_library(
-        adani SHARED
+        oldadani SHARED
         src/ApproximateCoefficientFunctions.cc
         src/ExactCoefficientFunctions.cc
         src/ThresholdCoefficientFunctions.cc
@@ -111,14 +111,14 @@ else(PYTHON_ONLY)
     )
 
     # define libraries to be linked
-    target_link_libraries(adani GSL::gsl GSL::gslcblas)
-    # target_link_libraries(adani gsl gslcblas)
+    target_link_libraries(oldadani GSL::gsl GSL::gslcblas)
+    # target_link_libraries(oldadani gsl gslcblas)
 
     # install
-    install(FILES ${PROJECT_SOURCE_DIR}/bin/adani-config
+    install(FILES ${PROJECT_SOURCE_DIR}/bin/oldadani-config
     DESTINATION bin PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
-    install(FILES ${PROJECT_SOURCE_DIR}/bin/adani.pc DESTINATION lib/pkgconfig)
-    install(DIRECTORY inc/adani DESTINATION include)
-    install(TARGETS adani DESTINATION lib)
+    install(FILES ${PROJECT_SOURCE_DIR}/bin/oldadani.pc DESTINATION lib/pkgconfig)
+    install(DIRECTORY inc/oldadani DESTINATION include)
+    install(TARGETS oldadani DESTINATION lib)
 
 endif (PYTHON_ONLY)

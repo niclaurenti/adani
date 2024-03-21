@@ -19,7 +19,7 @@ with open(os.path.join(this_directory, "README.md"), encoding="utf-8") as f:
     long_description = f.read()
 
 setup(
-    name="adani",
+    name="oldadani",
     version=versioneer.get_version(),
     cmdclass=versioneer.get_cmdclass(),
     description="Code computing approximate DIS N3LO coefficients",
@@ -27,7 +27,7 @@ setup(
     license="AGPLv3",
     packages=find_packages(where="inc"),
     package_dir={"": "inc"},
-    cmake_install_dir="inc/adani",
+    cmake_install_dir="inc/oldadani",
     cmake_args=['-DPYTHON_ONLY:BOOL=ON'],
     python_requires=">=3.8",
     long_description=long_description,

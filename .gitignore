@@ -3,13 +3,13 @@
 output/output_grid.exe
 build/
 _skbuild/
-adani.egg-info/
+oldadani.egg-info/
 examples/test.exe
 output/results
 output/*.dat
-inc/adani/version.h
-bin/adani-config
-bin/adani.pc
+inc/oldadani/version.h
+bin/oldadani-config
+bin/oldadani.pc
 
 docs/*.aux
 docs/*.fdb_latexmk

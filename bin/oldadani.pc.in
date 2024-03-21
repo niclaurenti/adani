@@ -4,7 +4,7 @@ includedir=@includedir@
 libdir=@libdir@
 
 Name: boh
-Description: The adani library
+Description: The oldadani library
 Version: @VERSION@
 Cflags: -I@includedir@ -std=c++17
 Libs: -L@libdir@ -ladani

@@ -21,9 +21,9 @@ cmake -DCMAKE_INSTALL_PREFIX=/your/installation/path/ ..
 make && make install
 ```
 
-The Python package is available in the PyPI <a href="https://pypi.org/project/adani/"><img alt="PyPI" src="https://img.shields.io/pypi/v/adani"/></a>. Install it with
+The Python package is available in the PyPI <a href="https://pypi.org/project/oldadani/"><img alt="PyPI" src="https://img.shields.io/pypi/v/oldadani"/></a>. Install it with
 ```bash
-pip install adani
+pip install oldadani
 ```
 For installing the Python module from source run
 ```bash
@@ -34,7 +34,7 @@ pip install .
 
 In order to compile a simple program run
 ```bash
-g++ -Wall -o test.exe test.cpp -ladani `adani-config --cppflags --ldflags --cxxflags`
+g++ -Wall -o test.exe test.cpp -ladani `oldadani-config --cppflags --ldflags --cxxflags`
 ```
 or
 ```bash
@@ -51,13 +51,13 @@ For MacOS users: add the flags ```-std=c++17 -stdlib=libc++```.
 
 In order to use the Python module add
 ```bash
-import adani
+import oldadani
 ```
 to a Python program.
 
 ## Contributing
 
-If you want to report a (possible) bug or want to ask for a new feature, please raise an issue: <a href="https://github.com/niclaurenti/adani/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/niclaurenti/adani"/></a>
+If you want to report a (possible) bug or want to ask for a new feature, please raise an issue: <a href="https://github.com/niclaurenti/oldadani/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/niclaurenti/oldadani"/></a>
 
 
 ## Contacts

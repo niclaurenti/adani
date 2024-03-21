@@ -1,7 +1,7 @@
-#include "adani/ThresholdCoefficientFunctions.h"
-#include "adani/Constants.h"
-#include "adani/ExactCoefficientFunctions.h"
-#include "adani/SpecialFunctions.h"
+#include "oldadani/ThresholdCoefficientFunctions.h"
+#include "oldadani/Constants.h"
+#include "oldadani/ExactCoefficientFunctions.h"
+#include "oldadani/SpecialFunctions.h"
 
 #include <cmath>
 
