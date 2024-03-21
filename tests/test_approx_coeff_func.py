@@ -52,7 +52,7 @@ def test_C30_oldversion():
                                 res_new = tmp.GetHigher()
                             np.testing.assert_allclose(res_old, res_new, rtol=1e-7)
 
-def test_mudep_oldversion():
+def test_mudep_oldversion_as3():
     for channel in ['g', 'q']:
         for kind in ['2', 'L']:
             exact = True if channel == 'q' else False
@@ -79,4 +79,30 @@ def test_mudep_oldversion():
                                 res_old = 0.
                             res_new = app.MuDependentTerms(x, m2Q2, m2Q2, nf)
                             np.testing.assert_allclose(res_old, res_new, rtol=1e-7)
+                del app
+
+def test_mudep_oldversion_as2():
+    for channel in ['g', 'q']:
+        for kind in ['2', 'L']:
+            app = ad.ApproximateCoefficientFunction(2, kind, channel)
+            for xi in np.geomspace(1e-2, 1e2, 10):
+                m2Q2 = 1/xi
+                xmax = 1/(1 + 4*m2Q2)
+                Lmu = -np.log(m2Q2)
+                for x in np.geomspace(1e-5, 1, 10):
+                    for nf in [3, 4]:
+                        if kind == '2':
+                            if channel == 'g':
+                                res_old = oldad.C2_21(x, m2Q2, nf) * Lmu
+                            if channel == 'q':
+                                res_old = oldad.C2_ps21(x, m2Q2, nf) * Lmu
+                        if kind == 'L':
+                            if channel == 'g':
+                                res_old = oldad.CL_g21(x, m2Q2, nf) * Lmu
+                            if channel == 'q':
+                                res_old = oldad.CL_ps21(x, m2Q2, nf) * Lmu
+                        if x > xmax:
+                            res_old = 0.
+                        res_new = app.MuDependentTerms(x, m2Q2, m2Q2, nf)
+                        np.testing.assert_allclose(res_old, res_new, rtol=1e-7)
             del app
