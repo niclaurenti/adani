@@ -33,6 +33,11 @@ jobs:
           pip install scipy
           pip install mpmath
           pip install versioneer
+          wget https://github.com/niclaurenti/adani/archive/refs/heads/oldadani.zip
+          unzip adani-oldadani.zip
+          cd adani-oldadani
+          pip install .
+          cd ..
           pip install .
       - name: Lint with flake8
         run: |
