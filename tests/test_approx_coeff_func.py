@@ -93,7 +93,7 @@ def test_mudep_oldversion_as2():
                     for nf in [3, 4]:
                         if kind == '2':
                             if channel == 'g':
-                                res_old = oldad.C2_21(x, m2Q2, nf) * Lmu
+                                res_old = oldad.C2_g21(x, m2Q2, nf) * Lmu
                             if channel == 'q':
                                 res_old = oldad.C2_ps21(x, m2Q2, nf) * Lmu
                         if kind == 'L':

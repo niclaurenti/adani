@@ -47,7 +47,7 @@ PYBIND11_MODULE(_core, m) {
             py::arg("NLL") = true, py::arg("exact_highscale") = false,
             py::arg("revised_approx_highscale") = true,
             py::arg("abserr") = 1e-3, py::arg("relerr") = 1e-3,
-            py::arg("dim") = 1000, py::arg("method_flag") = 1,
+            py::arg("dim") = 1000, py::arg("method_flag") = 0,
             py::arg("MCcalls") = 25000
         )
         .def(
@@ -81,7 +81,7 @@ PYBIND11_MODULE(_core, m) {
             py::arg("order"), py::arg("kind"), py::arg("channel"),
             py::arg("revised_approx_highscale") = true,
             py::arg("abserr") = 1e-3, py::arg("relerr") = 1e-3,
-            py::arg("dim") = 1000, py::arg("method_flag") = 1,
+            py::arg("dim") = 1000, py::arg("method_flag") = 0,
             py::arg("MCcalls") = 25000
         )
         .def(
@@ -141,7 +141,7 @@ PYBIND11_MODULE(_core, m) {
                 const double &, const int &, const int &, const int &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel"),
             py::arg("abserr") = 1e-3, py::arg("relerr") = 1e-3,
-            py::arg("dim") = 1000, py::arg("method_flag") = 1,
+            py::arg("dim") = 1000, py::arg("method_flag") = 0,
             py::arg("MCcalls") = 25000
         )
         .def(
