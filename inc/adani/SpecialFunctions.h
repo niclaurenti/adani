@@ -45,6 +45,9 @@ double S12(double x);
 //  Harmonic polylogarithms up to weight 3.
 //------------------------------------------------------------------------------------------//
 
+// TODO: Implemented in this way, the code goes through a lot of if's.
+// This is relevant since these functions are integrated.
+
 double H(double x, int i);
 double H(double x, int i, int j);
 double H(double x, int i, int j, int k);
