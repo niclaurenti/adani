@@ -1,7 +1,6 @@
 import adani as ad
 import oldadani as old
 import numpy as np
-from math import nan
 
 def test_lo_oldadani():
     for kind in ['2', 'L']:
@@ -29,7 +28,6 @@ def test_nnlo_oldadani():
                         if (kind == 'L' and channel == 'q'):
                             res2 = old.CL_ps2_highscale(x, m2Q2, m2mu2)
                         np.testing.assert_allclose(res1, res2, rtol=1e-7)
-
 
 def test_n3lo_oldadani():
     for kind in ['2', 'L']:
