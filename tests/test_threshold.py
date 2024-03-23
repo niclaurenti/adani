@@ -194,7 +194,7 @@ def test_nnlo():
 
                         res1 = thr.BetaIndependentTerms(x, m2Q2, m2mu2)
                         if kind == '2':
-                            res2 = old.C2_g3_threshold_const(x, m2Q2, m2mu2, nf)
+                            res2 = old.C2_g3_threshold_const(x, m2Q2, m2mu2)
                         else:
-                            res2 = old.CL_g3_threshold_const(x, m2Q2, m2mu2, nf)
+                            res2 = old.CL_g3_threshold_const(x, m2Q2, m2mu2)
                         np.testing.assert_allclose(res1, res2, rtol=1e-7)
