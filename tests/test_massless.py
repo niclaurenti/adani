@@ -1,4 +1,5 @@
 import adani as ad
+import oldadani as old
 import numpy as np
 from scipy.special import spence
 from mpmath import polylog, nsum, sin
@@ -80,51 +81,51 @@ def H_3(x, l):
     if (i == 1 and j == 1 and k == 1) :
         Lm = np.log(1. - x)
         return -1. / 6. * Lm * Lm * Lm
-    
+
     if (i == 1 and j == 1 and k == 0) :
         xm = 1. - x
         return zeta2 * np.log(xm) - Li3(xm) + zeta3
-    
+
     if (i == 1 and j == 1 and k == -1):
         return 0.5 * H_1(x, 1) * H_2(x, (1, -1)) - 0.5 * H_3(x, (1, -1, 1))
     if (i == 1 and j == 0 and k == 1):
         return -2. * S12(x) - np.log(1. - x) * Li2(x)
-    if (i == 1 and j == 0 and k == 0): 
+    if (i == 1 and j == 0 and k == 0):
         L = np.log(x)
         return -1. / 2 * L * L * np.log(1. - x) - L * Li2(x) + Li3(x)
-    
+
     if (i == 1 and j == 0 and k == -1):
         return H_1(x, 1) * H_2(x, (0, -1)) - H_3(x, (0, 1, -1)) - H_3(x, (0, -1, 1))
     if (i == 1 and j == -1 and k == 1):
         return H_1(x, 1) * H_2(x, (-1, 1)) - 2. * H_3(x, (-1, 1, 1))
     if (i == 1 and j == -1 and k == 0):
         return H_1(x, 0) * H_2(x, (1, -1)) - H_3(x, (0, 1, -1)) - H_3(x, (1, 0, -1))
-    if (i == 1 and j == -1 and k == -1): 
+    if (i == 1 and j == -1 and k == -1):
         xp = 1. + x
         Lp = np.log(xp)
         return (-0.5 * np.log((1. - x) / 2.) * Lp * Lp - Li3_1_2 - Lp * Li2(xp / 2.)
                + Li3(xp / 2.))
-    
+
 
     if (i == 0 and j == 1 and k == 1):
         return S12(x)
     if (i == 0 and j == 1 and k == 0):
         return np.log(x) * Li2(x) - 2. * Li3(x)
-    if (i == 0 and j == 1 and k == -1): 
+    if (i == 0 and j == 1 and k == -1):
         xp = 1. + x
         Lp = np.log(xp)
         return (Li3(2. * x / xp) - Li3(x / xp) - Li3(xp / 2.) - Li3(x)
                + Lp * Li2(0.5) + Lp * Li2(x) + 0.5 * ln2 * Lp * Lp + Li3_1_2)
-    
+
     if (i == 0 and j == 0 and k == 1):
         return Li3(x)
-    if (i == 0 and j == 0 and k == 0): 
+    if (i == 0 and j == 0 and k == 0):
         L = np.log(x)
         return 1. / 6. * L * L * L
-    
+
     if (i == 0 and j == 0 and k == -1):
         return -Li3(-x)
-    if (i == 0 and j == -1 and k == 1): 
+    if (i == 0 and j == -1 and k == 1):
         xm = 1. - x
         Lm = np.log(xm)
         Lm2 = Lm * Lm
@@ -132,38 +133,38 @@ def H_3(x, l):
         return (-S12(x) + Li3(-2. * x / xm) - Li3(xm / 2) - Li3(-x) + Li3_1_2
                + Li3(x) + Lm * Li2(-x) + Lm * Li2_1_2 - Lm * Li2(x)
                + 0.5 * ln2 * Lm2 - 1. / 6. * Lm3)
-    
+
     if (i == 0 and j == -1 and k == 0):
         return -np.log(x) * Li2(-x) + 2. * Li3(-x)
     if (i == 0 and j == -1 and k == -1):
         return S12(-x)
 
-    if (i == -1 and j == 1 and k == 1): 
+    if (i == -1 and j == 1 and k == 1):
         xm = 1. - x
         Lm = np.log(xm)
         return (0.5 * np.log((1. + x) / 2.) * Lm * Lm + Li3(0.5) + Lm * Li2(xm / 2.)
                - Li3(xm / 2))
-    
+
     if (i == -1 and j == 1 and k == 0):
         return H_1(x, 0) * H_2(x, (-1, 1)) - H_3(x, (0, -1, 1)) - H_3(x, (-1, 0, 1))
     if (i == -1 and j == 1 and k == -1):
         return H_1(x, -1) * H_2(x, (1, -1)) - 2. * H_3(x, (1, -1, -1))
     if (i == -1 and j == 0 and k == 1):
         return H_1(x, -1) * H_2(x, (0, 1)) - H_3(x, (0, -1, 1)) - H_3(x, (0, 1, -1))
-    if (i == -1 and j == 0 and k == 0): 
+    if (i == -1 and j == 0 and k == 0):
         L = np.log(x)
         return 0.5 * L * L * np.log(1. + x) + L * Li2(-x) - Li3(-x)
-    
+
     if (i == -1 and j == 0 and k == -1):
         return H_2(x, (0, -1)) * H_1(x, -1) - 2. * H_3(x, (0, -1, -1))
     if (i == -1 and j == -1 and k == 1):
         return 0.5 * H_1(x, -1) * H_2(x, (-1, 1)) - 0.5 * H_3(x, (-1, 1, -1))
     if (i == -1 and j == -1 and k == 0):
         return H_1(x, 0) * H_2(x, (-1, -1)) - H_3(x, (0, -1, -1)) - H_3(x, (-1, 0, -1))
-    if (i == -1 and j == -1 and k == -1): 
+    if (i == -1 and j == -1 and k == -1):
         Lp = np.log(1. + x)
         return 1. / 6. * Lp * Lp * Lp
-    
+
 
 def C2_g1(x, nf):
     return (4. * nf * TR
@@ -288,8 +289,8 @@ def C2_ps2(x, nf):
               + 16. / 3 * H11 / x - 4 * H11 * x - 16. / 3 * H11 * x2
               - 16 * H01 * x2 + 8 * H010 + 8 * H010 * x + 8 * H011
               + 8 * H011 * x + 16 * H001 + 16 * H001 * x))
-           
-           
+
+
 def CL_g2(x, nf):
     x2 = x * x
     x3 = x2 * x
@@ -350,4 +351,22 @@ def test_nnlo():
                         res2 = CL_g2(x, nf)
                     if (kind == 'L' and channel == 'q'):
                         res2 = CL_ps2(x, nf)
+                    np.testing.assert_allclose(res1, res2, rtol=1e-7)
+
+
+def test_n3lo():
+    for kind in ['2', 'L']:
+        for channel in ['g', 'q']:
+            ml = ad.MasslessCoefficientFunction(3, kind, channel)
+            for x in np.geomspace(1e-5, 1., 100, endpoint=False):
+                for nf in range(6 + 1):
+                    res1 = ml.MuIndependentTerms(x, nf)
+                    if (kind == '2' and channel == 'g'):
+                        res2 = old.C2_g3_massless(x, nf)
+                    if (kind == '2' and channel == 'q'):
+                        res2 = old.C2_ps3_massless(x, nf)
+                    if (kind == 'L' and channel == 'g'):
+                        res2 = old.CL_g3_massless(x, nf)
+                    if (kind == 'L' and channel == 'q'):
+                        res2 = old.CL_ps3_massless(x, nf)
                     np.testing.assert_allclose(res1, res2, rtol=1e-7)
