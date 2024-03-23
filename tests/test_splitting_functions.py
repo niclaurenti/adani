@@ -33,9 +33,9 @@ def test_Pgg0():
 
     for x in np.geomspace(1e-5, 1., 10, endpoint=False):
         for nf in range(1, 6 + 1):
-            np.testing.assert_allclose(old.Pgg0reg(x, nf), sf.Regular(x, nf), rtol = 1e-7)
-            np.testing.assert_allclose(old.Pgg0sing(x, nf), sf.Singular(x, nf), rtol = 1e-7)
-            np.testing.assert_allclose(old.Pgg0sing_int(x, nf), sf.SingularIntegrated(x, nf), rtol = 1e-7)
+            np.testing.assert_allclose(old.Pgg0reg(x), sf.Regular(x, nf), rtol = 1e-7)
+            np.testing.assert_allclose(old.Pgg0sing(x), sf.Singular(x, nf), rtol = 1e-7)
+            np.testing.assert_allclose(old.Pgg0sing_integrated(x), sf.SingularIntegrated(x, nf), rtol = 1e-7)
             np.testing.assert_allclose(old.Pgg0loc(nf), sf.Local(nf), rtol = 1e-7)
 
 def test_Pqq0():
@@ -44,10 +44,10 @@ def test_Pqq0():
 
     for x in np.geomspace(1e-5, 1., 10, endpoint=False):
         for nf in range(1, 6 + 1):
-            np.testing.assert_allclose(old.Pqq0reg(x, nf), sf.Regular(x, nf), rtol = 1e-7)
-            np.testing.assert_allclose(old.Pqq0sing(x, nf), sf.Singular(x, nf), rtol = 1e-7)
-            np.testing.assert_allclose(old.Pqq0sing_int(x, nf), sf.SingularIntegrated(x, nf), rtol = 1e-7)
-            np.testing.assert_allclose(old.Pqq0loc(nf), sf.Local(nf), rtol = 1e-7)
+            np.testing.assert_allclose(old.Pqq0reg(x), sf.Regular(x, nf), rtol = 1e-7)
+            np.testing.assert_allclose(old.Pqq0sing(x), sf.Singular(x, nf), rtol = 1e-7)
+            np.testing.assert_allclose(old.Pqq0sing_integrated(x), sf.SingularIntegrated(x, nf), rtol = 1e-7)
+            np.testing.assert_allclose(old.Pqq0loc(), sf.Local(nf), rtol = 1e-7)
 
 
 def test_Pgq1():
@@ -69,7 +69,7 @@ def test_Pgg1():
         for nf in range(1, 6 + 1):
             np.testing.assert_allclose(old.Pgg1reg(x, nf), sf.Regular(x, nf), rtol = 1e-7)
             np.testing.assert_allclose(old.Pgg1sing(x, nf), sf.Singular(x, nf), rtol = 1e-7)
-            np.testing.assert_allclose(old.Pgg1sing_int(x, nf), sf.SingularIntegrated(x, nf), rtol = 1e-7)
+            np.testing.assert_allclose(old.Pgg1sing_integrated(x, nf), sf.SingularIntegrated(x, nf), rtol = 1e-7)
             np.testing.assert_allclose(old.Pgg1loc(nf), sf.Local(nf), rtol = 1e-7)
 
 
