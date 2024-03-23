@@ -341,6 +341,14 @@ PYBIND11_MODULE(_core, m) {
         "CL_g2_threshold", &CL_g2_threshold, py::arg("x"), py::arg("m2Q2"),
         py::arg("m2mu2")
     );
+    m.def(
+        "C2_g2_threshold_const", &C2_g2_threshold_const, py::arg("x"), py::arg("m2Q2"),
+        py::arg("m2mu2")
+    );
+    m.def(
+        "CL_g2_threshold_const", &CL_g2_threshold_const, py::arg("x"), py::arg("m2Q2"),
+        py::arg("m2mu2")
+    );
 
     m.def(
         "C2_g3_threshold", &C2_g3_threshold, py::arg("x"), py::arg("m2Q2"),
