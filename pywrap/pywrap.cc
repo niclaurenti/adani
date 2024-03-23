@@ -328,8 +328,24 @@ PYBIND11_MODULE(_core, m) {
 
     // SplittingFunctions
 
+    m.def("Pgq0", &Pgq0, py::arg("x"));
+    m.def("Pqg0", &Pqg0, py::arg("x"), py::arg("nf"));
+
+    m.def("Pgg0reg", &Pgg0reg, py::arg("x"));
+    m.def("Pgg0sing", &Pgg0sing, py::arg("x"));
+    m.def("Pgg0sing_integrated", &Pgg0sing_integrated, py::arg("x"));
+    m.def("Pgg0loc", &Pgg0loc, py::arg("nf"));
+
+    m.def("Pqq0reg", &Pqq0reg, py::arg("x"));
+    m.def("Pqq0sing", &Pqq0sing, py::arg("x"));
+    m.def("Pqq0sing_integrated", &Pqq0sing_integrated, py::arg("x"));
+    m.def("Pqq0loc", &Pqq0loc);
+
+    m.def("Pgq1", &Pgq1, py::arg("x"), py::arg("nf"));
+
     m.def("Pgg1reg", &Pgg1reg, py::arg("x"), py::arg("nf"));
     m.def("Pgg1sing", &Pgg1sing, py::arg("x"), py::arg("nf"));
+    m.def("Pgg1sing_integrated", &Pgg1sing_integrated, py::arg("x"), py::arg("nf"));
     m.def("Pgg1loc", &Pgg1loc, py::arg("nf"));
 
     // ThresholdCoefficientFunctions
