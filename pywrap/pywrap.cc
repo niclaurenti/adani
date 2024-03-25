@@ -392,7 +392,36 @@ PYBIND11_MODULE(_core, m) {
     // HighEnergyCoefficientFunctions
 
     m.def(
+        "C2_g2_power_terms", &C2_g2_power_terms, py::arg("x"), py::arg("m2Q2"),
+        py::arg("m2mu2")
+    );
+    m.def(
+        "CL_g2_power_terms", &CL_g2_power_terms, py::arg("x"), py::arg("m2Q2"),
+        py::arg("m2mu2")
+    );
+    m.def(
+        "C2_ps2_power_terms", &C2_ps2_power_terms, py::arg("x"), py::arg("m2Q2"),
+        py::arg("m2mu2")
+    );
+    m.def(
+        "CL_ps2_power_terms", &CL_ps2_power_terms, py::arg("x"), py::arg("m2Q2"),
+        py::arg("m2mu2")
+    );
+
+    m.def(
         "C2_g3_power_terms", &C2_g3_power_terms, py::arg("x"), py::arg("m2Q2"),
+        py::arg("m2mu2"), py::arg("nf"), py::arg("v")
+    );
+    m.def(
+        "CL_g3_power_terms", &CL_g3_power_terms, py::arg("x"), py::arg("m2Q2"),
+        py::arg("m2mu2"), py::arg("nf"), py::arg("v")
+    );
+    m.def(
+        "C2_ps3_power_terms", &C2_ps3_power_terms, py::arg("x"), py::arg("m2Q2"),
+        py::arg("m2mu2"), py::arg("nf"), py::arg("v")
+    );
+    m.def(
+        "CL_ps3_power_terms", &CL_ps3_power_terms, py::arg("x"), py::arg("m2Q2"),
         py::arg("m2mu2"), py::arg("nf"), py::arg("v")
     );
 
