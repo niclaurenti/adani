@@ -395,10 +395,6 @@ PYBIND11_MODULE(_core, m) {
         "C2_g3_power_terms", &C2_g3_power_terms, py::arg("x"), py::arg("m2Q2"),
         py::arg("m2mu2"), py::arg("nf"), py::arg("v")
     );
-    m.def(
-        "CL_g2_highenergy", &CL_g2_highenergy, py::arg("x"), py::arg("m2Q2"),
-        py::arg("m2mu2")
-    );
 
     m.def(
         "C2_g3_highenergy", &C2_g3_highenergy, py::arg("x"), py::arg("m2Q2"),
@@ -406,6 +402,14 @@ PYBIND11_MODULE(_core, m) {
     );
     m.def(
         "CL_g3_highenergy", &CL_g3_highenergy, py::arg("x"), py::arg("m2Q2"),
+        py::arg("m2mu2"), py::arg("nf"), py::arg("v")
+    );
+    m.def(
+        "C2_ps3_highenergy", &C2_ps3_highenergy, py::arg("x"), py::arg("m2Q2"),
+        py::arg("m2mu2"), py::arg("nf"), py::arg("v")
+    );
+    m.def(
+        "CL_ps3_highenergy", &CL_ps3_highenergy, py::arg("x"), py::arg("m2Q2"),
         py::arg("m2mu2"), py::arg("nf"), py::arg("v")
     );
     m.def(
