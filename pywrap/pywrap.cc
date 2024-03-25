@@ -284,6 +284,8 @@ PYBIND11_MODULE(_core, m) {
     m.def("CL_g2", &CL_g2, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"));
     m.def("CL_ps2", &CL_ps2, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"));
 
+    m.def("C2_g20", &CL_g20, py::arg("x"), py::arg("m2Q2"));
+    m.def("C2_ps20", &CL_ps20, py::arg("x"), py::arg("m2Q2"));
     m.def("CL_g20", &CL_g20, py::arg("x"), py::arg("m2Q2"));
     m.def("CL_ps20", &CL_ps20, py::arg("x"), py::arg("m2Q2"));
 
@@ -312,6 +314,8 @@ PYBIND11_MODULE(_core, m) {
     );
 
     // MasslessCoefficientFunctions
+    m.def("C2_g1_massless", &C2_g1_massless, py::arg("x"), py::arg("nf"));
+    m.def("CL_g1_massless", &CL_g1_massless, py::arg("x"), py::arg("nf"));
 
     m.def("C2_g2_massless", &C2_g2_massless, py::arg("x"), py::arg("nf"));
     m.def("CL_g2_massless", &CL_g2_massless, py::arg("x"), py::arg("nf"));
