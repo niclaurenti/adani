@@ -144,14 +144,14 @@ double HighScaleSplitLogs::C2_g3_highscale_LL(double x, int nf) const {
     double x2 = x * x;
 
     // weight 1
-    const double H0 = H(x, 0);
-    const double H1 = H(x, 1);
+    const double H0 = H_0(x);
+    const double H1 = H_1(x);
 
     // weight 2
-    const double H00 = H(x, 0, 0);
-    const double H10 = H(x, 1, 0);
-    const double H01 = H(x, 0, 1);
-    const double H11 = H(x, 1, 1);
+    const double H00 = H_00(x);
+    const double H10 = H_10(x);
+    const double H01 = H_01(x);
+    const double H11 = H_11(x);
 
     return -0.8888888888888888 + 1.7777777777777777 * x
            - 1.7777777777777777 * x2
@@ -290,30 +290,30 @@ double HighScaleSplitLogs::C2_g3_highscale_NLL(double x, int nf) const {
     double x2 = x * x;
 
     // weight 1
-    const double Hm1 = H(x, -1);
-    const double H0 = H(x, 0);
-    const double H1 = H(x, 1);
+    const double Hm1 = H_m1(x);
+    const double H0 = H_0(x);
+    const double H1 = H_1(x);
 
     // weight 2
-    const double Hm10 = H(x, -1, 0);
-    const double H00 = H(x, 0, 0);
-    const double H10 = H(x, 1, 0);
-    const double H01 = H(x, 0, 1);
-    const double H11 = H(x, 1, 1);
+    const double Hm10 = H_m10(x);
+    const double H00 = H_00(x);
+    const double H10 = H_10(x);
+    const double H01 = H_01(x);
+    const double H11 = H_11(x);
 
     // weight 3
-    const double Hm1m10 = H(x, -1, -1, 0);
-    const double H0m10 = H(x, 0, -1, 0);
-    const double Hm100 = H(x, -1, 0, 0);
-    const double H000 = H(x, 0, 0, 0);
-    const double H100 = H(x, 1, 0, 0);
-    const double H010 = H(x, 0, 1, 0);
-    const double H110 = H(x, 1, 1, 0);
-    const double Hm101 = H(x, -1, 0, 1);
-    const double H001 = H(x, 0, 0, 1);
-    const double H101 = H(x, 1, 0, 1);
-    const double H011 = H(x, 0, 1, 1);
-    const double H111 = H(x, 1, 1, 1);
+    const double Hm1m10 = H_m1m10(x);
+    const double H0m10 = H_0m10(x);
+    const double Hm100 = H_m100(x);
+    const double H000 = H_000(x);
+    const double H100 = H_100(x);
+    const double H010 = H_010(x);
+    const double H110 = H_110(x);
+    const double Hm101 = H_m101(x);
+    const double H001 = H_001(x);
+    const double H101 = H_101(x);
+    const double H011 = H_011(x);
+    const double H111 = H_111(x);
 
     return -0.8888888888888888 - 0.8888888888888888 * H0
            - 0.8888888888888888 * H1 + 7.111111111111111 * x
@@ -2457,12 +2457,12 @@ double HighScaleSplitLogs::C2_ps3_highscale_LL(double x, int nf) const {
     double x2 = x * x;
 
     // weight 1
-    const double H0 = H(x, 0);
-    const double H1 = H(x, 1);
+    const double H0 = H_0(x);
+    const double H1 = H_1(x);
 
     // weight 2
-    const double H00 = H(x, 0, 0);
-    const double H01 = H(x, 0, 1);
+    const double H00 = H_00(x);
+    const double H01 = H_01(x);
 
     return -1.3333333333333333
                * (5.333333333333333 + 10.666666666666666 * H0
@@ -2526,22 +2526,22 @@ double HighScaleSplitLogs::C2_ps3_highscale_NLL(double x, int nf) const {
     double x2 = x * x;
 
     // weight 1
-    const double H0 = H(x, 0);
-    const double H1 = H(x, 1);
+    const double H0 = H_0(x);
+    const double H1 = H_1(x);
 
     // weight 2
-    const double Hm10 = H(x, -1, 0);
-    const double H00 = H(x, 0, 0);
-    const double H10 = H(x, 1, 0);
-    const double H01 = H(x, 0, 1);
-    const double H11 = H(x, 1, 1);
+    const double Hm10 = H_m10(x);
+    const double H00 = H_00(x);
+    const double H10 = H_10(x);
+    const double H01 = H_01(x);
+    const double H11 = H_11(x);
 
     // weight 3
-    const double H0m10 = H(x, 0, -1, 0);
-    const double H000 = H(x, 0, 0, 0);
-    const double H010 = H(x, 0, 1, 0);
-    const double H001 = H(x, 0, 0, 1);
-    const double H011 = H(x, 0, 1, 1);
+    const double H0m10 = H_0m10(x);
+    const double H000 = H_000(x);
+    const double H010 = H_010(x);
+    const double H001 = H_001(x);
+    const double H011 = H_011(x);
 
     return 1.3333333333333333
                * (-31.11111111111111 - 14.222222222222221 * H0
@@ -3494,11 +3494,11 @@ double HighScaleSplitLogs::CL_g3_highscale_NLL(double x, int /*v*/) const {
     double x2 = x * x;
 
     // weight 1
-    const double H0 = H(x, 0);
-    const double H1 = H(x, 1);
+    const double H0 = H_0(x);
+    const double H1 = H_1(x);
 
     // weight 2
-    const double H01 = H(x, 0, 1);
+    const double H01 = H_01(x);
 
     return -83.55555555555556 - 56.88888888888889 * H0 + 35.55555555555556 * H1
            - 11.25925925925926 / x + 275.91579969079277 * x
@@ -3728,7 +3728,7 @@ double HighScaleSplitLogs::CL_ps3_highscale_NLL(double x, int /*nf*/) const {
 
     double x2 = x * x;
 
-    const double H0 = H(x, 0);
+    const double H0 = H_0(x);
 
     return -56.888888888888886 - 28.444444444444443 * H0
            - 4.7407407407407405 / x + 71.11111111111111 * x
@@ -3747,7 +3747,7 @@ double HighScaleSplitLogs::CL_ps3_highscale_N2LL(double x, int /*nf*/) const {
 
     double x2 = x * x;
 
-    const double H0 = H(x, 0);
+    const double H0 = H_0(x);
 
     return 9.481481481481495 + 28.444444444444443 * H0 * H0
            - 12.641975308641975 / x + 227.55555555555551 * x

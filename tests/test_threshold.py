@@ -2,7 +2,7 @@ import adani as ad
 import oldadani as old
 import numpy as np
 
-def test_lo():
+def test_as1():
     for kind in ['2']:
         ml = ad.ThresholdCoefficientFunction(1, kind, 'g')
 
@@ -13,7 +13,7 @@ def test_lo():
                 res2 = old.C2_g1_threshold(x, m2Q2)
                 np.testing.assert_allclose(res1, res2, rtol=1e-7)
 
-def test_nlo():
+def test_as2():
     for kind in ['2', 'L']:
         thr = ad.ThresholdCoefficientFunction(2, kind, 'g')
         for m2Q2 in np.geomspace(1e-2, 1e4, 10):
@@ -34,7 +34,7 @@ def test_nlo():
                         res2 = old.CL_g2_threshold_const(x, m2Q2, m2mu2)
                     np.testing.assert_allclose(res1, res2, rtol=1e-7)
 
-def test_nnlo():
+def test_as3():
     for kind in ['2']:
         thr = ad.ThresholdCoefficientFunction(3, kind, 'g')
         for m2Q2 in np.geomspace(1e-2, 1e4, 10):

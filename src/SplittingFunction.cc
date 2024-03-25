@@ -480,14 +480,14 @@ double SplittingFunction::Pqq0sing_integrated(double x, int /*nf*/) const {
 
 double SplittingFunction::Pgq1(double x, int nf) const {
 
-    double H0 = H(x, 0);
-    double H1 = H(x, 1);
+    double H0 = H_0(x);
+    double H1 = H_1(x);
 
-    double H00 = H(x, 0, 0);
-    double H10 = H(x, 1, 0);
-    double Hm10 = H(x, -1, 0);
-    double H01 = H(x, 0, 1);
-    double H11 = H(x, 1, 1);
+    double H00 = H_00(x);
+    double H10 = H_10(x);
+    double Hm10 = H_m10(x);
+    double H01 = H_01(x);
+    double H11 = H_11(x);
 
     double tmp_CACF =
         zeta2 * 16. + 76. / 9 + 4. / x + 148. / 9 * x + 176. / 9 * x * x
@@ -517,12 +517,12 @@ double SplittingFunction::Pgg1reg(double x, int nf) const {
 
     double x2 = x * x;
 
-    double H0 = H(x, 0);
+    double H0 = H_0(x);
 
-    double H00 = H(x, 0, 0);
-    double H10 = H(x, 1, 0);
-    double Hm10 = H(x, -1, 0);
-    double H01 = H(x, 0, 1);
+    double H00 = H_00(x);
+    double H10 = H_10(x);
+    double Hm10 = H_m10(x);
+    double H01 = H_01(x);
 
     double gx = (67. / 18 - zeta2 + H00 + 2. * H10 + 2 * H01);
     double g1 = 67. / 18 - zeta2;

@@ -2,7 +2,7 @@ import adani as ad
 import oldadani as old
 import numpy as np
 
-def test_lo_oldadani():
+def test_as1_oldadani():
     for kind in ['2', 'L']:
         hs = ad.HighScaleCoefficientFunction(1, kind, 'g')
         for x in np.geomspace(1e-5, 1., 100, endpoint=False):
@@ -11,7 +11,7 @@ def test_lo_oldadani():
                 res2 = old.C2_g1_highscale(x, m2Q2) if kind == '2' else old.CL_g1_highscale(x)
                 np.testing.assert_allclose(res1, res2, rtol=1e-7)
 
-def test_nnlo_oldadani():
+def test_as2_oldadani():
     for kind in ['2', 'L']:
         for channel in ['g', 'q']:
             hs = ad.HighScaleCoefficientFunction(2, kind, channel)
@@ -29,7 +29,7 @@ def test_nnlo_oldadani():
                             res2 = old.CL_ps2_highscale(x, m2Q2, m2mu2)
                         np.testing.assert_allclose(res1, res2, rtol=1e-7)
 
-def test_n3lo_oldadani():
+def test_as3_oldadani():
     for kind in ['2', 'L']:
         for channel in ['g', 'q']:
             exact = True if channel == 'q' else False

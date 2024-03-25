@@ -220,13 +220,13 @@ double HighScaleCoefficientFunction::D2_ps2_highscale(
     double L_Q = log(1. / m2Q2) + L_M;
     double L_Q2 = L_Q * L_Q;
 
-    double H0 = H0(z);
-    double H1 = H1(z);
-    double Hm1 = H(z, -1);
-    double H01 = H(z, 0, 1);
-    double H0m1 = H(z, 0, -1);
-    double H001 = H(z, 0, 0, 1);
-    double H011 = H(z, 0, 1, 1);
+    double H0 = H_0(z);
+    double H1 = H_1(z);
+    double Hm1 = H_m1(z);
+    double H01 = H_01(z);
+    double H0m1 = H_0m1(z);
+    double H001 = H_001(z);
+    double H011 = H_011(z);
 
     return CF * TR
            * ((32. / 3 * H0m1 - 32. / 3 * Hm1 * H0) * (z + 1) * (z + 1)
@@ -297,23 +297,23 @@ double HighScaleCoefficientFunction::D2_g2_highscale(
 
     double x2 = x * x;
 
-    double H0 = H(x, 0);
-    double H1 = H(x, 1);
-    double Hm1 = H(x, -1);
-    double H00 = H(x, 0, 0);
-    double H01 = H(x, 0, 1);
-    double H11 = H(x, 1, 1);
-    double H10 = H(x, 1, 0);
-    double H011 = H(x, 0, 1, 1);
-    double H111 = H(x, 1, 1, 1);
-    double H100 = H(x, 1, 0, 0);
-    double H000 = H(x, 0, 0, 0);
-    double H010 = H(x, 0, 1, 0);
-    double H101 = H(x, 1, 0, 1);
-    double Hm1m10 = H(x, -1, -1, 0);
-    double Hm10 = H(x, -1, 0);
-    double Hm100 = H(x, -1, 0, 0);
-    double H110 = H(x, 1, 1, 0);
+    double H0 = H_0(x);
+    double H1 = H_1(x);
+    double Hm1 = H_m1(x);
+    double H00 = H_00(x);
+    double H01 = H_01(x);
+    double H11 = H_11(x);
+    double H10 = H_10(x);
+    double H011 = H_011(x);
+    double H111 = H_111(x);
+    double H100 = H_100(x);
+    double H000 = H_000(x);
+    double H010 = H_010(x);
+    double H101 = H_101(x);
+    double Hm1m10 = H_m1m10(x);
+    double Hm10 = H_m10(x);
+    double Hm100 = H_m100(x);
+    double H110 = H_110(x);
 
     double LQm = log(1. / m2Q2);
     double LQm2 = LQm * LQm;
@@ -416,11 +416,11 @@ double HighScaleCoefficientFunction::DL_g2_highscale(
     double L_M = log(m2mu2);
     double L_Q = log(1. / m2Q2) + L_M;
 
-    double H0 = H0(z);
-    double H1 = H1(z);
-    double Hm1 = H(z, -1);
-    double H01 = H(z, 0, 1);
-    double H0m1 = H(z, 0, -1);
+    double H0 = H_0(z);
+    double H1 = H_1(z);
+    double Hm1 = H_m1(z);
+    double H01 = H_01(z);
+    double H0m1 = H_0m1(z);
 
     return TR * TR * (-64. / 3 * (z - 1.) * z * L_M)
            + CA * TR
@@ -461,9 +461,9 @@ double HighScaleCoefficientFunction::DL_ps2_highscale(
     double L_M = log(m2mu2);
     double L_Q = log(1. / m2Q2) + L_M;
 
-    double H0 = H0(z);
-    double H1 = H1(z);
-    double H01 = H(z, 0, 1);
+    double H0 = H_0(z);
+    double H1 = H_1(z);
+    double H01 = H_01(z);
 
     return CF * TR
            * (32. / 9. / z * (z - 1.) * (10. * z2 - 2. * z + 1.)

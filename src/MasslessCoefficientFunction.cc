@@ -150,28 +150,28 @@ double MasslessCoefficientFunction::C2_g2_massless(double x, int nf) const {
     double x2 = x * x;
     double x3 = x2 * x;
 
-    double Hm1 = H(x, -1);
-    double H0 = H(x, 0);
-    double H1 = H(x, 1);
+    double Hm1 = H_m1(x);
+    double H0 = H_0(x);
+    double H1 = H_1(x);
 
-    double H00 = H(x, 0, 0);
-    double H10 = H(x, 1, 0);
-    double Hm10 = H(x, -1, 0);
-    double H01 = H(x, 0, 1);
-    double H11 = H(x, 1, 1);
+    double H00 = H_00(x);
+    double H10 = H_10(x);
+    double Hm10 = H_m10(x);
+    double H01 = H_01(x);
+    double H11 = H_11(x);
 
-    double Hm1m10 = H(x, -1, -1, 0);
-    double H0m10 = H(x, 0, -1, 0);
-    double Hm100 = H(x, -1, 0, 0);
-    double H000 = H(x, 0, 0, 0);
-    double H100 = H(x, 1, 0, 0);
-    double H010 = H(x, 0, 1, 0);
-    double H110 = H(x, 1, 1, 0);
-    double Hm101 = H(x, -1, 0, 1);
-    double H001 = H(x, 0, 0, 1);
-    double H101 = H(x, 1, 0, 1);
-    double H011 = H(x, 0, 1, 1);
-    double H111 = H(x, 1, 1, 1);
+    double Hm1m10 = H_m1m10(x);
+    double H0m10 = H_0m10(x);
+    double Hm100 = H_m100(x);
+    double H000 = H_000(x);
+    double H100 = H_100(x);
+    double H010 = H_010(x);
+    double H110 = H_110(x);
+    double Hm101 = H_m101(x);
+    double H001 = H_001(x);
+    double H101 = H_101(x);
+    double H011 = H_011(x);
+    double H111 = H_111(x);
 
     return nf * CF
                * (-647. / 15 - 104. / 3 * zeta2 * x + 72 * zeta2 * x2
@@ -234,19 +234,19 @@ double MasslessCoefficientFunction::C2_ps2_massless(double x, int nf) const {
 
     double x2 = x * x;
 
-    double H0 = H(x, 0);
-    double H1 = H(x, 1);
+    double H0 = H_0(x);
+    double H1 = H_1(x);
 
-    double H00 = H(x, 0, 0);
-    double H10 = H(x, 1, 0);
-    double Hm10 = H(x, -1, 0);
-    double H01 = H(x, 0, 1);
-    double H11 = H(x, 1, 1);
+    double H00 = H_00(x);
+    double H10 = H_10(x);
+    double Hm10 = H_m10(x);
+    double H01 = H_01(x);
+    double H11 = H_11(x);
 
-    double H000 = H(x, 0, 0, 0);
-    double H010 = H(x, 0, 1, 0);
-    double H001 = H(x, 0, 0, 1);
-    double H011 = H(x, 0, 1, 1);
+    double H000 = H_000(x);
+    double H010 = H_010(x);
+    double H001 = H_001(x);
+    double H011 = H_011(x);
 
     return nf * CF
            * (+158. / 9 - 16. / 3 * zeta2 / x - 16 * zeta2 * x + 16 * zeta2 * x2
@@ -275,14 +275,14 @@ double MasslessCoefficientFunction::CL_g2_massless(double x, int nf) const {
     double x2 = x * x;
     double x3 = x2 * x;
 
-    double H0 = H(x, 0);
-    double H1 = H(x, 1);
+    double H0 = H_0(x);
+    double H1 = H_1(x);
 
-    double H00 = H(x, 0, 0);
-    double H10 = H(x, 1, 0);
-    double Hm10 = H(x, -1, 0);
-    double H01 = H(x, 0, 1);
-    double H11 = H(x, 1, 1);
+    double H00 = H_00(x);
+    double H10 = H_10(x);
+    double Hm10 = H_m10(x);
+    double H01 = H_01(x);
+    double H11 = H_11(x);
 
     return nf * CF
                * (-128. / 15 + 16. / 3 * zeta2 * x + 64. / 5 * zeta2 * x3
@@ -313,11 +313,11 @@ double MasslessCoefficientFunction::CL_ps2_massless(double x, int nf) const {
 
     double x2 = x * x;
 
-    double H0 = H(x, 0);
-    double H1 = H(x, 1);
+    double H0 = H_0(x);
+    double H1 = H_1(x);
 
-    double H00 = H(x, 0, 0);
-    double H01 = H(x, 0, 1);
+    double H00 = H_00(x);
+    double H01 = H_01(x);
 
     return nf * CF
            * (+16. / 3 - 16 * zeta2 * x - 16. / 9 / x - 64. / 3 * x

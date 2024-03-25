@@ -237,7 +237,7 @@ double HighEnergyCoefficientFunction::C2_g2_highenergy(
 
     double L = log((1. + z) / (1. - z));
 
-    double Hmp = H11(z) + H1m1(z) - Hm11(z) - Hm1m1(z);
+    double Hmp = H_11(z) + H_1m1(z) - H_m11(z) - H_m1m1(z);
 
     double I = 4. * z * Hmp;
     double J = 4. * z * L;
@@ -277,7 +277,7 @@ double HighEnergyCoefficientFunction::CL_g2_highenergy(
 
     double L = log((1. + z) / (1. - z));
 
-    double Hmp = H11(z) + H1m1(z) - Hm11(z) - Hm1m1(z);
+    double Hmp = H_11(z) + H_1m1(z) - H_m11(z) - H_m1m1(z);
 
     double I = 4. * z * Hmp;
     double J = 4. * z * L;
@@ -440,11 +440,11 @@ double HighEnergyCoefficientFunction::C2_g3_highenergyLL(
 
     double L = log((1. + z) / (1. - z));
 
-    double Hmp = H11(z) + H1m1(z) - Hm11(z) - Hm1m1(z);
+    double Hmp = H_11(z) + H_1m1(z) - H_m11(z) - H_m1m1(z);
 
-    double Hmpm = H111(z) - H11m1(z) + H1m11(z)
-                  - H1m1m1(z) - Hm111(z) + Hm11m1(z)
-                  - Hm1m11(z) + Hm1m1m1(z);
+    double Hmpm = H_111(z) - H_11m1(z) + H_1m11(z)
+                  - H_1m1m1(z) - H_m111(z) + H_m11m1(z)
+                  - H_m1m11(z) + H_m1m1m1(z);
 
     double I = 4 * z * Hmp;
     double J = 4 * z * L;
@@ -483,11 +483,11 @@ Value HighEnergyCoefficientFunction::C2_g3_highenergyNLL(
 
     double L = log((1. + z) / (1. - z));
 
-    double Hmp = H11(z) + H1m1(z) - Hm11(z) - Hm1m1(z);
+    double Hmp = H_11(z) + H_1m1(z) - H_m11(z) - H_m1m1(z);
 
-    double Hmpm = H111(z) - H11m1(z) + H1m11(z)
-                  - H1m1m1(z) - Hm111(z) + Hm11m1(z)
-                  - Hm1m11(z) + Hm1m1m1(z);
+    double Hmpm = H_111(z) - H_11m1(z) + H_1m11(z)
+                  - H_1m1m1(z) - H_m111(z) + H_m11m1(z)
+                  - H_m1m11(z) + H_m1m1m1(z);
 
     double II = 4 * z * Hmp;
     double J = 4 * z * L;
@@ -634,11 +634,11 @@ double HighEnergyCoefficientFunction::CL_g3_highenergyLL(
 
     double L = log((1. + z) / (1. - z));
 
-    double Hmp = H11(z) + H1m1(z) - Hm11(z) - Hm1m1(z);
+    double Hmp = H_11(z) + H_1m1(z) - H_m11(z) - H_m1m1(z);
 
-    double Hmpm = H111(z) - H11m1(z) + H1m11(z)
-                  - H1m1m1(z) - Hm111(z) + Hm11m1(z)
-                  - Hm1m11(z) + Hm1m1m1(z);
+    double Hmpm = H_111(z) - H_11m1(z) + H_1m11(z)
+                  - H_1m1m1(z) - H_m111(z) + H_m11m1(z)
+                  - H_m1m11(z) + H_m1m1m1(z);
 
     double II = 4 * z * Hmp;
     double J = 4 * z * L;
@@ -683,11 +683,11 @@ Value HighEnergyCoefficientFunction::CL_g3_highenergyNLL(
 
     double L = log((1. + z) / (1. - z));
 
-    double Hmp = H11(z) + H1m1(z) - Hm11(z) - Hm1m1(z);
+    double Hmp = H_11(z) + H_1m1(z) - H_m11(z) - H_m1m1(z);
 
-    double Hmpm = H111(z) - H11m1(z) + H1m11(z)
-                  - H1m1m1(z) - Hm111(z) + Hm11m1(z)
-                  - Hm1m11(z) + Hm1m1m1(z);
+    double Hmpm = H_111(z) - H_11m1(z) + H_1m11(z)
+                  - H_1m1m1(z) - H_m111(z) + H_m11m1(z)
+                  - H_m1m11(z) + H_m1m1m1(z);
 
     double II = 4 * z * Hmp;
     double J = 4 * z * L;

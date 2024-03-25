@@ -2,7 +2,7 @@ import adani as ad
 import oldadani as old
 import numpy as np
 
-def test_lo():
+def test_as1():
     for kind in ['2', 'L']:
         ml = ad.MasslessCoefficientFunction(1, kind, 'g')
         for x in np.geomspace(1e-5, 1., 100, endpoint=False):
@@ -11,7 +11,7 @@ def test_lo():
                 res2 = old.C2_g1_massless(x, nf) if kind == '2' else old.CL_g1_massless(x, nf)
                 np.testing.assert_allclose(res1, res2, rtol=1e-7)
 
-def test_nnlo():
+def test_as2():
     for kind in ['2', 'L']:
         for channel in ['g', 'q']:
             ml = ad.MasslessCoefficientFunction(2, kind, channel)
@@ -29,7 +29,7 @@ def test_nnlo():
                     np.testing.assert_allclose(res1, res2, rtol=1e-7)
 
 
-def test_n3lo():
+def test_as3():
     for kind in ['2', 'L']:
         for channel in ['g', 'q']:
             ml = ad.MasslessCoefficientFunction(3, kind, channel)

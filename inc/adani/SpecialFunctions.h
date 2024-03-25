@@ -45,47 +45,47 @@ double S12(double x);
 //  Harmonic polylogarithms up to weight 3.
 //------------------------------------------------------------------------------------------//
 
-double H0(double x);
-double Hm1(double x);
-double H1(double x);
+double H_0(double x);
+double H_m1(double x);
+double H_1(double x);
 
-double Hm1m1(double x);
-double Hm10(double x);
-double Hm11(double x);
-double H0m1(double x);
-double H00(double x);
-double H01(double x);
-double H1m1(double x);
-double H10(double x);
-double H11(double x);
+double H_m1m1(double x);
+double H_m10(double x);
+double H_m11(double x);
+double H_0m1(double x);
+double H_00(double x);
+double H_01(double x);
+double H_1m1(double x);
+double H_10(double x);
+double H_11(double x);
 
-double Hm1m1m1(double x);
-double Hm1m10(double x);
-double Hm1m11(double x);
-double Hm10m1(double x);
-double Hm100(double x);
-double Hm101(double x);
-double Hm11m1(double x);
-double Hm110(double x);
-double Hm111(double x);
-double H0m1m1(double x);
-double H0m10(double x);
-double H0m11(double x);
-double H00m1(double x);
-double H000(double x);
-double H001(double x);
-double H01m1(double x);
-double H010(double x);
-double H011(double x);
-double H1m1m1(double x);
-double H1m10(double x);
-double H1m11(double x);
-double H10m1(double x);
-double H100(double x);
-double H101(double x);
-double H11m1(double x);
-double H110(double x);
-double H111(double x);
+double H_m1m1m1(double x);
+double H_m1m10(double x);
+double H_m1m11(double x);
+double H_m10m1(double x);
+double H_m100(double x);
+double H_m101(double x);
+double H_m11m1(double x);
+double H_m110(double x);
+double H_m111(double x);
+double H_0m1m1(double x);
+double H_0m10(double x);
+double H_0m11(double x);
+double H_00m1(double x);
+double H_000(double x);
+double H_001(double x);
+double H_01m1(double x);
+double H_010(double x);
+double H_011(double x);
+double H_1m1m1(double x);
+double H_1m10(double x);
+double H_1m11(double x);
+double H_10m1(double x);
+double H_100(double x);
+double H_101(double x);
+double H_11m1(double x);
+double H_110(double x);
+double H_111(double x);
 
 //==========================================================================================//
 //  Harmonic polylogarithms up to weight 5.
