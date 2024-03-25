@@ -220,8 +220,8 @@ double HighScaleCoefficientFunction::D2_ps2_highscale(
     double L_Q = log(1. / m2Q2) + L_M;
     double L_Q2 = L_Q * L_Q;
 
-    double H0 = H(z, 0);
-    double H1 = H(z, 1);
+    double H0 = H0(z);
+    double H1 = H1(z);
     double Hm1 = H(z, -1);
     double H01 = H(z, 0, 1);
     double H0m1 = H(z, 0, -1);
@@ -416,8 +416,8 @@ double HighScaleCoefficientFunction::DL_g2_highscale(
     double L_M = log(m2mu2);
     double L_Q = log(1. / m2Q2) + L_M;
 
-    double H0 = H(z, 0);
-    double H1 = H(z, 1);
+    double H0 = H0(z);
+    double H1 = H1(z);
     double Hm1 = H(z, -1);
     double H01 = H(z, 0, 1);
     double H0m1 = H(z, 0, -1);
@@ -461,8 +461,8 @@ double HighScaleCoefficientFunction::DL_ps2_highscale(
     double L_M = log(m2mu2);
     double L_Q = log(1. / m2Q2) + L_M;
 
-    double H0 = H(z, 0);
-    double H1 = H(z, 1);
+    double H0 = H0(z);
+    double H1 = H1(z);
     double H01 = H(z, 0, 1);
 
     return CF * TR

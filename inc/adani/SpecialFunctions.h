@@ -45,12 +45,47 @@ double S12(double x);
 //  Harmonic polylogarithms up to weight 3.
 //------------------------------------------------------------------------------------------//
 
-// TODO: Implemented in this way, the code goes through a lot of if's.
-// This is relevant since these functions are integrated.
+double H0(double x);
+double Hm1(double x);
+double H1(double x);
 
-double H(double x, int i);
-double H(double x, int i, int j);
-double H(double x, int i, int j, int k);
+double Hm1m1(double x);
+double Hm10(double x);
+double Hm11(double x);
+double H0m1(double x);
+double H00(double x);
+double H01(double x);
+double H1m1(double x);
+double H10(double x);
+double H11(double x);
+
+double Hm1m1m1(double x);
+double Hm1m10(double x);
+double Hm1m11(double x);
+double Hm10m1(double x);
+double Hm100(double x);
+double Hm101(double x);
+double Hm11m1(double x);
+double Hm110(double x);
+double Hm111(double x);
+double H0m1m1(double x);
+double H0m10(double x);
+double H0m11(double x);
+double H00m1(double x);
+double H000(double x);
+double H001(double x);
+double H01m1(double x);
+double H010(double x);
+double H011(double x);
+double H1m1m1(double x);
+double H1m10(double x);
+double H1m11(double x);
+double H10m1(double x);
+double H100(double x);
+double H101(double x);
+double H11m1(double x);
+double H110(double x);
+double H111(double x);
 
 //==========================================================================================//
 //  Harmonic polylogarithms up to weight 5.
