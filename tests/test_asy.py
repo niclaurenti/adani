@@ -1,5 +1,45 @@
 import adani as ad
+import oldadani as old
 import numpy as np
+
+def test_as2():
+    for kind in ['2', 'L']:
+        for channel in ['g', 'q']:
+            asy = ad.AsymptoticCoefficientFunction(2, kind, channel)
+            for m2Q2 in np.geomspace(1e-2, 1e4, 10):
+                for m2mu2 in np.geomspace(1e-2, 1e4, 10):
+                    for x in np.geomspace(1e-5, 1., 100, endpoint=False):
+                        res1 = asy.fx(x, m2Q2, m2mu2, 1)
+                        if kind == '2' and channel == 'g':
+                            res2 = old.C2_g2_asymptotic(x, m2Q2, m2mu2)
+                        if kind == '2' and channel == 'q':
+                            res2 = old.C2_ps2_asymptotic(x, m2Q2, m2mu2)
+                        if kind == 'L' and channel == 'g':
+                            res2 = old.CL_g2_asymptotic(x, m2Q2, m2mu2)
+                        if kind == 'L' and channel == 'q':
+                            res2 = old.CL_ps2_asymptotic(x, m2Q2, m2mu2)
+                        np.testing.assert_allclose(res1, res2, rtol=1e-7)
+
+
+def test_as3():
+    for kind in ['2', 'L']:
+        for channel in ['g', 'q']:
+            exact = channel == 'q'
+            asy = ad.AsymptoticCoefficientFunction(3, kind, channel, True, exact, not exact)
+            for m2Q2 in np.geomspace(1e-2, 1e4, 10):
+                for m2mu2 in np.geomspace(1e-2, 1e4, 10):
+                    for nf in range(1, 6+1):
+                        for x in np.geomspace(1e-5, 1., 100, endpoint=False):
+                            res1 = asy.fx(x, m2Q2, m2mu2, nf)
+                            if kind == '2' and channel == 'g':
+                                res2 = old.C2_g3_asymptotic(x, m2Q2, m2mu2, nf)
+                            if kind == '2' and channel == 'q':
+                                res2 = old.C2_ps3_asymptotic(x, m2Q2, m2mu2, nf)
+                            if kind == 'L' and channel == 'g':
+                                res2 = old.CL_g3_asymptotic(x, m2Q2, m2mu2, nf)
+                            if kind == 'L' and channel == 'q':
+                                res2 = old.CL_ps3_asymptotic(x, m2Q2, m2mu2, nf)
+                            np.testing.assert_allclose(res1, res2, rtol=1e-7)
 
 def test_asy():
     for order in range(1, 3 + 1):
