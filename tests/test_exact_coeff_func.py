@@ -17,8 +17,8 @@ def eta(x, xi):
 
 def test_as2_muindep():
     nf = 1
-    for kind in ['2']:
-        for channel in ['g']:
+    for kind in ['2', 'L']:
+        for channel in ['g', 'q']:
             cf = ad.ExactCoefficientFunction(2, kind, channel, 1e-3, 1e-3, 1000)
             for xi in np.geomspace(1e-2, 1e4, 10, endpoint=True):
                 xmax = 1/(1 + 4/xi)
