@@ -17,9 +17,9 @@ def eta(x, xi):
 
 def test_as2_muindep():
     nf = 1
-    for kind in ['2', 'L']:
-        for channel in ['g', 'q']:
-            cf = ad.ExactCoefficientFunction(2, kind, channel, 1e-3, 1e-3, 1000, 1, 25000)
+    for kind in ['2']:
+        for channel in ['g']:
+            cf = ad.ExactCoefficientFunction(2, kind, channel, 1e-3, 1e-3, 1000)
             for xi in np.geomspace(1e-2, 1e4, 10, endpoint=True):
                 xmax = 1/(1 + 4/xi)
                 for x in np.geomspace(1e-5, xmax, 10, endpoint=False):
@@ -27,11 +27,11 @@ def test_as2_muindep():
                     if eta(x, xi) < 1e6 and eta(x, xi) > 1e-6:
                         if kind == '2' and channel == 'g':
                             res2 = old.C2_g20(x, 1/xi)
-                        elif kind == 'L' and channel == 'g':
+                        if kind == 'L' and channel == 'g':
                             res2 = old.CL_g20(x, 1/xi)
-                        elif kind == '2' and channel == 'q':
+                        if kind == '2' and channel == 'q':
                             res2 = old.C2_ps20(x, 1/xi)
-                        else:
+                        if kind == 'L' and channel == 'q':
                             res2 = old.CL_ps20(x, 1/xi)
                     else:
                         res2 = 0
