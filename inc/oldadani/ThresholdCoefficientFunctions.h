@@ -51,6 +51,7 @@ double threshold_expansion_g3(double m2Q2, double m2mu2, int nf);
 double threshold_expansion_g3_const(double m2Q2, double m2mu2);
 
 double C2_g3_threshold_const(double x, double m2Q2, double m2mu2);
+double CL_g3_threshold_const(double x, double m2Q2, double m2mu2);
 
 //==========================================================================================//
 //  Function needed for the threshold limit.
