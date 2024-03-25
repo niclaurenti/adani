@@ -359,16 +359,4 @@ PYBIND11_MODULE(_core, m) {
             &ThresholdCoefficientFunction::MuDependentTermsBand
         )
         .def("fxBand", &ThresholdCoefficientFunction::fxBand);
-
-    // for tests
-
-    m.def("c2nlog_", (double (*)(double *, double *)) & c2nlog_);
-    m.def("clnlog_", (double (*)(double *, double *)) & clnlog_);
-    m.def("c2nloq_", (double (*)(double *, double *)) & c2nloq_);
-    m.def("clnloq_", (double (*)(double *, double *)) & clnloq_);
-
-    m.def("c2nlobarg_", (double (*)(double *, double *)) & c2nlobarg_);
-    m.def("clnlobarg_", (double (*)(double *, double *)) & clnlobarg_);
-    m.def("c2nlobarq_", (double (*)(double *, double *)) & c2nlobarq_);
-    m.def("clnlobarq_", (double (*)(double *, double *)) & clnlobarq_);
 }

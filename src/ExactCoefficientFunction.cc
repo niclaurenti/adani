@@ -535,10 +535,7 @@ double ExactCoefficientFunction::C_ps31(double x, double m2Q2, int nf) const {
 double ExactCoefficientFunction::C_ps32(double x, double m2Q2, int nf) const {
 
     return 0.5
-               * (convolutions_lmu2_[0]->Convolute(x, m2Q2, nf)rg_(double *wr, double *xi);
-    // double clnlobarg_(double *wr, double *xi);
-    // double c2nlobarq_(double *wr, double *xi);
-    // double clnlobarq_(double *wr, double *xi);
+               * (convolutions_lmu2_[0]->Convolute(x, m2Q2, nf)
                   + convolutions_lmu2_[1]->Convolute(x, m2Q2, nf))
            - 3. / 2 * beta(0, nf)
                  * convolutions_lmu2_[2]->Convolute(x, m2Q2, nf);
