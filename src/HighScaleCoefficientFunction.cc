@@ -73,6 +73,17 @@ Value HighScaleCoefficientFunction::fxBand(
     return (this->*fx_)(x, m2Q2, m2mu2, nf);
 }
 
+vector<double> HighScaleCoefficientFunction::fxBand_NotOrdered(double x, double m2Q2, double m2mu2, int nf) const {
+
+    double central, higher, lower;
+
+    central = fxBand(x, m2Q2, m2mu2, nf).GetCentral() - a_muindep_-> NotOrdered(x)[0];
+    higher = fxBand(x, m2Q2, m2mu2, nf).GetHigher() - a_muindep_-> NotOrdered(x)[1];
+    lower = fxBand(x, m2Q2, m2mu2, nf).GetLower() - a_muindep_-> NotOrdered(x)[2];
+
+    return {central, higher, lower};
+}
+
 //==========================================================================================//
 //  HighScaleCoefficientFunction: function that sets the pointer for fxBand
 //------------------------------------------------------------------------------------------//

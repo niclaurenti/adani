@@ -92,6 +92,39 @@ Value MatchingCondition::MuIndependentNfIndependentTerm(double x) const {
     }
 }
 
+vector<double> MatchingCondition::NotOrdered(double x) const {
+    double central, higher, lower;
+    if (entry2_ == 'q') {
+        if (exact_) {
+            central = a_Qq_PS_30(x, 0);
+            return {central, central, central};
+        } else {
+            higher = a_Qq_PS_30(x, 1);
+            lower = a_Qq_PS_30(x, -1);
+            central = 0.5 * (higher + lower);
+
+            return {central, higher, lower};
+        }
+    } else {
+        int low_id;
+        if (exact_) {
+            central = a_Qg_30(x, 0);
+            return {central, central, central};
+        } else {
+            if (revised_approx_)
+                low_id = -1;
+            else
+                low_id = -12;
+
+            higher = a_Qg_30(x, 1);
+            lower = a_Qg_30(x, low_id);
+            central = 0.5 * (higher + lower);
+
+            return {central, higher, lower};
+        }
+    }
+}
+
 //==========================================================================================//
 //  Matching condition Qg O(as)
 //

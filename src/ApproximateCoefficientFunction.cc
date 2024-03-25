@@ -327,7 +327,7 @@ Value ApproximateCoefficientFunctionKLMV::MuIndependentTermsBand(
 
     double he_ll = highenergy_->MuIndependentTerms(x, m2Q2, nf);
 
-    Value hs = highenergy_->MuIndependentTermsBand(x, m2Q2, nf);
+    vector<double> hs = highscale_->fxBand_NotOrdered(x, m2Q2, 1., nf);
 
     double gamma = params_A_.gamma, C = params_A_.C, delta = params_B_.gamma,
            D = params_B_.C;
@@ -336,19 +336,19 @@ Value ApproximateCoefficientFunctionKLMV::MuIndependentTermsBand(
 
     if (GetOrder() == 2) {
         res_A = ApproximationA(
-            x, m2Q2, 0., he_ll, hs.GetCentral(), thr, thr_const, gamma, C
+            x, m2Q2, 0., he_ll, hs[0], thr, thr_const, gamma, C
         );
         res_B = ApproximationB(
-            x, m2Q2, 0., he_ll, hs.GetCentral(), thr, 0., delta, D
+            x, m2Q2, 0., he_ll, hs[0], thr, 0., delta, D
         );
     } else if (GetOrder() == 3) {
         Value he_nll = ApproximateNLL(x, m2Q2);
         res_A = ApproximationA(
-            x, m2Q2, he_ll, he_nll.GetHigher(), hs.GetHigher(), thr, thr_const,
+            x, m2Q2, he_ll, he_nll.GetHigher(), hs[1], thr, thr_const,
             gamma, C
         );
         res_B = ApproximationB(
-            x, m2Q2, he_ll, he_nll.GetLower(), hs.GetLower(), thr, thr_const,
+            x, m2Q2, he_ll, he_nll.GetLower(), hs[2], thr, thr_const,
             delta, D
         );
     }
