@@ -59,6 +59,14 @@ PYBIND11_MODULE(_core, m) {
         "C2_g2_approximationB_klmv", &C2_g2_approximationB_klmv, py::arg("x"),
         py::arg("m2Q2"), py::arg("m2mu2")
     );
+    m.def(
+        "C2_ps2_approximationA_klmv", &C2_ps2_approximationA_klmv, py::arg("x"),
+        py::arg("m2Q2"), py::arg("m2mu2")
+    );
+    m.def(
+        "C2_ps2_approximationB_klmv", &C2_ps2_approximationB_klmv, py::arg("x"),
+        py::arg("m2Q2"), py::arg("m2mu2")
+    );
 
     m.def(
         "C2_g3_approximationA_klmv", &C2_g3_approximationA_klmv, py::arg("x"),
