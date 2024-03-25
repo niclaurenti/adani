@@ -123,20 +123,6 @@ class HighScaleCoefficientFunction : public CoefficientFunction {
         D2_g3_highscale(double x, double m2Q2, double m2mu2, int nf) const;
         Value
         D2_ps3_highscale(double x, double m2Q2, double m2mu2, int nf) const;
-
-        //==========================================================================================//
-        //  High scale (Q^2 >> m^2) coefficient functions at
-        //  O(as^3) used in [arXiv:1205.5727] klmv = Kawamura,
-        //  Lo Presti, Moch, Vogt This functions uses the
-        //  approximation for aQqPS30 (that now is exactly known)
-        //  from Eq. ?? of [arXiv:1205.5727]. It is only used for
-        //  benchmark against the plots on the paper
-        //------------------------------------------------------------------------------------------//
-
-        // double
-        // C2_ps3_highscale_klmv_paper(double x, double m2Q2, double m2mu2, int
-        // nf, int v) const ; double D2_ps3_highscale_klmv_paper(double x,
-        // double m2Q2, double m2mu2, int nf, int v) const ;
 };
 
 #endif

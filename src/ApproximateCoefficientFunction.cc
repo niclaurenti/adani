@@ -311,7 +311,7 @@ ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(
 ApproximateCoefficientFunctionKLMV::~ApproximateCoefficientFunctionKLMV() {
     delete threshold_;
     delete highscale_;
-    delete threshold_;
+    delete highenergy_;
 }
 
 //==========================================================================================//
@@ -321,6 +321,9 @@ ApproximateCoefficientFunctionKLMV::~ApproximateCoefficientFunctionKLMV() {
 Value ApproximateCoefficientFunctionKLMV::MuIndependentTermsBand(
     double x, double m2Q2, int nf
 ) const {
+
+    double xmax = 1. / (1. + 4 * m2Q2);
+    if (x <= 0 || x >= xmax) return 0.;
 
     double thr = threshold_->MuIndependentTerms(x, m2Q2, nf);
     double thr_const = threshold_->BetaIndependentTerms(x, m2Q2, 1.);
