@@ -22,7 +22,7 @@ def test_mudependent_terms():
                                 del massive
                                 del app
 
-def test_C20_oldversion():
+def test_as2_muindep_oldversion():
     for channel in ['g', 'q']:
         for kind in ['2', 'L']:
             app = ad.ApproximateCoefficientFunction(2, kind, channel)
@@ -49,7 +49,7 @@ def test_C20_oldversion():
                             res_new = tmp.GetHigher()
                         np.testing.assert_allclose(res_old, res_new, rtol=1e-7)
 
-def test_C30_oldversion():
+def test_as3_muindep_oldversion():
     for channel in ['g', 'q']:
         for kind in ['2', 'L']:
             exact = True if channel == 'q' else False
@@ -79,7 +79,7 @@ def test_C30_oldversion():
                                 res_new = tmp.GetHigher()
                             np.testing.assert_allclose(res_old, res_new, rtol=1e-7)
 
-def test_mudep_oldversion_as2():
+def test_mudep_as2_oldversion():
     for channel in ['g', 'q']:
         for kind in ['2', 'L']:
             app = ad.ApproximateCoefficientFunction(2, kind, channel)
@@ -105,7 +105,7 @@ def test_mudep_oldversion_as2():
                         np.testing.assert_allclose(res_old, res_new, rtol=1e-7)
             del app
 
-def test_mudep_oldversion_as3():
+def test_mudep_as3_oldversion():
     for channel in ['g', 'q']:
         for kind in ['2', 'L']:
             exact = True if channel == 'q' else False

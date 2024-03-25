@@ -345,13 +345,30 @@ ExactCoefficientFunction::CL_g1(double x, double m2Q2, int /*nf*/) const {
 //  OBSERVATION: in the O(as^2) exact coefficeint functions the
 //  mu-independent part is an interpolation in a certain grid. When this
 //  function is called for a (x,Q) value outside this grid, the value 0 is
-//  returned. The mu-dependent part is defined everywhere. However, also this
-//  one is put to zero for values outside the grid otherwise we would have that
-//  one term contributes while the other doesn't. Unfortunately in this way the
-//  check if(eta > 1e6 || eta < 1e-6 || xi<1e-3 || xi>1e5) return 0. must be
-//  performed twice (but this is not a big issue since in the integrals we have
-//  only the interpolated result).
+//  returned. The mu-dependent part is defined everywhere. This means that outside the grid
+//  one contribution is set to zero while the other is not.
 //------------------------------------------------------------------------------------------//
+
+/// @cond UNNECESSARY
+/**
+ * @name Fortran massive coefficient functions
+ * Fortran functions for the O(as^2)
+ * coefficient functions from 'src/hqcoef.f'.
+ */
+///@{
+extern "C" {
+    // double c2log_(double *wr,double *xi);
+    double c2nlog_(double *wr, double *xi);
+    double clnlog_(double *wr, double *xi);
+    double c2nloq_(double *wr, double *xi);
+    double clnloq_(double *wr, double *xi);
+    // double c2nlobarg_(double *wr, double *xi);
+    // double clnlobarg_(double *wr, double *xi);
+    // double c2nlobarq_(double *wr, double *xi);
+    // double clnlobarq_(double *wr, double *xi);
+}
+///@}
+/// \endcond
 
 //==========================================================================================//
 //  mu independent part of the exact massive quark coefficient functions for F2
@@ -518,7 +535,10 @@ double ExactCoefficientFunction::C_ps31(double x, double m2Q2, int nf) const {
 double ExactCoefficientFunction::C_ps32(double x, double m2Q2, int nf) const {
 
     return 0.5
-               * (convolutions_lmu2_[0]->Convolute(x, m2Q2, nf)
+               * (convolutions_lmu2_[0]->Convolute(x, m2Q2, nf)rg_(double *wr, double *xi);
+    // double clnlobarg_(double *wr, double *xi);
+    // double c2nlobarq_(double *wr, double *xi);
+    // double clnlobarq_(double *wr, double *xi);
                   + convolutions_lmu2_[1]->Convolute(x, m2Q2, nf))
            - 3. / 2 * beta(0, nf)
                  * convolutions_lmu2_[2]->Convolute(x, m2Q2, nf);

@@ -153,60 +153,6 @@ class ApproximateCoefficientFunctionKLMV : public AbstractApproximate {
 
 // //==========================================================================================//
 // //                      Approximate coefficient functions
-// //                      O(as)
-// //------------------------------------------------------------------------------------------//
-
-// double C2_g1_approximation_implicit(double x, double m2Q2, double k, double
-// h); double C2_g1_approximation(double x, double m2Q2); double
-// CL_g1_approximation(double x, double m2Q2);
-
-// //==========================================================================================//
-// //                      Approximate coefficient functions
-// //                      O(as^2)
-// //------------------------------------------------------------------------------------------//
-
-// double C2_g2_approximation(double x, double m2Q2, double m2mu2, int v = 0);
-// double C2_g20_approximation(double x, double m2Q2);
-// double C2_g20_approximation_implicit(
-//     double x, double m2Q2, double A, double B, double C, double D, double a,
-//     double b
-// );
-// double C2_g20_approximation_BAND(
-//     double x, double m2Q2, int v, double var, double fact
-// );
-
-// double C2_ps2_approximation(double x, double m2Q2, double m2mu2, int v = 0);
-// double C2_ps20_approximation(double x, double m2Q2);
-// double C2_ps20_approximation_implicit(
-//     double x, double m2Q2, double A, double B, double C, double D, double a,
-//     double b
-// );
-// double C2_ps20_approximation_BAND(
-//     double x, double m2Q2, int v, double var, double fact
-// );
-
-// double CL_g2_approximation(double x, double m2Q2, double m2mu2, int v = 0);
-// double CL_g20_approximation(double x, double m2Q2);
-// double CL_g20_approximation_implicit(
-//     double x, double m2Q2, double A, double B, double C, double D, double a,
-//     double b
-// );
-// double CL_g20_approximation_BAND(
-//     double x, double m2Q2, int v, double var, double fact
-// );
-
-// double CL_ps2_approximation(double x, double m2Q2, double m2mu2, int v = 0);
-// double CL_ps20_approximation(double x, double m2Q2);
-// double CL_ps20_approximation_implicit(
-//     double x, double m2Q2, double A, double B, double C, double D, double a,
-//     double b
-// );
-// double CL_ps20_approximation_BAND(
-//     double x, double m2Q2, int v, double var, double fact
-// );
-
-// //==========================================================================================//
-// //                      Approximate coefficient functions
 // //                      O(as^3)
 // //------------------------------------------------------------------------------------------//
 
