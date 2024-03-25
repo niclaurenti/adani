@@ -25,9 +25,9 @@ ExactCoefficientFunction::ExactCoefficientFunction(
     SetMethodFlag(method_flag);
     SetMCcalls(MCcalls);
 
-    gluon_lo_ = nullptr;
-    gluon_nlo_ = nullptr;
-    quark_nlo_ = nullptr;
+    gluon_as1_ = nullptr;
+    gluon_as2_ = nullptr;
+    quark_as2_ = nullptr;
 
     Pgq0_ = nullptr;
     Pgg0_ = nullptr;
@@ -42,15 +42,15 @@ ExactCoefficientFunction::ExactCoefficientFunction(
     delta_ = nullptr;
 
     if (GetOrder() > 1) {
-        gluon_lo_ = new ExactCoefficientFunction(1, GetKind(), 'g');
+        gluon_as1_ = new ExactCoefficientFunction(1, GetKind(), 'g');
 
         Pgq0_ = new SplittingFunction(0, 'g', 'q');
         Pgg0_ = new SplittingFunction(0, 'g', 'g');
         delta_ = new Delta();
     }
     if (GetOrder() > 2) {
-        gluon_nlo_ = new ExactCoefficientFunction(2, GetKind(), 'g');
-        quark_nlo_ = new ExactCoefficientFunction(2, GetKind(), 'q');
+        gluon_as2_ = new ExactCoefficientFunction(2, GetKind(), 'g');
+        quark_as2_ = new ExactCoefficientFunction(2, GetKind(), 'q');
 
         Pgq1_ = new SplittingFunction(1, 'g', 'q');
         Pqq0_ = new SplittingFunction(0, 'q', 'q');
@@ -64,59 +64,59 @@ ExactCoefficientFunction::ExactCoefficientFunction(
     if (GetOrder() == 2) {
         if (GetChannel() == 'q') {
             convolutions_lmu1_.push_back(
-                new Convolution(gluon_lo_, Pgq0_, abserr, relerr, dim)
+                new Convolution(gluon_as1_, Pgq0_, abserr, relerr, dim)
             );
         } else if (GetChannel() == 'g') {
             convolutions_lmu1_.push_back(
-                new Convolution(gluon_lo_, Pgg0_, abserr, relerr, dim)
+                new Convolution(gluon_as1_, Pgg0_, abserr, relerr, dim)
             );
-            convolutions_lmu1_.push_back(new Convolution(gluon_lo_, delta_));
+            convolutions_lmu1_.push_back(new Convolution(gluon_as1_, delta_));
         }
     } else if (GetOrder() == 3) {
         if (GetChannel() == 'q') {
             convolutions_lmu1_.push_back(
-                new Convolution(gluon_lo_, Pgq1_, abserr, relerr, dim)
+                new Convolution(gluon_as1_, Pgq1_, abserr, relerr, dim)
             );
             convolutions_lmu1_.push_back(
-                new Convolution(gluon_nlo_, Pgq0_, abserr, relerr, dim)
+                new Convolution(gluon_as2_, Pgq0_, abserr, relerr, dim)
             );
             convolutions_lmu1_.push_back(
-                new Convolution(quark_nlo_, Pqq0_, abserr, relerr, dim)
+                new Convolution(quark_as2_, Pqq0_, abserr, relerr, dim)
             );
-            convolutions_lmu1_.push_back(new Convolution(quark_nlo_, delta_));
+            convolutions_lmu1_.push_back(new Convolution(quark_as2_, delta_));
 
             convolutions_lmu2_.push_back(
-                new Convolution(gluon_lo_, Pgg0Pgq0_, abserr, relerr, dim)
+                new Convolution(gluon_as1_, Pgg0Pgq0_, abserr, relerr, dim)
             );
             convolutions_lmu2_.push_back(
-                new Convolution(gluon_lo_, Pqq0Pgq0_, abserr, relerr, dim)
+                new Convolution(gluon_as1_, Pqq0Pgq0_, abserr, relerr, dim)
             );
             convolutions_lmu2_.push_back(
-                new Convolution(gluon_lo_, Pgq0_, abserr, relerr, dim)
+                new Convolution(gluon_as1_, Pgq0_, abserr, relerr, dim)
             );
         } else {
             convolutions_lmu1_.push_back(
-                new Convolution(gluon_lo_, Pgg1_, abserr, relerr, dim)
+                new Convolution(gluon_as1_, Pgg1_, abserr, relerr, dim)
             );
-            convolutions_lmu1_.push_back(new Convolution(gluon_lo_, delta_));
+            convolutions_lmu1_.push_back(new Convolution(gluon_as1_, delta_));
             convolutions_lmu1_.push_back(
-                new Convolution(quark_nlo_, Pqg0_, abserr, relerr, dim)
+                new Convolution(quark_as2_, Pqg0_, abserr, relerr, dim)
             );
             convolutions_lmu1_.push_back(
-                new Convolution(gluon_nlo_, Pgg0_, abserr, relerr, dim)
+                new Convolution(gluon_as2_, Pgg0_, abserr, relerr, dim)
             );
-            convolutions_lmu1_.push_back(new Convolution(gluon_nlo_, delta_));
+            convolutions_lmu1_.push_back(new Convolution(gluon_as2_, delta_));
 
             convolutions_lmu2_.push_back(new DoubleConvolution(
-                gluon_lo_, Pgg0_, abserr, relerr, dim, method_flag, MCcalls
+                gluon_as1_, Pgg0_, abserr, relerr, dim, method_flag, MCcalls
             ));
             convolutions_lmu2_.push_back(
-                new Convolution(gluon_lo_, Pgq0Pqg0_, abserr, relerr, dim)
+                new Convolution(gluon_as1_, Pgq0Pqg0_, abserr, relerr, dim)
             );
             convolutions_lmu2_.push_back(
-                new Convolution(gluon_lo_, Pgg0_, abserr, relerr, dim)
+                new Convolution(gluon_as1_, Pgg0_, abserr, relerr, dim)
             );
-            convolutions_lmu2_.push_back(new Convolution(gluon_lo_, delta_));
+            convolutions_lmu2_.push_back(new Convolution(gluon_as1_, delta_));
         }
     }
 
@@ -129,9 +129,9 @@ ExactCoefficientFunction::ExactCoefficientFunction(
 
 ExactCoefficientFunction::~ExactCoefficientFunction() {
 
-    delete gluon_lo_;
-    delete gluon_nlo_;
-    delete quark_nlo_;
+    delete gluon_as1_;
+    delete gluon_as2_;
+    delete quark_as2_;
 
     for (long unsigned int i = 0; i < convolutions_lmu1_.size(); i++) {
         delete convolutions_lmu1_[i];

@@ -60,7 +60,7 @@ class HighScaleSplitLogs : public CoefficientFunction {
         void SetFunctions();
 
     private:
-        MasslessCoefficientFunction *massless_lo_;
+        MasslessCoefficientFunction *massless_as1_;
         MasslessCoefficientFunction *massless_;
         MatchingCondition *a_muindep_;
 

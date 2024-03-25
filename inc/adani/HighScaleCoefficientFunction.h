@@ -56,9 +56,9 @@ class HighScaleCoefficientFunction : public CoefficientFunction {
             double, double, double, int
         ) const;
 
-        MasslessCoefficientFunction *massless_lo_;
-        MasslessCoefficientFunction *massless_nlo_;
-        MasslessCoefficientFunction *massless_nnlo_;
+        MasslessCoefficientFunction *massless_as1_;
+        MasslessCoefficientFunction *massless_as2_;
+        MasslessCoefficientFunction *massless_as3_;
         MatchingCondition *a_muindep_;
 
         //==========================================================================================//

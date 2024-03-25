@@ -24,11 +24,11 @@ HighScaleSplitLogs::HighScaleSplitLogs(
         exit(-1);
     }
 
-    massless_lo_ = nullptr;
+    massless_as1_ = nullptr;
     a_muindep_ = nullptr;
 
     if (GetChannel() == 'g')
-        massless_lo_ =
+        massless_as1_ =
             new MasslessCoefficientFunction(1, GetKind(), GetChannel());
 
     massless_ =
@@ -48,7 +48,7 @@ HighScaleSplitLogs::HighScaleSplitLogs(
 
 HighScaleSplitLogs::~HighScaleSplitLogs() {
     delete massless_;
-    delete massless_lo_;
+    delete massless_as1_;
     delete a_muindep_;
 }
 
@@ -683,7 +683,7 @@ double HighScaleSplitLogs::C2_g3_highscale_NLL(double x, int nf) const {
                              + 16. * H01 * x2 + 89.33333333333333 * H1 * x2
                              + 16. * H10 * x2 + 16. * H11 * x2
                              - 16. * Hm10 * x2))
-           + 0.4444444444444444 * massless_lo_->MuIndependentTerms(x, 1);
+           + 0.4444444444444444 * massless_as1_->MuIndependentTerms(x, 1);
 }
 
 //==========================================================================================//
@@ -1631,7 +1631,7 @@ double HighScaleSplitLogs::C2_g3_highscale_N2LL(double x, int nf) const {
                              + 31.582734083485946 * x3
                              - 19.200000000000003 * H00 * x3
                              + 19.200000000000003 * Hm10 * x3))
-           - 12.666666666666666 * massless_lo_->MuIndependentTerms(x, 1);
+           - 12.666666666666666 * massless_as1_->MuIndependentTerms(x, 1);
 }
 
 //==========================================================================================//
@@ -2441,7 +2441,7 @@ Value HighScaleSplitLogs::C2_g3_highscale_N3LL(double x, int nf) const {
                     + 96. * Hm1m1m10 * x2 - 96. * Hm1m1m100 * x2
                     + 192. * Hm1m1m1m10 * x2)
            + a_muindep_->MuIndependentNfIndependentTerm(x)
-           + 4.666666666666667 * massless_lo_->MuIndependentTerms(x, 1)
+           + 4.666666666666667 * massless_as1_->MuIndependentTerms(x, 1)
            + massless_->MuIndependentTerms(x, nf + 1) / (1. + nf);
 }
 
@@ -3506,7 +3506,7 @@ double HighScaleSplitLogs::CL_g3_highscale_NLL(double x, int /*v*/) const {
            + 71.11111111111111 * H01 * x + 3.555555555555557 * H1 * x
            - 298.0740740740741 * x2 + 28.444444444444443 * H0 * x2
            - 39.111111111111114 * H1 * x2
-           + 0.4444444444444444 * massless_lo_->MuIndependentTerms(x, 1);
+           + 0.4444444444444444 * massless_as1_->MuIndependentTerms(x, 1);
 }
 
 //==========================================================================================//
@@ -3615,7 +3615,7 @@ double HighScaleSplitLogs::CL_g3_highscale_N2LL(double x, int nf) const {
            - 7.105427357601002e-15 * H0 * H0 * x3
            - 1.4210854715202004e-14 * H0m1 * x3
            + 1.4210854715202004e-14 * H0 * Hm1 * x3
-           - 12.666666666666666 * massless_lo_->MuIndependentTerms(x, 1);
+           - 12.666666666666666 * massless_as1_->MuIndependentTerms(x, 1);
 }
 
 //==========================================================================================//
@@ -3712,7 +3712,7 @@ Value HighScaleSplitLogs::CL_g3_highscale_N3LL(double x, int nf) const {
         - 11.851851851851851 * H1 * H1 * H1 * x2 + 210.55156055657295 * Hm1 * x2
         - 384. * H0 * Hm1 * x2 - 64. * H0 * H0 * Hm1 * x2
         - 256. * H0m1 * Hm1 * x2 + 128. * H0 * Hm1 * Hm1 * x2
-        + 4.666666666666667 * massless_lo_->MuIndependentTerms(x, 1)
+        + 4.666666666666667 * massless_as1_->MuIndependentTerms(x, 1)
         + massless_->MuIndependentTerms(x, nf + 1) / (1. + nf);
     return Value(tmp);
 }

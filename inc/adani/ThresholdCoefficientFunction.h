@@ -46,7 +46,7 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
             double, double, double, int
         ) const;
 
-        ExactCoefficientFunction *exactlo_;
+        ExactCoefficientFunction *exact_as1_;
 
         //==========================================================================================//
         //                      Threshold (s -> 4m^2) coefficient

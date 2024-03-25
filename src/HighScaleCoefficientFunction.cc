@@ -17,20 +17,20 @@ HighScaleCoefficientFunction::HighScaleCoefficientFunction(
     const bool &revised_approx
 )
     : CoefficientFunction(order, kind, channel) {
-    massless_lo_ = nullptr;
-    massless_nlo_ = nullptr;
-    massless_nnlo_ = nullptr;
+    massless_as1_ = nullptr;
+    massless_as2_ = nullptr;
+    massless_as3_ = nullptr;
     a_muindep_ = nullptr;
 
     if (GetChannel() == 'g')
-        massless_lo_ =
+        massless_as1_ =
             new MasslessCoefficientFunction(1, GetKind(), GetChannel());
 
     if (order > 1)
-        massless_nlo_ =
+        massless_as2_ =
             new MasslessCoefficientFunction(2, GetKind(), GetChannel());
     if (order > 2)
-        massless_nnlo_ =
+        massless_as3_ =
             new MasslessCoefficientFunction(3, GetKind(), GetChannel());
 
     if (GetOrder() == 3 && GetKind() == '2') {
@@ -46,9 +46,9 @@ HighScaleCoefficientFunction::HighScaleCoefficientFunction(
 //------------------------------------------------------------------------------------------//
 
 HighScaleCoefficientFunction::~HighScaleCoefficientFunction() {
-    delete massless_lo_;
-    delete massless_nlo_;
-    delete massless_nnlo_;
+    delete massless_as1_;
+    delete massless_as2_;
+    delete massless_as3_;
     delete a_muindep_;
 }
 
@@ -172,7 +172,7 @@ double
 HighScaleCoefficientFunction::D2_g1_highscale(double x, double m2Q2) const {
 
     return 4 * TR * (x * x + (x - 1) * (x - 1)) * log(1. / m2Q2)
-           + massless_lo_->MuIndependentTerms(x, 1);
+           + massless_as1_->MuIndependentTerms(x, 1);
 }
 
 //==========================================================================================//
@@ -181,7 +181,7 @@ HighScaleCoefficientFunction::D2_g1_highscale(double x, double m2Q2) const {
 //------------------------------------------------------------------------------------------//
 
 double HighScaleCoefficientFunction::DL_g1_highscale(double x) const {
-    return massless_lo_->MuIndependentTerms(x, 1);
+    return massless_as1_->MuIndependentTerms(x, 1);
 }
 
 //==========================================================================================//
@@ -384,7 +384,7 @@ double HighScaleCoefficientFunction::D2_g2_highscale(
            + CA * LQm2
                  * (2 + 8. / 3 / x + 16 * x - 62. / 3 * x2 + 4 * H0
                     + 16 * H0 * x - 4 * H1 + 8 * H1 * x - 8 * H1 * x2)
-           + massless_nlo_->MuIndependentTerms(x, 1);
+           + massless_as2_->MuIndependentTerms(x, 1);
 }
 
 //==========================================================================================//
@@ -1021,7 +1021,7 @@ double HighScaleCoefficientFunction::DL_g3_highscale(
                                       - 544. / 3 * H01 + 128. * H011
                                       + 384. * H000m1 - 384. * H0001
                                       + (128. * H01 - 128. * H0m1) * zeta2)))
-           + massless_nnlo_->MuIndependentTerms(z, nf + 1) / (nf + 1.);
+           + massless_as3_->MuIndependentTerms(z, nf + 1) / (nf + 1.);
 }
 
 //==========================================================================================//
@@ -1206,7 +1206,7 @@ double HighScaleCoefficientFunction::DL_ps3_highscale(
                                 + 256. * zeta2 * H0 + 512. * H00m1 - 256. * H011
                                 - 128. * zeta3))
                           * L_Q)
-           + massless_nnlo_->MuIndependentTerms(z, nf + 1) / (nf + 1.);
+           + massless_as3_->MuIndependentTerms(z, nf + 1) / (nf + 1.);
 }
 
 //==========================================================================================//
@@ -3126,7 +3126,7 @@ Value HighScaleCoefficientFunction::D2_g3_highscale(
            // from erratum
            + 8. / 9 * zeta3 - 16. / 9 * zeta3 * x + 16. / 9 * zeta3 * x2
            + a_muindep_->MuIndependentNfIndependentTerm(x)
-           + massless_nnlo_->MuIndependentTerms(x, nf + 1) / (nf + 1.);
+           + massless_as3_->MuIndependentTerms(x, nf + 1) / (nf + 1.);
 }
 
 //==========================================================================================//
@@ -3949,7 +3949,7 @@ Value HighScaleCoefficientFunction::D2_ps3_highscale(
                     - 8. / 3 * H1 - 32. / 9 * H1 / x + 8. / 3 * H1 * x
                     + 32. / 9 * H1 * x2 - 16. / 3 * H01 - 16. / 3 * H01 * x)
            + a_muindep_->MuIndependentNfIndependentTerm(x)
-           + 1. / (1 + nf) * massless_nnlo_->MuIndependentTerms(x, 1 + nf);
+           + 1. / (1 + nf) * massless_as3_->MuIndependentTerms(x, 1 + nf);
 }
 
 //==========================================================================================//

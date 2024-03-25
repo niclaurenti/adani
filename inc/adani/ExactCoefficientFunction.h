@@ -80,9 +80,9 @@ class ExactCoefficientFunction : public CoefficientFunction {
         std::vector<AbstractConvolution *> convolutions_lmu1_;
         std::vector<AbstractConvolution *> convolutions_lmu2_;
 
-        ExactCoefficientFunction *gluon_lo_;
-        ExactCoefficientFunction *gluon_nlo_;
-        ExactCoefficientFunction *quark_nlo_;
+        ExactCoefficientFunction *gluon_as1_;
+        ExactCoefficientFunction *gluon_as2_;
+        ExactCoefficientFunction *quark_as2_;
 
         SplittingFunction *Pgq0_;
         SplittingFunction *Pgg0_;

@@ -17,7 +17,7 @@ ThresholdCoefficientFunction::ThresholdCoefficientFunction(
 )
     : CoefficientFunction(order, kind, channel) {
 
-    exactlo_ = new ExactCoefficientFunction(1, GetKind(), GetChannel());
+    exact_as1_ = new ExactCoefficientFunction(1, GetKind(), GetChannel());
     SetFunctions();
 }
 
@@ -26,7 +26,7 @@ ThresholdCoefficientFunction::ThresholdCoefficientFunction(
 //------------------------------------------------------------------------------------------//
 
 ThresholdCoefficientFunction::~ThresholdCoefficientFunction() {
-    delete exactlo_;
+    delete exact_as1_;
 }
 
 //==========================================================================================//
@@ -177,7 +177,7 @@ double ThresholdCoefficientFunction::
     // defining nf as nan since they it is not needed
     int nf = static_cast<int>(nan(""));
 
-    return exactlo_->fx(x, m2Q2, m2mu2, nf)
+    return exact_as1_->fx(x, m2Q2, m2mu2, nf)
            * (threshold_expansion_g2(x, m2Q2, m2mu2)
               + threshold_expansion_g2_const(m2Q2, m2mu2));
 }
@@ -196,7 +196,7 @@ double ThresholdCoefficientFunction::
     // defining nf as nan since they it is not needed
     int nf = static_cast<int>(nan(""));
 
-    return exactlo_->fx(x, m2Q2, m2mu2, nf)
+    return exact_as1_->fx(x, m2Q2, m2mu2, nf)
            * (threshold_expansion_g2(x, m2Q2, m2mu2)
               + threshold_expansion_g2_const(m2Q2, m2mu2));
 }
@@ -215,7 +215,7 @@ double ThresholdCoefficientFunction::C2_g2_threshold_const(
     // defining nf as nan since they it is not needed
     int nf = static_cast<int>(nan(""));
 
-    return exactlo_->fx(x, m2Q2, m2mu2, nf)
+    return exact_as1_->fx(x, m2Q2, m2mu2, nf)
            * threshold_expansion_g2_const(m2Q2, m2mu2);
 }
 
@@ -233,7 +233,7 @@ double ThresholdCoefficientFunction::CL_g2_threshold_const(
     // defining nf as nan since they it is not needed
     int nf = static_cast<int>(nan(""));
 
-    return exactlo_->fx(x, m2Q2, m2mu2, nf)
+    return exact_as1_->fx(x, m2Q2, m2mu2, nf)
            * threshold_expansion_g2_const(m2Q2, m2mu2);
 }
 
@@ -338,7 +338,7 @@ double ThresholdCoefficientFunction::C2_g3_threshold(
     double x, double m2Q2, double m2mu2, int nf
 ) const {
 
-    return exactlo_->fx(x, m2Q2, m2mu2, nf)
+    return exact_as1_->fx(x, m2Q2, m2mu2, nf)
            * (threshold_expansion_g3(x, m2Q2, m2mu2, nf)
               + threshold_expansion_g3_const(m2Q2, m2mu2));
 }
@@ -354,7 +354,7 @@ double ThresholdCoefficientFunction::CL_g3_threshold(
     double x, double m2Q2, double m2mu2, int nf
 ) const {
 
-    return exactlo_->fx(x, m2Q2, m2mu2, nf)
+    return exact_as1_->fx(x, m2Q2, m2mu2, nf)
            * (threshold_expansion_g3(x, m2Q2, m2mu2, nf)
               + threshold_expansion_g3_const(m2Q2, m2mu2));
 }
@@ -373,7 +373,7 @@ double ThresholdCoefficientFunction::C2_g3_threshold_const(
     // defining nf as nan since they it is not needed
     int nf = static_cast<int>(nan(""));
 
-    return exactlo_->fx(x, m2Q2, m2mu2, nf)
+    return exact_as1_->fx(x, m2Q2, m2mu2, nf)
            * threshold_expansion_g3_const(m2Q2, m2mu2);
 }
 
@@ -391,7 +391,7 @@ double ThresholdCoefficientFunction::CL_g3_threshold_const(
     // defining nf as nan since they it is not needed
     int nf = static_cast<int>(nan(""));
 
-    return exactlo_->fx(x, m2Q2, m2mu2, nf)
+    return exact_as1_->fx(x, m2Q2, m2mu2, nf)
            * threshold_expansion_g3_const(m2Q2, m2mu2);
 }
 
