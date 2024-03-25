@@ -429,6 +429,14 @@ PYBIND11_MODULE(_core, m) {
         py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf"), py::arg("v")
     );
     m.def(
+        "C2_ps3_highenergy_highscale", &C2_ps3_highenergy_highscale, py::arg("x"),
+        py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf"), py::arg("v")
+    );
+    m.def(
+        "CL_ps3_highenergy_highscale", &CL_ps3_highenergy_highscale, py::arg("x"),
+        py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf"), py::arg("v")
+    );
+    m.def(
         "C2_g3_highenergy_highscaleLL", &C2_g3_highenergy_highscaleLL,
         py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2")
     );
