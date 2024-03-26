@@ -10,7 +10,7 @@ When using this code please cite [![arXiv](https://img.shields.io/badge/arXiv-24
 
 The code depends on the public library ```gsl```.
 
-Optional dependencies are the library ```pybind11``` and the Python module ```scikit-build``` (both public), that are required for building the Pyhton bindings.
+Optional dependencies are the library ```pybind11``` and the Python module ```scikit-build``` (both public), that are required for building the Python bindings.
 
 ## Installation
 
