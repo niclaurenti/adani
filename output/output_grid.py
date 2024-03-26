@@ -18,21 +18,22 @@ nf = runcard["nf"]
 mufrac = runcard["mufrac"]
 v = runcard.get("v", 0)
 
+exact = False if runcard["channel"][1] == 'g' else True
+appr = adani.ApproximateCoefficientFunction(3, runcard["channel"][0], runcard["channel"][1], True, exact, True, 1e-3, 1e-3, 1000, 0, 25000)
+
 def function_to_exe_in_parallel(pair):
     x, q = pair
     mu = mufrac * q
     m2Q2 = m**2 / q**2
     m2mu2 = m**2 / mu**2
-    if runcard["channel"] == "2g":
-        return adani.C2_g3_approximation(x, m2Q2, m2mu2, nf, v, method_flag=1)
-    elif runcard["channel"] == "2q":
-        return adani.C2_ps3_approximation(x, m2Q2, m2mu2, nf, v)
-    elif runcard["channel"] == "Lg":
-        return adani.CL_g3_approximation(x, m2Q2, m2mu2, nf, v, method_flag=1)
-    elif runcard["channel"] == "Lq":
-        return adani.CL_ps3_approximation(x, m2Q2, m2mu2, nf, v)
-    else:
-        raise ValueError("Set channel to one of these: 2g 2q Lg Lq")
+
+    res = appr.fxBand(x, m2Q2, m2mu2, nf)
+
+    return [
+        res.GetCentral(),
+        res.GetHigher(),
+        res.GetLower()
+    ]
 
 
 def run(n_threads, x_grid, Q_grid):
@@ -69,8 +70,14 @@ if __name__ == "__main__":
     if runcard["verbose"]:
         print("total running time: ", time.perf_counter() - start)
 
-    res_mat = res_vec.reshape(len(Q_grid), len(x_grid))
-    if runcard["verbose"]:
-        print("Saving grid in ", runcard["output_file"])
-    with open(runcard["output_file"], 'w') as f:
-        np.savetxt(f, res_mat)
+    res_mat = res_vec.reshape(len(Q_grid), len(x_grid), 3)
+
+    output_name = f"C_{runcard['channel']}_nf{nf}"
+
+    names = ['central', 'higher', 'lower']
+
+    for i in range(3):
+        if runcard["verbose"]:
+            print(f"Saving {names[i]} grid in: {output_name}_{names[i]}.dat")
+        with open("results/" + output_name + names[i] + '.dat', 'w') as f:
+            np.savetxt(f, res_mat[:,:,i])

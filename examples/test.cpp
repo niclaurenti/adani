@@ -20,8 +20,8 @@ int main() {
 
     ApproximateCoefficientFunction F2g(3, '2', 'g', true, false, true, 1e-3, 1e-3, 1000, 0, 25000);
     ApproximateCoefficientFunction FLg(3, 'L', 'g', true, false, true, 1e-3, 1e-3, 1000, 0, 25000);
-    ApproximateCoefficientFunction F2q(3, '2', 'q', true, false, true, 1e-3, 1e-3, 1000, 0, 25000);
-    ApproximateCoefficientFunction FLq(3, 'L', 'q', true, false, true, 1e-3, 1e-3, 1000, 0, 25000);
+    ApproximateCoefficientFunction F2q(3, '2', 'q', true, true, true, 1e-3, 1e-3, 1000, 0, 25000);
+    ApproximateCoefficientFunction FLq(3, 'L', 'q', true, true, true, 1e-3, 1e-3, 1000, 0, 25000);
 
     for(int i=0; i<N; i++) {
         for(int j=0; j<N; j++) {

@@ -9,7 +9,6 @@
 #include <ctime>
 #include <sstream>
 #include <string.h>
-#include <unistd.h>
 
 using namespace std;
 
@@ -17,8 +16,8 @@ std::string print_time(time_t seconds);
 
 int main(int argc, char** argv) {
 
-    if(argc!=7) {
-        cout<< "ERROR!\nUsage: ./output_grid.exe mufrac = mu/Q m nf v channel filename\nExiting..." <<endl;
+    if(argc!=5) {
+        cout<< "ERROR!\nUsage: ./output_grid.exe mufrac = mu/Q m nf channel\nExiting..." <<endl;
         return -1;
     }
 
@@ -26,14 +25,10 @@ int main(int argc, char** argv) {
     double m = atof(argv[2]);
 
     int nf = atoi(argv[3]) ;
-    int v = atoi(argv[4]) ;
-    if (v < -1 || v > 1) {
-        cout << "Choose v = {-1, 0, 1}" << endl ;
-        exit(-1);
-    }
-    string channel = argv[5];
 
-    string filename = argv[6] ;
+    char kind = argv[4][0];
+    char channel = argv[4][1];
+
     ifstream inputQ;
     inputQ.open("Q.txt");
 
@@ -62,49 +57,70 @@ int main(int argc, char** argv) {
 
     cout << "Size of the grid (x,Q) = (" << x.size() <<","<< Q.size() << ")" <<endl ;
 
+    string filename = "results/C_";
+    filename.append(argv[4]);
+    filename.append("_nf" + to_string(nf));
 
-    ofstream output;
-    output.open(filename);
-    if (! output.is_open()) {
-        cout<<"Problems in opening "<<filename<<endl ;
+    ofstream output_c;
+    ofstream output_h;
+    ofstream output_l;
+
+
+    output_c.open(filename + "_central.dat");
+    if (! output_c.is_open()) {
+        cout << "Problems in opening " << filename + "_central.dat" << endl ;
         exit(-1);
     } else {
-        cout << "Saving grid in " << filename << endl;
+        cout << "Saving central grid in " << filename + "_central.dat" << endl;
     }
 
-    double res ;
+    output_h.open(filename + "_higher.dat");
+    if (! output_h.is_open()) {
+        cout << "Problems in opening " << filename + "_higher.dat" << endl ;
+        exit(-1);
+    } else {
+        cout << "Saving higher grid in " << filename + "_higher.dat" << endl;
+    }
 
-    int k  = 1;
+    output_l.open(filename + "_lower.dat");
+    if (! output_l.is_open()) {
+        cout << "Problems in opening " << filename + "_lower.dat" << endl ;
+        exit(-1);
+    } else {
+        cout << "Saving lower grid in " << filename + "_lower.dat" << endl;
+    }
 
-    time_t total = 0, mean;
+    Value res = Value(0,0,0);
 
     time_t starting_time = time(NULL) ;
 
+    ApproximateCoefficientFunction Approx = ApproximateCoefficientFunction(3, kind, channel, true, channel == 'q', true);
+
     for(double Q_ : Q) {
-        time_t t1 = time(NULL) ;
         for(double x_ : x) {
             double m2Q2, mu, m2mu2 ;
             m2Q2 = pow(m/Q_, 2) ;
             mu = mufrac * Q_ ;
             m2mu2 = pow(m/mu, 2) ;
-            if(channel == "2g") res = C2_g3_approximation(x_, m2Q2, m2mu2, nf, v, 1) ;
-            else if(channel == "2q") res = C2_ps3_approximation(x_, m2Q2, m2mu2, nf, v) ;
-            else if(channel == "Lg") res = CL_g3_approximation(x_, m2Q2, m2mu2, nf, v, 1)  ;
-            else if(channel == "Lq") res = CL_ps3_approximation(x_, m2Q2, m2mu2, nf, v) ;
-            else {
-                cout<< "ERROR!\nUsage: channel = {2g, 2q, Lg, Lq}\nExiting..." <<endl;
-                exit(-1);
-            }
-            output << res << "   ";
+            res = Approx.fxBand(x_, m2Q2, m2mu2, nf);
+            output_c << res.GetCentral() << "   ";
+            output_h << res.GetHigher() << "   ";
+            output_l << res.GetLower() << "   ";
         }
-        output << endl ;
+        output_c << endl ;
+        output_h << endl ;
+        output_l << endl ;
     }
 
     time_t ending_time = time(NULL) ;
 
     cout << "Total running time is " << print_time(ending_time - starting_time) << endl ;
 
-    output.close();
+
+    output_c.close();
+    output_h.close();
+    output_l.close();
+
     inputQ.close() ;
     inputx.close() ;
 
