@@ -184,7 +184,8 @@ double ExactCoefficientFunction::MuDependentTerms(
 ) const {
 
     double x_max = 1. / (1 + 4 * m2Q2);
-    if (x <=0 || x > x_max) return 0.;
+    if (x <= 0 || x > x_max)
+        return 0.;
 
     return (this->*mu_dep_)(x, m2Q2, m2mu2, nf);
 }
@@ -345,8 +346,8 @@ ExactCoefficientFunction::CL_g1(double x, double m2Q2, int /*nf*/) const {
 //  OBSERVATION: in the O(as^2) exact coefficeint functions the
 //  mu-independent part is an interpolation in a certain grid. When this
 //  function is called for a (x,Q) value outside this grid, the value 0 is
-//  returned. The mu-dependent part is defined everywhere. This means that outside the grid
-//  one contribution is set to zero while the other is not.
+//  returned. The mu-dependent part is defined everywhere. This means that
+//  outside the grid one contribution is set to zero while the other is not.
 //------------------------------------------------------------------------------------------//
 
 /// @cond UNNECESSARY

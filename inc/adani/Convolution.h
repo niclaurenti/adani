@@ -56,7 +56,7 @@ class AbstractConvolution {
         double GetAbserr() const { return abserr_; };
         double GetRelerr() const { return relerr_; };
         int GetDim() const { return dim_; };
-        gsl_integration_workspace *GetWorkspace() const {return w_; };
+        gsl_integration_workspace *GetWorkspace() const { return w_; };
         CoefficientFunction *GetCoeffFunc() const { return coefffunc_; };
         AbstractSplittingFunction *GetSplitFunc() const { return splitfunc_; };
 

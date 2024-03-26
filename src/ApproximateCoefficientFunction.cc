@@ -171,7 +171,8 @@ Value ApproximateCoefficientFunction::MuIndependentTermsBand(
 ) const {
 
     double x_max = 1. / (1 + 4 * m2Q2);
-    if (x <=0 || x > x_max) return 0.;
+    if (x <= 0 || x > x_max)
+        return 0.;
 
     double A = approximation_.A, B = approximation_.B, C = approximation_.C,
            D = approximation_.D;
@@ -252,7 +253,7 @@ struct klmv_params klmv_C2g3A = { 1., 20., 0.007, 4, 0.28 };
 struct klmv_params klmv_C2g3B = { 0.8, 10.7, 0.055, 2, 0.423 };
 struct klmv_params klmv_C2q3A = { 1., 20., 0.004, 4, 0.125 };
 struct klmv_params klmv_C2q3B = { 0.8, 10.7, 0.0245, 2, 0.17 };
-struct klmv_params klmv_C2g3B_lowxi = {0.8, 10.7, 0.055125, 2, 0.3825};
+struct klmv_params klmv_C2g3B_lowxi = { 0.8, 10.7, 0.055125, 2, 0.3825 };
 
 //==========================================================================================//
 //  ApproximateCoefficientFunctionKLMV: constructor
@@ -260,9 +261,9 @@ struct klmv_params klmv_C2g3B_lowxi = {0.8, 10.7, 0.055125, 2, 0.3825};
 
 ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(
     const int &order, const char &kind, const char &channel,
-    const bool &revised_approx_highscale, const bool &lowxi, const double &abserr,
-    const double &relerr, const int &dim, const int &method_flag,
-    const int &MCcalls
+    const bool &revised_approx_highscale, const bool &lowxi,
+    const double &abserr, const double &relerr, const int &dim,
+    const int &method_flag, const int &MCcalls
 )
     : AbstractApproximate(
         order, kind, channel, abserr, relerr, dim, method_flag, MCcalls
@@ -289,8 +290,10 @@ ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(
     } else if (GetOrder() == 3) {
         if (GetChannel() == 'g') {
             params_A_ = klmv_C2g3A;
-            if (lowxi) params_B_ = klmv_C2g3B_lowxi;
-            else params_B_ = klmv_C2g3B;
+            if (lowxi)
+                params_B_ = klmv_C2g3B_lowxi;
+            else
+                params_B_ = klmv_C2g3B;
         } else if (GetChannel() == 'q') {
             params_A_ = klmv_C2q3A;
             params_B_ = klmv_C2q3B;
@@ -332,7 +335,8 @@ Value ApproximateCoefficientFunctionKLMV::MuIndependentTermsBand(
 ) const {
 
     double xmax = 1. / (1. + 4 * m2Q2);
-    if (x <= 0 || x >= xmax) return 0.;
+    if (x <= 0 || x >= xmax)
+        return 0.;
 
     double thr = threshold_->MuIndependentTerms(x, m2Q2, nf);
     double thr_const = threshold_->BetaIndependentTerms(x, m2Q2, 1.);
@@ -347,21 +351,16 @@ Value ApproximateCoefficientFunctionKLMV::MuIndependentTermsBand(
     double res_A, res_B;
 
     if (GetOrder() == 2) {
-        res_A = ApproximationA(
-            x, m2Q2, 0., he_ll, hs[0], thr, thr_const, gamma, C
-        );
-        res_B = ApproximationB(
-            x, m2Q2, 0., he_ll, hs[0], thr, 0., delta, D
-        );
+        res_A =
+            ApproximationA(x, m2Q2, 0., he_ll, hs[0], thr, thr_const, gamma, C);
+        res_B = ApproximationB(x, m2Q2, 0., he_ll, hs[0], thr, 0., delta, D);
     } else if (GetOrder() == 3) {
         Value he_nll = ApproximateNLL(x, m2Q2);
         res_A = ApproximationA(
-            x, m2Q2, he_ll, he_nll.GetHigher(), hs[1], thr, thr_const,
-            gamma, C
+            x, m2Q2, he_ll, he_nll.GetHigher(), hs[1], thr, thr_const, gamma, C
         );
         res_B = ApproximationB(
-            x, m2Q2, he_ll, he_nll.GetLower(), hs[2], thr, thr_const,
-            delta, D
+            x, m2Q2, he_ll, he_nll.GetLower(), hs[2], thr, thr_const, delta, D
         );
     }
 
@@ -421,7 +420,8 @@ double ApproximateCoefficientFunctionKLMV::ApproximationB(
 }
 
 //==========================================================================================//
-//  ApproximateCoefficientFunctionKLMV: NLL coefficient of the small-x  approximation
+//  ApproximateCoefficientFunctionKLMV: NLL coefficient of the small-x
+//  approximation
 //------------------------------------------------------------------------------------------//
 
 Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(

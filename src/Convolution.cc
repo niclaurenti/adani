@@ -582,14 +582,18 @@ double DoubleConvolution::SingularPart(double x, double m2Q2, int nf) const {
     F.params = &params;
 
     gsl_monte_vegas_init(s_);
-    gsl_monte_vegas_integrate(&F, xl, xu, 2, MCcalls_, r_, s_, &singular1, &err);
+    gsl_monte_vegas_integrate(
+        &F, xl, xu, 2, MCcalls_, r_, s_, &singular1, &err
+    );
 
     xl[1] = x / x_max;
     xu[1] = 1;
 
     F.f = &singular2_integrand;
     gsl_monte_vegas_init(s_);
-    gsl_monte_vegas_integrate(&F, xl, xu, 2, MCcalls_, r_, s_, &singular2, &err);
+    gsl_monte_vegas_integrate(
+        &F, xl, xu, 2, MCcalls_, r_, s_, &singular2, &err
+    );
 
     double abserr = GetAbserr();
     double relerr = GetRelerr();

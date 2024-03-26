@@ -55,11 +55,13 @@ Value AsymptoticCoefficientFunction::fxBand(
 }
 
 //==========================================================================================//
-//  AsymptoticCoefficientFunction: all possible variation (3x3=9) of the combination between
-//  high scale and power terms
+//  AsymptoticCoefficientFunction: all possible variation (3x3=9) of the
+//  combination between high scale and power terms
 //------------------------------------------------------------------------------------------//
 
-vector<double> AsymptoticCoefficientFunction::AllVariations(double x, double m2Q2, double m2mu2, int nf) const {
+vector<double> AsymptoticCoefficientFunction::AllVariations(
+    double x, double m2Q2, double m2mu2, int nf
+) const {
 
     vector<double> hs_vec = (highscale_->fxBand(x, m2Q2, m2mu2, nf)).ToVect();
     vector<double> pt_vec = (powerterms_->fxBand(x, m2Q2, m2mu2, nf)).ToVect();

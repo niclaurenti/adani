@@ -43,7 +43,8 @@ MatchingCondition::MatchingCondition(
     // checking only for g since revised_approximation is not present for q
     if (entry2_ == 'g') {
         if (exact && revised_approx) {
-            cout << "Error: revised_approx = true is meaningfull only if exact = "
+            cout << "Error: revised_approx = true is meaningfull only if exact "
+                    "= "
                     "false!"
                  << endl;
             exit(-1);
@@ -93,8 +94,8 @@ Value MatchingCondition::MuIndependentNfIndependentTerm(double x) const {
 }
 
 //==========================================================================================//
-//  MatchingCondition: nf independent part of the a_Qi (i=q,q) term without ordering
-//  the upper and lower bands
+//  MatchingCondition: nf independent part of the a_Qi (i=q,q) term without
+//  ordering the upper and lower bands
 //------------------------------------------------------------------------------------------//
 
 vector<double> MatchingCondition::NotOrdered(double x) const {
@@ -102,19 +103,19 @@ vector<double> MatchingCondition::NotOrdered(double x) const {
     if (entry2_ == 'q') {
         if (exact_) {
             central = a_Qq_PS_30(x, 0);
-            return {central, central, central};
+            return { central, central, central };
         } else {
             higher = a_Qq_PS_30(x, 1);
             lower = a_Qq_PS_30(x, -1);
             central = 0.5 * (higher + lower);
 
-            return {central, higher, lower};
+            return { central, higher, lower };
         }
     } else {
         int low_id;
         if (exact_) {
             central = a_Qg_30(x, 0);
-            return {central, central, central};
+            return { central, central, central };
         } else {
             if (revised_approx_)
                 low_id = -1;
@@ -125,7 +126,7 @@ vector<double> MatchingCondition::NotOrdered(double x) const {
             lower = a_Qg_30(x, low_id);
             central = 0.5 * (higher + lower);
 
-            return {central, higher, lower};
+            return { central, higher, lower };
         }
     }
 }

@@ -49,7 +49,8 @@ class HighScaleCoefficientFunction : public CoefficientFunction {
         Value
         fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
 
-        vector<double> fxBand_NotOrdered(double x, double m2Q2, double m2mu2, int nf) const;
+        vector<double>
+        fxBand_NotOrdered(double x, double m2Q2, double m2mu2, int nf) const;
 
         void SetFunctions();
 
