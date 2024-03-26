@@ -17,9 +17,9 @@ std::string print_time(time_t seconds);
 int main(int argc, char **argv) {
 
     if (argc != 5) {
-        cout << "ERROR!\nUsage: ./output_grid.exe mufrac = mu/Q m nf "
-                "channel\nExiting..."
-             << endl;
+        cout << "ERROR!" << endl
+             << "Usage: ./output_grid.exe mufrac = mu/Q m nf channel"
+             << "Exiting..." << endl;
         return -1;
     }
 
