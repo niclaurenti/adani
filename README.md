@@ -40,7 +40,7 @@ or
 ```bash
 g++ -Wall -I/your/installation/path/include -L/your/installation/path/lib/ -o test.exe test.cpp -ladani
 ```
-In the first case remember to run
+In both cases remember to run
 ```bash
 export PATH=$PATH:/your/installation/path/bin
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/your/installation/path/lib
