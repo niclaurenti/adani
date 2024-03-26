@@ -157,3 +157,28 @@ def test_klmv_as2():
                         tmp = app.MuIndependentTermsBand(x, m2Q2, 1)
                         np.testing.assert_allclose(higher, tmp.GetHigher(), rtol=1e-7)
                         np.testing.assert_allclose(lower, tmp.GetLower(), rtol=1e-7)
+
+def test_klmv_as3():
+    for channel in ['g', 'q']:
+        for kind in ['2']:
+            app = ad.ApproximateCoefficientFunctionKLMV(3, kind, channel)
+            for xi in np.geomspace(1e-2, 1e2, 10):
+                m2Q2 = 1/xi
+                for x in np.geomspace(1e-5, 1, 10):
+                    for nf in [4, 5, 6]:
+                        if kind == '2':
+                            if channel == 'g':
+                                tmpA = oldad.C2_g3_approximationA_klmv(x, m2Q2, 1., nf, 0)
+                                tmpB = oldad.C2_g3_approximationB_klmv(x, m2Q2, 1., nf, 0)
+                            if channel == 'q':
+                                tmpA = oldad.C2_ps3_approximationA_klmv(x, m2Q2, 1., nf)
+                                tmpB = oldad.C2_ps3_approximationB_klmv(x, m2Q2, 1., nf)
+                            if tmpA > tmpB:
+                                higher = tmpA
+                                lower = tmpB
+                            else:
+                                higher = tmpB
+                                lower = tmpA
+                            tmp = app.MuIndependentTermsBand(x, m2Q2, nf)
+                            np.testing.assert_allclose(higher, tmp.GetHigher(), rtol=1e-7)
+                            np.testing.assert_allclose(lower, tmp.GetLower(), rtol=1e-7)
