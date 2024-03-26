@@ -252,7 +252,7 @@ struct klmv_params klmv_C2g3A = { 1., 20., 0.007, 4, 0.28 };
 struct klmv_params klmv_C2g3B = { 0.8, 10.7, 0.055, 2, 0.423 };
 struct klmv_params klmv_C2q3A = { 1., 20., 0.004, 4, 0.125 };
 struct klmv_params klmv_C2q3B = { 0.8, 10.7, 0.0245, 2, 0.17 };
-// struct klmv_params klmv_C2gB_lowxi = {0.8, 10.7, 0.055, 2, 0.423};
+struct klmv_params klmv_C2g3B_lowxi = {0.8, 10.7, 0.055125, 2, 0.3825};
 
 //==========================================================================================//
 //  ApproximateCoefficientFunctionKLMV: constructor
@@ -260,7 +260,7 @@ struct klmv_params klmv_C2q3B = { 0.8, 10.7, 0.0245, 2, 0.17 };
 
 ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(
     const int &order, const char &kind, const char &channel,
-    const bool &revised_approx_highscale, const double &abserr,
+    const bool &revised_approx_highscale, const bool &lowxi, const double &abserr,
     const double &relerr, const int &dim, const int &method_flag,
     const int &MCcalls
 )
@@ -289,7 +289,8 @@ ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(
     } else if (GetOrder() == 3) {
         if (GetChannel() == 'g') {
             params_A_ = klmv_C2g3A;
-            params_B_ = klmv_C2g3B;
+            if (lowxi) params_B_ = klmv_C2g3B_lowxi;
+            else params_B_ = klmv_C2g3B;
         } else if (GetChannel() == 'q') {
             params_A_ = klmv_C2q3A;
             params_B_ = klmv_C2q3B;
@@ -297,9 +298,17 @@ ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(
     }
 
     threshold_ = new ThresholdCoefficientFunction(order, kind, channel);
+
+    bool exact_hs;
+    if (channel == 'q') {
+        exact_hs = revised_approx_highscale;
+    } else {
+        exact_hs = false;
+    }
     highscale_ = new HighScaleCoefficientFunction(
-        order, kind, channel, false, revised_approx_highscale
+        order, kind, channel, exact_hs, revised_approx_highscale
     );
+
     highenergy_ =
         new HighEnergyCoefficientFunction(order, kind, channel, false);
 }

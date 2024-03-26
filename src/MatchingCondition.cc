@@ -92,6 +92,11 @@ Value MatchingCondition::MuIndependentNfIndependentTerm(double x) const {
     }
 }
 
+//==========================================================================================//
+//  MatchingCondition: nf independent part of the a_Qi (i=q,q) term without ordering
+//  the upper and lower bands
+//------------------------------------------------------------------------------------------//
+
 vector<double> MatchingCondition::NotOrdered(double x) const {
     double central, higher, lower;
     if (entry2_ == 'q') {

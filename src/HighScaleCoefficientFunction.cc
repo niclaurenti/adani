@@ -73,6 +73,11 @@ Value HighScaleCoefficientFunction::fxBand(
     return (this->*fx_)(x, m2Q2, m2mu2, nf);
 }
 
+//==========================================================================================//
+//  HighScaleCoefficientFunction: band of the highscale coefficient function without ordering
+//  the upper and lower bands
+//------------------------------------------------------------------------------------------//
+
 vector<double> HighScaleCoefficientFunction::fxBand_NotOrdered(double x, double m2Q2, double m2mu2, int nf) const {
 
     if (GetOrder() == 2) return fxBand(x, m2Q2, m2mu2, nf).ToVect();

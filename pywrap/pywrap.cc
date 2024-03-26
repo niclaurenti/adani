@@ -75,11 +75,11 @@ PYBIND11_MODULE(_core, m) {
     )
         .def(
             py::init<
-                const int &, const char &, const char &, const bool &,
+                const int &, const char &, const char &, const bool &, const bool &,
                 const double &, const double &, const int &, const int &,
                 const int &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel"),
-            py::arg("revised_approx_highscale") = true,
+            py::arg("revised_approx_highscale") = true, py::arg("lowxi") = false,
             py::arg("abserr") = 1e-3, py::arg("relerr") = 1e-3,
             py::arg("dim") = 1000, py::arg("method_flag") = 0,
             py::arg("MCcalls") = 25000
