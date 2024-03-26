@@ -31,6 +31,7 @@ class MatchingCondition {
         ~MatchingCondition(){};
 
         Value MuIndependentNfIndependentTerm(double x) const;
+        vector<double> NotOrdered(double x) const;
 
     private:
         int order_;

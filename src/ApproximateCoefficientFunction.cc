@@ -252,7 +252,7 @@ struct klmv_params klmv_C2g3A = { 1., 20., 0.007, 4, 0.28 };
 struct klmv_params klmv_C2g3B = { 0.8, 10.7, 0.055, 2, 0.423 };
 struct klmv_params klmv_C2q3A = { 1., 20., 0.004, 4, 0.125 };
 struct klmv_params klmv_C2q3B = { 0.8, 10.7, 0.0245, 2, 0.17 };
-// struct klmv_params klmv_C2gB_lowxi = {0.8, 10.7, 0.055, 2, 0.423};
+struct klmv_params klmv_C2g3B_lowxi = {0.8, 10.7, 0.055125, 2, 0.3825};
 
 //==========================================================================================//
 //  ApproximateCoefficientFunctionKLMV: constructor
@@ -260,7 +260,7 @@ struct klmv_params klmv_C2q3B = { 0.8, 10.7, 0.0245, 2, 0.17 };
 
 ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(
     const int &order, const char &kind, const char &channel,
-    const bool &revised_approx_highscale, const double &abserr,
+    const bool &revised_approx_highscale, const bool &lowxi, const double &abserr,
     const double &relerr, const int &dim, const int &method_flag,
     const int &MCcalls
 )
@@ -289,7 +289,8 @@ ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(
     } else if (GetOrder() == 3) {
         if (GetChannel() == 'g') {
             params_A_ = klmv_C2g3A;
-            params_B_ = klmv_C2g3B;
+            if (lowxi) params_B_ = klmv_C2g3B_lowxi;
+            else params_B_ = klmv_C2g3B;
         } else if (GetChannel() == 'q') {
             params_A_ = klmv_C2q3A;
             params_B_ = klmv_C2q3B;
@@ -297,9 +298,17 @@ ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(
     }
 
     threshold_ = new ThresholdCoefficientFunction(order, kind, channel);
+
+    bool exact_hs;
+    if (channel == 'q') {
+        exact_hs = revised_approx_highscale;
+    } else {
+        exact_hs = false;
+    }
     highscale_ = new HighScaleCoefficientFunction(
-        order, kind, channel, false, revised_approx_highscale
+        order, kind, channel, exact_hs, revised_approx_highscale
     );
+
     highenergy_ =
         new HighEnergyCoefficientFunction(order, kind, channel, false);
 }
@@ -311,7 +320,7 @@ ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(
 ApproximateCoefficientFunctionKLMV::~ApproximateCoefficientFunctionKLMV() {
     delete threshold_;
     delete highscale_;
-    delete threshold_;
+    delete highenergy_;
 }
 
 //==========================================================================================//
@@ -322,12 +331,15 @@ Value ApproximateCoefficientFunctionKLMV::MuIndependentTermsBand(
     double x, double m2Q2, int nf
 ) const {
 
+    double xmax = 1. / (1. + 4 * m2Q2);
+    if (x <= 0 || x >= xmax) return 0.;
+
     double thr = threshold_->MuIndependentTerms(x, m2Q2, nf);
     double thr_const = threshold_->BetaIndependentTerms(x, m2Q2, 1.);
 
     double he_ll = highenergy_->MuIndependentTerms(x, m2Q2, nf);
 
-    Value hs = highenergy_->MuIndependentTermsBand(x, m2Q2, nf);
+    vector<double> hs = highscale_->fxBand_NotOrdered(x, m2Q2, 1., nf);
 
     double gamma = params_A_.gamma, C = params_A_.C, delta = params_B_.gamma,
            D = params_B_.C;
@@ -336,19 +348,19 @@ Value ApproximateCoefficientFunctionKLMV::MuIndependentTermsBand(
 
     if (GetOrder() == 2) {
         res_A = ApproximationA(
-            x, m2Q2, 0., he_ll, hs.GetCentral(), thr, thr_const, gamma, C
+            x, m2Q2, 0., he_ll, hs[0], thr, thr_const, gamma, C
         );
         res_B = ApproximationB(
-            x, m2Q2, 0., he_ll, hs.GetCentral(), thr, 0., delta, D
+            x, m2Q2, 0., he_ll, hs[0], thr, 0., delta, D
         );
     } else if (GetOrder() == 3) {
         Value he_nll = ApproximateNLL(x, m2Q2);
         res_A = ApproximationA(
-            x, m2Q2, he_ll, he_nll.GetHigher(), hs.GetHigher(), thr, thr_const,
+            x, m2Q2, he_ll, he_nll.GetHigher(), hs[1], thr, thr_const,
             gamma, C
         );
         res_B = ApproximationB(
-            x, m2Q2, he_ll, he_nll.GetLower(), hs.GetLower(), thr, thr_const,
+            x, m2Q2, he_ll, he_nll.GetLower(), hs[2], thr, thr_const,
             delta, D
         );
     }

@@ -74,6 +74,24 @@ Value HighScaleCoefficientFunction::fxBand(
 }
 
 //==========================================================================================//
+//  HighScaleCoefficientFunction: band of the highscale coefficient function without ordering
+//  the upper and lower bands
+//------------------------------------------------------------------------------------------//
+
+vector<double> HighScaleCoefficientFunction::fxBand_NotOrdered(double x, double m2Q2, double m2mu2, int nf) const {
+
+    if (GetOrder() == 2) return fxBand(x, m2Q2, m2mu2, nf).ToVect();
+
+    double central, higher, lower;
+    central = fxBand(x, m2Q2, m2mu2, nf).GetCentral();
+
+    higher = fxBand(x, m2Q2, m2mu2, nf).GetHigher() - a_muindep_-> MuIndependentNfIndependentTerm(x).GetHigher() + (a_muindep_-> NotOrdered(x))[1];
+    lower = fxBand(x, m2Q2, m2mu2, nf).GetLower() - a_muindep_-> MuIndependentNfIndependentTerm(x).GetLower() + (a_muindep_-> NotOrdered(x))[2];
+
+    return {central, higher, lower};
+}
+
+//==========================================================================================//
 //  HighScaleCoefficientFunction: function that sets the pointer for fxBand
 //------------------------------------------------------------------------------------------//
 
@@ -3951,47 +3969,3 @@ Value HighScaleCoefficientFunction::D2_ps3_highscale(
            + a_muindep_->MuIndependentNfIndependentTerm(x)
            + 1. / (1 + nf) * massless_as3_->MuIndependentTerms(x, 1 + nf);
 }
-
-//==========================================================================================//
-//  High scale (Q^2 >> m^2) limit of the quark coefficient functions for F2 at
-//  O(as^3) expanded in terms of \alpha_s^{[nf]}. This equation uses the
-//  approximate form of aQqPS30 given in Eq. (3.53) of [arXiv:1205.5727] instead
-//  of the exact expression given in Eq. (5.41, 5.42, 5.45) of Ref.
-//  [arXiv:1409.1135]. It is only used for benchmark against the plots on the
-//  paper.
-//
-//  Eq. (B.11) of Ref. [arXiv:1205.5727].
-//------------------------------------------------------------------------------------------//
-
-// double HighScaleCoefficientFunction::C2_ps3_highscale_klmv_paper(
-//     double x, double m2Q2, double m2mu2, int nf, int v
-// ) const {
-
-//     double Lmu = log(m2mu2);
-
-//     return D2_ps3_highscale_klmv_paper(x, m2Q2, m2mu2, nf, v)
-//            - 4. / 3 * Lmu * D2_ps2_highscale(x, m2Q2, m2mu2);
-// }
-
-//==========================================================================================//
-//  High scale (Q^2 >> m^2) limit of the quark coefficient functions for F2 at
-//  O(as^3) expanded in terms of \alpha_s^{[nf+1]}. This equation uses the
-//  approximate form of aQqPS30 given in Eq. (3.53) of [arXiv:1205.5727] instead
-//  of the exact expression given in Eq. (5.41, 5.42, 5.45) of Ref.
-//  [arXiv:1409.1135]. It is only used for benchmark against the plots on the
-//  paper.
-//
-//  Eq. (B.10) of Ref. [arXiv:1205.5727].
-//------------------------------------------------------------------------------------------//
-
-// double HighScaleCoefficientFunction::D2_ps3_highscale_klmv_paper(
-//     double x, double m2Q2, double m2mu2, int nf, int v
-// ) const {
-
-//     if (v == 1 || v == -1) {
-//         return D2_ps3_highscale(x, m2Q2, m2mu2, nf, v);
-//     } else {
-//         std::cout << "D2_ps3_highscale_klmv_paper: Choose either v=1,
-//         v=-1!!\nExiting!!\n" << std::endl; exit(-1);
-//     }
-// }

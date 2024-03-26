@@ -122,7 +122,7 @@ class ApproximateCoefficientFunctionKLMV : public AbstractApproximate {
     public:
         ApproximateCoefficientFunctionKLMV(
             const int &order, const char &kind, const char &channel,
-            const bool &revised_approx_highscale = true,
+            const bool &revised_approx_highscale = true, const bool &lowxi = false,
             const double &abserr = 1e-3, const double &relerr = 1e-3,
             const int &dim = 1000, const int &method_flag = 0,
             const int &MCcalls = 25000

@@ -133,3 +133,89 @@ def test_mudep_as3_oldversion():
                             res_new = app.MuDependentTerms(x, m2Q2, m2Q2, nf)
                             np.testing.assert_allclose(res_old, res_new, rtol=1e-7)
                 del app
+
+def test_klmv_as2():
+    for channel in ['g', 'q']:
+        app = ad.ApproximateCoefficientFunctionKLMV(2, '2', channel)
+        for xi in np.geomspace(1e-2, 1e2, 10):
+            m2Q2 = 1/xi
+            for x in np.geomspace(1e-5, 1, 10):
+                if channel == 'g':
+                    tmpA = oldad.C2_g2_approximationA_klmv(x, m2Q2, 1.)
+                    tmpB = oldad.C2_g2_approximationB_klmv(x, m2Q2, 1.)
+                if channel == 'q':
+                    tmpA = oldad.C2_ps2_approximationA_klmv(x, m2Q2, 1.)
+                    tmpB = oldad.C2_ps2_approximationB_klmv(x, m2Q2, 1.)
+                if tmpA > tmpB:
+                    higher = tmpA
+                    lower = tmpB
+                else:
+                    higher = tmpB
+                    lower = tmpA
+                tmp = app.MuIndependentTermsBand(x, m2Q2, 1)
+                np.testing.assert_allclose(higher, tmp.GetHigher(), rtol=1e-7)
+                np.testing.assert_allclose(lower, tmp.GetLower(), rtol=1e-7)
+
+def test_klmv_as3():
+    for channel in ['g', 'q']:
+        app = ad.ApproximateCoefficientFunctionKLMV(3, '2', channel)
+        for xi in np.geomspace(1e-2, 1e2, 10):
+            m2Q2 = 1/xi
+            for x in np.geomspace(1e-5, 1, 10):
+                for nf in [4, 5, 6]:
+                    if channel == 'g':
+                        tmpA = oldad.C2_g3_approximationA_klmv(x, m2Q2, 1., nf, 0)
+                        tmpB = oldad.C2_g3_approximationB_klmv(x, m2Q2, 1., nf, 0)
+                    if channel == 'q':
+                        tmpA = oldad.C2_ps3_approximationA_klmv(x, m2Q2, 1., nf)
+                        tmpB = oldad.C2_ps3_approximationB_klmv(x, m2Q2, 1., nf)
+                    if tmpA > tmpB:
+                        higher = tmpA
+                        lower = tmpB
+                    else:
+                        higher = tmpB
+                        lower = tmpA
+                    tmp = app.MuIndependentTermsBand(x, m2Q2, nf)
+                    np.testing.assert_allclose(higher, tmp.GetHigher(), rtol=1e-7)
+                    np.testing.assert_allclose(lower, tmp.GetLower(), rtol=1e-7)
+
+def test_klmv_paper_as3():
+    for channel in ['g', 'q']:
+        app = ad.ApproximateCoefficientFunctionKLMV(3, '2', channel, False)
+        for xi in np.geomspace(1e-2, 1e2, 10):
+            m2Q2 = 1/xi
+            for x in np.geomspace(1e-5, 1, 10):
+                for nf in [4, 5, 6]:
+                    if channel == 'g':
+                        tmpA = oldad.C2_g3_approximationA_klmv(x, m2Q2, 1., nf, 0)
+                        tmpB = oldad.C2_g3_approximationB_klmv_paper(x, m2Q2, 1., nf, 0)
+                    if channel == 'q':
+                        tmpA = oldad.C2_ps3_approximationA_klmv_paper(x, m2Q2, 1., nf)
+                        tmpB = oldad.C2_ps3_approximationB_klmv_paper(x, m2Q2, 1., nf)
+                    if tmpA > tmpB:
+                        higher = tmpA
+                        lower = tmpB
+                    else:
+                        higher = tmpB
+                        lower = tmpA
+                    tmp = app.MuIndependentTermsBand(x, m2Q2, nf)
+                    np.testing.assert_allclose(higher, tmp.GetHigher(), rtol=1e-7)
+                    np.testing.assert_allclose(lower, tmp.GetLower(), rtol=1e-7)
+
+def test_klmv_lowxi_as3():
+    app = ad.ApproximateCoefficientFunctionKLMV(3, '2', 'g', False, True)
+    for xi in np.geomspace(1e-2, 1e2, 10):
+        m2Q2 = 1/xi
+        for x in np.geomspace(1e-5, 1, 10):
+            for nf in [4, 5, 6]:
+                tmpA = oldad.C2_g3_approximationA_klmv(x, m2Q2, 1., nf, 0)
+                tmpB = oldad.C2_g3_approximationBlowxi_klmv(x, m2Q2, 1., nf, 0)
+                if tmpA > tmpB:
+                    higher = tmpA
+                    lower = tmpB
+                else:
+                    higher = tmpB
+                    lower = tmpA
+                tmp = app.MuIndependentTermsBand(x, m2Q2, nf)
+                np.testing.assert_allclose(higher, tmp.GetHigher(), rtol=1e-7)
+                np.testing.assert_allclose(lower, tmp.GetLower(), rtol=1e-7)
