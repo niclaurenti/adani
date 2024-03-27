@@ -98,12 +98,13 @@ int main(int argc, char **argv) {
 
     string hs_version;
 
-    if (channel == 'q') hs_version = "exact";
-    else hs_version = "improved";
+    if (channel == 'q')
+        hs_version = "exact";
+    else
+        hs_version = "improved";
 
-    ApproximateCoefficientFunction Approx = ApproximateCoefficientFunction(
-        3, kind, channel, true, hs_version
-    );
+    ApproximateCoefficientFunction Approx =
+        ApproximateCoefficientFunction(3, kind, channel, true, hs_version);
 
     for (double Q_ : Q) {
         for (double x_ : x) {

@@ -13,7 +13,8 @@ using std::endl;
 //------------------------------------------------------------------------------------------//
 
 MatchingCondition::MatchingCondition(
-    const int &order, const char &entry1, const char &entry2, const string &version
+    const int &order, const char &entry1, const char &entry2,
+    const string &version
 ) {
     // check order
     if (order != 3) {
@@ -37,9 +38,10 @@ MatchingCondition::MatchingCondition(
     }
     entry2_ = entry2;
 
-    //check version
+    // check version
     if (version != "exact" && version != "improved" && version != "original") {
-        cout << "Error: version must be 'exact', 'improved' or 'original'! Got " << version << endl;
+        cout << "Error: version must be 'exact', 'improved' or 'original'! Got "
+             << version << endl;
         exit(-1);
     }
 
@@ -49,7 +51,6 @@ MatchingCondition::MatchingCondition(
     }
 
     version_ = version;
-
 }
 
 //==========================================================================================//
@@ -60,7 +61,8 @@ MatchingCondition::MatchingCondition(
 Value MatchingCondition::MuIndependentNfIndependentTerm(double x) const {
     double central, higher, lower;
     if (entry2_ == 'q') {
-        if (version_ == "exact") return Value(a_Qq_PS_30(x, 0));
+        if (version_ == "exact")
+            return Value(a_Qq_PS_30(x, 0));
         else {
             higher = a_Qq_PS_30(x, 1);
             lower = a_Qq_PS_30(x, -1);
@@ -71,9 +73,12 @@ Value MatchingCondition::MuIndependentNfIndependentTerm(double x) const {
         }
     } else {
         int low_id;
-        if (version_ == "exact") return Value(a_Qg_30(x, 0));
-        else if (version_ == "improved") low_id = -1;
-        else low_id = -12;
+        if (version_ == "exact")
+            return Value(a_Qg_30(x, 0));
+        else if (version_ == "improved")
+            low_id = -1;
+        else
+            low_id = -12;
 
         higher = a_Qg_30(x, 1);
         lower = a_Qg_30(x, low_id);
@@ -94,27 +99,29 @@ vector<double> MatchingCondition::NotOrdered(double x) const {
     if (entry2_ == 'q') {
         if (version_ == "exact") {
             central = a_Qq_PS_30(x, 0);
-            return {central, central, central};
+            return { central, central, central };
         } else {
             higher = a_Qq_PS_30(x, 1);
             lower = a_Qq_PS_30(x, -1);
             central = 0.5 * (higher + lower);
 
-            return {central, higher, lower};
+            return { central, higher, lower };
         }
     } else {
         int low_id;
         if (version_ == "exact") {
             central = a_Qg_30(x, 0);
-            return {central, central, central};
-        } else if (version_ == "improved") low_id = -1;
-        else low_id = -12;
+            return { central, central, central };
+        } else if (version_ == "improved")
+            low_id = -1;
+        else
+            low_id = -12;
 
         higher = a_Qg_30(x, 1);
         lower = a_Qg_30(x, low_id);
         central = 0.5 * (higher + lower);
 
-        return {central, higher, lower};
+        return { central, higher, lower };
     }
 }
 

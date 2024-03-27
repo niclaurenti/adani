@@ -23,7 +23,10 @@ PYBIND11_MODULE(_core, m) {
             py::init<const double &, const double &, const double &>(),
             py::arg("central"), py::arg("higher"), py::arg("lower")
         )
-        .def(py::init<const double &, const double &>(), py::arg("higher"), py::arg("lower"))
+        .def(
+            py::init<const double &, const double &>(), py::arg("higher"),
+            py::arg("lower")
+        )
         .def(py::init<const double &>(), py::arg("central"))
         .def(py::self + py::self)
         .def(py::self + double())
@@ -45,8 +48,8 @@ PYBIND11_MODULE(_core, m) {
         .def(
             py::init<
                 const int &, const char &, const char &, const bool &,
-                const string &, const double &, const double &,
-                const int &, const int &, const int &>(),
+                const string &, const double &, const double &, const int &,
+                const int &, const int &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel"),
             py::arg("NLL") = true, py::arg("highscale_version") = "original",
             py::arg("abserr") = 1e-3, py::arg("relerr") = 1e-3,
@@ -78,9 +81,9 @@ PYBIND11_MODULE(_core, m) {
     )
         .def(
             py::init<
-                const int &, const char &, const char &, const string &, const bool &,
-                const double &, const double &, const int &, const int &,
-                const int &>(),
+                const int &, const char &, const char &, const string &,
+                const bool &, const double &, const double &, const int &,
+                const int &, const int &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel"),
             py::arg("highscale_version") = "original", py::arg("lowxi") = false,
             py::arg("abserr") = 1e-3, py::arg("relerr") = 1e-3,
@@ -246,8 +249,7 @@ PYBIND11_MODULE(_core, m) {
     // HighScaleCoefficientFunction
     py::class_<HighScaleCoefficientFunction>(m, "HighScaleCoefficientFunction")
         .def(
-            py::init<
-                const int &, const char &, const char &, const string &>(),
+            py::init<const int &, const char &, const char &, const string &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel"),
             py::arg("version") = "original"
         )
@@ -272,8 +274,7 @@ PYBIND11_MODULE(_core, m) {
     // HighScaleSplitLogs
     py::class_<HighScaleSplitLogs>(m, "HighScaleSplitLogs")
         .def(
-            py::init<
-                const int &, const char &, const char &, const string &>(),
+            py::init<const int &, const char &, const char &, const string &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel"),
             py::arg("version") = "original"
         )
