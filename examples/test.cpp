@@ -19,16 +19,16 @@ int main() {
     int nf = 4;
 
     ApproximateCoefficientFunction F2g(
-        3, '2', 'g', true, false, true, 1e-3, 1e-3, 1000, 0, 25000
+        3, '2', 'g', true, "improved", 1e-3, 1e-3, 1000, 0, 25000
     );
     ApproximateCoefficientFunction FLg(
-        3, 'L', 'g', true, false, true, 1e-3, 1e-3, 1000, 0, 25000
+        3, 'L', 'g', true, "improved", 1e-3, 1e-3, 1000, 0, 25000
     );
     ApproximateCoefficientFunction F2q(
-        3, '2', 'q', true, true, true, 1e-3, 1e-3, 1000, 0, 25000
+        3, '2', 'q', true, "exact", 1e-3, 1e-3, 1000, 0, 25000
     );
     ApproximateCoefficientFunction FLq(
-        3, 'L', 'q', true, true, true, 1e-3, 1e-3, 1000, 0, 25000
+        3, 'L', 'q', true, "exact", 1e-3, 1e-3, 1000, 0, 25000
     );
 
     for (int i = 0; i < N; i++) {

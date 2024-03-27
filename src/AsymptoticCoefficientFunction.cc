@@ -8,13 +8,12 @@
 
 AsymptoticCoefficientFunction::AsymptoticCoefficientFunction(
     const int &order, const char &kind, const char &channel, const bool &NLL,
-    const bool &exact_highscale, const bool &revised_approx_highscale
+    const string &highscale_version
 )
     : AbstractHighEnergyCoefficientFunction(order, kind, channel, NLL) {
 
     highscale_ = new HighScaleCoefficientFunction(
-        GetOrder(), GetKind(), GetChannel(), exact_highscale,
-        revised_approx_highscale
+        GetOrder(), GetKind(), GetChannel(), highscale_version
     );
     powerterms_ = new PowerTermsCoefficientFunction(
         GetOrder(), GetKind(), GetChannel(), GetNLL()

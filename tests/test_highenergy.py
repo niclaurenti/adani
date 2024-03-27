@@ -113,7 +113,7 @@ def test_powerterms_as3_oldadani():
                                 res2 = old.CL_ps3_power_terms(x, m2Q2, m2mu2, nf, 0)
                             np.testing.assert_allclose(res1, res2, rtol=1e-7)
 
-def test_asy():
+def test_powerterms():
     for order in range(1, 3 + 1):
         for kind in ['2', 'L']:
             for channel in ['g', 'q']:

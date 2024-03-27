@@ -13,8 +13,7 @@ using std::endl;
 //------------------------------------------------------------------------------------------//
 
 HighScaleSplitLogs::HighScaleSplitLogs(
-    const int &order, const char &kind, const char &channel, const bool &exact,
-    const bool &revised_approx
+    const int &order, const char &kind, const char &channel, const string &version
 )
     : CoefficientFunction(order, kind, channel) {
     if (order != 3) {
@@ -36,7 +35,7 @@ HighScaleSplitLogs::HighScaleSplitLogs(
 
     if (GetOrder() == 3 && GetKind() == '2') {
         a_muindep_ =
-            new MatchingCondition(3, 'Q', GetChannel(), exact, revised_approx);
+            new MatchingCondition(3, 'Q', GetChannel(), version);
     }
 
     SetFunctions();

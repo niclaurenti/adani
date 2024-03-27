@@ -30,8 +30,7 @@ class AsymptoticCoefficientFunction
     public:
         AsymptoticCoefficientFunction(
             const int &order, const char &kind, const char &channel,
-            const bool &NLL = true, const bool &exact_highscale = false,
-            const bool &revised_approx_highscale = true
+            const bool &NLL = true, const string &highscale_version = "original"
         );
         ~AsymptoticCoefficientFunction();
 

@@ -96,8 +96,13 @@ int main(int argc, char **argv) {
 
     time_t starting_time = time(NULL);
 
+    string hs_version;
+
+    if (channel == 'q') hs_version = "exact";
+    else hs_version = "improved";
+
     ApproximateCoefficientFunction Approx = ApproximateCoefficientFunction(
-        3, kind, channel, true, channel == 'q', true
+        3, kind, channel, true, hs_version
     );
 
     for (double Q_ : Q) {

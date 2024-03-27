@@ -5,6 +5,10 @@
 
 #include <adani/adani.h>
 
+#include <string>
+
+using std::string;
+
 namespace py = pybind11;
 
 PYBIND11_MODULE(_core, m) {
@@ -41,11 +45,10 @@ PYBIND11_MODULE(_core, m) {
         .def(
             py::init<
                 const int &, const char &, const char &, const bool &,
-                const bool &, const bool &, const double &, const double &,
+                const string &, const double &, const double &,
                 const int &, const int &, const int &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel"),
-            py::arg("NLL") = true, py::arg("exact_highscale") = false,
-            py::arg("revised_approx_highscale") = true,
+            py::arg("NLL") = true, py::arg("highscale_version") = "original",
             py::arg("abserr") = 1e-3, py::arg("relerr") = 1e-3,
             py::arg("dim") = 1000, py::arg("method_flag") = 0,
             py::arg("MCcalls") = 25000
@@ -75,11 +78,11 @@ PYBIND11_MODULE(_core, m) {
     )
         .def(
             py::init<
-                const int &, const char &, const char &, const bool &, const bool &,
+                const int &, const char &, const char &, const string &, const bool &,
                 const double &, const double &, const int &, const int &,
                 const int &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel"),
-            py::arg("revised_approx_highscale") = true, py::arg("lowxi") = false,
+            py::arg("highscale_version") = "original", py::arg("lowxi") = false,
             py::arg("abserr") = 1e-3, py::arg("relerr") = 1e-3,
             py::arg("dim") = 1000, py::arg("method_flag") = 0,
             py::arg("MCcalls") = 25000
@@ -110,10 +113,9 @@ PYBIND11_MODULE(_core, m) {
         .def(
             py::init<
                 const int &, const char &, const char &, const bool &,
-                const bool &, const bool &>(),
+                const string &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel"),
-            py::arg("NLL") = true, py::arg("exact_highscale") = false,
-            py::arg("revised_approx_highscale") = true
+            py::arg("NLL") = true, py::arg("highscale_version") = "original"
         )
         .def(
             "MuIndependentTerms",
@@ -245,10 +247,9 @@ PYBIND11_MODULE(_core, m) {
     py::class_<HighScaleCoefficientFunction>(m, "HighScaleCoefficientFunction")
         .def(
             py::init<
-                const int &, const char &, const char &, const bool &,
-                const bool &>(),
+                const int &, const char &, const char &, const string &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel"),
-            py::arg("exact") = false, py::arg("revised_approx") = true
+            py::arg("version") = "original"
         )
         .def(
             "MuIndependentTerms",
@@ -272,10 +273,9 @@ PYBIND11_MODULE(_core, m) {
     py::class_<HighScaleSplitLogs>(m, "HighScaleSplitLogs")
         .def(
             py::init<
-                const int &, const char &, const char &, const bool &,
-                const bool &>(),
+                const int &, const char &, const char &, const string &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel"),
-            py::arg("exact") = false, py::arg("revised_approx") = true
+            py::arg("version") = "original"
         )
         .def(
             "fx", (double(HighScaleSplitLogs::*)(double, double, int) const)
