@@ -225,6 +225,31 @@ Value PowerTermsCoefficientFunction::fxBand(
         return Value(central, lower, higher);
 }
 
+// In this way the error is enormous
+
+// Value PowerTermsCoefficientFunction::fxBand(
+//     double x, double m2Q2, double m2mu2, int nf
+// ) const {
+
+//     double central = (highenergy_->fx(x, m2Q2, m2mu2, nf))
+//                      - (highenergyhighscale_->fx(x, m2Q2, m2mu2, nf));
+
+//     vector<double> tmp1 = highenergy_->fxBand(x, m2Q2, m2mu2, nf).ToVect();
+//     vector<double> tmp2 = highenergyhighscale_->fxBand(x, m2Q2, m2mu2, nf).ToVect();
+
+//     double tmp, higher = central, lower = central;
+//     for(double he : tmp1) {
+//         for (double hehs : tmp2) {
+//             tmp = he - hehs;
+
+//             if(tmp > higher) higher = tmp;
+//             if(tmp < lower) lower = tmp;
+//         }
+//     }
+
+//     return Value(central, higher, lower);
+// }
+
 //==========================================================================================//
 //  High energy limit of the gluon coefficient function for F2 at O(as^2).
 //
