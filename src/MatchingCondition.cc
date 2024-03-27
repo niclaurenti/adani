@@ -40,15 +40,15 @@ MatchingCondition::MatchingCondition(
 
     // check version
     if (version != "exact" && version != "improved" && version != "original"
-        && version != "blumline") {
-        cout << "Error: version must be 'exact', 'improved', 'blumline' or "
+        && version != "abbdvss") {
+        cout << "Error: version must be 'exact', 'improved', 'abbdvss' or "
                 "'original'! Got "
              << version << endl;
         exit(-1);
     }
 
-    if (entry2 == 'q' && (version == "improved" || version == "blumline")) {
-        cout << "Error: quark channel doesn't have 'improved' or 'blumline' "
+    if (entry2 == 'q' && (version == "improved" || version == "abbdvss")) {
+        cout << "Error: quark channel doesn't have 'improved' or 'abbdvss' "
                 "version!"
              << endl;
         exit(-1);
@@ -79,7 +79,8 @@ Value MatchingCondition::MuIndependentNfIndependentTerm(double x) const {
         int low_id;
         if (version_ == "exact")
             return Value(a_Qg_30(x, 0));
-        else if (version_ == "blumline")
+        // abbdvss = Ablinger, Behring, Blumlein, De Freitas, von Manteuffel, Schneider, Schonwald
+        else if (version_ == "abbdvss")
             // This version doesn't have an uncertainty band
             // so returning the same value three times
             return Value(a_Qg_30(x, 2));
