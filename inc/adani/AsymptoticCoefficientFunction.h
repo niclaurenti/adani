@@ -30,20 +30,17 @@ class AsymptoticCoefficientFunction
     public:
         AsymptoticCoefficientFunction(
             const int &order, const char &kind, const char &channel,
-            const bool &NLL = true, const bool &exact_highscale = false,
-            const bool &revised_approx_highscale = true
+            const bool &NLL = true, const string &highscale_version = "original"
         );
         ~AsymptoticCoefficientFunction();
 
         double fx(double x, double m2Q2, double m2mu2, int nf) const override;
-        // double MuIndependentTerms(double x, double m2Q2, int nf) const
-        // override ; double MuDependentTerms(double x, double m2Q2, double
-        // m2mu2, int nf) const override ;
 
         Value
         fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
 
-        vector<double> AllVariations(double x, double m2Q2, double m2mu2, int nf) const;
+        vector<double>
+        AllVariations(double x, double m2Q2, double m2mu2, int nf) const;
 
     private:
         HighScaleCoefficientFunction *highscale_;

@@ -56,7 +56,7 @@ class AbstractConvolution {
         double GetAbserr() const { return abserr_; };
         double GetRelerr() const { return relerr_; };
         int GetDim() const { return dim_; };
-        gsl_integration_workspace *GetWorkspace() const {return w_; };
+        gsl_integration_workspace *GetWorkspace() const { return w_; };
         CoefficientFunction *GetCoeffFunc() const { return coefffunc_; };
         AbstractSplittingFunction *GetSplitFunc() const { return splitfunc_; };
 
@@ -94,7 +94,7 @@ class Convolution : public AbstractConvolution {
         double SingularPart(double x, double m2Q2, int nf) const override;
         double LocalPart(double x, double m2Q2, int nf) const override;
 
-        // support function for the integral. it is static in order to be passed
+        // support function for the integral. It is static in order to be passed
         // to gsl
         static double regular_integrand(double z, void *p);
         static double singular_integrand(double z, void *p);
@@ -141,7 +141,7 @@ class DoubleConvolution : public AbstractConvolution {
             CoefficientFunction *coefffunc,
             AbstractSplittingFunction *splitfunc, const double &abserr = 1e-3,
             const double &relerr = 1e-3, const int &dim = 1000,
-            const int &method_flag = 0, const int &MCcalls = 25000
+            const bool &MCintegral = false, const int &MCcalls = 25000
         );
         ~DoubleConvolution() override;
 
@@ -150,11 +150,11 @@ class DoubleConvolution : public AbstractConvolution {
         double LocalPart(double x, double m2Q2, int nf) const override;
 
         // get methods
-        int GetMethodFlag() const { return method_flag_; };
+        bool GetMCintegral() const { return MCintegral_; };
         int GetMCcalls() const { return MCcalls_; };
 
         // set methods
-        void SetMethodFlag(const int &method_flag);
+        void SetMCintegral(const bool &MCintegral);
         void SetMCcalls(const int &MCcalls);
 
         // support function for the integral. it is static in order to be passed
@@ -168,7 +168,7 @@ class DoubleConvolution : public AbstractConvolution {
         static double singular3_integrand(double z, void *p);
 
     private:
-        int method_flag_;
+        bool MCintegral_;
         int MCcalls_;
         gsl_monte_vegas_state *s_;
         gsl_rng *r_;

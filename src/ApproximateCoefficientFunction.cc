@@ -20,12 +20,12 @@ using std::vector;
 AbstractApproximate::AbstractApproximate(
     const int &order, const char &kind, const char &channel,
     const double &abserr, const double &relerr, const int &dim,
-    const int &method_flag, const int &MCcalls
+    const bool &MCintegral, const int &MCcalls
 )
     : CoefficientFunction(order, kind, channel) {
 
     muterms_ = new ExactCoefficientFunction(
-        order, kind, channel, abserr, relerr, dim, method_flag, MCcalls
+        order, kind, channel, abserr, relerr, dim, MCintegral, MCcalls
     );
 }
 
@@ -94,17 +94,16 @@ struct variation_parameters CL_var = { 0.2, 2. };
 
 ApproximateCoefficientFunction::ApproximateCoefficientFunction(
     const int &order, const char &kind, const char &channel, const bool &NLL,
-    const bool &exact_highscale, const bool &revised_approx_highscale,
-    const double &abserr, const double &relerr, const int &dim,
-    const int &method_flag, const int &MCcalls
+    const string &highscale_version, const double &abserr, const double &relerr,
+    const int &dim, const bool &MCintegral, const int &MCcalls
 )
     : AbstractApproximate(
-        order, kind, channel, abserr, relerr, dim, method_flag, MCcalls
+        order, kind, channel, abserr, relerr, dim, MCintegral, MCcalls
     ) {
 
     threshold_ = new ThresholdCoefficientFunction(order, kind, channel);
     asymptotic_ = new AsymptoticCoefficientFunction(
-        order, kind, channel, NLL, exact_highscale, revised_approx_highscale
+        order, kind, channel, NLL, highscale_version
     );
 
     if (order == 1) {
@@ -171,7 +170,8 @@ Value ApproximateCoefficientFunction::MuIndependentTermsBand(
 ) const {
 
     double x_max = 1. / (1 + 4 * m2Q2);
-    if (x <=0 || x > x_max) return 0.;
+    if (x <= 0 || x > x_max)
+        return 0.;
 
     double A = approximation_.A, B = approximation_.B, C = approximation_.C,
            D = approximation_.D;
@@ -252,7 +252,7 @@ struct klmv_params klmv_C2g3A = { 1., 20., 0.007, 4, 0.28 };
 struct klmv_params klmv_C2g3B = { 0.8, 10.7, 0.055, 2, 0.423 };
 struct klmv_params klmv_C2q3A = { 1., 20., 0.004, 4, 0.125 };
 struct klmv_params klmv_C2q3B = { 0.8, 10.7, 0.0245, 2, 0.17 };
-struct klmv_params klmv_C2g3B_lowxi = {0.8, 10.7, 0.055125, 2, 0.3825};
+struct klmv_params klmv_C2g3B_lowxi = { 0.8, 10.7, 0.055125, 2, 0.3825 };
 
 //==========================================================================================//
 //  ApproximateCoefficientFunctionKLMV: constructor
@@ -260,12 +260,12 @@ struct klmv_params klmv_C2g3B_lowxi = {0.8, 10.7, 0.055125, 2, 0.3825};
 
 ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(
     const int &order, const char &kind, const char &channel,
-    const bool &revised_approx_highscale, const bool &lowxi, const double &abserr,
-    const double &relerr, const int &dim, const int &method_flag,
+    const string &highscale_version, const bool &lowxi, const double &abserr,
+    const double &relerr, const int &dim, const bool &MCintegral,
     const int &MCcalls
 )
     : AbstractApproximate(
-        order, kind, channel, abserr, relerr, dim, method_flag, MCcalls
+        order, kind, channel, abserr, relerr, dim, MCintegral, MCcalls
     ) {
     if (GetOrder() == 1) {
         cout << "Error: KLMV approximation is not implemented at O(as)!"
@@ -289,8 +289,10 @@ ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(
     } else if (GetOrder() == 3) {
         if (GetChannel() == 'g') {
             params_A_ = klmv_C2g3A;
-            if (lowxi) params_B_ = klmv_C2g3B_lowxi;
-            else params_B_ = klmv_C2g3B;
+            if (lowxi)
+                params_B_ = klmv_C2g3B_lowxi;
+            else
+                params_B_ = klmv_C2g3B;
         } else if (GetChannel() == 'q') {
             params_A_ = klmv_C2q3A;
             params_B_ = klmv_C2q3B;
@@ -299,14 +301,8 @@ ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(
 
     threshold_ = new ThresholdCoefficientFunction(order, kind, channel);
 
-    bool exact_hs;
-    if (channel == 'q') {
-        exact_hs = revised_approx_highscale;
-    } else {
-        exact_hs = false;
-    }
     highscale_ = new HighScaleCoefficientFunction(
-        order, kind, channel, exact_hs, revised_approx_highscale
+        order, kind, channel, highscale_version
     );
 
     highenergy_ =
@@ -332,7 +328,8 @@ Value ApproximateCoefficientFunctionKLMV::MuIndependentTermsBand(
 ) const {
 
     double xmax = 1. / (1. + 4 * m2Q2);
-    if (x <= 0 || x >= xmax) return 0.;
+    if (x <= 0 || x >= xmax)
+        return 0.;
 
     double thr = threshold_->MuIndependentTerms(x, m2Q2, nf);
     double thr_const = threshold_->BetaIndependentTerms(x, m2Q2, 1.);
@@ -347,21 +344,16 @@ Value ApproximateCoefficientFunctionKLMV::MuIndependentTermsBand(
     double res_A, res_B;
 
     if (GetOrder() == 2) {
-        res_A = ApproximationA(
-            x, m2Q2, 0., he_ll, hs[0], thr, thr_const, gamma, C
-        );
-        res_B = ApproximationB(
-            x, m2Q2, 0., he_ll, hs[0], thr, 0., delta, D
-        );
+        res_A =
+            ApproximationA(x, m2Q2, 0., he_ll, hs[0], thr, thr_const, gamma, C);
+        res_B = ApproximationB(x, m2Q2, 0., he_ll, hs[0], thr, 0., delta, D);
     } else if (GetOrder() == 3) {
         Value he_nll = ApproximateNLL(x, m2Q2);
         res_A = ApproximationA(
-            x, m2Q2, he_ll, he_nll.GetHigher(), hs[1], thr, thr_const,
-            gamma, C
+            x, m2Q2, he_ll, he_nll.GetHigher(), hs[1], thr, thr_const, gamma, C
         );
         res_B = ApproximationB(
-            x, m2Q2, he_ll, he_nll.GetLower(), hs[2], thr, thr_const,
-            delta, D
+            x, m2Q2, he_ll, he_nll.GetLower(), hs[2], thr, thr_const, delta, D
         );
     }
 
@@ -421,7 +413,8 @@ double ApproximateCoefficientFunctionKLMV::ApproximationB(
 }
 
 //==========================================================================================//
-//  ApproximateCoefficientFunctionKLMV: NLL coefficient of the small-x  approximation
+//  ApproximateCoefficientFunctionKLMV: NLL coefficient of the small-x
+//  approximation
 //------------------------------------------------------------------------------------------//
 
 Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(
@@ -440,627 +433,3 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(
         * 4. / m2Q2 / x;
     return Value(tmp_A, tmp_B);
 }
-
-// //==========================================================================================//
-// //  Approximate gluon coefficient funtcions for F2 at O(as^2) from
-// //  [arXiv:1205.5727]. klmv = Kawamura, Lo Presti, Moch, Vogt. Upper band
-// (i.e.
-// //  approximation A)
-// //
-// //  Eq. (4.10) of Ref. [arXiv:1205.5727].
-// //------------------------------------------------------------------------------------------//
-
-// double C2_g2_approximationA_klmv(double x, double m2Q2, double m2mu2) {
-
-//     double x_max = 1. / (1. + 4 * m2Q2);
-
-//     if (x >= x_max || x < 0)
-//         return 0;
-
-//     double beta = sqrt(1. - 4 * m2Q2 * x / (1. - x));
-
-//     double eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
-
-//     double xi = 1. / m2Q2;
-
-//     double f = 1. / (1. + exp(2. * (xi - 4.)));
-
-//     double gamma = 1.0, C = 42.5;
-
-//     double eta_gamma = pow(eta, gamma);
-
-//     double beta3 = beta * beta * beta;
-
-//     double C_const = C2_g2_threshold(x, m2Q2, 1)
-//                      - C2_g2_threshold_const(x, m2Q2, 1.)
-//                      + (1. - f) * beta * C2_g2_highscale(x, m2Q2, 1.)
-//                      + f * beta3 * C2_g2_highenergy(x, m2Q2, 1.) * eta_gamma
-//                            / (C + eta_gamma);
-
-//     double C_log = C2_g21(x, m2Q2);
-
-//     return C_const + C_log * log(1. / m2mu2);
-// }
-
-// //==========================================================================================//
-// //  Approximate gluon coefficient funtcions for F2 at O(as^2) from
-// //  [arXiv:1205.5727]. klmv = Kawamura, Lo Presti, Moch, Vogt Lower band
-// (i.e.
-// //  approximation B)
-// //
-// //  Eq. (4.11) of Ref. [arXiv:1205.5727].
-// //------------------------------------------------------------------------------------------//
-
-// double C2_g2_approximationB_klmv(double x, double m2Q2, double m2mu2) {
-
-//     double x_max = 1. / (1. + 4. * m2Q2);
-
-//     if (x >= x_max || x < 0)
-//         return 0;
-
-//     double beta = sqrt(1. - 4. * m2Q2 * x / (1. - x));
-
-//     double eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
-
-//     double xi = 1. / m2Q2;
-
-//     double f = 1. / (1. + exp(2. * (xi - 4.)));
-
-//     double delta = 0.8, D = 19.4;
-
-//     double eta_delta = pow(eta, delta);
-
-//     double beta3 = beta * beta * beta;
-
-//     double C_const = C2_g2_threshold(x, m2Q2, 1.)
-//                      + (1. - f) * beta3 * C2_g2_highscale(x, m2Q2, 1.)
-//                      + f * beta3 * C2_g2_highenergy(x, m2Q2, 1.) * eta_delta
-//                            / (D + eta_delta);
-
-//     double C_log = C2_g21(x, m2Q2);
-
-//     return C_const + C_log * log(1. / m2mu2);
-// }
-
-// //==========================================================================================//
-// //  Approximate quark coefficient funtcions for F2 at O(as^2) from
-// //  [arXiv:1205.5727]. klmv = Kawamura, Lo Presti, Moch, Vogt. Upper band
-// (i.e.
-// //  approximation A)
-// //
-// //  Eq. (4.10) of Ref. [arXiv:1205.5727] but for the quark coefficient
-// function.
-// //------------------------------------------------------------------------------------------//
-
-// double C2_ps2_approximationA_klmv(double x, double m2Q2, double m2mu2) {
-
-//     double x_max = 1. / (1. + 4 * m2Q2);
-
-//     if (x >= x_max || x < 0)
-//         return 0;
-
-//     double beta = sqrt(1. - 4. * m2Q2 * x / (1. - x));
-
-//     double eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
-
-//     double xi = 1. / m2Q2;
-
-//     double f = 1. / (1. + exp(2. * (xi - 4.)));
-
-//     double gamma = 1.0, C = 42.5;
-
-//     double eta_gamma = pow(eta, gamma);
-
-//     double beta3 = beta * beta * beta;
-
-//     double C_const = (1. - f) * beta * C2_ps2_highscale(x, m2Q2, 1.)
-//                      + f * beta3 * C2_ps2_highenergy(x, m2Q2, 1.) * eta_gamma
-//                            / (C + eta_gamma);
-
-//     double C_log = C2_g21(x, m2Q2);
-
-//     return C_const + C_log * log(1. / m2mu2);
-// }
-
-// //==========================================================================================//
-// //  Approximate quark coefficient funtcions for F2 at O(as^2) from
-// //  [arXiv:1205.5727]. klmv = Kawamura, Lo Presti, Moch, Vogt. Lower band
-// (i.e.
-// //  approximation B)
-// //
-// //  Eq. (4.11) of Ref. [arXiv:1205.5727] but for the quark coefficient
-// function.
-// //------------------------------------------------------------------------------------------//
-
-// double C2_ps2_approximationB_klmv(double x, double m2Q2, double m2mu2) {
-
-//     double x_max = 1. / (1. + 4 * m2Q2);
-
-//     if (x >= x_max || x < 0)
-//         return 0;
-
-//     double beta = sqrt(1. - 4 * m2Q2 * x / (1. - x));
-
-//     double eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
-
-//     double xi = 1. / m2Q2;
-
-//     double f = 1. / (1. + exp(2. * (xi - 4.)));
-
-//     double delta = 0.8, D = 19.4;
-
-//     double eta_delta = pow(eta, delta);
-
-//     double beta3 = beta * beta * beta;
-
-//     double C_const = (1. - f) * beta3 * C2_ps2_highscale(x, m2Q2, 1.)
-//                      + f * beta3 * C2_ps2_highenergy(x, m2Q2, 1.) * eta_delta
-//                            / (D + eta_delta);
-
-//     double C_log = C2_g21(x, m2Q2);
-
-//     return C_const + C_log * log(1. / m2mu2);
-// }
-
-// //==========================================================================================//
-// //  Approximate gluon coefficient funtcions for F2 at O(as^3) from
-// //  [arXiv:1205.5727]. klmv = Kawamura, Lo Presti, Moch, Vogt. Upper band
-// (i.e.
-// //  approximation A)
-// //
-// //  Eq. (4.17) of Ref. [arXiv:1205.5727].
-// //  This equation uses the approximate form of aQg30 given in Eq. (3.49) of
-// //  [arXiv:1205.5727].
-// //------------------------------------------------------------------------------------------//
-
-// double C2_g3_approximationA_klmv(
-//     double x, double m2Q2, double m2mu2, int nf, int method_flag
-// ) {
-
-//     double x_max = 1. / (1. + 4 * m2Q2);
-
-//     if (x >= x_max || x < 0)
-//         return 0;
-
-//     double pi3 = M_PI * M_PI * M_PI;
-
-//     double beta = sqrt(1. - 4 * m2Q2 * x / (1. - x));
-
-//     double eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
-
-//     double xi = 1. / m2Q2;
-
-//     double f = 1. / (1. + exp(2. * (xi - 4)));
-
-//     double gamma = 1.0, C = 20.0;
-
-//     double eta_gamma = pow(eta, gamma);
-
-//     double beta3 = beta * beta * beta;
-
-//     double C2_g3_highenergyA =
-//         (64. * pi3) * (0.007 * pow(log(1. / m2Q2) / log(5), 4) - 0.28) * 4.
-//         / m2Q2 / x;
-
-//     double C30 = C2_g3_threshold(x, m2Q2, 1., nf)
-//                  - C2_g3_threshold_const(x, m2Q2, 1.)
-//                  + (1. - f) * beta * C2_g3_highscale(x, m2Q2, 1., nf, 1)
-//                  + f * beta3
-//                        * (-log(eta) / log(x) * C2_g3_highenergyLL(x,
-//                        m2Q2, 1.)
-//                           + C2_g3_highenergyA * eta_gamma / (C + eta_gamma));
-
-//     if (m2mu2 == 1.)
-//         return C30;
-
-//     double Lmu = -log(m2mu2);
-//     double Lmu2 = Lmu * Lmu;
-
-//     return C30 + C2_g31(x, m2Q2, nf) * Lmu
-//            + C2_g32(x, m2Q2, nf, method_flag) * Lmu2;
-// }
-
-// //==========================================================================================//
-// //  Approximate gluon coefficient funtcions for F2 at O(as^3) from
-// //  [arXiv:1205.5727]. klmv = Kawamura, Lo Presti, Moch, Vogt. Lower band
-// (i.e.
-// //  approximation B)
-// //
-// //  Eq. (4.18) of Ref. [arXiv:1205.5727].
-// //  This equation uses the approximate form of aQg30 given in Eq. (16) of
-// Ref.
-// //  [arXiv:1701.05838].
-// //------------------------------------------------------------------------------------------//
-
-// double C2_g3_approximationB_klmv(
-//     double x, double m2Q2, double m2mu2, int nf, int method_flag
-// ) {
-
-//     double x_max = 1. / (1. + 4 * m2Q2);
-
-//     if (x >= x_max || x < 0)
-//         return 0;
-
-//     double pi3 = M_PI * M_PI * M_PI;
-
-//     double beta = sqrt(1. - 4 * m2Q2 * x / (1. - x));
-
-//     double eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
-
-//     double xi = 1. / m2Q2;
-
-//     double f = 1. / (1. + exp(2. * (xi - 4)));
-
-//     double delta = 0.8, D = 10.7;
-
-//     double eta_delta = pow(eta, delta);
-
-//     double beta3 = beta * beta * beta;
-
-//     double C2_g3_highenergyB =
-//         (64. * pi3) * (0.055 * pow(log(1. / m2Q2) / log(5), 2) - 0.423) * 4.
-//         / m2Q2 / x;
-
-//     double C30 =
-//         (C2_g3_threshold(x, m2Q2, 1., nf) - C2_g3_threshold_const(x,
-//         m2Q2, 1.))
-//         + f * 2. * C2_g3_threshold_const(x, m2Q2, 1.)
-//         + (1. - f) * beta3 * C2_g3_highscale(x, m2Q2, 1., nf, -1)
-//         + f * beta3
-//               * (-log(eta) / log(x) * C2_g3_highenergyLL(x, m2Q2, 1.)
-//                  + C2_g3_highenergyB * eta_delta / (D + eta_delta));
-
-//     if (m2mu2 == 1.)
-//         return C30;
-
-//     double Lmu = -log(m2mu2);
-//     double Lmu2 = Lmu * Lmu;
-
-//     return C30 + C2_g31(x, m2Q2, nf) * Lmu
-//            + C2_g32(x, m2Q2, nf, method_flag) * Lmu2;
-// }
-
-// //==========================================================================================//
-// //  Approximate gluon coefficient funtcions for F2 at O(as^3) from
-// //  [arXiv:1205.5727]. klmv = Kawamura, Lo Presti, Moch, Vogt. Lower band
-// (i.e.
-// //  approximation B).
-// //
-// //  Eq. (4.18) of Ref. [arXiv:1205.5727].
-// //  This equation uses the approximate form of aQg30 given in Eq. (3.50) of
-// //  [arXiv:1205.5727] instead of the one given in Eq. (16) of Ref.
-// //  [arXiv:1701.05838].
-// //------------------------------------------------------------------------------------------//
-
-// double C2_g3_approximationB_klmv_paper(
-//     double x, double m2Q2, double m2mu2, int nf, int method_flag
-// ) {
-
-//     double x_max = 1. / (1. + 4 * m2Q2);
-
-//     if (x >= x_max || x < 0)
-//         return 0;
-
-//     double pi3 = M_PI * M_PI * M_PI;
-
-//     double beta = sqrt(1. - 4 * m2Q2 * x / (1. - x));
-
-//     double eta = 0.25 / m2Q2 * (1. - x) / x - 1;
-
-//     double xi = 1. / m2Q2;
-
-//     double f = 1. / (1. + exp(2. * (xi - 4.)));
-
-//     double delta = 0.8, D = 10.7;
-
-//     double eta_delta = pow(eta, delta);
-
-//     double beta3 = beta * beta * beta;
-
-//     double C2_g3_highenergyB =
-//         (64. * pi3) * (0.055 * pow(log(1. / m2Q2) / log(5), 2) - 0.423) * 4.
-//         / m2Q2 / x;
-
-//     double C30 =
-//         (C2_g3_threshold(x, m2Q2, 1., nf) - C2_g3_threshold_const(x,
-//         m2Q2, 1.))
-//         + f * 2. * C2_g3_threshold_const(x, m2Q2, 1.)
-//         + (1. - f) * beta3 * C2_g3_highscale(x, m2Q2, 1., nf, -12)
-//         + f * beta3
-//               * (-log(eta) / log(x) * C2_g3_highenergyLL(x, m2Q2, 1.)
-//                  + C2_g3_highenergyB * eta_delta / (D + eta_delta));
-
-//     if (m2mu2 == 1.)
-//         return C30;
-
-//     double Lmu = -log(m2mu2);
-//     double Lmu2 = Lmu * Lmu;
-
-//     return C30 + C2_g31(x, m2Q2, nf) * Lmu
-//            + C2_g32(x, m2Q2, nf, method_flag) * Lmu2;
-// }
-
-// //==========================================================================================//
-// //  Approximate gluon coefficient funtcions for F2 at O(as^3) from
-// //  [arXiv:1205.5727]. klmv = Kawamura, Lo Presti, Moch, Vogt. Lower band
-// (i.e.
-// //  approximation B) with the low xi limit.
-// //
-// //  Eq. (4.21) of Ref. [arXiv:1205.5727].
-// //  This equation uses the exact expression of aQqPS30 given in Eq.
-// //  (5.41, 5.42, 5.45) of Ref. [arXiv:1409.1135], and as approximation B for
-// the
-// //  small x limit at NLL it uses Eq. (4.25) of [arXiv:1205.5727] instead of
-// Eq.
-// //  (4.20)
-// //------------------------------------------------------------------------------------------//
-
-// double C2_g3_approximationBlowxi_klmv(
-//     double x, double m2Q2, double m2mu2, int nf, int method_flag
-// ) {
-
-//     double x_max = 1. / (1. + 4 * m2Q2);
-
-//     if (x >= x_max || x < 0)
-//         return 0;
-
-//     double pi3 = M_PI * M_PI * M_PI;
-
-//     double beta = sqrt(1. - 4 * m2Q2 * x / (1. - x));
-
-//     double eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
-
-//     double xi = 1. / m2Q2;
-
-//     double f = 1. / (1. + exp(2. * (xi - 4.)));
-
-//     double delta = 0.8, D = 10.7;
-
-//     double eta_delta = pow(eta, delta);
-
-//     double beta3 = beta * beta * beta;
-
-//     double C2_g3_highenergyB =
-//         CA / CF * (64. * pi3)
-//         * (0.0245 * pow(log(1. / m2Q2) / log(5), 2) - 0.17) * 4. / m2Q2 / x;
-
-//     double C30 =
-//         (C2_g3_threshold(x, m2Q2, 1., nf) - C2_g3_threshold_const(x,
-//         m2Q2, 1.))
-//         + f * 2. * C2_g3_threshold_const(x, m2Q2, 1.)
-//         + (1. - f) * beta3 * C2_g3_highscale(x, m2Q2, 1., nf, -12)
-//         + f * beta3
-//               * (-log(eta) / log(x) * C2_g3_highenergyLL(x, m2Q2, 1.)
-//                  + C2_g3_highenergyB * eta_delta / (D + eta_delta));
-
-//     if (m2mu2 == 1.)
-//         return C30;
-
-//     double Lmu = -log(m2mu2);
-//     double Lmu2 = Lmu * Lmu;
-
-//     return C30 + C2_g31(x, m2Q2, nf) * Lmu
-//            + C2_g32(x, m2Q2, nf, method_flag) * Lmu2;
-// }
-
-// //==========================================================================================//
-// //  Approximate quark coefficient funtcions for F2 at O(as^3) from
-// //  [arXiv:1205.5727]. klmv = Kawamura, Lo Presti, Moch, Vogt. Upper band
-// (i.e.
-// //  approximation A).
-// //
-// //  Eq. (4.21) of Ref. [arXiv:1205.5727].
-// //  This equation uses the exact expression of aQqPS30 given in Eq.
-// //  (5.41, 5.42, 5.45) of Ref. [arXiv:1409.1135]
-// //------------------------------------------------------------------------------------------//
-
-// double C2_ps3_approximationA_klmv(double x, double m2Q2, double m2mu2, int
-// nf) {
-
-//     double x_max = 1. / (1. + 4 * m2Q2);
-
-//     if (x >= x_max || x < 0)
-//         return 0;
-
-//     double pi3 = M_PI * M_PI * M_PI;
-
-//     double beta = sqrt(1. - 4. * m2Q2 * x / (1. - x));
-
-//     double eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
-
-//     double xi = 1. / m2Q2;
-
-//     double f = 1. / (1. + exp(2. * (xi - 4)));
-
-//     double gamma = 1.0, C = 20.0;
-
-//     double eta_gamma = pow(eta, gamma);
-
-//     double beta3 = beta * beta * beta;
-
-//     double C2_ps30_highenergyNLLA =
-//         (64. * pi3) * (0.004 * pow(log(1. / m2Q2) / log(5), 4) - 0.125) * 4.
-//         / m2Q2 / x;
-
-//     double C30 =
-//         (1. - f) * beta * C2_ps3_highscale(x, m2Q2, 1., nf)
-//         + f * beta3
-//               * (-log(eta) / log(x) * C2_ps3_highenergyLL(x, m2Q2, 1.)
-//                  + C2_ps30_highenergyNLLA * eta_gamma / (C + eta_gamma));
-
-//     if (m2mu2 == 1.)
-//         return C30;
-
-//     double Lmu = -log(m2mu2);
-//     double Lmu2 = Lmu * Lmu;
-
-//     return C30 + C2_ps31(x, m2Q2, nf) * Lmu + C2_ps32(x, m2Q2, nf) * Lmu2;
-// }
-
-// //==========================================================================================//
-// //  Approximate quark coefficient funtcions for F2 at O(as^3) from
-// //  [arXiv:1205.5727]. klmv = Kawamura, Lo Presti, Moch, Vogt. Lower band
-// (i.e.
-// //  approximation B).
-// //
-// //  Eq. (4.22) of Ref. [arXiv:1205.5727].
-// //  This equation uses the exact expression of aQqPS30 given in Eq.
-// //  (5.41, 5.42, 5.45) of Ref. [arXiv:1409.1135]
-// //------------------------------------------------------------------------------------------//
-
-// double C2_ps3_approximationB_klmv(double x, double m2Q2, double m2mu2, int
-// nf) {
-
-//     double x_max = 1. / (1. + 4. * m2Q2);
-
-//     if (x >= x_max || x < 0)
-//         return 0;
-
-//     double pi3 = M_PI * M_PI * M_PI;
-
-//     double beta = sqrt(1. - 4. * m2Q2 * x / (1. - x));
-
-//     double eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
-
-//     double xi = 1. / m2Q2;
-
-//     double f = 1. / (1. + exp(2. * (xi - 4)));
-
-//     double delta = 0.8, D = 10.7;
-
-//     double eta_delta = pow(eta, delta);
-
-//     double beta3 = beta * beta * beta;
-
-//     double C2_ps30_highenergyNLLB =
-//         (64. * pi3) * (0.0245 * pow(log(1. / m2Q2) / log(5), 2) - 0.17) * 4.
-//         / m2Q2 / x;
-
-//     double C30 =
-//         (1. - f) * beta3 * C2_ps3_highscale(x, m2Q2, 1., nf)
-//         + f * beta3
-//               * (-log(eta) / log(x) * C2_ps3_highenergyLL(x, m2Q2, 1.)
-//                  + C2_ps30_highenergyNLLB * eta_delta / (D + eta_delta));
-
-//     if (m2mu2 == 1.)
-//         return C30;
-
-//     double Lmu = -log(m2mu2);
-//     double Lmu2 = Lmu * Lmu;
-
-//     return C30 + C2_ps31(x, m2Q2, nf) * Lmu + C2_ps32(x, m2Q2, nf) * Lmu2;
-// }
-
-// //==========================================================================================//
-// //  Approximate quark coefficient funtcions for F2 at O(as^3) from
-// //  [arXiv:1205.5727]. klmv = Kawamura, Lo Presti, Moch, Vogt. Upper band
-// (i.e.
-// //  approximation A).
-// //
-// //  Eq. (4.21) of Ref. [arXiv:1205.5727].
-// //  This equation uses the approximate form of aQqPS30 given in Eq. (3.52) of
-// //  [arXiv:1205.5727] instead of the exact expression given in Eq.
-// //  (5.41, 5.42, 5.45) of Ref. [arXiv:1409.1135] Used only as a benchmark
-// //  against the plots of the paper [arXiv:1205.5727].
-// //------------------------------------------------------------------------------------------//
-
-// double
-// C2_ps3_approximationA_klmv_paper(double x, double m2Q2, double m2mu2, int nf)
-// {
-
-//     double x_max = 1. / (1. + 4. * m2Q2);
-
-//     if (x >= x_max || x < 0)
-//         return 0;
-
-//     double pi3 = M_PI * M_PI * M_PI;
-
-//     double beta = sqrt(1. - 4. * m2Q2 * x / (1. - x));
-
-//     double eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
-
-//     double xi = 1. / m2Q2;
-
-//     double f = 1. / (1. + exp(2. * (xi - 4.)));
-
-//     double gamma = 1.0, C = 20.0;
-
-//     double eta_gamma = pow(eta, gamma);
-
-//     double beta3 = beta * beta * beta;
-
-//     double C2_ps30_highenergyNLLA =
-//         (64. * pi3) * (0.004 * pow(log(1. / m2Q2) / log(5.), 4) - 0.125) * 4.
-//         / m2Q2 / x;
-
-//     double C30 =
-//         (1. - f) * beta * C2_ps3_highscale_klmv_paper(x, m2Q2, 1., nf, 1)
-//         + f * beta3
-//               * (-log(eta) / log(x) * C2_ps3_highenergyLL(x, m2Q2, 1.)
-//                  + C2_ps30_highenergyNLLA * eta_gamma / (C + eta_gamma));
-
-//     if (m2mu2 == 1.)
-//         return C30;
-
-//     double Lmu = -log(m2mu2);
-//     double Lmu2 = Lmu * Lmu;
-
-//     return C30 + C2_ps31(x, m2Q2, nf) * Lmu + C2_ps32(x, m2Q2, nf) * Lmu2;
-// }
-
-// //==========================================================================================//
-// //  Approximate quark coefficient funtcions for F2 at O(as^3) from
-// //  [arXiv:1205.5727]. klmv = Kawamura, Lo Presti, Moch, Vogt. Lower band
-// (i.e.
-// //  approximation B).
-// //
-// //  Eq. (4.22) of Ref. [arXiv:1205.5727].
-// //  This equation uses the approximate form of aQqPS30 given in Eq. (3.53) of
-// //  [arXiv:1205.5727] instead of the exact expression given in Eq.
-// //  (5.41, 5.42, 5.45) of Ref. [arXiv:1409.1135] Used only as a benchmark
-// //  against the plots of the paper [arXiv:1205.5727].
-// //------------------------------------------------------------------------------------------//
-
-// double
-// C2_ps3_approximationB_klmv_paper(double x, double m2Q2, double m2mu2, int nf)
-// {
-
-//     double x_max = 1. / (1. + 4. * m2Q2);
-
-//     if (x >= x_max || x < 0)
-//         return 0;
-
-//     double pi3 = M_PI * M_PI * M_PI;
-
-//     double beta = sqrt(1. - 4. * m2Q2 * x / (1. - x));
-
-//     double eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
-
-//     double xi = 1. / m2Q2;
-
-//     double f = 1. / (1. + exp(2. * (xi - 4.)));
-
-//     double delta = 0.8, D = 10.7;
-
-//     double eta_delta = pow(eta, delta);
-
-//     double beta3 = beta * beta * beta;
-
-//     double C2_ps30_highenergyNLLB =
-//         (64. * pi3) * (0.0245 * pow(log(1. / m2Q2) / log(5.), 2) - 0.17) * 4.
-//         / m2Q2 / x;
-
-//     double C30 =
-//         (1. - f) * beta3 * C2_ps3_highscale_klmv_paper(x, m2Q2, 1., nf, -1)
-//         + f * beta3
-//               * (-log(eta) / log(x) * C2_ps3_highenergyLL(x, m2Q2, 1.)
-//                  + C2_ps30_highenergyNLLB * eta_delta / (D + eta_delta));
-
-//     if (m2mu2 == 1.)
-//         return C30;
-
-//     double Lmu = -log(m2mu2);
-//     double Lmu2 = Lmu * Lmu;
-
-//     return C30 + C2_ps31(x, m2Q2, nf) * Lmu + C2_ps32(x, m2Q2, nf) * Lmu2;
-// }

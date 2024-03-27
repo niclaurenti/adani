@@ -18,6 +18,10 @@
 
 #include "CoefficientFunction.h"
 
+#include <string>
+
+using std::string;
+
 //==========================================================================================//
 //  class MatchingCondition
 //------------------------------------------------------------------------------------------//
@@ -26,7 +30,7 @@ class MatchingCondition {
     public:
         MatchingCondition(
             const int &order, const char &entry1, const char &entry2,
-            const bool &exact, const bool &revised_approx
+            const string &version
         );
         ~MatchingCondition(){};
 
@@ -38,8 +42,7 @@ class MatchingCondition {
         char entry1_;
         char entry2_;
 
-        bool exact_;
-        bool revised_approx_;
+        string version_;
 
         //==========================================================================================//
         //  Matching conditions O(as)

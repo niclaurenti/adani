@@ -33,24 +33,10 @@ class ExactCoefficientFunction : public CoefficientFunction {
         ExactCoefficientFunction(
             const int &order, const char &kind, const char &channel,
             const double &abserr = 1e-3, const double &relerr = 1e-3,
-            const int &dim = 1000, const int &method_flag = 0,
+            const int &dim = 1000, const bool &MCintegral = false,
             const int &MCcalls = 25000
         );
         ~ExactCoefficientFunction() override;
-
-        // get methods
-        int GetMethodFlag() const { return method_flag_; };
-        int GetAbserr() const { return abserr_; };
-        int GetRelerr() const { return relerr_; };
-        int GetMCcalls() const { return MCcalls_; };
-        int GetDim() const { return dim_; };
-
-        // set methods
-        void SetMethodFlag(const int &method_flag);
-        void SetAbserr(const double &abserr);
-        void SetRelerr(const double &relerr);
-        void SetMCcalls(const int &MCcalls);
-        void SetDim(const int &dim);
 
         double fx(double x, double m2Q2, double m2mu2, int nf) const override;
         double MuIndependentTerms(double x, double m2Q2, int nf) const override;
@@ -64,11 +50,6 @@ class ExactCoefficientFunction : public CoefficientFunction {
         void SetFunctions();
 
     private:
-        int method_flag_;
-        double abserr_;
-        double relerr_;
-        int MCcalls_;
-        int dim_;
 
         double (ExactCoefficientFunction::*mu_indep_)(
             double, double, int

@@ -5,7 +5,7 @@ import numpy as np
 def test_as1():
     nf = 1
     for kind in ['2', 'L']:
-        cf = ad.ExactCoefficientFunction(1, kind, 'g', 1e-3, 1e-3, 1000, 1, 25000)
+        cf = ad.ExactCoefficientFunction(1, kind, 'g')
         for xi in np.geomspace(1e-2, 1e4, 10, endpoint=True):
             xmax = 1/(1 + 4/xi)
             for x in np.geomspace(1e-5, xmax, 100, endpoint=False):
@@ -60,7 +60,7 @@ def test_as2_order_mudep():
 def test_as3_order_mudep():
     for kind in ['2', 'L']:
         for channel in ['g', 'q']:
-            cf = ad.ExactCoefficientFunction(3, kind, channel, 1e-3, 1e-3, 1000, 0)
+            cf = ad.ExactCoefficientFunction(3, kind, channel, 1e-3, 1e-3, 1000, False)
             for xi in np.geomspace(1e-2, 1e4, 5, endpoint=True):
                 for ximu in np.geomspace(1e-2, 1e4, 5, endpoint=True):
                     xmax = 1/(1 + 4/xi)

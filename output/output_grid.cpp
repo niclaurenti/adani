@@ -2,126 +2,150 @@
 
 #include "adani/adani.h"
 
-#include <iostream>
-#include <fstream>
 #include <cmath>
-#include <vector>
 #include <ctime>
+#include <fstream>
+#include <iostream>
 #include <sstream>
 #include <string.h>
-#include <unistd.h>
+#include <vector>
 
 using namespace std;
 
 std::string print_time(time_t seconds);
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
 
-    if(argc!=7) {
-        cout<< "ERROR!\nUsage: ./output_grid.exe mufrac = mu/Q m nf v channel filename\nExiting..." <<endl;
+    if (argc != 5) {
+        cout << "ERROR!" << endl
+             << "Usage: ./output_grid.exe mufrac = mu/Q m nf channel"
+             << "Exiting..." << endl;
         return -1;
     }
 
     double mufrac = atof(argv[1]);
     double m = atof(argv[2]);
 
-    int nf = atoi(argv[3]) ;
-    int v = atoi(argv[4]) ;
-    if (v < -1 || v > 1) {
-        cout << "Choose v = {-1, 0, 1}" << endl ;
-        exit(-1);
-    }
-    string channel = argv[5];
+    int nf = atoi(argv[3]);
 
-    string filename = argv[6] ;
+    char kind = argv[4][0];
+    char channel = argv[4][1];
+
     ifstream inputQ;
     inputQ.open("Q.txt");
 
     ifstream inputx;
     inputx.open("x.txt");
 
-    std::vector<double> Q, x ;
+    std::vector<double> Q, x;
 
-    double xtmp ;
-    inputx >> xtmp ;
-    while(!inputx.eof()) {
-        x.push_back(xtmp) ;
-        inputx >> xtmp ;
+    double xtmp;
+    inputx >> xtmp;
+    while (!inputx.eof()) {
+        x.push_back(xtmp);
+        inputx >> xtmp;
     }
 
-    double Qtmp ;
-    inputQ >> Qtmp ;
-    while(!inputQ.eof()) {
-        Q.push_back(Qtmp) ;
-        inputQ >> Qtmp ;
+    double Qtmp;
+    inputQ >> Qtmp;
+    while (!inputQ.eof()) {
+        Q.push_back(Qtmp);
+        inputQ >> Qtmp;
     }
 
-    cout    << "Computation of the grid for the coefficient function C"<< channel
-            << " for m = " << m << " GeV, nf = "<< nf << " and µ/Q = "<< mufrac
-            << endl ;
+    cout << "Computation of the grid for the coefficient function C" << channel
+         << " for m = " << m << " GeV, nf = " << nf << " and µ/Q = " << mufrac
+         << endl;
 
-    cout << "Size of the grid (x,Q) = (" << x.size() <<","<< Q.size() << ")" <<endl ;
+    cout << "Size of the grid (x,Q) = (" << x.size() << "," << Q.size() << ")"
+         << endl;
 
+    string filename = "results/C_";
+    filename.append(argv[4]);
+    filename.append("_nf" + to_string(nf));
 
-    ofstream output;
-    output.open(filename);
-    if (! output.is_open()) {
-        cout<<"Problems in opening "<<filename<<endl ;
+    ofstream output_c;
+    ofstream output_h;
+    ofstream output_l;
+
+    output_c.open(filename + "_central.dat");
+    if (!output_c.is_open()) {
+        cout << "Problems in opening " << filename + "_central.dat" << endl;
         exit(-1);
     } else {
-        cout << "Saving grid in " << filename << endl;
+        cout << "Saving central grid in " << filename + "_central.dat" << endl;
     }
 
-    double res ;
+    output_h.open(filename + "_higher.dat");
+    if (!output_h.is_open()) {
+        cout << "Problems in opening " << filename + "_higher.dat" << endl;
+        exit(-1);
+    } else {
+        cout << "Saving higher grid in " << filename + "_higher.dat" << endl;
+    }
 
-    int k  = 1;
+    output_l.open(filename + "_lower.dat");
+    if (!output_l.is_open()) {
+        cout << "Problems in opening " << filename + "_lower.dat" << endl;
+        exit(-1);
+    } else {
+        cout << "Saving lower grid in " << filename + "_lower.dat" << endl;
+    }
 
-    time_t total = 0, mean;
+    Value res = Value(0, 0, 0);
 
-    time_t starting_time = time(NULL) ;
+    time_t starting_time = time(NULL);
 
-    for(double Q_ : Q) {
-        time_t t1 = time(NULL) ;
-        for(double x_ : x) {
-            double m2Q2, mu, m2mu2 ;
-            m2Q2 = pow(m/Q_, 2) ;
-            mu = mufrac * Q_ ;
-            m2mu2 = pow(m/mu, 2) ;
-            if(channel == "2g") res = C2_g3_approximation(x_, m2Q2, m2mu2, nf, v, 1) ;
-            else if(channel == "2q") res = C2_ps3_approximation(x_, m2Q2, m2mu2, nf, v) ;
-            else if(channel == "Lg") res = CL_g3_approximation(x_, m2Q2, m2mu2, nf, v, 1)  ;
-            else if(channel == "Lq") res = CL_ps3_approximation(x_, m2Q2, m2mu2, nf, v) ;
-            else {
-                cout<< "ERROR!\nUsage: channel = {2g, 2q, Lg, Lq}\nExiting..." <<endl;
-                exit(-1);
-            }
-            output << res << "   ";
+    string hs_version;
+
+    if (channel == 'q')
+        hs_version = "exact";
+    else
+        hs_version = "improved";
+
+    ApproximateCoefficientFunction Approx =
+        ApproximateCoefficientFunction(3, kind, channel, true, hs_version);
+
+    for (double Q_ : Q) {
+        for (double x_ : x) {
+            double m2Q2, mu, m2mu2;
+            m2Q2 = pow(m / Q_, 2);
+            mu = mufrac * Q_;
+            m2mu2 = pow(m / mu, 2);
+            res = Approx.fxBand(x_, m2Q2, m2mu2, nf);
+            output_c << res.GetCentral() << "   ";
+            output_h << res.GetHigher() << "   ";
+            output_l << res.GetLower() << "   ";
         }
-        output << endl ;
+        output_c << endl;
+        output_h << endl;
+        output_l << endl;
     }
 
-    time_t ending_time = time(NULL) ;
+    time_t ending_time = time(NULL);
 
-    cout << "Total running time is " << print_time(ending_time - starting_time) << endl ;
+    cout << "Total running time is " << print_time(ending_time - starting_time)
+         << endl;
 
-    output.close();
-    inputQ.close() ;
-    inputx.close() ;
+    output_c.close();
+    output_h.close();
+    output_l.close();
+
+    inputQ.close();
+    inputx.close();
 
     return 0;
-
 }
 
 std::string print_time(time_t seconds) {
 
     stringstream ss;
 
-    int hour = (int) seconds / 3600 ;
-    int minute = (int) (seconds - hour * 3600) / 60 ;
-    int second = seconds - hour * 3600 - minute * 60 ;
+    int hour = (int)seconds / 3600;
+    int minute = (int)(seconds - hour * 3600) / 60;
+    int second = seconds - hour * 3600 - minute * 60;
 
-    ss << hour <<"h:"<< minute <<"m:"<< second <<"s" ;
+    ss << hour << "h:" << minute << "m:" << second << "s";
 
     return ss.str();
-
 }

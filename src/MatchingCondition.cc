@@ -13,8 +13,8 @@ using std::endl;
 //------------------------------------------------------------------------------------------//
 
 MatchingCondition::MatchingCondition(
-    const int &order, const char &entry1, const char &entry2, const bool &exact,
-    const bool &revised_approx
+    const int &order, const char &entry1, const char &entry2,
+    const string &version
 ) {
     // check order
     if (order != 3) {
@@ -38,18 +38,19 @@ MatchingCondition::MatchingCondition(
     }
     entry2_ = entry2;
 
-    exact_ = exact;
-
-    // checking only for g since revised_approximation is not present for q
-    if (entry2_ == 'g') {
-        if (exact && revised_approx) {
-            cout << "Error: revised_approx = true is meaningfull only if exact = "
-                    "false!"
-                 << endl;
-            exit(-1);
-        }
+    // check version
+    if (version != "exact" && version != "improved" && version != "original") {
+        cout << "Error: version must be 'exact', 'improved' or 'original'! Got "
+             << version << endl;
+        exit(-1);
     }
-    revised_approx_ = revised_approx;
+
+    if (entry2 == 'q' && version == "improved") {
+        cout << "Error: quark channel doesn't have 'improved' version!" << endl;
+        exit(-1);
+    }
+
+    version_ = version;
 }
 
 //==========================================================================================//
@@ -60,10 +61,9 @@ MatchingCondition::MatchingCondition(
 Value MatchingCondition::MuIndependentNfIndependentTerm(double x) const {
     double central, higher, lower;
     if (entry2_ == 'q') {
-        if (exact_) {
-            central = a_Qq_PS_30(x, 0);
-            return Value(central);
-        } else {
+        if (version_ == "exact")
+            return Value(a_Qq_PS_30(x, 0));
+        else {
             higher = a_Qq_PS_30(x, 1);
             lower = a_Qq_PS_30(x, -1);
             central = 0.5 * (higher + lower);
@@ -73,60 +73,55 @@ Value MatchingCondition::MuIndependentNfIndependentTerm(double x) const {
         }
     } else {
         int low_id;
-        if (exact_) {
-            central = a_Qg_30(x, 0);
-            return Value(central);
-        } else {
-            if (revised_approx_)
-                low_id = -1;
-            else
-                low_id = -12;
+        if (version_ == "exact")
+            return Value(a_Qg_30(x, 0));
+        else if (version_ == "improved")
+            low_id = -1;
+        else
+            low_id = -12;
 
-            higher = a_Qg_30(x, 1);
-            lower = a_Qg_30(x, low_id);
-            central = 0.5 * (higher + lower);
-            if (higher < lower)
-                return Value(central, lower, higher);
-            return Value(central, higher, lower);
-        }
+        higher = a_Qg_30(x, 1);
+        lower = a_Qg_30(x, low_id);
+        central = 0.5 * (higher + lower);
+        if (higher < lower)
+            return Value(central, lower, higher);
+        return Value(central, higher, lower);
     }
 }
 
 //==========================================================================================//
-//  MatchingCondition: nf independent part of the a_Qi (i=q,q) term without ordering
-//  the upper and lower bands
+//  MatchingCondition: nf independent part of the a_Qi (i=q,q) term without
+//  ordering the upper and lower bands
 //------------------------------------------------------------------------------------------//
 
 vector<double> MatchingCondition::NotOrdered(double x) const {
     double central, higher, lower;
     if (entry2_ == 'q') {
-        if (exact_) {
+        if (version_ == "exact") {
             central = a_Qq_PS_30(x, 0);
-            return {central, central, central};
+            return { central, central, central };
         } else {
             higher = a_Qq_PS_30(x, 1);
             lower = a_Qq_PS_30(x, -1);
             central = 0.5 * (higher + lower);
 
-            return {central, higher, lower};
+            return { central, higher, lower };
         }
     } else {
         int low_id;
-        if (exact_) {
+        if (version_ == "exact") {
             central = a_Qg_30(x, 0);
-            return {central, central, central};
-        } else {
-            if (revised_approx_)
-                low_id = -1;
-            else
-                low_id = -12;
+            return { central, central, central };
+        } else if (version_ == "improved")
+            low_id = -1;
+        else
+            low_id = -12;
 
-            higher = a_Qg_30(x, 1);
-            lower = a_Qg_30(x, low_id);
-            central = 0.5 * (higher + lower);
+        higher = a_Qg_30(x, 1);
+        lower = a_Qg_30(x, low_id);
+        central = 0.5 * (higher + lower);
 
-            return {central, higher, lower};
-        }
+        return { central, higher, lower };
     }
 }
 

@@ -13,8 +13,8 @@ using std::endl;
 //------------------------------------------------------------------------------------------//
 
 HighScaleCoefficientFunction::HighScaleCoefficientFunction(
-    const int &order, const char &kind, const char &channel, const bool &exact,
-    const bool &revised_approx
+    const int &order, const char &kind, const char &channel,
+    const string &version
 )
     : CoefficientFunction(order, kind, channel) {
     massless_as1_ = nullptr;
@@ -34,8 +34,7 @@ HighScaleCoefficientFunction::HighScaleCoefficientFunction(
             new MasslessCoefficientFunction(3, GetKind(), GetChannel());
 
     if (GetOrder() == 3 && GetKind() == '2') {
-        a_muindep_ =
-            new MatchingCondition(3, 'Q', GetChannel(), exact, revised_approx);
+        a_muindep_ = new MatchingCondition(3, 'Q', GetChannel(), version);
     }
 
     SetFunctions();
@@ -74,21 +73,28 @@ Value HighScaleCoefficientFunction::fxBand(
 }
 
 //==========================================================================================//
-//  HighScaleCoefficientFunction: band of the highscale coefficient function without ordering
-//  the upper and lower bands
+//  HighScaleCoefficientFunction: band of the highscale coefficient function
+//  without ordering the upper and lower bands
 //------------------------------------------------------------------------------------------//
 
-vector<double> HighScaleCoefficientFunction::fxBand_NotOrdered(double x, double m2Q2, double m2mu2, int nf) const {
+vector<double> HighScaleCoefficientFunction::fxBand_NotOrdered(
+    double x, double m2Q2, double m2mu2, int nf
+) const {
 
-    if (GetOrder() == 2) return fxBand(x, m2Q2, m2mu2, nf).ToVect();
+    if (GetOrder() == 2)
+        return fxBand(x, m2Q2, m2mu2, nf).ToVect();
 
     double central, higher, lower;
     central = fxBand(x, m2Q2, m2mu2, nf).GetCentral();
 
-    higher = fxBand(x, m2Q2, m2mu2, nf).GetHigher() - a_muindep_-> MuIndependentNfIndependentTerm(x).GetHigher() + (a_muindep_-> NotOrdered(x))[1];
-    lower = fxBand(x, m2Q2, m2mu2, nf).GetLower() - a_muindep_-> MuIndependentNfIndependentTerm(x).GetLower() + (a_muindep_-> NotOrdered(x))[2];
+    higher = fxBand(x, m2Q2, m2mu2, nf).GetHigher()
+             - a_muindep_->MuIndependentNfIndependentTerm(x).GetHigher()
+             + (a_muindep_->NotOrdered(x))[1];
+    lower = fxBand(x, m2Q2, m2mu2, nf).GetLower()
+            - a_muindep_->MuIndependentNfIndependentTerm(x).GetLower()
+            + (a_muindep_->NotOrdered(x))[2];
 
-    return {central, higher, lower};
+    return { central, higher, lower };
 }
 
 //==========================================================================================//
