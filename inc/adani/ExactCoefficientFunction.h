@@ -50,7 +50,6 @@ class ExactCoefficientFunction : public CoefficientFunction {
         void SetFunctions();
 
     private:
-
         double (ExactCoefficientFunction::*mu_indep_)(
             double, double, int
         ) const;
