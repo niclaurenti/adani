@@ -272,14 +272,14 @@ Value ConvolutedCoefficientFunction::fxBand(
 DoubleConvolution::DoubleConvolution(
     CoefficientFunction *coefffunc, AbstractSplittingFunction *splitfunc,
     const double &abserr, const double &relerr, const int &dim,
-    const int &method_flag, const int &MCcalls
+    const bool &MCintegral, const int &MCcalls
 )
     : AbstractConvolution(coefffunc, splitfunc, abserr, relerr, dim) {
 
-    SetMethodFlag(method_flag);
+    SetMCintegral(MCintegral);
     SetMCcalls(MCcalls);
 
-    if (method_flag == 1) {
+    if (MCintegral) {
         convolution_ =
             new Convolution(coefffunc, splitfunc, abserr, relerr, dim);
         conv_coeff_ = nullptr;
@@ -303,7 +303,7 @@ DoubleConvolution::DoubleConvolution(
 
 DoubleConvolution::~DoubleConvolution() {
 
-    if (method_flag_ == 1) {
+    if (MCintegral_) {
         gsl_monte_vegas_free(s_);
         gsl_rng_free(r_);
     }
@@ -316,14 +316,9 @@ DoubleConvolution::~DoubleConvolution() {
 //  DoubleConvolution: set method for method_flag
 //------------------------------------------------------------------------------------------//
 
-void DoubleConvolution::SetMethodFlag(const int &method_flag) {
-    // check dim
-    if (method_flag != 0 && method_flag != 1) {
-        cout << "Error: method_flag must be 0 or 1. Got " << method_flag
-             << endl;
-        exit(-1);
-    }
-    method_flag_ = method_flag;
+void DoubleConvolution::SetMCintegral(const bool &MCintegral) {
+
+    MCintegral_ = MCintegral;
 }
 
 //==========================================================================================//
@@ -421,7 +416,7 @@ double DoubleConvolution::regular3_integrand(double z, void *p) {
 
 double DoubleConvolution::RegularPart(double x, double m2Q2, int nf) const {
 
-    if (method_flag_ == 0)
+    if (!MCintegral_)
         return convolution_->RegularPart(x, m2Q2, nf);
 
     double x_max = 1. / (1. + 4 * m2Q2);
@@ -564,7 +559,7 @@ double DoubleConvolution::singular3_integrand(double z, void *p) {
 
 double DoubleConvolution::SingularPart(double x, double m2Q2, int nf) const {
 
-    if (method_flag_ == 0)
+    if (!MCintegral_)
         return convolution_->SingularPart(x, m2Q2, nf);
 
     double x_max = 1. / (1. + 4 * m2Q2);
@@ -624,7 +619,7 @@ double DoubleConvolution::SingularPart(double x, double m2Q2, int nf) const {
 
 double DoubleConvolution::LocalPart(double x, double m2Q2, int nf) const {
 
-    if (method_flag_ == 0)
+    if (!MCintegral_)
         return convolution_->LocalPart(x, m2Q2, nf);
 
     double x_max = 1. / (1. + 4 * m2Q2);

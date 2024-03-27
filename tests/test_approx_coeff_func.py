@@ -8,7 +8,7 @@ def test_mudependent_terms():
             for kind in ['2', 'L']:
                 for dim in [1000]:
                     for MCcalls in [20000]:
-                        for mf in [0, 1]:
+                        for mf in [False, True]:
                             for abserr in [1e-3]:
                                 relerr = abserr
                                 massive = ad.ExactCoefficientFunction(order, kind, channel, abserr, relerr, dim, mf, MCcalls)
@@ -108,7 +108,7 @@ def test_mudep_as3_oldversion():
     for channel in ['g', 'q']:
         for kind in ['2', 'L']:
             highscale_version = "exact" if channel == 'q' else "improved"
-            for mf in [0]:
+            for mf in [False]:
                 app = ad.ApproximateCoefficientFunction(3, kind, channel, True, highscale_version, 1e-3, 1e-3, 1000, mf, 25000)
                 for xi in np.geomspace(1e-2, 1e2, 10):
                     m2Q2 = 1/xi

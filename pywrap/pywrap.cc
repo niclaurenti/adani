@@ -49,11 +49,11 @@ PYBIND11_MODULE(_core, m) {
             py::init<
                 const int &, const char &, const char &, const bool &,
                 const string &, const double &, const double &, const int &,
-                const int &, const int &>(),
+                const bool &, const int &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel"),
             py::arg("NLL") = true, py::arg("highscale_version") = "original",
             py::arg("abserr") = 1e-3, py::arg("relerr") = 1e-3,
-            py::arg("dim") = 1000, py::arg("method_flag") = 0,
+            py::arg("dim") = 1000, py::arg("MCintegral") = false,
             py::arg("MCcalls") = 25000
         )
         .def(
@@ -83,11 +83,11 @@ PYBIND11_MODULE(_core, m) {
             py::init<
                 const int &, const char &, const char &, const string &,
                 const bool &, const double &, const double &, const int &,
-                const int &, const int &>(),
+                const bool &, const int &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel"),
             py::arg("highscale_version") = "original", py::arg("lowxi") = false,
             py::arg("abserr") = 1e-3, py::arg("relerr") = 1e-3,
-            py::arg("dim") = 1000, py::arg("method_flag") = 0,
+            py::arg("dim") = 1000, py::arg("MCintegral") = false,
             py::arg("MCcalls") = 25000
         )
         .def(
@@ -143,10 +143,10 @@ PYBIND11_MODULE(_core, m) {
         .def(
             py::init<
                 const int &, const char &, const char &, const double &,
-                const double &, const int &, const int &, const int &>(),
+                const double &, const int &, const bool &, const int &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel"),
             py::arg("abserr") = 1e-3, py::arg("relerr") = 1e-3,
-            py::arg("dim") = 1000, py::arg("method_flag") = 0,
+            py::arg("dim") = 1000, py::arg("MCintegral") = false,
             py::arg("MCcalls") = 25000
         )
         .def(

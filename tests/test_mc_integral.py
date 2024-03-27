@@ -5,8 +5,8 @@ nf=4
 
 def test_mc_integrals():
     for kind in ['2', 'L']:
-        massive_mc = ad.ExactCoefficientFunction(3, kind, 'g', 1e-3, 1e-3, 1000, 1, 1000000)
-        massive_nomc = ad.ExactCoefficientFunction(3, kind, 'g', 1e-3, 1e-3, 1000, 0, 25000)
+        massive_mc = ad.ExactCoefficientFunction(3, kind, 'g', 1e-3, 1e-3, 1000, True, 1000000)
+        massive_nomc = ad.ExactCoefficientFunction(3, kind, 'g', 1e-3, 1e-3, 1000, False, 25000)
         for xi in np.geomspace(1e-2, 1e4, 4, endpoint=True):
             m2Q2 = 1/xi
             xmax = 1. / (1. + 4 * m2Q2)

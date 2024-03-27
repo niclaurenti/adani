@@ -33,7 +33,7 @@ def test_as3_oldadani():
     for kind in ['2', 'L']:
         for channel in ['g', 'q']:
             version = "exact" if channel == 'q' else "improved"
-            hs = ad.HighScaleCoefficientFunction(3, kind, version)
+            hs = ad.HighScaleCoefficientFunction(3, kind, channel, version)
             for x in np.geomspace(1e-5, 1., 100, endpoint=False):
                 for m2Q2 in np.geomspace(1e-4, 1e-2, 10):
                     for m2mu2 in np.geomspace(1e-4, 1e-2, 10):

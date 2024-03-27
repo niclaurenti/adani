@@ -15,15 +15,9 @@ using std::endl;
 ExactCoefficientFunction::ExactCoefficientFunction(
     const int &order, const char &kind, const char &channel,
     const double &abserr, const double &relerr, const int &dim,
-    const int &method_flag, const int &MCcalls
+    const bool &MCintegral, const int &MCcalls
 )
     : CoefficientFunction(order, kind, channel) {
-
-    SetAbserr(abserr);
-    SetRelerr(relerr);
-    SetDim(dim);
-    SetMethodFlag(method_flag);
-    SetMCcalls(MCcalls);
 
     gluon_as1_ = nullptr;
     gluon_as2_ = nullptr;
@@ -108,7 +102,7 @@ ExactCoefficientFunction::ExactCoefficientFunction(
             convolutions_lmu1_.push_back(new Convolution(gluon_as2_, delta_));
 
             convolutions_lmu2_.push_back(new DoubleConvolution(
-                gluon_as1_, Pgg0_, abserr, relerr, dim, method_flag, MCcalls
+                gluon_as1_, Pgg0_, abserr, relerr, dim, MCintegral, MCcalls
             ));
             convolutions_lmu2_.push_back(
                 new Convolution(gluon_as1_, Pgq0Pqg0_, abserr, relerr, dim)
@@ -238,71 +232,6 @@ void ExactCoefficientFunction::SetFunctions() {
         }
         mu_indep_ = &ExactCoefficientFunction::WarningFunc;
     }
-}
-
-//==========================================================================================//
-//  ExactCoefficientFunction: set method for method_flag
-//------------------------------------------------------------------------------------------//
-
-void ExactCoefficientFunction::SetMethodFlag(const int &method_flag) {
-    // check method_flag
-    if (method_flag != 0 && method_flag != 1) {
-        cout << "Error: method_flag must be 0 or 1. Got" << method_flag << endl;
-        exit(-1);
-    }
-    method_flag_ = method_flag;
-}
-
-//==========================================================================================//
-//  ExactCoefficientFunction: set method for abserr
-//------------------------------------------------------------------------------------------//
-
-void ExactCoefficientFunction::SetAbserr(const double &abserr) {
-    // check abserr
-    if (abserr <= 0) {
-        cout << "Error: abserr must be positive. Got " << abserr << endl;
-        exit(-1);
-    }
-    abserr_ = abserr;
-}
-
-//==========================================================================================//
-//  ExactCoefficientFunction: set method for relerr
-//------------------------------------------------------------------------------------------//
-
-void ExactCoefficientFunction::SetRelerr(const double &relerr) {
-    // check relerr
-    if (relerr <= 0) {
-        cout << "Error: relerr must be positive. Got " << relerr << endl;
-        exit(-1);
-    }
-    relerr_ = relerr;
-}
-
-//==========================================================================================//
-//  ExactCoefficientFunction: set method for MCcalls
-//------------------------------------------------------------------------------------------//
-
-void ExactCoefficientFunction::SetMCcalls(const int &MCcalls) {
-    // check MCcalls
-    if (MCcalls <= 0) {
-        cout << "Error: MCcalls must be positive. Got " << MCcalls << endl;
-        exit(-1);
-    }
-    MCcalls_ = MCcalls;
-}
-
-//==========================================================================================//
-//  ExactCoefficientFunction: set method for dim
-//------------------------------------------------------------------------------------------//
-
-void ExactCoefficientFunction::SetDim(const int &dim) {
-    // check dim
-    if (dim <= 0) {
-        cout << "Error: MCcalls must be positive. Got " << dim << endl;
-        exit(-1);
-    }
-    dim_ = dim;
 }
 
 //==========================================================================================//

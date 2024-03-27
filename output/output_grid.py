@@ -19,7 +19,7 @@ mufrac = runcard["mufrac"]
 v = runcard.get("v", 0)
 
 hs_version = "exact" if runcard["channel"][1] == 'q' else "improved"
-appr = adani.ApproximateCoefficientFunction(3, runcard["channel"][0], runcard["channel"][1], True, hs_version, 1e-3, 1e-3, 1000, 0, 25000)
+appr = adani.ApproximateCoefficientFunction(3, runcard["channel"][0], runcard["channel"][1], True, hs_version, 1e-3, 1e-3, 1000, False, 25000)
 
 def function_to_exe_in_parallel(pair):
     x, q = pair
