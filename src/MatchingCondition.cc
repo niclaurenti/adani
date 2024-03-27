@@ -39,13 +39,13 @@ MatchingCondition::MatchingCondition(
     entry2_ = entry2;
 
     // check version
-    if (version != "exact" && version != "improved" && version != "original") {
-        cout << "Error: version must be 'exact', 'improved' or 'original'! Got "
+    if (version != "exact" && version != "improved" && version != "original" && version != "blumline") {
+        cout << "Error: version must be 'exact', 'improved', 'blumline' or 'original'! Got "
              << version << endl;
         exit(-1);
     }
 
-    if (entry2 == 'q' && version == "improved") {
+    if (entry2 == 'q' && (version == "improved" || version == "blumline")) {
         cout << "Error: quark channel doesn't have 'improved' version!" << endl;
         exit(-1);
     }
@@ -75,6 +75,10 @@ Value MatchingCondition::MuIndependentNfIndependentTerm(double x) const {
         int low_id;
         if (version_ == "exact")
             return Value(a_Qg_30(x, 0));
+        else if (version_ == "blumline")
+            // This version doesn't have an uncertainty band
+            // so returning the same value three times
+            return Value(a_Qg_30(x, 2));
         else if (version_ == "improved")
             low_id = -1;
         else
@@ -284,9 +288,19 @@ double MatchingCondition::a_Qg_30(double x, int v) const {
             -2658.323 * L12 - 7449.948 * L1 - 7460.002 * (2. - x)
             + 3178.819 * L2 + 4710.725 / x + 1548.891 / x * L
         );
+    } else if (v == 2) {
+        double L14 = L13 * L1;
+        double L15 = L14 * L1;
+        double L3 = L2 * L;
+        double L4 = L3 * L;
+        double L5 = L4 * L;
+        return - 5882.68 + 8956.65 / x + 10318.5 * x - 8363.19 * x * x + 737.165 * L1
+               - 332.537 * L12 + 4.3802 * L13 - 8.20988 * L14 + 3.7037 * L15 + 11013.4 * L
+               + (1548.89 * L) / x + 6558.74 * x * L - 720.048 * L2 + 514.091 * L3 - 21.7593 * L4
+               + 4.84444 * L5 - 274.207 * (-L1 + L) - 274.207 * (-1 + x - x * L1 + x * L);
     } else {
         cout << "Error in MatchingCondition::a_Qg_30: Choose either v=0, v=1, "
-                "v=-1 or v=-12"
+                "v=-1, v=-12 or v=2"
              << endl;
         exit(-1);
     }
