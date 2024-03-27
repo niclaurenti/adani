@@ -45,9 +45,51 @@ double S12(double x);
 //  Harmonic polylogarithms up to weight 3.
 //------------------------------------------------------------------------------------------//
 
-double H(double x, int i);
-double H(double x, int i, int j);
-double H(double x, int i, int j, int k);
+double H_0(double x);
+double H_m1(double x);
+double H_1(double x);
+
+double H_m1m1(double x);
+double H_m10(double x);
+double H_m11(double x);
+double H_0m1(double x);
+double H_00(double x);
+double H_01(double x);
+double H_1m1(double x);
+double H_10(double x);
+double H_11(double x);
+
+double H_m1m1m1(double x);
+double H_m1m10(double x);
+double H_m1m11(double x);
+double H_m10m1(double x);
+double H_m100(double x);
+double H_m101(double x);
+double H_m11m1(double x);
+double H_m110(double x);
+double H_m111(double x);
+double H_0m1m1(double x);
+double H_0m10(double x);
+double H_0m11(double x);
+double H_00m1(double x);
+double H_000(double x);
+double H_001(double x);
+double H_01m1(double x);
+double H_010(double x);
+double H_011(double x);
+double H_1m1m1(double x);
+double H_1m10(double x);
+double H_1m11(double x);
+double H_10m1(double x);
+double H_100(double x);
+double H_101(double x);
+double H_11m1(double x);
+double H_110(double x);
+double H_111(double x);
+
+//==========================================================================================//
+//  Harmonic polylogarithms up to weight 5.
+//------------------------------------------------------------------------------------------//
 
 /**
  * @name Fortran harmonic polylogarithms

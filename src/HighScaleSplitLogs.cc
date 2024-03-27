@@ -1,32 +1,156 @@
 #include "adani/HighScaleSplitLogs.h"
 #include "adani/Constants.h"
-#include "adani/Convolutions.h"
-#include "adani/MasslessCoefficientFunctions.h"
-#include "adani/MatchingConditions.h"
 #include "adani/SpecialFunctions.h"
+
 #include <cmath>
 #include <iostream>
 
+using std::cout;
+using std::endl;
+
+//==========================================================================================//
+//  HighScaleSplitLogs: constructor
+//------------------------------------------------------------------------------------------//
+
+HighScaleSplitLogs::HighScaleSplitLogs(
+    const int &order, const char &kind, const char &channel,
+    const string &version
+)
+    : CoefficientFunction(order, kind, channel) {
+    if (order != 3) {
+        cout << "Error: HighScaleSplitLogs is implemented only for order = 3. "
+                "Got "
+             << order << endl;
+        exit(-1);
+    }
+
+    massless_as1_ = nullptr;
+    a_muindep_ = nullptr;
+
+    if (GetChannel() == 'g')
+        massless_as1_ =
+            new MasslessCoefficientFunction(1, GetKind(), GetChannel());
+
+    massless_ =
+        new MasslessCoefficientFunction(GetOrder(), GetKind(), GetChannel());
+
+    if (GetOrder() == 3 && GetKind() == '2') {
+        a_muindep_ = new MatchingCondition(3, 'Q', GetChannel(), version);
+    }
+
+    SetFunctions();
+}
+
+//==========================================================================================//
+//  HighScaleSplitLogs: destructor
+//------------------------------------------------------------------------------------------//
+
+HighScaleSplitLogs::~HighScaleSplitLogs() {
+    delete massless_;
+    delete massless_as1_;
+    delete a_muindep_;
+}
+
+//==========================================================================================//
+//  HighScaleSplitLogs: warning function that prevents from calling fx with Q !=
+//  mu.
+//------------------------------------------------------------------------------------------//
+
+double HighScaleSplitLogs::
+    fx(double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const {
+    cout << "Error: HighScaleSplitLogs is implemented only in the case mu=Q!"
+         << endl;
+    cout << "Use HighScaleSplitLogs::fx(double x, double m2Q2, int nf)" << endl;
+    exit(-1);
+}
+
+//==========================================================================================//
+//  HighScaleSplitLogs: central value of the band
+//------------------------------------------------------------------------------------------//
+
+double HighScaleSplitLogs::fx(double x, double m2Q2, int nf) const {
+    return fxBand(x, m2Q2, nf).GetCentral();
+}
+
+//==========================================================================================//
+//  HighScaleSplitLogs: warning function that prevents from calling fxBand with
+//  Q != mu.
+//------------------------------------------------------------------------------------------//
+
+Value HighScaleSplitLogs::
+    fxBand(double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const {
+    cout << "Error: HighScaleSplitLogs is implemented only in the case mu=Q!"
+         << endl;
+    cout << "Use HighScaleSplitLogs::fxBand(double x, double m2Q2, int nf)"
+         << endl;
+    exit(-1);
+}
+
+//==========================================================================================//
+//  HighScaleSplitLogs: band of the total result
+//------------------------------------------------------------------------------------------//
+
+Value HighScaleSplitLogs::fxBand(double x, double m2Q2, int nf) const {
+    double Log = log(m2Q2);
+    double Log2 = Log * Log;
+    double Log3 = Log2 * Log;
+    return LL(x, nf) * Log3 + NLL(x, nf) * Log2 + N2LL(x, nf) * Log
+           + N3LL(x, nf);
+}
+
+//==========================================================================================//
+//  HighScaleSplitLogs: function that sets the pointers to the correct function
+//------------------------------------------------------------------------------------------//
+
+void HighScaleSplitLogs::SetFunctions() {
+
+    if (GetKind() == '2') {
+        if (GetChannel() == 'q') {
+            LL_ = &HighScaleSplitLogs::C2_ps3_highscale_LL;
+            NLL_ = &HighScaleSplitLogs::C2_ps3_highscale_NLL;
+            N2LL_ = &HighScaleSplitLogs::C2_ps3_highscale_N2LL;
+            N3LL_ = &HighScaleSplitLogs::C2_ps3_highscale_N3LL;
+        } else if (GetChannel() == 'g') {
+            LL_ = &HighScaleSplitLogs::C2_g3_highscale_LL;
+            NLL_ = &HighScaleSplitLogs::C2_g3_highscale_NLL;
+            N2LL_ = &HighScaleSplitLogs::C2_g3_highscale_N2LL;
+            N3LL_ = &HighScaleSplitLogs::C2_g3_highscale_N3LL;
+        }
+    } else if (GetKind() == 'L') {
+        if (GetChannel() == 'q') {
+            LL_ = &HighScaleSplitLogs::ZeroFunction;
+            NLL_ = &HighScaleSplitLogs::CL_ps3_highscale_NLL;
+            N2LL_ = &HighScaleSplitLogs::CL_ps3_highscale_N2LL;
+            N3LL_ = &HighScaleSplitLogs::CL_ps3_highscale_N3LL;
+        } else if (GetChannel() == 'g') {
+            LL_ = &HighScaleSplitLogs::ZeroFunction;
+            NLL_ = &HighScaleSplitLogs::CL_g3_highscale_NLL;
+            N2LL_ = &HighScaleSplitLogs::CL_g3_highscale_N2LL;
+            N3LL_ = &HighScaleSplitLogs::CL_g3_highscale_N3LL;
+        }
+    }
+}
+
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for F2 at
-//  O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//  O(as^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
 //
 //  Coefficient of log(m^2/Q^2)^3
 //------------------------------------------------------------------------------------------//
 
-double C2_g3_highscale_LL(double x, int nf) {
+double HighScaleSplitLogs::C2_g3_highscale_LL(double x, int nf) const {
 
     double x2 = x * x;
 
     // weight 1
-    const double H0 = H(x, 0);
-    const double H1 = H(x, 1);
+    const double H0 = H_0(x);
+    const double H1 = H_1(x);
 
     // weight 2
-    const double H00 = H(x, 0, 0);
-    const double H10 = H(x, 1, 0);
-    const double H01 = H(x, 0, 1);
-    const double H11 = H(x, 1, 1);
+    const double H00 = H_00(x);
+    const double H10 = H_10(x);
+    const double H01 = H_01(x);
+    const double H11 = H_11(x);
 
     return -0.8888888888888888 + 1.7777777777777777 * x
            - 1.7777777777777777 * x2
@@ -155,40 +279,40 @@ double C2_g3_highscale_LL(double x, int nf) {
 
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for F2 at
-//  O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//  O(as^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
 //
 //  Coefficient of log(m^2/Q^2)^2
 //------------------------------------------------------------------------------------------//
 
-double C2_g3_highscale_NLL(double x, int nf) {
+double HighScaleSplitLogs::C2_g3_highscale_NLL(double x, int nf) const {
 
     double x2 = x * x;
 
     // weight 1
-    const double Hm1 = H(x, -1);
-    const double H0 = H(x, 0);
-    const double H1 = H(x, 1);
+    const double Hm1 = H_m1(x);
+    const double H0 = H_0(x);
+    const double H1 = H_1(x);
 
     // weight 2
-    const double Hm10 = H(x, -1, 0);
-    const double H00 = H(x, 0, 0);
-    const double H10 = H(x, 1, 0);
-    const double H01 = H(x, 0, 1);
-    const double H11 = H(x, 1, 1);
+    const double Hm10 = H_m10(x);
+    const double H00 = H_00(x);
+    const double H10 = H_10(x);
+    const double H01 = H_01(x);
+    const double H11 = H_11(x);
 
     // weight 3
-    const double Hm1m10 = H(x, -1, -1, 0);
-    const double H0m10 = H(x, 0, -1, 0);
-    const double Hm100 = H(x, -1, 0, 0);
-    const double H000 = H(x, 0, 0, 0);
-    const double H100 = H(x, 1, 0, 0);
-    const double H010 = H(x, 0, 1, 0);
-    const double H110 = H(x, 1, 1, 0);
-    const double Hm101 = H(x, -1, 0, 1);
-    const double H001 = H(x, 0, 0, 1);
-    const double H101 = H(x, 1, 0, 1);
-    const double H011 = H(x, 0, 1, 1);
-    const double H111 = H(x, 1, 1, 1);
+    const double Hm1m10 = H_m1m10(x);
+    const double H0m10 = H_0m10(x);
+    const double Hm100 = H_m100(x);
+    const double H000 = H_000(x);
+    const double H100 = H_100(x);
+    const double H010 = H_010(x);
+    const double H110 = H_110(x);
+    const double Hm101 = H_m101(x);
+    const double H001 = H_001(x);
+    const double H101 = H_101(x);
+    const double H011 = H_011(x);
+    const double H111 = H_111(x);
 
     return -0.8888888888888888 - 0.8888888888888888 * H0
            - 0.8888888888888888 * H1 + 7.111111111111111 * x
@@ -558,17 +682,17 @@ double C2_g3_highscale_NLL(double x, int nf) {
                              + 16. * H01 * x2 + 89.33333333333333 * H1 * x2
                              + 16. * H10 * x2 + 16. * H11 * x2
                              - 16. * Hm10 * x2))
-           + 0.4444444444444444 * C2_g1_massless(x, 1);
+           + 0.4444444444444444 * massless_as1_->MuIndependentTerms(x, 1);
 }
 
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for F2 at
-//  O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//  O(as^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
 //
 //  Coefficient of log(m^2/Q^2)^1
 //------------------------------------------------------------------------------------------//
 
-double C2_g3_highscale_N2LL(double x, int nf) {
+double HighScaleSplitLogs::C2_g3_highscale_N2LL(double x, int nf) const {
 
     double x2 = x * x;
     double x3 = x2 * x;
@@ -1506,17 +1630,17 @@ double C2_g3_highscale_N2LL(double x, int nf) {
                              + 31.582734083485946 * x3
                              - 19.200000000000003 * H00 * x3
                              + 19.200000000000003 * Hm10 * x3))
-           - 12.666666666666666 * C2_g1_massless(x, 1);
+           - 12.666666666666666 * massless_as1_->MuIndependentTerms(x, 1);
 }
 
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for F2 at
-//  O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//  O(as^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
 //
 //  Coefficient of log(m^2/Q^2)^0
 //------------------------------------------------------------------------------------------//
 
-double C2_g3_highscale_N3LL(double x, int nf, int v) {
+Value HighScaleSplitLogs::C2_g3_highscale_N3LL(double x, int nf) const {
 
     double x2 = x * x;
 
@@ -2315,28 +2439,29 @@ double C2_g3_highscale_N3LL(double x, int nf, int v) {
                     - 64. * Hm1m1011 * x2 + 157.91367041742973 * Hm1m1m1 * x2
                     + 96. * Hm1m1m10 * x2 - 96. * Hm1m1m100 * x2
                     + 192. * Hm1m1m1m10 * x2)
-           + a_Qg_30(x, v) + 4.666666666666667 * C2_g1_massless(x, 1)
-           + C2_g3_massless(x, 1 + nf) / (1. + nf);
+           + a_muindep_->MuIndependentNfIndependentTerm(x)
+           + 4.666666666666667 * massless_as1_->MuIndependentTerms(x, 1)
+           + massless_->MuIndependentTerms(x, nf + 1) / (1. + nf);
 }
 
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the pure singlet coefficient functions for
-//  F2 at O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//  F2 at O(as^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
 //
 //  Coefficient of log(m^2/Q^2)^3
 //------------------------------------------------------------------------------------------//
 
-double C2_ps3_highscale_LL(double x, int nf) {
+double HighScaleSplitLogs::C2_ps3_highscale_LL(double x, int nf) const {
 
     double x2 = x * x;
 
     // weight 1
-    const double H0 = H(x, 0);
-    const double H1 = H(x, 1);
+    const double H0 = H_0(x);
+    const double H1 = H_1(x);
 
     // weight 2
-    const double H00 = H(x, 0, 0);
-    const double H01 = H(x, 0, 1);
+    const double H00 = H_00(x);
+    const double H01 = H_01(x);
 
     return -1.3333333333333333
                * (5.333333333333333 + 10.666666666666666 * H0
@@ -2390,32 +2515,32 @@ double C2_ps3_highscale_LL(double x, int nf) {
 
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the pure singlet coefficient functions for
-//  F2 at O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//  F2 at O(as^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
 //
 //  Coefficient of log(m^2/Q^2)^2
 //------------------------------------------------------------------------------------------//
 
-double C2_ps3_highscale_NLL(double x, int nf) {
+double HighScaleSplitLogs::C2_ps3_highscale_NLL(double x, int nf) const {
 
     double x2 = x * x;
 
     // weight 1
-    const double H0 = H(x, 0);
-    const double H1 = H(x, 1);
+    const double H0 = H_0(x);
+    const double H1 = H_1(x);
 
     // weight 2
-    const double Hm10 = H(x, -1, 0);
-    const double H00 = H(x, 0, 0);
-    const double H10 = H(x, 1, 0);
-    const double H01 = H(x, 0, 1);
-    const double H11 = H(x, 1, 1);
+    const double Hm10 = H_m10(x);
+    const double H00 = H_00(x);
+    const double H10 = H_10(x);
+    const double H01 = H_01(x);
+    const double H11 = H_11(x);
 
     // weight 3
-    const double H0m10 = H(x, 0, -1, 0);
-    const double H000 = H(x, 0, 0, 0);
-    const double H010 = H(x, 0, 1, 0);
-    const double H001 = H(x, 0, 0, 1);
-    const double H011 = H(x, 0, 1, 1);
+    const double H0m10 = H_0m10(x);
+    const double H000 = H_000(x);
+    const double H010 = H_010(x);
+    const double H001 = H_001(x);
+    const double H011 = H_011(x);
 
     return 1.3333333333333333
                * (-31.11111111111111 - 14.222222222222221 * H0
@@ -2582,12 +2707,12 @@ double C2_ps3_highscale_NLL(double x, int nf) {
 
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the pure singlet coefficient functions for
-//  F2 at O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//  F2 at O(as^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
 //
 //  Coefficient of log(m^2/Q^2)^1
 //------------------------------------------------------------------------------------------//
 
-double C2_ps3_highscale_N2LL(double x, int nf) {
+double HighScaleSplitLogs::C2_ps3_highscale_N2LL(double x, int nf) const {
 
     double x2 = x * x;
     double x3 = x2 * x;
@@ -2982,12 +3107,12 @@ double C2_ps3_highscale_N2LL(double x, int nf) {
 
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the pure singlet coefficient functions for
-//  F2 at O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//  F2 at O(as^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
 //
 //  Coefficient of log(m^2/Q^2)^0
 //------------------------------------------------------------------------------------------//
 
-double C2_ps3_highscale_N3LL(double x, int nf) {
+Value HighScaleSplitLogs::C2_ps3_highscale_N3LL(double x, int nf) const {
 
     double x2 = x * x;
 
@@ -3352,26 +3477,27 @@ double C2_ps3_highscale_N3LL(double x, int nf) {
                     - 67.55555555555556 * Hm1m10 * x2
                     - 21.333333333333332 * Hm1m100 * x2
                     + 42.666666666666664 * Hm1m1m10 * x2)
-           + a_Qq_PS_30(x, 0) + C2_ps3_massless(x, 1 + nf) / (1. + nf);
+           + a_muindep_->MuIndependentNfIndependentTerm(x)
+           + massless_->MuIndependentTerms(x, nf + 1) / (1. + nf);
 }
 
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for FL at
-//  O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//  O(as^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
 //
 //  Coefficient of log(m^2/Q^2)^2
 //------------------------------------------------------------------------------------------//
 
-double CL_g3_highscale_NLL(double x) {
+double HighScaleSplitLogs::CL_g3_highscale_NLL(double x, int /*v*/) const {
 
     double x2 = x * x;
 
     // weight 1
-    const double H0 = H(x, 0);
-    const double H1 = H(x, 1);
+    const double H0 = H_0(x);
+    const double H1 = H_1(x);
 
     // weight 2
-    const double H01 = H(x, 0, 1);
+    const double H01 = H_01(x);
 
     return -83.55555555555556 - 56.88888888888889 * H0 + 35.55555555555556 * H1
            - 11.25925925925926 / x + 275.91579969079277 * x
@@ -3379,17 +3505,17 @@ double CL_g3_highscale_NLL(double x) {
            + 71.11111111111111 * H01 * x + 3.555555555555557 * H1 * x
            - 298.0740740740741 * x2 + 28.444444444444443 * H0 * x2
            - 39.111111111111114 * H1 * x2
-           + 0.4444444444444444 * CL_g1_massless(x, 1);
+           + 0.4444444444444444 * massless_as1_->MuIndependentTerms(x, 1);
 }
 
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for FL at
-//  O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//  O(as^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
 //
 //  Coefficient of log(m^2/Q^2)^1
 //------------------------------------------------------------------------------------------//
 
-double CL_g3_highscale_N2LL(double x, int nf) {
+double HighScaleSplitLogs::CL_g3_highscale_N2LL(double x, int nf) const {
 
     double x2 = x * x;
     double x3 = x2 * x;
@@ -3488,17 +3614,17 @@ double CL_g3_highscale_N2LL(double x, int nf) {
            - 7.105427357601002e-15 * H0 * H0 * x3
            - 1.4210854715202004e-14 * H0m1 * x3
            + 1.4210854715202004e-14 * H0 * Hm1 * x3
-           - 12.666666666666666 * CL_g1_massless(x, 1);
+           - 12.666666666666666 * massless_as1_->MuIndependentTerms(x, 1);
 }
 
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for FL at
-//  O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//  O(as^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
 //
 //  Coefficient of log(m^2/Q^2)^0
 //------------------------------------------------------------------------------------------//
 
-double CL_g3_highscale_N3LL(double x, int nf) {
+Value HighScaleSplitLogs::CL_g3_highscale_N3LL(double x, int nf) const {
 
     double x2 = x * x;
 
@@ -3544,66 +3670,64 @@ double CL_g3_highscale_N3LL(double x, int nf) {
     delete[] Hr4;
     delete[] Hr5;
 
-    return 547.6343796175224 + 40.888888888888886 * H0
-           + 27.555555555555557 * H0 * H0 - 4.7407407407407405 * H0 * H0 * H0
-           - 170.66666666666669 * H001 + 64. * H00m1 - 181.33333333333334 * H01
-           + 71.11111111111111 * H0 * H01 + 35.55555555555556 * H011
-           - 64. * H0 * H0m1 - 128. * H0m1m1 - 3.555555555555557 * H1
-           + 209.77777777777774 * H0 * H1 + 14.222222222222221 * H0 * H0 * H1
-           - 16. * H1 * H1 - 32. * H0 * H1 * H1
-           + 5.925925925925926 * H1 * H1 * H1 - 105.27578027828648 * Hm1
-           + 32. * H0 * H0 * Hm1 + 128. * H0m1 * Hm1 - 64. * H0 * Hm1 * Hm1
-           - 32.2962962962963 / x - (42.666666666666664 * H01) / x
-           + (42.666666666666664 * H0 * H1) / x + 766.5164922945999 * x
-           + 358.03296696417954 * H0 * x - 142.2222222222222 * H0 * H0 * x
-           - 52.74074074074074 * H0 * H0 * H0 * x
-           + 4.7407407407407405 * H0 * H0 * H0 * H0 * x
-           + 1877.3333333333333 * H0001 * x - 384. * H000m1 * x
-           + 476.44444444444446 * H001 * x - 682.6666666666666 * H0 * H001 * x
-           + 199.11111111111111 * H0011 * x - 64. * H00m1 * x
-           + 256. * H0 * H00m1 * x + 890.6666666666667 * H01 * x
-           - 305.77777777777777 * H0 * H01 * x
-           + 28.444444444444443 * H0 * H0 * H01 * x
-           + 99.55555555555556 * H011 * x - 128. * H0 * H011 * x
-           + 71.11111111111111 * H0111 * x + 594.5515605565729 * H0m1 * x
-           + 64. * H0 * H0m1 * x - 64. * H0 * H0 * H0m1 * x
-           - 128. * H0m1 * H0m1 * x + 128. * H0m1m1 * x + 256. * H0 * H0m1m1 * x
-           + 229.33333333333337 * H1 * x - 931.5555555555555 * H0 * H1 * x
-           + 14.222222222222221 * H0 * H0 * H1 * x
-           + 117.33333333333334 * H1 * H1 * x - 32. * H0 * H1 * H1 * x
-           + 5.925925925925926 * H1 * H1 * H1 * x + 105.27578027828648 * Hm1 * x
-           - 384. * H0 * Hm1 * x - 32. * H0 * H0 * Hm1 * x
-           - 128. * H0m1 * Hm1 * x + 64. * H0 * Hm1 * Hm1 * x
-           - 4376.146540538595 * x2 + 2591.9999999999995 * H0 * x2
-           - 129.77777777777777 * H0 * H0 * x2
-           - 9.481481481481481 * H0 * H0 * H0 * x2
-           - 56.888888888888886 * H001 * x2 - 128. * H00m1 * x2
-           - 497.7777777777777 * H01 * x2 + 56.888888888888886 * H0 * H01 * x2
-           - 71.11111111111111 * H011 * x2 + 384. * H0m1 * x2
-           + 128. * H0 * H0m1 * x2 + 256. * H0m1m1 * x2
-           - 225.77777777777783 * H1 * x2 + 679.1111111111111 * H0 * H1 * x2
-           - 28.444444444444443 * H0 * H0 * H1 * x2
-           - 101.33333333333334 * H1 * H1 * x2 + 64. * H0 * H1 * H1 * x2
-           - 11.851851851851851 * H1 * H1 * H1 * x2
-           + 210.55156055657295 * Hm1 * x2 - 384. * H0 * Hm1 * x2
-           - 64. * H0 * H0 * Hm1 * x2 - 256. * H0m1 * Hm1 * x2
-           + 128. * H0 * Hm1 * Hm1 * x2
-           + 4.666666666666667 * CL_g1_massless(x, 1)
-           + CL_g3_massless(x, 1 + nf) / (1. + nf);
+    double tmp =
+        547.6343796175224 + 40.888888888888886 * H0
+        + 27.555555555555557 * H0 * H0 - 4.7407407407407405 * H0 * H0 * H0
+        - 170.66666666666669 * H001 + 64. * H00m1 - 181.33333333333334 * H01
+        + 71.11111111111111 * H0 * H01 + 35.55555555555556 * H011
+        - 64. * H0 * H0m1 - 128. * H0m1m1 - 3.555555555555557 * H1
+        + 209.77777777777774 * H0 * H1 + 14.222222222222221 * H0 * H0 * H1
+        - 16. * H1 * H1 - 32. * H0 * H1 * H1 + 5.925925925925926 * H1 * H1 * H1
+        - 105.27578027828648 * Hm1 + 32. * H0 * H0 * Hm1 + 128. * H0m1 * Hm1
+        - 64. * H0 * Hm1 * Hm1 - 32.2962962962963 / x
+        - (42.666666666666664 * H01) / x + (42.666666666666664 * H0 * H1) / x
+        + 766.5164922945999 * x + 358.03296696417954 * H0 * x
+        - 142.2222222222222 * H0 * H0 * x - 52.74074074074074 * H0 * H0 * H0 * x
+        + 4.7407407407407405 * H0 * H0 * H0 * H0 * x
+        + 1877.3333333333333 * H0001 * x - 384. * H000m1 * x
+        + 476.44444444444446 * H001 * x - 682.6666666666666 * H0 * H001 * x
+        + 199.11111111111111 * H0011 * x - 64. * H00m1 * x
+        + 256. * H0 * H00m1 * x + 890.6666666666667 * H01 * x
+        - 305.77777777777777 * H0 * H01 * x
+        + 28.444444444444443 * H0 * H0 * H01 * x + 99.55555555555556 * H011 * x
+        - 128. * H0 * H011 * x + 71.11111111111111 * H0111 * x
+        + 594.5515605565729 * H0m1 * x + 64. * H0 * H0m1 * x
+        - 64. * H0 * H0 * H0m1 * x - 128. * H0m1 * H0m1 * x + 128. * H0m1m1 * x
+        + 256. * H0 * H0m1m1 * x + 229.33333333333337 * H1 * x
+        - 931.5555555555555 * H0 * H1 * x
+        + 14.222222222222221 * H0 * H0 * H1 * x
+        + 117.33333333333334 * H1 * H1 * x - 32. * H0 * H1 * H1 * x
+        + 5.925925925925926 * H1 * H1 * H1 * x + 105.27578027828648 * Hm1 * x
+        - 384. * H0 * Hm1 * x - 32. * H0 * H0 * Hm1 * x - 128. * H0m1 * Hm1 * x
+        + 64. * H0 * Hm1 * Hm1 * x - 4376.146540538595 * x2
+        + 2591.9999999999995 * H0 * x2 - 129.77777777777777 * H0 * H0 * x2
+        - 9.481481481481481 * H0 * H0 * H0 * x2 - 56.888888888888886 * H001 * x2
+        - 128. * H00m1 * x2 - 497.7777777777777 * H01 * x2
+        + 56.888888888888886 * H0 * H01 * x2 - 71.11111111111111 * H011 * x2
+        + 384. * H0m1 * x2 + 128. * H0 * H0m1 * x2 + 256. * H0m1m1 * x2
+        - 225.77777777777783 * H1 * x2 + 679.1111111111111 * H0 * H1 * x2
+        - 28.444444444444443 * H0 * H0 * H1 * x2
+        - 101.33333333333334 * H1 * H1 * x2 + 64. * H0 * H1 * H1 * x2
+        - 11.851851851851851 * H1 * H1 * H1 * x2 + 210.55156055657295 * Hm1 * x2
+        - 384. * H0 * Hm1 * x2 - 64. * H0 * H0 * Hm1 * x2
+        - 256. * H0m1 * Hm1 * x2 + 128. * H0 * Hm1 * Hm1 * x2
+        + 4.666666666666667 * massless_as1_->MuIndependentTerms(x, 1)
+        + massless_->MuIndependentTerms(x, nf + 1) / (1. + nf);
+    return Value(tmp);
 }
 
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the pure singlet coefficient functions for
-//  FL at O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//  FL at O(as^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
 //
 //  Coefficient of log(m^2/Q^2)^2
 //------------------------------------------------------------------------------------------//
 
-double CL_ps3_highscale_NLL(double x) {
+double HighScaleSplitLogs::CL_ps3_highscale_NLL(double x, int /*nf*/) const {
 
     double x2 = x * x;
 
-    const double H0 = H(x, 0);
+    const double H0 = H_0(x);
 
     return -56.888888888888886 - 28.444444444444443 * H0
            - 4.7407407407407405 / x + 71.11111111111111 * x
@@ -3613,16 +3737,16 @@ double CL_ps3_highscale_NLL(double x) {
 
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the pure singlet coefficient functions for
-//  FL at O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//  FL at O(as^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
 //
 //  Coefficient of log(m^2/Q^2)^1
 //------------------------------------------------------------------------------------------//
 
-double CL_ps3_highscale_N2LL(double x) {
+double HighScaleSplitLogs::CL_ps3_highscale_N2LL(double x, int /*nf*/) const {
 
     double x2 = x * x;
 
-    const double H0 = H(x, 0);
+    const double H0 = H_0(x);
 
     return 9.481481481481495 + 28.444444444444443 * H0 * H0
            - 12.641975308641975 / x + 227.55555555555551 * x
@@ -3633,12 +3757,12 @@ double CL_ps3_highscale_N2LL(double x) {
 
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the pure singlet coefficient functions for
-//  FL at O(alpha_s^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
+//  FL at O(as^3) expanded in terms of \alpha_s^{[nf]}, for Q=mu.
 //
 //  Coefficient of log(m^2/Q^2)^0
 //------------------------------------------------------------------------------------------//
 
-double CL_ps3_highscale_N3LL(double x, int nf) {
+Value HighScaleSplitLogs::CL_ps3_highscale_N3LL(double x, int nf) const {
 
     double x2 = x * x;
 
@@ -3677,23 +3801,26 @@ double CL_ps3_highscale_N3LL(double x, int nf) {
     delete[] Hr4;
     delete[] Hr5;
 
-    return 10.347610117516318 - 61.62962962962962 * H0
-           - 7.111111111111111 * H0 * H0 - 4.7407407407407405 * H0 * H0 * H0
-           - 113.77777777777777 * H001 - 85.33333333333333 * H01
-           + 56.888888888888886 * H0 * H01 + 33.185185185185176 * H1
-           + 85.33333333333333 * H0 * H1 - 7.111111111111111 * H1 * H1
-           - 14.748971193415636 / x - (18.962962962962962 * H01) / x
-           - (7.901234567901234 * H1) / x + (18.962962962962962 * H0 * H1) / x
-           + (2.3703703703703702 * H1 * H1) / x + 361.7482701359206 * x
-           - 95.68094345084964 * H0 * x - 11.85185185185185 * H0 * H0 * H0 * x
-           + 1.1851851851851851 * H0 * H0 * H0 * H0 * x
-           + 170.66666666666666 * H0001 * x - 56.888888888888886 * H001 * x
-           - 56.888888888888886 * H0 * H001 * x + 194.37037037037038 * H01 * x
-           + 28.444444444444443 * H0 * H01 * x - 14.222222222222221 * H011 * x
-           + 4.740740740740742 * H1 * x - 142.22222222222223 * H0 * H1 * x
-           - 421.19311971200943 * x2 + 222.8148148148148 * H0 * x2
-           - 18.962962962962962 * H0 * H0 * x2 - 28.444444444444443 * H01 * x2
-           - 30.02469135802469 * H1 * x2 + 37.925925925925924 * H0 * H1 * x2
-           + 4.7407407407407405 * H1 * H1 * x2
-           + CL_ps3_massless(x, 1 + nf) / (1. + nf);
+    double tmp =
+        10.347610117516318 - 61.62962962962962 * H0
+        - 7.111111111111111 * H0 * H0 - 4.7407407407407405 * H0 * H0 * H0
+        - 113.77777777777777 * H001 - 85.33333333333333 * H01
+        + 56.888888888888886 * H0 * H01 + 33.185185185185176 * H1
+        + 85.33333333333333 * H0 * H1 - 7.111111111111111 * H1 * H1
+        - 14.748971193415636 / x - (18.962962962962962 * H01) / x
+        - (7.901234567901234 * H1) / x + (18.962962962962962 * H0 * H1) / x
+        + (2.3703703703703702 * H1 * H1) / x + 361.7482701359206 * x
+        - 95.68094345084964 * H0 * x - 11.85185185185185 * H0 * H0 * H0 * x
+        + 1.1851851851851851 * H0 * H0 * H0 * H0 * x
+        + 170.66666666666666 * H0001 * x - 56.888888888888886 * H001 * x
+        - 56.888888888888886 * H0 * H001 * x + 194.37037037037038 * H01 * x
+        + 28.444444444444443 * H0 * H01 * x - 14.222222222222221 * H011 * x
+        + 4.740740740740742 * H1 * x - 142.22222222222223 * H0 * H1 * x
+        - 421.19311971200943 * x2 + 222.8148148148148 * H0 * x2
+        - 18.962962962962962 * H0 * H0 * x2 - 28.444444444444443 * H01 * x2
+        - 30.02469135802469 * H1 * x2 + 37.925925925925924 * H0 * H1 * x2
+        + 4.7407407407407405 * H1 * H1 * x2
+        + massless_->MuIndependentTerms(x, nf + 1) / (1. + nf);
+
+    return Value(tmp);
 }

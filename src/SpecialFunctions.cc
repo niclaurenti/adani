@@ -3,7 +3,8 @@
 #include <cmath>
 #include <iostream>
 
-using namespace std;
+using std::cout;
+using std::endl;
 
 #define Li2_1_2 0.5822405265
 #define Li3_1_2 0.5372131936
@@ -146,7 +147,6 @@ double Li3(double x) {
 
 double S12(double x) {
 
-    double c;
     if (x > 1) {
         return (
             -Li3(1. - x) + zeta3 + log(x - 1.) * Li2(1. - x)
@@ -159,9 +159,10 @@ double S12(double x) {
     }
 
     else if ((0 < x) && (x < 1)) {
+        double logxm = log(1. - x);
         return (
-            -Li3(1. - x) + zeta3 + log(1. - x) * Li2(1. - x)
-            + 0.5 * log(x) * log(1. - x) * log(1. - x)
+            -Li3(1. - x) + zeta3 + logxm * Li2(1. - x)
+            + 0.5 * log(x) * logxm * logxm
         );
     }
 
@@ -170,11 +171,11 @@ double S12(double x) {
     }
 
     else if (x < 0) {
-        c = 1. / (1. - x);
+        double c = 1. / (1. - x);
+        double logc = log(c);
         return (
-            -Li3(c) + zeta3 + log(c) * Li2(c)
-            + 0.5 * log(c) * log(c) * log(1. - c)
-            - 1. / 6. * log(c) * log(c) * log(c)
+            -Li3(c) + zeta3 + logc * Li2(c) + 0.5 * logc * logc * log(1. - c)
+            - 1. / 6. * logc * logc * logc
         );
     }
 
@@ -189,20 +190,15 @@ double S12(double x) {
 //  Eq. (1) of Ref. [arXiv:hep-ph/9905237v1]
 //------------------------------------------------------------------------------------------//
 
-double H(double x, int i) {
+double H_0(double x) { return log(x); }
 
-    if (i == 1)
-        return -log(1. - x);
-    if (i == 0)
-        return log(x);
-    if (i == -1)
-        return log(1. + x);
+//------------------------------------------------------------------------------------------//
 
-    else {
-        cout << "H(x,i) is defined only for i = -1,0,1! \n Exiting..." << endl;
-        exit(-1);
-    }
-}
+double H_1(double x) { return -log(1. - x); }
+
+//------------------------------------------------------------------------------------------//
+
+double H_m1(double x) { return log(1. + x); }
 
 //==========================================================================================//
 //  Harmonic polylogarithms of weight 2.
@@ -210,41 +206,56 @@ double H(double x, int i) {
 //  Eq. (9,11) of Ref. [arXiv:hep-ph/9905237v1]
 //------------------------------------------------------------------------------------------//
 
-double H(double x, int i, int j) {
+double H_m1m1(double x) {
 
-    if (i == 0 && j == 0) {
-        double L = log(x);
-        return 0.5 * L * L;
-    }
-    if (i == 0 && j == 1)
-        return Li2(x);
-    if (i == 0 && j == -1)
-        return -Li2(-x);
-    if (i == 1 && j == 0)
-        return -log(x) * log(1. - x) - Li2(x);
-    // there's a typo in the paper: +Li2(x)
-    if (i == 1 && j == 1) {
-        double Lm = log(1. - x);
-        return 0.5 * Lm * Lm;
-    }
-    if (i == 1 && j == -1) {
-        double xm = 1. - x;
-        return Li2(xm / 2.) - ln2 * log(xm) - Li2_1_2;
-    }
-    if (i == -1 && j == 0)
-        return log(x) * log(1. + x) + Li2(-x);
-    if (i == -1 && j == 1) {
-        double xp = 1. + x;
-        return Li2(xp / 2) - ln2 * log(xp) - Li2_1_2;
-    }
-    if (i == -1 && j == -1) {
-        double Lp = log(1. + x);
-        return 0.5 * Lp * Lp;
-    } else {
-        cout << "H(x," << i << "," << j << ") is not defined." << endl
-             << "Exiting..." << endl;
-        exit(-1);
-    }
+    double Lp = log(1. + x);
+    return 0.5 * Lp * Lp;
+}
+
+//------------------------------------------------------------------------------------------//
+
+double H_m10(double x) { return log(x) * log(1. + x) + Li2(-x); }
+
+//------------------------------------------------------------------------------------------//
+
+double H_m11(double x) {
+
+    double xp = 1. + x;
+    return Li2(xp / 2) - ln2 * log(xp) - Li2_1_2;
+}
+
+//------------------------------------------------------------------------------------------//
+
+double H_0m1(double x) { return -Li2(-x); }
+
+//------------------------------------------------------------------------------------------//
+
+double H_00(double x) {
+
+    double L = log(x);
+    return 0.5 * L * L;
+}
+
+//------------------------------------------------------------------------------------------//
+
+double H_01(double x) { return Li2(x); }
+
+//------------------------------------------------------------------------------------------//
+
+double H_1m1(double x) {
+
+    double xm = 1. - x;
+    return Li2(xm / 2.) - ln2 * log(xm) - Li2_1_2;
+}
+
+double H_10(double x) { return -log(x) * log(1. - x) - Li2(x); }
+
+//------------------------------------------------------------------------------------------//
+
+double H_11(double x) {
+
+    double Lm = log(1. - x);
+    return 0.5 * Lm * Lm;
 }
 
 //==========================================================================================//
@@ -253,100 +264,163 @@ double H(double x, int i, int j) {
 //  Eq. (78-89) of Ref. [arXiv:hep-ph/0507152v2]
 //------------------------------------------------------------------------------------------//
 
-double H(double x, int i, int j, int k) {
+double H_m1m1m1(double x) {
 
-    if (i == 1 && j == 1 && k == 1) {
-        double Lm = log(1. - x);
-        return -1. / 6. * Lm * Lm * Lm;
-    }
-    if (i == 1 && j == 1 && k == 0) {
-        double xm = 1. - x;
-        return zeta2 * log(xm) - Li3(xm) + zeta3;
-    }
-    if (i == 1 && j == 1 && k == -1)
-        return 0.5 * H(x, 1) * H(x, 1, -1) - 0.5 * H(x, 1, -1, 1);
-    if (i == 1 && j == 0 && k == 1)
-        return -2. * S12(x) - log(1. - x) * Li2(x);
-    if (i == 1 && j == 0 && k == 0) {
-        double L = log(x);
-        return -1. / 2 * L * L * log(1. - x) - L * Li2(x) + Li3(x);
-    }
-    if (i == 1 && j == 0 && k == -1)
-        return H(x, 1) * H(x, 0, -1) - H(x, 0, 1, -1) - H(x, 0, -1, 1);
-    if (i == 1 && j == -1 && k == 1)
-        return H(x, 1) * H(x, -1, 1) - 2. * H(x, -1, 1, 1);
-    if (i == 1 && j == -1 && k == 0)
-        return H(x, 0) * H(x, 1, -1) - H(x, 0, 1, -1) - H(x, 1, 0, -1);
-    if (i == 1 && j == -1 && k == -1) {
-        double xp = 1. + x;
-        double Lp = log(xp);
-        return -0.5 * log((1. - x) / 2.) * Lp * Lp - Li3_1_2 - Lp * Li2(xp / 2.)
-               + Li3(xp / 2.);
-    }
+    double Lp = log(1. + x);
+    return 1. / 6. * Lp * Lp * Lp;
+}
 
-    if (i == 0 && j == 1 && k == 1)
-        return S12(x);
-    if (i == 0 && j == 1 && k == 0)
-        return log(x) * Li2(x) - 2. * Li3(x);
-    if (i == 0 && j == 1 && k == -1) {
-        double xp = 1. + x;
-        double Lp = log(xp);
-        return Li3(2. * x / xp) - Li3(x / xp) - Li3(xp / 2.) - Li3(x)
-               + Lp * Li2(0.5) + Lp * Li2(x) + 0.5 * ln2 * Lp * Lp + Li3_1_2;
-    }
-    if (i == 0 && j == 0 && k == 1)
-        return Li3(x);
-    if (i == 0 && j == 0 && k == 0) {
-        double L = log(x);
-        return 1. / 6. * L * L * L;
-    }
-    if (i == 0 && j == 0 && k == -1)
-        return -Li3(-x);
-    if (i == 0 && j == -1 && k == 1) {
-        double xm = 1. - x;
-        double Lm = log(xm);
-        double Lm2 = Lm * Lm;
-        double Lm3 = Lm2 * Lm;
-        return -S12(x) + Li3(-2. * x / xm) - Li3(xm / 2) - Li3(-x) + Li3_1_2
-               + Li3(x) + Lm * Li2(-x) + Lm * Li2_1_2 - Lm * Li2(x)
-               + 0.5 * ln2 * Lm2 - 1. / 6. * Lm3;
-    }
-    if (i == 0 && j == -1 && k == 0)
-        return -log(x) * Li2(-x) + 2. * Li3(-x);
-    if (i == 0 && j == -1 && k == -1)
-        return S12(-x);
+//------------------------------------------------------------------------------------------//
 
-    if (i == -1 && j == 1 && k == 1) {
-        double xm = 1. - x;
-        double Lm = log(xm);
-        return 0.5 * log((1. + x) / 2.) * Lm * Lm + Li3(0.5) + Lm * Li2(xm / 2.)
-               - Li3(xm / 2);
-    }
-    if (i == -1 && j == 1 && k == 0)
-        return H(x, 0) * H(x, -1, 1) - H(x, 0, -1, 1) - H(x, -1, 0, 1);
-    if (i == -1 && j == 1 && k == -1)
-        return H(x, -1) * H(x, 1, -1) - 2. * H(x, 1, -1, -1);
-    if (i == -1 && j == 0 && k == 1)
-        return H(x, -1) * H(x, 0, 1) - H(x, 0, -1, 1) - H(x, 0, 1, -1);
-    if (i == -1 && j == 0 && k == 0) {
-        double L = log(x);
-        return 0.5 * L * L * log(1. + x) + L * Li2(-x) - Li3(-x);
-    }
-    if (i == -1 && j == 0 && k == -1)
-        return H(x, 0, -1) * H(x, -1) - 2. * H(x, 0, -1, -1);
-    if (i == -1 && j == -1 && k == 1)
-        return 0.5 * H(x, -1) * H(x, -1, 1) - 0.5 * H(x, -1, 1, -1);
-    if (i == -1 && j == -1 && k == 0)
-        return H(x, 0) * H(x, -1, -1) - H(x, 0, -1, -1) - H(x, -1, 0, -1);
-    if (i == -1 && j == -1 && k == -1) {
-        double Lp = log(1. + x);
-        return 1. / 6. * Lp * Lp * Lp;
-    }
+double H_m1m10(double x) {
 
-    else {
-        cout << "H(x," << i << "," << j << "," << k << ") is not defined."
-             << endl
-             << "Exiting..." << endl;
-        exit(-1);
-    }
+    return H_0(x) * H_m1m1(x) - H_0m1m1(x) - H_m10m1(x);
+}
+
+//------------------------------------------------------------------------------------------//
+
+double H_m1m11(double x) { return 0.5 * H_m1(x) * H_m11(x) - 0.5 * H_m11m1(x); }
+
+//------------------------------------------------------------------------------------------//
+
+double H_m10m1(double x) { return H_0m1(x) * H_m1(x) - 2. * H_0m1m1(x); }
+
+//------------------------------------------------------------------------------------------//
+
+double H_m100(double x) {
+
+    double L = log(x);
+    return 0.5 * L * L * log(1. + x) + L * Li2(-x) - Li3(-x);
+}
+
+//------------------------------------------------------------------------------------------//
+
+double H_m101(double x) { return H_m1(x) * H_01(x) - H_0m11(x) - H_01m1(x); }
+
+//------------------------------------------------------------------------------------------//
+
+double H_m11m1(double x) { return H_m1(x) * H_1m1(x) - 2. * H_1m1m1(x); }
+
+//------------------------------------------------------------------------------------------//
+
+double H_m110(double x) { return H_0(x) * H_m11(x) - H_0m11(x) - H_m101(x); }
+
+//------------------------------------------------------------------------------------------//
+
+double H_m111(double x) {
+
+    double xm = 1. - x;
+    double Lm = log(xm);
+    return 0.5 * log((1. + x) / 2.) * Lm * Lm + Li3(0.5) + Lm * Li2(xm / 2.)
+           - Li3(xm / 2);
+}
+
+//------------------------------------------------------------------------------------------//
+
+double H_0m1m1(double x) { return S12(-x); }
+
+//------------------------------------------------------------------------------------------//
+
+double H_0m10(double x) { return -log(x) * Li2(-x) + 2. * Li3(-x); }
+
+//------------------------------------------------------------------------------------------//
+
+double H_0m11(double x) {
+
+    double xm = 1. - x;
+    double Lm = log(xm);
+    double Lm2 = Lm * Lm;
+    double Lm3 = Lm2 * Lm;
+
+    return -S12(x) + Li3(-2. * x / xm) - Li3(xm / 2) - Li3(-x) + Li3_1_2
+           + Li3(x) + Lm * Li2(-x) + Lm * Li2_1_2 - Lm * Li2(x)
+           + 0.5 * ln2 * Lm2 - 1. / 6. * Lm3;
+}
+
+//------------------------------------------------------------------------------------------//
+
+double H_00m1(double x) { return -Li3(-x); }
+
+//------------------------------------------------------------------------------------------//
+
+double H_000(double x) {
+
+    double L = log(x);
+    return 1. / 6. * L * L * L;
+}
+
+//------------------------------------------------------------------------------------------//
+
+double H_001(double x) { return Li3(x); }
+
+//------------------------------------------------------------------------------------------//
+
+double H_01m1(double x) {
+
+    double xp = 1. + x;
+    double Lp = log(xp);
+    return Li3(2. * x / xp) - Li3(x / xp) - Li3(xp / 2.) - Li3(x)
+           + Lp * Li2(0.5) + Lp * Li2(x) + 0.5 * ln2 * Lp * Lp + Li3_1_2;
+}
+
+//------------------------------------------------------------------------------------------//
+
+double H_010(double x) { return log(x) * Li2(x) - 2. * Li3(x); }
+
+//------------------------------------------------------------------------------------------//
+
+double H_011(double x) { return S12(x); }
+
+//------------------------------------------------------------------------------------------//
+
+double H_1m1m1(double x) {
+
+    double xp = 1. + x;
+    double Lp = log(xp);
+    return -0.5 * log((1. - x) / 2.) * Lp * Lp - Li3_1_2 - Lp * Li2(xp / 2.)
+           + Li3(xp / 2.);
+}
+
+//------------------------------------------------------------------------------------------//
+
+double H_1m10(double x) { return H_0(x) * H_1m1(x) - H_01m1(x) - H_10m1(x); }
+
+//------------------------------------------------------------------------------------------//
+
+double H_1m11(double x) { return H_1(x) * H_m11(x) - 2. * H_m111(x); }
+
+//------------------------------------------------------------------------------------------//
+
+double H_10m1(double x) { return H_1(x) * H_0m1(x) - H_01m1(x) - H_0m11(x); }
+
+//------------------------------------------------------------------------------------------//
+
+double H_100(double x) {
+
+    double L = log(x);
+    return -1. / 2 * L * L * log(1. - x) - L * Li2(x) + Li3(x);
+}
+
+//------------------------------------------------------------------------------------------//
+
+double H_101(double x) { return -2. * S12(x) - log(1. - x) * Li2(x); }
+
+//------------------------------------------------------------------------------------------//
+
+double H_11m1(double x) { return 0.5 * H_1(x) * H_1m1(x) - 0.5 * H_1m11(x); }
+
+//------------------------------------------------------------------------------------------//
+
+double H_110(double x) {
+
+    double xm = 1. - x;
+    return zeta2 * log(xm) - Li3(xm) + zeta3;
+}
+
+//------------------------------------------------------------------------------------------//
+
+double H_111(double x) {
+
+    double Lm = log(1. - x);
+    return -1. / 6. * Lm * Lm * Lm;
 }

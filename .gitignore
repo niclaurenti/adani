@@ -19,3 +19,8 @@ docs/*.synctex.gz
 
 dist/
 MANIFEST.in
+
+env/
+venv/
+
+tests/__pycache__/

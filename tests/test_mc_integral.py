@@ -1,14 +1,17 @@
-import adani
+import adani as ad
 import numpy as np
 
-mb=4.92
 nf=4
 
 def test_mc_integrals():
-    for q in np.geomspace(2 * mb, 100., 10):
-        m2Q2 = (mb / q)**2
-        xmax = 1. / (1. + 4 * m2Q2)
-        for x in np.geomspace(1e-4, xmax, 10, endpoint=False):
-            mc = adani.C2_g1_x_Pgg0_x_Pgg0_MC(x, m2Q2, nf)
-            no_mc = adani.C2_g1_x_Pgg0_x_Pgg0(x, m2Q2, nf)
-            # np.testing.assert_allclose(mc, no_mc, rtol=1e-2)
+    for kind in ['2', 'L']:
+        massive_mc = ad.ExactCoefficientFunction(3, kind, 'g', 1e-3, 1e-3, 1000, True, 1000000)
+        massive_nomc = ad.ExactCoefficientFunction(3, kind, 'g', 1e-3, 1e-3, 1000, False, 25000)
+        for xi in np.geomspace(1e-2, 1e4, 4, endpoint=True):
+            m2Q2 = 1/xi
+            xmax = 1. / (1. + 4 * m2Q2)
+            for x in np.geomspace(1e-5, xmax, 5, endpoint=False):
+                    for nf in range(1, 6 + 1):
+                        res1 = massive_mc.MuDependentTerms(x, m2Q2, m2Q2, nf)
+                        res2 = massive_nomc.MuDependentTerms(x, m2Q2, m2Q2, nf)
+                        np.testing.assert_allclose(res1, res2, rtol=5e-3)

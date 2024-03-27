@@ -10,7 +10,7 @@ When using this code please cite [![arXiv](https://img.shields.io/badge/arXiv-24
 
 The code depends on the public library ```gsl```.
 
-Optional dependencies are the library ```pybind11``` and the Python module ```scikit-build``` (both public), that are required for building the Pyhton bindings.
+Optional dependencies are the library ```pybind11``` and the Python module ```scikit-build``` (both public), that are required for building the Python bindings.
 
 ## Installation
 
@@ -40,7 +40,7 @@ or
 ```bash
 g++ -Wall -I/your/installation/path/include -L/your/installation/path/lib/ -o test.exe test.cpp -ladani
 ```
-In the first case remember to run
+In both cases remember to run
 ```bash
 export PATH=$PATH:/your/installation/path/bin
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/your/installation/path/lib
