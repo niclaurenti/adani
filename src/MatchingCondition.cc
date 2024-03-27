@@ -46,7 +46,7 @@ MatchingCondition::MatchingCondition(
     }
 
     if (entry2 == 'q' && (version == "improved" || version == "blumline")) {
-        cout << "Error: quark channel doesn't have 'improved' version!" << endl;
+        cout << "Error: quark channel doesn't have 'improved' or 'blumline' version!" << endl;
         exit(-1);
     }
 
