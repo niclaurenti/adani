@@ -137,6 +137,10 @@ class ExactCoefficientFunction : public CoefficientFunction {
         double C_ps3_MuDep(double x, double m2Q2, double m2mu2, int nf) const;
         double C_g3_MuDep(double x, double m2Q2, double m2mu2, int nf) const;
 
+        //==========================================================================================//
+        //  Function needed to make muindep_ and mudep_ point to a zero function
+        //------------------------------------------------------------------------------------------//
+
         double ZeroFunction(
             double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/
         ) const {

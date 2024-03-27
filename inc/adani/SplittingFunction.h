@@ -121,6 +121,10 @@ class SplittingFunction : public AbstractSplittingFunction {
         double Pgg1sing_integrated(double x, int nf) const;
         double Pgg1loc(int nf) const;
 
+        //==========================================================================================//
+        //  Function needed to return a zero function
+        //------------------------------------------------------------------------------------------//
+
         double ZeroFunction_x_nf(double /*x*/, int /*nf*/) const { return 0.; };
         double ZeroFunction_nf(int /*nf*/) const { return 0.; };
 };
@@ -186,6 +190,10 @@ class ConvolutedSplittingFunctions : public AbstractSplittingFunction {
         //------------------------------------------------------------------------------------------//
 
         double Pgq0_x_Pqg0(double x, int nf) const;
+
+        //==========================================================================================//
+        //  Function needed to return a zero function
+        //------------------------------------------------------------------------------------------//
 
         double ZeroFunction_x_nf(double /*x*/, int /*nf*/) const { return 0.; };
         double ZeroFunction_nf(int /*nf*/) const { return 0.; };
