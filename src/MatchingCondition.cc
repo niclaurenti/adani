@@ -254,8 +254,9 @@ vector<double> MatchingCondition::NotOrdered(double x) const {
 //
 //  v = 0 : exact result
 //  v = 1 : Eq. (3.49) of Ref. [arXiv:1205.5727]
-//  v = 2 : Eq. (16) Ref. of [arXiv:1701.05838]
+//  v = -1 : Eq. (16) Ref. of [arXiv:1701.05838]
 //  v = -12 : Eq. (3.50) of Ref. [arXiv:1205.5727]
+//  v = 2 : approximation from [arXiv:2403.00513]
 //------------------------------------------------------------------------------------------//
 
 double MatchingCondition::a_Qg_30(double x, int v) const {
