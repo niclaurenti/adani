@@ -209,7 +209,7 @@ Value PowerTermsCoefficientFunction::fxBand(
     double x, double m2Q2, double m2mu2, int nf
 ) const {
     // TODO: in this way the error is very small: should take all the
-    // combinations
+    // combinations?
     double central = (highenergy_->fx(x, m2Q2, m2mu2, nf))
                      - (highenergyhighscale_->fx(x, m2Q2, m2mu2, nf));
     double higher =
@@ -224,6 +224,30 @@ Value PowerTermsCoefficientFunction::fxBand(
     else
         return Value(central, lower, higher);
 }
+
+// In this way the error is enormous
+
+// Value PowerTermsCoefficientFunction::fxBand(
+//     double x, double m2Q2, double m2mu2, int nf
+// ) const {
+
+//     double central = (highenergy_->fx(x, m2Q2, m2mu2, nf))
+//                      - (highenergyhighscale_->fx(x, m2Q2, m2mu2, nf));
+
+//     Value tmp1 = highenergy_->fxBand(x, m2Q2, m2mu2, nf);
+//     Value tmp2 = highenergyhighscale_->fxBand(x, m2Q2, m2mu2, nf);
+
+//     double delta_he_up = tmp1.GetHigher() - tmp1.GetCentral();
+//     double delta_he_down = tmp1.GetCentral() - tmp1.GetLower();
+
+//     double delta_hehs_up = tmp2.GetHigher() - tmp2.GetCentral();
+//     double delta_hehs_down = tmp2.GetCentral() - tmp2.GetLower();
+
+//     double err_up = sqrt(delta_he_up*delta_he_up + delta_hehs_up*delta_hehs_up);
+//     double err_down = sqrt(delta_he_down*delta_he_down + delta_hehs_down*delta_hehs_down);
+
+//     return Value(central, central + err_up, central - err_down);
+// }
 
 // In this way the error is enormous
 
