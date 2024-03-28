@@ -69,50 +69,22 @@ MatchingCondition::MatchingCondition(
 //------------------------------------------------------------------------------------------//
 
 Value MatchingCondition::MuIndependentNfIndependentTerm(double x) const {
-    double central, higher, lower;
-    if (entry2_ == 'q') {
-        if (version_ == "exact")
-            return Value(a_Qq_PS_30(x, 0));
-        else if (version_ == "klmv") {
-            higher = a_Qq_PS_30(x, 1);
-            lower = a_Qq_PS_30(x, -1);
-            central = 0.5 * (higher + lower);
-            if (higher < lower)
-                return Value(central, lower, higher);
-            return Value(central, higher, lower);
-        } else {
-            cout << "Error: something has gone wrong in MatchingCondition::MuIndependentNfIndependentTerm"
-                 << endl;
-            exit(-1);
-        }
-    } else {
-        int low_id;
-        if (version_ == "exact")
-            return Value(a_Qg_30(x, 0));
-        // abbdvss = Ablinger, Behring, Blumlein, De Freitas, von Manteuffel, Schneider, Schonwald
-        else if (version_ == "abbdvss")
-            // This version doesn't have an uncertainty band
-            // so returning the same value three times
-            return Value(a_Qg_30(x, 2));
-        // abmp = Alekhin, Blumlein, Moch, Placakyte
-        else if (version_ == "abmp")
-            low_id = -1;
-        // klmv = Kawamura, Lo Presti, Moch, Vogt
-        else if (version_ == "klmv")
-            low_id = -12;
-        else {
-            cout << "Error: something has gone wrong in MatchingCondition::MuIndependentNfIndependentTerm"
-                 << endl;
-            exit(-1);
-        }
 
-        higher = a_Qg_30(x, 1);
-        lower = a_Qg_30(x, low_id);
-        central = 0.5 * (higher + lower);
-        if (higher < lower)
-            return Value(central, lower, higher);
-        return Value(central, higher, lower);
+    double central, higher, lower;
+
+    vector<double> res = NotOrdered(x);
+
+    central = res[0];
+
+    if (res[1] > res[2]) {
+        higher = res[1];
+        lower = res[2];
+    } else {
+        higher = res[2];
+        lower = res[1];
     }
+
+    return Value(central, higher, lower);
 }
 
 //==========================================================================================//
@@ -121,17 +93,22 @@ Value MatchingCondition::MuIndependentNfIndependentTerm(double x) const {
 //------------------------------------------------------------------------------------------//
 
 vector<double> MatchingCondition::NotOrdered(double x) const {
+
     double central, higher, lower;
     if (entry2_ == 'q') {
         if (version_ == "exact") {
             central = a_Qq_PS_30(x, 0);
             return { central, central, central };
-        } else {
+        } else if (version_ == "klmv") {
             higher = a_Qq_PS_30(x, 1);
             lower = a_Qq_PS_30(x, -1);
             central = 0.5 * (higher + lower);
 
             return { central, higher, lower };
+        } else {
+            cout << "Error: something has gone wrong in MatchingCondition::MuIndependentNfIndependentTerm"
+                 << endl;
+            exit(-1);
         }
     } else {
         int low_id;
@@ -140,8 +117,13 @@ vector<double> MatchingCondition::NotOrdered(double x) const {
             return { central, central, central };
         } else if (version_ == "abmp")
             low_id = -1;
-        else
+        else if (version_ == "klmv")
             low_id = -12;
+        else {
+            cout << "Error: something has gone wrong in MatchingCondition::NotOrdered"
+                 << endl;
+            exit(-1);
+        }
 
         higher = a_Qg_30(x, 1);
         lower = a_Qg_30(x, low_id);
