@@ -39,16 +39,22 @@ MatchingCondition::MatchingCondition(
     entry2_ = entry2;
 
     // check version
-    if (version != "exact" && version != "improved" && version != "original"
+    if (version != "exact" && version != "abmp" && version != "klmv"
         && version != "abbdvss") {
-        cout << "Error: version must be 'exact', 'improved', 'abbdvss' or "
-                "'original'! Got "
+        cout << "Error: version must be 'exact', 'abmp', 'abbdvss' or "
+                "'klmv'! Got "
              << version << endl;
         exit(-1);
     }
 
-    if (entry2 == 'q' && (version == "improved" || version == "abbdvss")) {
-        cout << "Error: quark channel doesn't have 'improved' or 'abbdvss' "
+      if (entry2 == 'g' && version == "exact") {
+        cout << "Error: aQg channel doesn't have 'exact' version!"
+             << endl;
+        exit(-1);
+    }
+
+    if (entry2 == 'q' && (version == "abmp" || version == "abbdvss")) {
+        cout << "Error: aQq channel doesn't have 'abmp' or 'abbdvss' "
                 "version!"
              << endl;
         exit(-1);
@@ -67,13 +73,17 @@ Value MatchingCondition::MuIndependentNfIndependentTerm(double x) const {
     if (entry2_ == 'q') {
         if (version_ == "exact")
             return Value(a_Qq_PS_30(x, 0));
-        else {
+        else if (version_ == "klmv") {
             higher = a_Qq_PS_30(x, 1);
             lower = a_Qq_PS_30(x, -1);
             central = 0.5 * (higher + lower);
             if (higher < lower)
                 return Value(central, lower, higher);
             return Value(central, higher, lower);
+        } else {
+            cout << "Error: something has gone wrong in MatchingCondition::MuIndependentNfIndependentTerm"
+                 << endl;
+            exit(-1);
         }
     } else {
         int low_id;
@@ -84,10 +94,17 @@ Value MatchingCondition::MuIndependentNfIndependentTerm(double x) const {
             // This version doesn't have an uncertainty band
             // so returning the same value three times
             return Value(a_Qg_30(x, 2));
-        else if (version_ == "improved")
+        // abmp = Alekhin, Blumlein, Moch, Placakyte
+        else if (version_ == "abmp")
             low_id = -1;
-        else
+        // klmv = Kawamura, Lo Presti, Moch, Vogt
+        else if (version_ == "klmv")
             low_id = -12;
+        else {
+            cout << "Error: something has gone wrong in MatchingCondition::MuIndependentNfIndependentTerm"
+                 << endl;
+            exit(-1);
+        }
 
         higher = a_Qg_30(x, 1);
         lower = a_Qg_30(x, low_id);
@@ -121,7 +138,7 @@ vector<double> MatchingCondition::NotOrdered(double x) const {
         if (version_ == "exact") {
             central = a_Qg_30(x, 0);
             return { central, central, central };
-        } else if (version_ == "improved")
+        } else if (version_ == "abmp")
             low_id = -1;
         else
             low_id = -12;

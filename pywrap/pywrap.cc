@@ -51,7 +51,7 @@ PYBIND11_MODULE(_core, m) {
                 const string &, const double &, const double &, const int &,
                 const bool &, const int &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel"),
-            py::arg("NLL") = true, py::arg("highscale_version") = "original",
+            py::arg("NLL") = true, py::arg("highscale_version") = "klmv",
             py::arg("abserr") = 1e-3, py::arg("relerr") = 1e-3,
             py::arg("dim") = 1000, py::arg("MCintegral") = false,
             py::arg("MCcalls") = 25000
@@ -85,7 +85,7 @@ PYBIND11_MODULE(_core, m) {
                 const bool &, const double &, const double &, const int &,
                 const bool &, const int &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel"),
-            py::arg("highscale_version") = "original", py::arg("lowxi") = false,
+            py::arg("highscale_version") = "klmv", py::arg("lowxi") = false,
             py::arg("abserr") = 1e-3, py::arg("relerr") = 1e-3,
             py::arg("dim") = 1000, py::arg("MCintegral") = false,
             py::arg("MCcalls") = 25000
@@ -118,7 +118,7 @@ PYBIND11_MODULE(_core, m) {
                 const int &, const char &, const char &, const bool &,
                 const string &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel"),
-            py::arg("NLL") = true, py::arg("highscale_version") = "original"
+            py::arg("NLL") = true, py::arg("highscale_version") = "klmv"
         )
         .def(
             "MuIndependentTerms",
@@ -251,7 +251,7 @@ PYBIND11_MODULE(_core, m) {
         .def(
             py::init<const int &, const char &, const char &, const string &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel"),
-            py::arg("version") = "original"
+            py::arg("version") = "klmv"
         )
         .def(
             "MuIndependentTerms",
@@ -276,7 +276,7 @@ PYBIND11_MODULE(_core, m) {
         .def(
             py::init<const int &, const char &, const char &, const string &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel"),
-            py::arg("version") = "original"
+            py::arg("version") = "klmv"
         )
         .def(
             "fx", (double(HighScaleSplitLogs::*)(double, double, int) const)
