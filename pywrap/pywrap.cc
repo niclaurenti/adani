@@ -37,6 +37,7 @@ PYBIND11_MODULE(_core, m) {
         .def(py::self / double())
         .def(py::self *= double())
         .def(py::self /= double())
+        .def("ToVect", &Value::ToVect)
         .def("GetCentral", &Value::GetCentral)
         .def("GetHigher", &Value::GetHigher)
         .def("GetLower", &Value::GetLower);
