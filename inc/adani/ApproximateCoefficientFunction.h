@@ -89,8 +89,7 @@ class ApproximateCoefficientFunction : public AbstractApproximate {
     public:
         ApproximateCoefficientFunction(
             const int &order, const char &kind, const char &channel,
-            const bool &NLL = true,
-            const string &highscale_version = "klmv",
+            const bool &NLL = true, const string &highscale_version = "klmv",
             const double &abserr = 1e-3, const double &relerr = 1e-3,
             const int &dim = 1000, const bool &MCintegral = false,
             const int &MCcalls = 25000
@@ -122,10 +121,10 @@ class ApproximateCoefficientFunctionKLMV : public AbstractApproximate {
     public:
         ApproximateCoefficientFunctionKLMV(
             const int &order, const char &kind, const char &channel,
-            const string &highscale_version = "klmv",
-            const bool &lowxi = false, const double &abserr = 1e-3,
-            const double &relerr = 1e-3, const int &dim = 1000,
-            const bool &MCintegral = false, const int &MCcalls = 25000
+            const string &highscale_version = "klmv", const bool &lowxi = false,
+            const double &abserr = 1e-3, const double &relerr = 1e-3,
+            const int &dim = 1000, const bool &MCintegral = false,
+            const int &MCcalls = 25000
         );
         ~ApproximateCoefficientFunctionKLMV() override;
 

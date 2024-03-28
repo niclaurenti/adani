@@ -47,9 +47,8 @@ MatchingCondition::MatchingCondition(
         exit(-1);
     }
 
-      if (entry2 == 'g' && version == "exact") {
-        cout << "Error: aQg channel doesn't have 'exact' version!"
-             << endl;
+    if (entry2 == 'g' && version == "exact") {
+        cout << "Error: aQg channel doesn't have 'exact' version!" << endl;
         exit(-1);
     }
 
@@ -106,7 +105,8 @@ vector<double> MatchingCondition::NotOrdered(double x) const {
 
             return { central, higher, lower };
         } else {
-            cout << "Error: something has gone wrong in MatchingCondition::MuIndependentNfIndependentTerm"
+            cout << "Error: something has gone wrong in "
+                    "MatchingCondition::MuIndependentNfIndependentTerm"
                  << endl;
             exit(-1);
         }
@@ -120,7 +120,8 @@ vector<double> MatchingCondition::NotOrdered(double x) const {
         else if (version_ == "klmv")
             low_id = -12;
         else {
-            cout << "Error: something has gone wrong in MatchingCondition::NotOrdered"
+            cout << "Error: something has gone wrong in "
+                    "MatchingCondition::NotOrdered"
                  << endl;
             exit(-1);
         }

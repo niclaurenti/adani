@@ -243,8 +243,9 @@ Value PowerTermsCoefficientFunction::fxBand(
 //     double delta_hehs_up = tmp2.GetHigher() - tmp2.GetCentral();
 //     double delta_hehs_down = tmp2.GetCentral() - tmp2.GetLower();
 
-//     double err_up = sqrt(delta_he_up*delta_he_up + delta_hehs_up*delta_hehs_up);
-//     double err_down = sqrt(delta_he_down*delta_he_down + delta_hehs_down*delta_hehs_down);
+//     double err_up = sqrt(delta_he_up*delta_he_up +
+//     delta_hehs_up*delta_hehs_up); double err_down =
+//     sqrt(delta_he_down*delta_he_down + delta_hehs_down*delta_hehs_down);
 
 //     return Value(central, central + err_up, central - err_down);
 // }
@@ -259,7 +260,8 @@ Value PowerTermsCoefficientFunction::fxBand(
 //                      - (highenergyhighscale_->fx(x, m2Q2, m2mu2, nf));
 
 //     vector<double> tmp1 = highenergy_->fxBand(x, m2Q2, m2mu2, nf).ToVect();
-//     vector<double> tmp2 = highenergyhighscale_->fxBand(x, m2Q2, m2mu2, nf).ToVect();
+//     vector<double> tmp2 = highenergyhighscale_->fxBand(x, m2Q2, m2mu2,
+//     nf).ToVect();
 
 //     double tmp, higher = central, lower = central;
 //     for(double he : tmp1) {
