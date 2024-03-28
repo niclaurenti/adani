@@ -40,8 +40,8 @@ MatchingCondition::MatchingCondition(
 
     // check version
     if (version != "exact" && version != "abmp" && version != "klmv"
-        && version != "abbdvss") {
-        cout << "Error: version must be 'exact', 'abmp', 'abbdvss' or "
+        && version != "gm") {
+        cout << "Error: version must be 'exact', 'abmp', 'gm' or "
                 "'klmv'! Got "
              << version << endl;
         exit(-1);
@@ -52,8 +52,8 @@ MatchingCondition::MatchingCondition(
         exit(-1);
     }
 
-    if (entry2 == 'q' && (version == "abmp" || version == "abbdvss")) {
-        cout << "Error: aQq channel doesn't have 'abmp' or 'abbdvss' "
+    if (entry2 == 'q' && (version == "abmp" || version == "gm")) {
+        cout << "Error: aQq channel doesn't have 'abmp' or 'gm' "
                 "version!"
              << endl;
         exit(-1);
@@ -261,7 +261,7 @@ vector<double> MatchingCondition::NotOrdered(double x) const {
 //  v = 1 : Eq. (3.49) of Ref. [arXiv:1205.5727]
 //  v = -1 : Eq. (16) Ref. of [arXiv:1701.05838]
 //  v = -12 : Eq. (3.50) of Ref. [arXiv:1205.5727]
-//  v = 2 : approximation from [arXiv:2403.00513]
+//  v = 2 : approximation from Giacomo Magni, based on the results of [arXiv:2403.00513]
 //------------------------------------------------------------------------------------------//
 
 double MatchingCondition::a_Qg_30(double x, int v) const {
