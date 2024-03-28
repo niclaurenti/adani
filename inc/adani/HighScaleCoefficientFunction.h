@@ -38,7 +38,7 @@ class HighScaleCoefficientFunction : public CoefficientFunction {
     public:
         HighScaleCoefficientFunction(
             const int &order, const char &kind, const char &channel,
-            const string &version = "original"
+            const string &version = "klmv"
         );
         ~HighScaleCoefficientFunction() override;
 

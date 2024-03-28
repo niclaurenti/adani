@@ -32,7 +32,7 @@ def test_as2_oldadani():
 def test_as3_oldadani():
     for kind in ['2', 'L']:
         for channel in ['g', 'q']:
-            version = "exact" if channel == 'q' else "improved"
+            version = "exact" if channel == 'q' else "abmp"
             hs = ad.HighScaleCoefficientFunction(3, kind, channel, version)
             for x in np.geomspace(1e-5, 1., 100, endpoint=False):
                 for m2Q2 in np.geomspace(1e-4, 1e-2, 10):
@@ -52,8 +52,8 @@ def test_as3_oldadani():
 def test_splitlogs_vs_highscale():
     for kind in ['2', 'L']:
         for channel in ['g', 'q']:
-            for hs_version in ["exact", "improved", "original"]:
-                if channel == 'q' and hs_version == "improved":
+            for hs_version in ["exact", "abmp", "klmv"]:
+                if channel == 'q' and hs_version == "abmp":
                     continue
                 if channel == 'g' and hs_version == "exact":
                     continue
@@ -75,8 +75,8 @@ def test_splitlogs_vs_highscale():
 def test_split_logs():
     for kind in ['2', 'L']:
         for channel in ['g', 'q']:
-            for hs_version in ["exact", "improved", "original"]:
-                if channel == 'q' and hs_version == "improved":
+            for hs_version in ["exact", "abmp", "klmv"]:
+                if channel == 'q' and hs_version == "abmp":
                     continue
                 if channel == 'g' and hs_version == "exact":
                     continue

@@ -24,7 +24,7 @@ def test_as2():
 def test_as3():
     for kind in ['2', 'L']:
         for channel in ['g', 'q']:
-            hs_version = "exact" if channel == 'q' else "improved"
+            hs_version = "exact" if channel == 'q' else "abmp"
             asy = ad.AsymptoticCoefficientFunction(3, kind, channel, True, hs_version)
             for m2Q2 in np.geomspace(1e-2, 1e4, 10):
                 for m2mu2 in np.geomspace(1e-2, 1e4, 10):
@@ -47,8 +47,8 @@ def test_asy():
             for channel in ['g', 'q']:
                 if order == 1 and channel == 'q':
                     continue
-                for hs_version in ["exact", "improved", "original"]:
-                    if channel == 'q' and hs_version == "improved":
+                for hs_version in ["exact", "abmp", "klmv"]:
+                    if channel == 'q' and hs_version == "abmp":
                         continue
                     if channel == 'g' and hs_version == "exact":
                         continue

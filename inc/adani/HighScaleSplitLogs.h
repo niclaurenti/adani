@@ -37,7 +37,7 @@ class HighScaleSplitLogs : public CoefficientFunction {
     public:
         HighScaleSplitLogs(
             const int &order, const char &kind, const char &channel,
-            const string &version = "original"
+            const string &version = "klmv"
         );
         ~HighScaleSplitLogs() override;
 

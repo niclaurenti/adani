@@ -101,7 +101,7 @@ int main(int argc, char **argv) {
     if (channel == 'q')
         hs_version = "exact";
     else
-        hs_version = "improved";
+        hs_version = "abmp";
 
     ApproximateCoefficientFunction Approx =
         ApproximateCoefficientFunction(3, kind, channel, true, hs_version);

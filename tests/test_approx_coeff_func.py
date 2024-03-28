@@ -12,7 +12,7 @@ def test_mudependent_terms():
                             for abserr in [1e-3]:
                                 relerr = abserr
                                 massive = ad.ExactCoefficientFunction(order, kind, channel, abserr, relerr, dim, mf, MCcalls)
-                                app = ad.ApproximateCoefficientFunction(order, kind, channel, True, "original", abserr, relerr, dim, mf, MCcalls)
+                                app = ad.ApproximateCoefficientFunction(order, kind, channel, True, "klmv", abserr, relerr, dim, mf, MCcalls)
                                 x = np.geomspace(1e-5, 1., 5, endpoint=True)
                                 for xi in np.geomspace(1e-2, 1e4, 4, endpoint=True):
                                     for nf in [4, 5]:
@@ -52,7 +52,7 @@ def test_as2_muindep_oldversion():
 def test_as3_muindep_oldversion():
     for channel in ['g', 'q']:
         for kind in ['2', 'L']:
-            highscale_version = "exact" if channel == 'q' else "improved"
+            highscale_version = "exact" if channel == 'q' else "abmp"
             app = ad.ApproximateCoefficientFunction(3, kind, channel,True, highscale_version)
             for xi in np.geomspace(1e-2, 1e2, 10):
                 m2Q2 = 1/xi
@@ -107,7 +107,7 @@ def test_mudep_as2_oldversion():
 def test_mudep_as3_oldversion():
     for channel in ['g', 'q']:
         for kind in ['2', 'L']:
-            highscale_version = "exact" if channel == 'q' else "improved"
+            highscale_version = "exact" if channel == 'q' else "abmp"
             for mf in [False]:
                 app = ad.ApproximateCoefficientFunction(3, kind, channel, True, highscale_version, 1e-3, 1e-3, 1000, mf, 25000)
                 for xi in np.geomspace(1e-2, 1e2, 10):
@@ -134,7 +134,7 @@ def test_mudep_as3_oldversion():
 
 def test_klmv_as2():
     for channel in ['g', 'q']:
-        app = ad.ApproximateCoefficientFunctionKLMV(2, '2', channel, "improved")
+        app = ad.ApproximateCoefficientFunctionKLMV(2, '2', channel, "abmp")
         for xi in np.geomspace(1e-2, 1e2, 10):
             m2Q2 = 1/xi
             for x in np.geomspace(1e-5, 1, 10):
@@ -156,7 +156,7 @@ def test_klmv_as2():
 
 def test_klmv_as3():
     for channel in ['g', 'q']:
-        hs_version = "improved" if channel == 'g' else 'exact'
+        hs_version = "abmp" if channel == 'g' else 'exact'
         app = ad.ApproximateCoefficientFunctionKLMV(3, '2', channel, hs_version)
         for xi in np.geomspace(1e-2, 1e2, 10):
             m2Q2 = 1/xi
@@ -180,7 +180,7 @@ def test_klmv_as3():
 
 def test_klmv_paper_as3():
     for channel in ['g', 'q']:
-        app = ad.ApproximateCoefficientFunctionKLMV(3, '2', channel, "original")
+        app = ad.ApproximateCoefficientFunctionKLMV(3, '2', channel, "klmv")
         for xi in np.geomspace(1e-2, 1e2, 10):
             m2Q2 = 1/xi
             for x in np.geomspace(1e-5, 1, 10):
@@ -202,7 +202,7 @@ def test_klmv_paper_as3():
                     np.testing.assert_allclose(lower, tmp.GetLower(), rtol=1e-7)
 
 def test_klmv_lowxi_as3():
-    app = ad.ApproximateCoefficientFunctionKLMV(3, '2', 'g', "original", True)
+    app = ad.ApproximateCoefficientFunctionKLMV(3, '2', 'g', "klmv", True)
     for xi in np.geomspace(1e-2, 1e2, 10):
         m2Q2 = 1/xi
         for x in np.geomspace(1e-5, 1, 10):
