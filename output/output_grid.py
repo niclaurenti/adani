@@ -20,7 +20,6 @@ with open(runcard, "r") as stream:
 m = runcard["m"]
 nf = runcard["nf"]
 mufrac = runcard["mufrac"]
-v = runcard.get("v", 0)
 
 hs_version = "exact" if runcard["channel"][1] == "q" else "abmp"
 appr = adani.ApproximateCoefficientFunction(
