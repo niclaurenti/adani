@@ -28,6 +28,7 @@ setup(
     packages=find_packages(where="inc"),
     package_dir={"": "inc"},
     package_data={'': ['CMakeLists.txt']},
+    include_package_data = True,
     cmake_install_dir="inc/adani",
     cmake_args=['-DPYTHON_ONLY:BOOL=ON'],
     python_requires=">=3.8",
