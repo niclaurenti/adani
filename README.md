@@ -21,10 +21,16 @@ cmake -DCMAKE_INSTALL_PREFIX=/your/installation/path/ ..
 make && make install
 ```
 
-The Python package is available in the PyPI <a href="https://pypi.org/project/adani/"><img alt="PyPI" src="https://img.shields.io/pypi/v/adani"/></a>. Install it with
+The Python package is available via:
+- PyPI <a href="https://pypi.org/project/adani/"><img alt="PyPI" src="https://img.shields.io/pypi/v/adani"/></a>. Install it with
 ```bash
 pip install adani
 ```
+- conda-forge: [![Conda Version](https://img.shields.io/conda/vn/conda-forge/adani.svg)](https://anaconda.org/conda-forge/adani)
+```bash
+conda install adani
+```
+
 For installing the Python module from source run
 ```bash
 pip install .
