@@ -98,8 +98,8 @@ ApproximateCoefficientFunction::ApproximateCoefficientFunction(
     const int &dim, const bool &MCintegral, const int &MCcalls
 )
     : AbstractApproximate(
-        order, kind, channel, abserr, relerr, dim, MCintegral, MCcalls
-    ) {
+          order, kind, channel, abserr, relerr, dim, MCintegral, MCcalls
+      ) {
 
     threshold_ = new ThresholdCoefficientFunction(order, kind, channel);
     asymptotic_ = new AsymptoticCoefficientFunction(
@@ -265,8 +265,8 @@ ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(
     const int &MCcalls
 )
     : AbstractApproximate(
-        order, kind, channel, abserr, relerr, dim, MCintegral, MCcalls
-    ) {
+          order, kind, channel, abserr, relerr, dim, MCintegral, MCcalls
+      ) {
     if (GetOrder() == 1) {
         cout << "Error: KLMV approximation is not implemented at O(as)!"
              << endl;
@@ -355,6 +355,11 @@ Value ApproximateCoefficientFunctionKLMV::MuIndependentTermsBand(
         res_B = ApproximationB(
             x, m2Q2, he_ll, he_nll.GetLower(), hs[2], thr, thr_const, delta, D
         );
+    } else {
+        cout << "Error: ApproximateCoefficientFunctionKLMV is implemented only "
+                "for order = 2 or 3. Got "
+             << GetOrder() << endl;
+        exit(-1);
     }
 
     if (res_A > res_B)
