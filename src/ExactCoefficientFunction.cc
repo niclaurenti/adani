@@ -35,6 +35,14 @@ ExactCoefficientFunction::ExactCoefficientFunction(
 
     delta_ = nullptr;
 
+    if (GetOrder() == 2) {
+        asy_ = new AsymptoticCoefficientFunction(order, kind, channel);
+        thr_ = new ThresholdCoefficientFunction(order, kind, channel);
+    } else {
+        asy_ = nullptr;
+        thr_ = nullptr;
+    }
+
     if (GetOrder() > 1) {
         gluon_as1_ = new ExactCoefficientFunction(1, GetKind(), 'g');
 
@@ -146,6 +154,9 @@ ExactCoefficientFunction::~ExactCoefficientFunction() {
     delete Pgq0Pqg0_;
 
     delete delta_;
+
+    delete asy_;
+    delete thr_;
 }
 
 //==========================================================================================//
@@ -372,10 +383,14 @@ ExactCoefficientFunction::C2_g20(double x, double m2Q2, int /*nf*/) const {
     double xi = 1. / m2Q2;
     double eta = 0.25 * xi * (1 - x) / x - 1.;
 
-    if (eta > 1e6 || eta < 1e-6 || xi < 1e-3 || xi > 1e5)
-        return 0.;
-
-    return 16 * M_PI * xi * c2nlog_(&eta, &xi) / x;
+    // if (eta > 1e6 || eta < 1e-6 || xi < 1e-3 || xi > 1e5)
+    //     return 0.;
+    if (eta < 1e-6) return thr_ -> MuIndependentTerms(x, m2Q2, 1);
+    else if (eta > 1e6 || xi > 1e5) return asy_ -> MuIndependentTerms(x, m2Q2, 1);
+    else if (xi < 1e-3) {
+        cout << "Error in ExactCoefficientFunction::C2_g20: max value of m2Q2 is 1e3. Got " << m2Q2 << endl;
+        exit(-1);
+    } else return 16 * M_PI * xi * c2nlog_(&eta, &xi) / x;
 }
 
 //==========================================================================================//
