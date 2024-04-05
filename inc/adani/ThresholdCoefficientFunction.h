@@ -21,6 +21,8 @@
 #include "adani/CoefficientFunction.h"
 #include "adani/ExactCoefficientFunction.h"
 
+class ExactCoefficientFunction;
+
 //==========================================================================================//
 //  class ThresholdCoefficientFunction
 //------------------------------------------------------------------------------------------//
