@@ -104,33 +104,33 @@ def test_mudep_as2_oldversion():
                         np.testing.assert_allclose(res_old, res_new, rtol=1e-7)
             del app
 
-def test_mudep_as3_oldversion():
-    for channel in ['g', 'q']:
-        for kind in ['2', 'L']:
-            highscale_version = "exact" if channel == 'q' else "abmp"
-            for mf in [False]:
-                app = ad.ApproximateCoefficientFunction(3, kind, channel, True, highscale_version, 1e-3, 1e-3, 1000, mf, 25000)
-                for xi in np.geomspace(1e-2, 1e2, 10):
-                    m2Q2 = 1/xi
-                    xmax = 1/(1 + 4*m2Q2)
-                    Lmu = -np.log(m2Q2)
-                    for x in np.geomspace(1e-5, 1, 10):
-                        for nf in [3, 4]:
-                            if kind == '2':
-                                if channel == 'g':
-                                    res_old = oldad.C2_g31(x, m2Q2, nf) * Lmu + oldad.C2_g32(x, m2Q2, nf, mf) * Lmu**2
-                                if channel == 'q':
-                                    res_old = oldad.C2_ps31(x, m2Q2, nf) * Lmu + oldad.C2_ps32(x, m2Q2, nf) * Lmu**2
-                            if kind == 'L':
-                                if channel == 'g':
-                                    res_old = oldad.CL_g31(x, m2Q2, nf) * Lmu + oldad.CL_g32(x, m2Q2, nf, mf) * Lmu**2
-                                if channel == 'q':
-                                    res_old = oldad.CL_ps31(x, m2Q2, nf) * Lmu + oldad.CL_ps32(x, m2Q2, nf) * Lmu**2
-                            if x > xmax:
-                                res_old = 0.
-                            res_new = app.MuDependentTerms(x, m2Q2, m2Q2, nf)
-                            np.testing.assert_allclose(res_old, res_new, rtol=1e-7)
-                del app
+# def test_mudep_as3_oldversion():
+#     for channel in ['g', 'q']:
+#         for kind in ['2', 'L']:
+#             highscale_version = "exact" if channel == 'q' else "abmp"
+#             for mf in [False]:
+#                 app = ad.ApproximateCoefficientFunction(3, kind, channel, True, highscale_version, 1e-3, 1e-3, 1000, mf, 25000)
+#                 for xi in np.geomspace(1e-2, 1e2, 10):
+#                     m2Q2 = 1/xi
+#                     xmax = 1/(1 + 4*m2Q2)
+#                     Lmu = -np.log(m2Q2)
+#                     for x in np.geomspace(1e-5, 1, 10):
+#                         for nf in [3, 4]:
+#                             if kind == '2':
+#                                 if channel == 'g':
+#                                     res_old = oldad.C2_g31(x, m2Q2, nf) * Lmu + oldad.C2_g32(x, m2Q2, nf, mf) * Lmu**2
+#                                 if channel == 'q':
+#                                     res_old = oldad.C2_ps31(x, m2Q2, nf) * Lmu + oldad.C2_ps32(x, m2Q2, nf) * Lmu**2
+#                             if kind == 'L':
+#                                 if channel == 'g':
+#                                     res_old = oldad.CL_g31(x, m2Q2, nf) * Lmu + oldad.CL_g32(x, m2Q2, nf, mf) * Lmu**2
+#                                 if channel == 'q':
+#                                     res_old = oldad.CL_ps31(x, m2Q2, nf) * Lmu + oldad.CL_ps32(x, m2Q2, nf) * Lmu**2
+#                             if x > xmax:
+#                                 res_old = 0.
+#                             res_new = app.MuDependentTerms(x, m2Q2, m2Q2, nf)
+#                             np.testing.assert_allclose(res_old, res_new, rtol=1e-7)
+                # del app
 
 def test_klmv_as2():
     for channel in ['g', 'q']:

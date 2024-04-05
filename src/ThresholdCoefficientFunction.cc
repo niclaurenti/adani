@@ -1,5 +1,6 @@
 #include "adani/ThresholdCoefficientFunction.h"
 #include "adani/Constants.h"
+#include "adani/ExactCoefficientFunction.h"
 #include "adani/SpecialFunctions.h"
 
 #include <cmath>

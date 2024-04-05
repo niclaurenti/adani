@@ -1,6 +1,7 @@
 #include "adani/ExactCoefficientFunction.h"
 #include "adani/Constants.h"
 #include "adani/SpecialFunctions.h"
+#include "adani/ThresholdCoefficientFunction.h"
 
 #include <cmath>
 #include <iostream>
@@ -290,6 +291,25 @@ ExactCoefficientFunction::CL_g1(double x, double m2Q2, int /*nf*/) const {
 //  outside the grid one contribution is set to zero while the other is not.
 //------------------------------------------------------------------------------------------//
 
+//==========================================================================================//
+//  Check that the (eta, xi) values are inside the interpolation grid:
+//  1e-6 < eta < 1e6
+//  1e-3 < xi < 1e5
+//------------------------------------------------------------------------------------------//
+
+double ExactCoefficientFunction::CheckRanges(double x, double m2Q2) const {
+
+    double xi = 1. / m2Q2;
+    double eta = 0.25 * xi * (1 - x) / x - 1.;
+
+    if (eta < 1e-6) return thr_ -> MuIndependentTerms(x, m2Q2, 1);
+    if (eta > 1e6 || xi > 1e5) return asy_ -> MuIndependentTerms(x, m2Q2, 1);
+    if (xi < 1e-3) {
+        cout << "Error in ExactCoefficientFunction::C2_g20: max value of m2Q2 is 1e3. Got " << m2Q2 << endl;
+        exit(-1);
+    }
+}
+
 /// @cond UNNECESSARY
 /**
  * @name Fortran massive coefficient functions
@@ -325,8 +345,7 @@ ExactCoefficientFunction::C2_ps20(double x, double m2Q2, int /*nf*/) const {
     double xi = 1. / m2Q2;
     double eta = 0.25 * xi * (1 - x) / x - 1.;
 
-    if (eta > 1e6 || eta < 1e-6 || xi < 1e-3 || xi > 1e5)
-        return 0.;
+    CheckRanges(x, m2Q2);
 
     return 16 * M_PI * xi * c2nloq_(&eta, &xi) / x;
 }
@@ -363,8 +382,7 @@ ExactCoefficientFunction::CL_ps20(double x, double m2Q2, int /*nf*/) const {
     double xi = 1. / m2Q2;
     double eta = 0.25 * xi * (1 - x) / x - 1.;
 
-    if (eta > 1e6 || eta < 1e-6 || xi < 1e-3 || xi > 1e5)
-        return 0.;
+    CheckRanges(x, m2Q2);
 
     return 16 * M_PI * xi * clnloq_(&eta, &xi) / x;
 }
@@ -383,14 +401,9 @@ ExactCoefficientFunction::C2_g20(double x, double m2Q2, int /*nf*/) const {
     double xi = 1. / m2Q2;
     double eta = 0.25 * xi * (1 - x) / x - 1.;
 
-    // if (eta > 1e6 || eta < 1e-6 || xi < 1e-3 || xi > 1e5)
-    //     return 0.;
-    if (eta < 1e-6) return thr_ -> MuIndependentTerms(x, m2Q2, 1);
-    else if (eta > 1e6 || xi > 1e5) return asy_ -> MuIndependentTerms(x, m2Q2, 1);
-    else if (xi < 1e-3) {
-        cout << "Error in ExactCoefficientFunction::C2_g20: max value of m2Q2 is 1e3. Got " << m2Q2 << endl;
-        exit(-1);
-    } else return 16 * M_PI * xi * c2nlog_(&eta, &xi) / x;
+    CheckRanges(x, m2Q2);
+
+    return 16 * M_PI * xi * c2nlog_(&eta, &xi) / x;
 }
 
 //==========================================================================================//
@@ -425,8 +438,7 @@ ExactCoefficientFunction::CL_g20(double x, double m2Q2, int /*nf*/) const {
     double xi = 1. / m2Q2;
     double eta = 0.25 * xi * (1 - x) / x - 1.;
 
-    if (eta > 1e6 || eta < 1e-6 || xi < 1e-3 || xi > 1e5)
-        return 0.;
+    CheckRanges(x, m2Q2);
 
     return 16 * M_PI * xi * clnlog_(&eta, &xi) / x;
 }

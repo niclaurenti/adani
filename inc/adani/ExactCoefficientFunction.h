@@ -21,9 +21,12 @@
 #include "adani/CoefficientFunction.h"
 #include "adani/Convolution.h"
 #include "adani/SplittingFunction.h"
-#include "adani/ThresholdCoefficientFunction.h"
 
 #include <vector>
+
+//==========================================================================================//
+//  forward declaration of class ThresholdCoefficientFunction to avoid circular dependencies
+//------------------------------------------------------------------------------------------//
 
 class ThresholdCoefficientFunction;
 
@@ -100,6 +103,8 @@ class ExactCoefficientFunction : public CoefficientFunction {
         double CL_g20(double x, double m2Q2, int /*nf*/) const;
         double C2_ps20(double x, double m2Q2, int /*nf*/) const;
         double CL_ps20(double x, double m2Q2, int /*nf*/) const;
+
+        double CheckRanges(double x, double m2Q2) const;
 
         //==========================================================================================//
         //  Exact massive coefficient functions O(as^2): terms
