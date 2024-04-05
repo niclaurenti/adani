@@ -29,7 +29,7 @@ CoefficientFunction::~CoefficientFunction(){};
 void CoefficientFunction::SetOrder(const int &order) {
     // check order
     if (order < 1 || order > 3) {
-        cout << "Error: order must be 1,2 or 3. Got: " << order << endl;
+        cout << "Error: order must be 1, 2 or 3. Got: " << order << endl;
         exit(-1);
     }
     order_ = order;
