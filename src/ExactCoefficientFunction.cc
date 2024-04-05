@@ -302,10 +302,13 @@ double ExactCoefficientFunction::CheckRanges(double x, double m2Q2) const {
     double xi = 1. / m2Q2;
     double eta = 0.25 * xi * (1 - x) / x - 1.;
 
-    if (eta < 1e-6) return thr_ -> MuIndependentTerms(x, m2Q2, 1);
-    if (eta > 1e6 || xi > 1e5) return asy_ -> MuIndependentTerms(x, m2Q2, 1);
+    // using nf = nan since at O(as2) the coefficient functions don't depend on nf
+    int nf = static_cast<int>(nan(""));
+
+    if (eta < 1e-6) return thr_ -> MuIndependentTerms(x, m2Q2, nf);
+    if (eta > 1e6 || xi > 1e5) return asy_ -> MuIndependentTerms(x, m2Q2, nf);
     if (xi < 1e-3) {
-        cout << "Error in ExactCoefficientFunction::C2_g20: max value of m2Q2 is 1e3. Got " << m2Q2 << endl;
+        cout << "Error in ExactCoefficientFunction::C" << GetKind() << "_" << GetChannel() << "2 : max value of m2Q2 is 1e3. Got " << m2Q2 << endl;
         exit(-1);
     }
 }
