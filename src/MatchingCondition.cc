@@ -106,7 +106,7 @@ vector<double> MatchingCondition::NotOrdered(double x) const {
             return { central, higher, lower };
         } else {
             cout << "Error: something has gone wrong in "
-                    "MatchingCondition::MuIndependentNfIndependentTerm"
+                    "MatchingCondition::NotOrdered"
                  << endl;
             exit(-1);
         }
@@ -114,6 +114,9 @@ vector<double> MatchingCondition::NotOrdered(double x) const {
         int low_id;
         if (version_ == "exact") {
             central = a_Qg_30(x, 0);
+            return { central, central, central };
+        } else if (version_ == "gm") {
+            central = a_Qg_30(x, 2);
             return { central, central, central };
         } else if (version_ == "abmp")
             low_id = -1;
