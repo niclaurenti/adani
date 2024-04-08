@@ -82,7 +82,7 @@ if __name__ == "__main__":
         )
         print(f"Size of the grid (x,Q) = ({len(x_grid)},{len(Q_grid)})")
         print(
-            "This may take a while (depending on the number of threads you choose). In order to spend this time, I would suggest you this interesting view:"
+            "This may take a while (depending on the number of threads you chose). In order to spend this time, I would suggest you this interesting view:"
         )
         print("https://www.youtube.com/watch?v=53pG68KCUMI")
 
