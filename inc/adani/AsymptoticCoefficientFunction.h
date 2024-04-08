@@ -37,10 +37,10 @@ class AsymptoticCoefficientFunction
         double fx(double x, double m2Q2, double m2mu2, int nf) const override;
 
         Value
-        fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
+            fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
 
         vector<double>
-        AllVariations(double x, double m2Q2, double m2mu2, int nf) const;
+            AllVariations(double x, double m2Q2, double m2mu2, int nf) const;
 
     private:
         HighScaleCoefficientFunction *highscale_;

@@ -247,7 +247,7 @@ double ConvolutedSplittingFunctions::Regular(double x, int nf) const {
 //------------------------------------------------------------------------------------------//
 
 ConvolutedSplittingFunctions
-ConvolutedSplittingFunctions::operator*(const double &rhs) const {
+    ConvolutedSplittingFunctions::operator*(const double &rhs) const {
     ConvolutedSplittingFunctions res(
         order1_, entry1_, entry2_, order2_, entry3_, entry4_
     );
@@ -260,7 +260,7 @@ ConvolutedSplittingFunctions::operator*(const double &rhs) const {
 //------------------------------------------------------------------------------------------//
 
 ConvolutedSplittingFunctions
-operator*(const double &lhs, const ConvolutedSplittingFunctions &rhs) {
+    operator*(const double &lhs, const ConvolutedSplittingFunctions &rhs) {
     ConvolutedSplittingFunctions res(
         rhs.order1_, rhs.entry1_, rhs.entry2_, rhs.order2_, rhs.entry3_,
         rhs.entry4_
@@ -274,7 +274,7 @@ operator*(const double &lhs, const ConvolutedSplittingFunctions &rhs) {
 //------------------------------------------------------------------------------------------//
 
 ConvolutedSplittingFunctions
-ConvolutedSplittingFunctions::operator/(const double &rhs) const {
+    ConvolutedSplittingFunctions::operator/(const double &rhs) const {
     ConvolutedSplittingFunctions res(
         order1_, entry1_, entry2_, order2_, entry3_, entry4_
     );
@@ -293,9 +293,11 @@ void ConvolutedSplittingFunctions::SetFunctions() {
         if (entry1_ == 'g' && entry2_ == 'q' && entry3_ == 'q'
             && entry4_ == 'g')
             reg_ = &ConvolutedSplittingFunctions::Pgq0_x_Pqg0;
-        else if (entry1_ == 'g' && entry2_ == 'g' && entry3_ == 'g' && entry4_ == 'q')
+        else if (entry1_ == 'g' && entry2_ == 'g' && entry3_ == 'g'
+                 && entry4_ == 'q')
             reg_ = &ConvolutedSplittingFunctions::Pgg0_x_Pgq0;
-        else if (entry1_ == 'q' && entry2_ == 'q' && entry3_ == 'g' && entry4_ == 'q')
+        else if (entry1_ == 'q' && entry2_ == 'q' && entry3_ == 'g'
+                 && entry4_ == 'q')
             reg_ = &ConvolutedSplittingFunctions::Pqq0_x_Pgq0;
         else {
             cout << "Error: P" << entry1_ << entry2_ << order1_ << " x P"

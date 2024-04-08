@@ -42,13 +42,13 @@ class HighScaleSplitLogs : public CoefficientFunction {
         ~HighScaleSplitLogs() override;
 
         double
-        fx(double /*x*/, double /*m2Q2*/, double /*m2mu2*/,
-           int /*nf*/) const override;
+            fx(double /*x*/, double /*m2Q2*/, double /*m2mu2*/,
+               int /*nf*/) const override;
         double fx(double x, double m2Q2, int nf) const;
 
         Value
-        fxBand(double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/)
-            const override;
+            fxBand(double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/)
+                const override;
         Value fxBand(double x, double m2Q2, int nf) const;
 
         // division of the total result in the log terms

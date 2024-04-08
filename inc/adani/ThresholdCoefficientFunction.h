@@ -21,7 +21,8 @@
 #include "adani/CoefficientFunction.h"
 
 //==========================================================================================//
-//  forward declaration of class ExactCoefficientFunction to avoid circular dependencies
+//  forward declaration of class ExactCoefficientFunction to avoid circular
+//  dependencies
 //------------------------------------------------------------------------------------------//
 
 class ExactCoefficientFunction;
@@ -40,7 +41,7 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
 
         double fx(double x, double m2Q2, double m2mu2, int nf) const override;
         Value
-        fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
+            fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
 
         double BetaIndependentTerms(double x, double m2Q2, double m2mu2) const;
 
@@ -59,21 +60,21 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
         //------------------------------------------------------------------------------------------//
 
         double
-        C2_g1_threshold(double x, double m2Q2, double /*m2mu2*/, int /*nf*/)
-            const;
+            C2_g1_threshold(double x, double m2Q2, double /*m2mu2*/, int /*nf*/)
+                const;
 
         //==========================================================================================//
         //                      Threshold (s -> 4m^2) coefficient
         //                      functions O(as^2)
         //------------------------------------------------------------------------------------------//
 
-        double
-        C2_g2_threshold(double x, double m2Q2, double m2mu2, int /*nf*/) const;
-        double
-        CL_g2_threshold(double x, double m2Q2, double m2mu2, int /*nf*/) const;
+        double C2_g2_threshold(double x, double m2Q2, double m2mu2, int /*nf*/)
+            const;
+        double CL_g2_threshold(double x, double m2Q2, double m2mu2, int /*nf*/)
+            const;
 
         double
-        threshold_expansion_g2(double x, double m2Q2, double m2mu2) const;
+            threshold_expansion_g2(double x, double m2Q2, double m2mu2) const;
         double threshold_expansion_g2_const(double m2Q2, double m2mu2) const;
 
         double C2_g2_threshold_const(double x, double m2Q2, double m2mu2) const;
@@ -85,9 +86,9 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
         //------------------------------------------------------------------------------------------//
 
         double
-        C2_g3_threshold(double x, double m2Q2, double m2mu2, int nf) const;
+            C2_g3_threshold(double x, double m2Q2, double m2mu2, int nf) const;
         double
-        CL_g3_threshold(double x, double m2Q2, double m2mu2, int nf) const;
+            CL_g3_threshold(double x, double m2Q2, double m2mu2, int nf) const;
 
         double threshold_expansion_g3(
             double x, double m2Q2, double m2mu2, int nf

@@ -47,21 +47,22 @@ class CoefficientFunction {
         );
         CoefficientFunction(CoefficientFunction *coeff)
             : CoefficientFunction(
-                coeff->GetOrder(), coeff->GetKind(), coeff->GetChannel()
-            ){};
+                  coeff->GetOrder(), coeff->GetKind(), coeff->GetChannel()
+              ){};
 
         virtual ~CoefficientFunction() = 0;
 
         virtual double MuIndependentTerms(double x, double m2Q2, int nf) const;
         virtual double fx(double x, double m2Q2, double m2mu2, int nf) const;
         virtual double
-        MuDependentTerms(double x, double m2Q2, double m2mu2, int nf) const;
+            MuDependentTerms(double x, double m2Q2, double m2mu2, int nf) const;
         virtual Value
-        fxBand(double x, double m2Q2, double m2mu2, int nf) const = 0;
+            fxBand(double x, double m2Q2, double m2mu2, int nf) const = 0;
         virtual Value
-        MuIndependentTermsBand(double x, double m2Q2, int nf) const;
-        virtual Value
-        MuDependentTermsBand(double x, double m2Q2, double m2mu2, int nf) const;
+            MuIndependentTermsBand(double x, double m2Q2, int nf) const;
+        virtual Value MuDependentTermsBand(
+            double x, double m2Q2, double m2mu2, int nf
+        ) const;
 
         // get methods
         int GetOrder() const { return order_; };

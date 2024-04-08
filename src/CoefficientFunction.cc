@@ -71,7 +71,7 @@ void CoefficientFunction::SetChannel(const char &channel) {
 //------------------------------------------------------------------------------------------//
 
 double
-CoefficientFunction::fx(double x, double m2Q2, double m2mu2, int nf) const {
+    CoefficientFunction::fx(double x, double m2Q2, double m2mu2, int nf) const {
     return fxBand(x, m2Q2, m2mu2, nf).GetCentral();
 }
 
@@ -79,8 +79,9 @@ CoefficientFunction::fx(double x, double m2Q2, double m2mu2, int nf) const {
 //  CoefficientFunction: central value of mu independent terms
 //------------------------------------------------------------------------------------------//
 
-double
-CoefficientFunction::MuIndependentTerms(double x, double m2Q2, int nf) const {
+double CoefficientFunction::MuIndependentTerms(
+    double x, double m2Q2, int nf
+) const {
     return fx(x, m2Q2, 1., nf);
 }
 

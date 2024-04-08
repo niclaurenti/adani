@@ -35,8 +35,9 @@ AbstractApproximate::AbstractApproximate(
 
 AbstractApproximate::~AbstractApproximate() { delete muterms_; }
 
-double
-AbstractApproximate::MuIndependentTerms(double x, double m2Q2, int nf) const {
+double AbstractApproximate::MuIndependentTerms(
+    double x, double m2Q2, int nf
+) const {
     return MuIndependentTermsBand(x, m2Q2, nf).GetCentral();
 }
 

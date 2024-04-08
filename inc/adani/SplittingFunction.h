@@ -56,7 +56,7 @@ class SplittingFunction : public AbstractSplittingFunction {
         // overloading operators
         SplittingFunction operator*(const double &rhs) const;
         friend SplittingFunction
-        operator*(const double &lhs, const SplittingFunction &rhs);
+            operator*(const double &lhs, const SplittingFunction &rhs);
         SplittingFunction operator/(const double &rhs) const;
 
         // Components of the Splitting Function
@@ -144,8 +144,9 @@ class ConvolutedSplittingFunctions : public AbstractSplittingFunction {
 
         // overloading operators
         ConvolutedSplittingFunctions operator*(const double &rhs) const;
-        friend ConvolutedSplittingFunctions
-        operator*(const double &lhs, const ConvolutedSplittingFunctions &rhs);
+        friend ConvolutedSplittingFunctions operator*(
+            const double &lhs, const ConvolutedSplittingFunctions &rhs
+        );
         ConvolutedSplittingFunctions operator/(const double &rhs) const;
 
         // Components of the Convoluted Splitting Function

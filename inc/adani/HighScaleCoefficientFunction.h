@@ -45,10 +45,11 @@ class HighScaleCoefficientFunction : public CoefficientFunction {
         double fx(double x, double m2Q2, double m2mu2, int nf) const override;
 
         Value
-        fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
+            fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
 
-        vector<double>
-        fxBand_NotOrdered(double x, double m2Q2, double m2mu2, int nf) const;
+        vector<double> fxBand_NotOrdered(
+            double x, double m2Q2, double m2mu2, int nf
+        ) const;
 
         void SetFunctions();
 
@@ -68,11 +69,11 @@ class HighScaleCoefficientFunction : public CoefficientFunction {
         //------------------------------------------------------------------------------------------//
 
         Value
-        C2_g1_highscale(double x, double m2Q2, double /*m2mu2*/, int /*nf*/)
-            const;
-        Value
-        CL_g1_highscale(double x, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/)
-            const;
+            C2_g1_highscale(double x, double m2Q2, double /*m2mu2*/, int /*nf*/)
+                const;
+        Value CL_g1_highscale(
+            double x, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/
+        ) const;
 
         double D2_g1_highscale(double x, double m2Q2) const;
         double DL_g1_highscale(double x) const;
@@ -82,15 +83,15 @@ class HighScaleCoefficientFunction : public CoefficientFunction {
         //                      functions O(as^2)
         //------------------------------------------------------------------------------------------//
 
-        Value
-        C2_g2_highscale(double x, double m2Q2, double m2mu2, int /*nf*/) const;
-        Value
-        C2_ps2_highscale(double z, double m2Q2, double m2mu2, int /*nf*/) const;
+        Value C2_g2_highscale(double x, double m2Q2, double m2mu2, int /*nf*/)
+            const;
+        Value C2_ps2_highscale(double z, double m2Q2, double m2mu2, int /*nf*/)
+            const;
 
-        Value
-        CL_g2_highscale(double x, double m2Q2, double m2mu2, int /*nf*/) const;
-        Value
-        CL_ps2_highscale(double x, double m2Q2, double m2mu2, int /*nf*/) const;
+        Value CL_g2_highscale(double x, double m2Q2, double m2mu2, int /*nf*/)
+            const;
+        Value CL_ps2_highscale(double x, double m2Q2, double m2mu2, int /*nf*/)
+            const;
 
         double D2_g2_highscale(double x, double m2Q2, double m2mu2) const;
         double D2_ps2_highscale(double x, double m2Q2, double m2mu2) const;
@@ -104,24 +105,24 @@ class HighScaleCoefficientFunction : public CoefficientFunction {
         //------------------------------------------------------------------------------------------//
 
         Value
-        C2_g3_highscale(double x, double m2Q2, double m2mu2, int nf) const;
+            C2_g3_highscale(double x, double m2Q2, double m2mu2, int nf) const;
         Value
-        C2_ps3_highscale(double x, double m2Q2, double m2mu2, int nf) const;
+            C2_ps3_highscale(double x, double m2Q2, double m2mu2, int nf) const;
 
         Value
-        CL_g3_highscale(double x, double m2Q2, double m2mu2, int nf) const;
+            CL_g3_highscale(double x, double m2Q2, double m2mu2, int nf) const;
         Value
-        CL_ps3_highscale(double x, double m2Q2, double m2mu2, int nf) const;
+            CL_ps3_highscale(double x, double m2Q2, double m2mu2, int nf) const;
 
         double
-        DL_g3_highscale(double z, double m2Q2, double m2mu2, int nf) const;
+            DL_g3_highscale(double z, double m2Q2, double m2mu2, int nf) const;
         double
-        DL_ps3_highscale(double z, double m2Q2, double m2mu2, int nf) const;
+            DL_ps3_highscale(double z, double m2Q2, double m2mu2, int nf) const;
 
         Value
-        D2_g3_highscale(double x, double m2Q2, double m2mu2, int nf) const;
+            D2_g3_highscale(double x, double m2Q2, double m2mu2, int nf) const;
         Value
-        D2_ps3_highscale(double x, double m2Q2, double m2mu2, int nf) const;
+            D2_ps3_highscale(double x, double m2Q2, double m2mu2, int nf) const;
 };
 
 #endif

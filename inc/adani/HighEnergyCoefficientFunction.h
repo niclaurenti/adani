@@ -74,7 +74,7 @@ class HighEnergyCoefficientFunction
         ~HighEnergyCoefficientFunction() override{};
 
         Value
-        fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
+            fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
 
         void SetFunctions();
 
@@ -106,14 +106,18 @@ class HighEnergyCoefficientFunction
         double C2_ps3_highenergyLL(double x, double m2Q2, double m2mu2) const;
         double CL_ps3_highenergyLL(double x, double m2Q2, double m2mu2) const;
 
-        Value
-        C2_g3_highenergyNLL(double x, double m2Q2, double m2mu2, int nf) const;
-        Value
-        CL_g3_highenergyNLL(double x, double m2Q2, double m2mu2, int nf) const;
-        Value
-        C2_ps3_highenergyNLL(double x, double m2Q2, double m2mu2, int nf) const;
-        Value
-        CL_ps3_highenergyNLL(double x, double m2Q2, double m2mu2, int nf) const;
+        Value C2_g3_highenergyNLL(
+            double x, double m2Q2, double m2mu2, int nf
+        ) const;
+        Value CL_g3_highenergyNLL(
+            double x, double m2Q2, double m2mu2, int nf
+        ) const;
+        Value C2_ps3_highenergyNLL(
+            double x, double m2Q2, double m2mu2, int nf
+        ) const;
+        Value CL_ps3_highenergyNLL(
+            double x, double m2Q2, double m2mu2, int nf
+        ) const;
 
         //==========================================================================================//
         //                      High energy coefficient functions
@@ -121,20 +125,22 @@ class HighEnergyCoefficientFunction
         //------------------------------------------------------------------------------------------//
 
         Value
-        C2_g3_highenergy(double x, double m2Q2, double m2mu2, int nf) const;
+            C2_g3_highenergy(double x, double m2Q2, double m2mu2, int nf) const;
+        Value C2_ps3_highenergy(
+            double x, double m2Q2, double m2mu2, int nf
+        ) const;
         Value
-        C2_ps3_highenergy(double x, double m2Q2, double m2mu2, int nf) const;
-        Value
-        CL_g3_highenergy(double x, double m2Q2, double m2mu2, int nf) const;
-        Value
-        CL_ps3_highenergy(double x, double m2Q2, double m2mu2, int nf) const;
+            CL_g3_highenergy(double x, double m2Q2, double m2mu2, int nf) const;
+        Value CL_ps3_highenergy(
+            double x, double m2Q2, double m2mu2, int nf
+        ) const;
 
         //==========================================================================================//
         //  Function needed to make LL_ and NLL_ point to a zero function
         //------------------------------------------------------------------------------------------//
 
-        double
-        ZeroFunction(double /*x*/, double /*m2Q2*/, double /*m2mu2*/) const {
+        double ZeroFunction(double /*x*/, double /*m2Q2*/, double /*m2mu2*/)
+            const {
             return 0.;
         };
         Value ZeroFunctionBand(
@@ -159,7 +165,7 @@ class HighEnergyHighScaleCoefficientFunction
         ~HighEnergyHighScaleCoefficientFunction() override{};
 
         Value
-        fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
+            fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
 
         void SetFunctions();
 
@@ -176,24 +182,30 @@ class HighEnergyHighScaleCoefficientFunction
         //                      coefficient functions O(as^2)
         //------------------------------------------------------------------------------------------//
 
-        double
-        C2_g2_highenergy_highscale(double x, double m2Q2, double m2mu2) const;
-        double
-        C2_ps2_highenergy_highscale(double x, double m2Q2, double m2mu2) const;
-        double
-        CL_g2_highenergy_highscale(double x, double m2Q2, double m2mu2) const;
-        double
-        CL_ps2_highenergy_highscale(double x, double m2Q2, double m2mu2) const;
+        double C2_g2_highenergy_highscale(
+            double x, double m2Q2, double m2mu2
+        ) const;
+        double C2_ps2_highenergy_highscale(
+            double x, double m2Q2, double m2mu2
+        ) const;
+        double CL_g2_highenergy_highscale(
+            double x, double m2Q2, double m2mu2
+        ) const;
+        double CL_ps2_highenergy_highscale(
+            double x, double m2Q2, double m2mu2
+        ) const;
 
         //==========================================================================================//
         //  Q>>m limit of the high energy coefficient functions
         //  O(as^3) at leading log
         //------------------------------------------------------------------------------------------//
 
-        double
-        C2_g3_highenergy_highscaleLL(double x, double m2Q2, double m2mu2) const;
-        double
-        CL_g3_highenergy_highscaleLL(double x, double m2Q2, double m2mu2) const;
+        double C2_g3_highenergy_highscaleLL(
+            double x, double m2Q2, double m2mu2
+        ) const;
+        double CL_g3_highenergy_highscaleLL(
+            double x, double m2Q2, double m2mu2
+        ) const;
         double C2_ps3_highenergy_highscaleLL(
             double x, double m2Q2, double m2mu2
         ) const;
@@ -236,8 +248,8 @@ class HighEnergyHighScaleCoefficientFunction
         //  Function needed to make LL_ and NLL_ point to a zero function
         //------------------------------------------------------------------------------------------//
 
-        double
-        ZeroFunction(double /*x*/, double /*m2Q2*/, double /*m2mu2*/) const {
+        double ZeroFunction(double /*x*/, double /*m2Q2*/, double /*m2mu2*/)
+            const {
             return 0.;
         };
         Value ZeroFunctionBand(
@@ -262,7 +274,7 @@ class PowerTermsCoefficientFunction
         ~PowerTermsCoefficientFunction() override;
 
         Value
-        fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
+            fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
 
     private:
         HighEnergyCoefficientFunction *highenergy_;

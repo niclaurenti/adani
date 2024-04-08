@@ -193,7 +193,7 @@ Value HighScaleCoefficientFunction::
 //------------------------------------------------------------------------------------------//
 
 double
-HighScaleCoefficientFunction::D2_g1_highscale(double x, double m2Q2) const {
+    HighScaleCoefficientFunction::D2_g1_highscale(double x, double m2Q2) const {
 
     return 4 * TR * (x * x + (x - 1) * (x - 1)) * log(1. / m2Q2)
            + massless_as1_->MuIndependentTerms(x, 1);

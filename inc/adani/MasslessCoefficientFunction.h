@@ -42,7 +42,7 @@ class MasslessCoefficientFunction : public CoefficientFunction {
         ) const override;
 
         Value
-        fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
+            fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
 
         void SetFunctions();
 

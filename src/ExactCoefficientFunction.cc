@@ -274,7 +274,7 @@ double ExactCoefficientFunction::C2_g1(double x, double m2Q2, int /*nf*/)
 //------------------------------------------------------------------------------------------//
 
 double
-ExactCoefficientFunction::CL_g1(double x, double m2Q2, int /*nf*/) const {
+    ExactCoefficientFunction::CL_g1(double x, double m2Q2, int /*nf*/) const {
 
     double beta = sqrt(1. - 4. * m2Q2 * x / (1. - x));
     double x2 = x * x;
@@ -321,18 +321,23 @@ extern "C" {
 //------------------------------------------------------------------------------------------//
 
 double
-ExactCoefficientFunction::C2_ps20(double x, double m2Q2, int /*nf*/) const {
+    ExactCoefficientFunction::C2_ps20(double x, double m2Q2, int /*nf*/) const {
 
     double xi = 1. / m2Q2;
     double eta = 0.25 * xi * (1 - x) / x - 1.;
 
-    // using nf = nan since at O(as2) the coefficient functions don't depend on nf
+    // using nf = nan since at O(as2) the coefficient functions don't depend on
+    // nf
     int nf = static_cast<int>(nan(""));
 
-    if (eta < 1e-6) return thr_ -> MuIndependentTerms(x, m2Q2, nf);
-    if (eta > 1e6 || xi > 1e5) return asy_ -> MuIndependentTerms(x, m2Q2, nf);
+    if (eta < 1e-6)
+        return thr_->MuIndependentTerms(x, m2Q2, nf);
+    if (eta > 1e6 || xi > 1e5)
+        return asy_->MuIndependentTerms(x, m2Q2, nf);
     if (xi < 1e-3) {
-        cout << "Error in ExactCoefficientFunction::C2_ps20 : max value of m2Q2 is 1e3. Got " << m2Q2 << endl;
+        cout << "Error in ExactCoefficientFunction::C2_ps20 : max value of "
+                "m2Q2 is 1e3. Got "
+             << m2Q2 << endl;
         exit(-1);
     }
 
@@ -366,18 +371,23 @@ double ExactCoefficientFunction::C_ps21(double x, double m2Q2) const {
 //------------------------------------------------------------------------------------------//
 
 double
-ExactCoefficientFunction::CL_ps20(double x, double m2Q2, int /*nf*/) const {
+    ExactCoefficientFunction::CL_ps20(double x, double m2Q2, int /*nf*/) const {
 
     double xi = 1. / m2Q2;
     double eta = 0.25 * xi * (1 - x) / x - 1.;
 
-    // using nf = nan since at O(as2) the coefficient functions don't depend on nf
+    // using nf = nan since at O(as2) the coefficient functions don't depend on
+    // nf
     int nf = static_cast<int>(nan(""));
 
-    if (eta < 1e-6) return thr_ -> MuIndependentTerms(x, m2Q2, nf);
-    if (eta > 1e6 || xi > 1e5) return asy_ -> MuIndependentTerms(x, m2Q2, nf);
+    if (eta < 1e-6)
+        return thr_->MuIndependentTerms(x, m2Q2, nf);
+    if (eta > 1e6 || xi > 1e5)
+        return asy_->MuIndependentTerms(x, m2Q2, nf);
     if (xi < 1e-3) {
-        cout << "Error in ExactCoefficientFunction::CL_ps20 : max value of m2Q2 is 1e3. Got " << m2Q2 << endl;
+        cout << "Error in ExactCoefficientFunction::CL_ps20 : max value of "
+                "m2Q2 is 1e3. Got "
+             << m2Q2 << endl;
         exit(-1);
     }
 
@@ -393,18 +403,23 @@ ExactCoefficientFunction::CL_ps20(double x, double m2Q2, int /*nf*/) const {
 //------------------------------------------------------------------------------------------//
 
 double
-ExactCoefficientFunction::C2_g20(double x, double m2Q2, int /*nf*/) const {
+    ExactCoefficientFunction::C2_g20(double x, double m2Q2, int /*nf*/) const {
 
     double xi = 1. / m2Q2;
     double eta = 0.25 * xi * (1 - x) / x - 1.;
 
-    // using nf = nan since at O(as2) the coefficient functions don't depend on nf
+    // using nf = nan since at O(as2) the coefficient functions don't depend on
+    // nf
     int nf = static_cast<int>(nan(""));
 
-    if (eta < 1e-6) return thr_ -> MuIndependentTerms(x, m2Q2, nf);
-    if (eta > 1e6 || xi > 1e5) return asy_ -> MuIndependentTerms(x, m2Q2, nf);
+    if (eta < 1e-6)
+        return thr_->MuIndependentTerms(x, m2Q2, nf);
+    if (eta > 1e6 || xi > 1e5)
+        return asy_->MuIndependentTerms(x, m2Q2, nf);
     if (xi < 1e-3) {
-        cout << "Error in ExactCoefficientFunction::C2_g20 : max value of m2Q2 is 1e3. Got " << m2Q2 << endl;
+        cout << "Error in ExactCoefficientFunction::C2_g20 : max value of m2Q2 "
+                "is 1e3. Got "
+             << m2Q2 << endl;
         exit(-1);
     }
 
@@ -438,18 +453,23 @@ double ExactCoefficientFunction::C_g21(double x, double m2Q2) const {
 //------------------------------------------------------------------------------------------//
 
 double
-ExactCoefficientFunction::CL_g20(double x, double m2Q2, int /*nf*/) const {
+    ExactCoefficientFunction::CL_g20(double x, double m2Q2, int /*nf*/) const {
 
     double xi = 1. / m2Q2;
     double eta = 0.25 * xi * (1 - x) / x - 1.;
 
-    // using nf = nan since at O(as2) the coefficient functions don't depend on nf
+    // using nf = nan since at O(as2) the coefficient functions don't depend on
+    // nf
     int nf = static_cast<int>(nan(""));
 
-    if (eta < 1e-6) return thr_ -> MuIndependentTerms(x, m2Q2, nf);
-    if (eta > 1e6 || xi > 1e5) return asy_ -> MuIndependentTerms(x, m2Q2, nf);
+    if (eta < 1e-6)
+        return thr_->MuIndependentTerms(x, m2Q2, nf);
+    if (eta > 1e6 || xi > 1e5)
+        return asy_->MuIndependentTerms(x, m2Q2, nf);
     if (xi < 1e-3) {
-        cout << "Error in ExactCoefficientFunction::CL_g20 : max value of m2Q2 is 1e3. Got " << m2Q2 << endl;
+        cout << "Error in ExactCoefficientFunction::CL_g20 : max value of m2Q2 "
+                "is 1e3. Got "
+             << m2Q2 << endl;
         exit(-1);
     }
 
@@ -579,9 +599,8 @@ double ExactCoefficientFunction::C_ps3_MuDep(
 //  ExactCoefficientFunction: print warning for mu independent part of O(as^3)
 //------------------------------------------------------------------------------------------//
 
-double
-ExactCoefficientFunction::WarningFunc(double /*x*/, double /*m2Q2*/, int /*nf*/)
-    const {
+double ExactCoefficientFunction::
+    WarningFunc(double /*x*/, double /*m2Q2*/, int /*nf*/) const {
     cout << "Error: mu-independent terms of the exact coefficient function at "
             "O(a_s^3) are not known!"
          << endl;

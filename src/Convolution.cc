@@ -339,7 +339,7 @@ void DoubleConvolution::SetMCcalls(const int &MCcalls) {
 //------------------------------------------------------------------------------------------//
 
 double
-DoubleConvolution::regular1_integrand(double z[], size_t /*dim*/, void *p) {
+    DoubleConvolution::regular1_integrand(double z[], size_t /*dim*/, void *p) {
 
     struct function_params *params = (struct function_params *)p;
 
@@ -366,7 +366,7 @@ DoubleConvolution::regular1_integrand(double z[], size_t /*dim*/, void *p) {
 //------------------------------------------------------------------------------------------//
 
 double
-DoubleConvolution::regular2_integrand(double z[], size_t /*dim*/, void *p) {
+    DoubleConvolution::regular2_integrand(double z[], size_t /*dim*/, void *p) {
     struct function_params *params = (struct function_params *)p;
 
     double m2Q2 = (params->m2Q2);
@@ -467,8 +467,9 @@ double DoubleConvolution::RegularPart(double x, double m2Q2, int nf) const {
 //  DoubleConvolution: integrand of the first singular part
 //------------------------------------------------------------------------------------------//
 
-double
-DoubleConvolution::singular1_integrand(double z[], size_t /*dim*/, void *p) {
+double DoubleConvolution::singular1_integrand(
+    double z[], size_t /*dim*/, void *p
+) {
 
     struct function_params *params = (struct function_params *)p;
 
@@ -496,8 +497,9 @@ DoubleConvolution::singular1_integrand(double z[], size_t /*dim*/, void *p) {
 //  DoubleConvolution: integrand of the second singular part
 //------------------------------------------------------------------------------------------//
 
-double
-DoubleConvolution::singular2_integrand(double z[], size_t /*dim*/, void *p) {
+double DoubleConvolution::singular2_integrand(
+    double z[], size_t /*dim*/, void *p
+) {
 
     struct function_params *params = (struct function_params *)p;
 

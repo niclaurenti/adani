@@ -72,7 +72,7 @@ class AbstractApproximate : public CoefficientFunction {
         double MuIndependentTerms(double x, double m2Q2, int nf) const override;
 
         Value
-        fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
+            fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
         double MuDependentTerms(
             double x, double m2Q2, double m2mu2, int nf
         ) const override;
@@ -96,8 +96,9 @@ class ApproximateCoefficientFunction : public AbstractApproximate {
         );
         ~ApproximateCoefficientFunction() override;
 
-        Value
-        MuIndependentTermsBand(double x, double m2Q2, int nf) const override;
+        Value MuIndependentTermsBand(
+            double x, double m2Q2, int nf
+        ) const override;
 
     private:
         ThresholdCoefficientFunction *threshold_;
@@ -128,8 +129,9 @@ class ApproximateCoefficientFunctionKLMV : public AbstractApproximate {
         );
         ~ApproximateCoefficientFunctionKLMV() override;
 
-        Value
-        MuIndependentTermsBand(double x, double m2Q2, int nf) const override;
+        Value MuIndependentTermsBand(
+            double x, double m2Q2, int nf
+        ) const override;
 
     private:
         ThresholdCoefficientFunction *threshold_;

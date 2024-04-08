@@ -25,7 +25,8 @@
 #include <vector>
 
 //==========================================================================================//
-//  forward declaration of class ThresholdCoefficientFunction to avoid circular dependencies
+//  forward declaration of class ThresholdCoefficientFunction to avoid circular
+//  dependencies
 //------------------------------------------------------------------------------------------//
 
 class ThresholdCoefficientFunction;
@@ -52,7 +53,7 @@ class ExactCoefficientFunction : public CoefficientFunction {
         ) const override;
 
         Value
-        fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
+            fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
 
         void SetFunctions();
 
@@ -64,8 +65,8 @@ class ExactCoefficientFunction : public CoefficientFunction {
             double, double, double, int
         ) const;
 
-        AsymptoticCoefficientFunction* asy_;
-        ThresholdCoefficientFunction* thr_;
+        AsymptoticCoefficientFunction *asy_;
+        ThresholdCoefficientFunction *thr_;
 
         std::vector<AbstractConvolution *> convolutions_lmu1_;
         std::vector<AbstractConvolution *> convolutions_lmu2_;
@@ -118,9 +119,9 @@ class ExactCoefficientFunction : public CoefficientFunction {
         //------------------------------------------------------------------------------------------//
 
         double
-        C_ps2_MuDep(double x, double m2Q2, double m2mu2, int /*nf*/) const;
+            C_ps2_MuDep(double x, double m2Q2, double m2mu2, int /*nf*/) const;
         double
-        C_g2_MuDep(double x, double m2Q2, double m2mu2, int /*nf*/) const;
+            C_g2_MuDep(double x, double m2Q2, double m2mu2, int /*nf*/) const;
 
         //==========================================================================================//
         //  Exact massive coefficient functions O(as^3): terms
