@@ -18,7 +18,10 @@ ThresholdCoefficientFunction::ThresholdCoefficientFunction(
 )
     : CoefficientFunction(order, kind, channel) {
 
-    exact_as1_ = new ExactCoefficientFunction(1, GetKind(), GetChannel());
+    if(GetChannel() == 'g') {
+        exact_as1_ = new ExactCoefficientFunction(1, GetKind(), GetChannel());
+    } else exact_as1_ = nullptr;
+
     SetFunctions();
 }
 
