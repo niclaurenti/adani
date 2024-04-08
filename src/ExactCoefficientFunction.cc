@@ -1,6 +1,7 @@
 #include "adani/ExactCoefficientFunction.h"
 #include "adani/Constants.h"
 #include "adani/SpecialFunctions.h"
+#include "adani/ThresholdCoefficientFunction.h"
 
 #include <cmath>
 #include <iostream>
@@ -34,6 +35,14 @@ ExactCoefficientFunction::ExactCoefficientFunction(
     Pgq0Pqg0_ = nullptr;
 
     delta_ = nullptr;
+
+    if (GetOrder() == 2) {
+        asy_ = new AsymptoticCoefficientFunction(order, kind, channel);
+        thr_ = new ThresholdCoefficientFunction(order, kind, channel);
+    } else {
+        asy_ = nullptr;
+        thr_ = nullptr;
+    }
 
     if (GetOrder() > 1) {
         gluon_as1_ = new ExactCoefficientFunction(1, GetKind(), 'g');
@@ -146,6 +155,9 @@ ExactCoefficientFunction::~ExactCoefficientFunction() {
     delete Pgq0Pqg0_;
 
     delete delta_;
+
+    delete asy_;
+    delete thr_;
 }
 
 //==========================================================================================//
@@ -314,8 +326,15 @@ ExactCoefficientFunction::C2_ps20(double x, double m2Q2, int /*nf*/) const {
     double xi = 1. / m2Q2;
     double eta = 0.25 * xi * (1 - x) / x - 1.;
 
-    if (eta > 1e6 || eta < 1e-6 || xi < 1e-3 || xi > 1e5)
-        return 0.;
+    // using nf = nan since at O(as2) the coefficient functions don't depend on nf
+    int nf = static_cast<int>(nan(""));
+
+    if (eta < 1e-6) return thr_ -> MuIndependentTerms(x, m2Q2, nf);
+    if (eta > 1e6 || xi > 1e5) return asy_ -> MuIndependentTerms(x, m2Q2, nf);
+    if (xi < 1e-3) {
+        cout << "Error in ExactCoefficientFunction::C2_ps20 : max value of m2Q2 is 1e3. Got " << m2Q2 << endl;
+        exit(-1);
+    }
 
     return 16 * M_PI * xi * c2nloq_(&eta, &xi) / x;
 }
@@ -352,8 +371,15 @@ ExactCoefficientFunction::CL_ps20(double x, double m2Q2, int /*nf*/) const {
     double xi = 1. / m2Q2;
     double eta = 0.25 * xi * (1 - x) / x - 1.;
 
-    if (eta > 1e6 || eta < 1e-6 || xi < 1e-3 || xi > 1e5)
-        return 0.;
+    // using nf = nan since at O(as2) the coefficient functions don't depend on nf
+    int nf = static_cast<int>(nan(""));
+
+    if (eta < 1e-6) return thr_ -> MuIndependentTerms(x, m2Q2, nf);
+    if (eta > 1e6 || xi > 1e5) return asy_ -> MuIndependentTerms(x, m2Q2, nf);
+    if (xi < 1e-3) {
+        cout << "Error in ExactCoefficientFunction::CL_ps20 : max value of m2Q2 is 1e3. Got " << m2Q2 << endl;
+        exit(-1);
+    }
 
     return 16 * M_PI * xi * clnloq_(&eta, &xi) / x;
 }
@@ -372,8 +398,15 @@ ExactCoefficientFunction::C2_g20(double x, double m2Q2, int /*nf*/) const {
     double xi = 1. / m2Q2;
     double eta = 0.25 * xi * (1 - x) / x - 1.;
 
-    if (eta > 1e6 || eta < 1e-6 || xi < 1e-3 || xi > 1e5)
-        return 0.;
+    // using nf = nan since at O(as2) the coefficient functions don't depend on nf
+    int nf = static_cast<int>(nan(""));
+
+    if (eta < 1e-6) return thr_ -> MuIndependentTerms(x, m2Q2, nf);
+    if (eta > 1e6 || xi > 1e5) return asy_ -> MuIndependentTerms(x, m2Q2, nf);
+    if (xi < 1e-3) {
+        cout << "Error in ExactCoefficientFunction::C2_g20 : max value of m2Q2 is 1e3. Got " << m2Q2 << endl;
+        exit(-1);
+    }
 
     return 16 * M_PI * xi * c2nlog_(&eta, &xi) / x;
 }
@@ -410,8 +443,15 @@ ExactCoefficientFunction::CL_g20(double x, double m2Q2, int /*nf*/) const {
     double xi = 1. / m2Q2;
     double eta = 0.25 * xi * (1 - x) / x - 1.;
 
-    if (eta > 1e6 || eta < 1e-6 || xi < 1e-3 || xi > 1e5)
-        return 0.;
+    // using nf = nan since at O(as2) the coefficient functions don't depend on nf
+    int nf = static_cast<int>(nan(""));
+
+    if (eta < 1e-6) return thr_ -> MuIndependentTerms(x, m2Q2, nf);
+    if (eta > 1e6 || xi > 1e5) return asy_ -> MuIndependentTerms(x, m2Q2, nf);
+    if (xi < 1e-3) {
+        cout << "Error in ExactCoefficientFunction::CL_g20 : max value of m2Q2 is 1e3. Got " << m2Q2 << endl;
+        exit(-1);
+    }
 
     return 16 * M_PI * xi * clnlog_(&eta, &xi) / x;
 }

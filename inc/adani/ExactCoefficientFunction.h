@@ -17,11 +17,18 @@
 #ifndef Exact_h
 #define Exact_h
 
+#include "adani/AsymptoticCoefficientFunction.h"
 #include "adani/CoefficientFunction.h"
 #include "adani/Convolution.h"
 #include "adani/SplittingFunction.h"
 
 #include <vector>
+
+//==========================================================================================//
+//  forward declaration of class ThresholdCoefficientFunction to avoid circular dependencies
+//------------------------------------------------------------------------------------------//
+
+class ThresholdCoefficientFunction;
 
 //==========================================================================================//
 //  class ExactCoefficientFunction
@@ -56,6 +63,9 @@ class ExactCoefficientFunction : public CoefficientFunction {
         double (ExactCoefficientFunction::*mu_dep_)(
             double, double, double, int
         ) const;
+
+        AsymptoticCoefficientFunction* asy_;
+        ThresholdCoefficientFunction* thr_;
 
         std::vector<AbstractConvolution *> convolutions_lmu1_;
         std::vector<AbstractConvolution *> convolutions_lmu2_;

@@ -19,7 +19,12 @@
 #define Threshold_h
 
 #include "adani/CoefficientFunction.h"
-#include "adani/ExactCoefficientFunction.h"
+
+//==========================================================================================//
+//  forward declaration of class ExactCoefficientFunction to avoid circular dependencies
+//------------------------------------------------------------------------------------------//
+
+class ExactCoefficientFunction;
 
 //==========================================================================================//
 //  class ThresholdCoefficientFunction
