@@ -59,7 +59,7 @@ void CoefficientFunction::SetChannel(const char &channel) {
         exit(-1);
     }
     if (channel_ == 'q' && order_ == 1) {
-        cout << "Error: quark coefficeint function at O(as) doesn't exist!"
+        cout << "Error: quark coefficient function at O(as) doesn't exist!"
              << endl;
         exit(-1);
     }
