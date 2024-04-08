@@ -104,8 +104,6 @@ class ExactCoefficientFunction : public CoefficientFunction {
         double C2_ps20(double x, double m2Q2, int /*nf*/) const;
         double CL_ps20(double x, double m2Q2, int /*nf*/) const;
 
-        double CheckRanges(double x, double m2Q2) const;
-
         //==========================================================================================//
         //  Exact massive coefficient functions O(as^2): terms
         //  proportional to log(mu^2/m^2)
