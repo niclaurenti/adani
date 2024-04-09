@@ -18,7 +18,7 @@ project(adani)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -fPIC")
-# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -fPIC -lgsl -lgslcblas -lm")
+
 enable_language(Fortran)
 set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fPIC")
 
@@ -88,8 +88,7 @@ if(PYTHON_ONLY)
         src/ThresholdCoefficientFunction.cc
         src/Value.cc
     )
-    target_link_libraries(_core PRIVATE GSL::gsl GSL::gslcblas)
-    # target_link_libraries(_core PRIVATE gsl gslcblas)
+    target_link_libraries(_core PRIVATE GSL::gsl)
     target_compile_definitions(_core PRIVATE VERSION_INFO=${PROJECT_VERSION})
     install(TARGETS _core DESTINATION .)
 
@@ -115,8 +114,7 @@ else(PYTHON_ONLY)
     )
 
     # define libraries to be linked
-    target_link_libraries(adani GSL::gsl GSL::gslcblas)
-    # target_link_libraries(adani gsl gslcblas)
+    target_link_libraries(adani GSL::gsl)
 
     # install
     install(FILES ${PROJECT_SOURCE_DIR}/bin/adani-config
