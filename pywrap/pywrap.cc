@@ -59,22 +59,22 @@ PYBIND11_MODULE(_core, m) {
         )
         .def(
             "MuIndependentTerms",
-            &ApproximateCoefficientFunction::MuIndependentTerms
+            &ApproximateCoefficientFunction::MuIndependentTerms, py::arg("x"), py::arg("m2Q2"), py::arg("nf")
         )
         .def(
             "MuDependentTerms",
-            &ApproximateCoefficientFunction::MuDependentTerms
+            &ApproximateCoefficientFunction::MuDependentTerms, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf")
         )
-        .def("fx", &ApproximateCoefficientFunction::fx)
+        .def("fx", &ApproximateCoefficientFunction::fx, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf"))
         .def(
             "MuIndependentTermsBand",
-            &ApproximateCoefficientFunction::MuIndependentTermsBand
+            &ApproximateCoefficientFunction::MuIndependentTermsBand, py::arg("x"), py::arg("m2Q2"), py::arg("nf")
         )
         .def(
             "MuDependentTermsBand",
-            &ApproximateCoefficientFunction::MuDependentTermsBand
+            &ApproximateCoefficientFunction::MuDependentTermsBand, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf")
         )
-        .def("fxBand", &ApproximateCoefficientFunction::fxBand);
+        .def("fxBand", &ApproximateCoefficientFunction::fxBand, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf"));
 
     // ApproximateCoefficientFunctionKLMV
     py::class_<ApproximateCoefficientFunctionKLMV>(
@@ -93,22 +93,22 @@ PYBIND11_MODULE(_core, m) {
         )
         .def(
             "MuIndependentTerms",
-            &ApproximateCoefficientFunctionKLMV::MuIndependentTerms
+            &ApproximateCoefficientFunctionKLMV::MuIndependentTerms, py::arg("x"), py::arg("m2Q2"), py::arg("nf")
         )
         .def(
             "MuDependentTerms",
-            &ApproximateCoefficientFunctionKLMV::MuDependentTerms
+            &ApproximateCoefficientFunctionKLMV::MuDependentTerms, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf")
         )
-        .def("fx", &ApproximateCoefficientFunctionKLMV::fx)
+        .def("fx", &ApproximateCoefficientFunctionKLMV::fx, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf"))
         .def(
             "MuIndependentTermsBand",
-            &ApproximateCoefficientFunctionKLMV::MuIndependentTermsBand
+            &ApproximateCoefficientFunctionKLMV::MuIndependentTermsBand, py::arg("x"), py::arg("m2Q2"), py::arg("nf")
         )
         .def(
             "MuDependentTermsBand",
-            &ApproximateCoefficientFunctionKLMV::MuDependentTermsBand
+            &ApproximateCoefficientFunctionKLMV::MuDependentTermsBand, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf")
         )
-        .def("fxBand", &ApproximateCoefficientFunctionKLMV::fxBand);
+        .def("fxBand", &ApproximateCoefficientFunctionKLMV::fxBand, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf"));
 
     // AsymptoticCoefficientFunction
     py::class_<AsymptoticCoefficientFunction>(
@@ -123,21 +123,21 @@ PYBIND11_MODULE(_core, m) {
         )
         .def(
             "MuIndependentTerms",
-            &AsymptoticCoefficientFunction::MuIndependentTerms
+            &AsymptoticCoefficientFunction::MuIndependentTerms, py::arg("x"), py::arg("m2Q2"), py::arg("nf")
         )
         .def(
-            "MuDependentTerms", &AsymptoticCoefficientFunction::MuDependentTerms
+            "MuDependentTerms", &AsymptoticCoefficientFunction::MuDependentTerms, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf")
         )
-        .def("fx", &AsymptoticCoefficientFunction::fx)
+        .def("fx", &AsymptoticCoefficientFunction::fx, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf"))
         .def(
             "MuIndependentTermsBand",
-            &AsymptoticCoefficientFunction::MuIndependentTermsBand
+            &AsymptoticCoefficientFunction::MuIndependentTermsBand, py::arg("x"), py::arg("m2Q2"), py::arg("nf")
         )
         .def(
             "MuDependentTermsBand",
-            &AsymptoticCoefficientFunction::MuDependentTermsBand
+            &AsymptoticCoefficientFunction::MuDependentTermsBand, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf")
         )
-        .def("fxBand", &AsymptoticCoefficientFunction::fxBand);
+        .def("fxBand", &AsymptoticCoefficientFunction::fxBand, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf"));
 
     // ExactCoefficientFunction
     py::class_<ExactCoefficientFunction>(m, "ExactCoefficientFunction")
@@ -151,19 +151,19 @@ PYBIND11_MODULE(_core, m) {
             py::arg("MCcalls") = 25000
         )
         .def(
-            "MuIndependentTerms", &ExactCoefficientFunction::MuIndependentTerms
+            "MuIndependentTerms", &ExactCoefficientFunction::MuIndependentTerms, py::arg("x"), py::arg("m2Q2"), py::arg("nf")
         )
-        .def("MuDependentTerms", &ExactCoefficientFunction::MuDependentTerms)
-        .def("fx", &ExactCoefficientFunction::fx)
+        .def("MuDependentTerms", &ExactCoefficientFunction::MuDependentTerms, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf"))
+        .def("fx", &ExactCoefficientFunction::fx, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf"))
         .def(
             "MuIndependentTermsBand",
-            &ExactCoefficientFunction::MuIndependentTermsBand
+            &ExactCoefficientFunction::MuIndependentTermsBand, py::arg("x"), py::arg("m2Q2"), py::arg("nf")
         )
         .def(
             "MuDependentTermsBand",
-            &ExactCoefficientFunction::MuDependentTermsBand
+            &ExactCoefficientFunction::MuDependentTermsBand, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf")
         )
-        .def("fxBand", &ExactCoefficientFunction::fxBand);
+        .def("fxBand", &ExactCoefficientFunction::fxBand, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf"));
 
     // HighEnergyCoefficientFunction
     py::class_<HighEnergyCoefficientFunction>(
@@ -176,21 +176,21 @@ PYBIND11_MODULE(_core, m) {
         )
         .def(
             "MuIndependentTerms",
-            &HighEnergyCoefficientFunction::MuIndependentTerms
+            &HighEnergyCoefficientFunction::MuIndependentTerms, py::arg("x"), py::arg("m2Q2"), py::arg("nf")
         )
         .def(
-            "MuDependentTerms", &HighEnergyCoefficientFunction::MuDependentTerms
+            "MuDependentTerms", &HighEnergyCoefficientFunction::MuDependentTerms, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf")
         )
-        .def("fx", &HighEnergyCoefficientFunction::fx)
+        .def("fx", &HighEnergyCoefficientFunction::fx, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf"))
         .def(
             "MuIndependentTermsBand",
-            &HighEnergyCoefficientFunction::MuIndependentTermsBand
+            &HighEnergyCoefficientFunction::MuIndependentTermsBand, py::arg("x"), py::arg("m2Q2"), py::arg("nf")
         )
         .def(
             "MuDependentTermsBand",
-            &HighEnergyCoefficientFunction::MuDependentTermsBand
+            &HighEnergyCoefficientFunction::MuDependentTermsBand, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf")
         )
-        .def("fxBand", &HighEnergyCoefficientFunction::fxBand);
+        .def("fxBand", &HighEnergyCoefficientFunction::fxBand, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf"));
 
     // HighEnergyHighScaleCoefficientFunction
     py::class_<HighEnergyHighScaleCoefficientFunction>(
@@ -203,22 +203,22 @@ PYBIND11_MODULE(_core, m) {
         )
         .def(
             "MuIndependentTerms",
-            &HighEnergyHighScaleCoefficientFunction::MuIndependentTerms
+            &HighEnergyHighScaleCoefficientFunction::MuIndependentTerms, py::arg("x"), py::arg("m2Q2"), py::arg("nf")
         )
         .def(
             "MuDependentTerms",
-            &HighEnergyHighScaleCoefficientFunction::MuDependentTerms
+            &HighEnergyHighScaleCoefficientFunction::MuDependentTerms, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf")
         )
-        .def("fx", &HighEnergyHighScaleCoefficientFunction::fx)
+        .def("fx", &HighEnergyHighScaleCoefficientFunction::fx, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf"))
         .def(
             "MuIndependentTermsBand",
-            &HighEnergyHighScaleCoefficientFunction::MuIndependentTermsBand
+            &HighEnergyHighScaleCoefficientFunction::MuIndependentTermsBand, py::arg("x"), py::arg("m2Q2"), py::arg("nf")
         )
         .def(
             "MuDependentTermsBand",
-            &HighEnergyHighScaleCoefficientFunction::MuDependentTermsBand
+            &HighEnergyHighScaleCoefficientFunction::MuDependentTermsBand, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf")
         )
-        .def("fxBand", &HighEnergyHighScaleCoefficientFunction::fxBand);
+        .def("fxBand", &HighEnergyHighScaleCoefficientFunction::fxBand, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf"));
 
     // PowerTermsCoefficientFunction
     py::class_<PowerTermsCoefficientFunction>(
@@ -231,21 +231,21 @@ PYBIND11_MODULE(_core, m) {
         )
         .def(
             "MuIndependentTerms",
-            &PowerTermsCoefficientFunction::MuIndependentTerms
+            &PowerTermsCoefficientFunction::MuIndependentTerms, py::arg("x"), py::arg("m2Q2"), py::arg("nf")
         )
         .def(
-            "MuDependentTerms", &PowerTermsCoefficientFunction::MuDependentTerms
+            "MuDependentTerms", &PowerTermsCoefficientFunction::MuDependentTerms, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf")
         )
-        .def("fx", &PowerTermsCoefficientFunction::fx)
+        .def("fx", &PowerTermsCoefficientFunction::fx, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf"))
         .def(
             "MuIndependentTermsBand",
-            &PowerTermsCoefficientFunction::MuIndependentTermsBand
+            &PowerTermsCoefficientFunction::MuIndependentTermsBand, py::arg("x"), py::arg("m2Q2"), py::arg("nf")
         )
         .def(
             "MuDependentTermsBand",
-            &PowerTermsCoefficientFunction::MuDependentTermsBand
+            &PowerTermsCoefficientFunction::MuDependentTermsBand, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf")
         )
-        .def("fxBand", &PowerTermsCoefficientFunction::fxBand);
+        .def("fxBand", &PowerTermsCoefficientFunction::fxBand, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf"));
 
     // HighScaleCoefficientFunction
     py::class_<HighScaleCoefficientFunction>(m, "HighScaleCoefficientFunction")
@@ -256,21 +256,21 @@ PYBIND11_MODULE(_core, m) {
         )
         .def(
             "MuIndependentTerms",
-            &HighScaleCoefficientFunction::MuIndependentTerms
+            &HighScaleCoefficientFunction::MuIndependentTerms, py::arg("x"), py::arg("m2Q2"), py::arg("nf")
         )
         .def(
-            "MuDependentTerms", &HighScaleCoefficientFunction::MuDependentTerms
+            "MuDependentTerms", &HighScaleCoefficientFunction::MuDependentTerms, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf")
         )
-        .def("fx", &HighScaleCoefficientFunction::fx)
+        .def("fx", &HighScaleCoefficientFunction::fx, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf"))
         .def(
             "MuIndependentTermsBand",
-            &HighScaleCoefficientFunction::MuIndependentTermsBand
+            &HighScaleCoefficientFunction::MuIndependentTermsBand, py::arg("x"), py::arg("m2Q2"), py::arg("nf")
         )
         .def(
             "MuDependentTermsBand",
-            &HighScaleCoefficientFunction::MuDependentTermsBand
+            &HighScaleCoefficientFunction::MuDependentTermsBand, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf")
         )
-        .def("fxBand", &HighScaleCoefficientFunction::fxBand);
+        .def("fxBand", &HighScaleCoefficientFunction::fxBand, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf"));
 
     // HighScaleSplitLogs
     py::class_<HighScaleSplitLogs>(m, "HighScaleSplitLogs")
@@ -281,15 +281,15 @@ PYBIND11_MODULE(_core, m) {
         )
         .def(
             "fx", (double(HighScaleSplitLogs::*)(double, double, int) const)
-                      & HighScaleSplitLogs::fx
+                      & HighScaleSplitLogs::fx, py::arg("x"), py::arg("m2Q2"), py::arg("nf")
         )
-        .def("LL", &HighScaleSplitLogs::LL)
-        .def("NLL", &HighScaleSplitLogs::NLL)
-        .def("N2LL", &HighScaleSplitLogs::N2LL)
-        .def("N3LL", &HighScaleSplitLogs::N3LL)
+        .def("LL", &HighScaleSplitLogs::LL, py::arg("x"), py::arg("nf"))
+        .def("NLL", &HighScaleSplitLogs::NLL, py::arg("x"), py::arg("nf"))
+        .def("N2LL", &HighScaleSplitLogs::N2LL, py::arg("x"), py::arg("nf"))
+        .def("N3LL", &HighScaleSplitLogs::N3LL, py::arg("x"), py::arg("nf"))
         .def(
             "fxBand", (Value(HighScaleSplitLogs::*)(double, double, int) const)
-                          & HighScaleSplitLogs::fxBand
+                          & HighScaleSplitLogs::fxBand, py::arg("x"), py::arg("m2Q2"), py::arg("nf")
         );
 
     // MasslessCoefficientFunction
@@ -301,7 +301,7 @@ PYBIND11_MODULE(_core, m) {
         .def(
             "MuIndependentTerms",
             (double(MasslessCoefficientFunction::*)(double, int) const)
-                & MasslessCoefficientFunction::MuIndependentTerms
+                & MasslessCoefficientFunction::MuIndependentTerms, py::arg("x"), py::arg("nf")
         )
         .def("MuDependentTerms", &MasslessCoefficientFunction::MuDependentTerms)
         .def("fx", &MasslessCoefficientFunction::fx);
@@ -312,10 +312,10 @@ PYBIND11_MODULE(_core, m) {
             py::init<const int &, const char &, const char &>(),
             py::arg("order"), py::arg("entry1"), py::arg("entry2")
         )
-        .def("Regular", &SplittingFunction::Regular)
-        .def("Singular", &SplittingFunction::Singular)
-        .def("SingularIntegrated", &SplittingFunction::SingularIntegrated)
-        .def("Local", &SplittingFunction::Local);
+        .def("Regular", &SplittingFunction::Regular, py::arg("x"), py::arg("nf"))
+        .def("Singular", &SplittingFunction::Singular, py::arg("x"), py::arg("nf"))
+        .def("SingularIntegrated", &SplittingFunction::SingularIntegrated, py::arg("x"), py::arg("nf"))
+        .def("Local", &SplittingFunction::Local, py::arg("nf"));
 
     // ConvolutedSplittingFunctions
     py::class_<ConvolutedSplittingFunctions>(m, "ConvolutedSplittingFunctions")
@@ -326,13 +326,13 @@ PYBIND11_MODULE(_core, m) {
             py::arg("order1"), py::arg("entry1"), py::arg("entry2"),
             py::arg("order2"), py::arg("entry3"), py::arg("entry4")
         )
-        .def("Regular", &ConvolutedSplittingFunctions::Regular)
-        .def("Singular", &ConvolutedSplittingFunctions::Singular)
+        .def("Regular", &ConvolutedSplittingFunctions::Regular, py::arg("x"), py::arg("nf"))
+        .def("Singular", &ConvolutedSplittingFunctions::Singular, py::arg("x"), py::arg("nf"))
         .def(
             "SingularIntegrated",
-            &ConvolutedSplittingFunctions::SingularIntegrated
+            &ConvolutedSplittingFunctions::SingularIntegrated, py::arg("x"), py::arg("nf")
         )
-        .def("Local", &ConvolutedSplittingFunctions::Local);
+        .def("Local", &ConvolutedSplittingFunctions::Local, py::arg("nf"));
 
     // ThresholdCoefficientFunction
     py::class_<ThresholdCoefficientFunction>(m, "ThresholdCoefficientFunction")
@@ -342,23 +342,23 @@ PYBIND11_MODULE(_core, m) {
         )
         .def(
             "MuIndependentTerms",
-            &ThresholdCoefficientFunction::MuIndependentTerms
+            &ThresholdCoefficientFunction::MuIndependentTerms, py::arg("x"), py::arg("m2Q2"), py::arg("nf")
         )
         .def(
-            "MuDependentTerms", &ThresholdCoefficientFunction::MuDependentTerms
+            "MuDependentTerms", &ThresholdCoefficientFunction::MuDependentTerms, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf")
         )
-        .def("fx", &ThresholdCoefficientFunction::fx)
+        .def("fx", &ThresholdCoefficientFunction::fx, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf"))
         .def(
             "MuIndependentTermsBand",
-            &ThresholdCoefficientFunction::MuIndependentTermsBand
+            &ThresholdCoefficientFunction::MuIndependentTermsBand, py::arg("x"), py::arg("m2Q2"), py::arg("nf")
         )
         .def(
             "BetaIndependentTerms",
-            &ThresholdCoefficientFunction::BetaIndependentTerms
+            &ThresholdCoefficientFunction::BetaIndependentTerms, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2")
         )
         .def(
             "MuDependentTermsBand",
-            &ThresholdCoefficientFunction::MuDependentTermsBand
+            &ThresholdCoefficientFunction::MuDependentTermsBand, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf")
         )
-        .def("fxBand", &ThresholdCoefficientFunction::fxBand);
+        .def("fxBand", &ThresholdCoefficientFunction::fxBand, py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf"));
 }
