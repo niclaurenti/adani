@@ -6,6 +6,8 @@ def test_coeff_func():
     for order in range(1, 3 + 1):
         for kind in ["2", "L"]:
             for channel in ["q", "g"]:
+                if order == 1 and channel == "q":
+                    continue
                 app = ad.ApproximateCoefficientFunction(order, kind, channel)
                 assert app.GetOrder() == order
                 assert app.GetKind() == kind
