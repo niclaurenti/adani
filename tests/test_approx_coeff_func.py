@@ -2,6 +2,16 @@ import adani as ad
 import oldadani as oldad
 import numpy as np
 
+def test_coeff_func():
+    for order in range(1, 3 + 1):
+        for kind in ["2", "L"]:
+            for channel in ["q", "g"]:
+                app = ad.ApproximateCoefficientFunction(order, kind, channel)
+                assert app.GetOrder() == order
+                assert app.GetKind() == kind
+                assert app.GetChannel() == channel
+                del app
+
 def test_mudependent_terms():
     for order in [2, 3]:
         for channel in ['g', 'q']:
