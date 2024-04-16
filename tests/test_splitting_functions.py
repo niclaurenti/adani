@@ -5,6 +5,14 @@ import numpy as np
 CA = 3
 CF = 4./3
 
+def test_get_methods():
+    for entry1 in ["q", "g"]:
+        for entry2 in ["q", "g"]:
+            sf = ad.SplittingFunction(0, entry1, entry2)
+            assert sf.GetOrder() == 0
+            assert sf.GetEntry1() == entry1
+            assert sf.GetEntry2() == entry2
+
 def test_Pgq0():
 
     sf = ad.SplittingFunction(0, 'g', 'q')

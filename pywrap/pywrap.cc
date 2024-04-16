@@ -416,6 +416,9 @@ PYBIND11_MODULE(_core, m) {
             py::init<const int &, const char &, const char &>(),
             py::arg("order"), py::arg("entry1"), py::arg("entry2")
         )
+        .def("GetOrder", &SplittingFunction::GetOrder)
+        .def("GetEntry1", &SplittingFunction::GetEntry1)
+        .def("GetEntry2", &SplittingFunction::GetEntry2)
         .def(
             "Regular", &SplittingFunction::Regular, py::arg("x"), py::arg("nf")
         )
@@ -438,6 +441,12 @@ PYBIND11_MODULE(_core, m) {
             py::arg("order1"), py::arg("entry1"), py::arg("entry2"),
             py::arg("order2"), py::arg("entry3"), py::arg("entry4")
         )
+        .def("GetOrder1", &ConvolutedSplittingFunctions::GetOrder1)
+        .def("GetEntry1", &ConvolutedSplittingFunctions::GetEntry1)
+        .def("GetEntry2", &ConvolutedSplittingFunctions::GetEntry2)
+        .def("GetOrder2", &ConvolutedSplittingFunctions::GetOrder2)
+        .def("GetEntry3", &ConvolutedSplittingFunctions::GetEntry3)
+        .def("GetEntry4", &ConvolutedSplittingFunctions::GetEntry4)
         .def(
             "Regular", &ConvolutedSplittingFunctions::Regular, py::arg("x"),
             py::arg("nf")
