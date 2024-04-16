@@ -16,7 +16,7 @@ AbstractHighEnergyCoefficientFunction::AbstractHighEnergyCoefficientFunction(
 )
     : CoefficientFunction(order, kind, channel) {
 
-    SetNLL(NLL);
+    NLL_ = NLL;
 }
 
 //==========================================================================================//

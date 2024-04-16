@@ -60,11 +60,6 @@ class AbstractConvolution {
         CoefficientFunction *GetCoeffFunc() const { return coefffunc_; };
         AbstractSplittingFunction *GetSplitFunc() const { return splitfunc_; };
 
-        // set methods
-        void SetAbserr(const double &abserr);
-        void SetRelerr(const double &relerr);
-        void SetDim(const int &dim);
-
     private:
         double abserr_;
         double relerr_;

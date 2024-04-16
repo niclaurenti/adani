@@ -43,9 +43,6 @@ class AbstractHighEnergyCoefficientFunction : public CoefficientFunction {
         // get methods
         bool GetNLL() const { return NLL_; };
 
-        // set methods
-        void SetNLL(const bool &NLL) { NLL_ = NLL; };
-
     private:
         bool NLL_;
 

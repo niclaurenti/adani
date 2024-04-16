@@ -69,11 +69,6 @@ class CoefficientFunction {
         char GetKind() const { return kind_; };
         char GetChannel() const { return channel_; };
 
-        // set methods
-        void SetOrder(const int &order);
-        void SetKind(const char &kind);
-        void SetChannel(const char &channel);
-
     private:
         int order_;    // order = 1, 2, or 3
         char kind_;    // kind_ = '2' for F2 and 'L' for FL
