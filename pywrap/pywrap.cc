@@ -43,9 +43,7 @@ PYBIND11_MODULE(_core, m) {
         .def("GetLower", &Value::GetLower);
 
     // CoefficientFunction
-    py::class_<CoefficientFunction>(
-        m, "CoefficientFunction"
-    )
+    py::class_<CoefficientFunction>(m, "CoefficientFunction")
         .def("GetOrder", &CoefficientFunction::GetOrder)
         .def("GetKind", &CoefficientFunction::GetKind)
         .def("GetChannel", &CoefficientFunction::GetChannel);
@@ -179,7 +177,9 @@ PYBIND11_MODULE(_core, m) {
         );
 
     // ExactCoefficientFunction
-    py::class_<ExactCoefficientFunction, CoefficientFunction>(m, "ExactCoefficientFunction")
+    py::class_<ExactCoefficientFunction, CoefficientFunction>(
+        m, "ExactCoefficientFunction"
+    )
         .def(
             py::init<
                 const int &, const char &, const char &, const double &,
@@ -223,7 +223,8 @@ PYBIND11_MODULE(_core, m) {
         .def("GetNLL", &AbstractHighEnergyCoefficientFunction::GetNLL);
 
     // HighEnergyCoefficientFunction
-    py::class_<HighEnergyCoefficientFunction, AbstractHighEnergyCoefficientFunction>(
+    py::class_<
+        HighEnergyCoefficientFunction, AbstractHighEnergyCoefficientFunction>(
         m, "HighEnergyCoefficientFunction"
     )
         .def(
@@ -261,7 +262,9 @@ PYBIND11_MODULE(_core, m) {
         );
 
     // HighEnergyHighScaleCoefficientFunction
-    py::class_<HighEnergyHighScaleCoefficientFunction, AbstractHighEnergyCoefficientFunction>(
+    py::class_<
+        HighEnergyHighScaleCoefficientFunction,
+        AbstractHighEnergyCoefficientFunction>(
         m, "HighEnergyHighScaleCoefficientFunction"
     )
         .def(
@@ -299,7 +302,8 @@ PYBIND11_MODULE(_core, m) {
         );
 
     // PowerTermsCoefficientFunction
-    py::class_<PowerTermsCoefficientFunction, AbstractHighEnergyCoefficientFunction>(
+    py::class_<
+        PowerTermsCoefficientFunction, AbstractHighEnergyCoefficientFunction>(
         m, "PowerTermsCoefficientFunction"
     )
         .def(
@@ -337,7 +341,9 @@ PYBIND11_MODULE(_core, m) {
         );
 
     // HighScaleCoefficientFunction
-    py::class_<HighScaleCoefficientFunction, CoefficientFunction>(m, "HighScaleCoefficientFunction")
+    py::class_<HighScaleCoefficientFunction, CoefficientFunction>(
+        m, "HighScaleCoefficientFunction"
+    )
         .def(
             py::init<const int &, const char &, const char &, const string &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel"),
@@ -396,7 +402,9 @@ PYBIND11_MODULE(_core, m) {
         );
 
     // MasslessCoefficientFunction
-    py::class_<MasslessCoefficientFunction, CoefficientFunction>(m, "MasslessCoefficientFunction")
+    py::class_<MasslessCoefficientFunction, CoefficientFunction>(
+        m, "MasslessCoefficientFunction"
+    )
         .def(
             py::init<const int &, const char &, const char &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel")
@@ -463,7 +471,9 @@ PYBIND11_MODULE(_core, m) {
         .def("Local", &ConvolutedSplittingFunctions::Local, py::arg("nf"));
 
     // ThresholdCoefficientFunction
-    py::class_<ThresholdCoefficientFunction, CoefficientFunction>(m, "ThresholdCoefficientFunction")
+    py::class_<ThresholdCoefficientFunction, CoefficientFunction>(
+        m, "ThresholdCoefficientFunction"
+    )
         .def(
             py::init<const int &, const char &, const char &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel")

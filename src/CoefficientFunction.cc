@@ -36,7 +36,6 @@ CoefficientFunction::CoefficientFunction(
         exit(-1);
     }
     channel_ = channel;
-
 }
 
 //==========================================================================================//
@@ -44,7 +43,6 @@ CoefficientFunction::CoefficientFunction(
 //------------------------------------------------------------------------------------------//
 
 CoefficientFunction::~CoefficientFunction(){};
-
 
 //==========================================================================================//
 //  CoefficientFunction: central value of fx
