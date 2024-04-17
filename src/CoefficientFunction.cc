@@ -9,7 +9,8 @@ using std::endl;
 
 CoefficientFunction::CoefficientFunction(
     const int &order, const char &kind, const char &channel
-) : order_(order), kind_(kind), channel_(channel) {
+)
+    : order_(order), kind_(kind), channel_(channel) {
 
     // check order
     if (order < 1 || order > 3) {

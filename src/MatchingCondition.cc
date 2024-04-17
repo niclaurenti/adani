@@ -15,7 +15,8 @@ using std::endl;
 MatchingCondition::MatchingCondition(
     const int &order, const char &entry1, const char &entry2,
     const string &version
-) : order_(order), entry1_(entry1), entry2_(entry2), version_(version) {
+)
+    : order_(order), entry1_(entry1), entry2_(entry2), version_(version) {
     // check order
     if (order != 3) {
         cout << "Error: only order = 3 is implemented. Got " << order << endl;

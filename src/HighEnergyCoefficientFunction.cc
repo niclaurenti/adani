@@ -14,7 +14,7 @@ using std::endl;
 AbstractHighEnergyCoefficientFunction::AbstractHighEnergyCoefficientFunction(
     const int &order, const char &kind, const char &channel, const bool &NLL
 )
-    : CoefficientFunction(order, kind, channel), NLL_(NLL) {};
+    : CoefficientFunction(order, kind, channel), NLL_(NLL){};
 
 //==========================================================================================//
 //  HighEnergyCoefficientFunction: constructor

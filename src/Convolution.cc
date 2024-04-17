@@ -16,7 +16,8 @@ using std::endl;
 AbstractConvolution::AbstractConvolution(
     CoefficientFunction *coefffunc, AbstractSplittingFunction *splitfunc,
     const double &abserr, const double &relerr, const int &dim
-) : dim_(dim) {
+)
+    : dim_(dim) {
 
     SetAbserr(abserr);
     SetRelerr(relerr);
@@ -267,7 +268,8 @@ DoubleConvolution::DoubleConvolution(
     const double &abserr, const double &relerr, const int &dim,
     const bool &MCintegral, const int &MCcalls
 )
-    : AbstractConvolution(coefffunc, splitfunc, abserr, relerr, dim), MCintegral_(MCintegral) {
+    : AbstractConvolution(coefffunc, splitfunc, abserr, relerr, dim),
+      MCintegral_(MCintegral) {
 
     SetMCcalls(MCcalls);
 

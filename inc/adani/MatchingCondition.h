@@ -6,7 +6,8 @@
  *    Description:  Header file for the
  * MatchingCondition.cc file.
  *
- *         Author:  Non credo esista una persona che analizzi il calcio meglio di me.
+ *         Author:  Non credo esista una persona che analizzi il calcio meglio
+ * di me.
  *
  *  In this file there are the matching conditions.
  *
@@ -34,10 +35,10 @@ class MatchingCondition {
         );
         ~MatchingCondition(){};
 
-        int GetOrder() const {return order_;};
-        char GetEntry1() const {return entry1_;};
-        char GetEntry2() const {return entry2_;};
-        string GetVersion() const {return version_;};
+        int GetOrder() const { return order_; };
+        char GetEntry1() const { return entry1_; };
+        char GetEntry2() const { return entry2_; };
+        string GetVersion() const { return version_; };
 
         Value MuIndependentNfIndependentTerm(double x) const;
         vector<double> NotOrdered(double x) const;

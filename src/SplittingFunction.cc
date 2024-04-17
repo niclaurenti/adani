@@ -21,7 +21,10 @@ AbstractSplittingFunction::~AbstractSplittingFunction(){};
 SplittingFunction::SplittingFunction(
     const int &order, const char &entry1, const char &entry2
 )
-    : AbstractSplittingFunction(), order_(order), entry1_(entry1), entry2_(entry2) {
+    : AbstractSplittingFunction(),
+      order_(order),
+      entry1_(entry1),
+      entry2_(entry2) {
 
     // check order
     if (order != 0 && order != 1) {
@@ -184,7 +187,13 @@ ConvolutedSplittingFunctions::ConvolutedSplittingFunctions(
     const int &order1, const char &entry1, const char &entry2,
     const int &order2, const char &entry3, const char &entry4
 )
-    : AbstractSplittingFunction() , order1_(order1), entry1_(entry1), entry2_(entry2), order2_(order2), entry3_(entry3), entry4_(entry4){
+    : AbstractSplittingFunction(),
+      order1_(order1),
+      entry1_(entry1),
+      entry2_(entry2),
+      order2_(order2),
+      entry3_(entry3),
+      entry4_(entry4) {
 
     // check order
     if (order1 != 0 && order1 != 1) {
