@@ -16,28 +16,16 @@ using std::endl;
 AbstractConvolution::AbstractConvolution(
     CoefficientFunction *coefffunc, AbstractSplittingFunction *splitfunc,
     const double &abserr, const double &relerr, const int &dim
-) {
+) : dim_(dim) {
 
-    // check abserr
-    if (abserr <= 0) {
-        cout << "Error: abserr must be positive. Got " << abserr << endl;
-        exit(-1);
-    }
-    abserr_ = abserr;
-
-    // check relerr
-    if (relerr <= 0) {
-        cout << "Error: relerr must be positive. Got " << relerr << endl;
-        exit(-1);
-    }
-    relerr_ = relerr;
+    SetAbserr(abserr);
+    SetRelerr(relerr);
 
     // check dim
     if (dim <= 0) {
         cout << "Error: dim must be positive. Got " << dim << endl;
         exit(-1);
     }
-    dim_ = dim;
 
     w_ = gsl_integration_workspace_alloc(dim);
 
@@ -53,6 +41,32 @@ AbstractConvolution::~AbstractConvolution() {
 
     gsl_integration_workspace_free(w_);
 };
+
+//==========================================================================================//
+//  AbstractConvolution: set method for abserr
+//------------------------------------------------------------------------------------------//
+
+void AbstractConvolution::SetAbserr(const double &abserr) {
+    // check abserr
+    if (abserr <= 0) {
+        cout << "Error: abserr must be positive. Got " << abserr << endl;
+        exit(-1);
+    }
+    abserr_ = abserr;
+}
+
+//==========================================================================================//
+//  AbstractConvolution: set method for relerr
+//------------------------------------------------------------------------------------------//
+
+void AbstractConvolution::SetRelerr(const double &relerr) {
+    // check relerr
+    if (relerr <= 0) {
+        cout << "Error: relerr must be positive. Got " << relerr << endl;
+        exit(-1);
+    }
+    relerr_ = relerr;
+}
 
 //==========================================================================================//
 //  AbstractConvolution: convolute splitting function with coefficient function
@@ -253,9 +267,8 @@ DoubleConvolution::DoubleConvolution(
     const double &abserr, const double &relerr, const int &dim,
     const bool &MCintegral, const int &MCcalls
 )
-    : AbstractConvolution(coefffunc, splitfunc, abserr, relerr, dim) {
+    : AbstractConvolution(coefffunc, splitfunc, abserr, relerr, dim), MCintegral_(MCintegral) {
 
-    SetMCintegral(MCintegral);
     SetMCcalls(MCcalls);
 
     if (MCintegral) {
@@ -289,15 +302,6 @@ DoubleConvolution::~DoubleConvolution() {
 
     delete convolution_;
     delete conv_coeff_;
-}
-
-//==========================================================================================//
-//  DoubleConvolution: set method for method_flag
-//------------------------------------------------------------------------------------------//
-
-void DoubleConvolution::SetMCintegral(const bool &MCintegral) {
-
-    MCintegral_ = MCintegral;
 }
 
 //==========================================================================================//

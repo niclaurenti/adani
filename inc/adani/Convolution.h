@@ -60,10 +60,15 @@ class AbstractConvolution {
         CoefficientFunction *GetCoeffFunc() const { return coefffunc_; };
         AbstractSplittingFunction *GetSplitFunc() const { return splitfunc_; };
 
+        // set methods
+        void SetAbserr(const double &abserr);
+        void SetRelerr(const double &relerr);
+
     private:
         double abserr_;
         double relerr_;
-        int dim_;
+        const int dim_;
+
         gsl_integration_workspace *w_;
 
     protected:
@@ -149,7 +154,6 @@ class DoubleConvolution : public AbstractConvolution {
         int GetMCcalls() const { return MCcalls_; };
 
         // set methods
-        void SetMCintegral(const bool &MCintegral);
         void SetMCcalls(const int &MCcalls);
 
         // support function for the integral. it is static in order to be passed
@@ -163,7 +167,7 @@ class DoubleConvolution : public AbstractConvolution {
         static double singular3_integrand(double z, void *p);
 
     private:
-        bool MCintegral_;
+        const bool MCintegral_;
         int MCcalls_;
         gsl_monte_vegas_state *s_;
         gsl_rng *r_;
