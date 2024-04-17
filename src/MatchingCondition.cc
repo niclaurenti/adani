@@ -15,13 +15,12 @@ using std::endl;
 MatchingCondition::MatchingCondition(
     const int &order, const char &entry1, const char &entry2,
     const string &version
-) {
+) : order_(order), entry1_(entry1), entry2_(entry2), version_(version) {
     // check order
     if (order != 3) {
         cout << "Error: only order = 3 is implemented. Got " << order << endl;
         exit(-1);
     }
-    order_ = order;
 
     // check entry1
     if (entry1 != 'Q') {
@@ -29,14 +28,12 @@ MatchingCondition::MatchingCondition(
              << endl;
         exit(-1);
     }
-    entry1_ = entry1;
 
     // check entry2
     if (entry2 != 'g' && entry2 != 'q') {
         cout << "Error: entry2 must be g or q. Got " << entry2 << endl;
         exit(-1);
     }
-    entry2_ = entry2;
 
     // check version
     if (version != "exact" && version != "abmp" && version != "klmv"
@@ -58,8 +55,6 @@ MatchingCondition::MatchingCondition(
              << endl;
         exit(-1);
     }
-
-    version_ = version;
 }
 
 //==========================================================================================//
@@ -287,13 +282,13 @@ double MatchingCondition::a_Qg_30(double x, int v) const {
             354.1002 * L13 + 479.3838 * L12 - 7856.784 * (2. - x)
             - 6233.530 * L2 + 9416.621 / x + 1548.891 / x * L
         );
-    } else if (v == -1) { // Updated version w.r.t v==-12
+    } else if (v == -1) {
         return (
             226.3840 * L13 - 652.2045 * L12 - 2686.387 * L1
             - 7714.786 * (2. - x) - 2841.851 * L2 + 7721.120 / x
             + 1548.891 / x * L
         );
-    } else if (v == -12) { // Version of the paper (used only for benchamrk)
+    } else if (v == -12) {
         return (
             -2658.323 * L12 - 7449.948 * L1 - 7460.002 * (2. - x)
             + 3178.819 * L2 + 4710.725 / x + 1548.891 / x * L
