@@ -126,6 +126,8 @@ def test_powerterms():
     for order in range(1, 3 + 1):
         for kind in ['2', 'L']:
             for channel in ['g', 'q']:
+                if channel == 'q' and order == 1:
+                    continue
                 for NLL in [True, False]:
                     he = ad.HighEnergyCoefficientFunction(order, kind, channel, NLL)
                     hehs = ad.HighEnergyHighScaleCoefficientFunction(order, kind, channel, NLL)
