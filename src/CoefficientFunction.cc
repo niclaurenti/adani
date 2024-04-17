@@ -9,21 +9,19 @@ using std::endl;
 
 CoefficientFunction::CoefficientFunction(
     const int &order, const char &kind, const char &channel
-) {
+) : order_(order), kind_(kind), channel_(channel) {
 
     // check order
     if (order < 1 || order > 3) {
         cout << "Error: order must be 1, 2 or 3. Got: " << order << endl;
         exit(-1);
     }
-    order_ = order;
 
     // check kind
     if (kind != '2' && kind != 'L') {
         cout << "Error: kind must be 2 or L. Got: " << kind << endl;
         exit(-1);
     }
-    kind_ = kind;
 
     // check channel
     if (channel != 'g' && channel != 'q') {
@@ -35,7 +33,6 @@ CoefficientFunction::CoefficientFunction(
              << endl;
         exit(-1);
     }
-    channel_ = channel;
 }
 
 //==========================================================================================//

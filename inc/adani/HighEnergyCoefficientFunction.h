@@ -44,7 +44,7 @@ class AbstractHighEnergyCoefficientFunction : public CoefficientFunction {
         bool GetNLL() const { return NLL_; };
 
     private:
-        bool NLL_;
+        const bool NLL_;
 
         //==========================================================================================//
         //                  Color factors O(as^3)
