@@ -16,10 +16,17 @@ using std::endl;
 AbstractConvolution::AbstractConvolution(
     CoefficientFunction *coefffunc, AbstractSplittingFunction *splitfunc,
     const double &abserr, const double &relerr, const int &dim
-) {
-    abserr_ = abserr;
-    relerr_ = relerr;
-    dim_ = dim;
+)
+    : dim_(dim) {
+
+    SetAbserr(abserr);
+    SetRelerr(relerr);
+
+    // check dim
+    if (dim <= 0) {
+        cout << "Error: dim must be positive. Got " << dim << endl;
+        exit(-1);
+    }
 
     w_ = gsl_integration_workspace_alloc(dim);
 
@@ -60,19 +67,6 @@ void AbstractConvolution::SetRelerr(const double &relerr) {
         exit(-1);
     }
     relerr_ = relerr;
-}
-
-//==========================================================================================//
-//  AbstractConvolution: set method for dim
-//------------------------------------------------------------------------------------------//
-
-void AbstractConvolution::SetDim(const int &dim) {
-    // check dim
-    if (dim <= 0) {
-        cout << "Error: dim must be positive. Got " << dim << endl;
-        exit(-1);
-    }
-    dim_ = dim;
 }
 
 //==========================================================================================//
@@ -274,9 +268,9 @@ DoubleConvolution::DoubleConvolution(
     const double &abserr, const double &relerr, const int &dim,
     const bool &MCintegral, const int &MCcalls
 )
-    : AbstractConvolution(coefffunc, splitfunc, abserr, relerr, dim) {
+    : AbstractConvolution(coefffunc, splitfunc, abserr, relerr, dim),
+      MCintegral_(MCintegral) {
 
-    SetMCintegral(MCintegral);
     SetMCcalls(MCcalls);
 
     if (MCintegral) {
@@ -310,15 +304,6 @@ DoubleConvolution::~DoubleConvolution() {
 
     delete convolution_;
     delete conv_coeff_;
-}
-
-//==========================================================================================//
-//  DoubleConvolution: set method for method_flag
-//------------------------------------------------------------------------------------------//
-
-void DoubleConvolution::SetMCintegral(const bool &MCintegral) {
-
-    MCintegral_ = MCintegral;
 }
 
 //==========================================================================================//

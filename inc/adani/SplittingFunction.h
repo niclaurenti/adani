@@ -74,9 +74,9 @@ class SplittingFunction : public AbstractSplittingFunction {
         char GetEntry2() const { return entry2_; };
 
     private:
-        int order_;
-        char entry1_;
-        char entry2_;
+        const int order_;
+        const char entry1_;
+        const char entry2_;
 
         double (SplittingFunction::*reg_)(double, int) const;
         double (SplittingFunction::*sing_)(double, int) const;
@@ -169,12 +169,12 @@ class ConvolutedSplittingFunctions : public AbstractSplittingFunction {
         char GetEntry4() const { return entry4_; };
 
     private:
-        int order1_;
-        char entry1_;
-        char entry2_;
-        int order2_;
-        char entry3_;
-        char entry4_;
+        const int order1_;
+        const char entry1_;
+        const char entry2_;
+        const int order2_;
+        const char entry3_;
+        const char entry4_;
 
         double (ConvolutedSplittingFunctions::*reg_)(double, int) const;
 

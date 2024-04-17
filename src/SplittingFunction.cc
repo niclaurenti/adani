@@ -21,28 +21,28 @@ AbstractSplittingFunction::~AbstractSplittingFunction(){};
 SplittingFunction::SplittingFunction(
     const int &order, const char &entry1, const char &entry2
 )
-    : AbstractSplittingFunction() {
+    : AbstractSplittingFunction(),
+      order_(order),
+      entry1_(entry1),
+      entry2_(entry2) {
 
     // check order
     if (order != 0 && order != 1) {
         cout << "Error: order must be 0 or 1. Got " << order << endl;
         exit(-1);
     }
-    order_ = order;
 
     // check entry1
     if (entry1 != 'g' && entry1 != 'q') {
         cout << "Error: entry1 must be g or q. Got " << entry1 << endl;
         exit(-1);
     }
-    entry1_ = entry1;
 
     // check entry2
     if (entry2 != 'g' && entry2 != 'q') {
         cout << "Error: entry2 must be g or q. Got " << entry2 << endl;
         exit(-1);
     }
-    entry2_ = entry2;
 
     SetFunctions();
 }
@@ -187,49 +187,49 @@ ConvolutedSplittingFunctions::ConvolutedSplittingFunctions(
     const int &order1, const char &entry1, const char &entry2,
     const int &order2, const char &entry3, const char &entry4
 )
-    : AbstractSplittingFunction() {
+    : AbstractSplittingFunction(),
+      order1_(order1),
+      entry1_(entry1),
+      entry2_(entry2),
+      order2_(order2),
+      entry3_(entry3),
+      entry4_(entry4) {
 
     // check order
     if (order1 != 0 && order1 != 1) {
         cout << "Error: order1 must be 0 or 1. Got " << order1 << endl;
         exit(-1);
     }
-    order1_ = order1;
 
     // check order
     if (order2 != 0 && order2 != 1) {
         cout << "Error: order2 must be 0 or 1. Got " << order2 << endl;
         exit(-1);
     }
-    order2_ = order2;
 
     // check entry1
     if (entry1 != 'g' && entry1 != 'q') {
         cout << "Error: entry1 must be g or q. Got " << entry1 << endl;
         exit(-1);
     }
-    entry1_ = entry1;
 
     // check entry2
     if (entry2 != 'g' && entry2 != 'q') {
         cout << "Error: entry2 must be g or q. Got " << entry2 << endl;
         exit(-1);
     }
-    entry2_ = entry2;
 
     // check entry3
     if (entry3 != 'g' && entry3 != 'q') {
         cout << "Error: entry3 must be g or q. Got " << entry3 << endl;
         exit(-1);
     }
-    entry3_ = entry3;
 
     // check entry4
     if (entry4 != 'g' && entry4 != 'q') {
         cout << "Error: entry3 must be g or q. Got " << entry4 << endl;
         exit(-1);
     }
-    entry4_ = entry4;
 
     SetFunctions();
 }

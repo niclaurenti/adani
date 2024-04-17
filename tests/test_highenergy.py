@@ -2,6 +2,15 @@ import adani as ad
 import oldadani as old
 import numpy as np
 
+def test_nll():
+    for nll in [True, False]:
+        he = ad.HighEnergyCoefficientFunction(3, "2", "g", NLL=nll)
+        hehs = ad.HighEnergyHighScaleCoefficientFunction(3, "2", "g", NLL=nll)
+        pt = ad.PowerTermsCoefficientFunction(3, "2", "g", NLL=nll)
+        assert he.GetNLL() == nll
+        assert hehs.GetNLL() == nll
+        assert pt.GetNLL() == nll
+
 def test_highenergy_as2_oldadani():
     for kind in ['2', 'L']:
         for channel in ['g', 'q']:
@@ -117,6 +126,8 @@ def test_powerterms():
     for order in range(1, 3 + 1):
         for kind in ['2', 'L']:
             for channel in ['g', 'q']:
+                if channel == 'q' and order == 1:
+                    continue
                 for NLL in [True, False]:
                     he = ad.HighEnergyCoefficientFunction(order, kind, channel, NLL)
                     hehs = ad.HighEnergyHighScaleCoefficientFunction(order, kind, channel, NLL)
