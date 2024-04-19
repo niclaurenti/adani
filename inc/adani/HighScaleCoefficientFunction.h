@@ -24,9 +24,11 @@
 
 //==========================================================================================//
 //                      The notation used is the following:
+//
 //                      C^{(k)} = k-th order expansion in
-//                      terms of \alpha_s^{[nf]} D^{(k)} =
-//                      k-th order expansion in terms of
+//                      terms of \alpha_s^{[nf]}
+//
+//                      D^{(k)} = k-th order expansion in terms of
 //                      \alpha_s^{[nf+1]}
 //------------------------------------------------------------------------------------------//
 
