@@ -6,8 +6,7 @@
  *    Description:  Header file for the
  *                  Value.cc file.
  *
- *         Author: Non credo esista una persona che analizzi il calcio meglio di
- * me
+ *         Author: La fatica chiama e noi fedeli dobbiamo abbracciarla
  *
  *  In this file there is the class Value
  *
