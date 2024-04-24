@@ -41,7 +41,8 @@ class ExactCoefficientFunction : public CoefficientFunction {
         ExactCoefficientFunction(
             const int &order, const char &kind, const char &channel,
             const double &abserr = 1e-3, const double &relerr = 1e-3,
-            const int &dim = 1000, const bool &MCintegral = false,
+            const int &dim = 1000, const bool &analytical_PggxPgg = true,
+            const bool &MCintegral = false,
             const int &MCcalls = 25000
         );
         ~ExactCoefficientFunction() override;
@@ -84,6 +85,7 @@ class ExactCoefficientFunction : public CoefficientFunction {
         SplittingFunction *Pgg1_;
         SplittingFunction *Pqg0_;
         ConvolutedSplittingFunctions *Pgq0Pqg0_;
+        ConvolutedSplittingFunctions * Pgg0Pgg0_;
 
         Delta *delta_;
 

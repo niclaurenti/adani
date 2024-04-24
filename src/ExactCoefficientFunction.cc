@@ -15,7 +15,7 @@ using std::endl;
 
 ExactCoefficientFunction::ExactCoefficientFunction(
     const int &order, const char &kind, const char &channel,
-    const double &abserr, const double &relerr, const int &dim,
+    const double &abserr, const double &relerr, const int &dim, const bool &analytical_PggxPgg,
     const bool &MCintegral, const int &MCcalls
 )
     : CoefficientFunction(order, kind, channel) {
@@ -33,6 +33,7 @@ ExactCoefficientFunction::ExactCoefficientFunction(
     Pgg1_ = nullptr;
     Pqg0_ = nullptr;
     Pgq0Pqg0_ = nullptr;
+    Pgg0Pgg0_ = nullptr;
 
     delta_ = nullptr;
 
@@ -110,9 +111,13 @@ ExactCoefficientFunction::ExactCoefficientFunction(
             );
             convolutions_lmu1_.push_back(new Convolution(gluon_as2_, delta_));
 
-            convolutions_lmu2_.push_back(new DoubleConvolution(
-                gluon_as1_, Pgg0_, abserr, relerr, dim, MCintegral, MCcalls
-            ));
+            if (!analytical_PggxPgg) {
+                convolutions_lmu2_.push_back(new DoubleConvolution(
+                    gluon_as1_, Pgg0_, abserr, relerr, dim, MCintegral, MCcalls
+                ));
+            } else {
+                convolutions_lmu2_.push_back(new Convolution(gluon_as1_, Pgg0Pgg0_, abserr, relerr, dim));
+            }
             convolutions_lmu2_.push_back(
                 new Convolution(gluon_as1_, Pgq0Pqg0_, abserr, relerr, dim)
             );
