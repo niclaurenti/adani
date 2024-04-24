@@ -19,13 +19,13 @@ using std::vector;
 
 AbstractApproximate::AbstractApproximate(
     const int &order, const char &kind, const char &channel,
-    const double &abserr, const double &relerr, const int &dim,
+    const double &abserr, const double &relerr, const int &dim, const bool &analytical_PggxPgg,
     const bool &MCintegral, const int &MCcalls
 )
     : CoefficientFunction(order, kind, channel) {
 
     muterms_ = new ExactCoefficientFunction(
-        order, kind, channel, abserr, relerr, dim, MCintegral, MCcalls
+        order, kind, channel, abserr, relerr, dim, analytical_PggxPgg, MCintegral, MCcalls
     );
 }
 
@@ -34,6 +34,10 @@ AbstractApproximate::AbstractApproximate(
 //------------------------------------------------------------------------------------------//
 
 AbstractApproximate::~AbstractApproximate() { delete muterms_; }
+
+//==========================================================================================//
+//  AbstractApproximate: central value of the mu-independent terms
+//------------------------------------------------------------------------------------------//
 
 double AbstractApproximate::MuIndependentTerms(
     double x, double m2Q2, int nf
@@ -96,10 +100,10 @@ struct variation_parameters CL_var = { 0.2, 2. };
 ApproximateCoefficientFunction::ApproximateCoefficientFunction(
     const int &order, const char &kind, const char &channel, const bool &NLL,
     const string &highscale_version, const double &abserr, const double &relerr,
-    const int &dim, const bool &MCintegral, const int &MCcalls
+    const int &dim, const bool &analytical_PggxPgg, const bool &MCintegral, const int &MCcalls
 )
     : AbstractApproximate(
-          order, kind, channel, abserr, relerr, dim, MCintegral, MCcalls
+          order, kind, channel, abserr, relerr, dim, analytical_PggxPgg, MCintegral, MCcalls
       ) {
 
     threshold_ = new ThresholdCoefficientFunction(order, kind, channel);
@@ -262,11 +266,11 @@ struct klmv_params klmv_C2g3B_lowxi = { 0.8, 10.7, 0.055125, 2, 0.3825 };
 ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(
     const int &order, const char &kind, const char &channel,
     const string &highscale_version, const bool &lowxi, const double &abserr,
-    const double &relerr, const int &dim, const bool &MCintegral,
+    const double &relerr, const int &dim, const bool &analytical_PggxPgg, const bool &MCintegral,
     const int &MCcalls
 )
     : AbstractApproximate(
-          order, kind, channel, abserr, relerr, dim, MCintegral, MCcalls
+          order, kind, channel, abserr, relerr, dim, analytical_PggxPgg, MCintegral, MCcalls
       ) {
     if (GetOrder() == 1) {
         cout << "Error: KLMV approximation is not implemented at O(as)!"
