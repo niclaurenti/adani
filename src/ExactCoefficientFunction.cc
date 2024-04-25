@@ -73,7 +73,9 @@ ExactCoefficientFunction::ExactCoefficientFunction(
         Pgg1_ = new SplittingFunction(1, 'g', 'g');
         Pqg0_ = new SplittingFunction(0, 'q', 'g');
         Pgq0Pqg0_ = new ConvolutedSplittingFunctions(0, 'g', 'q', 0, 'q', 'g');
-        Pgg0Pgg0_ = new ConvolutedSplittingFunctions(0, 'g', 'g', 0, 'g', 'g');
+        if (double_int_method == "analytical")
+            Pgg0Pgg0_ =
+                new ConvolutedSplittingFunctions(0, 'g', 'g', 0, 'g', 'g');
     }
 
     if (GetOrder() == 2) {
