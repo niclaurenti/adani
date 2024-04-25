@@ -679,7 +679,7 @@ double ConvolutedSplittingFunctions::Pgq0_x_Pqg0(double x, int nf) const {
 }
 
 //==========================================================================================//
-//  Analytical convolution between the splitting functions Pgq0 and Pqg0
+//  Analytical convolution between the splitting functions Pgg0reg and Pgg0reg
 //------------------------------------------------------------------------------------------//
 
 double ConvolutedSplittingFunctions::Pgg0reg_x_Pgg0reg(double x) const {
@@ -703,7 +703,8 @@ double ConvolutedSplittingFunctions::Pgg0reg_x_Pgg0sing(double x) const {
 }
 
 //==========================================================================================//
-//  Analytical convolution between the splitting functions Pgg0reg and Pgg0sing
+//  Regular part of the analytical convolution between the splitting functions
+//  Pgg0sing and Pgg0sing
 //------------------------------------------------------------------------------------------//
 
 double ConvolutedSplittingFunctions::Pgg0sing_x_Pgg0sing_reg(double x) const {
@@ -712,7 +713,8 @@ double ConvolutedSplittingFunctions::Pgg0sing_x_Pgg0sing_reg(double x) const {
 }
 
 //==========================================================================================//
-//  Analytical convolution between the splitting functions Pgg0reg and Pgg0sing
+//  Singular part of the analytical convolution between the splitting functions
+//  Pgg0sing and Pgg0sing
 //------------------------------------------------------------------------------------------//
 
 double ConvolutedSplittingFunctions::Pgg0sing_x_Pgg0sing_sing(double x) const {
@@ -721,7 +723,8 @@ double ConvolutedSplittingFunctions::Pgg0sing_x_Pgg0sing_sing(double x) const {
 }
 
 //==========================================================================================//
-//  Analytical convolution between the splitting functions Pgg0reg and Pgg0sing
+//  Integral from 0 to x of the singular part of the analytical convolution
+//  between the splitting functions Pgg0sing and Pgg0sing
 //------------------------------------------------------------------------------------------//
 
 double ConvolutedSplittingFunctions::Pgg0sing_x_Pgg0sing_sing_integrated(
@@ -733,7 +736,8 @@ double ConvolutedSplittingFunctions::Pgg0sing_x_Pgg0sing_sing_integrated(
 }
 
 //==========================================================================================//
-//  Analytical convolution between the splitting functions Pgg0reg and Pgg0sing
+//  Local part of the analytical convolution between the splitting functions
+//  Pgg0sing and Pgg0sing
 //------------------------------------------------------------------------------------------//
 
 double ConvolutedSplittingFunctions::Pgg0sing_x_Pgg0sing_loc() const {
@@ -754,7 +758,7 @@ double ConvolutedSplittingFunctions::Pgg0_x_Pgg0_reg(double x, int nf) const {
 }
 
 //==========================================================================================//
-//  Regular part of the analytical convolution between the splitting functions
+//  Singular part of the analytical convolution between the splitting functions
 //  Pgg0 and Pgg0
 //------------------------------------------------------------------------------------------//
 
@@ -765,8 +769,8 @@ double ConvolutedSplittingFunctions::Pgg0_x_Pgg0_sing(double x, int nf) const {
 }
 
 //==========================================================================================//
-//  Regular part of the analytical convolution between the splitting functions
-//  Pgg0 and Pgg0
+//  Integral from 0 to x of the singular part of the analytical convolution
+//  between the splitting functions Pgg0 and Pgg0
 //------------------------------------------------------------------------------------------//
 
 double ConvolutedSplittingFunctions::Pgg0_x_Pgg0_sing_integrated(
@@ -778,7 +782,7 @@ double ConvolutedSplittingFunctions::Pgg0_x_Pgg0_sing_integrated(
 }
 
 //==========================================================================================//
-//  Regular part of the analytical convolution between the splitting functions
+//  Local part of the analytical convolution between the splitting functions
 //  Pgg0 and Pgg0
 //------------------------------------------------------------------------------------------//
 
