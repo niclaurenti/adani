@@ -151,10 +151,10 @@ class ConvolutedSplittingFunctions : public AbstractSplittingFunction {
 
         // Components of the Convoluted Splitting Function
         double Regular(double x, int nf) const override;
-        double Singular(double x, int nf) const override ;
-        double Local(int nf) const override ;
+        double Singular(double x, int nf) const override;
+        double Local(int nf) const override;
         // Integral from 0 to x of the Singular part
-        double SingularIntegrated(double x, int nf) const override ;
+        double SingularIntegrated(double x, int nf) const override;
 
         void SetFunctions();
 
@@ -179,7 +179,7 @@ class ConvolutedSplittingFunctions : public AbstractSplittingFunction {
         double (ConvolutedSplittingFunctions::*sing_int_)(double, int) const;
         double (ConvolutedSplittingFunctions::*loc_)(int) const;
 
-        SplittingFunction* Pgg0_ ;
+        SplittingFunction *Pgg0_;
 
         //==========================================================================================//
         //  Convolution between the splitting functions Pgg0/Pqq0
