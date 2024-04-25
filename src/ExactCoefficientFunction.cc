@@ -15,8 +15,8 @@ using std::endl;
 
 ExactCoefficientFunction::ExactCoefficientFunction(
     const int &order, const char &kind, const char &channel,
-    const double &abserr, const double &relerr, const int &dim, const bool &analytical_PggxPgg,
-    const bool &MCintegral, const int &MCcalls
+    const double &abserr, const double &relerr, const int &dim,
+    const string &double_int_method, const int &MCcalls
 )
     : CoefficientFunction(order, kind, channel) {
 
@@ -36,6 +36,16 @@ ExactCoefficientFunction::ExactCoefficientFunction(
     Pgg0Pgg0_ = nullptr;
 
     delta_ = nullptr;
+
+    // check double_int_method
+    if (double_int_method != "analytical"
+        && double_int_method != "double_numerical"
+        && double_int_method != "monte_carlo") {
+        cout << "Error in ExactCoefficientFunction: double_int_method must be "
+                "'analytical', 'double_numerical' or 'monte_carlo'! Got "
+             << double_int_method << endl;
+        exit(-1);
+    }
 
     if (GetOrder() == 2) {
         asy_ = new AsymptoticCoefficientFunction(order, kind, channel);
@@ -63,6 +73,7 @@ ExactCoefficientFunction::ExactCoefficientFunction(
         Pgg1_ = new SplittingFunction(1, 'g', 'g');
         Pqg0_ = new SplittingFunction(0, 'q', 'g');
         Pgq0Pqg0_ = new ConvolutedSplittingFunctions(0, 'g', 'q', 0, 'q', 'g');
+        Pgg0Pgg0_ = new ConvolutedSplittingFunctions(0, 'g', 'g', 0, 'g', 'g');
     }
 
     if (GetOrder() == 2) {
@@ -111,12 +122,18 @@ ExactCoefficientFunction::ExactCoefficientFunction(
             );
             convolutions_lmu1_.push_back(new Convolution(gluon_as2_, delta_));
 
-            if (!analytical_PggxPgg) {
+            if (double_int_method == "monte_carlo") {
                 convolutions_lmu2_.push_back(new DoubleConvolution(
-                    gluon_as1_, Pgg0_, abserr, relerr, dim, MCintegral, MCcalls
+                    gluon_as1_, Pgg0_, abserr, relerr, dim, true, MCcalls
+                ));
+            } else if (double_int_method == "double_numerical") {
+                convolutions_lmu2_.push_back(new DoubleConvolution(
+                    gluon_as1_, Pgg0_, abserr, relerr, dim, false, MCcalls
                 ));
             } else {
-                convolutions_lmu2_.push_back(new Convolution(gluon_as1_, Pgg0Pgg0_, abserr, relerr, dim));
+                convolutions_lmu2_.push_back(
+                    new Convolution(gluon_as1_, Pgg0Pgg0_, abserr, relerr, dim)
+                );
             }
             convolutions_lmu2_.push_back(
                 new Convolution(gluon_as1_, Pgq0Pqg0_, abserr, relerr, dim)
@@ -158,6 +175,7 @@ ExactCoefficientFunction::~ExactCoefficientFunction() {
     delete Pgg1_;
     delete Pqg0_;
     delete Pgq0Pqg0_;
+    delete Pgg0Pgg0_;
 
     delete delta_;
 

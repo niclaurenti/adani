@@ -231,7 +231,8 @@ ConvolutedSplittingFunctions::ConvolutedSplittingFunctions(
         exit(-1);
     }
 
-    if (order1_ == 0 && entry1_ == 'g' && entry2_ == 'g' && order2_ == 0 && entry3_ == 'g' && entry4_ == 'g') {
+    if (order1_ == 0 && entry1_ == 'g' && entry2_ == 'g' && order2_ == 0
+        && entry3_ == 'g' && entry4_ == 'g') {
         Pgg0_ = new SplittingFunction(0, 'g', 'g');
     } else {
         Pgg0_ = nullptr;
@@ -240,10 +241,7 @@ ConvolutedSplittingFunctions::ConvolutedSplittingFunctions(
     SetFunctions();
 }
 
-ConvolutedSplittingFunctions::~ConvolutedSplittingFunctions() {
-
-    delete Pgg0_;
-}
+ConvolutedSplittingFunctions::~ConvolutedSplittingFunctions() { delete Pgg0_; }
 
 //==========================================================================================//
 //  ConvolutedSplittingFunctions: regular part
@@ -265,7 +263,8 @@ double ConvolutedSplittingFunctions::Singular(double x, int nf) const {
 //  ConvolutedSplittingFunctions: integral from 0 to x of the singular part
 //------------------------------------------------------------------------------------------//
 
-double ConvolutedSplittingFunctions::SingularIntegrated(double x, int nf) const {
+double
+    ConvolutedSplittingFunctions::SingularIntegrated(double x, int nf) const {
     return GetMultFact() * (this->*sing_int_)(x, nf);
 }
 
@@ -332,22 +331,23 @@ void ConvolutedSplittingFunctions::SetFunctions() {
             sing_int_ = &ConvolutedSplittingFunctions::ZeroFunction_x_nf;
             loc_ = &ConvolutedSplittingFunctions::ZeroFunction_nf;
         } else if (entry1_ == 'g' && entry2_ == 'g' && entry3_ == 'g'
-                 && entry4_ == 'q') {
+                   && entry4_ == 'q') {
             reg_ = &ConvolutedSplittingFunctions::Pgg0_x_Pgq0;
             sing_ = &ConvolutedSplittingFunctions::ZeroFunction_x_nf;
             sing_int_ = &ConvolutedSplittingFunctions::ZeroFunction_x_nf;
             loc_ = &ConvolutedSplittingFunctions::ZeroFunction_nf;
         } else if (entry1_ == 'q' && entry2_ == 'q' && entry3_ == 'g'
-                 && entry4_ == 'q') {
+                   && entry4_ == 'q') {
             reg_ = &ConvolutedSplittingFunctions::Pqq0_x_Pgq0;
             sing_ = &ConvolutedSplittingFunctions::ZeroFunction_x_nf;
             sing_int_ = &ConvolutedSplittingFunctions::ZeroFunction_x_nf;
             loc_ = &ConvolutedSplittingFunctions::ZeroFunction_nf;
         } else if (entry1_ == 'g' && entry2_ == 'g' && entry3_ == 'g'
-                 && entry4_ == 'g') {
+                   && entry4_ == 'g') {
             reg_ = &ConvolutedSplittingFunctions::Pgg0_x_Pgg0_reg;
             sing_ = &ConvolutedSplittingFunctions::Pgg0_x_Pgg0_sing;
-            sing_int_ = &ConvolutedSplittingFunctions::Pgg0_x_Pgg0_sing_integrated;
+            sing_int_ =
+                &ConvolutedSplittingFunctions::Pgg0_x_Pgg0_sing_integrated;
             loc_ = &ConvolutedSplittingFunctions::Pgg0_x_Pgg0_loc;
         } else {
             cout << "Error: P" << entry1_ << entry2_ << order1_ << " x P"
@@ -684,7 +684,10 @@ double ConvolutedSplittingFunctions::Pgq0_x_Pqg0(double x, int nf) const {
 
 double ConvolutedSplittingFunctions::Pgg0reg_x_Pgg0reg(double x) const {
 
-    return 16 * CA * CA *((-1. + x) * (11. + x * (5. + 2. * x)) - 3. * (1. + x * (4. + x + x * x)) * log(x)) / (3. * x);
+    return 16 * CA * CA
+           * ((-1. + x) * (11. + x * (5. + 2. * x))
+              - 3. * (1. + x * (4. + x + x * x)) * log(x))
+           / (3. * x);
 }
 
 //==========================================================================================//
@@ -693,7 +696,10 @@ double ConvolutedSplittingFunctions::Pgg0reg_x_Pgg0reg(double x) const {
 
 double ConvolutedSplittingFunctions::Pgg0reg_x_Pgg0sing(double x) const {
 
-    return 16. * CA * CA * (0.5 * (1. - 4. * x + 3. * x * x) + (-2. + 1. / x + x - x * x) * log(1. - x) + (2. - x + x * x) * log(x));
+    return 16. * CA * CA
+           * (0.5 * (1. - 4. * x + 3. * x * x)
+              + (-2. + 1. / x + x - x * x) * log(1. - x)
+              + (2. - x + x * x) * log(x));
 }
 
 //==========================================================================================//
@@ -702,7 +708,7 @@ double ConvolutedSplittingFunctions::Pgg0reg_x_Pgg0sing(double x) const {
 
 double ConvolutedSplittingFunctions::Pgg0sing_x_Pgg0sing_reg(double x) const {
 
-    return - 16 * CA * CA * log(x) / (1. - x);
+    return -16 * CA * CA * log(x) / (1. - x);
 }
 
 //==========================================================================================//
@@ -718,10 +724,12 @@ double ConvolutedSplittingFunctions::Pgg0sing_x_Pgg0sing_sing(double x) const {
 //  Analytical convolution between the splitting functions Pgg0reg and Pgg0sing
 //------------------------------------------------------------------------------------------//
 
-double ConvolutedSplittingFunctions::Pgg0sing_x_Pgg0sing_sing_integrated(double x) const {
+double ConvolutedSplittingFunctions::Pgg0sing_x_Pgg0sing_sing_integrated(
+    double x
+) const {
 
     double L1 = log(1. - x);
-    return - 16. * CA * CA * L1 * L1 ;
+    return -16. * CA * CA * L1 * L1;
 }
 
 //==========================================================================================//
@@ -730,46 +738,52 @@ double ConvolutedSplittingFunctions::Pgg0sing_x_Pgg0sing_sing_integrated(double 
 
 double ConvolutedSplittingFunctions::Pgg0sing_x_Pgg0sing_loc() const {
 
-    return - 16 * CA * CA * zeta2;
+    return -16 * CA * CA * zeta2;
 }
 
 //==========================================================================================//
-//  Regular part of the analytical convolution between the splitting functions Pgg0 and Pgg0
+//  Regular part of the analytical convolution between the splitting functions
+//  Pgg0 and Pgg0
 //------------------------------------------------------------------------------------------//
 
 double ConvolutedSplittingFunctions::Pgg0_x_Pgg0_reg(double x, int nf) const {
 
-    return Pgg0reg_x_Pgg0reg(x)
-           + 2 * Pgg0reg_x_Pgg0sing(x)
-           + 2 * Pgg0_ -> Regular(x, nf) * Pgg0_ -> Local(nf)
+    return Pgg0reg_x_Pgg0reg(x) + 2 * Pgg0reg_x_Pgg0sing(x)
+           + 2 * Pgg0_->Regular(x, nf) * Pgg0_->Local(nf)
            + Pgg0sing_x_Pgg0sing_reg(x);
 }
 
 //==========================================================================================//
-//  Regular part of the analytical convolution between the splitting functions Pgg0 and Pgg0
+//  Regular part of the analytical convolution between the splitting functions
+//  Pgg0 and Pgg0
 //------------------------------------------------------------------------------------------//
 
 double ConvolutedSplittingFunctions::Pgg0_x_Pgg0_sing(double x, int nf) const {
 
     return Pgg0sing_x_Pgg0sing_sing(x)
-           + 2 * Pgg0_ -> Singular(x, nf) * Pgg0_ -> Local(nf);
+           + 2 * Pgg0_->Singular(x, nf) * Pgg0_->Local(nf);
 }
 
 //==========================================================================================//
-//  Regular part of the analytical convolution between the splitting functions Pgg0 and Pgg0
+//  Regular part of the analytical convolution between the splitting functions
+//  Pgg0 and Pgg0
 //------------------------------------------------------------------------------------------//
 
-double ConvolutedSplittingFunctions::Pgg0_x_Pgg0_sing_integrated(double x, int nf) const {
+double ConvolutedSplittingFunctions::Pgg0_x_Pgg0_sing_integrated(
+    double x, int nf
+) const {
 
     return Pgg0sing_x_Pgg0sing_sing_integrated(x)
-           + 2 * Pgg0_ -> SingularIntegrated(x, nf) * Pgg0_ -> Local(nf);
+           + 2 * Pgg0_->SingularIntegrated(x, nf) * Pgg0_->Local(nf);
 }
 
 //==========================================================================================//
-//  Regular part of the analytical convolution between the splitting functions Pgg0 and Pgg0
+//  Regular part of the analytical convolution between the splitting functions
+//  Pgg0 and Pgg0
 //------------------------------------------------------------------------------------------//
 
 double ConvolutedSplittingFunctions::Pgg0_x_Pgg0_loc(int nf) const {
 
-    return Pgg0sing_x_Pgg0sing_loc() + Pgg0_ -> Local(nf);
+    double loc = Pgg0_->Local(nf);
+    return Pgg0sing_x_Pgg0sing_loc() + loc * loc;
 }
