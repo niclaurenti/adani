@@ -53,7 +53,10 @@ In both cases remember to run
 export PATH=$PATH:/your/installation/path/bin
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/your/installation/path/lib
 ```
-For MacOS users: add the flags ```-std=c++17 -stdlib=libc++```.
+For MacOS users: add the flags ```-std=c++17 -stdlib=libc++``` and run also
+```bash
+export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:/your/installation/path/lib
+```
 
 ## Import the Python module
 
