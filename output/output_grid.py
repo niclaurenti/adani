@@ -31,7 +31,7 @@ appr = adani.ApproximateCoefficientFunction(
     1e-3,
     1e-3,
     1000,
-    False,
+    "analytical",
     25000,
 )
 

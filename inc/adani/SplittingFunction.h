@@ -140,7 +140,7 @@ class ConvolutedSplittingFunctions : public AbstractSplittingFunction {
             const int &order1, const char &entry1, const char &entry2,
             const int &order2, const char &entry3, const char &entry4
         );
-        ~ConvolutedSplittingFunctions() override{};
+        ~ConvolutedSplittingFunctions() override;
 
         // overloading operators
         ConvolutedSplittingFunctions operator*(const double &rhs) const;
@@ -151,12 +151,10 @@ class ConvolutedSplittingFunctions : public AbstractSplittingFunction {
 
         // Components of the Convoluted Splitting Function
         double Regular(double x, int nf) const override;
-        double Singular(double /*x*/, int /*nf*/) const override { return 0.; };
-        double Local(int /*nf*/) const override { return 0.; };
+        double Singular(double x, int nf) const override;
+        double Local(int nf) const override;
         // Integral from 0 to x of the Singular part
-        double SingularIntegrated(double /*x*/, int /*nf*/) const override {
-            return 0.;
-        };
+        double SingularIntegrated(double x, int nf) const override;
 
         void SetFunctions();
 
@@ -177,6 +175,11 @@ class ConvolutedSplittingFunctions : public AbstractSplittingFunction {
         const char entry4_;
 
         double (ConvolutedSplittingFunctions::*reg_)(double, int) const;
+        double (ConvolutedSplittingFunctions::*sing_)(double, int) const;
+        double (ConvolutedSplittingFunctions::*sing_int_)(double, int) const;
+        double (ConvolutedSplittingFunctions::*loc_)(int) const;
+
+        SplittingFunction *Pgg0_;
 
         //==========================================================================================//
         //  Convolution between the splitting functions Pgg0/Pqq0
@@ -191,6 +194,22 @@ class ConvolutedSplittingFunctions : public AbstractSplittingFunction {
         //------------------------------------------------------------------------------------------//
 
         double Pgq0_x_Pqg0(double x, int nf) const;
+
+        //==========================================================================================//
+        //  Convolution between the splitting functions Pgg0 and Pgg0
+        //------------------------------------------------------------------------------------------//
+
+        double Pgg0reg_x_Pgg0reg(double x) const;
+        double Pgg0reg_x_Pgg0sing(double x) const;
+        double Pgg0sing_x_Pgg0sing_reg(double x) const;
+        double Pgg0sing_x_Pgg0sing_sing(double x) const;
+        double Pgg0sing_x_Pgg0sing_sing_integrated(double x) const;
+        double Pgg0sing_x_Pgg0sing_loc() const;
+
+        double Pgg0_x_Pgg0_reg(double x, int nf) const;
+        double Pgg0_x_Pgg0_sing(double x, int nf) const;
+        double Pgg0_x_Pgg0_sing_integrated(double x, int nf) const;
+        double Pgg0_x_Pgg0_loc(int nf) const;
 
         //==========================================================================================//
         //  Function needed to return a zero function
