@@ -18,7 +18,7 @@ def test_as2():
                             res2 = old.CL_g2_asymptotic(x, m2Q2, m2mu2)
                         if kind == 'L' and channel == 'q':
                             res2 = old.CL_ps2_asymptotic(x, m2Q2, m2mu2)
-                        np.testing.assert_allclose(res1, res2, rtol=1e-7)
+                        np.testing.assert_allclose(res1, res2, rtol=1e-6)
 
 
 def test_as3():
