@@ -451,9 +451,6 @@ double MatchingCondition::a_Qq_PS_30(double x, int v) const {
         const double tildeH0m1111 = tildeHr5[235];
         const double tildeH01111 = tildeHr5[241];
 
-        double Li_412 = 0.5174790617; //=Li_4(1/2)=H_{0,0,0,1}(1/2)
-        double Li_512 = 0.5084005792; //=Li_5(1/2)=H_{0,0,0,0,1}(1/2)
-
         delete[] tildeHr1;
         delete[] tildeHr2;
         delete[] tildeHr3;

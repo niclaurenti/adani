@@ -486,7 +486,7 @@ double SplittingFunction::Pgg0sing(double x, int /*nf*/) const {
 //------------------------------------------------------------------------------------------//
 
 double SplittingFunction::Pgg0sing_integrated(double x, int /*nf*/) const {
-    return -Pgg0sing(0., 0) * log(1. - x);
+    return -4 * CA * log(1. - x);
 }
 
 //==========================================================================================//
@@ -512,7 +512,7 @@ double SplittingFunction::Pqq0loc(int /*nf*/) const { return CF * 3.; }
 //------------------------------------------------------------------------------------------//
 
 double SplittingFunction::Pqq0sing(double x, int /*nf*/) const {
-    return CF * 2. * 2. / (1. - x);
+    return CF * 4. / (1. - x);
 }
 
 //==========================================================================================//
@@ -521,7 +521,7 @@ double SplittingFunction::Pqq0sing(double x, int /*nf*/) const {
 //------------------------------------------------------------------------------------------//
 
 double SplittingFunction::Pqq0sing_integrated(double x, int /*nf*/) const {
-    return -Pqq0sing(0., 0) * log(1. - x);
+    return -4. * CF * log(1. - x);
 }
 
 //==========================================================================================//
@@ -622,12 +622,7 @@ double SplittingFunction::Pgg1loc(int nf) const {
 
 double SplittingFunction::Pgg1sing(double x, int nf) const {
 
-    double g1 = 67. / 18 - zeta2;
-
-    double tmp_CAnf = -10. / 9 * pggsing(x);
-    double tmp_CACA = 2. * g1 * pggsing(x);
-
-    return 4. * (tmp_CAnf * CA * nf + tmp_CACA * CA * CA);
+    return 4. * (-10. / 9 * CA * nf + 2. * (67. / 18 - zeta2) * CA * CA) * pggsing(x);
 }
 
 //==========================================================================================//
@@ -639,7 +634,7 @@ double SplittingFunction::Pgg1sing(double x, int nf) const {
 
 double SplittingFunction::Pgg1sing_integrated(double x, int nf) const {
 
-    return -Pgg1sing(0., nf) * log(1. - x);
+    return - 4. * (-10. / 9 * CA * nf + 2. * (67. / 18 - zeta2) * CA * CA) * log(1. - x);
 }
 
 //==========================================================================================//
