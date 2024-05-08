@@ -617,8 +617,8 @@ double SplittingFunction::Pgg1reg(double x, int nf) const {
 
 double SplittingFunction::Pgg1loc(int nf) const {
 
-    return -10.666666666666666 * CA * nf - 8. * CF * nf
-           + CA * CA * (42.666666666666664 + 48. * zeta3);
+    return -2.6666666666666665 * CA * nf - 2. * CF * nf
+           + CA * CA * (10.666666666666666 + 12. * zeta3);
 }
 
 //==========================================================================================//
