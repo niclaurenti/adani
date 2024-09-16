@@ -282,12 +282,12 @@ double ExactCoefficientFunction::C2_g1(double x, double m2Q2, int /*nf*/)
 
     double beta = sqrt(1. - 4. * m2Q2 * x / (1 - x));
     double x2 = x * x;
-    double m4Q4 = m2Q2 * m2Q2;
+    // double m4Q4 = m2Q2 * m2Q2;
     double L = log((1. + beta) / (1. - beta));
 
     return 4. * TR
            * (L
-                  * (-8. * x2 * m4Q4 - 4. * x * m2Q2 * (3. * x - 1) + 2. * x2
+                  * (-8. * x2 * m2Q2 * m2Q2 - 4. * x * m2Q2 * (3. * x - 1) + 2. * x2
                      - 2. * x + 1.)
               + beta * (4. * m2Q2 * x * (x - 1.) - (8. * x2 - 8. * x + 1.)));
 }
@@ -302,10 +302,9 @@ double
     ExactCoefficientFunction::CL_g1(double x, double m2Q2, int /*nf*/) const {
 
     double beta = sqrt(1. - 4. * m2Q2 * x / (1. - x));
-    double x2 = x * x;
     double L = log((1. + beta) / (1. - beta));
 
-    return 16. * TR * (x * (1. - x) * beta - 2. * x2 * m2Q2 * L);
+    return 16. * TR * (x * (1. - x) * beta - 2. * x * x * m2Q2 * L);
 }
 
 //==========================================================================================//

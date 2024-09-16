@@ -428,7 +428,7 @@ double SplittingFunction::pggreg(double x) const {
 //  Eq. (4.11) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
 
-double SplittingFunction::pggsing(double x) const { return 1. / (1. - x); }
+double SplittingFunction::pggsing(double x) const { return 4. / (1. - x); }
 
 //==========================================================================================//
 //  Gluon-quark splitting functions O(as)
@@ -467,7 +467,8 @@ double SplittingFunction::Pgg0reg(double x, int /*nf*/) const {
 //------------------------------------------------------------------------------------------//
 
 double SplittingFunction::Pgg0loc(int nf) const {
-    return 11. / 3 * CA - 2. / 3 * nf;
+    // return 11. / 3 * CA - 2. / 3 * nf;
+    return 3.6666666666666665 * CA - 0.6666666666666666 * nf;
 }
 
 //==========================================================================================//
@@ -477,7 +478,7 @@ double SplittingFunction::Pgg0loc(int nf) const {
 //------------------------------------------------------------------------------------------//
 
 double SplittingFunction::Pgg0sing(double x, int /*nf*/) const {
-    return 4. * CA * pggsing(x);
+    return CA * pggsing(x);
 }
 
 //==========================================================================================//
@@ -486,7 +487,7 @@ double SplittingFunction::Pgg0sing(double x, int /*nf*/) const {
 //------------------------------------------------------------------------------------------//
 
 double SplittingFunction::Pgg0sing_integrated(double x, int /*nf*/) const {
-    return -Pgg0sing(0., 0) * log(1. - x);
+    return -4 * CA * log(1. - x);
 }
 
 //==========================================================================================//
@@ -512,7 +513,7 @@ double SplittingFunction::Pqq0loc(int /*nf*/) const { return CF * 3.; }
 //------------------------------------------------------------------------------------------//
 
 double SplittingFunction::Pqq0sing(double x, int /*nf*/) const {
-    return CF * 2. * 2. / (1. - x);
+    return CF * 4. / (1. - x);
 }
 
 //==========================================================================================//
@@ -521,7 +522,7 @@ double SplittingFunction::Pqq0sing(double x, int /*nf*/) const {
 //------------------------------------------------------------------------------------------//
 
 double SplittingFunction::Pqq0sing_integrated(double x, int /*nf*/) const {
-    return -Pqq0sing(0., 0) * log(1. - x);
+    return -4. * CF * log(1. - x);
 }
 
 //==========================================================================================//
@@ -541,22 +542,31 @@ double SplittingFunction::Pgq1(double x, int nf) const {
     double H01 = H_01(x);
     double H11 = H_11(x);
 
-    double tmp_CACF =
-        zeta2 * 16. + 76. / 9 + 4. / x + 148. / 9 * x + 176. / 9 * x * x
-        + Hm10 * (+16. + 16. / x + 8. * x)
-        + H0 * (-48. - 20. * x - 32. / 3 * x * x) + H00 * (+16. + 8. * x)
-        + H1 * (+88. / 3 - 88. / 3 / x - 68. / 3 * x)
-        + H10 * (-16. + 16. / x + 8. * x) + H11 * (-16. + 16. / x + 8. * x)
-        + H01 * (-16. + 16. / x + 8. * x);
-
-    double tmp_CFnf = +80. / 9 - 80. / 9 / x - 64. / 9 * x
-                      + H1 * (-16. / 3 + 16. / 3 / x + 8. / 3 * x);
-
-    double tmp_CFCF = -10. - 14. * x + H0 * (+8. + 14. * x)
-                      + H00 * (-8. + 4. * x) + H1 * (-24. + 24. / x + 20. * x)
-                      + H11 * (+16. - 16. / x - 8. * x);
-
-    return CA * CF * tmp_CACF + CF * nf * tmp_CFnf + CF * CF * tmp_CFCF;
+    return CF * nf
+               * (8.88888888888889 - 8.88888888888889 / x
+                  - 7.111111111111111 * x
+                  + H1
+                        * (-5.333333333333333 + 5.333333333333333 / x
+                           + 2.6666666666666665 * x))
+           + CF * CF
+                 * (-10. - 24. * H1 + 16. * H11 + (24. * H1 - 16. * H11) / x
+                    - 14. * x + 20. * H1 * x - 8. * H11 * x
+                    + H00 * (-8. + 4. * x) + H0 * (8. + 14. * x))
+           + (CA * CF
+              * (4. - 29.333333333333332 * H1 + 16. * H10 + 16. * H11
+                 + 16. * Hm10
+                 + (8.444444444444445 - 47.99999999999999 * H0 + 16. * H00) * x
+                 + H01 * (16. + x * (-16. + 8. * x))
+                 + x
+                       * (-16. * H10 - 16. * H11 + 16. * Hm10
+                          + H1 * (29.333333333333332 - 22.666666666666664 * x)
+                          + (16.444444444444443 - 20. * H0 + 8. * H00) * x
+                          + x
+                                * (8. * H10 + 8. * H11 + 8. * Hm10
+                                   + 19.555555555555554 * x
+                                   - 10.666666666666666 * H0 * x)
+                          + 16. * zeta2)))
+                 / x;
 }
 
 //==========================================================================================//
@@ -576,27 +586,27 @@ double SplittingFunction::Pgg1reg(double x, int nf) const {
     double Hm10 = H_m10(x);
     double H01 = H_01(x);
 
-    double gx = (67. / 18 - zeta2 + H00 + 2. * H10 + 2 * H01);
-    double g1 = 67. / 18 - zeta2;
-
-    double tmp_CAnf = 116. / 9 - 92. / 9 / x - 76. / 9 * x + 92. / 9 * x2
-                      + H0 * (-8. / 3 - 8. / 3 * x);
-
-    double tmp_CACA =
-        zeta2 * (32. - 8. / (1. + x) + 16. * x2) - 50. / 9 - 218. / 9 * x
-        + Hm10 * (+32. - 16. / (1. + x) + 16. / x + 16. * x + 16. * x2)
-        + H0 * (-100. / 3 + 44. / 3 * x - 176. / 3 * x2)
-        + H00 * (8. / (1. + x) + 32. * x - 16. * x2)
-        + H10 * (-32. + 16. / x + 16. * x - 16. * x2)
-        + H01 * (-32. + 16. / x + 16. * x - 16. * x2)
-        + 8. * (gx - g1) * pggsing(x);
-    // the last term comes from expanding g(z)[f(z)]_+ = g(1)[f(z)]_+ +
-    // (g(z)-g(1))f(z) where (g(z)-g(1))f(z) is regular
-
-    double tmp_CFnf = -32. + 8. / 3 * 1. / x + 16. * x + 40. / 3 * x2
-                      + H0 * (-12. - 20. * x) + H00 * (-8. - 8. * x);
-
-    return tmp_CAnf * CA * nf + tmp_CACA * CA * CA + tmp_CFnf * CF * nf;
+    return CA * nf
+               * (12.888888888888888
+                  + H0 * (-2.6666666666666665 - 2.6666666666666665 * x)
+                  - 10.222222222222221 / x - 8.444444444444445 * x
+                  + 10.222222222222221 * x2)
+           + CF * nf
+                 * (-32. + H0 * (-12. - 20. * x) + H00 * (-8. - 8. * x)
+                    + 2.6666666666666665 / x + 16. * x
+                    + 13.333333333333332 * x2)
+           + CA * CA
+                 * (-5.555555555555555 - 33.33333333333333 * H0
+                    + 2. * (H00 + 2 * H01 + 2. * H10) * pggsing(x)
+                    - 24.22222222222222 * x
+                    + H0 * (14.666666666666666 - 58.666666666666664 * x) * x
+                    + H00 * (32. - 16. * x) * x + (8. * H00) / (1. + x)
+                    + H01 * (-32. + 16. / x + 16. * x - 16. * x2)
+                    + H10 * (-32. + 16. / x + 16. * x - 16. * x2)
+                    + (16. * Hm10 * (1. + x * (1. + 1. * x))
+                       * (1. + x * (1. + 1. * x)))
+                          / (x * (1. + x))
+                    + (32. + 16. * x2 - 8. / (1. + x)) * zeta2);
 }
 
 //==========================================================================================//
@@ -607,11 +617,8 @@ double SplittingFunction::Pgg1reg(double x, int nf) const {
 
 double SplittingFunction::Pgg1loc(int nf) const {
 
-    double tmp_CAnf = -2. / 3;
-    double tmp_CACA = 8. / 3 + 3. * zeta3;
-    double tmp_CFnf = -1. / 2;
-
-    return 4. * (tmp_CAnf * CA * nf + tmp_CACA * CA * CA + tmp_CFnf * CF * nf);
+    return -2.6666666666666665 * CA * nf - 2. * CF * nf
+           + CA * CA * (10.666666666666666 + 12. * zeta3);
 }
 
 //==========================================================================================//
@@ -622,12 +629,9 @@ double SplittingFunction::Pgg1loc(int nf) const {
 
 double SplittingFunction::Pgg1sing(double x, int nf) const {
 
-    double g1 = 67. / 18 - zeta2;
-
-    double tmp_CAnf = -10. / 9 * pggsing(x);
-    double tmp_CACA = 2. * g1 * pggsing(x);
-
-    return 4. * (tmp_CAnf * CA * nf + tmp_CACA * CA * CA);
+    return (-1.1111111111111112 * CA * nf
+            + CA * CA * (7.444444444444444 - 2. * zeta2))
+           * pggsing(x);
 }
 
 //==========================================================================================//
@@ -639,7 +643,9 @@ double SplittingFunction::Pgg1sing(double x, int nf) const {
 
 double SplittingFunction::Pgg1sing_integrated(double x, int nf) const {
 
-    return -Pgg1sing(0., nf) * log(1. - x);
+    return -(-4.444444444444445 * CA * nf
+             + CA * CA * (29.777777777777775 - 8. * zeta2))
+           * log(1. - x);
 }
 
 //==========================================================================================//
