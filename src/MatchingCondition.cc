@@ -9,6 +9,15 @@ using std::cout;
 using std::endl;
 
 //==========================================================================================//
+//  Numerical values of the exact aQg30 needed for the interpolation
+//------------------------------------------------------------------------------------------//
+
+// clang-format off
+const double aQg30_X[] = { 1e-4, 1e-3, 1e-2, 0.1, 0.2, 0.3, 0.4, 0.5,  0.6,  0.7,  0.8, 0.9, 1.0 };
+const double aQg30_VALUES[] = { 0.3, 0.4, 0.45, 0.5, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1,  0.5, 0.1, 0.0 };
+// clang-format on
+
+//==========================================================================================//
 //  MatchingCondition: constructor
 //------------------------------------------------------------------------------------------//
 
@@ -45,17 +54,44 @@ MatchingCondition::MatchingCondition(
         exit(-1);
     }
 
-    if (entry2 == 'g' && version == "exact") {
-        cout << "Error: aQg channel doesn't have 'exact' version!" << endl;
-        exit(-1);
-    }
-
     if (entry2 == 'q' && (version == "abmp" || version == "gm")) {
         cout << "Error: aQq channel doesn't have 'abmp' or 'gm' "
                 "version!"
              << endl;
         exit(-1);
     }
+
+    acc_ = nullptr;
+    spline_ = nullptr;
+
+    if (entry2 == 'g' && version == "exact") {
+
+        int dimX = sizeof(aQg30_X) / sizeof(aQg30_X[0]);
+        int dim = sizeof(aQg30_VALUES) / sizeof(aQg30_VALUES[0]);
+
+        if (dim != dimX) {
+            cout
+                << "Error: dimensions of aQg30_X and aQg30_VALUES do not match!"
+                << endl;
+            cout << "length of aQg30_X: " << dimX << endl;
+            cout << "length of aQg30_VALUES: " << dim << endl;
+            exit(-1);
+        }
+
+        acc_ = gsl_interp_accel_alloc();
+        spline_ = gsl_spline_alloc(gsl_interp_cspline, dim);
+
+        gsl_spline_init(spline_, aQg30_X, aQg30_VALUES, dim);
+    }
+}
+
+//==========================================================================================//
+//  MatchingCondition: destructor
+//------------------------------------------------------------------------------------------//
+
+MatchingCondition::~MatchingCondition() {
+    gsl_spline_free(spline_);
+    gsl_interp_accel_free(acc_);
 }
 
 //==========================================================================================//
@@ -256,12 +292,13 @@ vector<double> MatchingCondition::NotOrdered(double x) const {
 //  Approximation of the nf-independent part of the mu-independent part of the
 //  unrenormalized matching condition Qg at O(as^3).
 //
-//  v = 0 : exact result
+//  v = 0 : exact result from Ref. [arXiv:2403.00513]
 //  v = 1 : Eq. (3.49) of Ref. [arXiv:1205.5727]
 //  v = -1 : Eq. (16) Ref. of [arXiv:1701.05838]
 //  v = -12 : Eq. (3.50) of Ref. [arXiv:1205.5727]
 //  v = 2 : approximation from Giacomo Magni, based on the results of
 //  [arXiv:2403.00513]
+//  v = 3 : small x limit, Eq. (4.4) from Ref. [arXiv:2403.00513]
 //------------------------------------------------------------------------------------------//
 
 double MatchingCondition::a_Qg_30(double x, int v) const {
@@ -276,8 +313,10 @@ double MatchingCondition::a_Qg_30(double x, int v) const {
     double L13 = L12 * L1;
 
     if (v == 0) {
-        cout << "a_Qg_30 exact is not known/implemented yet!" << endl;
-        exit(-1);
+        if (x < 1e-4)
+            return a_Qg_30(x, 3);
+        else
+            return gsl_spline_eval(spline_, x, acc_);
     } else if (v == 1) {
         return (
             354.1002 * L13 + 479.3838 * L12 - 7856.784 * (2. - x)
@@ -307,6 +346,15 @@ double MatchingCondition::a_Qg_30(double x, int v) const {
                + 10739.21741 * L + 1548.8916669999999 * L / x
                - 7861.809052567688 * x * L - 720.0483828 * L2 + 514.0912722 * L3
                - 21.75925926 * L4 + 4.844444444 * L5;
+    } else if (v == 3) {
+        double L = log(x);
+        double L2 = L * L;
+        double L3 = L2 * L;
+        double L4 = L3 * L;
+        double L5 = L4 * L;
+        return (1548.891667 * L + 8956.649545) / x + 4.844444444 * L5
+               - 21.75925926 * L4 + 514.0912722 * L3 - 720.0483828 * L2
+               + 10739.21741 * L;
     } else {
         cout << "Error in MatchingCondition::a_Qg_30: Choose either v=0, v=1, "
                 "v=-1, v=-12 or v=2"

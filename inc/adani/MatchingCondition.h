@@ -19,6 +19,8 @@
 
 #include "CoefficientFunction.h"
 
+#include <gsl/gsl_errno.h>
+#include <gsl/gsl_spline.h>
 #include <string>
 
 using std::string;
@@ -33,7 +35,7 @@ class MatchingCondition {
             const int &order, const char &entry1, const char &entry2,
             const string &version
         );
-        ~MatchingCondition(){};
+        ~MatchingCondition();
 
         int GetOrder() const { return order_; };
         char GetEntry1() const { return entry1_; };
@@ -48,6 +50,9 @@ class MatchingCondition {
         const char entry1_;
         const char entry2_;
         const string version_;
+
+        gsl_interp_accel *acc_;
+        gsl_spline *spline_;
 
         //==========================================================================================//
         //  Matching conditions O(as)
