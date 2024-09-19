@@ -13,6 +13,8 @@ using std::endl;
 //------------------------------------------------------------------------------------------//
 
 // clang-format off
+// FAKE NUMBERS
+// WAITING FOR REAL ONES
 const double aQg30_X[] = { 1e-4, 1e-3, 1e-2, 0.1, 0.2, 0.3, 0.4, 0.5,  0.6,  0.7,  0.8, 0.9, 1.0 };
 const double aQg30_VALUES[] = { 0.3, 0.4, 0.45, 0.5, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1,  0.5, 0.1, 0.0 };
 // clang-format on
