@@ -357,7 +357,7 @@ double MatchingCondition::a_Qg_30(double x, int v) const {
                + 10739.21741 * L;
     } else {
         cout << "Error in MatchingCondition::a_Qg_30: Choose either v=0, v=1, "
-                "v=-1, v=-12 or v=2"
+                "v=-1, v=-12, v=2 or v=3"
              << endl;
         exit(-1);
     }
