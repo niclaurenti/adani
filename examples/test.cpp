@@ -19,10 +19,10 @@ int main() {
     int nf = 4;
 
     ApproximateCoefficientFunction F2g(
-        3, '2', 'g', true, "abmp", 1e-3, 1e-3, 1000, "analytical", 25000
+        3, '2', 'g', true, "exact", 1e-3, 1e-3, 1000, "analytical", 25000
     );
     ApproximateCoefficientFunction FLg(
-        3, 'L', 'g', true, "abmp", 1e-3, 1e-3, 1000, "analytical", 25000
+        3, 'L', 'g', true, "exact", 1e-3, 1e-3, 1000, "analytical", 25000
     );
     ApproximateCoefficientFunction F2q(
         3, '2', 'q', true, "exact", 1e-3, 1e-3, 1000

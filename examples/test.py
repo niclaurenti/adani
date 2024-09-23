@@ -4,8 +4,8 @@ import numpy as np
 nf = 4
 m = 4.92
 
-F2g = ad.ApproximateCoefficientFunction(3, '2', 'g', True, "abmp", 1e-3, 1e-3, 1000, "analytical", 25000)
-FLg = ad.ApproximateCoefficientFunction(3, 'L', 'g', True, "abmp", 1e-3, 1e-3, 1000, "analytical", 25000)
+F2g = ad.ApproximateCoefficientFunction(3, '2', 'g', True, "exact", 1e-3, 1e-3, 1000, "analytical", 25000)
+FLg = ad.ApproximateCoefficientFunction(3, 'L', 'g', True, "exact", 1e-3, 1e-3, 1000, "analytical", 25000)
 F2q = ad.ApproximateCoefficientFunction(3, '2', 'q', True, "exact", 1e-3, 1e-3, 1000)
 FLq = ad.ApproximateCoefficientFunction(3, 'L', 'q', True, "exact", 1e-3, 1e-3, 1000)
 
