@@ -20,7 +20,7 @@ def test_mudependent_terms():
             for kind in ['2', 'L']:
                 for dim in [1000]:
                     for MCcalls in [20000]:
-                        for mf in [False, True]:
+                        for mf in ["analytical", "double_numerical", "monte_carlo"]:
                             for abserr in [1e-3]:
                                 relerr = abserr
                                 massive = ad.ExactCoefficientFunction(order, kind, channel, abserr, relerr, dim, mf, MCcalls)

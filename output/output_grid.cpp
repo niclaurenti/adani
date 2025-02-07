@@ -58,6 +58,7 @@ int main(int argc, char **argv) {
         inputQ >> Qtmp;
     }
 
+    // clang-format off
     cout << "                                                                                      " << endl;
     cout << "                    888       888          888                                        " << endl;
     cout << "                    888   o   888          888                                        " << endl;
@@ -121,6 +122,7 @@ int main(int argc, char **argv) {
     cout << "                                  @@@@@@@@@@@@@@                   .+-  =@@@@@@@                     " << endl;
     cout << endl;
     cout << endl;
+    // clang-format on
 
     cout << "Computation of the grid for the coefficient function C" << channel
          << " for m = " << m << " GeV, nf = " << nf << " and µ/Q = " << mufrac

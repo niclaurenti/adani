@@ -31,7 +31,7 @@ appr = adani.ApproximateCoefficientFunction(
     1e-3,
     1e-3,
     1000,
-    False,
+    "analytical",
     25000,
 )
 
@@ -175,5 +175,5 @@ if __name__ == "__main__":
             print(
                 f"Saving {names[i]} grid in: {here / 'results'}/{output_name}_{names[i]}.dat"
             )
-        with open(f"{here / 'results'}/" + output_name + names[i] + ".dat", "w") as f:
+        with open(f"{here / 'results'}/{output_name}_{names[i]}.dat", "w") as f:
             np.savetxt(f, res_mat[:, :, i])

@@ -41,9 +41,9 @@ jobs:
           CIBW_BEFORE_BUILD_LINUX: >
             yum -y install wget &&
             yum -y install tar &&
-            wget https://mirror.ibcp.fr/pub/gnu/gsl/gsl-2.7.1.tar.gz &&
-            tar -zxvf gsl-2.7.1.tar.gz &&
-            cd gsl-2.7.1 &&
+            wget https://mirror.ibcp.fr/pub/gnu/gsl/gsl-2.8.tar.gz &&
+            tar -zxvf gsl-2.8.tar.gz &&
+            cd gsl-2.8 &&
             ./configure &&
             make &&
             make install &&
