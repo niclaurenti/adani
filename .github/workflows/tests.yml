@@ -7,7 +7,7 @@ jobs:
 
     runs-on: ubuntu-latest
     container:
-          image: ghcr.io/catthehacker/ubuntu:full-latest
+          image: ghcr.io/catthehacker/ubuntu:act-latest
           credentials:
             username: ${{ github.repository_owner }}
             password: ${{ secrets.GITHUB_TOKEN }}

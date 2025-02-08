@@ -6,9 +6,6 @@
 using std::cout;
 using std::endl;
 
-// TODO : in all the numerical convolutions the gsl default error is first
-// switched off and then swithced on again: see if it can be done once for all
-
 //==========================================================================================//
 //  AbstractConvolution: constructor
 //------------------------------------------------------------------------------------------//
