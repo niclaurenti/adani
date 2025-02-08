@@ -36,7 +36,6 @@ Install it with
 ```bash
 conda install adani
 ```
-At the moment there is a problem in the conda package: to fix it run also ```conda install conda-forge::gsl```.
 
 For installing the Python module from source run
 ```bash

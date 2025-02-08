@@ -97,6 +97,40 @@ double Convolution::regular_integrand(double z, void *p) {
 }
 
 //==========================================================================================//
+//  Convolution: initialize static data member
+//------------------------------------------------------------------------------------------//
+
+int Convolution::NumberOfInstances_ = 0;
+
+//==========================================================================================//
+//  Convolution: constructor
+//------------------------------------------------------------------------------------------//
+
+Convolution::Convolution(
+    CoefficientFunction *coefffunc, AbstractSplittingFunction *splitfunc, const double &abserr,
+    const double &relerr, const int &dim
+    )
+    : AbstractConvolution(coefffunc, splitfunc, abserr, relerr, dim) {
+        NumberOfInstances_++;
+        if (NumberOfInstances_ == 1) {
+            old_handler_ = gsl_set_error_handler(NULL);
+            gsl_set_error_handler_off();
+        }
+
+    };
+
+//==========================================================================================//
+//  Convolution: destructor
+//------------------------------------------------------------------------------------------//
+
+Convolution::~Convolution() {
+    NumberOfInstances_--;
+    if (NumberOfInstances_ == 0) {
+        gsl_set_error_handler(old_handler_);
+    }
+}
+
+//==========================================================================================//
 //  Convolution: integrand of the singular part
 //------------------------------------------------------------------------------------------//
 
@@ -145,14 +179,9 @@ double Convolution::RegularPart(double x, double m2Q2, int nf) const {
     F.function = &regular_integrand;
     F.params = &params;
 
-    gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
-    gsl_set_error_handler_off();
-
     gsl_integration_qag(
         &F, x, x_max, abserr, relerr, dim, 4, w, &regular, &error
     );
-
-    gsl_set_error_handler(old_handler);
 
     return regular;
 }
@@ -178,14 +207,9 @@ double Convolution::SingularPart(double x, double m2Q2, int nf) const {
     F.function = &singular_integrand;
     F.params = &params;
 
-    gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
-    gsl_set_error_handler_off();
-
     gsl_integration_qag(
         &F, x / x_max, 1., abserr, relerr, dim, 4, w, &singular, &error
     );
-
-    gsl_set_error_handler(old_handler);
 
     return singular;
 }
@@ -434,14 +458,9 @@ double DoubleConvolution::RegularPart(double x, double m2Q2, int nf) const {
     f.function = &regular3_integrand;
     f.params = &params;
 
-    gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
-    gsl_set_error_handler_off();
-
     gsl_integration_qag(
         &f, x, x_max, abserr, relerr, dim, 4, w, &regular3, &err
     );
-
-    gsl_set_error_handler(old_handler);
 
     regular4 = convolution_->RegularPart(x, m2Q2, nf) * splitfunc_->Local(nf);
 
@@ -586,14 +605,9 @@ double DoubleConvolution::SingularPart(double x, double m2Q2, int nf) const {
     f.function = &singular3_integrand;
     f.params = &params;
 
-    gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
-    gsl_set_error_handler_off();
-
     gsl_integration_qag(
         &f, x / x_max, 1, abserr, relerr, dim, 4, w, &singular3, &err
     );
-
-    gsl_set_error_handler(old_handler);
 
     singular4 = convolution_->SingularPart(x, m2Q2, nf) * splitfunc_->Local(nf);
 
