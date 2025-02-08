@@ -86,9 +86,8 @@ class Convolution : public AbstractConvolution {
             CoefficientFunction *coefffunc,
             AbstractSplittingFunction *splitfunc, const double &abserr = 1e-3,
             const double &relerr = 1e-3, const int &dim = 1000
-        )
-            : AbstractConvolution(coefffunc, splitfunc, abserr, relerr, dim){};
-        ~Convolution() override{};
+        );
+        ~Convolution() override;
 
         double RegularPart(double x, double m2Q2, int nf) const override;
         double SingularPart(double x, double m2Q2, int nf) const override;
@@ -98,6 +97,10 @@ class Convolution : public AbstractConvolution {
         // to gsl
         static double regular_integrand(double z, void *p);
         static double singular_integrand(double z, void *p);
+
+    private:
+        static int NumberOfInstances_;
+        static gsl_error_handler_t* old_handler_;
 };
 
 //==========================================================================================//
