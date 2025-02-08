@@ -311,8 +311,8 @@ double
 //==========================================================================================//
 //  OBSERVATION: in the O(as^2) exact coefficeint functions the
 //  mu-independent part is an interpolation in a certain grid. When this
-//  function is called for a (x,Q) value outside this grid, te returned value is the
-//  appropriate limit.
+//  function is called for a (x,Q) value outside this grid, te returned value is
+//  the appropriate limit.
 //------------------------------------------------------------------------------------------//
 
 /// @cond UNNECESSARY

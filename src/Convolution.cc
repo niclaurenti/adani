@@ -98,24 +98,23 @@ double Convolution::regular_integrand(double z, void *p) {
 //------------------------------------------------------------------------------------------//
 
 int Convolution::NumberOfInstances_ = 0;
-gsl_error_handler_t* Convolution::old_handler_ = nullptr;
+gsl_error_handler_t *Convolution::old_handler_ = nullptr;
 
 //==========================================================================================//
 //  Convolution: constructor
 //------------------------------------------------------------------------------------------//
 
 Convolution::Convolution(
-    CoefficientFunction *coefffunc, AbstractSplittingFunction *splitfunc, const double &abserr,
-    const double &relerr, const int &dim
-    )
+    CoefficientFunction *coefffunc, AbstractSplittingFunction *splitfunc,
+    const double &abserr, const double &relerr, const int &dim
+)
     : AbstractConvolution(coefffunc, splitfunc, abserr, relerr, dim) {
-        NumberOfInstances_++;
-        if (NumberOfInstances_ == 1) {
-            old_handler_ = gsl_set_error_handler(NULL);
-            gsl_set_error_handler_off();
-        }
-
-    };
+    NumberOfInstances_++;
+    if (NumberOfInstances_ == 1) {
+        old_handler_ = gsl_set_error_handler(NULL);
+        gsl_set_error_handler_off();
+    }
+};
 
 //==========================================================================================//
 //  Convolution: destructor
