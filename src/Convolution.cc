@@ -97,10 +97,11 @@ double Convolution::regular_integrand(double z, void *p) {
 }
 
 //==========================================================================================//
-//  Convolution: initialize static data member
+//  Convolution: initialize static data members
 //------------------------------------------------------------------------------------------//
 
 int Convolution::NumberOfInstances_ = 0;
+gsl_error_handler_t* Convolution::old_handler_ = nullptr;
 
 //==========================================================================================//
 //  Convolution: constructor
