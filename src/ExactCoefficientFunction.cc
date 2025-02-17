@@ -37,14 +37,15 @@ ExactCoefficientFunction::ExactCoefficientFunction(
 
     delta_ = nullptr;
 
-    // check double_int_method
-    if (double_int_method != "analytical"
-        && double_int_method != "double_numerical"
-        && double_int_method != "monte_carlo") {
-        cout << "Error in ExactCoefficientFunction: double_int_method must be "
-                "'analytical', 'double_numerical' or 'monte_carlo'! Got "
-             << double_int_method << endl;
-        exit(-1);
+    try {
+        // check double_int_method
+        if (double_int_method != "analytical"
+            && double_int_method != "double_numerical"
+            && double_int_method != "monte_carlo") {
+            throw NotValidException("double_int_method must be 'analytical', 'double_numerical' or 'monte_carlo'! Got '" + double_int_method +"'", __PRETTY_FUNCTION__);
+        }
+    } catch (const NotValidException& e) {
+        e.runtime_error();
     }
 
     if (GetOrder() == 2) {
