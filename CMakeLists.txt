@@ -76,6 +76,7 @@ if(PYTHON_ONLY)
         src/CoefficientFunction.cc
         src/Convolution.cc
         src/ExactCoefficientFunction.cc
+        src/Exceptions.cc
         src/HighEnergyCoefficientFunction.cc
         src/HighScaleCoefficientFunction.cc
         src/HighScaleSplitLogs.cc
@@ -100,6 +101,7 @@ else(PYTHON_ONLY)
         src/CoefficientFunction.cc
         src/Convolution.cc
         src/ExactCoefficientFunction.cc
+        src/Exceptions.cc
         src/HighEnergyCoefficientFunction.cc
         src/HighScaleCoefficientFunction.cc
         src/HighScaleSplitLogs.cc
