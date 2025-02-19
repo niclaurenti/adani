@@ -301,8 +301,7 @@ ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(
                 params_B_ = klmv_C2q2B;
             } else {
                 throw UnexpectedException(
-                    "Unexpected exception!",
-                    __PRETTY_FUNCTION__
+                    "Unexpected exception!", __PRETTY_FUNCTION__
                 );
             }
         } else if (GetOrder() == 3) {
@@ -317,19 +316,17 @@ ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(
                 params_B_ = klmv_C2q3B;
             } else {
                 throw UnexpectedException(
-                    "Unexpected exception!",
-                    __PRETTY_FUNCTION__
+                    "Unexpected exception!", __PRETTY_FUNCTION__
                 );
             }
         } else {
             throw UnexpectedException(
-                "Unexpected exception!",
-                __PRETTY_FUNCTION__
+                "Unexpected exception!", __PRETTY_FUNCTION__
             );
         }
     } catch (const NotImplementedException &e) {
         e.runtime_error();
-    } catch (UnexpectedException& e) {
+    } catch (UnexpectedException &e) {
         e.runtime_error();
     }
 

@@ -146,6 +146,11 @@ void HighEnergyHighScaleCoefficientFunction::SetFunctions() {
         else if (GetKind() == 'L' && GetChannel() == 'q')
             LL_ = &HighEnergyHighScaleCoefficientFunction::
                       CL_ps2_highenergy_highscale;
+        else {
+            throw UnexpectedException(
+                "Unexpected exception!", __PRETTY_FUNCTION__
+            );
+        }
 
     } else if (GetOrder() == 3) {
 
