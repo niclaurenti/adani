@@ -77,3 +77,11 @@ NotPresentException::NotPresentException(const string& reason, const string& fun
 NotValidException::NotValidException(const string& reason, const string& function) {
     message_ = "NotValidException in " + function + ": " + reason;
 }
+
+//==========================================================================================//
+//  UnexpectedException: constructor
+//------------------------------------------------------------------------------------------//
+
+UnexpectedException::UnexpectedException(const string& reason, const string& function) {
+    message_ = "UnexpectedException in " + function + ": " + reason;
+}

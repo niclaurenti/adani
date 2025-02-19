@@ -3,10 +3,6 @@
 #include "adani/SpecialFunctions.h"
 
 #include <cmath>
-#include <iostream>
-
-using std::cout;
-using std::endl;
 
 //==========================================================================================//
 //  HighScaleSplitLogs: constructor
@@ -17,11 +13,15 @@ HighScaleSplitLogs::HighScaleSplitLogs(
     const string &version
 )
     : CoefficientFunction(order, kind, channel) {
-    if (order != 3) {
-        cout << "Error: HighScaleSplitLogs is implemented only for order = 3. "
-                "Got "
-             << order << endl;
-        exit(-1);
+    try {
+        if (order != 3) {
+            throw NotImplementedException(
+                "HighScaleSplitLogs is implemented only for order = 3. Got order=" + to_string(order),
+                __PRETTY_FUNCTION__
+            );
+        }
+    } catch (NotImplementedException& e) {
+      e.runtime_error();
     }
 
     massless_as1_ = nullptr;
@@ -57,11 +57,8 @@ HighScaleSplitLogs::~HighScaleSplitLogs() {
 //------------------------------------------------------------------------------------------//
 
 double HighScaleSplitLogs::
-    fx(double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const {
-    cout << "Error: HighScaleSplitLogs is implemented only in the case mu=Q!"
-         << endl;
-    cout << "Use HighScaleSplitLogs::fx(double x, double m2Q2, int nf)" << endl;
-    exit(-1);
+    fx(double x, double m2Q2, double /*m2mu2*/, int nf) const {
+    return fx(x, m2Q2, nf);
 }
 
 //==========================================================================================//
@@ -78,12 +75,8 @@ double HighScaleSplitLogs::fx(double x, double m2Q2, int nf) const {
 //------------------------------------------------------------------------------------------//
 
 Value HighScaleSplitLogs::
-    fxBand(double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const {
-    cout << "Error: HighScaleSplitLogs is implemented only in the case mu=Q!"
-         << endl;
-    cout << "Use HighScaleSplitLogs::fxBand(double x, double m2Q2, int nf)"
-         << endl;
-    exit(-1);
+    fxBand(double x, double m2Q2, double /*m2mu2*/, int nf) const {
+    return fxBand(x, m2Q2, nf);
 }
 
 //==========================================================================================//

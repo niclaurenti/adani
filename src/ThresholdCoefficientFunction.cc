@@ -23,7 +23,11 @@ ThresholdCoefficientFunction::ThresholdCoefficientFunction(
     } else
         exact_as1_ = nullptr;
 
-    SetFunctions();
+    try {
+        SetFunctions();
+    } catch (UnexpectedException& e) {
+        e.runtime_error();
+    }
 }
 
 //==========================================================================================//
@@ -78,16 +82,16 @@ double ThresholdCoefficientFunction::BetaIndependentTerms(
         else if (GetOrder() == 3 && GetKind() == 'L')
             return C2_g3_threshold_const(x, m2Q2, m2mu2);
         else {
-            cout << "Error: something has gone wrong in "
-                    "ThresholdCoefficientFunction::SetFunctions!"
-                 << endl;
-            exit(-1);
+            throw UnexpectedException(
+                "Unexpected exception!",
+                __PRETTY_FUNCTION__
+            );
         }
     } else {
-        cout << "Error: something has gone wrong in "
-                "ThresholdCoefficientFunction::SetFunctions!"
-             << endl;
-        exit(-1);
+        throw UnexpectedException(
+            "Unexpected exception!",
+            __PRETTY_FUNCTION__
+        );
     }
 }
 
@@ -112,10 +116,10 @@ void ThresholdCoefficientFunction::SetFunctions() {
         else if (GetOrder() == 3 && GetKind() == 'L')
             fx_ = &ThresholdCoefficientFunction::CL_g3_threshold;
         else {
-            cout << "Error: something has gone wrong in "
-                    "ThresholdCoefficientFunction::SetFunctions!"
-                 << endl;
-            exit(-1);
+            throw UnexpectedException(
+                "Unexpected exception!",
+                __PRETTY_FUNCTION__
+            );
         }
     }
 }

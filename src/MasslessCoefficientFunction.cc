@@ -16,7 +16,11 @@ MasslessCoefficientFunction::MasslessCoefficientFunction(
     const int &order, const char &kind, const char &channel
 )
     : CoefficientFunction(order, kind, channel) {
-    SetFunctions();
+    try {
+        SetFunctions();
+    } catch (UnexpectedException& e) {
+        e.runtime_error();
+    }
 }
 
 //==========================================================================================//
@@ -106,10 +110,10 @@ void MasslessCoefficientFunction::SetFunctions() {
     else if (GetOrder() == 3 && GetKind() == 'L' && GetChannel() == 'q')
         mu_indep_ = &MasslessCoefficientFunction::CL_ps3_massless;
     else {
-        cout << "Error: something has gone wrong in "
-                "MasslessCoefficientFunction::SetFunctions!"
-             << endl;
-        exit(-1);
+        throw UnexpectedException(
+            "Unexpected exception!",
+            __PRETTY_FUNCTION__
+        );
     }
 }
 

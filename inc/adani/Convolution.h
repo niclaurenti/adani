@@ -63,6 +63,7 @@ class AbstractConvolution {
         // set methods
         void SetAbserr(const double &abserr);
         void SetRelerr(const double &relerr);
+        void AllocWorkspace(const int &dim);
 
     private:
         double abserr_;

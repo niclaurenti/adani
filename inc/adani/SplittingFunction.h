@@ -38,6 +38,10 @@ class AbstractSplittingFunction {
             mult_factor_ = mult_factor;
         };
 
+    protected:
+        void CheckOrder(int order) const;
+        void CheckEntry(char entry) const;
+
     private:
         double mult_factor_;
 };

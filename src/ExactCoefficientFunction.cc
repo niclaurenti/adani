@@ -4,10 +4,6 @@
 #include "adani/ThresholdCoefficientFunction.h"
 
 #include <cmath>
-#include <iostream>
-
-using std::cout;
-using std::endl;
 
 //==========================================================================================//
 //  ExactCoefficientFunction: constructor
@@ -204,7 +200,15 @@ double ExactCoefficientFunction::fx(
 double ExactCoefficientFunction::MuIndependentTerms(
     double x, double m2Q2, int nf
 ) const {
-    return (this->*mu_indep_)(x, m2Q2, nf);
+    double res;
+    try {
+        res = (this->*mu_indep_)(x, m2Q2, nf);
+    } catch (NotValidException& e) {
+        e.runtime_error();
+    } catch (NotKnownException& e) {
+        e.runtime_error();
+    }
+    return res;
 }
 
 //==========================================================================================//
@@ -360,10 +364,10 @@ double
     if (eta > 1e6 || xi > 1e5)
         return asy_->MuIndependentTerms(x, m2Q2, nf);
     if (xi < 1e-3) {
-        cout << "Error in ExactCoefficientFunction::C2_ps20 : max value of "
-                "m2Q2 is 1e3. Got "
-             << m2Q2 << endl;
-        exit(-1);
+        throw NotValidException(
+            "max value of m2Q2 is 1e3. Got m2Q2=" + to_string(m2Q2),
+            __PRETTY_FUNCTION__
+        );
     }
 
     return 16 * M_PI * xi * c2nloq_(&eta, &xi) / x;
@@ -410,10 +414,10 @@ double
     if (eta > 1e6 || xi > 1e5)
         return asy_->MuIndependentTerms(x, m2Q2, nf);
     if (xi < 1e-3) {
-        cout << "Error in ExactCoefficientFunction::CL_ps20 : max value of "
-                "m2Q2 is 1e3. Got "
-             << m2Q2 << endl;
-        exit(-1);
+        throw NotValidException(
+            "max value of m2Q2 is 1e3. Got m2Q2=" + to_string(m2Q2),
+            __PRETTY_FUNCTION__
+        );
     }
 
     return 16 * M_PI * xi * clnloq_(&eta, &xi) / x;
@@ -442,10 +446,10 @@ double
     if (eta > 1e6 || xi > 1e5)
         return asy_->MuIndependentTerms(x, m2Q2, nf);
     if (xi < 1e-3) {
-        cout << "Error in ExactCoefficientFunction::C2_g20 : max value of m2Q2 "
-                "is 1e3. Got "
-             << m2Q2 << endl;
-        exit(-1);
+        throw NotValidException(
+            "max value of m2Q2 is 1e3. Got m2Q2=" + to_string(m2Q2),
+            __PRETTY_FUNCTION__
+        );
     }
 
     return 16 * M_PI * xi * c2nlog_(&eta, &xi) / x;
@@ -492,10 +496,10 @@ double
     if (eta > 1e6 || xi > 1e5)
         return asy_->MuIndependentTerms(x, m2Q2, nf);
     if (xi < 1e-3) {
-        cout << "Error in ExactCoefficientFunction::CL_g20 : max value of m2Q2 "
-                "is 1e3. Got "
-             << m2Q2 << endl;
-        exit(-1);
+        throw NotValidException(
+            "max value of m2Q2 is 1e3. Got m2Q2=" + to_string(m2Q2),
+            __PRETTY_FUNCTION__
+        );
     }
 
     return 16 * M_PI * xi * clnlog_(&eta, &xi) / x;
@@ -626,8 +630,9 @@ double ExactCoefficientFunction::C_ps3_MuDep(
 
 double ExactCoefficientFunction::
     WarningFunc(double /*x*/, double /*m2Q2*/, int /*nf*/) const {
-    cout << "Error: mu-independent terms of the exact coefficient function at "
-            "O(a_s^3) are not known!"
-         << endl;
-    exit(-1);
+    throw NotKnownException(
+        "mu-independent terms of the exact coefficient function at order=3 are not known!",
+        "ExactCoefficientFunction::MuIndependentTerms"
+    );
+    return 0.;
 }
