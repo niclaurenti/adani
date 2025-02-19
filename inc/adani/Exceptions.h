@@ -59,4 +59,13 @@ class NotValidException : public AbstractException {
         NotValidException(const string& reason, const string& function);
 };
 
+//==========================================================================================//
+//  class UnexpectedException: passing invalid parameters
+//------------------------------------------------------------------------------------------//
+
+class UnexpectedException : public AbstractException {
+    public:
+    UnexpectedException(const string& reason, const string& function);
+};
+
 #endif

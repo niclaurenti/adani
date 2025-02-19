@@ -111,6 +111,8 @@ ApproximateCoefficientFunction::ApproximateCoefficientFunction(
         order, kind, channel, NLL, highscale_version
     );
 
+    // in principle this if statements should not give any error since they are all
+    // checked in the CoefficientFunction constructor
     if (order == 1) {
         if (kind == '2') {
             if (channel == 'g')
@@ -142,10 +144,6 @@ ApproximateCoefficientFunction::ApproximateCoefficientFunction(
                 approximation_ = C2_g3_params;
             else if (channel == 'q')
                 approximation_ = C2_ps3_params;
-            else {
-                cout << "Error" << endl;
-                exit(-1);
-            }
             variation_ = C2_var;
         } else if (kind == 'L') {
             if (channel == 'g')
@@ -272,15 +270,21 @@ ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(
     : AbstractApproximate(
           order, kind, channel, abserr, relerr, dim, double_int_method, MCcalls
       ) {
-    if (GetOrder() == 1) {
-        cout << "Error: KLMV approximation is not implemented at O(as)!"
-             << endl;
-        exit(-1);
-    }
-    if (GetKind() == 'L') {
-        cout << "Error: KLMV approximation is not implemented for kind = 'L'!"
-             << endl;
-        exit(-1);
+    try {
+        if (GetOrder() == 1) {
+            throw NotImplementedException(
+                "KLMV approximation is not implemented at order 1! Got order=" + to_string(order),
+                __PRETTY_FUNCTION__
+            );
+        }
+        if (GetKind() == 'L') {
+            throw NotImplementedException(
+                "KLMV approximation is not implemented for kind = 'L'! Got kind='" + string(1, kind) + "'",
+                __PRETTY_FUNCTION__
+            );
+        }
+    } catch (const NotImplementedException& e) {
+        e.runtime_error();
     }
 
     if (GetOrder() == 2) {
@@ -348,11 +352,13 @@ Value ApproximateCoefficientFunctionKLMV::MuIndependentTermsBand(
 
     double res_A, res_B;
 
+    // order=1 is checked in the constructor
+
     if (GetOrder() == 2) {
         res_A =
             ApproximationA(x, m2Q2, 0., he_ll, hs[0], thr, thr_const, gamma, C);
         res_B = ApproximationB(x, m2Q2, 0., he_ll, hs[0], thr, 0., delta, D);
-    } else if (GetOrder() == 3) {
+    } else { // order = 3
         Value he_nll = ApproximateNLL(x, m2Q2);
         res_A = ApproximationA(
             x, m2Q2, he_ll, he_nll.GetHigher(), hs[1], thr, thr_const, gamma, C
@@ -360,11 +366,6 @@ Value ApproximateCoefficientFunctionKLMV::MuIndependentTermsBand(
         res_B = ApproximationB(
             x, m2Q2, he_ll, he_nll.GetLower(), hs[2], thr, thr_const, delta, D
         );
-    } else {
-        cout << "Error: ApproximateCoefficientFunctionKLMV is implemented only "
-                "for order = 2 or 3. Got "
-             << GetOrder() << endl;
-        exit(-1);
     }
 
     if (res_A > res_B)

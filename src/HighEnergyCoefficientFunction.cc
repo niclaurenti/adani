@@ -2,10 +2,7 @@
 #include "adani/Constants.h"
 #include "adani/SpecialFunctions.h"
 #include <cmath>
-#include <iostream>
 
-using std::cout;
-using std::endl;
 
 //==========================================================================================//
 //  AbstractHighEnergyCoefficientFunction: constructor
@@ -24,7 +21,11 @@ HighEnergyCoefficientFunction::HighEnergyCoefficientFunction(
     const int &order, const char &kind, const char &channel, const bool &NLL
 )
     : AbstractHighEnergyCoefficientFunction(order, kind, channel, NLL) {
-    SetFunctions();
+    try {
+        SetFunctions();
+    } catch (UnexpectedException& e) {
+        e.runtime_error();
+    }
 }
 
 //==========================================================================================//
@@ -45,8 +46,10 @@ Value HighEnergyCoefficientFunction::fxBand(
 void HighEnergyCoefficientFunction::SetFunctions() {
 
     if (GetOrder() == 1) {
+
         LL_ = &HighEnergyCoefficientFunction::ZeroFunction;
         NLL_ = &HighEnergyCoefficientFunction::ZeroFunctionBand;
+
     } else if (GetOrder() == 2) {
 
         NLL_ = &HighEnergyCoefficientFunction::ZeroFunctionBand;
@@ -60,6 +63,7 @@ void HighEnergyCoefficientFunction::SetFunctions() {
             LL_ = &HighEnergyCoefficientFunction::CL_ps2_highenergy;
 
     } else if (GetOrder() == 3) {
+
         if (GetKind() == '2' && GetChannel() == 'g') {
             LL_ = &HighEnergyCoefficientFunction::C2_g3_highenergyLL;
             NLL_ = &HighEnergyCoefficientFunction::C2_g3_highenergyNLL;
@@ -72,18 +76,20 @@ void HighEnergyCoefficientFunction::SetFunctions() {
         } else if (GetKind() == 'L' && GetChannel() == 'q') {
             LL_ = &HighEnergyCoefficientFunction::CL_ps3_highenergyLL;
             NLL_ = &HighEnergyCoefficientFunction::CL_ps3_highenergyNLL;
+
         } else {
-            cout << "Error: something has gone wrong in "
-                    "HighEnergyCoefficientFunction::SetFunctions!"
-                 << endl;
-            exit(-1);
+            throw UnexpectedException(
+                "Unexpected exception!",
+                __PRETTY_FUNCTION__
+            );
         }
     } else {
-        cout << "Error: something has bone wrong in "
-                "HighEnergyCoefficientFunction::SetFunctions!"
-             << endl;
-        exit(-1);
+        throw UnexpectedException(
+            "Unexpected exception!",
+            __PRETTY_FUNCTION__
+        );
     }
+
     if (!GetNLL())
         NLL_ = &HighEnergyCoefficientFunction::ZeroFunctionBand;
 }
@@ -96,7 +102,11 @@ HighEnergyHighScaleCoefficientFunction::HighEnergyHighScaleCoefficientFunction(
     const int &order, const char &kind, const char &channel, const bool &NLL
 )
     : AbstractHighEnergyCoefficientFunction(order, kind, channel, NLL) {
-    SetFunctions();
+    try {
+        SetFunctions();
+    } catch (UnexpectedException& e) {
+        e.runtime_error();
+    }
 }
 
 //==========================================================================================//
@@ -118,8 +128,10 @@ Value HighEnergyHighScaleCoefficientFunction::fxBand(
 void HighEnergyHighScaleCoefficientFunction::SetFunctions() {
 
     if (GetOrder() == 1) {
+
         LL_ = &HighEnergyHighScaleCoefficientFunction::ZeroFunction;
         NLL_ = &HighEnergyHighScaleCoefficientFunction::ZeroFunctionBand;
+
     } else if (GetOrder() == 2) {
 
         NLL_ = &HighEnergyHighScaleCoefficientFunction::ZeroFunctionBand;
@@ -137,6 +149,7 @@ void HighEnergyHighScaleCoefficientFunction::SetFunctions() {
                       CL_ps2_highenergy_highscale;
 
     } else if (GetOrder() == 3) {
+
         if (GetKind() == '2' && GetChannel() == 'g') {
             LL_ = &HighEnergyHighScaleCoefficientFunction::
                       C2_g3_highenergy_highscaleLL;
@@ -157,17 +170,18 @@ void HighEnergyHighScaleCoefficientFunction::SetFunctions() {
                       CL_ps3_highenergy_highscaleLL;
             NLL_ = &HighEnergyHighScaleCoefficientFunction::
                        CL_ps3_highenergy_highscaleNLL;
+
         } else {
-            cout << "Error: something has gone wrong in "
-                    "HighEnergyHighScaleCoefficientFunction::SetFunctions!"
-                 << endl;
-            exit(-1);
+            throw UnexpectedException(
+                "Unexpected exception!",
+                __PRETTY_FUNCTION__
+            );
         }
     } else {
-        cout << "Error: something has bone wrong in "
-                "HighEnergyHighScaleCoefficientFunction::SetFunctions!"
-             << endl;
-        exit(-1);
+        throw UnexpectedException(
+            "Unexpected exception!",
+            __PRETTY_FUNCTION__
+        );
     }
     if (!GetNLL())
         NLL_ = &HighEnergyHighScaleCoefficientFunction::ZeroFunctionBand;

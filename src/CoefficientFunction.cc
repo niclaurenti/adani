@@ -1,9 +1,6 @@
 #include "adani/CoefficientFunction.h"
 #include "adani/Exceptions.h"
 
-using std::cout;
-using std::endl;
-
 //==========================================================================================//
 //  CoefficientFunction: constructor
 //------------------------------------------------------------------------------------------//
