@@ -123,9 +123,9 @@ void HighScaleSplitLogs::SetFunctions() {
             N2LL_ = &HighScaleSplitLogs::C2_g3_highscale_N2LL;
             N3LL_ = &HighScaleSplitLogs::C2_g3_highscale_N3LL;
         } else {
-         throw UnexpectedException(
-            "Unexpected exception!", __PRETTY_FUNCTION__
-        );
+            throw UnexpectedException(
+                "Unexpected exception!", __PRETTY_FUNCTION__
+            );
         }
     } else if (GetKind() == 'L') {
         if (GetChannel() == 'q') {
@@ -139,9 +139,9 @@ void HighScaleSplitLogs::SetFunctions() {
             N2LL_ = &HighScaleSplitLogs::CL_g3_highscale_N2LL;
             N3LL_ = &HighScaleSplitLogs::CL_g3_highscale_N3LL;
         } else {
-         throw UnexpectedException(
-            "Unexpected exception!", __PRETTY_FUNCTION__
-        );
+            throw UnexpectedException(
+                "Unexpected exception!", __PRETTY_FUNCTION__
+            );
         }
     } else {
         throw UnexpectedException("Unexpected exception!", __PRETTY_FUNCTION__);

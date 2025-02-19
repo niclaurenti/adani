@@ -99,9 +99,7 @@ void ThresholdCoefficientFunction::SetFunctions() {
             );
         }
     } else {
-        throw UnexpectedException(
-            "Unexpected exception!", __PRETTY_FUNCTION__
-        );
+        throw UnexpectedException("Unexpected exception!", __PRETTY_FUNCTION__);
     }
 }
 

@@ -3,10 +3,6 @@
 #include "adani/SpecialFunctions.h"
 
 #include <cmath>
-#include <iostream>
-
-using std::cout;
-using std::endl;
 
 //==========================================================================================//
 //  MasslessCoefficientFunction: constructor
@@ -28,9 +24,10 @@ MasslessCoefficientFunction::MasslessCoefficientFunction(
 //------------------------------------------------------------------------------------------//
 
 double MasslessCoefficientFunction::fx(
-    double x, double m2Q2, double m2mu2, int nf
+    double x, double /*m2Q2*/, double /*m2mu2*/, int nf
 ) const {
-    return MuIndependentTerms(x, nf) + MuDependentTerms(x, m2Q2, m2mu2, nf);
+    // return MuIndependentTerms(x, nf) + MuDependentTerms(x, m2Q2, m2mu2, nf);
+    return MuIndependentTerms(x, nf);
 }
 
 //==========================================================================================//
@@ -40,10 +37,12 @@ double MasslessCoefficientFunction::fx(
 double MasslessCoefficientFunction::MuDependentTerms(
     double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/
 ) const {
-    cout << "Error: mu dependent terms of the massless coefficient functions "
-            "are not implemented!"
-         << endl;
-    exit(-1);
+    throw NotImplementedException(
+        "this function is deprecated and should not be used since "
+        "MasslessCoefficientFunction is implemented only for Q=mu.",
+        __PRETTY_FUNCTION__
+    );
+    // return 0:;
 }
 
 //==========================================================================================//
@@ -53,12 +52,14 @@ double MasslessCoefficientFunction::MuDependentTerms(
 
 double MasslessCoefficientFunction::
     MuIndependentTerms(double /*x*/, double /*m2Q2*/, int /*nf*/) const {
-    cout << "Error: massless coefficient functions do not depend on m^2/Q^2!"
-         << endl;
-    cout << "Call MasslessCoefficientFunction::MuIndependentTerms(double x, "
-            "int nf)"
-         << endl;
-    exit(-1);
+    throw NotValidException(
+        "this function is deprecated and should not be used since "
+        "MasslessCoefficientFunction do not depend on m^2/Q^2!. Call "
+        "MasslessCoefficientFunction::MuIndependentTerms(double x, int nf) "
+        "instead",
+        __PRETTY_FUNCTION__
+    );
+    // return 0.;
 }
 
 //==========================================================================================//
