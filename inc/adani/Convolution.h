@@ -101,7 +101,7 @@ class Convolution : public AbstractConvolution {
 
     private:
         static int NumberOfInstances_;
-        static gsl_error_handler_t* old_handler_;
+        static gsl_error_handler_t *old_handler_;
 };
 
 //==========================================================================================//

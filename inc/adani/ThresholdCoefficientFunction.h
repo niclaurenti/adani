@@ -49,8 +49,8 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
 
     private:
         // TODO: fx is the sum of a beta-dependent term and a beta-independent
-        // in this way there is some repeated code. Split the pointers into beta-indep and
-        // beta-dep
+        // in this way there is some repeated code. Split the pointers into
+        // beta-indep and beta-dep
         double (ThresholdCoefficientFunction::*fx_)(
             double, double, double, int
         ) const;

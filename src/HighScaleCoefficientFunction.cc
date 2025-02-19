@@ -34,11 +34,11 @@ HighScaleCoefficientFunction::HighScaleCoefficientFunction(
     }
 
     try {
-      SetFunctions();
-    } catch (NotPresentException& e) {
-      e.runtime_error();
-    } catch (UnexpectedException& e) {
-      e.runtime_error();
+        SetFunctions();
+    } catch (NotPresentException &e) {
+        e.runtime_error();
+    } catch (UnexpectedException &e) {
+        e.runtime_error();
     }
 }
 
@@ -113,8 +113,10 @@ void HighScaleCoefficientFunction::SetFunctions() {
             fx_ = &HighScaleCoefficientFunction::CL_g1_highscale;
         else {
             throw NotPresentException(
-                  "quark coefficient function is not present at order 1! Got order=" + to_string(GetOrder()),
-                  __PRETTY_FUNCTION__
+                "quark coefficient function is not present at order 1! Got "
+                "order="
+                    + to_string(GetOrder()),
+                __PRETTY_FUNCTION__
             );
         }
 
@@ -130,8 +132,7 @@ void HighScaleCoefficientFunction::SetFunctions() {
             fx_ = &HighScaleCoefficientFunction::CL_ps2_highscale;
         else {
             throw UnexpectedException(
-                "Unexpected exception!",
-                __PRETTY_FUNCTION__
+                "Unexpected exception!", __PRETTY_FUNCTION__
             );
         }
     } else if (GetOrder() == 3) {
@@ -146,15 +147,11 @@ void HighScaleCoefficientFunction::SetFunctions() {
             fx_ = &HighScaleCoefficientFunction::CL_ps3_highscale;
         else {
             throw UnexpectedException(
-                "Unexpected exception!",
-                __PRETTY_FUNCTION__
+                "Unexpected exception!", __PRETTY_FUNCTION__
             );
         }
     } else {
-        throw UnexpectedException(
-            "Unexpected exception!",
-            __PRETTY_FUNCTION__
-        );
+        throw UnexpectedException("Unexpected exception!", __PRETTY_FUNCTION__);
     }
 }
 

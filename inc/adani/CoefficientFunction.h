@@ -17,8 +17,8 @@
 #ifndef CoeffFunc
 #define CoeffFunc
 
-#include "adani/Value.h"
 #include "adani/Exceptions.h"
+#include "adani/Value.h"
 
 #include <vector>
 

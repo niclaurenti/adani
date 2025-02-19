@@ -8,14 +8,18 @@
 #include <iostream>
 #include <sstream>
 #include <string.h>
-#include <vector>
 #include <thread>
+#include <vector>
 
 using namespace std;
 
 std::string print_time(time_t seconds);
 
-void loopFunction(int start, int end, vector<double>& xvec, vector<double>& Qvec, ApproximateCoefficientFunction& app, double **res_c, double **res_h, double **res_l, double m, int nf, double mufrac);
+void loopFunction(
+    int start, int end, vector<double> &xvec, vector<double> &Qvec,
+    ApproximateCoefficientFunction &app, double **res_c, double **res_h,
+    double **res_l, double m, int nf, double mufrac
+);
 
 int main(int argc, char **argv) {
 
@@ -134,19 +138,19 @@ int main(int argc, char **argv) {
     int rows = x.size();
     int cols = Q.size();
 
-    double **res_c = new double*[rows];
+    double **res_c = new double *[rows];
 
     for (int i = 0; i < rows; ++i) {
         res_c[i] = new double[cols];
     }
 
-    double **res_h = new double*[rows];
+    double **res_h = new double *[rows];
 
     for (int i = 0; i < rows; ++i) {
         res_h[i] = new double[cols];
     }
 
-    double **res_l = new double*[rows];
+    double **res_l = new double *[rows];
 
     for (int i = 0; i < rows; ++i) {
         res_l[i] = new double[cols];
@@ -171,10 +175,13 @@ int main(int argc, char **argv) {
     for (int i = 0; i < numThreads; ++i) {
         int start = i * iterationsPerThread;
         int end = (i == numThreads - 1) ? rows : (i + 1) * iterationsPerThread;
-        threads.emplace_back(loopFunction, start, end, ref(x), ref(Q), ref(Approx), res_c, res_h, res_l, m, nf, mufrac);
+        threads.emplace_back(
+            loopFunction, start, end, ref(x), ref(Q), ref(Approx), res_c, res_h,
+            res_l, m, nf, mufrac
+        );
     }
 
-    for (std::thread& thread : threads) {
+    for (std::thread &thread : threads) {
         thread.join();
     }
 
@@ -249,7 +256,11 @@ std::string print_time(time_t seconds) {
     return ss.str();
 }
 
-void loopFunction(int start, int end, vector<double>& xvec, vector<double>& Qvec, ApproximateCoefficientFunction& app, double **res_c, double **res_h, double **res_l, double m, int nf, double mufrac) {
+void loopFunction(
+    int start, int end, vector<double> &xvec, vector<double> &Qvec,
+    ApproximateCoefficientFunction &app, double **res_c, double **res_h,
+    double **res_l, double m, int nf, double mufrac
+) {
     double x, Q, m2Q2, mu, m2mu2;
     for (int i = start; i < end; i++) {
         for (int j = 0; j < int(Qvec.size()); j++) {
@@ -262,7 +273,9 @@ void loopFunction(int start, int end, vector<double>& xvec, vector<double>& Qvec
             res_c[i][j] = res.GetCentral();
             res_h[i][j] = res.GetHigher();
             res_l[i][j] = res.GetLower();
-            // std::cout << "Thread ID: " << std::this_thread::get_id() <<" x="<< x << " Q=" << Q << " mu=" << mu << " nf" << nf << " res_c=" << res_c[i][j] << endl;
+            // std::cout << "Thread ID: " << std::this_thread::get_id() <<"
+            // x="<< x << " Q=" << Q << " mu=" << mu << " nf" << nf << " res_c="
+            // << res_c[i][j] << endl;
         }
     }
 }

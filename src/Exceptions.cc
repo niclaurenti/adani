@@ -4,17 +4,19 @@
 //  Definition of colors
 //------------------------------------------------------------------------------------------//
 
-#define RESET   "\033[0m"
-#define RED     "\033[31m"
-#define GREEN   "\033[32m"
-#define YELLOW  "\033[33m"
-#define BLUE    "\033[34m"
+#define RESET "\033[0m"
+#define RED "\033[31m"
+#define GREEN "\033[32m"
+#define YELLOW "\033[33m"
+#define BLUE "\033[34m"
 
 //==========================================================================================//
 //  AbstractException: constructor
 //------------------------------------------------------------------------------------------//
 
-AbstractException::AbstractException(const string& reason, const string& function) {
+AbstractException::AbstractException(
+    const string &reason, const string &function
+) {
     message_ = "AbstractException in " + function + ": " + reason;
 }
 
@@ -22,7 +24,7 @@ AbstractException::AbstractException(const string& reason, const string& functio
 //  AbstractException: redefinition of what method
 //------------------------------------------------------------------------------------------//
 
-const char* AbstractException::what() const noexcept {
+const char *AbstractException::what() const noexcept {
     return message_.c_str();
 }
 
@@ -50,7 +52,9 @@ void AbstractException::warning() const {
 //  NotImplementedException: constructor
 //------------------------------------------------------------------------------------------//
 
-NotImplementedException::NotImplementedException(const string& reason, const string& function) {
+NotImplementedException::NotImplementedException(
+    const string &reason, const string &function
+) {
     message_ = "NotImplementedException in " + function + ": " + reason;
 }
 
@@ -58,7 +62,9 @@ NotImplementedException::NotImplementedException(const string& reason, const str
 //  NotKnownException: constructor
 //------------------------------------------------------------------------------------------//
 
-NotKnownException::NotKnownException(const string& reason, const string& function) {
+NotKnownException::NotKnownException(
+    const string &reason, const string &function
+) {
     message_ = "NotKnownException in " + function + ": " + reason;
 }
 
@@ -66,7 +72,9 @@ NotKnownException::NotKnownException(const string& reason, const string& functio
 //  NotPresentException: constructor
 //------------------------------------------------------------------------------------------//
 
-NotPresentException::NotPresentException(const string& reason, const string& function) {
+NotPresentException::NotPresentException(
+    const string &reason, const string &function
+) {
     message_ = "NotPresentException in " + function + ": " + reason;
 }
 
@@ -74,7 +82,9 @@ NotPresentException::NotPresentException(const string& reason, const string& fun
 //  NotValidException: constructor
 //------------------------------------------------------------------------------------------//
 
-NotValidException::NotValidException(const string& reason, const string& function) {
+NotValidException::NotValidException(
+    const string &reason, const string &function
+) {
     message_ = "NotValidException in " + function + ": " + reason;
 }
 
@@ -82,6 +92,8 @@ NotValidException::NotValidException(const string& reason, const string& functio
 //  UnexpectedException: constructor
 //------------------------------------------------------------------------------------------//
 
-UnexpectedException::UnexpectedException(const string& reason, const string& function) {
+UnexpectedException::UnexpectedException(
+    const string &reason, const string &function
+) {
     message_ = "UnexpectedException in " + function + ": " + reason;
 }

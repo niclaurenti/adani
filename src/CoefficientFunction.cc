@@ -13,29 +13,50 @@ CoefficientFunction::CoefficientFunction(
     try {
         // check order
         if (order_ < 1) {
-            throw NotPresentException("massive coefficient functions below order 1 are not present! Got order=" + to_string(order_), __PRETTY_FUNCTION__);
+            throw NotPresentException(
+                "massive coefficient functions below order 1 are not present! "
+                "Got order="
+                    + to_string(order_),
+                __PRETTY_FUNCTION__
+            );
         }
         if (order_ > 3) {
-            throw NotKnownException("massive coefficient functions below order 3 are not known! Got order=" + to_string(order_), __PRETTY_FUNCTION__);
+            throw NotKnownException(
+                "massive coefficient functions below order 3 are not known! "
+                "Got order="
+                    + to_string(order_),
+                __PRETTY_FUNCTION__
+            );
         }
 
         // check kind
         if (kind_ != '2' && kind_ != 'L') {
-            throw NotValidException("kind must be '2' or 'L'! Got '" + string(1, kind_) + "'", __PRETTY_FUNCTION__);
+            throw NotValidException(
+                "kind must be '2' or 'L'! Got '" + string(1, kind_) + "'",
+                __PRETTY_FUNCTION__
+            );
         }
 
         // check channel
         if (channel_ != 'g' && channel_ != 'q') {
-            throw NotValidException("channel must be 'g' or 'q'! Got '" + string(1, channel_) + "'", __PRETTY_FUNCTION__);
+            throw NotValidException(
+                "channel must be 'g' or 'q'! Got '" + string(1, channel_) + "'",
+                __PRETTY_FUNCTION__
+            );
         }
         if (channel_ == 'q' && order_ == 1) {
-            throw NotPresentException("quark massive coefficient functions at order 1 are not present! Got channel=" + string(1, channel_) + ",order=" + to_string(order_), __PRETTY_FUNCTION__);
+            throw NotPresentException(
+                "quark massive coefficient functions at order 1 are not "
+                "present! Got channel="
+                    + string(1, channel_) + ",order=" + to_string(order_),
+                __PRETTY_FUNCTION__
+            );
         }
-    } catch (const NotPresentException& e) {
+    } catch (const NotPresentException &e) {
         e.runtime_error();
-    } catch (const NotKnownException& e) {
+    } catch (const NotKnownException &e) {
         e.runtime_error();
-    } catch (const NotValidException& e) {
+    } catch (const NotValidException &e) {
         e.runtime_error();
     }
 }

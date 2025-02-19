@@ -44,14 +44,23 @@ class HighScaleSplitLogs : public CoefficientFunction {
         double fx(double x, double m2Q2, int nf) const;
         Value fxBand(double x, double m2Q2, int nf) const;
 
-        [[deprecated("This function is deprecated and should not be used since HighScaleSplitLogs is implemented only for Q=mu. Calling HighScaleSplitLogs::fx(double x, double m2Q2, int nf)")]]
-        double
+        [[deprecated(
+            "This function is deprecated and should not be used since "
+            "HighScaleSplitLogs is implemented only for Q=mu. It will throw a "
+            "NotImplementedException. Use HighScaleSplitLogs::fx(double x, "
+            "double m2Q2, int nf) instead"
+        )]] double
             fx(double /*x*/, double /*m2Q2*/, double /*m2mu2*/,
                int /*nf*/) const override;
-        [[deprecated("This function is deprecated and should not be used since HighScaleSplitLogs is implemented only for Q=mu. Calling HighScaleSplitLogs::fxBand(double x, double m2Q2, int nf)")]]
-        Value
-            fxBand(double x, double m2Q2, double /*m2mu2*/, int nf)
-                const override;
+        [[deprecated(
+            "This function is deprecated and should not be used since "
+            "HighScaleSplitLogs is implemented only for Q=mu. It will throw a "
+            "NotImplementedException. Use HighScaleSplitLogs::fxBand(double x, "
+            "double m2Q2, int nf) instead"
+        )]] Value
+            fxBand(
+                double x, double m2Q2, double /*m2mu2*/, int nf
+            ) const override;
 
         // division of the total result in the log terms
         double LL(double x, int nf) const { return (this->*LL_)(x, nf); }

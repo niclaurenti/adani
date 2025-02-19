@@ -11,7 +11,8 @@ Value::Value(const double &central, const double &higher, const double &lower) {
         higher_ = higher;
         if (higher < central) {
             throw NotValidException(
-                "class Value initialized with higher < central! Got: higher=" + to_string(higher) + ", central=" + to_string(central),
+                "class Value initialized with higher < central! Got: higher="
+                    + to_string(higher) + ", central=" + to_string(central),
                 __PRETTY_FUNCTION__
             );
         }
@@ -19,11 +20,12 @@ Value::Value(const double &central, const double &higher, const double &lower) {
         lower_ = lower;
         if (lower > central) {
             throw NotValidException(
-                "class Value initialized with lower > central! Got: lower=" + to_string(lower) + ", central=" + to_string(central),
+                "class Value initialized with lower > central! Got: lower="
+                    + to_string(lower) + ", central=" + to_string(central),
                 __PRETTY_FUNCTION__
             );
         }
-    } catch (NotValidException& e) {
+    } catch (NotValidException &e) {
         e.runtime_error();
     }
 }
@@ -48,11 +50,12 @@ Value::Value(const double &higher, const double &lower) {
         lower_ = lower;
         if (higher < lower) {
             throw NotValidException(
-                "class Value initialized with lower > higher! Got: lower=" + to_string(lower) + ", higher=" + to_string(higher),
+                "class Value initialized with lower > higher! Got: lower="
+                    + to_string(lower) + ", higher=" + to_string(higher),
                 __PRETTY_FUNCTION__
             );
         }
-    } catch (NotValidException& e) {
+    } catch (NotValidException &e) {
         e.runtime_error();
     }
 
