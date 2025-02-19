@@ -48,8 +48,14 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
         void SetFunctions();
 
     private:
+        // TODO: fx is the sum of a beta-dependent term and a beta-independent
+        // in this way there is some repeated code. Split the pointers into beta-indep and
+        // beta-dep
         double (ThresholdCoefficientFunction::*fx_)(
             double, double, double, int
+        ) const;
+        double (ThresholdCoefficientFunction::*beta_indep_)(
+            double, double, double
         ) const;
 
         ExactCoefficientFunction *exact_as1_;
@@ -111,6 +117,11 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
 
         double ZeroFunction(
             double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/
+        ) const {
+            return 0.;
+        };
+        double ZeroFunction(
+            double /*x*/, double /*m2Q2*/, double /*m2mu2*/
         ) const {
             return 0.;
         };
