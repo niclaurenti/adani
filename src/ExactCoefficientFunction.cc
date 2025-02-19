@@ -469,7 +469,7 @@ double ExactCoefficientFunction::C_g21(double x, double m2Q2) const {
 
     return -(
         convolutions_lmu1_[0]->Convolute(x, m2Q2, nf_one)
-        - convolutions_lmu1_[1]->Convolute(x, m2Q2, nf_one) * beta(0, nf_one)
+        - convolutions_lmu1_[1]->Convolute(x, m2Q2, nf_one) * beta0(nf_one)
     );
 }
 
@@ -540,7 +540,7 @@ double ExactCoefficientFunction::C_ps31(double x, double m2Q2, int nf) const {
         convolutions_lmu1_[0]->Convolute(x, m2Q2, nf)
         + convolutions_lmu1_[1]->Convolute(x, m2Q2, nf)
         + convolutions_lmu1_[2]->Convolute(x, m2Q2, nf)
-        - 2. * beta(0, nf) * convolutions_lmu1_[3]->Convolute(x, m2Q2, nf)
+        - 2. * beta0(nf) * convolutions_lmu1_[3]->Convolute(x, m2Q2, nf)
     );
 }
 
@@ -556,7 +556,7 @@ double ExactCoefficientFunction::C_ps32(double x, double m2Q2, int nf) const {
     return 0.5
                * (convolutions_lmu2_[0]->Convolute(x, m2Q2, nf)
                   + convolutions_lmu2_[1]->Convolute(x, m2Q2, nf))
-           - 3. / 2 * beta(0, nf)
+           - 3. / 2 * beta0(nf)
                  * convolutions_lmu2_[2]->Convolute(x, m2Q2, nf);
 }
 
@@ -571,10 +571,10 @@ double ExactCoefficientFunction::C_g31(double x, double m2Q2, int nf) const {
 
     return -(
         convolutions_lmu1_[0]->Convolute(x, m2Q2, nf)
-        - beta(1, nf) * convolutions_lmu1_[1]->Convolute(x, m2Q2, nf)
+        - beta1(nf) * convolutions_lmu1_[1]->Convolute(x, m2Q2, nf)
         + convolutions_lmu1_[2]->Convolute(x, m2Q2, nf)
         + convolutions_lmu1_[3]->Convolute(x, m2Q2, nf)
-        - 2. * beta(0, nf) * convolutions_lmu1_[4]->Convolute(x, m2Q2, nf)
+        - 2. * beta0(nf) * convolutions_lmu1_[4]->Convolute(x, m2Q2, nf)
     );
 }
 
@@ -587,13 +587,13 @@ double ExactCoefficientFunction::C_g31(double x, double m2Q2, int nf) const {
 
 double ExactCoefficientFunction::C_g32(double x, double m2Q2, int nf) const {
 
-    double beta0 = beta(0, nf);
+    double beta_0 = beta0(nf);
 
     return 0.5
                * (convolutions_lmu2_[0]->Convolute(x, m2Q2, nf)
                   + convolutions_lmu2_[1]->Convolute(x, m2Q2, nf))
-           - 3. / 2 * beta0 * convolutions_lmu2_[2]->Convolute(x, m2Q2, nf)
-           + beta0 * beta0 * convolutions_lmu2_[3]->Convolute(x, m2Q2, nf);
+           - 3. / 2 * beta_0 * convolutions_lmu2_[2]->Convolute(x, m2Q2, nf)
+           + beta_0 * beta_0 * convolutions_lmu2_[3]->Convolute(x, m2Q2, nf);
 }
 
 //==========================================================================================//
