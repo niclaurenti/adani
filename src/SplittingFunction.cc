@@ -1,7 +1,7 @@
 #include "adani/SplittingFunction.h"
 #include "adani/Constants.h"
-#include "adani/SpecialFunctions.h"
 #include "adani/Exceptions.h"
+#include "adani/SpecialFunctions.h"
 
 #include <cmath>
 
@@ -24,7 +24,8 @@ void AbstractSplittingFunction::CheckOrder(int order) const {
     }
     if (order > 1) {
         throw NotImplementedException(
-            "order greater than 1 is not implemented. Got order=" + to_string(order),
+            "order greater than 1 is not implemented. Got order="
+                + to_string(order),
             __PRETTY_FUNCTION__
         );
     }
@@ -65,11 +66,11 @@ SplittingFunction::SplittingFunction(
 
         SetFunctions();
 
-    } catch (NotImplementedException& e) {
+    } catch (NotImplementedException &e) {
         e.runtime_error();
-    } catch (NotValidException& e) {
+    } catch (NotValidException &e) {
         e.runtime_error();
-    } catch (UnexpectedException& e) {
+    } catch (UnexpectedException &e) {
         e.runtime_error();
     }
 }
@@ -173,9 +174,8 @@ void SplittingFunction::SetFunctions() {
             sing_int_ = &SplittingFunction::Pqq0sing_integrated;
 
         } else {
-             throw UnexpectedException(
-                "Unexpected exception!",
-                __PRETTY_FUNCTION__
+            throw UnexpectedException(
+                "Unexpected exception!", __PRETTY_FUNCTION__
             );
         }
     } else if (order_ == 1) {
@@ -195,15 +195,11 @@ void SplittingFunction::SetFunctions() {
 
         } else {
             throw UnexpectedException(
-                "Unexpected exception!",
-                __PRETTY_FUNCTION__
+                "Unexpected exception!", __PRETTY_FUNCTION__
             );
         }
     } else {
-        throw UnexpectedException(
-            "Unexpected exception!",
-            __PRETTY_FUNCTION__
-        );
+        throw UnexpectedException("Unexpected exception!", __PRETTY_FUNCTION__);
     }
 }
 
@@ -246,13 +242,13 @@ ConvolutedSplittingFunctions::ConvolutedSplittingFunctions(
 
         SetFunctions();
 
-        } catch (NotImplementedException& e) {
-            e.runtime_error();
-        } catch (NotValidException& e) {
-            e.runtime_error();
-        } catch (UnexpectedException& e) {
-            e.runtime_error();
-        }
+    } catch (NotImplementedException &e) {
+        e.runtime_error();
+    } catch (NotValidException &e) {
+        e.runtime_error();
+    } catch (UnexpectedException &e) {
+        e.runtime_error();
+    }
 }
 
 ConvolutedSplittingFunctions::~ConvolutedSplittingFunctions() { delete Pgg0_; }
@@ -365,13 +361,18 @@ void ConvolutedSplittingFunctions::SetFunctions() {
             loc_ = &ConvolutedSplittingFunctions::Pgg0_x_Pgg0_loc;
         } else {
             throw NotImplementedException(
-                "P" + string(1, entry1_) + string(1, entry2_) + to_string(order1_) + " x " + "P" + string(1, entry3_) + string(1, entry4_) + to_string(order2_) + " is not implemented",
+                "P" + string(1, entry1_) + string(1, entry2_)
+                    + to_string(order1_) + " x " + "P" + string(1, entry3_)
+                    + string(1, entry4_) + to_string(order2_)
+                    + " is not implemented",
                 __PRETTY_FUNCTION__
             );
         }
     } else {
         throw NotImplementedException(
-            "P" + string(1, entry1_) + string(1, entry2_) + to_string(order1_) + " x " + "P" + string(1, entry3_) + string(1, entry4_) + to_string(order2_) + " is not implemented",
+            "P" + string(1, entry1_) + string(1, entry2_) + to_string(order1_)
+                + " x " + "P" + string(1, entry3_) + string(1, entry4_)
+                + to_string(order2_) + " is not implemented",
             __PRETTY_FUNCTION__
         );
     }

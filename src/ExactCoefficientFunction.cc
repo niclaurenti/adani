@@ -38,9 +38,14 @@ ExactCoefficientFunction::ExactCoefficientFunction(
         if (double_int_method != "analytical"
             && double_int_method != "double_numerical"
             && double_int_method != "monte_carlo") {
-            throw NotValidException("double_int_method must be 'analytical', 'double_numerical' or 'monte_carlo'! Got '" + double_int_method +"'", __PRETTY_FUNCTION__);
+            throw NotValidException(
+                "double_int_method must be 'analytical', 'double_numerical' or "
+                "'monte_carlo'! Got '"
+                    + double_int_method + "'",
+                __PRETTY_FUNCTION__
+            );
         }
-    } catch (const NotValidException& e) {
+    } catch (const NotValidException &e) {
         e.runtime_error();
     }
 
@@ -203,9 +208,9 @@ double ExactCoefficientFunction::MuIndependentTerms(
     double res;
     try {
         res = (this->*mu_indep_)(x, m2Q2, nf);
-    } catch (NotValidException& e) {
+    } catch (NotValidException &e) {
         e.runtime_error();
-    } catch (NotKnownException& e) {
+    } catch (NotKnownException &e) {
         e.runtime_error();
     }
     return res;
@@ -556,8 +561,7 @@ double ExactCoefficientFunction::C_ps32(double x, double m2Q2, int nf) const {
     return 0.5
                * (convolutions_lmu2_[0]->Convolute(x, m2Q2, nf)
                   + convolutions_lmu2_[1]->Convolute(x, m2Q2, nf))
-           - 3. / 2 * beta0(nf)
-                 * convolutions_lmu2_[2]->Convolute(x, m2Q2, nf);
+           - 3. / 2 * beta0(nf) * convolutions_lmu2_[2]->Convolute(x, m2Q2, nf);
 }
 
 //==========================================================================================//
@@ -631,7 +635,8 @@ double ExactCoefficientFunction::C_ps3_MuDep(
 double ExactCoefficientFunction::
     WarningFunc(double /*x*/, double /*m2Q2*/, int /*nf*/) const {
     throw NotKnownException(
-        "mu-independent terms of the exact coefficient function at order=3 are not known!",
+        "mu-independent terms of the exact coefficient function at order=3 are "
+        "not known!",
         "ExactCoefficientFunction::MuIndependentTerms"
     );
     return 0.;

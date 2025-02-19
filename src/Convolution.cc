@@ -20,7 +20,7 @@ AbstractConvolution::AbstractConvolution(
         SetAbserr(abserr);
         SetRelerr(relerr);
         AllocWorkspace(dim);
-    } catch (NotValidException& e) {
+    } catch (NotValidException &e) {
         e.runtime_error();
     }
 
@@ -80,7 +80,6 @@ void AbstractConvolution::AllocWorkspace(const int &dim) {
         );
     }
     w_ = gsl_integration_workspace_alloc(dim);
-
 }
 
 //==========================================================================================//
@@ -311,7 +310,7 @@ DoubleConvolution::DoubleConvolution(
 
     try {
         SetMCcalls(MCcalls);
-    } catch (NotValidException& e) {
+    } catch (NotValidException &e) {
         e.runtime_error();
     }
 

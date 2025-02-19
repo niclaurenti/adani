@@ -12,10 +12,10 @@ using namespace std;
 
 class AbstractException : public exception {
     public:
-        AbstractException() {};
-        AbstractException(const string& reason, const string& function);
+        AbstractException(){};
+        AbstractException(const string &reason, const string &function);
 
-        const char* what() const noexcept override;
+        const char *what() const noexcept override;
         void runtime_error() const;
         void warning() const;
 
@@ -29,7 +29,7 @@ class AbstractException : public exception {
 
 class NotImplementedException : public AbstractException {
     public:
-        NotImplementedException(const string& reason, const string& function);
+        NotImplementedException(const string &reason, const string &function);
 };
 
 //==========================================================================================//
@@ -38,7 +38,7 @@ class NotImplementedException : public AbstractException {
 
 class NotKnownException : public AbstractException {
     public:
-        NotKnownException(const string& reason, const string& function);
+        NotKnownException(const string &reason, const string &function);
 };
 
 //==========================================================================================//
@@ -47,7 +47,7 @@ class NotKnownException : public AbstractException {
 
 class NotPresentException : public AbstractException {
     public:
-        NotPresentException(const string& reason, const string& function);
+        NotPresentException(const string &reason, const string &function);
 };
 
 //==========================================================================================//
@@ -56,7 +56,7 @@ class NotPresentException : public AbstractException {
 
 class NotValidException : public AbstractException {
     public:
-        NotValidException(const string& reason, const string& function);
+        NotValidException(const string &reason, const string &function);
 };
 
 //==========================================================================================//
@@ -65,7 +65,7 @@ class NotValidException : public AbstractException {
 
 class UnexpectedException : public AbstractException {
     public:
-    UnexpectedException(const string& reason, const string& function);
+        UnexpectedException(const string &reason, const string &function);
 };
 
 #endif

@@ -3,7 +3,6 @@
 #include "adani/SpecialFunctions.h"
 #include <cmath>
 
-
 //==========================================================================================//
 //  AbstractHighEnergyCoefficientFunction: constructor
 //------------------------------------------------------------------------------------------//
@@ -23,7 +22,7 @@ HighEnergyCoefficientFunction::HighEnergyCoefficientFunction(
     : AbstractHighEnergyCoefficientFunction(order, kind, channel, NLL) {
     try {
         SetFunctions();
-    } catch (UnexpectedException& e) {
+    } catch (UnexpectedException &e) {
         e.runtime_error();
     }
 }
@@ -61,6 +60,11 @@ void HighEnergyCoefficientFunction::SetFunctions() {
             LL_ = &HighEnergyCoefficientFunction::CL_g2_highenergy;
         else if (GetKind() == 'L' && GetChannel() == 'q')
             LL_ = &HighEnergyCoefficientFunction::CL_ps2_highenergy;
+        else {
+            throw UnexpectedException(
+                "Unexpected exception!", __PRETTY_FUNCTION__
+            );
+        }
 
     } else if (GetOrder() == 3) {
 
@@ -76,18 +80,13 @@ void HighEnergyCoefficientFunction::SetFunctions() {
         } else if (GetKind() == 'L' && GetChannel() == 'q') {
             LL_ = &HighEnergyCoefficientFunction::CL_ps3_highenergyLL;
             NLL_ = &HighEnergyCoefficientFunction::CL_ps3_highenergyNLL;
-
         } else {
             throw UnexpectedException(
-                "Unexpected exception!",
-                __PRETTY_FUNCTION__
+                "Unexpected exception!", __PRETTY_FUNCTION__
             );
         }
     } else {
-        throw UnexpectedException(
-            "Unexpected exception!",
-            __PRETTY_FUNCTION__
-        );
+        throw UnexpectedException("Unexpected exception!", __PRETTY_FUNCTION__);
     }
 
     if (!GetNLL())
@@ -104,7 +103,7 @@ HighEnergyHighScaleCoefficientFunction::HighEnergyHighScaleCoefficientFunction(
     : AbstractHighEnergyCoefficientFunction(order, kind, channel, NLL) {
     try {
         SetFunctions();
-    } catch (UnexpectedException& e) {
+    } catch (UnexpectedException &e) {
         e.runtime_error();
     }
 }
@@ -173,15 +172,11 @@ void HighEnergyHighScaleCoefficientFunction::SetFunctions() {
 
         } else {
             throw UnexpectedException(
-                "Unexpected exception!",
-                __PRETTY_FUNCTION__
+                "Unexpected exception!", __PRETTY_FUNCTION__
             );
         }
     } else {
-        throw UnexpectedException(
-            "Unexpected exception!",
-            __PRETTY_FUNCTION__
-        );
+        throw UnexpectedException("Unexpected exception!", __PRETTY_FUNCTION__);
     }
     if (!GetNLL())
         NLL_ = &HighEnergyHighScaleCoefficientFunction::ZeroFunctionBand;
@@ -956,7 +951,8 @@ Value HighEnergyHighScaleCoefficientFunction::C2_g3_highenergy_highscaleNLL(
          + (-416. * a21 / 9 + 64. / 27 * a10 * a11 * (-71. + 3. * pi2)
             - 32. / 27 * a11 * beta_0 * (-71. + 3. * pi2))
                * LQ
-         + (416. * a10 * a11 / 9 + 32. * a21 / 3 - 208. * a11 * beta_0 / 9) * LQ2
+         + (416. * a10 * a11 / 9 + 32. * a21 / 3 - 208. * a11 * beta_0 / 9)
+               * LQ2
          + (-64. * a10 * a11 / 9 + 32. * a11 * beta_0 / 9) * LQ3
          + Lmu2
                * (32. * a10 * a11 / 3 - 16. * a11 * beta_0 / 3
@@ -989,8 +985,8 @@ Value HighEnergyHighScaleCoefficientFunction::C2_g3_highenergy_highscaleNLL(
                   + (64 * a10 * a11 / 3 - 32 * a11 * beta_0 / 3) * LQ2
                   + LQ
                         * (-832 * a10 * a11 / 9
-                           + 8. / 9 * a11 * beta_0 * (52 + 96 * ln2 - 63 * zeta3)
-                        )
+                           + 8. / 9 * a11 * beta_0
+                                 * (52 + 96 * ln2 - 63 * zeta3))
                   + 4. / 9 * a11 * beta_0
                         * (-40 + 8 * pi2 - 96 * ln2 + 63 * zeta3))
          + LQ

@@ -111,47 +111,52 @@ ApproximateCoefficientFunction::ApproximateCoefficientFunction(
         order, kind, channel, NLL, highscale_version
     );
 
-    // in principle this if statements should not give any error since they are all
-    // checked in the CoefficientFunction constructor
-    if (order == 1) {
-        if (kind == '2') {
-            if (channel == 'g')
-                approximation_ = C2_g1_params;
-            variation_ = C2_var;
-        } else if (kind == 'L') {
-            if (channel == 'g')
-                approximation_ = CL_g2_params;
-            variation_ = CL_var;
+    try {
+        if (order == 1) {
+            if (kind == '2') {
+                if (channel == 'g')
+                    approximation_ = C2_g1_params;
+                variation_ = C2_var;
+            } else if (kind == 'L') {
+                if (channel == 'g')
+                    approximation_ = CL_g2_params;
+                variation_ = CL_var;
+            }
+        } else if (order == 2) {
+            if (kind == '2') {
+                if (channel == 'g')
+                    approximation_ = C2_g2_params;
+                else if (channel == 'q')
+                    approximation_ = C2_ps2_params;
+                variation_ = C2_var;
+            } else if (kind == 'L') {
+                if (channel == 'g')
+                    approximation_ = CL_g2_params;
+                else if (channel == 'q')
+                    approximation_ = CL_ps2_params;
+                variation_ = CL_var;
+            }
+        } else if (order == 3) {
+            if (kind == '2') {
+                if (channel == 'g')
+                    approximation_ = C2_g3_params;
+                else if (channel == 'q')
+                    approximation_ = C2_ps3_params;
+                variation_ = C2_var;
+            } else if (kind == 'L') {
+                if (channel == 'g')
+                    approximation_ = CL_g3_params;
+                else if (channel == 'q')
+                    approximation_ = CL_ps3_params;
+                variation_ = CL_var;
+            }
+        } else {
+            throw UnexpectedException(
+                "Unexpected exception!", __PRETTY_FUNCTION__
+            );
         }
-    }
-    if (order == 2) {
-        if (kind == '2') {
-            if (channel == 'g')
-                approximation_ = C2_g2_params;
-            else if (channel == 'q')
-                approximation_ = C2_ps2_params;
-            variation_ = C2_var;
-        } else if (kind == 'L') {
-            if (channel == 'g')
-                approximation_ = CL_g2_params;
-            else if (channel == 'q')
-                approximation_ = CL_ps2_params;
-            variation_ = CL_var;
-        }
-    } else if (order == 3) {
-        if (kind == '2') {
-            if (channel == 'g')
-                approximation_ = C2_g3_params;
-            else if (channel == 'q')
-                approximation_ = C2_ps3_params;
-            variation_ = C2_var;
-        } else if (kind == 'L') {
-            if (channel == 'g')
-                approximation_ = CL_g3_params;
-            else if (channel == 'q')
-                approximation_ = CL_ps3_params;
-            variation_ = CL_var;
-        }
+    } catch (UnexpectedException &e) {
+        e.runtime_error();
     }
 }
 
@@ -273,39 +278,59 @@ ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(
     try {
         if (GetOrder() == 1) {
             throw NotImplementedException(
-                "KLMV approximation is not implemented at order 1! Got order=" + to_string(order),
+                "KLMV approximation is not implemented at order 1! Got order="
+                    + to_string(order),
                 __PRETTY_FUNCTION__
             );
         }
         if (GetKind() == 'L') {
             throw NotImplementedException(
-                "KLMV approximation is not implemented for kind = 'L'! Got kind='" + string(1, kind) + "'",
+                "KLMV approximation is not implemented for kind = 'L'! Got "
+                "kind='"
+                    + string(1, kind) + "'",
                 __PRETTY_FUNCTION__
             );
         }
-    } catch (const NotImplementedException& e) {
-        e.runtime_error();
-    }
 
-    if (GetOrder() == 2) {
-        if (GetChannel() == 'g') {
-            params_A_ = klmv_C2g2A;
-            params_B_ = klmv_C2g2B;
-        } else if (GetChannel() == 'q') {
-            params_A_ = klmv_C2q2A;
-            params_B_ = klmv_C2q2B;
+        if (GetOrder() == 2) {
+            if (GetChannel() == 'g') {
+                params_A_ = klmv_C2g2A;
+                params_B_ = klmv_C2g2B;
+            } else if (GetChannel() == 'q') {
+                params_A_ = klmv_C2q2A;
+                params_B_ = klmv_C2q2B;
+            } else {
+                throw UnexpectedException(
+                    "Unexpected exception!",
+                    __PRETTY_FUNCTION__
+                );
+            }
+        } else if (GetOrder() == 3) {
+            if (GetChannel() == 'g') {
+                params_A_ = klmv_C2g3A;
+                if (lowxi)
+                    params_B_ = klmv_C2g3B_lowxi;
+                else
+                    params_B_ = klmv_C2g3B;
+            } else if (GetChannel() == 'q') {
+                params_A_ = klmv_C2q3A;
+                params_B_ = klmv_C2q3B;
+            } else {
+                throw UnexpectedException(
+                    "Unexpected exception!",
+                    __PRETTY_FUNCTION__
+                );
+            }
+        } else {
+            throw UnexpectedException(
+                "Unexpected exception!",
+                __PRETTY_FUNCTION__
+            );
         }
-    } else if (GetOrder() == 3) {
-        if (GetChannel() == 'g') {
-            params_A_ = klmv_C2g3A;
-            if (lowxi)
-                params_B_ = klmv_C2g3B_lowxi;
-            else
-                params_B_ = klmv_C2g3B;
-        } else if (GetChannel() == 'q') {
-            params_A_ = klmv_C2q3A;
-            params_B_ = klmv_C2q3B;
-        }
+    } catch (const NotImplementedException &e) {
+        e.runtime_error();
+    } catch (UnexpectedException& e) {
+        e.runtime_error();
     }
 
     threshold_ = new ThresholdCoefficientFunction(order, kind, channel);
