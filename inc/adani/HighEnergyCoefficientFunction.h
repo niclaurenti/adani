@@ -164,8 +164,6 @@ class HighEnergyHighScaleCoefficientFunction
         Value
             fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
 
-        void SetFunctions();
-
     private:
         double (HighEnergyHighScaleCoefficientFunction::*LL_)(
             double, double, double
@@ -173,6 +171,8 @@ class HighEnergyHighScaleCoefficientFunction
         Value (HighEnergyHighScaleCoefficientFunction::*NLL_)(
             double, double, double, int
         ) const;
+
+        void SetFunctions();
 
         //==========================================================================================//
         //                      Q>>m limit of the high energy
