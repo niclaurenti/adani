@@ -68,8 +68,6 @@ class HighScaleSplitLogs : public CoefficientFunction {
         double N2LL(double x, int nf) const { return (this->*N2LL_)(x, nf); }
         Value N3LL(double x, int nf) const { return (this->*N3LL_)(x, nf); }
 
-        void SetFunctions();
-
     private:
         MasslessCoefficientFunction *massless_as1_;
         MasslessCoefficientFunction *massless_;
@@ -79,6 +77,8 @@ class HighScaleSplitLogs : public CoefficientFunction {
         double (HighScaleSplitLogs::*NLL_)(double, int) const;
         double (HighScaleSplitLogs::*N2LL_)(double, int) const;
         Value (HighScaleSplitLogs::*N3LL_)(double, int) const;
+
+        void SetFunctions();
 
         //==========================================================================================//
         //           Gluon channel, F2

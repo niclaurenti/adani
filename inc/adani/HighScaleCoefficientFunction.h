@@ -53,8 +53,6 @@ class HighScaleCoefficientFunction : public CoefficientFunction {
             double x, double m2Q2, double m2mu2, int nf
         ) const;
 
-        void SetFunctions();
-
     private:
         Value (HighScaleCoefficientFunction::*fx_)(
             double, double, double, int
@@ -64,6 +62,8 @@ class HighScaleCoefficientFunction : public CoefficientFunction {
         MasslessCoefficientFunction *massless_as2_;
         MasslessCoefficientFunction *massless_as3_;
         MatchingCondition *a_muindep_;
+
+        void SetFunctions();
 
         //==========================================================================================//
         //                      High scale (Q^2 >> m^2) coefficient

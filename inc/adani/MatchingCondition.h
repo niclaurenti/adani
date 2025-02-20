@@ -40,9 +40,6 @@ class MatchingCondition {
         char GetEntry2() const { return entry2_; };
         string GetVersion() const { return version_; };
 
-        void CheckEntry(char entry) const;
-        void CheckVersion(string version) const;
-
         Value MuIndependentNfIndependentTerm(double x) const;
         vector<double> NotOrdered(double x) const;
 
@@ -51,6 +48,9 @@ class MatchingCondition {
         const char entry1_;
         const char entry2_;
         const string version_;
+
+        void CheckEntry(char entry) const;
+        void CheckVersion(string version) const;
 
         //==========================================================================================//
         //  Matching conditions O(as)

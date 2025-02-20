@@ -7,6 +7,7 @@
 #include "adani/Constants.h"
 #include "adani/Convolution.h"
 #include "adani/ExactCoefficientFunction.h"
+#include "adani/Exceptions.h"
 #include "adani/HighEnergyCoefficientFunction.h"
 #include "adani/HighScaleCoefficientFunction.h"
 #include "adani/HighScaleSplitLogs.h"

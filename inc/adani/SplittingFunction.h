@@ -70,8 +70,6 @@ class SplittingFunction : public AbstractSplittingFunction {
         // Integral from 0 to x of the Singular part
         double SingularIntegrated(double x, int nf) const override;
 
-        void SetFunctions();
-
         // get methods
         double GetOrder() const { return order_; };
         char GetEntry1() const { return entry1_; };
@@ -86,6 +84,8 @@ class SplittingFunction : public AbstractSplittingFunction {
         double (SplittingFunction::*sing_)(double, int) const;
         double (SplittingFunction::*sing_int_)(double, int) const;
         double (SplittingFunction::*loc_)(int) const;
+
+        void SetFunctions();
 
         //==========================================================================================//
         //                      Splitting functions O(as)
@@ -160,8 +160,6 @@ class ConvolutedSplittingFunctions : public AbstractSplittingFunction {
         // Integral from 0 to x of the Singular part
         double SingularIntegrated(double x, int nf) const override;
 
-        void SetFunctions();
-
         // get methods
         double GetOrder1() const { return order1_; };
         char GetEntry1() const { return entry1_; };
@@ -184,6 +182,8 @@ class ConvolutedSplittingFunctions : public AbstractSplittingFunction {
         double (ConvolutedSplittingFunctions::*loc_)(int) const;
 
         SplittingFunction *Pgg0_;
+
+        void SetFunctions();
 
         //==========================================================================================//
         //  Convolution between the splitting functions Pgg0/Pqq0
