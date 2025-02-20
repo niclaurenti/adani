@@ -3,10 +3,9 @@
  *
  *       Filename:  HighEnergyCoefficientFunction.h
  *
- *    Description:  Header file for the
- * HighEnergyCoefficientFunction.cc file.
+ *         Author:  Daniele Adani
  *
- *         Author:  L'allenamento si fa!
+ *    Description:  L'allenamento si fa!
  *
  *  In this file there are the coefficient functions in the
  * high energy limit, i.e. x -> 0

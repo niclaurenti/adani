@@ -3,10 +3,9 @@
  *
  *       Filename:  ExactCoefficientFunction.h
  *
- *    Description:  Header file for the
- * ExactCoefficientFunction.cc file.
+ *         Author:  Daniele Adani
  *
- *         Author:  Hanno un cuore differente
+ *    Description:  Hanno un cuore differente
  *
  *  In this file there are the exact heavy coefficient
  *  functions (when known)

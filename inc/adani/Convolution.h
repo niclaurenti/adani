@@ -3,11 +3,9 @@
  *
  *       Filename:  Convolution.h
  *
- *    Description:  Header file for the Convolution.cc
- * file.
+ *         Author:  Daniele Adani
  *
- *         Author:  Dribbla tutti, anche i cammelli del
- * deserto
+ *    Description:  Dribbla tutti, anche i cammelli del deserto
  *
  *  In this file there are the convolutions between the coefficeint functions
  * and splitting functions.

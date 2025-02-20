@@ -1,3 +1,17 @@
+/*
+ * =====================================================================================
+ *
+ *       Filename:  Exceptions.h
+ *
+ *         Author:  Daniele Adani
+ *
+ *    Description:  Noi parliamo di idee che danno animo a un gioco che poi è
+ *                  quello che amiamo, ovvero il calcio
+ *
+ *  In this file there are the custom exceptions
+ *
+ * =====================================================================================
+ */
 #ifndef Exceptions_h
 #define Exceptions_h
 

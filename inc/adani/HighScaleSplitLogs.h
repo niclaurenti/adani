@@ -3,10 +3,9 @@
  *
  *       Filename:  HighScaleSplitLogs.h
  *
- *    Description:  Header file for the
- * HighScaleSplitLogs.cc file.
+ *         Author:  Daniele Adani
  *
- *         Author:  I mancini sono veramente l'essenza della qualita' nel calcio
+ *    Description:  I mancini sono veramente l'essenza della qualita' nel calcio
  *
  *  In this file there are the coefficient functions in the
  *  high scale limit, i.e. Q^2 >> m^2, implemented setting mu=Q and splitting

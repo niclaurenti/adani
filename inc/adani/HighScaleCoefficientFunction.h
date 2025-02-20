@@ -3,11 +3,9 @@
  *
  *       Filename:  HighScaleCoefficientFunction.h
  *
- *    Description:  Header file for the
- * HighScaleCoefficientFunction.cc file.
+ *         Author:  Daniele Adani
  *
- *         Author:  Da quella posizione trasforma l'acqua in
- * vino
+ *    Description:  Da quella posizione trasforma l'acqua in vino
  *
  *  In this file there are the coefficient functions in the
  * high scale limit, i.e. Q^2 >> m^2

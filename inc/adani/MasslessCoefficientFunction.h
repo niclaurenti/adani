@@ -3,10 +3,9 @@
  *
  *       Filename:  MasslessCoefficientFunction.h
  *
- *    Description:  Header file for the
- * MasslessCoefficientFunction.cc file.
+ *         Author:  Daniele Adani
  *
- *         Author:  Viva el Futbol
+ *    Description:  Viva el Futbol
  *
  *  In this file there are the massless coefficient
  * functions. Observe that for the O(as^2) and

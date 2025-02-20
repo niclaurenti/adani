@@ -3,10 +3,9 @@
  *
  *       Filename:  ThresholdCoefficientFunctions.h
  *
- *    Description:  Header file for the
- * ThresholdCoefficientFunctions.cc file.
+ *         Author:  Daniele Adani
  *
- *         Author:  La garra charruaaaaaaa
+ *    Description:  La garra charruaaaaaaa
  *
  *  In this file there are the coefficient functions in the
  * threshold limit, i.e. s->4m^2 (where s is the partonic

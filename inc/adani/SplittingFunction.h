@@ -3,11 +3,9 @@
  *
  *       Filename:  SplittingFunction.h
  *
- *    Description:  Header file for the
- * SplittingFunction.cc file.
+ *         Author:  Daniele Adani
  *
- *         Author:  A livello di servilismo come siamo
- * messi?
+ *    Description:  A livello di servilismo come siamo messi?
  *
  *  In this file there are the splitting functions.
  *

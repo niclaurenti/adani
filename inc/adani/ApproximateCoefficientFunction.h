@@ -3,10 +3,9 @@
  *
  *       Filename:  ApproximateCoefficientFunction.h
  *
- *    Description:  Header file for the
- * ApproximateCoefficientFunction.cc file.
+ *         Author:  Daniele Adani
  *
- *         Author:  L'artiglio che graffia
+ *    Description:  L'artiglio che graffia
  *
  *  In this file there is the approximation for the unknown
  * O(as^3) DIS massive coefficient functions.
