@@ -3,11 +3,9 @@
  *
  *       Filename:  Convolution.h
  *
- *    Description:  Header file for the Convolution.cc
- * file.
+ *         Author:  Daniele Adani
  *
- *         Author:  Dribbla tutti, anche i cammelli del
- * deserto
+ *    Description:  Dribbla tutti, anche i cammelli del deserto
  *
  *  In this file there are the convolutions between the coefficeint functions
  * and splitting functions.
@@ -63,6 +61,7 @@ class AbstractConvolution {
         // set methods
         void SetAbserr(const double &abserr);
         void SetRelerr(const double &relerr);
+        void AllocWorkspace(const int &dim);
 
     private:
         double abserr_;
@@ -93,14 +92,14 @@ class Convolution : public AbstractConvolution {
         double SingularPart(double x, double m2Q2, int nf) const override;
         double LocalPart(double x, double m2Q2, int nf) const override;
 
+    private:
+        static int NumberOfInstances_;
+        static gsl_error_handler_t *old_handler_;
+
         // support function for the integral. It is static in order to be passed
         // to gsl
         static double regular_integrand(double z, void *p);
         static double singular_integrand(double z, void *p);
-
-    private:
-        static int NumberOfInstances_;
-        static gsl_error_handler_t *old_handler_;
 };
 
 //==========================================================================================//
@@ -121,6 +120,9 @@ class ConvolutedCoefficientFunction : public CoefficientFunction {
         Convolution *GetConv() const { return conv_; };
 
         double MuIndependentTerms(double x, double m2Q2, int nf) const override;
+
+        // TODO: these three last functions should be marked as deprecated since
+        // not implemented
         double MuDependentTerms(
             double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/
         ) const override {
@@ -159,6 +161,15 @@ class DoubleConvolution : public AbstractConvolution {
         // set methods
         void SetMCcalls(const int &MCcalls);
 
+    private:
+        const bool MCintegral_;
+        int MCcalls_;
+        gsl_monte_vegas_state *s_;
+        gsl_rng *r_;
+
+        Convolution *convolution_;
+        ConvolutedCoefficientFunction *conv_coeff_;
+
         // support function for the integral. it is static in order to be passed
         // to gsl
         static double regular1_integrand(double z[], size_t /*dim*/, void *p);
@@ -168,15 +179,6 @@ class DoubleConvolution : public AbstractConvolution {
         static double singular1_integrand(double z[], size_t /*dim*/, void *p);
         static double singular2_integrand(double z[], size_t /*dim*/, void *p);
         static double singular3_integrand(double z, void *p);
-
-    private:
-        const bool MCintegral_;
-        int MCcalls_;
-        gsl_monte_vegas_state *s_;
-        gsl_rng *r_;
-
-        Convolution *convolution_;
-        ConvolutedCoefficientFunction *conv_coeff_;
 };
 
 //==========================================================================================//

@@ -3,10 +3,9 @@
  *
  *       Filename:  HighEnergyCoefficientFunction.h
  *
- *    Description:  Header file for the
- * HighEnergyCoefficientFunction.cc file.
+ *         Author:  Daniele Adani
  *
- *         Author:  L'allenamento si fa!
+ *    Description:  L'allenamento si fa!
  *
  *  In this file there are the coefficient functions in the
  * high energy limit, i.e. x -> 0
@@ -73,8 +72,6 @@ class HighEnergyCoefficientFunction
         Value
             fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
 
-        void SetFunctions();
-
     private:
         double (HighEnergyCoefficientFunction::*LL_)(
             double, double, double
@@ -82,6 +79,8 @@ class HighEnergyCoefficientFunction
         Value (HighEnergyCoefficientFunction::*NLL_)(
             double, double, double, int
         ) const;
+
+        void SetFunctions();
 
         //==========================================================================================//
         //                      High energy coefficient functions
@@ -164,8 +163,6 @@ class HighEnergyHighScaleCoefficientFunction
         Value
             fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
 
-        void SetFunctions();
-
     private:
         double (HighEnergyHighScaleCoefficientFunction::*LL_)(
             double, double, double
@@ -173,6 +170,8 @@ class HighEnergyHighScaleCoefficientFunction
         Value (HighEnergyHighScaleCoefficientFunction::*NLL_)(
             double, double, double, int
         ) const;
+
+        void SetFunctions();
 
         //==========================================================================================//
         //                      Q>>m limit of the high energy

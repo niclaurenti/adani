@@ -3,9 +3,9 @@
  *
  *       Filename:  Constants.h
  *
- *    Description:  File containing color factors.
+ *         Author:  Daniele Adani
  *
- *         Author:  Padre tempo opera in silenzio
+ *    Description:  Padre tempo opera in silenzio
  *
  * =====================================================================================
  */

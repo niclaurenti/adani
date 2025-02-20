@@ -3,11 +3,9 @@
  *
  *       Filename:  HighScaleCoefficientFunction.h
  *
- *    Description:  Header file for the
- * HighScaleCoefficientFunction.cc file.
+ *         Author:  Daniele Adani
  *
- *         Author:  Da quella posizione trasforma l'acqua in
- * vino
+ *    Description:  Da quella posizione trasforma l'acqua in vino
  *
  *  In this file there are the coefficient functions in the
  * high scale limit, i.e. Q^2 >> m^2
@@ -53,8 +51,6 @@ class HighScaleCoefficientFunction : public CoefficientFunction {
             double x, double m2Q2, double m2mu2, int nf
         ) const;
 
-        void SetFunctions();
-
     private:
         Value (HighScaleCoefficientFunction::*fx_)(
             double, double, double, int
@@ -64,6 +60,8 @@ class HighScaleCoefficientFunction : public CoefficientFunction {
         MasslessCoefficientFunction *massless_as2_;
         MasslessCoefficientFunction *massless_as3_;
         MatchingCondition *a_muindep_;
+
+        void SetFunctions();
 
         //==========================================================================================//
         //                      High scale (Q^2 >> m^2) coefficient

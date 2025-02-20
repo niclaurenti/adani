@@ -3,10 +3,9 @@
  *
  *       Filename:  CoefficientFunctions.h
  *
- *    Description:  Header file for the
- *                  CoefficientFunctions.cc file.
+ *         Author:  Daniele Adani
  *
- *         Author:  La tigre e il leone saranno anche più forti,
+ *    Description:  La tigre e il leone saranno anche più forti,
  *                  ma non vedrete mai un lupo al circo
  *
  *  In this file there is the abstract class CoefficientFunction
@@ -17,9 +16,9 @@
 #ifndef CoeffFunc
 #define CoeffFunc
 
+#include "adani/Exceptions.h"
 #include "adani/Value.h"
 
-#include <iostream>
 #include <vector>
 
 //==========================================================================================//

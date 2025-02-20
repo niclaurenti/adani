@@ -3,10 +3,9 @@
  *
  *       Filename:  Value.h
  *
- *    Description:  Header file for the
- *                  Value.cc file.
+ *         Author:  Daniele Adani
  *
- *         Author: La fatica chiama e noi fedeli dobbiamo abbracciarla
+ *    Description: La fatica chiama e noi fedeli dobbiamo abbracciarla
  *
  *  In this file there is the class Value
  *

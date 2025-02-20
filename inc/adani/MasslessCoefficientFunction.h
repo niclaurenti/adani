@@ -3,10 +3,9 @@
  *
  *       Filename:  MasslessCoefficientFunction.h
  *
- *    Description:  Header file for the
- * MasslessCoefficientFunction.cc file.
+ *         Author:  Daniele Adani
  *
- *         Author:  Viva el Futbol
+ *    Description:  Viva el Futbol
  *
  *  In this file there are the massless coefficient
  * functions. Observe that for the O(as^2) and
@@ -33,21 +32,46 @@ class MasslessCoefficientFunction : public CoefficientFunction {
         );
         ~MasslessCoefficientFunction() override{};
 
-        double fx(double x, double m2Q2, double m2mu2, int nf) const override;
-        double MuIndependentTerms(double /*x*/, double /*m2Q2*/, int /*nf*/)
-            const override;
+        [[deprecated(
+            "This function is deprecated and should not be used since it "
+            "depends on the MuDependent terms that are not implemented. It "
+            "will throw a NotImplementedException. Call "
+            "MasslessCoefficientFunction::MuIndependentTerms(double x, int nf) "
+            "for the mu-independent terms"
+        )]] double
+            fx(double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/
+            ) const override;
+
+        [[deprecated("This function is deprecated and should not be used since "
+                     "MasslessCoefficientFunction do not depend on m^2/Q^2!. "
+                     "It will throw a NotValidException. Call "
+                     "MasslessCoefficientFunction::MuIndependentTerms(double "
+                     "x, int nf) instead")]] double
+            MuIndependentTerms(double /*x*/, double /*m2Q2*/, int /*nf*/)
+                const override;
         double MuIndependentTerms(double x, int nf) const;
-        double MuDependentTerms(
-            double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/
-        ) const override;
 
-        Value
-            fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
+        [[deprecated("This function is deprecated and should not be used since "
+                     "MasslessCoefficientFunction is implemented only for "
+                     "Q=mu. It will throw a NotImplementedException.")]] double
+            MuDependentTerms(
+                double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/
+            ) const override;
 
-        void SetFunctions();
+        [[deprecated(
+            "This function is deprecated and should not be used since it "
+            "depends on the MuDependent terms that are not implemented. It "
+            "will throw a NotImplementedException. Call "
+            "MasslessCoefficientFunction::MuIndependentTerms(double x, int nf) "
+            "for the mu-independent terms"
+        )]] Value
+            fxBand(double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/)
+                const override;
 
     private:
         double (MasslessCoefficientFunction::*mu_indep_)(double, int) const;
+
+        void SetFunctions();
 
         //==========================================================================================//
         //                      Massless coefficient functions

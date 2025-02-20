@@ -3,10 +3,9 @@
  *
  *       Filename:  HighScaleSplitLogs.h
  *
- *    Description:  Header file for the
- * HighScaleSplitLogs.cc file.
+ *         Author:  Daniele Adani
  *
- *         Author:  I mancini sono veramente l'essenza della qualita' nel calcio
+ *    Description:  I mancini sono veramente l'essenza della qualita' nel calcio
  *
  *  In this file there are the coefficient functions in the
  *  high scale limit, i.e. Q^2 >> m^2, implemented setting mu=Q and splitting
@@ -41,23 +40,32 @@ class HighScaleSplitLogs : public CoefficientFunction {
         );
         ~HighScaleSplitLogs() override;
 
-        double
+        double fx(double x, double m2Q2, int nf) const;
+        Value fxBand(double x, double m2Q2, int nf) const;
+
+        [[deprecated(
+            "This function is deprecated and should not be used since "
+            "HighScaleSplitLogs is implemented only for Q=mu. It will throw a "
+            "NotImplementedException. Use HighScaleSplitLogs::fx(double x, "
+            "double m2Q2, int nf) instead"
+        )]] double
             fx(double /*x*/, double /*m2Q2*/, double /*m2mu2*/,
                int /*nf*/) const override;
-        double fx(double x, double m2Q2, int nf) const;
-
-        Value
-            fxBand(double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/)
-                const override;
-        Value fxBand(double x, double m2Q2, int nf) const;
+        [[deprecated(
+            "This function is deprecated and should not be used since "
+            "HighScaleSplitLogs is implemented only for Q=mu. It will throw a "
+            "NotImplementedException. Use HighScaleSplitLogs::fxBand(double x, "
+            "double m2Q2, int nf) instead"
+        )]] Value
+            fxBand(
+                double x, double m2Q2, double /*m2mu2*/, int nf
+            ) const override;
 
         // division of the total result in the log terms
         double LL(double x, int nf) const { return (this->*LL_)(x, nf); }
         double NLL(double x, int nf) const { return (this->*NLL_)(x, nf); }
         double N2LL(double x, int nf) const { return (this->*N2LL_)(x, nf); }
         Value N3LL(double x, int nf) const { return (this->*N3LL_)(x, nf); }
-
-        void SetFunctions();
 
     private:
         MasslessCoefficientFunction *massless_as1_;
@@ -68,6 +76,8 @@ class HighScaleSplitLogs : public CoefficientFunction {
         double (HighScaleSplitLogs::*NLL_)(double, int) const;
         double (HighScaleSplitLogs::*N2LL_)(double, int) const;
         Value (HighScaleSplitLogs::*N3LL_)(double, int) const;
+
+        void SetFunctions();
 
         //==========================================================================================//
         //           Gluon channel, F2
