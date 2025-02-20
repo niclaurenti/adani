@@ -121,7 +121,8 @@ class ConvolutedCoefficientFunction : public CoefficientFunction {
 
         double MuIndependentTerms(double x, double m2Q2, int nf) const override;
 
-        //TODO: these three last functions should be marked as deprecated since not implemented
+        // TODO: these three last functions should be marked as deprecated since
+        // not implemented
         double MuDependentTerms(
             double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/
         ) const override {

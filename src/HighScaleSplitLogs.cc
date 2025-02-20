@@ -17,17 +17,6 @@ HighScaleSplitLogs::HighScaleSplitLogs(
     massless_as1_ = nullptr;
     a_muindep_ = nullptr;
 
-    if (GetChannel() == 'g')
-        massless_as1_ =
-            new MasslessCoefficientFunction(1, GetKind(), GetChannel());
-
-    massless_ =
-        new MasslessCoefficientFunction(GetOrder(), GetKind(), GetChannel());
-
-    if (GetOrder() == 3 && GetKind() == '2') {
-        a_muindep_ = new MatchingCondition(3, 'Q', GetChannel(), version);
-    }
-
     try {
         if (order != 3) {
             throw NotImplementedException(
@@ -40,6 +29,17 @@ HighScaleSplitLogs::HighScaleSplitLogs(
         SetFunctions();
     } catch (NotImplementedException &e) {
         e.runtime_error();
+    }
+
+    if (GetChannel() == 'g')
+        massless_as1_ =
+            new MasslessCoefficientFunction(1, GetKind(), GetChannel());
+
+    massless_ =
+        new MasslessCoefficientFunction(GetOrder(), GetKind(), GetChannel());
+
+    if (GetOrder() == 3 && GetKind() == '2') {
+        a_muindep_ = new MatchingCondition(3, 'Q', GetChannel(), version);
     }
 }
 
