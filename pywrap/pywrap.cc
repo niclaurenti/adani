@@ -390,6 +390,12 @@ PYBIND11_MODULE(_core, m) {
                 & HighScaleSplitLogs::fx,
             py::arg("x"), py::arg("m2Q2"), py::arg("nf")
         )
+        .def(
+            "fx",
+            (double(HighScaleSplitLogs::*)(double, double, double, int) const)
+                & HighScaleSplitLogs::fx,
+            py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf")
+        )
         .def("LL", &HighScaleSplitLogs::LL, py::arg("x"), py::arg("nf"))
         .def("NLL", &HighScaleSplitLogs::NLL, py::arg("x"), py::arg("nf"))
         .def("N2LL", &HighScaleSplitLogs::N2LL, py::arg("x"), py::arg("nf"))
@@ -399,6 +405,12 @@ PYBIND11_MODULE(_core, m) {
             (Value(HighScaleSplitLogs::*)(double, double, int) const)
                 & HighScaleSplitLogs::fxBand,
             py::arg("x"), py::arg("m2Q2"), py::arg("nf")
+        )
+        .def(
+            "fxBand",
+            (Value(HighScaleSplitLogs::*)(double, double, double, int) const)
+                & HighScaleSplitLogs::fxBand,
+            py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf")
         );
 
     // MasslessCoefficientFunction
@@ -415,8 +427,34 @@ PYBIND11_MODULE(_core, m) {
                 & MasslessCoefficientFunction::MuIndependentTerms,
             py::arg("x"), py::arg("nf")
         )
-        .def("MuDependentTerms", &MasslessCoefficientFunction::MuDependentTerms)
-        .def("fx", &MasslessCoefficientFunction::fx);
+        .def(
+            "MuIndependentTerms",
+            (double(MasslessCoefficientFunction::*)(double, double, int) const)
+                & MasslessCoefficientFunction::MuIndependentTerms,
+            py::arg("x"), py::arg("m2Q2"), py::arg("nf")
+        )
+        .def(
+            "MuDependentTerms",
+            (double(MasslessCoefficientFunction::*)(double, double, double, int)
+                 const)
+                & MasslessCoefficientFunction::MuDependentTerms,
+            py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf")
+        )
+        .def(
+            "fx",
+            (double(MasslessCoefficientFunction::*)(double, double, double, int)
+                 const)
+                & MasslessCoefficientFunction::fx,
+            py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf")
+        )
+        .def(
+            "fxBand",
+            (Value(MasslessCoefficientFunction::*)(double, double, double, int)
+                 const)
+                & MasslessCoefficientFunction::fxBand,
+            py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf")
+        );
+    ;
 
     // SplittingFunction
     py::class_<SplittingFunction>(m, "SplittingFunction")
@@ -510,4 +548,7 @@ PYBIND11_MODULE(_core, m) {
             "fxBand", &ThresholdCoefficientFunction::fxBand, py::arg("x"),
             py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf")
         );
+
+    // Exceptions
+    //  m.def("throw_exception", &throw_exception);
 }

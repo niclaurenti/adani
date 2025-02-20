@@ -45,8 +45,6 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
 
         double BetaIndependentTerms(double x, double m2Q2, double m2mu2) const;
 
-        void SetFunctions();
-
     private:
         // TODO: fx is the sum of a beta-dependent term and a beta-independent
         // in this way there is some repeated code. Split the pointers into
@@ -59,6 +57,8 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
         ) const;
 
         ExactCoefficientFunction *exact_as1_;
+
+        void SetFunctions();
 
         //==========================================================================================//
         //                      Threshold (s -> 4m^2) coefficient

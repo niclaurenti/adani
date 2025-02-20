@@ -33,9 +33,15 @@ class MasslessCoefficientFunction : public CoefficientFunction {
         );
         ~MasslessCoefficientFunction() override{};
 
-        double fx(
-            double x, double /*m2Q2*/, double /*m2mu2*/, int nf
-        ) const override;
+        [[deprecated(
+            "This function is deprecated and should not be used since it "
+            "depends on the MuDependent terms that are not implemented. It "
+            "will throw a NotImplementedException. Call "
+            "MasslessCoefficientFunction::MuIndependentTerms(double x, int nf) "
+            "for the mu-independent terms"
+        )]] double
+            fx(double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/
+            ) const override;
 
         [[deprecated("This function is deprecated and should not be used since "
                      "MasslessCoefficientFunction do not depend on m^2/Q^2!. "
@@ -53,13 +59,20 @@ class MasslessCoefficientFunction : public CoefficientFunction {
                 double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/
             ) const override;
 
-        Value
-            fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
-
-        void SetFunctions();
+        [[deprecated(
+            "This function is deprecated and should not be used since it "
+            "depends on the MuDependent terms that are not implemented. It "
+            "will throw a NotImplementedException. Call "
+            "MasslessCoefficientFunction::MuIndependentTerms(double x, int nf) "
+            "for the mu-independent terms"
+        )]] Value
+            fxBand(double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/)
+                const override;
 
     private:
         double (MasslessCoefficientFunction::*mu_indep_)(double, int) const;
+
+        void SetFunctions();
 
         //==========================================================================================//
         //                      Massless coefficient functions

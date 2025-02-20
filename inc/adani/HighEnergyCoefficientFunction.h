@@ -73,8 +73,6 @@ class HighEnergyCoefficientFunction
         Value
             fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
 
-        void SetFunctions();
-
     private:
         double (HighEnergyCoefficientFunction::*LL_)(
             double, double, double
@@ -82,6 +80,8 @@ class HighEnergyCoefficientFunction
         Value (HighEnergyCoefficientFunction::*NLL_)(
             double, double, double, int
         ) const;
+
+        void SetFunctions();
 
         //==========================================================================================//
         //                      High energy coefficient functions
