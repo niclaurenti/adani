@@ -12,7 +12,7 @@
 AbstractSplittingFunction::~AbstractSplittingFunction(){};
 
 //==========================================================================================//
-//  AbstractSplittingFunction: destructor
+//  AbstractSplittingFunction: CheckOrder
 //------------------------------------------------------------------------------------------//
 
 void AbstractSplittingFunction::CheckOrder(int order) const {
@@ -32,7 +32,7 @@ void AbstractSplittingFunction::CheckOrder(int order) const {
 }
 
 //==========================================================================================//
-//  AbstractSplittingFunction: destructor
+//  AbstractSplittingFunction: CheckEntry
 //------------------------------------------------------------------------------------------//
 
 void AbstractSplittingFunction::CheckEntry(char entry) const {
