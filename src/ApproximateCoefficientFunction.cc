@@ -6,11 +6,8 @@
 #include "adani/SpecialFunctions.h"
 
 #include <cmath>
-#include <iostream>
 #include <vector>
 
-using std::cout;
-using std::endl;
 using std::vector;
 
 //==========================================================================================//

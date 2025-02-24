@@ -1,10 +1,6 @@
 #include "adani/Convolution.h"
 
 #include <cmath>
-#include <iostream>
-
-using std::cout;
-using std::endl;
 
 //==========================================================================================//
 //  AbstractConvolution: constructor
