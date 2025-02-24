@@ -13,7 +13,7 @@ Value::Value(const double &central, const double &higher, const double &lower) {
             throw NotValidException(
                 "class Value initialized with higher < central! Got: higher="
                     + to_string(higher) + ", central=" + to_string(central),
-                __PRETTY_FUNCTION__
+                __PRETTY_FUNCTION__, __LINE__
             );
         }
 
@@ -22,7 +22,7 @@ Value::Value(const double &central, const double &higher, const double &lower) {
             throw NotValidException(
                 "class Value initialized with lower > central! Got: lower="
                     + to_string(lower) + ", central=" + to_string(central),
-                __PRETTY_FUNCTION__
+                __PRETTY_FUNCTION__, __LINE__
             );
         }
     } catch (NotValidException &e) {
@@ -52,7 +52,7 @@ Value::Value(const double &higher, const double &lower) {
             throw NotValidException(
                 "class Value initialized with lower > higher! Got: lower="
                     + to_string(lower) + ", higher=" + to_string(higher),
-                __PRETTY_FUNCTION__
+                __PRETTY_FUNCTION__, __LINE__
             );
         }
     } catch (NotValidException &e) {

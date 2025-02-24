@@ -19,14 +19,14 @@ void AbstractSplittingFunction::CheckOrder(int order) const {
     if (order < 0) {
         throw NotValidException(
             "order must be non negative. Got order=" + to_string(order),
-            __PRETTY_FUNCTION__
+            __PRETTY_FUNCTION__, __LINE__
         );
     }
     if (order > 1) {
         throw NotImplementedException(
             "order greater than 1 is not implemented. Got order="
                 + to_string(order),
-            __PRETTY_FUNCTION__
+            __PRETTY_FUNCTION__, __LINE__
         );
     }
 }
@@ -39,7 +39,7 @@ void AbstractSplittingFunction::CheckEntry(char entry) const {
     if (entry != 'g' && entry != 'q') {
         throw NotValidException(
             "entry must be non 'q' or 'g'. Got '" + string(1, entry) + "'",
-            __PRETTY_FUNCTION__
+            __PRETTY_FUNCTION__, __LINE__
         );
     }
 }
@@ -175,7 +175,7 @@ void SplittingFunction::SetFunctions() {
 
         } else {
             throw UnexpectedException(
-                "Unexpected exception!", __PRETTY_FUNCTION__
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
             );
         }
     } else if (order_ == 1) {
@@ -195,11 +195,11 @@ void SplittingFunction::SetFunctions() {
 
         } else {
             throw UnexpectedException(
-                "Unexpected exception!", __PRETTY_FUNCTION__
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
             );
         }
     } else {
-        throw UnexpectedException("Unexpected exception!", __PRETTY_FUNCTION__);
+        throw UnexpectedException("Unexpected exception!", __PRETTY_FUNCTION__, __LINE__);
     }
 }
 
@@ -365,7 +365,7 @@ void ConvolutedSplittingFunctions::SetFunctions() {
                     + to_string(order1_) + " x " + "P" + string(1, entry3_)
                     + string(1, entry4_) + to_string(order2_)
                     + " is not implemented",
-                __PRETTY_FUNCTION__
+                __PRETTY_FUNCTION__, __LINE__
             );
         }
     } else {
@@ -373,7 +373,7 @@ void ConvolutedSplittingFunctions::SetFunctions() {
             "P" + string(1, entry1_) + string(1, entry2_) + to_string(order1_)
                 + " x " + "P" + string(1, entry3_) + string(1, entry4_)
                 + to_string(order2_) + " is not implemented",
-            __PRETTY_FUNCTION__
+            __PRETTY_FUNCTION__, __LINE__
         );
     }
 }

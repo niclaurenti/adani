@@ -17,7 +17,7 @@ CoefficientFunction::CoefficientFunction(
                 "massive coefficient functions below order 1 are not present! "
                 "Got order="
                     + to_string(order_),
-                __PRETTY_FUNCTION__
+                __PRETTY_FUNCTION__, __LINE__
             );
         }
         if (order_ > 3) {
@@ -25,7 +25,7 @@ CoefficientFunction::CoefficientFunction(
                 "massive coefficient functions below order 3 are not known! "
                 "Got order="
                     + to_string(order_),
-                __PRETTY_FUNCTION__
+                __PRETTY_FUNCTION__, __LINE__
             );
         }
 
@@ -33,7 +33,7 @@ CoefficientFunction::CoefficientFunction(
         if (kind_ != '2' && kind_ != 'L') {
             throw NotValidException(
                 "kind must be '2' or 'L'! Got '" + string(1, kind_) + "'",
-                __PRETTY_FUNCTION__
+                __PRETTY_FUNCTION__, __LINE__
             );
         }
 
@@ -41,7 +41,7 @@ CoefficientFunction::CoefficientFunction(
         if (channel_ != 'g' && channel_ != 'q') {
             throw NotValidException(
                 "channel must be 'g' or 'q'! Got '" + string(1, channel_) + "'",
-                __PRETTY_FUNCTION__
+                __PRETTY_FUNCTION__, __LINE__
             );
         }
         if (channel_ == 'q' && order_ == 1) {
@@ -49,7 +49,7 @@ CoefficientFunction::CoefficientFunction(
                 "quark massive coefficient functions at order 1 are not "
                 "present! Got channel="
                     + string(1, channel_) + ",order=" + to_string(order_),
-                __PRETTY_FUNCTION__
+                __PRETTY_FUNCTION__, __LINE__
             );
         }
     } catch (const NotPresentException &e) {

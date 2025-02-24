@@ -11,28 +11,28 @@
 #define BLUE "\033[34m"
 
 //==========================================================================================//
-//  AbstractException: constructor
+//  UnknownException: constructor
 //------------------------------------------------------------------------------------------//
 
-AbstractException::AbstractException(
-    const string &reason, const string &function
+UnknownException::UnknownException(
+    const string &reason, const string &function, const int &line
 ) {
-    message_ = "AbstractException in " + function + ": " + reason;
+    message_ = "UnknownException in " + function + " at line " + to_string(line) + ": " + reason;
 }
 
 //==========================================================================================//
-//  AbstractException: redefinition of what method
+//  UnknownException: redefinition of what method
 //------------------------------------------------------------------------------------------//
 
-const char *AbstractException::what() const noexcept {
+const char *UnknownException::what() const noexcept {
     return message_.c_str();
 }
 
 //==========================================================================================//
-//  AbstractException: runtime_error
+//  UnknownException: runtime_error
 //------------------------------------------------------------------------------------------//
 
-void AbstractException::runtime_error() const {
+void UnknownException::runtime_error() const {
     cerr << RED << "Error! " << RESET;
     cerr << (*this).what() << endl;
     cerr << "Exiting program!" << endl;
@@ -40,10 +40,10 @@ void AbstractException::runtime_error() const {
 }
 
 //==========================================================================================//
-//  AbstractException: warning
+//  UnknownException: warning
 //------------------------------------------------------------------------------------------//
 
-void AbstractException::warning() const {
+void UnknownException::warning() const {
     cerr << YELLOW << "Warning! " << RESET;
     cerr << (*this).what() << endl;
 }
@@ -53,9 +53,9 @@ void AbstractException::warning() const {
 //------------------------------------------------------------------------------------------//
 
 NotImplementedException::NotImplementedException(
-    const string &reason, const string &function
+    const string &reason, const string &function, const int &line
 ) {
-    message_ = "NotImplementedException in " + function + ": " + reason;
+    message_ = "NotImplementedException in " + function + " at line " + to_string(line) + ": " + reason;
 }
 
 //==========================================================================================//
@@ -63,9 +63,9 @@ NotImplementedException::NotImplementedException(
 //------------------------------------------------------------------------------------------//
 
 NotKnownException::NotKnownException(
-    const string &reason, const string &function
+    const string &reason, const string &function, const int &line
 ) {
-    message_ = "NotKnownException in " + function + ": " + reason;
+    message_ = "NotKnownException in " + function + " at line " + to_string(line) + ": " + reason;
 }
 
 //==========================================================================================//
@@ -73,9 +73,9 @@ NotKnownException::NotKnownException(
 //------------------------------------------------------------------------------------------//
 
 NotPresentException::NotPresentException(
-    const string &reason, const string &function
+    const string &reason, const string &function, const int &line
 ) {
-    message_ = "NotPresentException in " + function + ": " + reason;
+    message_ = "NotPresentException in " + function + " at line " + to_string(line) + ": " + reason;
 }
 
 //==========================================================================================//
@@ -83,9 +83,9 @@ NotPresentException::NotPresentException(
 //------------------------------------------------------------------------------------------//
 
 NotValidException::NotValidException(
-    const string &reason, const string &function
+    const string &reason, const string &function, const int &line
 ) {
-    message_ = "NotValidException in " + function + ": " + reason;
+    message_ = "NotValidException in " + function + " at line " + to_string(line) + ": " + reason;
 }
 
 //==========================================================================================//
@@ -93,7 +93,7 @@ NotValidException::NotValidException(
 //------------------------------------------------------------------------------------------//
 
 UnexpectedException::UnexpectedException(
-    const string &reason, const string &function
+    const string &reason, const string &function, const int &line
 ) {
-    message_ = "UnexpectedException in " + function + ": " + reason;
+    message_ = "UnexpectedException in " + function + " at line " + to_string(line) + ": " + reason;
 }

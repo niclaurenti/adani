@@ -42,7 +42,7 @@ ExactCoefficientFunction::ExactCoefficientFunction(
                 "double_int_method must be 'analytical', 'double_numerical' or "
                 "'monte_carlo'! Got '"
                     + double_int_method + "'",
-                __PRETTY_FUNCTION__
+                __PRETTY_FUNCTION__, __LINE__
             );
         }
     } catch (const NotValidException &e) {
@@ -371,7 +371,7 @@ double
     if (xi < 1e-3) {
         throw NotValidException(
             "max value of m2Q2 is 1e3. Got m2Q2=" + to_string(m2Q2),
-            __PRETTY_FUNCTION__
+            __PRETTY_FUNCTION__, __LINE__
         );
     }
 
@@ -421,7 +421,7 @@ double
     if (xi < 1e-3) {
         throw NotValidException(
             "max value of m2Q2 is 1e3. Got m2Q2=" + to_string(m2Q2),
-            __PRETTY_FUNCTION__
+            __PRETTY_FUNCTION__, __LINE__
         );
     }
 
@@ -453,7 +453,7 @@ double
     if (xi < 1e-3) {
         throw NotValidException(
             "max value of m2Q2 is 1e3. Got m2Q2=" + to_string(m2Q2),
-            __PRETTY_FUNCTION__
+            __PRETTY_FUNCTION__, __LINE__
         );
     }
 
@@ -503,7 +503,7 @@ double
     if (xi < 1e-3) {
         throw NotValidException(
             "max value of m2Q2 is 1e3. Got m2Q2=" + to_string(m2Q2),
-            __PRETTY_FUNCTION__
+            __PRETTY_FUNCTION__, __LINE__
         );
     }
 
@@ -637,7 +637,7 @@ double ExactCoefficientFunction::
     throw NotKnownException(
         "mu-independent terms of the exact coefficient function at order=3 are "
         "not known!",
-        "ExactCoefficientFunction::MuIndependentTerms"
+        __PRETTY_FUNCTION__, __LINE__
     );
     return 0.;
 }

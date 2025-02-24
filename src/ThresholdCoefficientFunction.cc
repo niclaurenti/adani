@@ -95,11 +95,11 @@ void ThresholdCoefficientFunction::SetFunctions() {
             beta_indep_ = &ThresholdCoefficientFunction::CL_g3_threshold_const;
         } else {
             throw UnexpectedException(
-                "Unexpected exception!", __PRETTY_FUNCTION__
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
             );
         }
     } else {
-        throw UnexpectedException("Unexpected exception!", __PRETTY_FUNCTION__);
+        throw UnexpectedException("Unexpected exception!", __PRETTY_FUNCTION__, __LINE__);
     }
 }
 

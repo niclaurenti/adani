@@ -21,13 +21,13 @@
 using namespace std;
 
 //==========================================================================================//
-//  class AbstractException: base class for all the exceptions
+//  class UnknownException: base class for all the exceptions
 //------------------------------------------------------------------------------------------//
 
-class AbstractException : public exception {
+class UnknownException : public exception {
     public:
-        AbstractException(){};
-        AbstractException(const string &reason, const string &function);
+        UnknownException(){};
+        UnknownException(const string &reason, const string &function, const int &line);
 
         const char *what() const noexcept override;
         void runtime_error() const;
@@ -41,45 +41,45 @@ class AbstractException : public exception {
 //  class NotImplementedException: when something is not implemented
 //------------------------------------------------------------------------------------------//
 
-class NotImplementedException : public AbstractException {
+class NotImplementedException : public UnknownException {
     public:
-        NotImplementedException(const string &reason, const string &function);
+        NotImplementedException(const string &reason, const string &function, const int &line);
 };
 
 //==========================================================================================//
 //  class NotKnownException: when something is still not known
 //------------------------------------------------------------------------------------------//
 
-class NotKnownException : public AbstractException {
+class NotKnownException : public UnknownException {
     public:
-        NotKnownException(const string &reason, const string &function);
+        NotKnownException(const string &reason, const string &function, const int &line);
 };
 
 //==========================================================================================//
 //  class NotPresentException: when something is not present, i.e. it is zero
 //------------------------------------------------------------------------------------------//
 
-class NotPresentException : public AbstractException {
+class NotPresentException : public UnknownException {
     public:
-        NotPresentException(const string &reason, const string &function);
+        NotPresentException(const string &reason, const string &function, const int &line);
 };
 
 //==========================================================================================//
 //  class NotValidException: passing invalid parameters
 //------------------------------------------------------------------------------------------//
 
-class NotValidException : public AbstractException {
+class NotValidException : public UnknownException {
     public:
-        NotValidException(const string &reason, const string &function);
+        NotValidException(const string &reason, const string &function, const int &line);
 };
 
 //==========================================================================================//
 //  class UnexpectedException: passing invalid parameters
 //------------------------------------------------------------------------------------------//
 
-class UnexpectedException : public AbstractException {
+class UnexpectedException : public UnknownException {
     public:
-        UnexpectedException(const string &reason, const string &function);
+        UnexpectedException(const string &reason, const string &function, const int &line);
 };
 
 #endif

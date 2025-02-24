@@ -23,7 +23,7 @@ MatchingCondition::MatchingCondition(
         if (order != 3) {
             throw NotImplementedException(
                 "only order = 3 is implemented. Got order=" + to_string(order),
-                __PRETTY_FUNCTION__
+                __PRETTY_FUNCTION__, __LINE__
             );
         }
 
@@ -31,20 +31,20 @@ MatchingCondition::MatchingCondition(
         if (entry1 != 'Q') {
             throw NotImplementedException(
                 "only entry1 = 'Q' is implemented. Got " + string(1, entry1),
-                __PRETTY_FUNCTION__
+                __PRETTY_FUNCTION__, __LINE__
             );
         }
 
         // check entry2
         if (entry2 == 'Q') {
             throw NotImplementedException(
-                "entry2 = 'Q' is not implemented!", __PRETTY_FUNCTION__
+                "entry2 = 'Q' is not implemented!", __PRETTY_FUNCTION__, __LINE__
             );
         }
 
         if (entry2 == 'g' && version == "exact") {
             throw NotImplementedException(
-                "aQg channel doesn't have 'exact' version!", __PRETTY_FUNCTION__
+                "aQg channel doesn't have 'exact' version!", __PRETTY_FUNCTION__, __LINE__
             );
         }
 
@@ -52,7 +52,7 @@ MatchingCondition::MatchingCondition(
             throw NotImplementedException(
                 "aQq channel doesn't have 'abmp' or 'gm' version! Got '"
                     + version + "'",
-                __PRETTY_FUNCTION__
+                __PRETTY_FUNCTION__, __LINE__
             );
         }
     } catch (NotImplementedException &e) {
@@ -70,7 +70,7 @@ void MatchingCondition::CheckEntry(char entry) const {
     if (entry != 'g' && entry != 'q' && entry != 'Q') {
         throw NotValidException(
             "entry must be non 'g', 'q' or 'Q'. Got '" + string(1, entry) + "'",
-            __PRETTY_FUNCTION__
+            __PRETTY_FUNCTION__, __LINE__
         );
     }
 }
@@ -85,7 +85,7 @@ void MatchingCondition::CheckVersion(string version) const {
         throw NotValidException(
             "version must be 'exact', 'abmp', 'gm' or 'klmv'! Got'" + version
                 + "'",
-            __PRETTY_FUNCTION__
+            __PRETTY_FUNCTION__, __LINE__
         );
     }
 }
@@ -141,7 +141,7 @@ vector<double> MatchingCondition::NotOrdered(double x) const {
             return { central, higher, lower };
         } else {
             throw UnexpectedException(
-                "Unexpected exception!", __PRETTY_FUNCTION__
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
             );
         }
     } else {
@@ -158,7 +158,7 @@ vector<double> MatchingCondition::NotOrdered(double x) const {
             low_id = -12;
         else {
             throw UnexpectedException(
-                "Unexpected exception!", __PRETTY_FUNCTION__
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
             );
         }
 
@@ -314,7 +314,7 @@ double MatchingCondition::a_Qg_30(double x, int v) const {
 
     if (v == 0) {
         throw NotImplementedException(
-            "a_Qg_30 exact is not implemented yet!", __PRETTY_FUNCTION__
+            "a_Qg_30 exact is not implemented yet!", __PRETTY_FUNCTION__, __LINE__
         );
     } else if (v == 1) {
         return (
@@ -348,7 +348,7 @@ double MatchingCondition::a_Qg_30(double x, int v) const {
     } else {
         throw NotValidException(
             "Choose either v=0, v=1, v=-1, v=-12 or v=2! Got " + to_string(v),
-            __PRETTY_FUNCTION__
+            __PRETTY_FUNCTION__, __LINE__
         );
     }
 }
@@ -1068,7 +1068,7 @@ double MatchingCondition::a_Qq_PS_30(double x, int v) const {
     } else {
         throw NotValidException(
             "Choose either v=0, v=1 or v=-1! Got " + to_string(v),
-            __PRETTY_FUNCTION__
+            __PRETTY_FUNCTION__, __LINE__
         );
     }
 }

@@ -42,7 +42,7 @@ void AbstractConvolution::SetAbserr(const double &abserr) {
     if (abserr <= 0) {
         throw NotValidException(
             "abserr must be positive. Got abserr=" + to_string(abserr),
-            __PRETTY_FUNCTION__
+            __PRETTY_FUNCTION__, __LINE__
         );
     }
     abserr_ = abserr;
@@ -57,7 +57,7 @@ void AbstractConvolution::SetRelerr(const double &relerr) {
     if (relerr <= 0) {
         throw NotValidException(
             "relerr must be positive. Got relerr=" + to_string(relerr),
-            __PRETTY_FUNCTION__
+            __PRETTY_FUNCTION__, __LINE__
         );
     }
     relerr_ = relerr;
@@ -72,7 +72,7 @@ void AbstractConvolution::AllocWorkspace(const int &dim) {
     if (dim <= 0) {
         throw NotValidException(
             "dim must be positive. Got dim=" + to_string(dim),
-            __PRETTY_FUNCTION__
+            __PRETTY_FUNCTION__, __LINE__
         );
     }
     w_ = gsl_integration_workspace_alloc(dim);
@@ -352,7 +352,7 @@ void DoubleConvolution::SetMCcalls(const int &MCcalls) {
     if (MCcalls <= 0) {
         throw NotValidException(
             "MCcalls must be positive. Got MCcalls=" + to_string(MCcalls),
-            __PRETTY_FUNCTION__
+            __PRETTY_FUNCTION__, __LINE__
         );
     }
     MCcalls_ = MCcalls;

@@ -62,7 +62,7 @@ void HighEnergyCoefficientFunction::SetFunctions() {
             LL_ = &HighEnergyCoefficientFunction::CL_ps2_highenergy;
         else {
             throw UnexpectedException(
-                "Unexpected exception!", __PRETTY_FUNCTION__
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
             );
         }
 
@@ -82,11 +82,11 @@ void HighEnergyCoefficientFunction::SetFunctions() {
             NLL_ = &HighEnergyCoefficientFunction::CL_ps3_highenergyNLL;
         } else {
             throw UnexpectedException(
-                "Unexpected exception!", __PRETTY_FUNCTION__
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
             );
         }
     } else {
-        throw UnexpectedException("Unexpected exception!", __PRETTY_FUNCTION__);
+        throw UnexpectedException("Unexpected exception!", __PRETTY_FUNCTION__, __LINE__);
     }
 
     if (!GetNLL())
@@ -148,7 +148,7 @@ void HighEnergyHighScaleCoefficientFunction::SetFunctions() {
                       CL_ps2_highenergy_highscale;
         else {
             throw UnexpectedException(
-                "Unexpected exception!", __PRETTY_FUNCTION__
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
             );
         }
 
@@ -177,11 +177,11 @@ void HighEnergyHighScaleCoefficientFunction::SetFunctions() {
 
         } else {
             throw UnexpectedException(
-                "Unexpected exception!", __PRETTY_FUNCTION__
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
             );
         }
     } else {
-        throw UnexpectedException("Unexpected exception!", __PRETTY_FUNCTION__);
+        throw UnexpectedException("Unexpected exception!", __PRETTY_FUNCTION__, __LINE__);
     }
     if (!GetNLL())
         NLL_ = &HighEnergyHighScaleCoefficientFunction::ZeroFunctionBand;

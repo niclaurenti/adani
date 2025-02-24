@@ -31,7 +31,7 @@ double MasslessCoefficientFunction::fx(
         "on the MuDependent terms that are not implemented. Call "
         "MasslessCoefficientFunction::MuIndependentTerms(double x, int nf) for "
         "the mu-independent terms",
-        __PRETTY_FUNCTION__
+        __PRETTY_FUNCTION__, __LINE__
     );
     // return MuIndependentTerms(x, nf) + MuDependentTerms(x, m2Q2, m2mu2, nf);
 }
@@ -46,7 +46,7 @@ double MasslessCoefficientFunction::MuDependentTerms(
     throw NotImplementedException(
         "this function is deprecated and should not be used since "
         "MasslessCoefficientFunction is implemented only for Q=mu.",
-        __PRETTY_FUNCTION__
+        __PRETTY_FUNCTION__, __LINE__
     );
     // return 0:;
 }
@@ -63,7 +63,7 @@ double MasslessCoefficientFunction::
         "MasslessCoefficientFunction do not depend on m^2/Q^2!. Call "
         "MasslessCoefficientFunction::MuIndependentTerms(double x, int nf) "
         "instead",
-        __PRETTY_FUNCTION__
+        __PRETTY_FUNCTION__, __LINE__
     );
     // return 0.;
 }
@@ -90,7 +90,7 @@ Value MasslessCoefficientFunction::fxBand(
         "on the MuDependent terms that are not implemented. Call "
         "MasslessCoefficientFunction::MuIndependentTerms(double x, int nf) for "
         "the mu-independent terms",
-        __PRETTY_FUNCTION__
+        __PRETTY_FUNCTION__, __LINE__
     );
     // return Value(fx(x, m2Q2, m2mu2, nf));
 }
@@ -124,7 +124,7 @@ void MasslessCoefficientFunction::SetFunctions() {
     else if (GetOrder() == 3 && GetKind() == 'L' && GetChannel() == 'q')
         mu_indep_ = &MasslessCoefficientFunction::CL_ps3_massless;
     else {
-        throw UnexpectedException("Unexpected exception!", __PRETTY_FUNCTION__);
+        throw UnexpectedException("Unexpected exception!", __PRETTY_FUNCTION__, __LINE__);
     }
 }
 

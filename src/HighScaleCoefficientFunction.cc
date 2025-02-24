@@ -122,7 +122,7 @@ void HighScaleCoefficientFunction::SetFunctions() {
                 "quark coefficient function is not present at order 1! Got "
                 "order="
                     + to_string(GetOrder()),
-                __PRETTY_FUNCTION__
+                __PRETTY_FUNCTION__, __LINE__
             );
         }
 
@@ -138,7 +138,7 @@ void HighScaleCoefficientFunction::SetFunctions() {
             fx_ = &HighScaleCoefficientFunction::CL_ps2_highscale;
         else {
             throw UnexpectedException(
-                "Unexpected exception!", __PRETTY_FUNCTION__
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
             );
         }
     } else if (GetOrder() == 3) {
@@ -153,11 +153,11 @@ void HighScaleCoefficientFunction::SetFunctions() {
             fx_ = &HighScaleCoefficientFunction::CL_ps3_highscale;
         else {
             throw UnexpectedException(
-                "Unexpected exception!", __PRETTY_FUNCTION__
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
             );
         }
     } else {
-        throw UnexpectedException("Unexpected exception!", __PRETTY_FUNCTION__);
+        throw UnexpectedException("Unexpected exception!", __PRETTY_FUNCTION__, __LINE__);
     }
 }
 

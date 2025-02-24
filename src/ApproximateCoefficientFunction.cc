@@ -113,11 +113,25 @@ ApproximateCoefficientFunction::ApproximateCoefficientFunction(
             if (kind == '2') {
                 if (channel == 'g')
                     approximation_ = C2_g1_params;
+                else {
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
+                }
                 variation_ = C2_var;
             } else if (kind == 'L') {
                 if (channel == 'g')
                     approximation_ = CL_g2_params;
+                else {
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
+                }
                 variation_ = CL_var;
+            } else {
+                throw UnexpectedException(
+                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                );
             }
         } else if (order == 2) {
             if (kind == '2') {
@@ -125,12 +139,22 @@ ApproximateCoefficientFunction::ApproximateCoefficientFunction(
                     approximation_ = C2_g2_params;
                 else if (channel == 'q')
                     approximation_ = C2_ps2_params;
+                else {
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
+                }
                 variation_ = C2_var;
             } else if (kind == 'L') {
                 if (channel == 'g')
                     approximation_ = CL_g2_params;
                 else if (channel == 'q')
                     approximation_ = CL_ps2_params;
+                else {
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
+                }
                 variation_ = CL_var;
             }
         } else if (order == 3) {
@@ -139,17 +163,27 @@ ApproximateCoefficientFunction::ApproximateCoefficientFunction(
                     approximation_ = C2_g3_params;
                 else if (channel == 'q')
                     approximation_ = C2_ps3_params;
+                else {
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
+                }
                 variation_ = C2_var;
             } else if (kind == 'L') {
                 if (channel == 'g')
                     approximation_ = CL_g3_params;
                 else if (channel == 'q')
                     approximation_ = CL_ps3_params;
+                else {
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
+                }
                 variation_ = CL_var;
             }
         } else {
             throw UnexpectedException(
-                "Unexpected exception!", __PRETTY_FUNCTION__
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
             );
         }
     } catch (UnexpectedException &e) {
@@ -277,7 +311,7 @@ ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(
             throw NotImplementedException(
                 "KLMV approximation is not implemented at order 1! Got order="
                     + to_string(order),
-                __PRETTY_FUNCTION__
+                __PRETTY_FUNCTION__, __LINE__
             );
         }
         if (GetKind() == 'L') {
@@ -285,7 +319,7 @@ ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(
                 "KLMV approximation is not implemented for kind = 'L'! Got "
                 "kind='"
                     + string(1, kind) + "'",
-                __PRETTY_FUNCTION__
+                __PRETTY_FUNCTION__, __LINE__
             );
         }
 
@@ -298,7 +332,7 @@ ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(
                 params_B_ = klmv_C2q2B;
             } else {
                 throw UnexpectedException(
-                    "Unexpected exception!", __PRETTY_FUNCTION__
+                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
                 );
             }
         } else if (GetOrder() == 3) {
@@ -313,12 +347,12 @@ ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(
                 params_B_ = klmv_C2q3B;
             } else {
                 throw UnexpectedException(
-                    "Unexpected exception!", __PRETTY_FUNCTION__
+                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
                 );
             }
         } else {
             throw UnexpectedException(
-                "Unexpected exception!", __PRETTY_FUNCTION__
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
             );
         }
     } catch (const NotImplementedException &e) {

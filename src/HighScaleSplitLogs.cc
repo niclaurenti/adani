@@ -23,7 +23,7 @@ HighScaleSplitLogs::HighScaleSplitLogs(
                 "HighScaleSplitLogs is implemented only for order = 3. Got "
                 "order="
                     + to_string(order),
-                __PRETTY_FUNCTION__
+                __PRETTY_FUNCTION__, __LINE__
             );
         }
         SetFunctions();
@@ -64,7 +64,7 @@ double HighScaleSplitLogs::
         "this function is deprecated and should not be used since "
         "HighScaleSplitLogs is implemented only for Q=mu. Use "
         "HighScaleSplitLogs::fx(double x, double m2Q2, int nf) instead",
-        __PRETTY_FUNCTION__
+        __PRETTY_FUNCTION__, __LINE__
     );
     // return 0.;
 }
@@ -88,7 +88,7 @@ Value HighScaleSplitLogs::
         "this function is deprecated and should not be used since "
         "HighScaleSplitLogs is implemented only for Q=mu. Use "
         "HighScaleSplitLogs::fxBand(double x, double m2Q2, int nf) instead",
-        __PRETTY_FUNCTION__
+        __PRETTY_FUNCTION__, __LINE__
     );
     //  return Value(0.);
 }
@@ -124,7 +124,7 @@ void HighScaleSplitLogs::SetFunctions() {
             N3LL_ = &HighScaleSplitLogs::C2_g3_highscale_N3LL;
         } else {
             throw UnexpectedException(
-                "Unexpected exception!", __PRETTY_FUNCTION__
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
             );
         }
     } else if (GetKind() == 'L') {
@@ -140,11 +140,11 @@ void HighScaleSplitLogs::SetFunctions() {
             N3LL_ = &HighScaleSplitLogs::CL_g3_highscale_N3LL;
         } else {
             throw UnexpectedException(
-                "Unexpected exception!", __PRETTY_FUNCTION__
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
             );
         }
     } else {
-        throw UnexpectedException("Unexpected exception!", __PRETTY_FUNCTION__);
+        throw UnexpectedException("Unexpected exception!", __PRETTY_FUNCTION__, __LINE__);
     }
 }
 
