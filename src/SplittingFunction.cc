@@ -1,18 +1,48 @@
 #include "adani/SplittingFunction.h"
 #include "adani/Constants.h"
+#include "adani/Exceptions.h"
 #include "adani/SpecialFunctions.h"
 
 #include <cmath>
-#include <iostream>
-
-using std::cout;
-using std::endl;
 
 //==========================================================================================//
 //  AbstractSplittingFunction: destructor
 //------------------------------------------------------------------------------------------//
 
 AbstractSplittingFunction::~AbstractSplittingFunction(){};
+
+//==========================================================================================//
+//  AbstractSplittingFunction: CheckOrder
+//------------------------------------------------------------------------------------------//
+
+void AbstractSplittingFunction::CheckOrder(int order) const {
+    if (order < 0) {
+        throw NotValidException(
+            "order must be non negative. Got order=" + to_string(order),
+            __PRETTY_FUNCTION__, __LINE__
+        );
+    }
+    if (order > 1) {
+        throw NotImplementedException(
+            "order greater than 1 is not implemented. Got order="
+                + to_string(order),
+            __PRETTY_FUNCTION__, __LINE__
+        );
+    }
+}
+
+//==========================================================================================//
+//  AbstractSplittingFunction: CheckEntry
+//------------------------------------------------------------------------------------------//
+
+void AbstractSplittingFunction::CheckEntry(char entry) const {
+    if (entry != 'g' && entry != 'q') {
+        throw NotValidException(
+            "entry must be non 'q' or 'g'. Got '" + string(1, entry) + "'",
+            __PRETTY_FUNCTION__, __LINE__
+        );
+    }
+}
 
 //==========================================================================================//
 //  SplittingFunction: constructor
@@ -26,25 +56,23 @@ SplittingFunction::SplittingFunction(
       entry1_(entry1),
       entry2_(entry2) {
 
-    // check order
-    if (order != 0 && order != 1) {
-        cout << "Error: order must be 0 or 1. Got " << order << endl;
-        exit(-1);
-    }
+    try {
+        // check order
+        CheckOrder(order);
+        // check entry1
+        CheckEntry(entry1);
+        // check entry2
+        CheckEntry(entry2);
 
-    // check entry1
-    if (entry1 != 'g' && entry1 != 'q') {
-        cout << "Error: entry1 must be g or q. Got " << entry1 << endl;
-        exit(-1);
-    }
+        SetFunctions();
 
-    // check entry2
-    if (entry2 != 'g' && entry2 != 'q') {
-        cout << "Error: entry2 must be g or q. Got " << entry2 << endl;
-        exit(-1);
+    } catch (NotImplementedException &e) {
+        e.runtime_error();
+    } catch (NotValidException &e) {
+        e.runtime_error();
+    } catch (UnexpectedException &e) {
+        e.runtime_error();
     }
-
-    SetFunctions();
 }
 
 //==========================================================================================//
@@ -146,10 +174,9 @@ void SplittingFunction::SetFunctions() {
             sing_int_ = &SplittingFunction::Pqq0sing_integrated;
 
         } else {
-            cout << "Error: something has gone wrong in "
-                    "SplittingFunction::SetFunctions!"
-                 << endl;
-            exit(-1);
+            throw UnexpectedException(
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+            );
         }
     } else if (order_ == 1) {
         if (entry1_ == 'g' && entry2_ == 'q') {
@@ -167,15 +194,12 @@ void SplittingFunction::SetFunctions() {
             sing_int_ = &SplittingFunction::Pgg1sing_integrated;
 
         } else {
-            cout << "Error: something has gone wrong in "
-                    "SplittingFunction::SetFunctions!"
-                 << endl;
-            exit(-1);
+            throw UnexpectedException(
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+            );
         }
     } else {
-        cout << "Error: P" << entry1_ << entry2_ << order_
-             << " is not implemented!" << endl;
-        exit(-1);
+        throw UnexpectedException("Unexpected exception!", __PRETTY_FUNCTION__, __LINE__);
     }
 }
 
@@ -195,50 +219,36 @@ ConvolutedSplittingFunctions::ConvolutedSplittingFunctions(
       entry3_(entry3),
       entry4_(entry4) {
 
-    // check order
-    if (order1 != 0 && order1 != 1) {
-        cout << "Error: order1 must be 0 or 1. Got " << order1 << endl;
-        exit(-1);
-    }
+    try {
+        // check order 1
+        CheckOrder(order1);
+        // check order
+        CheckOrder(order2);
+        // check entry1
+        CheckEntry(entry1);
+        // check entry2
+        CheckEntry(entry2);
+        // check entry3
+        CheckEntry(entry3);
+        // check entry4
+        CheckEntry(entry4);
 
-    // check order
-    if (order2 != 0 && order2 != 1) {
-        cout << "Error: order2 must be 0 or 1. Got " << order2 << endl;
-        exit(-1);
-    }
+        if (order1_ == 0 && entry1_ == 'g' && entry2_ == 'g' && order2_ == 0
+            && entry3_ == 'g' && entry4_ == 'g') {
+            Pgg0_ = new SplittingFunction(0, 'g', 'g');
+        } else {
+            Pgg0_ = nullptr;
+        }
 
-    // check entry1
-    if (entry1 != 'g' && entry1 != 'q') {
-        cout << "Error: entry1 must be g or q. Got " << entry1 << endl;
-        exit(-1);
-    }
+        SetFunctions();
 
-    // check entry2
-    if (entry2 != 'g' && entry2 != 'q') {
-        cout << "Error: entry2 must be g or q. Got " << entry2 << endl;
-        exit(-1);
+    } catch (NotImplementedException &e) {
+        e.runtime_error();
+    } catch (NotValidException &e) {
+        e.runtime_error();
+    } catch (UnexpectedException &e) {
+        e.runtime_error();
     }
-
-    // check entry3
-    if (entry3 != 'g' && entry3 != 'q') {
-        cout << "Error: entry3 must be g or q. Got " << entry3 << endl;
-        exit(-1);
-    }
-
-    // check entry4
-    if (entry4 != 'g' && entry4 != 'q') {
-        cout << "Error: entry3 must be g or q. Got " << entry4 << endl;
-        exit(-1);
-    }
-
-    if (order1_ == 0 && entry1_ == 'g' && entry2_ == 'g' && order2_ == 0
-        && entry3_ == 'g' && entry4_ == 'g') {
-        Pgg0_ = new SplittingFunction(0, 'g', 'g');
-    } else {
-        Pgg0_ = nullptr;
-    }
-
-    SetFunctions();
 }
 
 ConvolutedSplittingFunctions::~ConvolutedSplittingFunctions() { delete Pgg0_; }
@@ -350,15 +360,21 @@ void ConvolutedSplittingFunctions::SetFunctions() {
                 &ConvolutedSplittingFunctions::Pgg0_x_Pgg0_sing_integrated;
             loc_ = &ConvolutedSplittingFunctions::Pgg0_x_Pgg0_loc;
         } else {
-            cout << "Error: P" << entry1_ << entry2_ << order1_ << " x P"
-                 << entry3_ << entry4_ << order2_ << " is not implemented!"
-                 << endl;
-            exit(-1);
+            throw NotImplementedException(
+                "P" + string(1, entry1_) + string(1, entry2_)
+                    + to_string(order1_) + " x " + "P" + string(1, entry3_)
+                    + string(1, entry4_) + to_string(order2_)
+                    + " is not implemented",
+                __PRETTY_FUNCTION__, __LINE__
+            );
         }
     } else {
-        cout << "Error: P" << entry1_ << entry2_ << order1_ << " x P" << entry3_
-             << entry4_ << order2_ << " is not implemented!" << endl;
-        exit(-1);
+        throw NotImplementedException(
+            "P" + string(1, entry1_) + string(1, entry2_) + to_string(order1_)
+                + " x " + "P" + string(1, entry3_) + string(1, entry4_)
+                + to_string(order2_) + " is not implemented",
+            __PRETTY_FUNCTION__, __LINE__
+        );
     }
 }
 

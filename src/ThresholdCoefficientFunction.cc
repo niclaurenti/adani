@@ -4,10 +4,6 @@
 #include "adani/SpecialFunctions.h"
 
 #include <cmath>
-#include <iostream>
-
-using std::cout;
-using std::endl;
 
 //==========================================================================================//
 //  ThresholdCoefficientFunction: constructor
@@ -23,7 +19,11 @@ ThresholdCoefficientFunction::ThresholdCoefficientFunction(
     } else
         exact_as1_ = nullptr;
 
-    SetFunctions();
+    try {
+        SetFunctions();
+    } catch (UnexpectedException &e) {
+        e.runtime_error();
+    }
 }
 
 //==========================================================================================//
@@ -62,33 +62,8 @@ Value ThresholdCoefficientFunction::fxBand(
 double ThresholdCoefficientFunction::BetaIndependentTerms(
     double x, double m2Q2, double m2mu2
 ) const {
-    if (GetChannel() == 'q')
-        return 0.;
-    else if (GetChannel() == 'g') {
-        if (GetOrder() == 1 && GetKind() == '2')
-            return 0.;
-        else if (GetOrder() == 1 && GetKind() == 'L')
-            return 0.;
-        else if (GetOrder() == 2 && GetKind() == '2')
-            return C2_g2_threshold_const(x, m2Q2, m2mu2);
-        else if (GetOrder() == 2 && GetKind() == 'L')
-            return CL_g2_threshold_const(x, m2Q2, m2mu2);
-        else if (GetOrder() == 3 && GetKind() == '2')
-            return C2_g3_threshold_const(x, m2Q2, m2mu2);
-        else if (GetOrder() == 3 && GetKind() == 'L')
-            return C2_g3_threshold_const(x, m2Q2, m2mu2);
-        else {
-            cout << "Error: something has gone wrong in "
-                    "ThresholdCoefficientFunction::SetFunctions!"
-                 << endl;
-            exit(-1);
-        }
-    } else {
-        cout << "Error: something has gone wrong in "
-                "ThresholdCoefficientFunction::SetFunctions!"
-             << endl;
-        exit(-1);
-    }
+
+    return (this->*beta_indep_)(x, m2Q2, m2mu2);
 }
 
 //==========================================================================================//
@@ -96,27 +71,35 @@ double ThresholdCoefficientFunction::BetaIndependentTerms(
 //------------------------------------------------------------------------------------------//
 
 void ThresholdCoefficientFunction::SetFunctions() {
-    if (GetChannel() == 'q')
+    if (GetChannel() == 'q') {
         fx_ = &ThresholdCoefficientFunction::ZeroFunction;
-    else if (GetChannel() == 'g') {
-        if (GetOrder() == 1 && GetKind() == '2')
+        beta_indep_ = &ThresholdCoefficientFunction::ZeroFunction;
+    } else if (GetChannel() == 'g') {
+        if (GetOrder() == 1 && GetKind() == '2') {
             fx_ = &ThresholdCoefficientFunction::C2_g1_threshold;
-        else if (GetOrder() == 1 && GetKind() == 'L')
+            beta_indep_ = &ThresholdCoefficientFunction::ZeroFunction;
+        } else if (GetOrder() == 1 && GetKind() == 'L') {
             fx_ = &ThresholdCoefficientFunction::ZeroFunction;
-        else if (GetOrder() == 2 && GetKind() == '2')
+            beta_indep_ = &ThresholdCoefficientFunction::ZeroFunction;
+        } else if (GetOrder() == 2 && GetKind() == '2') {
             fx_ = &ThresholdCoefficientFunction::C2_g2_threshold;
-        else if (GetOrder() == 2 && GetKind() == 'L')
+            beta_indep_ = &ThresholdCoefficientFunction::C2_g2_threshold_const;
+        } else if (GetOrder() == 2 && GetKind() == 'L') {
             fx_ = &ThresholdCoefficientFunction::CL_g2_threshold;
-        else if (GetOrder() == 3 && GetKind() == '2')
+            beta_indep_ = &ThresholdCoefficientFunction::CL_g2_threshold_const;
+        } else if (GetOrder() == 3 && GetKind() == '2') {
             fx_ = &ThresholdCoefficientFunction::C2_g3_threshold;
-        else if (GetOrder() == 3 && GetKind() == 'L')
+            beta_indep_ = &ThresholdCoefficientFunction::C2_g3_threshold_const;
+        } else if (GetOrder() == 3 && GetKind() == 'L') {
             fx_ = &ThresholdCoefficientFunction::CL_g3_threshold;
-        else {
-            cout << "Error: something has gone wrong in "
-                    "ThresholdCoefficientFunction::SetFunctions!"
-                 << endl;
-            exit(-1);
+            beta_indep_ = &ThresholdCoefficientFunction::CL_g3_threshold_const;
+        } else {
+            throw UnexpectedException(
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+            );
         }
+    } else {
+        throw UnexpectedException("Unexpected exception!", __PRETTY_FUNCTION__, __LINE__);
     }
 }
 

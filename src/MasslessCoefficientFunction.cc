@@ -3,10 +3,6 @@
 #include "adani/SpecialFunctions.h"
 
 #include <cmath>
-#include <iostream>
-
-using std::cout;
-using std::endl;
 
 //==========================================================================================//
 //  MasslessCoefficientFunction: constructor
@@ -16,7 +12,11 @@ MasslessCoefficientFunction::MasslessCoefficientFunction(
     const int &order, const char &kind, const char &channel
 )
     : CoefficientFunction(order, kind, channel) {
-    SetFunctions();
+    try {
+        SetFunctions();
+    } catch (UnexpectedException &e) {
+        e.runtime_error();
+    }
 }
 
 //==========================================================================================//
@@ -24,9 +24,16 @@ MasslessCoefficientFunction::MasslessCoefficientFunction(
 //------------------------------------------------------------------------------------------//
 
 double MasslessCoefficientFunction::fx(
-    double x, double m2Q2, double m2mu2, int nf
+    double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/
 ) const {
-    return MuIndependentTerms(x, nf) + MuDependentTerms(x, m2Q2, m2mu2, nf);
+    throw NotImplementedException(
+        "this function is deprecated and should not be used since it depends "
+        "on the MuDependent terms that are not implemented. Call "
+        "MasslessCoefficientFunction::MuIndependentTerms(double x, int nf) for "
+        "the mu-independent terms",
+        __PRETTY_FUNCTION__, __LINE__
+    );
+    // return MuIndependentTerms(x, nf) + MuDependentTerms(x, m2Q2, m2mu2, nf);
 }
 
 //==========================================================================================//
@@ -36,10 +43,12 @@ double MasslessCoefficientFunction::fx(
 double MasslessCoefficientFunction::MuDependentTerms(
     double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/
 ) const {
-    cout << "Error: mu dependent terms of the massless coefficient functions "
-            "are not implemented!"
-         << endl;
-    exit(-1);
+    throw NotImplementedException(
+        "this function is deprecated and should not be used since "
+        "MasslessCoefficientFunction is implemented only for Q=mu.",
+        __PRETTY_FUNCTION__, __LINE__
+    );
+    // return 0:;
 }
 
 //==========================================================================================//
@@ -49,12 +58,14 @@ double MasslessCoefficientFunction::MuDependentTerms(
 
 double MasslessCoefficientFunction::
     MuIndependentTerms(double /*x*/, double /*m2Q2*/, int /*nf*/) const {
-    cout << "Error: massless coefficient functions do not depend on m^2/Q^2!"
-         << endl;
-    cout << "Call MasslessCoefficientFunction::MuIndependentTerms(double x, "
-            "int nf)"
-         << endl;
-    exit(-1);
+    throw NotValidException(
+        "this function is deprecated and should not be used since "
+        "MasslessCoefficientFunction do not depend on m^2/Q^2!. Call "
+        "MasslessCoefficientFunction::MuIndependentTerms(double x, int nf) "
+        "instead",
+        __PRETTY_FUNCTION__, __LINE__
+    );
+    // return 0.;
 }
 
 //==========================================================================================//
@@ -72,9 +83,16 @@ double MasslessCoefficientFunction::MuIndependentTerms(double x, int nf) const {
 //------------------------------------------------------------------------------------------//
 
 Value MasslessCoefficientFunction::fxBand(
-    double x, double m2Q2, double m2mu2, int nf
+    double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/
 ) const {
-    return Value(fx(x, m2Q2, m2mu2, nf));
+    throw NotImplementedException(
+        "this function is deprecated and should not be used since it depends "
+        "on the MuDependent terms that are not implemented. Call "
+        "MasslessCoefficientFunction::MuIndependentTerms(double x, int nf) for "
+        "the mu-independent terms",
+        __PRETTY_FUNCTION__, __LINE__
+    );
+    // return Value(fx(x, m2Q2, m2mu2, nf));
 }
 
 //==========================================================================================//
@@ -106,10 +124,7 @@ void MasslessCoefficientFunction::SetFunctions() {
     else if (GetOrder() == 3 && GetKind() == 'L' && GetChannel() == 'q')
         mu_indep_ = &MasslessCoefficientFunction::CL_ps3_massless;
     else {
-        cout << "Error: something has gone wrong in "
-                "MasslessCoefficientFunction::SetFunctions!"
-             << endl;
-        exit(-1);
+        throw UnexpectedException("Unexpected exception!", __PRETTY_FUNCTION__, __LINE__);
     }
 }
 

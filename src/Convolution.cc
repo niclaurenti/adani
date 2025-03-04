@@ -1,10 +1,6 @@
 #include "adani/Convolution.h"
 
 #include <cmath>
-#include <iostream>
-
-using std::cout;
-using std::endl;
 
 //==========================================================================================//
 //  AbstractConvolution: constructor
@@ -16,16 +12,13 @@ AbstractConvolution::AbstractConvolution(
 )
     : dim_(dim) {
 
-    SetAbserr(abserr);
-    SetRelerr(relerr);
-
-    // check dim
-    if (dim <= 0) {
-        cout << "Error: dim must be positive. Got " << dim << endl;
-        exit(-1);
+    try {
+        SetAbserr(abserr);
+        SetRelerr(relerr);
+        AllocWorkspace(dim);
+    } catch (NotValidException &e) {
+        e.runtime_error();
     }
-
-    w_ = gsl_integration_workspace_alloc(dim);
 
     coefffunc_ = coefffunc;
     splitfunc_ = splitfunc;
@@ -47,8 +40,10 @@ AbstractConvolution::~AbstractConvolution() {
 void AbstractConvolution::SetAbserr(const double &abserr) {
     // check abserr
     if (abserr <= 0) {
-        cout << "Error: abserr must be positive. Got " << abserr << endl;
-        exit(-1);
+        throw NotValidException(
+            "abserr must be positive. Got abserr=" + to_string(abserr),
+            __PRETTY_FUNCTION__, __LINE__
+        );
     }
     abserr_ = abserr;
 }
@@ -60,10 +55,27 @@ void AbstractConvolution::SetAbserr(const double &abserr) {
 void AbstractConvolution::SetRelerr(const double &relerr) {
     // check relerr
     if (relerr <= 0) {
-        cout << "Error: relerr must be positive. Got " << relerr << endl;
-        exit(-1);
+        throw NotValidException(
+            "relerr must be positive. Got relerr=" + to_string(relerr),
+            __PRETTY_FUNCTION__, __LINE__
+        );
     }
     relerr_ = relerr;
+}
+
+//==========================================================================================//
+//  AbstractConvolution: method for the allocation of workspace
+//------------------------------------------------------------------------------------------//
+
+void AbstractConvolution::AllocWorkspace(const int &dim) {
+    // check dim
+    if (dim <= 0) {
+        throw NotValidException(
+            "dim must be positive. Got dim=" + to_string(dim),
+            __PRETTY_FUNCTION__, __LINE__
+        );
+    }
+    w_ = gsl_integration_workspace_alloc(dim);
 }
 
 //==========================================================================================//
@@ -292,7 +304,11 @@ DoubleConvolution::DoubleConvolution(
     : AbstractConvolution(coefffunc, splitfunc, abserr, relerr, dim),
       MCintegral_(MCintegral) {
 
-    SetMCcalls(MCcalls);
+    try {
+        SetMCcalls(MCcalls);
+    } catch (NotValidException &e) {
+        e.runtime_error();
+    }
 
     if (MCintegral) {
         convolution_ =
@@ -332,10 +348,12 @@ DoubleConvolution::~DoubleConvolution() {
 //------------------------------------------------------------------------------------------//
 
 void DoubleConvolution::SetMCcalls(const int &MCcalls) {
-    // check dim
+    // check MCcalls
     if (MCcalls <= 0) {
-        cout << "Error: MCcalls must be positive. Got " << MCcalls << endl;
-        exit(-1);
+        throw NotValidException(
+            "MCcalls must be positive. Got MCcalls=" + to_string(MCcalls),
+            __PRETTY_FUNCTION__, __LINE__
+        );
     }
     MCcalls_ = MCcalls;
 }

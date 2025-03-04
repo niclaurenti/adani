@@ -46,7 +46,7 @@ pip install .
 
 In order to compile a simple program run
 ```bash
-g++ -Wall -o test.exe test.cpp -ladani `adani-config --cppflags --ldflags --cxxflags`
+g++ -Wall -o test.exe test.cpp `adani-config --cppflags --ldflags --cxxflags`
 ```
 or
 ```bash

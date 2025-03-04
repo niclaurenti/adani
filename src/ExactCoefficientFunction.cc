@@ -4,10 +4,6 @@
 #include "adani/ThresholdCoefficientFunction.h"
 
 #include <cmath>
-#include <iostream>
-
-using std::cout;
-using std::endl;
 
 //==========================================================================================//
 //  ExactCoefficientFunction: constructor
@@ -37,14 +33,20 @@ ExactCoefficientFunction::ExactCoefficientFunction(
 
     delta_ = nullptr;
 
-    // check double_int_method
-    if (double_int_method != "analytical"
-        && double_int_method != "double_numerical"
-        && double_int_method != "monte_carlo") {
-        cout << "Error in ExactCoefficientFunction: double_int_method must be "
-                "'analytical', 'double_numerical' or 'monte_carlo'! Got "
-             << double_int_method << endl;
-        exit(-1);
+    try {
+        // check double_int_method
+        if (double_int_method != "analytical"
+            && double_int_method != "double_numerical"
+            && double_int_method != "monte_carlo") {
+            throw NotValidException(
+                "double_int_method must be 'analytical', 'double_numerical' or "
+                "'monte_carlo'! Got '"
+                    + double_int_method + "'",
+                __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+    } catch (const NotValidException &e) {
+        e.runtime_error();
     }
 
     if (GetOrder() == 2) {
@@ -203,7 +205,15 @@ double ExactCoefficientFunction::fx(
 double ExactCoefficientFunction::MuIndependentTerms(
     double x, double m2Q2, int nf
 ) const {
-    return (this->*mu_indep_)(x, m2Q2, nf);
+    double res;
+    try {
+        res = (this->*mu_indep_)(x, m2Q2, nf);
+    } catch (NotValidException &e) {
+        e.runtime_error();
+    } catch (NotKnownException &e) {
+        e.runtime_error();
+    }
+    return res;
 }
 
 //==========================================================================================//
@@ -359,10 +369,10 @@ double
     if (eta > 1e6 || xi > 1e5)
         return asy_->MuIndependentTerms(x, m2Q2, nf);
     if (xi < 1e-3) {
-        cout << "Error in ExactCoefficientFunction::C2_ps20 : max value of "
-                "m2Q2 is 1e3. Got "
-             << m2Q2 << endl;
-        exit(-1);
+        throw NotValidException(
+            "max value of m2Q2 is 1e3. Got m2Q2=" + to_string(m2Q2),
+            __PRETTY_FUNCTION__, __LINE__
+        );
     }
 
     return 16 * M_PI * xi * c2nloq_(&eta, &xi) / x;
@@ -409,10 +419,10 @@ double
     if (eta > 1e6 || xi > 1e5)
         return asy_->MuIndependentTerms(x, m2Q2, nf);
     if (xi < 1e-3) {
-        cout << "Error in ExactCoefficientFunction::CL_ps20 : max value of "
-                "m2Q2 is 1e3. Got "
-             << m2Q2 << endl;
-        exit(-1);
+        throw NotValidException(
+            "max value of m2Q2 is 1e3. Got m2Q2=" + to_string(m2Q2),
+            __PRETTY_FUNCTION__, __LINE__
+        );
     }
 
     return 16 * M_PI * xi * clnloq_(&eta, &xi) / x;
@@ -441,10 +451,10 @@ double
     if (eta > 1e6 || xi > 1e5)
         return asy_->MuIndependentTerms(x, m2Q2, nf);
     if (xi < 1e-3) {
-        cout << "Error in ExactCoefficientFunction::C2_g20 : max value of m2Q2 "
-                "is 1e3. Got "
-             << m2Q2 << endl;
-        exit(-1);
+        throw NotValidException(
+            "max value of m2Q2 is 1e3. Got m2Q2=" + to_string(m2Q2),
+            __PRETTY_FUNCTION__, __LINE__
+        );
     }
 
     return 16 * M_PI * xi * c2nlog_(&eta, &xi) / x;
@@ -464,7 +474,7 @@ double ExactCoefficientFunction::C_g21(double x, double m2Q2) const {
 
     return -(
         convolutions_lmu1_[0]->Convolute(x, m2Q2, nf_one)
-        - convolutions_lmu1_[1]->Convolute(x, m2Q2, nf_one) * beta(0, nf_one)
+        - convolutions_lmu1_[1]->Convolute(x, m2Q2, nf_one) * beta0(nf_one)
     );
 }
 
@@ -491,10 +501,10 @@ double
     if (eta > 1e6 || xi > 1e5)
         return asy_->MuIndependentTerms(x, m2Q2, nf);
     if (xi < 1e-3) {
-        cout << "Error in ExactCoefficientFunction::CL_g20 : max value of m2Q2 "
-                "is 1e3. Got "
-             << m2Q2 << endl;
-        exit(-1);
+        throw NotValidException(
+            "max value of m2Q2 is 1e3. Got m2Q2=" + to_string(m2Q2),
+            __PRETTY_FUNCTION__, __LINE__
+        );
     }
 
     return 16 * M_PI * xi * clnlog_(&eta, &xi) / x;
@@ -535,7 +545,7 @@ double ExactCoefficientFunction::C_ps31(double x, double m2Q2, int nf) const {
         convolutions_lmu1_[0]->Convolute(x, m2Q2, nf)
         + convolutions_lmu1_[1]->Convolute(x, m2Q2, nf)
         + convolutions_lmu1_[2]->Convolute(x, m2Q2, nf)
-        - 2. * beta(0, nf) * convolutions_lmu1_[3]->Convolute(x, m2Q2, nf)
+        - 2. * beta0(nf) * convolutions_lmu1_[3]->Convolute(x, m2Q2, nf)
     );
 }
 
@@ -551,8 +561,7 @@ double ExactCoefficientFunction::C_ps32(double x, double m2Q2, int nf) const {
     return 0.5
                * (convolutions_lmu2_[0]->Convolute(x, m2Q2, nf)
                   + convolutions_lmu2_[1]->Convolute(x, m2Q2, nf))
-           - 3. / 2 * beta(0, nf)
-                 * convolutions_lmu2_[2]->Convolute(x, m2Q2, nf);
+           - 3. / 2 * beta0(nf) * convolutions_lmu2_[2]->Convolute(x, m2Q2, nf);
 }
 
 //==========================================================================================//
@@ -566,10 +575,10 @@ double ExactCoefficientFunction::C_g31(double x, double m2Q2, int nf) const {
 
     return -(
         convolutions_lmu1_[0]->Convolute(x, m2Q2, nf)
-        - beta(1, nf) * convolutions_lmu1_[1]->Convolute(x, m2Q2, nf)
+        - beta1(nf) * convolutions_lmu1_[1]->Convolute(x, m2Q2, nf)
         + convolutions_lmu1_[2]->Convolute(x, m2Q2, nf)
         + convolutions_lmu1_[3]->Convolute(x, m2Q2, nf)
-        - 2. * beta(0, nf) * convolutions_lmu1_[4]->Convolute(x, m2Q2, nf)
+        - 2. * beta0(nf) * convolutions_lmu1_[4]->Convolute(x, m2Q2, nf)
     );
 }
 
@@ -582,13 +591,13 @@ double ExactCoefficientFunction::C_g31(double x, double m2Q2, int nf) const {
 
 double ExactCoefficientFunction::C_g32(double x, double m2Q2, int nf) const {
 
-    double beta0 = beta(0, nf);
+    double beta_0 = beta0(nf);
 
     return 0.5
                * (convolutions_lmu2_[0]->Convolute(x, m2Q2, nf)
                   + convolutions_lmu2_[1]->Convolute(x, m2Q2, nf))
-           - 3. / 2 * beta0 * convolutions_lmu2_[2]->Convolute(x, m2Q2, nf)
-           + beta0 * beta0 * convolutions_lmu2_[3]->Convolute(x, m2Q2, nf);
+           - 3. / 2 * beta_0 * convolutions_lmu2_[2]->Convolute(x, m2Q2, nf)
+           + beta_0 * beta_0 * convolutions_lmu2_[3]->Convolute(x, m2Q2, nf);
 }
 
 //==========================================================================================//
@@ -625,8 +634,10 @@ double ExactCoefficientFunction::C_ps3_MuDep(
 
 double ExactCoefficientFunction::
     WarningFunc(double /*x*/, double /*m2Q2*/, int /*nf*/) const {
-    cout << "Error: mu-independent terms of the exact coefficient function at "
-            "O(a_s^3) are not known!"
-         << endl;
-    exit(-1);
+    throw NotKnownException(
+        "mu-independent terms of the exact coefficient function at order=3 are "
+        "not known!",
+        __PRETTY_FUNCTION__, __LINE__
+    );
+    return 0.;
 }

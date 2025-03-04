@@ -3,10 +3,6 @@
 #include "adani/SpecialFunctions.h"
 
 #include <cmath>
-#include <iostream>
-
-using std::cout;
-using std::endl;
 
 //==========================================================================================//
 //  HighScaleCoefficientFunction: constructor
@@ -37,7 +33,13 @@ HighScaleCoefficientFunction::HighScaleCoefficientFunction(
         a_muindep_ = new MatchingCondition(3, 'Q', GetChannel(), version);
     }
 
-    SetFunctions();
+    try {
+        SetFunctions();
+    } catch (NotPresentException &e) {
+        e.runtime_error();
+    } catch (UnexpectedException &e) {
+        e.runtime_error();
+    }
 }
 
 //==========================================================================================//
@@ -87,12 +89,18 @@ vector<double> HighScaleCoefficientFunction::fxBand_NotOrdered(
     double central, higher, lower;
     central = fxBand(x, m2Q2, m2mu2, nf).GetCentral();
 
-    higher = fxBand(x, m2Q2, m2mu2, nf).GetHigher()
-             - a_muindep_->MuIndependentNfIndependentTerm(x).GetHigher()
-             + (a_muindep_->NotOrdered(x))[1];
-    lower = fxBand(x, m2Q2, m2mu2, nf).GetLower()
-            - a_muindep_->MuIndependentNfIndependentTerm(x).GetLower()
-            + (a_muindep_->NotOrdered(x))[2];
+    try {
+        higher = fxBand(x, m2Q2, m2mu2, nf).GetHigher()
+                 - a_muindep_->MuIndependentNfIndependentTerm(x).GetHigher()
+                 + (a_muindep_->NotOrdered(x))[1];
+        lower = fxBand(x, m2Q2, m2mu2, nf).GetLower()
+                - a_muindep_->MuIndependentNfIndependentTerm(x).GetLower()
+                + (a_muindep_->NotOrdered(x))[2];
+    } catch (NotImplementedException &e) {
+        e.runtime_error();
+    } catch (UnexpectedException &e) {
+        e.runtime_error();
+    }
 
     return { central, higher, lower };
 }
@@ -104,16 +112,22 @@ vector<double> HighScaleCoefficientFunction::fxBand_NotOrdered(
 void HighScaleCoefficientFunction::SetFunctions() {
 
     if (GetOrder() == 1) {
+
         if (GetKind() == '2' && GetChannel() == 'g')
             fx_ = &HighScaleCoefficientFunction::C2_g1_highscale;
         else if (GetKind() == 'L' && GetChannel() == 'g')
             fx_ = &HighScaleCoefficientFunction::CL_g1_highscale;
         else {
-            cout << "Error: quark coefficient function is not present at O(as)!"
-                 << endl;
-            exit(-1);
+            throw NotPresentException(
+                "quark coefficient function is not present at order 1! Got "
+                "order="
+                    + to_string(GetOrder()),
+                __PRETTY_FUNCTION__, __LINE__
+            );
         }
+
     } else if (GetOrder() == 2) {
+
         if (GetKind() == '2' && GetChannel() == 'g')
             fx_ = &HighScaleCoefficientFunction::C2_g2_highscale;
         else if (GetKind() == '2' && GetChannel() == 'q')
@@ -123,13 +137,12 @@ void HighScaleCoefficientFunction::SetFunctions() {
         else if (GetKind() == 'L' && GetChannel() == 'q')
             fx_ = &HighScaleCoefficientFunction::CL_ps2_highscale;
         else {
-            cout << "Error: something has gone wrong in "
-                    "HighScaleCoefficientFunction::SetFunctions, GetOrder() == "
-                    "2!"
-                 << endl;
-            exit(-1);
+            throw UnexpectedException(
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+            );
         }
     } else if (GetOrder() == 3) {
+
         if (GetKind() == '2' && GetChannel() == 'g')
             fx_ = &HighScaleCoefficientFunction::C2_g3_highscale;
         else if (GetKind() == '2' && GetChannel() == 'q')
@@ -139,17 +152,12 @@ void HighScaleCoefficientFunction::SetFunctions() {
         else if (GetKind() == 'L' && GetChannel() == 'q')
             fx_ = &HighScaleCoefficientFunction::CL_ps3_highscale;
         else {
-            cout << "Error: something has gone wrong in "
-                    "HighScaleCoefficientFunction::SetFunctions, GetOrder() == "
-                    "3!"
-                 << endl;
-            exit(-1);
+            throw UnexpectedException(
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+            );
         }
     } else {
-        cout << "Error: something has gone wrong in "
-                "HighScaleCoefficientFunction::SetFunctions!"
-             << endl;
-        exit(-1);
+        throw UnexpectedException("Unexpected exception!", __PRETTY_FUNCTION__, __LINE__);
     }
 }
 

@@ -3,10 +3,6 @@
 #include "adani/SpecialFunctions.h"
 
 #include <cmath>
-#include <iostream>
-
-using std::cout;
-using std::endl;
 
 //==========================================================================================//
 //  HighScaleSplitLogs: constructor
@@ -17,15 +13,23 @@ HighScaleSplitLogs::HighScaleSplitLogs(
     const string &version
 )
     : CoefficientFunction(order, kind, channel) {
-    if (order != 3) {
-        cout << "Error: HighScaleSplitLogs is implemented only for order = 3. "
-                "Got "
-             << order << endl;
-        exit(-1);
-    }
 
     massless_as1_ = nullptr;
     a_muindep_ = nullptr;
+
+    try {
+        if (order != 3) {
+            throw NotImplementedException(
+                "HighScaleSplitLogs is implemented only for order = 3. Got "
+                "order="
+                    + to_string(order),
+                __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+        SetFunctions();
+    } catch (NotImplementedException &e) {
+        e.runtime_error();
+    }
 
     if (GetChannel() == 'g')
         massless_as1_ =
@@ -37,8 +41,6 @@ HighScaleSplitLogs::HighScaleSplitLogs(
     if (GetOrder() == 3 && GetKind() == '2') {
         a_muindep_ = new MatchingCondition(3, 'Q', GetChannel(), version);
     }
-
-    SetFunctions();
 }
 
 //==========================================================================================//
@@ -58,10 +60,13 @@ HighScaleSplitLogs::~HighScaleSplitLogs() {
 
 double HighScaleSplitLogs::
     fx(double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const {
-    cout << "Error: HighScaleSplitLogs is implemented only in the case mu=Q!"
-         << endl;
-    cout << "Use HighScaleSplitLogs::fx(double x, double m2Q2, int nf)" << endl;
-    exit(-1);
+    throw NotImplementedException(
+        "this function is deprecated and should not be used since "
+        "HighScaleSplitLogs is implemented only for Q=mu. Use "
+        "HighScaleSplitLogs::fx(double x, double m2Q2, int nf) instead",
+        __PRETTY_FUNCTION__, __LINE__
+    );
+    // return 0.;
 }
 
 //==========================================================================================//
@@ -79,11 +84,13 @@ double HighScaleSplitLogs::fx(double x, double m2Q2, int nf) const {
 
 Value HighScaleSplitLogs::
     fxBand(double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const {
-    cout << "Error: HighScaleSplitLogs is implemented only in the case mu=Q!"
-         << endl;
-    cout << "Use HighScaleSplitLogs::fxBand(double x, double m2Q2, int nf)"
-         << endl;
-    exit(-1);
+    throw NotImplementedException(
+        "this function is deprecated and should not be used since "
+        "HighScaleSplitLogs is implemented only for Q=mu. Use "
+        "HighScaleSplitLogs::fxBand(double x, double m2Q2, int nf) instead",
+        __PRETTY_FUNCTION__, __LINE__
+    );
+    //  return Value(0.);
 }
 
 //==========================================================================================//
@@ -115,6 +122,10 @@ void HighScaleSplitLogs::SetFunctions() {
             NLL_ = &HighScaleSplitLogs::C2_g3_highscale_NLL;
             N2LL_ = &HighScaleSplitLogs::C2_g3_highscale_N2LL;
             N3LL_ = &HighScaleSplitLogs::C2_g3_highscale_N3LL;
+        } else {
+            throw UnexpectedException(
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+            );
         }
     } else if (GetKind() == 'L') {
         if (GetChannel() == 'q') {
@@ -127,7 +138,13 @@ void HighScaleSplitLogs::SetFunctions() {
             NLL_ = &HighScaleSplitLogs::CL_g3_highscale_NLL;
             N2LL_ = &HighScaleSplitLogs::CL_g3_highscale_N2LL;
             N3LL_ = &HighScaleSplitLogs::CL_g3_highscale_N3LL;
+        } else {
+            throw UnexpectedException(
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+            );
         }
+    } else {
+        throw UnexpectedException("Unexpected exception!", __PRETTY_FUNCTION__, __LINE__);
     }
 }
 

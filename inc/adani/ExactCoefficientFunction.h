@@ -3,10 +3,9 @@
  *
  *       Filename:  ExactCoefficientFunction.h
  *
- *    Description:  Header file for the
- * ExactCoefficientFunction.cc file.
+ *         Author:  Daniele Adani
  *
- *         Author:  Hanno un cuore differente
+ *    Description:  Hanno un cuore differente
  *
  *  In this file there are the exact heavy coefficient
  *  functions (when known)
@@ -59,8 +58,6 @@ class ExactCoefficientFunction : public CoefficientFunction {
         Value
             fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
 
-        void SetFunctions();
-
     private:
         double (ExactCoefficientFunction::*mu_indep_)(
             double, double, int
@@ -91,6 +88,8 @@ class ExactCoefficientFunction : public CoefficientFunction {
         ConvolutedSplittingFunctions *Pgg0Pgg0_;
 
         Delta *delta_;
+
+        void SetFunctions();
 
         //==========================================================================================//
         //                      Exact massive coefficient functions

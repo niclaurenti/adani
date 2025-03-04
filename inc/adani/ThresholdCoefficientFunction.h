@@ -3,10 +3,9 @@
  *
  *       Filename:  ThresholdCoefficientFunctions.h
  *
- *    Description:  Header file for the
- * ThresholdCoefficientFunctions.cc file.
+ *         Author:  Daniele Adani
  *
- *         Author:  La garra charruaaaaaaa
+ *    Description:  La garra charruaaaaaaa
  *
  *  In this file there are the coefficient functions in the
  * threshold limit, i.e. s->4m^2 (where s is the partonic
@@ -45,14 +44,20 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
 
         double BetaIndependentTerms(double x, double m2Q2, double m2mu2) const;
 
-        void SetFunctions();
-
     private:
+        // TODO: fx is the sum of a beta-dependent term and a beta-independent
+        // in this way there is some repeated code. Split the pointers into
+        // beta-indep and beta-dep
         double (ThresholdCoefficientFunction::*fx_)(
             double, double, double, int
         ) const;
+        double (ThresholdCoefficientFunction::*beta_indep_)(
+            double, double, double
+        ) const;
 
         ExactCoefficientFunction *exact_as1_;
+
+        void SetFunctions();
 
         //==========================================================================================//
         //                      Threshold (s -> 4m^2) coefficient
@@ -111,6 +116,11 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
 
         double ZeroFunction(
             double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/
+        ) const {
+            return 0.;
+        };
+        double ZeroFunction(
+            double /*x*/, double /*m2Q2*/, double /*m2mu2*/
         ) const {
             return 0.;
         };

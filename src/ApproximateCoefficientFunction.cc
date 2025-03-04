@@ -6,11 +6,8 @@
 #include "adani/SpecialFunctions.h"
 
 #include <cmath>
-#include <iostream>
 #include <vector>
 
-using std::cout;
-using std::endl;
 using std::vector;
 
 //==========================================================================================//
@@ -111,49 +108,86 @@ ApproximateCoefficientFunction::ApproximateCoefficientFunction(
         order, kind, channel, NLL, highscale_version
     );
 
-    if (order == 1) {
-        if (kind == '2') {
-            if (channel == 'g')
-                approximation_ = C2_g1_params;
-            variation_ = C2_var;
-        } else if (kind == 'L') {
-            if (channel == 'g')
-                approximation_ = CL_g2_params;
-            variation_ = CL_var;
-        }
-    }
-    if (order == 2) {
-        if (kind == '2') {
-            if (channel == 'g')
-                approximation_ = C2_g2_params;
-            else if (channel == 'q')
-                approximation_ = C2_ps2_params;
-            variation_ = C2_var;
-        } else if (kind == 'L') {
-            if (channel == 'g')
-                approximation_ = CL_g2_params;
-            else if (channel == 'q')
-                approximation_ = CL_ps2_params;
-            variation_ = CL_var;
-        }
-    } else if (order == 3) {
-        if (kind == '2') {
-            if (channel == 'g')
-                approximation_ = C2_g3_params;
-            else if (channel == 'q')
-                approximation_ = C2_ps3_params;
-            else {
-                cout << "Error" << endl;
-                exit(-1);
+    try {
+        if (order == 1) {
+            if (kind == '2') {
+                if (channel == 'g')
+                    approximation_ = C2_g1_params;
+                else {
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
+                }
+                variation_ = C2_var;
+            } else if (kind == 'L') {
+                if (channel == 'g')
+                    approximation_ = CL_g2_params;
+                else {
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
+                }
+                variation_ = CL_var;
+            } else {
+                throw UnexpectedException(
+                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                );
             }
-            variation_ = C2_var;
-        } else if (kind == 'L') {
-            if (channel == 'g')
-                approximation_ = CL_g3_params;
-            else if (channel == 'q')
-                approximation_ = CL_ps3_params;
-            variation_ = CL_var;
+        } else if (order == 2) {
+            if (kind == '2') {
+                if (channel == 'g')
+                    approximation_ = C2_g2_params;
+                else if (channel == 'q')
+                    approximation_ = C2_ps2_params;
+                else {
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
+                }
+                variation_ = C2_var;
+            } else if (kind == 'L') {
+                if (channel == 'g')
+                    approximation_ = CL_g2_params;
+                else if (channel == 'q')
+                    approximation_ = CL_ps2_params;
+                else {
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
+                }
+                variation_ = CL_var;
+            }
+        } else if (order == 3) {
+            if (kind == '2') {
+                if (channel == 'g')
+                    approximation_ = C2_g3_params;
+                else if (channel == 'q')
+                    approximation_ = C2_ps3_params;
+                else {
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
+                }
+                variation_ = C2_var;
+            } else if (kind == 'L') {
+                if (channel == 'g')
+                    approximation_ = CL_g3_params;
+                else if (channel == 'q')
+                    approximation_ = CL_ps3_params;
+                else {
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
+                }
+                variation_ = CL_var;
+            }
+        } else {
+            throw UnexpectedException(
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+            );
         }
+    } catch (UnexpectedException &e) {
+        e.runtime_error();
     }
 }
 
@@ -272,36 +306,59 @@ ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(
     : AbstractApproximate(
           order, kind, channel, abserr, relerr, dim, double_int_method, MCcalls
       ) {
-    if (GetOrder() == 1) {
-        cout << "Error: KLMV approximation is not implemented at O(as)!"
-             << endl;
-        exit(-1);
-    }
-    if (GetKind() == 'L') {
-        cout << "Error: KLMV approximation is not implemented for kind = 'L'!"
-             << endl;
-        exit(-1);
-    }
+    try {
+        if (GetOrder() == 1) {
+            throw NotImplementedException(
+                "KLMV approximation is not implemented at order 1! Got order="
+                    + to_string(order),
+                __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+        if (GetKind() == 'L') {
+            throw NotImplementedException(
+                "KLMV approximation is not implemented for kind = 'L'! Got "
+                "kind='"
+                    + string(1, kind) + "'",
+                __PRETTY_FUNCTION__, __LINE__
+            );
+        }
 
-    if (GetOrder() == 2) {
-        if (GetChannel() == 'g') {
-            params_A_ = klmv_C2g2A;
-            params_B_ = klmv_C2g2B;
-        } else if (GetChannel() == 'q') {
-            params_A_ = klmv_C2q2A;
-            params_B_ = klmv_C2q2B;
+        if (GetOrder() == 2) {
+            if (GetChannel() == 'g') {
+                params_A_ = klmv_C2g2A;
+                params_B_ = klmv_C2g2B;
+            } else if (GetChannel() == 'q') {
+                params_A_ = klmv_C2q2A;
+                params_B_ = klmv_C2q2B;
+            } else {
+                throw UnexpectedException(
+                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                );
+            }
+        } else if (GetOrder() == 3) {
+            if (GetChannel() == 'g') {
+                params_A_ = klmv_C2g3A;
+                if (lowxi)
+                    params_B_ = klmv_C2g3B_lowxi;
+                else
+                    params_B_ = klmv_C2g3B;
+            } else if (GetChannel() == 'q') {
+                params_A_ = klmv_C2q3A;
+                params_B_ = klmv_C2q3B;
+            } else {
+                throw UnexpectedException(
+                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                );
+            }
+        } else {
+            throw UnexpectedException(
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+            );
         }
-    } else if (GetOrder() == 3) {
-        if (GetChannel() == 'g') {
-            params_A_ = klmv_C2g3A;
-            if (lowxi)
-                params_B_ = klmv_C2g3B_lowxi;
-            else
-                params_B_ = klmv_C2g3B;
-        } else if (GetChannel() == 'q') {
-            params_A_ = klmv_C2q3A;
-            params_B_ = klmv_C2q3B;
-        }
+    } catch (const NotImplementedException &e) {
+        e.runtime_error();
+    } catch (UnexpectedException &e) {
+        e.runtime_error();
     }
 
     threshold_ = new ThresholdCoefficientFunction(order, kind, channel);
@@ -348,11 +405,13 @@ Value ApproximateCoefficientFunctionKLMV::MuIndependentTermsBand(
 
     double res_A, res_B;
 
+    // order=1 is checked in the constructor
+
     if (GetOrder() == 2) {
         res_A =
             ApproximationA(x, m2Q2, 0., he_ll, hs[0], thr, thr_const, gamma, C);
         res_B = ApproximationB(x, m2Q2, 0., he_ll, hs[0], thr, 0., delta, D);
-    } else if (GetOrder() == 3) {
+    } else { // order = 3
         Value he_nll = ApproximateNLL(x, m2Q2);
         res_A = ApproximationA(
             x, m2Q2, he_ll, he_nll.GetHigher(), hs[1], thr, thr_const, gamma, C
@@ -360,11 +419,6 @@ Value ApproximateCoefficientFunctionKLMV::MuIndependentTermsBand(
         res_B = ApproximationB(
             x, m2Q2, he_ll, he_nll.GetLower(), hs[2], thr, thr_const, delta, D
         );
-    } else {
-        cout << "Error: ApproximateCoefficientFunctionKLMV is implemented only "
-                "for order = 2 or 3. Got "
-             << GetOrder() << endl;
-        exit(-1);
     }
 
     if (res_A > res_B)

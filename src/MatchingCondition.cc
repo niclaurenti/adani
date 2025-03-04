@@ -3,10 +3,6 @@
 #include "adani/SpecialFunctions.h"
 
 #include <cmath>
-#include <iostream>
-
-using std::cout;
-using std::endl;
 
 //==========================================================================================//
 //  MatchingCondition: constructor
@@ -18,43 +14,79 @@ MatchingCondition::MatchingCondition(
 )
     : order_(order), entry1_(entry1), entry2_(entry2), version_(version) {
     // check order
-    if (order != 3) {
-        cout << "Error: only order = 3 is implemented. Got " << order << endl;
-        exit(-1);
-    }
+    try {
 
-    // check entry1
-    if (entry1 != 'Q') {
-        cout << "Error: only entry1 = 'Q' is implemented. Got " << entry1
-             << endl;
-        exit(-1);
-    }
+        CheckEntry(entry1);
+        CheckEntry(entry2);
+        CheckVersion(version);
 
-    // check entry2
-    if (entry2 != 'g' && entry2 != 'q') {
-        cout << "Error: entry2 must be g or q. Got " << entry2 << endl;
-        exit(-1);
-    }
+        if (order != 3) {
+            throw NotImplementedException(
+                "only order = 3 is implemented. Got order=" + to_string(order),
+                __PRETTY_FUNCTION__, __LINE__
+            );
+        }
 
-    // check version
+        // check entry1
+        if (entry1 != 'Q') {
+            throw NotImplementedException(
+                "only entry1 = 'Q' is implemented. Got " + string(1, entry1),
+                __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+
+        // check entry2
+        if (entry2 == 'Q') {
+            throw NotImplementedException(
+                "entry2 = 'Q' is not implemented!", __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+
+        if (entry2 == 'g' && version == "exact") {
+            throw NotImplementedException(
+                "aQg channel doesn't have 'exact' version!", __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+
+        if (entry2 == 'q' && (version == "abmp" || version == "gm")) {
+            throw NotImplementedException(
+                "aQq channel doesn't have 'abmp' or 'gm' version! Got '"
+                    + version + "'",
+                __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+    } catch (NotImplementedException &e) {
+        e.runtime_error();
+    } catch (NotValidException &e) {
+        e.runtime_error();
+    }
+}
+
+//==========================================================================================//
+//  MatchingCondition: CheckEntry
+//------------------------------------------------------------------------------------------//
+
+void MatchingCondition::CheckEntry(char entry) const {
+    if (entry != 'g' && entry != 'q' && entry != 'Q') {
+        throw NotValidException(
+            "entry must be non 'g', 'q' or 'Q'. Got '" + string(1, entry) + "'",
+            __PRETTY_FUNCTION__, __LINE__
+        );
+    }
+}
+
+//==========================================================================================//
+//  MatchingCondition: CheckVersion
+//------------------------------------------------------------------------------------------//
+
+void MatchingCondition::CheckVersion(string version) const {
     if (version != "exact" && version != "abmp" && version != "klmv"
         && version != "gm") {
-        cout << "Error: version must be 'exact', 'abmp', 'gm' or "
-                "'klmv'! Got "
-             << version << endl;
-        exit(-1);
-    }
-
-    if (entry2 == 'g' && version == "exact") {
-        cout << "Error: aQg channel doesn't have 'exact' version!" << endl;
-        exit(-1);
-    }
-
-    if (entry2 == 'q' && (version == "abmp" || version == "gm")) {
-        cout << "Error: aQq channel doesn't have 'abmp' or 'gm' "
-                "version!"
-             << endl;
-        exit(-1);
+        throw NotValidException(
+            "version must be 'exact', 'abmp', 'gm' or 'klmv'! Got'" + version
+                + "'",
+            __PRETTY_FUNCTION__, __LINE__
+        );
     }
 }
 
@@ -67,7 +99,14 @@ Value MatchingCondition::MuIndependentNfIndependentTerm(double x) const {
 
     double central, higher, lower;
 
-    vector<double> res = NotOrdered(x);
+    vector<double> res;
+    try {
+        res = NotOrdered(x);
+    } catch (NotImplementedException &e) {
+        e.runtime_error();
+    } catch (UnexpectedException &e) {
+        e.runtime_error();
+    }
 
     central = res[0];
 
@@ -101,10 +140,9 @@ vector<double> MatchingCondition::NotOrdered(double x) const {
 
             return { central, higher, lower };
         } else {
-            cout << "Error: something has gone wrong in "
-                    "MatchingCondition::NotOrdered"
-                 << endl;
-            exit(-1);
+            throw UnexpectedException(
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+            );
         }
     } else {
         int low_id;
@@ -119,10 +157,9 @@ vector<double> MatchingCondition::NotOrdered(double x) const {
         else if (version_ == "klmv")
             low_id = -12;
         else {
-            cout << "Error: something has gone wrong in "
-                    "MatchingCondition::NotOrdered"
-                 << endl;
-            exit(-1);
+            throw UnexpectedException(
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+            );
         }
 
         higher = a_Qg_30(x, 1);
@@ -276,8 +313,9 @@ double MatchingCondition::a_Qg_30(double x, int v) const {
     double L13 = L12 * L1;
 
     if (v == 0) {
-        cout << "a_Qg_30 exact is not known/implemented yet!" << endl;
-        exit(-1);
+        throw NotImplementedException(
+            "a_Qg_30 exact is not implemented yet!", __PRETTY_FUNCTION__, __LINE__
+        );
     } else if (v == 1) {
         return (
             354.1002 * L13 + 479.3838 * L12 - 7856.784 * (2. - x)
@@ -308,10 +346,10 @@ double MatchingCondition::a_Qg_30(double x, int v) const {
                - 7861.809052567688 * x * L - 720.0483828 * L2 + 514.0912722 * L3
                - 21.75925926 * L4 + 4.844444444 * L5;
     } else {
-        cout << "Error in MatchingCondition::a_Qg_30: Choose either v=0, v=1, "
-                "v=-1, v=-12 or v=2"
-             << endl;
-        exit(-1);
+        throw NotValidException(
+            "Choose either v=0, v=1, v=-1, v=-12 or v=2! Got " + to_string(v),
+            __PRETTY_FUNCTION__, __LINE__
+        );
     }
 }
 
@@ -1028,8 +1066,9 @@ double MatchingCondition::a_Qq_PS_30(double x, int v) const {
             + 8571.165 * x * L - 2346.893 * L * L + 688.396 / x * L
         );
     } else {
-        std::cout << "a_Qq_PS_30: Choose either v=0, v=1 or v=-1!!\nExiting!!\n"
-                  << std::endl;
-        exit(-1);
+        throw NotValidException(
+            "Choose either v=0, v=1 or v=-1! Got " + to_string(v),
+            __PRETTY_FUNCTION__, __LINE__
+        );
     }
 }
