@@ -39,7 +39,7 @@ jobs:
         env:
           CIBW_SKIP: pp* cp36-* *-musllinux_x86_64 *_i686
           CIBW_ENVIRONMENT_MACOS: "MACOSX_DEPLOYMENT_TARGET=14.0"
-          CIBW_BEFORE_BUILD_LINUX: >
+          CIBW_BEFORE_ALL_LINUX: >
             yum -y install wget &&
             yum -y install tar &&
             wget https://mirror.ibcp.fr/pub/gnu/gsl/gsl-2.8.tar.gz &&
@@ -49,7 +49,7 @@ jobs:
             make &&
             make install &&
             cd ..
-          CIBW_BEFORE_BUILD_MACOS: >
+          CIBW_BEFORE_ALL_MACOS: >
             brew reinstall gcc &&
             brew install gsl
       - name: Verify clean directory
