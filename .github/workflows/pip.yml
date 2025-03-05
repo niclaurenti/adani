@@ -1,4 +1,4 @@
-name: Wheels
+name: Build and upload to PyPI
 
 on:
   push:
@@ -39,7 +39,7 @@ jobs:
         env:
           CIBW_ARCHS_MACOS: auto x86_64 arm64
           CIBW_SKIP: pp* cp36-* *-musllinux_x86_64 *_i686
-          CIBW_ENVIRONMENT_MACOS: "MACOSX_DEPLOYMENT_TARGET=11"
+          #CIBW_ENVIRONMENT_MACOS: "MACOSX_DEPLOYMENT_TARGET=11"
           CIBW_BEFORE_BUILD_LINUX: >
             yum -y install wget &&
             yum -y install tar &&
@@ -58,7 +58,7 @@ jobs:
         shell: bash
       - uses: actions/upload-artifact@v4
         with:
-          name: wheels
+          name: wheels-${{ matrix.os }}-${{ strategy.job-index }}
           path: wheelhouse/*.whl
 
   upload_all:
@@ -76,8 +76,9 @@ jobs:
           path: dist
       - uses: actions/download-artifact@v4
         with:
-          name: wheels
+          name: wheels-*
           path: dist
+          merge-multiple: true
   #     - uses: pypa/gh-action-pypi-publish@master
   #       with:
   #         password: ${{ secrets.PYPI_TOKEN }}
