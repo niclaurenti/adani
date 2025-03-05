@@ -2,8 +2,8 @@ name: Build and upload to PyPI
 
 on:
   push:
-    # tags:
-    #   - "*"
+    tags:
+      - "*"
 
 jobs:
   build_sdist:
@@ -74,6 +74,6 @@ jobs:
           pattern: artifact-*
           path: dist
           merge-multiple: true
-  #     - uses: pypa/gh-action-pypi-publish@master
-  #       with:
-  #         password: ${{ secrets.PYPI_TOKEN }}
+      - uses: pypa/gh-action-pypi-publish@master
+        with:
+          password: ${{ secrets.PYPI_TOKEN }}
