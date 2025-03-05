@@ -13,13 +13,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          submodules: true
+          submodules: true #non mi serve
       - name: Build SDist
         run: pipx run build --sdist
       - name: Check metadata
         run: pipx run twine check dist/*
       - uses: actions/upload-artifact@v4
         with:
+          name: targz
           path: dist/*.tar.gz
 
   build_wheels:
@@ -33,7 +34,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          submodules: true
+          submodules: true #non mi serve
       - uses: pypa/cibuildwheel@v2.22
         env:
           CIBW_ARCHS_MACOS: auto x86_64 arm64
@@ -57,6 +58,7 @@ jobs:
         shell: bash
       - uses: actions/upload-artifact@v4
         with:
+          name: wheels
           path: wheelhouse/*.whl
 
   upload_all:
@@ -70,7 +72,11 @@ jobs:
           python-version: "3.x"
       - uses: actions/download-artifact@v4
         with:
-          name: artifact
+          name: targz
+          path: dist
+      - uses: actions/download-artifact@v4
+        with:
+          name: wheels
           path: dist
   #     - uses: pypa/gh-action-pypi-publish@master
   #       with:
