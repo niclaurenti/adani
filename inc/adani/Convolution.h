@@ -8,12 +8,12 @@
  *    Description:  Dribbla tutti, anche i cammelli del deserto
  *
  *  In this file there are the convolutions between the coefficeint functions
- * and splitting functions.
+ *  and splitting functions.
  *
  *  For the convolution between a regular function and a
- * function containing regular, singular (plus distribution)
- * and local (delta) parts see Eq. (4.7) of Ref.
- * [arXiv:hep-ph/0504242v1]
+ *  function containing regular, singular (plus distribution)
+ *  and local (delta) parts see Eq. (4.7) of Ref.
+ *  [arXiv:hep-ph/0504242v1]
  *
  * =====================================================================================
  */

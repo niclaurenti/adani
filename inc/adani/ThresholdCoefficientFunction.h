@@ -8,8 +8,8 @@
  *    Description:  La garra charruaaaaaaa
  *
  *  In this file there are the coefficient functions in the
- * threshold limit, i.e. s->4m^2 (where s is the partonic
- * conter of mass energy), or x -> xmax
+ *  threshold limit, i.e. s->4m^2 (where s is the partonic
+ *  center of mass energy), or x -> xmax
  *
  * =====================================================================================
  */

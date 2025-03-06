@@ -8,7 +8,7 @@
  *    Description:  Da quella posizione trasforma l'acqua in vino
  *
  *  In this file there are the coefficient functions in the
- * high scale limit, i.e. Q^2 >> m^2
+ *  high scale limit, i.e. Q^2 >> m^2
  *
  * =====================================================================================
  */

@@ -8,7 +8,7 @@
  *    Description:  L'allenamento si fa!
  *
  *  In this file there are the coefficient functions in the
- * high energy limit, i.e. x -> 0
+ *  high energy limit, i.e. x -> 0
  *
  * =====================================================================================
  */

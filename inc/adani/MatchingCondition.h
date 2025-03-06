@@ -6,7 +6,7 @@
  *         Author:  Daniele Adani
  *
  *    Description:  Non credo esista una persona che analizzi il calcio meglio
- * di me.
+ *                  di me.
  *
  *  In this file there are the matching conditions.
  *

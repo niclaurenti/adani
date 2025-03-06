@@ -8,9 +8,9 @@
  *    Description:  Viva el Futbol
  *
  *  In this file there are the massless coefficient
- * functions. Observe that for the O(as^2) and
- * O(as^3) it is used a parameterization of the exact
- * result, being the latter a very long equation.
+ *  functions. Observe that for the O(as^2) and
+ *  O(as^3) it is used a parameterization of the exact
+ *  result, being the latter a very long equation.
  *
  * =====================================================================================
  */

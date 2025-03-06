@@ -8,7 +8,7 @@
  *    Description:  Anche tu sei un teorico Max
  *
  *  In this file there are the coefficient functions in the
- * asymptotic limit, i.e. x -> 0 and/or Q^2 >> m^2
+ *  asymptotic limit, i.e. x -> 0 and/or Q^2 >> m^2
  *
  * =====================================================================================
  */
