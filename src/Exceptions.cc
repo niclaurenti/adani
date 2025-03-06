@@ -17,16 +17,15 @@
 UnknownException::UnknownException(
     const string &reason, const string &function, const int &line
 ) {
-    message_ = "UnknownException in " + function + " at line " + to_string(line) + ": " + reason;
+    message_ = "UnknownException in " + function + " at line " + to_string(line)
+               + ": " + reason;
 }
 
 //==========================================================================================//
 //  UnknownException: redefinition of what method
 //------------------------------------------------------------------------------------------//
 
-const char *UnknownException::what() const noexcept {
-    return message_.c_str();
-}
+const char *UnknownException::what() const noexcept { return message_.c_str(); }
 
 //==========================================================================================//
 //  UnknownException: runtime_error
@@ -55,7 +54,8 @@ void UnknownException::warning() const {
 NotImplementedException::NotImplementedException(
     const string &reason, const string &function, const int &line
 ) {
-    message_ = "NotImplementedException in " + function + " at line " + to_string(line) + ": " + reason;
+    message_ = "NotImplementedException in " + function + " at line "
+               + to_string(line) + ": " + reason;
 }
 
 //==========================================================================================//
@@ -65,7 +65,8 @@ NotImplementedException::NotImplementedException(
 NotKnownException::NotKnownException(
     const string &reason, const string &function, const int &line
 ) {
-    message_ = "NotKnownException in " + function + " at line " + to_string(line) + ": " + reason;
+    message_ = "NotKnownException in " + function + " at line "
+               + to_string(line) + ": " + reason;
 }
 
 //==========================================================================================//
@@ -75,7 +76,8 @@ NotKnownException::NotKnownException(
 NotPresentException::NotPresentException(
     const string &reason, const string &function, const int &line
 ) {
-    message_ = "NotPresentException in " + function + " at line " + to_string(line) + ": " + reason;
+    message_ = "NotPresentException in " + function + " at line "
+               + to_string(line) + ": " + reason;
 }
 
 //==========================================================================================//
@@ -85,7 +87,8 @@ NotPresentException::NotPresentException(
 NotValidException::NotValidException(
     const string &reason, const string &function, const int &line
 ) {
-    message_ = "NotValidException in " + function + " at line " + to_string(line) + ": " + reason;
+    message_ = "NotValidException in " + function + " at line "
+               + to_string(line) + ": " + reason;
 }
 
 //==========================================================================================//
@@ -95,5 +98,6 @@ NotValidException::NotValidException(
 UnexpectedException::UnexpectedException(
     const string &reason, const string &function, const int &line
 ) {
-    message_ = "UnexpectedException in " + function + " at line " + to_string(line) + ": " + reason;
+    message_ = "UnexpectedException in " + function + " at line "
+               + to_string(line) + ": " + reason;
 }

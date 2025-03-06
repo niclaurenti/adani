@@ -124,7 +124,9 @@ void MasslessCoefficientFunction::SetFunctions() {
     else if (GetOrder() == 3 && GetKind() == 'L' && GetChannel() == 'q')
         mu_indep_ = &MasslessCoefficientFunction::CL_ps3_massless;
     else {
-        throw UnexpectedException("Unexpected exception!", __PRETTY_FUNCTION__, __LINE__);
+        throw UnexpectedException(
+            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+        );
     }
 }
 

@@ -27,7 +27,9 @@ using namespace std;
 class UnknownException : public exception {
     public:
         UnknownException(){};
-        UnknownException(const string &reason, const string &function, const int &line);
+        UnknownException(
+            const string &reason, const string &function, const int &line
+        );
 
         const char *what() const noexcept override;
         void runtime_error() const;
@@ -43,7 +45,9 @@ class UnknownException : public exception {
 
 class NotImplementedException : public UnknownException {
     public:
-        NotImplementedException(const string &reason, const string &function, const int &line);
+        NotImplementedException(
+            const string &reason, const string &function, const int &line
+        );
 };
 
 //==========================================================================================//
@@ -52,7 +56,9 @@ class NotImplementedException : public UnknownException {
 
 class NotKnownException : public UnknownException {
     public:
-        NotKnownException(const string &reason, const string &function, const int &line);
+        NotKnownException(
+            const string &reason, const string &function, const int &line
+        );
 };
 
 //==========================================================================================//
@@ -61,7 +67,9 @@ class NotKnownException : public UnknownException {
 
 class NotPresentException : public UnknownException {
     public:
-        NotPresentException(const string &reason, const string &function, const int &line);
+        NotPresentException(
+            const string &reason, const string &function, const int &line
+        );
 };
 
 //==========================================================================================//
@@ -70,7 +78,9 @@ class NotPresentException : public UnknownException {
 
 class NotValidException : public UnknownException {
     public:
-        NotValidException(const string &reason, const string &function, const int &line);
+        NotValidException(
+            const string &reason, const string &function, const int &line
+        );
 };
 
 //==========================================================================================//
@@ -79,7 +89,9 @@ class NotValidException : public UnknownException {
 
 class UnexpectedException : public UnknownException {
     public:
-        UnexpectedException(const string &reason, const string &function, const int &line);
+        UnexpectedException(
+            const string &reason, const string &function, const int &line
+        );
 };
 
 #endif

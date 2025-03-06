@@ -38,13 +38,15 @@ MatchingCondition::MatchingCondition(
         // check entry2
         if (entry2 == 'Q') {
             throw NotImplementedException(
-                "entry2 = 'Q' is not implemented!", __PRETTY_FUNCTION__, __LINE__
+                "entry2 = 'Q' is not implemented!", __PRETTY_FUNCTION__,
+                __LINE__
             );
         }
 
         if (entry2 == 'g' && version == "exact") {
             throw NotImplementedException(
-                "aQg channel doesn't have 'exact' version!", __PRETTY_FUNCTION__, __LINE__
+                "aQg channel doesn't have 'exact' version!",
+                __PRETTY_FUNCTION__, __LINE__
             );
         }
 
@@ -314,7 +316,8 @@ double MatchingCondition::a_Qg_30(double x, int v) const {
 
     if (v == 0) {
         throw NotImplementedException(
-            "a_Qg_30 exact is not implemented yet!", __PRETTY_FUNCTION__, __LINE__
+            "a_Qg_30 exact is not implemented yet!", __PRETTY_FUNCTION__,
+            __LINE__
         );
     } else if (v == 1) {
         return (

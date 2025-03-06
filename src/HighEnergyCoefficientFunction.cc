@@ -86,7 +86,9 @@ void HighEnergyCoefficientFunction::SetFunctions() {
             );
         }
     } else {
-        throw UnexpectedException("Unexpected exception!", __PRETTY_FUNCTION__, __LINE__);
+        throw UnexpectedException(
+            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+        );
     }
 
     if (!GetNLL())
@@ -181,7 +183,9 @@ void HighEnergyHighScaleCoefficientFunction::SetFunctions() {
             );
         }
     } else {
-        throw UnexpectedException("Unexpected exception!", __PRETTY_FUNCTION__, __LINE__);
+        throw UnexpectedException(
+            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+        );
     }
     if (!GetNLL())
         NLL_ = &HighEnergyHighScaleCoefficientFunction::ZeroFunctionBand;

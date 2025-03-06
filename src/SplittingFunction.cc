@@ -199,7 +199,9 @@ void SplittingFunction::SetFunctions() {
             );
         }
     } else {
-        throw UnexpectedException("Unexpected exception!", __PRETTY_FUNCTION__, __LINE__);
+        throw UnexpectedException(
+            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+        );
     }
 }
 
