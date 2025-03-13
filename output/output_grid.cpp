@@ -8,17 +8,24 @@
 #include <iostream>
 #include <sstream>
 #include <string.h>
+#include <thread>
 #include <vector>
 
 using namespace std;
 
 std::string print_time(time_t seconds);
 
+void loopFunction(
+    int start, int end, vector<double> &xvec, vector<double> &Qvec,
+    ApproximateCoefficientFunction &app, double **res_c, double **res_h,
+    double **res_l, double m, int nf, double mufrac
+);
+
 int main(int argc, char **argv) {
 
-    if (argc != 5) {
+    if (argc != 6) {
         cout << "ERROR!" << endl
-             << "Usage: ./output_grid.exe mufrac = mu/Q m nf channel"
+             << "Usage: ./output_grid.exe mufrac = mu/Q m nf channel threads"
              << "Exiting..." << endl;
         return -1;
     }
@@ -30,6 +37,8 @@ int main(int argc, char **argv) {
 
     char kind = argv[4][0];
     char channel = argv[4][1];
+
+    int numThreads = atoi(argv[5]);
 
     ifstream inputQ;
     inputQ.open("Q.txt");
@@ -126,6 +135,61 @@ int main(int argc, char **argv) {
     cout << "Size of the grid (x,Q) = (" << x.size() << "," << Q.size() << ")"
          << endl;
 
+    int rows = x.size();
+    int cols = Q.size();
+
+    double **res_c = new double *[rows];
+
+    for (int i = 0; i < rows; ++i) {
+        res_c[i] = new double[cols];
+    }
+
+    double **res_h = new double *[rows];
+
+    for (int i = 0; i < rows; ++i) {
+        res_h[i] = new double[cols];
+    }
+
+    double **res_l = new double *[rows];
+
+    for (int i = 0; i < rows; ++i) {
+        res_l[i] = new double[cols];
+    }
+
+    string hs_version;
+
+    if (channel == 'q')
+        hs_version = "exact";
+    else
+        hs_version = "abmp";
+
+    ApproximateCoefficientFunction Approx =
+        ApproximateCoefficientFunction(3, kind, channel, true, hs_version);
+
+    int iterationsPerThread = rows / numThreads;
+
+    std::vector<std::thread> threads;
+
+    time_t starting_time = time(NULL);
+
+    for (int i = 0; i < numThreads; ++i) {
+        int start = i * iterationsPerThread;
+        int end = (i == numThreads - 1) ? rows : (i + 1) * iterationsPerThread;
+        threads.emplace_back(
+            loopFunction, start, end, ref(x), ref(Q), ref(Approx), res_c, res_h,
+            res_l, m, nf, mufrac
+        );
+    }
+
+    for (std::thread &thread : threads) {
+        thread.join();
+    }
+
+    time_t ending_time = time(NULL);
+
+    cout << "Total running time is " << print_time(ending_time - starting_time)
+         << endl;
+
     string filename = "results/C_";
     filename.append(argv[4]);
     filename.append("_nf" + to_string(nf));
@@ -158,40 +222,16 @@ int main(int argc, char **argv) {
         cout << "Saving lower grid in " << filename + "_lower.dat" << endl;
     }
 
-    Value res = Value(0, 0, 0);
-
-    time_t starting_time = time(NULL);
-
-    string hs_version;
-
-    if (channel == 'q')
-        hs_version = "exact";
-    else
-        hs_version = "abmp";
-
-    ApproximateCoefficientFunction Approx =
-        ApproximateCoefficientFunction(3, kind, channel, true, hs_version);
-
-    for (double Q_ : Q) {
-        for (double x_ : x) {
-            double m2Q2, mu, m2mu2;
-            m2Q2 = pow(m / Q_, 2);
-            mu = mufrac * Q_;
-            m2mu2 = pow(m / mu, 2);
-            res = Approx.fxBand(x_, m2Q2, m2mu2, nf);
-            output_c << res.GetCentral() << "   ";
-            output_h << res.GetHigher() << "   ";
-            output_l << res.GetLower() << "   ";
+    for (int j = 0; j < cols; j++) {
+        for (int i = 0; i < rows; i++) {
+            output_c << res_c[i][j] << "   ";
+            output_h << res_h[i][j] << "   ";
+            output_l << res_l[i][j] << "   ";
         }
         output_c << endl;
         output_h << endl;
         output_l << endl;
     }
-
-    time_t ending_time = time(NULL);
-
-    cout << "Total running time is " << print_time(ending_time - starting_time)
-         << endl;
 
     output_c.close();
     output_h.close();
@@ -214,4 +254,28 @@ std::string print_time(time_t seconds) {
     ss << hour << "h:" << minute << "m:" << second << "s";
 
     return ss.str();
+}
+
+void loopFunction(
+    int start, int end, vector<double> &xvec, vector<double> &Qvec,
+    ApproximateCoefficientFunction &app, double **res_c, double **res_h,
+    double **res_l, double m, int nf, double mufrac
+) {
+    double x, Q, m2Q2, mu, m2mu2;
+    for (int i = start; i < end; i++) {
+        for (int j = 0; j < int(Qvec.size()); j++) {
+            x = xvec[i];
+            Q = Qvec[j];
+            mu = mufrac * Q;
+            m2Q2 = m * m / (Q * Q);
+            m2mu2 = m * m / (mu * mu);
+            Value res = app.fxBand(x, m2Q2, m2mu2, nf);
+            res_c[i][j] = res.GetCentral();
+            res_h[i][j] = res.GetHigher();
+            res_l[i][j] = res.GetLower();
+            // std::cout << "Thread ID: " << std::this_thread::get_id() <<"
+            // x="<< x << " Q=" << Q << " mu=" << mu << " nf" << nf << " res_c="
+            // << res_c[i][j] << endl;
+        }
+    }
 }

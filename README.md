@@ -2,7 +2,10 @@
 
 ADANI (Approximate DIS At N$`^3`$LO Implementation) is a C++ code that computes an approximation for the DIS coefficient functions at N$`^3`$LO in heavy quark production, that are not fully known yet.
 
-ADANI has been used in order to pruduce the NNPDF4.0 PDFs determination at approximate N$`^3`$LO, see [![arXiv](https://img.shields.io/badge/arXiv-2402.18635-b31b1b?labelColor=222222)](https://arxiv.org/abs/2402.18635) and [![arXiv](https://img.shields.io/badge/arXiv-2406.01779-b31b1b?labelColor=222222)](https://arxiv.org/abs/2406.01779).
+ADANI has been used in the NNPDF4.0 PDFs determination at approximate N$`^3`$LO to produce the N$`^3`$LO DIS theory
+predictions,
+see [![arXiv](https://img.shields.io/badge/arXiv-2402.18635-b31b1b?labelColor=222222)](https://arxiv.org/abs/2402.18635)
+and [![arXiv](https://img.shields.io/badge/arXiv-2406.01779-b31b1b?labelColor=222222)](https://arxiv.org/abs/2406.01779).
 
 ## Citation Policy
 
@@ -33,7 +36,6 @@ Install it with
 ```bash
 conda install adani
 ```
-At the moment there is a problem in the conda package: to fix it run also ```conda install conda-forge::gsl```.
 
 For installing the Python module from source run
 ```bash
@@ -44,7 +46,7 @@ pip install .
 
 In order to compile a simple program run
 ```bash
-g++ -Wall -o test.exe test.cpp -ladani `adani-config --cppflags --ldflags --cxxflags`
+g++ -Wall -o test.exe test.cpp `adani-config --cppflags --ldflags --cxxflags`
 ```
 or
 ```bash

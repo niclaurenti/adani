@@ -3,11 +3,10 @@
  *
  *       Filename:  MatchingCondition.h
  *
- *    Description:  Header file for the
- * MatchingCondition.cc file.
+ *         Author:  Daniele Adani
  *
- *         Author:  Non credo esista una persona che analizzi il calcio meglio
- * di me.
+ *    Description:  Non credo esista una persona che analizzi il calcio meglio
+ *                  di me.
  *
  *  In this file there are the matching conditions.
  *
@@ -53,6 +52,9 @@ class MatchingCondition {
 
         gsl_interp_accel *acc_;
         gsl_spline *spline_;
+
+        void CheckEntry(char entry) const;
+        void CheckVersion(string version) const;
 
         //==========================================================================================//
         //  Matching conditions O(as)

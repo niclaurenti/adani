@@ -3,10 +3,9 @@
  *
  *       Filename:  SpecialFunctions.h
  *
- *    Description:  Header file for the SpecialFunctions.cc
- * file.
+ *         Author:  Daniele Adani
  *
- *         Author:  Allison? No, Franco Armani
+ *    Description:  Allison? No, Franco Armani
  *
  *  In this file there are some useful functions.
  *
@@ -20,7 +19,8 @@
 //  Beta function.
 //------------------------------------------------------------------------------------------//
 
-double beta(int ord, int nf);
+double beta0(int nf);
+double beta1(int nf);
 
 //==========================================================================================//
 //  Theta function. (no longer used)

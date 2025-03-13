@@ -1,7 +1,5 @@
 #include "adani/CoefficientFunction.h"
-
-using std::cout;
-using std::endl;
+#include "adani/Exceptions.h"
 
 //==========================================================================================//
 //  CoefficientFunction: constructor
@@ -12,27 +10,54 @@ CoefficientFunction::CoefficientFunction(
 )
     : order_(order), kind_(kind), channel_(channel) {
 
-    // check order
-    if (order < 1 || order > 3) {
-        cout << "Error: order must be 1, 2 or 3. Got: " << order << endl;
-        exit(-1);
-    }
+    try {
+        // check order
+        if (order_ < 1) {
+            throw NotPresentException(
+                "massive coefficient functions below order 1 are not present! "
+                "Got order="
+                    + to_string(order_),
+                __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+        if (order_ > 3) {
+            throw NotKnownException(
+                "massive coefficient functions below order 3 are not known! "
+                "Got order="
+                    + to_string(order_),
+                __PRETTY_FUNCTION__, __LINE__
+            );
+        }
 
-    // check kind
-    if (kind != '2' && kind != 'L') {
-        cout << "Error: kind must be 2 or L. Got: " << kind << endl;
-        exit(-1);
-    }
+        // check kind
+        if (kind_ != '2' && kind_ != 'L') {
+            throw NotValidException(
+                "kind must be '2' or 'L'! Got '" + string(1, kind_) + "'",
+                __PRETTY_FUNCTION__, __LINE__
+            );
+        }
 
-    // check channel
-    if (channel != 'g' && channel != 'q') {
-        cout << "Error: channel must be g or q. Got: " << channel << endl;
-        exit(-1);
-    }
-    if (channel_ == 'q' && order_ == 1) {
-        cout << "Error: quark coefficient function at O(as) doesn't exist!"
-             << endl;
-        exit(-1);
+        // check channel
+        if (channel_ != 'g' && channel_ != 'q') {
+            throw NotValidException(
+                "channel must be 'g' or 'q'! Got '" + string(1, channel_) + "'",
+                __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+        if (channel_ == 'q' && order_ == 1) {
+            throw NotPresentException(
+                "quark massive coefficient functions at order 1 are not "
+                "present! Got channel="
+                    + string(1, channel_) + ",order=" + to_string(order_),
+                __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+    } catch (const NotPresentException &e) {
+        e.runtime_error();
+    } catch (const NotKnownException &e) {
+        e.runtime_error();
+    } catch (const NotValidException &e) {
+        e.runtime_error();
     }
 }
 

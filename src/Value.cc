@@ -1,7 +1,5 @@
 #include "adani/Value.h"
-
-using std::cout;
-using std::endl;
+#include "adani/Exceptions.h"
 
 //==========================================================================================//
 //  Value: constructor
@@ -9,20 +7,27 @@ using std::endl;
 
 Value::Value(const double &central, const double &higher, const double &lower) {
     central_ = central;
+    try {
+        higher_ = higher;
+        if (higher < central) {
+            throw NotValidException(
+                "class Value initialized with higher < central! Got: higher="
+                    + to_string(higher) + ", central=" + to_string(central),
+                __PRETTY_FUNCTION__, __LINE__
+            );
+        }
 
-    if (higher < central) {
-        cout << "Error: class Value initialized with higher < central!" << endl;
-        cout << "Got: central=" << central << ", higher=" << higher << endl;
-        exit(-1);
+        lower_ = lower;
+        if (lower > central) {
+            throw NotValidException(
+                "class Value initialized with lower > central! Got: lower="
+                    + to_string(lower) + ", central=" + to_string(central),
+                __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+    } catch (NotValidException &e) {
+        e.runtime_error();
     }
-    higher_ = higher;
-
-    if (lower > central) {
-        cout << "Error: class Value initialized with lower > central!" << endl;
-        cout << "Got: central=" << central << ", lower=" << lower << endl;
-        exit(-1);
-    }
-    lower_ = lower;
 }
 
 //==========================================================================================//
@@ -40,14 +45,20 @@ Value::Value(const double &central) {
 //------------------------------------------------------------------------------------------//
 
 Value::Value(const double &higher, const double &lower) {
-
-    if (higher < lower) {
-        cout << "Error: class Value initialized with higher < lower!" << endl;
-        cout << "Got: higher=" << higher << ", lower=" << lower << endl;
-        exit(-1);
+    try {
+        higher_ = higher;
+        lower_ = lower;
+        if (higher < lower) {
+            throw NotValidException(
+                "class Value initialized with lower > higher! Got: lower="
+                    + to_string(lower) + ", higher=" + to_string(higher),
+                __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+    } catch (NotValidException &e) {
+        e.runtime_error();
     }
-    higher_ = higher;
-    lower_ = lower;
+
     central_ = (higher + lower) / 2;
 }
 

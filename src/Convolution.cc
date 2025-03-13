@@ -1,13 +1,6 @@
 #include "adani/Convolution.h"
 
 #include <cmath>
-#include <iostream>
-
-using std::cout;
-using std::endl;
-
-// TODO : in all the numerical convolutions the gsl default error is first
-// switched off and then swithced on again: see if it can be done once for all
 
 //==========================================================================================//
 //  AbstractConvolution: constructor
@@ -19,16 +12,13 @@ AbstractConvolution::AbstractConvolution(
 )
     : dim_(dim) {
 
-    SetAbserr(abserr);
-    SetRelerr(relerr);
-
-    // check dim
-    if (dim <= 0) {
-        cout << "Error: dim must be positive. Got " << dim << endl;
-        exit(-1);
+    try {
+        SetAbserr(abserr);
+        SetRelerr(relerr);
+        AllocWorkspace(dim);
+    } catch (NotValidException &e) {
+        e.runtime_error();
     }
-
-    w_ = gsl_integration_workspace_alloc(dim);
 
     coefffunc_ = coefffunc;
     splitfunc_ = splitfunc;
@@ -50,8 +40,10 @@ AbstractConvolution::~AbstractConvolution() {
 void AbstractConvolution::SetAbserr(const double &abserr) {
     // check abserr
     if (abserr <= 0) {
-        cout << "Error: abserr must be positive. Got " << abserr << endl;
-        exit(-1);
+        throw NotValidException(
+            "abserr must be positive. Got abserr=" + to_string(abserr),
+            __PRETTY_FUNCTION__, __LINE__
+        );
     }
     abserr_ = abserr;
 }
@@ -63,10 +55,27 @@ void AbstractConvolution::SetAbserr(const double &abserr) {
 void AbstractConvolution::SetRelerr(const double &relerr) {
     // check relerr
     if (relerr <= 0) {
-        cout << "Error: relerr must be positive. Got " << relerr << endl;
-        exit(-1);
+        throw NotValidException(
+            "relerr must be positive. Got relerr=" + to_string(relerr),
+            __PRETTY_FUNCTION__, __LINE__
+        );
     }
     relerr_ = relerr;
+}
+
+//==========================================================================================//
+//  AbstractConvolution: method for the allocation of workspace
+//------------------------------------------------------------------------------------------//
+
+void AbstractConvolution::AllocWorkspace(const int &dim) {
+    // check dim
+    if (dim <= 0) {
+        throw NotValidException(
+            "dim must be positive. Got dim=" + to_string(dim),
+            __PRETTY_FUNCTION__, __LINE__
+        );
+    }
+    w_ = gsl_integration_workspace_alloc(dim);
 }
 
 //==========================================================================================//
@@ -94,6 +103,40 @@ double Convolution::regular_integrand(double z, void *p) {
     AbstractSplittingFunction *sf = (params->conv)->GetSplitFunc();
 
     return cf->MuIndependentTerms(z, m2Q2, nf) * sf->Regular(x / z, nf) / z;
+}
+
+//==========================================================================================//
+//  Convolution: initialize static data members
+//------------------------------------------------------------------------------------------//
+
+int Convolution::NumberOfInstances_ = 0;
+gsl_error_handler_t *Convolution::old_handler_ = nullptr;
+
+//==========================================================================================//
+//  Convolution: constructor
+//------------------------------------------------------------------------------------------//
+
+Convolution::Convolution(
+    CoefficientFunction *coefffunc, AbstractSplittingFunction *splitfunc,
+    const double &abserr, const double &relerr, const int &dim
+)
+    : AbstractConvolution(coefffunc, splitfunc, abserr, relerr, dim) {
+    NumberOfInstances_++;
+    if (NumberOfInstances_ == 1) {
+        old_handler_ = gsl_set_error_handler(NULL);
+        gsl_set_error_handler_off();
+    }
+};
+
+//==========================================================================================//
+//  Convolution: destructor
+//------------------------------------------------------------------------------------------//
+
+Convolution::~Convolution() {
+    NumberOfInstances_--;
+    if (NumberOfInstances_ == 0) {
+        gsl_set_error_handler(old_handler_);
+    }
 }
 
 //==========================================================================================//
@@ -145,14 +188,9 @@ double Convolution::RegularPart(double x, double m2Q2, int nf) const {
     F.function = &regular_integrand;
     F.params = &params;
 
-    gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
-    gsl_set_error_handler_off();
-
     gsl_integration_qag(
         &F, x, x_max, abserr, relerr, dim, 4, w, &regular, &error
     );
-
-    gsl_set_error_handler(old_handler);
 
     return regular;
 }
@@ -178,14 +216,9 @@ double Convolution::SingularPart(double x, double m2Q2, int nf) const {
     F.function = &singular_integrand;
     F.params = &params;
 
-    gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
-    gsl_set_error_handler_off();
-
     gsl_integration_qag(
         &F, x / x_max, 1., abserr, relerr, dim, 4, w, &singular, &error
     );
-
-    gsl_set_error_handler(old_handler);
 
     return singular;
 }
@@ -271,7 +304,11 @@ DoubleConvolution::DoubleConvolution(
     : AbstractConvolution(coefffunc, splitfunc, abserr, relerr, dim),
       MCintegral_(MCintegral) {
 
-    SetMCcalls(MCcalls);
+    try {
+        SetMCcalls(MCcalls);
+    } catch (NotValidException &e) {
+        e.runtime_error();
+    }
 
     if (MCintegral) {
         convolution_ =
@@ -311,10 +348,12 @@ DoubleConvolution::~DoubleConvolution() {
 //------------------------------------------------------------------------------------------//
 
 void DoubleConvolution::SetMCcalls(const int &MCcalls) {
-    // check dim
+    // check MCcalls
     if (MCcalls <= 0) {
-        cout << "Error: MCcalls must be positive. Got " << MCcalls << endl;
-        exit(-1);
+        throw NotValidException(
+            "MCcalls must be positive. Got MCcalls=" + to_string(MCcalls),
+            __PRETTY_FUNCTION__, __LINE__
+        );
     }
     MCcalls_ = MCcalls;
 }
@@ -434,14 +473,9 @@ double DoubleConvolution::RegularPart(double x, double m2Q2, int nf) const {
     f.function = &regular3_integrand;
     f.params = &params;
 
-    gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
-    gsl_set_error_handler_off();
-
     gsl_integration_qag(
         &f, x, x_max, abserr, relerr, dim, 4, w, &regular3, &err
     );
-
-    gsl_set_error_handler(old_handler);
 
     regular4 = convolution_->RegularPart(x, m2Q2, nf) * splitfunc_->Local(nf);
 
@@ -586,14 +620,9 @@ double DoubleConvolution::SingularPart(double x, double m2Q2, int nf) const {
     f.function = &singular3_integrand;
     f.params = &params;
 
-    gsl_error_handler_t *old_handler = gsl_set_error_handler(NULL);
-    gsl_set_error_handler_off();
-
     gsl_integration_qag(
         &f, x / x_max, 1, abserr, relerr, dim, 4, w, &singular3, &err
     );
-
-    gsl_set_error_handler(old_handler);
 
     singular4 = convolution_->SingularPart(x, m2Q2, nf) * splitfunc_->Local(nf);
 

@@ -1,31 +1,19 @@
 #include "adani/SpecialFunctions.h"
 #include "adani/Constants.h"
 #include <cmath>
-#include <iostream>
-
-using std::cout;
-using std::endl;
 
 #define Li2_1_2 0.5822405265
 #define Li3_1_2 0.5372131936
 
 //==========================================================================================//
-//  Beta function.
+//  Beta functions.
 //------------------------------------------------------------------------------------------//
 
-double beta(int ord, int nf) {
-    if (ord == 0)
-        return (11. / 3 * CA - 2. / 3 * nf);
-    if (ord == 1) {
-        double TF = TR * nf;
-        double b_ca2 = 34. / 3. * CA * CA;
-        double b_ca = -20. / 3. * CA * TF;
-        double b_cf = -4. * CF * TF;
-        return b_ca2 + b_ca + b_cf;
-    } else {
-        cout << "beta(" << ord << ") is not implemented" << endl;
-        exit(-1);
-    }
+double beta0(int nf) { return (11. / 3 * CA - 2. / 3 * nf); }
+
+double beta1(int nf) {
+    return (34. / 3. * CA * CA)
+           + ((-20. / 3. * CA * TR) + (-4. * CF * TR)) * nf;
 }
 
 //==========================================================================================//
