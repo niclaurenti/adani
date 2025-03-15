@@ -550,12 +550,11 @@ PYBIND11_MODULE(_core, m) {
         );
 
     // MatchingCondition
-    py::class_<MatchingCondition>(
-        m, "MatchingCondition"
-    )
+    py::class_<MatchingCondition>(m, "MatchingCondition")
         .def(
             py::init<const int &, const char &, const char &, const string &>(),
-            py::arg("order"), py::arg("entry1"), py::arg("entry2"), py::arg("version")
+            py::arg("order"), py::arg("entry1"), py::arg("entry2"),
+            py::arg("version") = "exact"
         )
         .def(
             "MuIndependentNfIndependentTerm",

@@ -285,9 +285,9 @@ vector<double> MatchingCondition::NotOrdered(double x) const {
 // }
 
 extern "C" {
-    double aQg3(double* x);
-    double red0_(double* x);
-    double red1_(double* x);
+    double aQg3(double *x);
+    double red0_(double *x);
+    double red1_(double *x);
 }
 
 //==========================================================================================//
@@ -314,7 +314,7 @@ double MatchingCondition::a_Qg_30(double x, int v) const {
     double L13 = L12 * L1;
 
     if (v == 0) {
-        double aQg3red = ( x < 0.5 ? red0_(&x) : red1_(&x) );
+        double aQg3red = (x < 0.5 ? red0_(&x) : red1_(&x));
         return aQg3(&x) / 2 + aQg3red;
     } else if (v == 1) {
         return (
