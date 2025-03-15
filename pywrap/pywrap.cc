@@ -58,7 +58,7 @@ PYBIND11_MODULE(_core, m) {
                 const string &, const double &, const double &, const int &,
                 const string &, const int &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel"),
-            py::arg("NLL") = true, py::arg("highscale_version") = "klmv",
+            py::arg("NLL") = true, py::arg("highscale_version") = "exact",
             py::arg("abserr") = 1e-3, py::arg("relerr") = 1e-3,
             py::arg("dim") = 1000, py::arg("double_int_method") = "analytical",
             py::arg("MCcalls") = 25000
@@ -145,7 +145,7 @@ PYBIND11_MODULE(_core, m) {
                 const int &, const char &, const char &, const bool &,
                 const string &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel"),
-            py::arg("NLL") = true, py::arg("highscale_version") = "klmv"
+            py::arg("NLL") = true, py::arg("highscale_version") = "exact"
         )
         .def(
             "MuIndependentTerms",
@@ -547,6 +547,18 @@ PYBIND11_MODULE(_core, m) {
         .def(
             "fxBand", &ThresholdCoefficientFunction::fxBand, py::arg("x"),
             py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf")
+        );
+
+    // MatchingCondition
+    py::class_<MatchingCondition>(m, "MatchingCondition")
+        .def(
+            py::init<const int &, const char &, const char &, const string &>(),
+            py::arg("order"), py::arg("entry1"), py::arg("entry2"),
+            py::arg("version") = "exact"
+        )
+        .def(
+            "MuIndependentNfIndependentTerm",
+            &MatchingCondition::MuIndependentNfIndependentTerm, py::arg("x")
         );
 
     // Exceptions

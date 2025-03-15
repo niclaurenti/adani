@@ -43,13 +43,6 @@ MatchingCondition::MatchingCondition(
             );
         }
 
-        if (entry2 == 'g' && version == "exact") {
-            throw NotImplementedException(
-                "aQg channel doesn't have 'exact' version!",
-                __PRETTY_FUNCTION__, __LINE__
-            );
-        }
-
         if (entry2 == 'q' && (version == "abmp" || version == "gm")) {
             throw NotImplementedException(
                 "aQq channel doesn't have 'abmp' or 'gm' version! Got '"
@@ -291,6 +284,12 @@ vector<double> MatchingCondition::NotOrdered(double x) const {
 //     return 0.5 * tmp;
 // }
 
+extern "C" {
+    double aQg3(double *x);
+    double red0_(double *x);
+    double red1_(double *x);
+}
+
 //==========================================================================================//
 //  Approximation of the nf-independent part of the mu-independent part of the
 //  unrenormalized matching condition Qg at O(as^3).
@@ -315,10 +314,8 @@ double MatchingCondition::a_Qg_30(double x, int v) const {
     double L13 = L12 * L1;
 
     if (v == 0) {
-        throw NotImplementedException(
-            "a_Qg_30 exact is not implemented yet!", __PRETTY_FUNCTION__,
-            __LINE__
-        );
+        double aQg3red = (x < 0.5 ? red0_(&x) : red1_(&x));
+        return aQg3(&x) / 2 + aQg3red;
     } else if (v == 1) {
         return (
             354.1002 * L13 + 479.3838 * L12 - 7856.784 * (2. - x)

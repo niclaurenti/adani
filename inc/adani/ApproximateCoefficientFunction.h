@@ -89,7 +89,7 @@ class ApproximateCoefficientFunction : public AbstractApproximate {
     public:
         ApproximateCoefficientFunction(
             const int &order, const char &kind, const char &channel,
-            const bool &NLL = true, const string &highscale_version = "klmv",
+            const bool &NLL = true, const string &highscale_version = "exact",
             const double &abserr = 1e-3, const double &relerr = 1e-3,
             const int &dim = 1000,
             const string &double_int_method = "analytical",

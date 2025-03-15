@@ -72,6 +72,8 @@ if(PYTHON_ONLY)
         _core MODULE
         pywrap/pywrap.cc
         src/ApproximateCoefficientFunction.cc
+        src/AQg3mod.f90
+        src/AQg3red.f
         src/AsymptoticCoefficientFunction.cc
         src/CoefficientFunction.cc
         src/Convolution.cc
@@ -97,6 +99,8 @@ else(PYTHON_ONLY)
     add_library(
         adani SHARED
         src/ApproximateCoefficientFunction.cc
+        src/AQg3mod.f90
+        src/AQg3red.f
         src/AsymptoticCoefficientFunction.cc
         src/CoefficientFunction.cc
         src/Convolution.cc

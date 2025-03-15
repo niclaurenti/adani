@@ -29,7 +29,7 @@ class AsymptoticCoefficientFunction
     public:
         AsymptoticCoefficientFunction(
             const int &order, const char &kind, const char &channel,
-            const bool &NLL = true, const string &highscale_version = "klmv"
+            const bool &NLL = true, const string &highscale_version = "exact"
         );
         ~AsymptoticCoefficientFunction();
 
