@@ -30,7 +30,7 @@ class MatchingCondition {
     public:
         MatchingCondition(
             const int &order, const char &entry1, const char &entry2,
-            const string &version
+            const string &version = "exact"
         );
         ~MatchingCondition(){};
 
