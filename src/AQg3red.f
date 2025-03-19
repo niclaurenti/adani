@@ -1,4 +1,4 @@
-double precision FUNCTION AQG3NF(z)
+      double precision FUNCTION AQG3NF(z)
 *     -------------------------
 *     ------------------------------------------------------------------------
 *     Code: J. Bluemlein, March 11, 2024
