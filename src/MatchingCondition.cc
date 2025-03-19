@@ -117,6 +117,15 @@ Value MatchingCondition::MuIndependentNfIndependentTerm(double x) const {
 }
 
 //==========================================================================================//
+//  MatchingCondition: nf independent part of the a_Qi (i=q,q) term.
+//  a_Qi is the mu independent part of the unrenormalized OMA
+//------------------------------------------------------------------------------------------//
+
+Value MatchingCondition::MuIndependentTerm(double x, int nf) const {
+    return MuIndependentNfIndependentTerm(x) + nf * a_Qg_31(x);
+}
+
+//==========================================================================================//
 //  MatchingCondition: nf independent part of the a_Qi (i=q,q) term without
 //  ordering the upper and lower bands
 //------------------------------------------------------------------------------------------//
@@ -288,6 +297,7 @@ extern "C" {
     double aQg3(double *x);
     double red0_(double *x);
     double red1_(double *x);
+    double aqg3nf_(double *x);
 }
 
 //==========================================================================================//
@@ -352,6 +362,13 @@ double MatchingCondition::a_Qg_30(double x, int v) const {
         );
     }
 }
+
+//==========================================================================================//
+//  nf-dependent part of the mu-independent part of the unrenormalized matching
+//  condition Qg at O(as^3).
+//------------------------------------------------------------------------------------------//
+
+double MatchingCondition::a_Qg_31(double x) const { return aqg3nf_(&x); }
 
 //==========================================================================================//
 //  nf-independent part of the mu-independent part of the unrenormalized
