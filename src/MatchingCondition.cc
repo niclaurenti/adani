@@ -1062,6 +1062,12 @@ double MatchingCondition::a_Qq_PS_30(double x, int v) const {
     }
 }
 
+//==========================================================================================//
+//  nf-dependent part of the mu-independent part of the unrenormalized
+//  matching condition Qq at O(as^3)
+//  See Eq. (5.41, 5.42, 5.45) of Ref. [arXiv:1409.1135]
+//------------------------------------------------------------------------------------------//
+
 double MatchingCondition::a_Qq_PS_31(double x) const {
 
     double x2 = x * x;
