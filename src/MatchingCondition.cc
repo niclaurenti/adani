@@ -64,7 +64,7 @@ MatchingCondition::MatchingCondition(
 void MatchingCondition::CheckEntry(char entry) const {
     if (entry != 'g' && entry != 'q' && entry != 'Q') {
         throw NotValidException(
-            "entry must be non 'g', 'q' or 'Q'. Got '" + string(1, entry) + "'",
+            "entry must be 'g', 'q' or 'Q'. Got '" + string(1, entry) + "'",
             __PRETTY_FUNCTION__, __LINE__
         );
     }
