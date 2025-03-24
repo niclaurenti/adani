@@ -40,6 +40,8 @@ class MatchingCondition {
         string GetVersion() const { return version_; };
 
         Value MuIndependentNfIndependentTerm(double x) const;
+        double MuIndependentNfDependentTerm(double x) const;
+        Value MuIndependentTerm(double x, int nf) const;
         vector<double> NotOrdered(double x) const;
 
     private:
@@ -69,7 +71,9 @@ class MatchingCondition {
         //------------------------------------------------------------------------------------------//
 
         double a_Qg_30(double x, int v) const;
+        double a_Qg_31(double x) const;
         double a_Qq_PS_30(double x, int v) const;
+        double a_Qq_PS_31(double x) const;
 };
 
 #endif

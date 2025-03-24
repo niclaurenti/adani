@@ -559,6 +559,10 @@ PYBIND11_MODULE(_core, m) {
         .def(
             "MuIndependentNfIndependentTerm",
             &MatchingCondition::MuIndependentNfIndependentTerm, py::arg("x")
+        )
+        .def(
+            "MuIndependentTerm", &MatchingCondition::MuIndependentTerm,
+            py::arg("x"), py::arg("nf")
         );
 
     // Exceptions
