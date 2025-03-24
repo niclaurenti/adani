@@ -86,7 +86,16 @@ void MatchingCondition::CheckVersion(string version) const {
 }
 
 //==========================================================================================//
-//  MatchingCondition: nf independent part of the a_Qi (i=q,q) term.
+//  MatchingCondition: Total a_Qi (i=q,g) term.
+//  a_Qi is the mu independent part of the unrenormalized OMA
+//------------------------------------------------------------------------------------------//
+
+Value MatchingCondition::MuIndependentTerm(double x, int nf) const {
+    return MuIndependentNfIndependentTerm(x) + nf * MuIndependentNfDependentTerm(x);
+}
+
+//==========================================================================================//
+//  MatchingCondition: nf independent part of the a_Qi (i=q,g) term.
 //  a_Qi is the mu independent part of the unrenormalized OMA
 //------------------------------------------------------------------------------------------//
 
@@ -117,12 +126,16 @@ Value MatchingCondition::MuIndependentNfIndependentTerm(double x) const {
 }
 
 //==========================================================================================//
-//  MatchingCondition: nf independent part of the a_Qi (i=q,q) term.
+//  MatchingCondition: nf dependent part of the a_Qi (i=q,g) term.
 //  a_Qi is the mu independent part of the unrenormalized OMA
 //------------------------------------------------------------------------------------------//
 
-Value MatchingCondition::MuIndependentTerm(double x, int nf) const {
-    return MuIndependentNfIndependentTerm(x) + nf * a_Qg_31(x);
+double MatchingCondition::MuIndependentNfDependentTerm(double x) const {
+    if (entry2_ == 'q') return a_Qq_PS_31(x);
+    else if (entry2_ == 'g') return a_Qg_31(x);
+    else throw UnexpectedException(
+        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+    );
 }
 
 //==========================================================================================//
@@ -148,7 +161,7 @@ vector<double> MatchingCondition::NotOrdered(double x) const {
                 "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
             );
         }
-    } else {
+    } else if (entry2_ == 'g'){
         int low_id;
         if (version_ == "exact") {
             central = a_Qg_30(x, 0);
@@ -171,6 +184,10 @@ vector<double> MatchingCondition::NotOrdered(double x) const {
         central = 0.5 * (higher + lower);
 
         return { central, higher, lower };
+    } else {
+        throw UnexpectedException(
+            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+        );
     }
 }
 
@@ -533,51 +550,6 @@ double MatchingCondition::a_Qq_PS_30(double x, int v) const {
                      + 16 * Li_412;
 
         double aQqPS30 = (
-            // This contribution has been already introduced in
-            // D2_ps3_highscale
-            /*CF * nf * TR * TR * (
-                16. / 81 * (x - 1.) / x * (4. * x2 + 7 * x + 4) * H1_3
-                + 64./729 * (x - 1.) / x * (5165 * x2 - 2632 * x + 1736)
-                - 64./243 * (1350 * x2 - 569 * x - 218) * H0
-                + 64./81 * (111 * x2 + 64 * x + 100) * H0_2
-                - 128./81 * (6 * x2 + 4 * x - 5) * H0_3
-                + 64./27 * (x + 1.) * H0_4
-                + (
-                    64./9 * (x - 1.) / x * (4. * x2 + 7. * x + 4.) * H0_2
-                    - 64./27 * (x - 1.) / x * (74. * x2 - 43. * x + 20) * H0
-                    + 64./81 * (x - 1.) / x * (150. * x2 + 103. * x + 60.)
-                ) * H1
-                + (
-                    -32./9 * (x - 1.) / x * (4. * x2 + 7. * x + 4) * H0
-                    + 16./81 * (x - 1.) / x * (74. * x2 - 43. * x + 20)
-                ) * H1_2
-                + (
-                    128./9 * 1./x * (2. * x3 + x2 -2 * x + 4.) * H0
-                    + 64./81 * 1./x * (111. * x3 - 415. * x2 + 89. * x - 60)
-                    - 128./3 * (x + 1.) * H0_2
-                ) * H01
-                + (
-                    -128. / 27 * (2. * x + 3.) / x * (9. * x2 - 8. * x + 4.)
-                    + 256./3 * (x + 1.) * H0
-                ) * H001
-                + (
-                    64./27 * 1./x * (6. * x3 + 5. * x2 - 4. * x - 12.)
-                    + 128./3 * (x + 1.) * H0
-                ) * H011
-                - 256./9 * (x + 1.) * H0001 - 640./9 * (x + 1.) * H0011
-                - 64./9 * (x + 1.) * H0111
-                + (
-                    80./9 * (x - 1.) / x * (4. * x2 + 7. * x + 4.) * H1
-                    + 16./81 * 1./x * (666. * x3 - 95. * x2 + 589. * x - 60.)
-                    - 224./27 * (6. * x2 + 4. * x - 5.) * H0
-                    + 224./9 * (x + 1.) * H0_2 - 160./3 * (x + 1) * H01
-                ) * zeta2
-                + (
-                    32./27 * 1./x * (104 * x3 + 67 * x2 - 89 * x + 28)
-                    - 320./3 * (x + 1) * H0
-                ) * zeta3 + 560./3 * (x + 1.) * zeta4
-            )*/
-
             +CF * TR * TR
                 * (-32. / 81 * (x - 1.) / x * (4. * x2 + 7. * x + 4.) * H1_3
                    - 128. / 1215
@@ -1088,4 +1060,97 @@ double MatchingCondition::a_Qq_PS_30(double x, int v) const {
             __PRETTY_FUNCTION__, __LINE__
         );
     }
+}
+
+double MatchingCondition::a_Qq_PS_31(double x) const {
+
+    double x2 = x * x;
+    double x3 = x2 * x;
+
+    // Allocate pointers for the harmonic polylogs
+    double wx = x;
+    int nw = 4;
+    int n1 = -1;
+    int n2 = 1;
+    int sz = n2 - n1 + 1;
+    double *Hr1 = new double[sz];
+    double *Hr2 = new double[sz * sz];
+    double *Hr3 = new double[sz * sz * sz];
+    double *Hr4 = new double[sz * sz * sz * sz];
+    double *Hr5 = new double[sz * sz * sz * sz * sz];
+
+    // Call polylogs
+    apf_hplog_(&wx, &nw, Hr1, Hr2, Hr3, Hr4, Hr5, &n1, &n2);
+
+    // weight 1
+    const double H0 = Hr1[1];
+    const double H1 = Hr1[2];
+
+    // weight 2
+    const double H01 = Hr2[7];
+
+    // weight 3
+    const double H001 = Hr3[22];
+    const double H011 = Hr3[25];
+
+    // weight 4
+    const double H0001 = Hr4[67];
+    const double H0011 = Hr4[76];
+    const double H0111 = Hr4[79];
+
+    delete[] Hr1;
+    delete[] Hr2;
+    delete[] Hr3;
+    delete[] Hr4;
+    delete[] Hr5;
+
+    double H0_2 = H0 * H0;
+    double H0_3 = H0_2 * H0;
+    double H0_4 = H0_3 * H0;
+
+    double H1_2 = H1 * H1;
+    double H1_3 = H1_2 * H1;
+
+    return  CF * TR * TR * (
+        16. / 81 * (x - 1.) / x * (4. * x2 + 7 * x + 4) * H1_3
+        + 64./729 * (x - 1.) / x * (5165 * x2 - 2632 * x + 1736)
+        - 64./243 * (1350 * x2 - 569 * x - 218) * H0
+        + 64./81 * (111 * x2 + 64 * x + 100) * H0_2
+        - 128./81 * (6 * x2 + 4 * x - 5) * H0_3
+        + 64./27 * (x + 1.) * H0_4
+        + (
+            64./9 * (x - 1.) / x * (4. * x2 + 7. * x + 4.) * H0_2
+            - 64./27 * (x - 1.) / x * (74. * x2 - 43. * x + 20) * H0
+            + 64./81 * (x - 1.) / x * (150. * x2 + 103. * x + 60.)
+        ) * H1
+        + (
+            -32./9 * (x - 1.) / x * (4. * x2 + 7. * x + 4) * H0
+            + 16./81 * (x - 1.) / x * (74. * x2 - 43. * x + 20)
+        ) * H1_2
+        + (
+            128./9 * 1./x * (2. * x3 + x2 -2 * x + 4.) * H0
+            + 64./81 * 1./x * (111. * x3 - 415. * x2 + 89. * x - 60)
+            - 128./3 * (x + 1.) * H0_2
+        ) * H01
+        + (
+            -128. / 27 * (2. * x + 3.) / x * (9. * x2 - 8. * x + 4.)
+            + 256./3 * (x + 1.) * H0
+        ) * H001
+        + (
+            64./27 * 1./x * (6. * x3 + 5. * x2 - 4. * x - 12.)
+            + 128./3 * (x + 1.) * H0
+        ) * H011
+        - 256./9 * (x + 1.) * H0001 - 640./9 * (x + 1.) * H0011
+        - 64./9 * (x + 1.) * H0111
+        + (
+            80./9 * (x - 1.) / x * (4. * x2 + 7. * x + 4.) * H1
+            + 16./81 * 1./x * (666. * x3 - 95. * x2 + 589. * x - 60.)
+            - 224./27 * (6. * x2 + 4. * x - 5.) * H0
+            + 224./9 * (x + 1.) * H0_2 - 160./3 * (x + 1) * H01
+        ) * zeta2
+        + (
+            32./27 * 1./x * (104 * x3 + 67 * x2 - 89 * x + 28)
+            - 320./3 * (x + 1) * H0
+        ) * zeta3 + 560./3 * (x + 1.) * zeta4
+    );
 }
