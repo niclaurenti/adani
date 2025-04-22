@@ -1,4 +1,7 @@
 !=======================================================================
+! This fortran routine has been copy-pasted from HOPPET
+!=======================================================================
+!=======================================================================
 !
 ! This source file has been provided to the Hoppet authors under GPLv3
 ! by Johannes Blumlein and corresponds to the following article, which
