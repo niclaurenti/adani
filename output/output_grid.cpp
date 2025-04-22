@@ -49,17 +49,13 @@ int main(int argc, char **argv) {
     std::vector<double> Q, x;
 
     double xtmp;
-    inputx >> xtmp;
-    while (!inputx.eof()) {
+    while (inputx >> xtmp) {
         x.push_back(xtmp);
-        inputx >> xtmp;
     }
 
     double Qtmp;
-    inputQ >> Qtmp;
-    while (!inputQ.eof()) {
+    while (inputQ >> Qtmp) {
         Q.push_back(Qtmp);
-        inputQ >> Qtmp;
     }
 
     // clang-format off
