@@ -229,6 +229,7 @@ Value ApproximateCoefficientFunction::MuIndependentTermsBand(
         (asymptotic_->MuIndependentTermsBand(x, m2Q2, nf)).ToVect();
     vector<double> thresh =
         (threshold_->MuIndependentTermsBand(x, m2Q2, nf)).ToVect();
+    // thresh contains three identical numbers since the band was not present
 
     double central = Approximation(x, m2Q2, asy[0], thresh[0], A, B, C, D);
     double higher = central, lower = central, tmp;
