@@ -3,6 +3,7 @@ import sys
 import time
 from multiprocessing import Pool
 from pathlib import Path
+from tqdm import tqdm
 
 import numpy as np
 import yaml
@@ -54,7 +55,7 @@ def run(n_threads, x_grid, Q_grid):
             grid.append((x, q))
     args = (function_to_exe_in_parallel, grid)
     with Pool(n_threads) as pool:
-        result = pool.map(*args)
+        result = list(tqdm(pool.imap(*args), total=len(grid)))
     return result
 
 def print_time(seconds):
