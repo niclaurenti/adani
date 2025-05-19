@@ -96,7 +96,7 @@ struct variation_parameters CL_var = { 0.2, 2. };
 
 ApproximateCoefficientFunction::ApproximateCoefficientFunction(
     const int &order, const char &kind, const char &channel, const bool &NLL,
-    const string &highscale_version, const bool &approx_at_Q,
+    const string &highscale_version, const string &approx_scale,
     const double &abserr, const double &relerr, const int &dim,
     const string &double_int_method, const int &MCcalls
 )
@@ -109,9 +109,17 @@ ApproximateCoefficientFunction::ApproximateCoefficientFunction(
         order, kind, channel, NLL, highscale_version
     );
 
-    approx_at_Q_ = approx_at_Q;
+    approx_scale_ = approx_scale;
 
     try {
+
+        if (approx_scale != "m" && approx_scale != "Q" && approx_scale != "combination") {
+            throw NotValidException(
+                "approx_scale must be 'm', 'Q' or 'combination! Got " + approx_scale,
+                __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+
         if (order == 1) {
             if (kind == '2') {
                 if (channel == 'g')
@@ -231,19 +239,87 @@ Value ApproximateCoefficientFunction::MuIndependentTermsBand(
     vector<double> asy;
     vector<double> thresh;
 
-    if (!approx_at_Q_) {
-        asy = (asymptotic_->MuIndependentTermsBand(x, m2Q2, nf)).ToVect();
-        thresh = (threshold_->MuIndependentTermsBand(x, m2Q2, nf)).ToVect();
-        // thresh contains three identical numbers since the band was not
-        // present
+    if (approx_scale_ == "m") {
+        return ApproximationAtScale_m(x, m2Q2, nf, Avec, Bvec, Cvec, Dvec);
+    } else if (approx_scale_ == "Q") {
+        return ApproximationAtScale_m(x, m2Q2, nf, Avec, Bvec, Cvec, Dvec);
     } else {
-        asy = (asymptotic_->fxBand(x, m2Q2, m2Q2, nf)).ToVect();
-        thresh = (threshold_->fxBand(x, m2Q2, m2Q2, nf)).ToVect();
-        // thresh contains three identical numbers since the band was not
-        // present
+       return (
+        ApproximationAtScale_m(x, m2Q2, nf, Avec, Bvec, Cvec, Dvec)
+        + ApproximationAtScale_m(x, m2Q2, nf, Avec, Bvec, Cvec, Dvec)
+       ) / 2.;
     }
 
-    double central = Approximation(x, m2Q2, asy[0], thresh[0], A, B, C, D);
+}
+
+//==========================================================================================//
+//  ApproximateCoefficientFunction: functional form of the approximation
+//------------------------------------------------------------------------------------------//
+
+double ApproximateCoefficientFunction::Approximation(
+    double x, double m2Q2, double asy, double thresh, double A, double B,
+    double C, double D
+) const {
+
+    double eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
+    double xi = 1. / m2Q2;
+
+    double h = A + (B - A) / (1. + exp(a * (log(xi) - b)));
+    double k = C + (D - C) / (1. + exp(a * (log(xi) - b)));
+
+    double damp_thr = 1. / (1. + pow(eta / h, k));
+    double damp_asy = 1. - damp_thr;
+
+    return asy * damp_asy + thresh * damp_thr;
+}
+
+//==========================================================================================//
+//  ApproximateCoefficientFunction: approximation of the mu-independent terms in the
+//  expansion in terms of log mu^2/m^2
+//------------------------------------------------------------------------------------------//
+
+Value ApproximateCoefficientFunction::ApproximationAtScale_m(
+    double x, double m2Q2, int nf,
+    double Avec[3], double Bvec[3], double Cvec[3], double Dvec[3]
+) const {
+    vector<double> asy = (asymptotic_->MuIndependentTermsBand(x, m2Q2, nf)).ToVect();
+    vector<double> thresh = (threshold_->MuIndependentTermsBand(x, m2Q2, nf)).ToVect();
+    // thresh contains three identical numbers since the band was not
+    // present
+    return ComputeVariations(x, m2Q2, asy, thresh, Avec, Bvec, Cvec, Dvec);
+}
+
+//==========================================================================================//
+//  ApproximateCoefficientFunction: approximation of the mu-independent terms in the
+//  expansion in terms of log mu^2/Q^2
+//------------------------------------------------------------------------------------------//
+
+Value ApproximateCoefficientFunction::ApproximationAtScale_Q(
+    double x, double m2Q2, int nf,
+    double Avec[3], double Bvec[3], double Cvec[3], double Dvec[3]
+) const {
+    vector<double> asy = (asymptotic_->fxBand(x, m2Q2, m2Q2, nf)).ToVect();
+    vector<double> thresh = (threshold_->fxBand(x, m2Q2, m2Q2, nf)).ToVect();
+    // thresh contains three identical numbers since the band was not
+    // present
+    return ComputeVariations(x, m2Q2, asy, thresh, Avec, Bvec, Cvec, Dvec)
+           - MuDependentTerms(x, m2Q2, m2Q2, nf);
+}
+
+//==========================================================================================//
+//  ApproximateCoefficientFunction: function that computes the bounds of the envelope of all
+//  the variations
+//------------------------------------------------------------------------------------------//
+
+
+    Value ApproximateCoefficientFunction::ComputeVariations(
+        const double x, double m2Q2, const vector<double> &asy, const vector<double> &thresh,
+        double Avec[3], double Bvec[3], double Cvec[3], double Dvec[3]
+    ) const {
+
+    double central = Approximation(
+        x, m2Q2, asy[0], thresh[0], Avec[0], Bvec[0], Cvec[0], Dvec[0]
+    );
     double higher = central, lower = central, tmp;
 
     for (int i = 0; i < int(asy.size()); i++) {
@@ -267,35 +343,9 @@ Value ApproximateCoefficientFunction::MuIndependentTermsBand(
         }
     }
 
-    Value res = Value(central, higher, lower);
+    return Value(central, higher, lower);
 
-    if (approx_at_Q_) {
-        res = res - MuDependentTerms(x, m2Q2, m2Q2, nf);
     }
-
-    return res;
-}
-
-//==========================================================================================//
-//  ApproximateCoefficientFunction: functional form of the approximation
-//------------------------------------------------------------------------------------------//
-
-double ApproximateCoefficientFunction::Approximation(
-    double x, double m2Q2, double asy, double thresh, double A, double B,
-    double C, double D
-) const {
-
-    double eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
-    double xi = 1. / m2Q2;
-
-    double h = A + (B - A) / (1. + exp(a * (log(xi) - b)));
-    double k = C + (D - C) / (1. + exp(a * (log(xi) - b)));
-
-    double damp_thr = 1. / (1. + pow(eta / h, k));
-    double damp_asy = 1. - damp_thr;
-
-    return asy * damp_asy + thresh * damp_thr;
-}
 
 //==========================================================================================//
 //  ApproximateCoefficientFunctionKLMV: parameters of the approximation
