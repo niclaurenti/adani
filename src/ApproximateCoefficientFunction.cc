@@ -113,9 +113,11 @@ ApproximateCoefficientFunction::ApproximateCoefficientFunction(
 
     try {
 
-        if (approx_scale != "m" && approx_scale != "Q" && approx_scale != "combination") {
+        if (approx_scale != "m" && approx_scale != "Q"
+            && approx_scale != "combination") {
             throw NotValidException(
-                "approx_scale must be 'm', 'Q' or 'combination! Got " + approx_scale,
+                "approx_scale must be 'm', 'Q' or 'combination! Got "
+                    + approx_scale,
                 __PRETTY_FUNCTION__, __LINE__
             );
         }
@@ -244,12 +246,10 @@ Value ApproximateCoefficientFunction::MuIndependentTermsBand(
     } else if (approx_scale_ == "Q") {
         return ApproximationAtScale_m(x, m2Q2, nf, Avec, Bvec, Cvec, Dvec);
     } else {
-       return (
-        ApproximationAtScale_m(x, m2Q2, nf, Avec, Bvec, Cvec, Dvec)
-        + ApproximationAtScale_m(x, m2Q2, nf, Avec, Bvec, Cvec, Dvec)
-       ) / 2.;
+        return (ApproximationAtScale_m(x, m2Q2, nf, Avec, Bvec, Cvec, Dvec)
+                + ApproximationAtScale_m(x, m2Q2, nf, Avec, Bvec, Cvec, Dvec))
+               / 2.;
     }
-
 }
 
 //==========================================================================================//
@@ -274,29 +274,31 @@ double ApproximateCoefficientFunction::Approximation(
 }
 
 //==========================================================================================//
-//  ApproximateCoefficientFunction: approximation of the mu-independent terms in the
-//  expansion in terms of log mu^2/m^2
+//  ApproximateCoefficientFunction: approximation of the mu-independent terms in
+//  the expansion in terms of log mu^2/m^2
 //------------------------------------------------------------------------------------------//
 
 Value ApproximateCoefficientFunction::ApproximationAtScale_m(
-    double x, double m2Q2, int nf,
-    double Avec[3], double Bvec[3], double Cvec[3], double Dvec[3]
+    double x, double m2Q2, int nf, double Avec[3], double Bvec[3],
+    double Cvec[3], double Dvec[3]
 ) const {
-    vector<double> asy = (asymptotic_->MuIndependentTermsBand(x, m2Q2, nf)).ToVect();
-    vector<double> thresh = (threshold_->MuIndependentTermsBand(x, m2Q2, nf)).ToVect();
+    vector<double> asy =
+        (asymptotic_->MuIndependentTermsBand(x, m2Q2, nf)).ToVect();
+    vector<double> thresh =
+        (threshold_->MuIndependentTermsBand(x, m2Q2, nf)).ToVect();
     // thresh contains three identical numbers since the band was not
     // present
     return ComputeVariations(x, m2Q2, asy, thresh, Avec, Bvec, Cvec, Dvec);
 }
 
 //==========================================================================================//
-//  ApproximateCoefficientFunction: approximation of the mu-independent terms in the
-//  expansion in terms of log mu^2/Q^2
+//  ApproximateCoefficientFunction: approximation of the mu-independent terms in
+//  the expansion in terms of log mu^2/Q^2
 //------------------------------------------------------------------------------------------//
 
 Value ApproximateCoefficientFunction::ApproximationAtScale_Q(
-    double x, double m2Q2, int nf,
-    double Avec[3], double Bvec[3], double Cvec[3], double Dvec[3]
+    double x, double m2Q2, int nf, double Avec[3], double Bvec[3],
+    double Cvec[3], double Dvec[3]
 ) const {
     vector<double> asy = (asymptotic_->fxBand(x, m2Q2, m2Q2, nf)).ToVect();
     vector<double> thresh = (threshold_->fxBand(x, m2Q2, m2Q2, nf)).ToVect();
@@ -307,15 +309,15 @@ Value ApproximateCoefficientFunction::ApproximationAtScale_Q(
 }
 
 //==========================================================================================//
-//  ApproximateCoefficientFunction: function that computes the bounds of the envelope of all
-//  the variations
+//  ApproximateCoefficientFunction: function that computes the bounds of the
+//  envelope of all the variations
 //------------------------------------------------------------------------------------------//
 
-
-    Value ApproximateCoefficientFunction::ComputeVariations(
-        const double x, double m2Q2, const vector<double> &asy, const vector<double> &thresh,
-        double Avec[3], double Bvec[3], double Cvec[3], double Dvec[3]
-    ) const {
+Value ApproximateCoefficientFunction::ComputeVariations(
+    const double x, double m2Q2, const vector<double> &asy,
+    const vector<double> &thresh, double Avec[3], double Bvec[3],
+    double Cvec[3], double Dvec[3]
+) const {
 
     double central = Approximation(
         x, m2Q2, asy[0], thresh[0], Avec[0], Bvec[0], Cvec[0], Dvec[0]
@@ -344,8 +346,7 @@ Value ApproximateCoefficientFunction::ApproximationAtScale_Q(
     }
 
     return Value(central, higher, lower);
-
-    }
+}
 
 //==========================================================================================//
 //  ApproximateCoefficientFunctionKLMV: parameters of the approximation

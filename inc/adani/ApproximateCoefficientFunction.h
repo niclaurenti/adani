@@ -116,16 +116,17 @@ class ApproximateCoefficientFunction : public AbstractApproximate {
         ) const;
 
         Value ApproximationAtScale_m(
-            double x, double m2Q2, int nf,
-            double Avec[3], double Bvec[3], double Cvec[3], double Dvec[3]
+            double x, double m2Q2, int nf, double Avec[3], double Bvec[3],
+            double Cvec[3], double Dvec[3]
         ) const;
         Value ApproximationAtScale_Q(
-            double x, double m2Q2, int nf,
-            double Avec[3], double Bvec[3], double Cvec[3], double Dvec[3]
+            double x, double m2Q2, int nf, double Avec[3], double Bvec[3],
+            double Cvec[3], double Dvec[3]
         ) const;
         Value ComputeVariations(
-            const double x, double m2Q2, const vector<double> &asy, const vector<double> &thresh,
-            double Avec[3], double Bvec[3], double Cvec[3], double Dvec[3]
+            const double x, double m2Q2, const vector<double> &asy,
+            const vector<double> &thresh, double Avec[3], double Bvec[3],
+            double Cvec[3], double Dvec[3]
         ) const;
 };
 
