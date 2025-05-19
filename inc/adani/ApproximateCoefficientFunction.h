@@ -90,8 +90,8 @@ class ApproximateCoefficientFunction : public AbstractApproximate {
         ApproximateCoefficientFunction(
             const int &order, const char &kind, const char &channel,
             const bool &NLL = true, const string &highscale_version = "exact",
-            const double &abserr = 1e-3, const double &relerr = 1e-3,
-            const int &dim = 1000,
+            const bool &approx_at_Q = false, const double &abserr = 1e-3,
+            const double &relerr = 1e-3, const int &dim = 1000,
             const string &double_int_method = "analytical",
             const int &MCcalls = 25000
         );
@@ -107,6 +107,8 @@ class ApproximateCoefficientFunction : public AbstractApproximate {
 
         struct approximation_parameters approximation_;
         struct variation_parameters variation_;
+
+        bool approx_at_Q_;
 
         double Approximation(
             double x, double m2Q2, double asy, double thresh, double A,
