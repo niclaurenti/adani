@@ -101,6 +101,8 @@ class ApproximateCoefficientFunction : public AbstractApproximate {
             double x, double m2Q2, int nf
         ) const override;
 
+        void LegacyVariation(const bool &legacy_var);
+
     private:
         ThresholdCoefficientFunction *threshold_;
         AsymptoticCoefficientFunction *asymptotic_;
@@ -128,6 +130,8 @@ class ApproximateCoefficientFunction : public AbstractApproximate {
             const vector<double> &thresh, double Avec[3], double Bvec[3],
             double Cvec[3], double Dvec[3]
         ) const;
+
+        bool legacy_var_;
 };
 
 //==========================================================================================//

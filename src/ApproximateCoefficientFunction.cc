@@ -199,6 +199,9 @@ ApproximateCoefficientFunction::ApproximateCoefficientFunction(
                 "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
             );
         }
+
+        LegacyVariation(false);
+
     } catch (UnexpectedException &e) {
         e.runtime_error();
     }
@@ -230,8 +233,19 @@ Value ApproximateCoefficientFunction::MuIndependentTermsBand(
     double var2 = variation_.var2, var1 = variation_.var1;
 
     double Amax = var1 * A, Amin = A / var1, Bmax = B * var1, Bmin = B / var1;
-    double Cmax = var2 * C, Cmin = C / var2, Dmax = var2 * D,
-           Dmin = D / var2;
+    double Cmax, Cmin, Dmax, Dmin;
+
+    if (!legacy_var_) {
+        Cmax = var2 * C;
+        Cmin = C / var2;
+        Dmax = var2 * D;
+        Dmin = D / var2;
+    } else {
+        Cmax = (1. + var2) * C;
+        Cmin = (1. - var2) * C;
+        Dmax = (1. + var2) * D;
+        Dmin = (1. - var2) * D;
+    }
 
     double Avec[3] = { A, Amax, Amin };
     double Bvec[3] = { B, Bmax, Bmin };
@@ -346,6 +360,26 @@ Value ApproximateCoefficientFunction::ComputeVariations(
     }
 
     return Value(central, higher, lower);
+}
+
+//==========================================================================================//
+//  ApproximateCoefficientFunction: set method to restore legacy behavior for variation
+//------------------------------------------------------------------------------------------//
+
+void ApproximateCoefficientFunction::LegacyVariation(const bool &legacy_var) {
+
+    legacy_var_ = legacy_var;
+
+    if (GetKind() == '2') {
+        variation_.var2 = 0.3 ;
+    } else if (GetKind() == 'L') {
+        variation_.var2 = 0.2 ;
+    } else {
+        throw UnexpectedException(
+            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+        );
+    }
+
 }
 
 //==========================================================================================//

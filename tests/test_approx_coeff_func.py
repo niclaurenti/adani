@@ -25,6 +25,7 @@ def test_mudependent_terms():
                                 relerr = abserr
                                 massive = ad.ExactCoefficientFunction(order, kind, channel, abserr, relerr, dim, mf, MCcalls)
                                 app = ad.ApproximateCoefficientFunction(order, kind, channel, True, "klmv", "m", abserr, relerr, dim, mf, MCcalls)
+                                app.LegacyVariation(True)
                                 x = np.geomspace(1e-5, 1., 5, endpoint=True)
                                 for xi in np.geomspace(1e-2, 1e4, 4, endpoint=True):
                                     for nf in [4, 5]:
@@ -38,10 +39,11 @@ def test_as2_muindep_oldversion():
     for channel in ['g', 'q']:
         for kind in ['2', 'L']:
             app = ad.ApproximateCoefficientFunction(2, kind, channel)
+            app.LegacyVariation(True)
             for xi in np.geomspace(1e-2, 1e2, 10):
                 m2Q2 = 1/xi
                 for x in np.geomspace(1e-5, 1, 10):
-                    for v in [0]:
+                    for v in [0, 1, -1]:
                         if kind == '2':
                             if channel == 'g':
                                 res_old = oldad.C2_g2_approximation(x, m2Q2, 1., v)
@@ -55,25 +57,23 @@ def test_as2_muindep_oldversion():
                         tmp = app.MuIndependentTermsBand(x, m2Q2, 1)
                         if v == 0:
                             res_new = tmp.GetCentral()
-                            tol = 1e-7
-                        # if v == -1:
-                        #     res_new = tmp.GetLower()
-                        #     tol = 5e-3
-                        # if v == 1:
-                        #     res_new = tmp.GetHigher()
-                        #     tol=5e-3
-                        np.testing.assert_allclose(res_old, res_new, rtol=tol)
+                        if v == -1:
+                            res_new = tmp.GetLower()
+                        if v == 1:
+                            res_new = tmp.GetHigher()
+                        np.testing.assert_allclose(res_old, res_new, rtol=1e-7)
 
 def test_as3_muindep_oldversion():
     for channel in ['g', 'q']:
         for kind in ['2', 'L']:
             highscale_version = "exact" if channel == 'q' else "abmp"
             app = ad.ApproximateCoefficientFunction(3, kind, channel,True, highscale_version)
+            app.LegacyVariation(True)
             for xi in np.geomspace(1e-2, 1e2, 10):
                 m2Q2 = 1/xi
                 for x in np.geomspace(1e-5, 1, 10):
                     for nf in range(1, 6 + 1):
-                        for v in [0]:
+                        for v in [0, 1, -1]:
                             if kind == '2':
                                 if channel == 'g':
                                     res_old = oldad.C2_g3_approximation(x, m2Q2, 1., nf, v)
@@ -87,14 +87,11 @@ def test_as3_muindep_oldversion():
                             tmp = app.MuIndependentTermsBand(x, m2Q2, nf)
                             if v == 0:
                                 res_new = tmp.GetCentral()
-                                tol=1e-7
-                            # if v == -1:
-                            #     res_new = tmp.GetLower()
-                            #     tol=5e-3
-                            # if v == 1:
-                            #     res_new = tmp.GetHigher()
-                            #     tol=5e-3
-                            np.testing.assert_allclose(res_old, res_new, rtol=tol)
+                            if v == -1:
+                                res_new = tmp.GetLower()
+                            if v == 1:
+                                res_new = tmp.GetHigher()
+                            np.testing.assert_allclose(res_old, res_new, rtol=1e-7)
 
 def test_mudep_as2_oldversion():
     for channel in ['g', 'q']:
