@@ -24,7 +24,8 @@ def test_mudependent_terms():
                             for abserr in [1e-3]:
                                 relerr = abserr
                                 massive = ad.ExactCoefficientFunction(order, kind, channel, abserr, relerr, dim, mf, MCcalls)
-                                app = ad.ApproximateCoefficientFunction(order, kind, channel, True, "klmv", abserr, relerr, dim, mf, MCcalls)
+                                app = ad.ApproximateCoefficientFunction(order, kind, channel, True, "klmv", "m", abserr, relerr, dim, mf, MCcalls)
+                                app.LegacyVariation(True)
                                 x = np.geomspace(1e-5, 1., 5, endpoint=True)
                                 for xi in np.geomspace(1e-2, 1e4, 4, endpoint=True):
                                     for nf in [4, 5]:
@@ -38,6 +39,7 @@ def test_as2_muindep_oldversion():
     for channel in ['g', 'q']:
         for kind in ['2', 'L']:
             app = ad.ApproximateCoefficientFunction(2, kind, channel)
+            app.LegacyVariation(True)
             for xi in np.geomspace(1e-2, 1e2, 10):
                 m2Q2 = 1/xi
                 for x in np.geomspace(1e-5, 1, 10):
@@ -66,6 +68,7 @@ def test_as3_muindep_oldversion():
         for kind in ['2', 'L']:
             highscale_version = "exact" if channel == 'q' else "abmp"
             app = ad.ApproximateCoefficientFunction(3, kind, channel,True, highscale_version)
+            app.LegacyVariation(True)
             for xi in np.geomspace(1e-2, 1e2, 10):
                 m2Q2 = 1/xi
                 for x in np.geomspace(1e-5, 1, 10):

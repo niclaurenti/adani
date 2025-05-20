@@ -91,6 +91,10 @@ PYBIND11_MODULE(_core, m) {
         .def(
             "fxBand", &ApproximateCoefficientFunction::fxBand, py::arg("x"),
             py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf")
+        )
+        .def(
+            "LegacyVariation", &ApproximateCoefficientFunction::LegacyVariation,
+            py::arg("legacy_var")
         );
 
     // ApproximateCoefficientFunctionKLMV
