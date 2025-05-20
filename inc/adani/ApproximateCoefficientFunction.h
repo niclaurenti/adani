@@ -38,8 +38,8 @@ struct approximation_parameters {
 //------------------------------------------------------------------------------------------//
 
 struct variation_parameters {
-        double var;
-        double fact;
+        double var1;
+        double var2;
 };
 
 //==========================================================================================//
@@ -90,8 +90,8 @@ class ApproximateCoefficientFunction : public AbstractApproximate {
         ApproximateCoefficientFunction(
             const int &order, const char &kind, const char &channel,
             const bool &NLL = true, const string &highscale_version = "exact",
-            const double &abserr = 1e-3, const double &relerr = 1e-3,
-            const int &dim = 1000,
+            const string &approx_scale = "m", const double &abserr = 1e-3,
+            const double &relerr = 1e-3, const int &dim = 1000,
             const string &double_int_method = "analytical",
             const int &MCcalls = 25000
         );
@@ -101,6 +101,8 @@ class ApproximateCoefficientFunction : public AbstractApproximate {
             double x, double m2Q2, int nf
         ) const override;
 
+        void LegacyVariation(const bool &legacy_var);
+
     private:
         ThresholdCoefficientFunction *threshold_;
         AsymptoticCoefficientFunction *asymptotic_;
@@ -108,10 +110,28 @@ class ApproximateCoefficientFunction : public AbstractApproximate {
         struct approximation_parameters approximation_;
         struct variation_parameters variation_;
 
+        string approx_scale_;
+
         double Approximation(
             double x, double m2Q2, double asy, double thresh, double A,
             double B, double C, double D
         ) const;
+
+        Value ApproximationAtScale_m(
+            double x, double m2Q2, int nf, double Avec[3], double Bvec[3],
+            double Cvec[3], double Dvec[3]
+        ) const;
+        Value ApproximationAtScale_Q(
+            double x, double m2Q2, int nf, double Avec[3], double Bvec[3],
+            double Cvec[3], double Dvec[3]
+        ) const;
+        Value ComputeVariations(
+            const double x, double m2Q2, const vector<double> &asy,
+            const vector<double> &thresh, double Avec[3], double Bvec[3],
+            double Cvec[3], double Dvec[3]
+        ) const;
+
+        bool legacy_var_;
 };
 
 //==========================================================================================//

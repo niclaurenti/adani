@@ -87,8 +87,8 @@ struct approximation_parameters CL_g3_params = { 10., 11., 3., 2. };
 struct approximation_parameters C2_ps3_params = { 0.3, 2.5, 2.5, 1.2 };
 struct approximation_parameters CL_ps3_params = { 20., 11., 3., 2. };
 
-struct variation_parameters C2_var = { 0.3, 3. };
-struct variation_parameters CL_var = { 0.2, 2. };
+struct variation_parameters C2_var = { 3., 1.4 };
+struct variation_parameters CL_var = { 2., 1.3 };
 
 //==========================================================================================//
 //  ApproximateCoefficientFunction: constructor
@@ -96,8 +96,9 @@ struct variation_parameters CL_var = { 0.2, 2. };
 
 ApproximateCoefficientFunction::ApproximateCoefficientFunction(
     const int &order, const char &kind, const char &channel, const bool &NLL,
-    const string &highscale_version, const double &abserr, const double &relerr,
-    const int &dim, const string &double_int_method, const int &MCcalls
+    const string &highscale_version, const string &approx_scale,
+    const double &abserr, const double &relerr, const int &dim,
+    const string &double_int_method, const int &MCcalls
 )
     : AbstractApproximate(
           order, kind, channel, abserr, relerr, dim, double_int_method, MCcalls
@@ -108,7 +109,19 @@ ApproximateCoefficientFunction::ApproximateCoefficientFunction(
         order, kind, channel, NLL, highscale_version
     );
 
+    approx_scale_ = approx_scale;
+
     try {
+
+        if (approx_scale != "m" && approx_scale != "Q"
+            && approx_scale != "combination") {
+            throw NotValidException(
+                "approx_scale must be 'm', 'Q' or 'combination! Got "
+                    + approx_scale,
+                __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+
         if (order == 1) {
             if (kind == '2') {
                 if (channel == 'g')
@@ -186,6 +199,9 @@ ApproximateCoefficientFunction::ApproximateCoefficientFunction(
                 "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
             );
         }
+
+        LegacyVariation(false);
+
     } catch (UnexpectedException &e) {
         e.runtime_error();
     }
@@ -214,24 +230,112 @@ Value ApproximateCoefficientFunction::MuIndependentTermsBand(
 
     double A = approximation_.A, B = approximation_.B, C = approximation_.C,
            D = approximation_.D;
-    double var = variation_.var, fact = variation_.fact;
+    double var2 = variation_.var2, var1 = variation_.var1;
 
-    double Amax = fact * A, Amin = A / fact, Bmax = B * fact, Bmin = B / fact;
-    double Cmax = (1. + var) * C, Cmin = (1. - var) * C, Dmax = (1. + var) * D,
-           Dmin = (1. - var) * D;
+    double Amax = var1 * A, Amin = A / var1, Bmax = B * var1, Bmin = B / var1;
+    double Cmax, Cmin, Dmax, Dmin;
+
+    if (!legacy_var_) {
+        Cmax = var2 * C;
+        Cmin = C / var2;
+        Dmax = var2 * D;
+        Dmin = D / var2;
+    } else {
+        Cmax = (1. + var2) * C;
+        Cmin = (1. - var2) * C;
+        Dmax = (1. + var2) * D;
+        Dmin = (1. - var2) * D;
+    }
 
     double Avec[3] = { A, Amax, Amin };
     double Bvec[3] = { B, Bmax, Bmin };
     double Cvec[3] = { C, Cmax, Cmin };
     double Dvec[3] = { D, Dmax, Dmin };
 
+    vector<double> asy;
+    vector<double> thresh;
+
+    if (approx_scale_ == "m") {
+        return ApproximationAtScale_m(x, m2Q2, nf, Avec, Bvec, Cvec, Dvec);
+    } else if (approx_scale_ == "Q") {
+        return ApproximationAtScale_m(x, m2Q2, nf, Avec, Bvec, Cvec, Dvec);
+    } else {
+        return (ApproximationAtScale_m(x, m2Q2, nf, Avec, Bvec, Cvec, Dvec)
+                + ApproximationAtScale_m(x, m2Q2, nf, Avec, Bvec, Cvec, Dvec))
+               / 2.;
+    }
+}
+
+//==========================================================================================//
+//  ApproximateCoefficientFunction: functional form of the approximation
+//------------------------------------------------------------------------------------------//
+
+double ApproximateCoefficientFunction::Approximation(
+    double x, double m2Q2, double asy, double thresh, double A, double B,
+    double C, double D
+) const {
+
+    double eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
+    double xi = 1. / m2Q2;
+
+    double h = A + (B - A) / (1. + exp(a * (log(xi) - b)));
+    double k = C + (D - C) / (1. + exp(a * (log(xi) - b)));
+
+    double damp_thr = 1. / (1. + pow(eta / h, k));
+    double damp_asy = 1. - damp_thr;
+
+    return asy * damp_asy + thresh * damp_thr;
+}
+
+//==========================================================================================//
+//  ApproximateCoefficientFunction: approximation of the mu-independent terms in
+//  the expansion in terms of log mu^2/m^2
+//------------------------------------------------------------------------------------------//
+
+Value ApproximateCoefficientFunction::ApproximationAtScale_m(
+    double x, double m2Q2, int nf, double Avec[3], double Bvec[3],
+    double Cvec[3], double Dvec[3]
+) const {
     vector<double> asy =
         (asymptotic_->MuIndependentTermsBand(x, m2Q2, nf)).ToVect();
     vector<double> thresh =
         (threshold_->MuIndependentTermsBand(x, m2Q2, nf)).ToVect();
-    // thresh contains three identical numbers since the band was not present
+    // thresh contains three identical numbers since the band was not
+    // present
+    return ComputeVariations(x, m2Q2, asy, thresh, Avec, Bvec, Cvec, Dvec);
+}
 
-    double central = Approximation(x, m2Q2, asy[0], thresh[0], A, B, C, D);
+//==========================================================================================//
+//  ApproximateCoefficientFunction: approximation of the mu-independent terms in
+//  the expansion in terms of log mu^2/Q^2
+//------------------------------------------------------------------------------------------//
+
+Value ApproximateCoefficientFunction::ApproximationAtScale_Q(
+    double x, double m2Q2, int nf, double Avec[3], double Bvec[3],
+    double Cvec[3], double Dvec[3]
+) const {
+    vector<double> asy = (asymptotic_->fxBand(x, m2Q2, m2Q2, nf)).ToVect();
+    vector<double> thresh = (threshold_->fxBand(x, m2Q2, m2Q2, nf)).ToVect();
+    // thresh contains three identical numbers since the band was not
+    // present
+    return ComputeVariations(x, m2Q2, asy, thresh, Avec, Bvec, Cvec, Dvec)
+           - MuDependentTerms(x, m2Q2, m2Q2, nf);
+}
+
+//==========================================================================================//
+//  ApproximateCoefficientFunction: function that computes the bounds of the
+//  envelope of all the variations
+//------------------------------------------------------------------------------------------//
+
+Value ApproximateCoefficientFunction::ComputeVariations(
+    const double x, double m2Q2, const vector<double> &asy,
+    const vector<double> &thresh, double Avec[3], double Bvec[3],
+    double Cvec[3], double Dvec[3]
+) const {
+
+    double central = Approximation(
+        x, m2Q2, asy[0], thresh[0], Avec[0], Bvec[0], Cvec[0], Dvec[0]
+    );
     double higher = central, lower = central, tmp;
 
     for (int i = 0; i < int(asy.size()); i++) {
@@ -259,24 +363,23 @@ Value ApproximateCoefficientFunction::MuIndependentTermsBand(
 }
 
 //==========================================================================================//
-//  ApproximateCoefficientFunction: functional form of the approximation
+//  ApproximateCoefficientFunction: set method to restore legacy behavior for variation
 //------------------------------------------------------------------------------------------//
 
-double ApproximateCoefficientFunction::Approximation(
-    double x, double m2Q2, double asy, double thresh, double A, double B,
-    double C, double D
-) const {
+void ApproximateCoefficientFunction::LegacyVariation(const bool &legacy_var) {
 
-    double eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
-    double xi = 1. / m2Q2;
+    legacy_var_ = legacy_var;
 
-    double h = A + (B - A) / (1. + exp(a * (log(xi) - b)));
-    double k = C + (D - C) / (1. + exp(a * (log(xi) - b)));
+    if (GetKind() == '2') {
+        variation_.var2 = 0.3 ;
+    } else if (GetKind() == 'L') {
+        variation_.var2 = 0.2 ;
+    } else {
+        throw UnexpectedException(
+            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+        );
+    }
 
-    double damp_thr = 1. / (1. + pow(eta / h, k));
-    double damp_asy = 1. - damp_thr;
-
-    return asy * damp_asy + thresh * damp_thr;
 }
 
 //==========================================================================================//

@@ -55,12 +55,13 @@ PYBIND11_MODULE(_core, m) {
         .def(
             py::init<
                 const int &, const char &, const char &, const bool &,
-                const string &, const double &, const double &, const int &,
-                const string &, const int &>(),
+                const string &, const string &, const double &, const double &,
+                const int &, const string &, const int &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel"),
             py::arg("NLL") = true, py::arg("highscale_version") = "exact",
-            py::arg("abserr") = 1e-3, py::arg("relerr") = 1e-3,
-            py::arg("dim") = 1000, py::arg("double_int_method") = "analytical",
+            py::arg("approx_scale") = "m", py::arg("abserr") = 1e-3,
+            py::arg("relerr") = 1e-3, py::arg("dim") = 1000,
+            py::arg("double_int_method") = "analytical",
             py::arg("MCcalls") = 25000
         )
         .def(
@@ -90,6 +91,10 @@ PYBIND11_MODULE(_core, m) {
         .def(
             "fxBand", &ApproximateCoefficientFunction::fxBand, py::arg("x"),
             py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf")
+        )
+        .def(
+            "LegacyVariation", &ApproximateCoefficientFunction::LegacyVariation,
+            py::arg("legacy_var")
         );
 
     // ApproximateCoefficientFunctionKLMV
