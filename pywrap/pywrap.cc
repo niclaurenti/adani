@@ -102,7 +102,7 @@ PYBIND11_MODULE(_core, m) {
                 const bool &, const double &, const double &, const int &,
                 const string &, const int &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel"),
-            py::arg("highscale_version") = "klmv", py::arg("lowxi") = false,
+            py::arg("highscale_version") = "exact", py::arg("lowxi") = false,
             py::arg("abserr") = 1e-3, py::arg("relerr") = 1e-3,
             py::arg("dim") = 1000, py::arg("double_int_method") = "analytical",
             py::arg("MCcalls") = 25000
@@ -347,7 +347,7 @@ PYBIND11_MODULE(_core, m) {
         .def(
             py::init<const int &, const char &, const char &, const string &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel"),
-            py::arg("version") = "klmv"
+            py::arg("version") = "exact"
         )
         .def(
             "MuIndependentTerms",
@@ -377,12 +377,49 @@ PYBIND11_MODULE(_core, m) {
             py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf")
         );
 
+    // HighScaleCoefficientFunction
+    py::class_<HighScaleRescaledCoefficientFunction, HighScaleCoefficientFunction>(
+        m, "HighScaleRescaledCoefficientFunction"
+    )
+        .def(
+            py::init<const int &, const char &, const char &, const string &>(),
+            py::arg("order"), py::arg("kind"), py::arg("channel"),
+            py::arg("version") = "exact"
+        )
+        .def(
+            "MuIndependentTerms",
+            &HighScaleRescaledCoefficientFunction::MuIndependentTerms, py::arg("x"),
+            py::arg("m2Q2"), py::arg("nf")
+        )
+        .def(
+            "MuDependentTerms", &HighScaleRescaledCoefficientFunction::MuDependentTerms,
+            py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf")
+        )
+        .def(
+            "fx", &HighScaleRescaledCoefficientFunction::fx, py::arg("x"),
+            py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf")
+        )
+        .def(
+            "MuIndependentTermsBand",
+            &HighScaleRescaledCoefficientFunction::MuIndependentTermsBand, py::arg("x"),
+            py::arg("m2Q2"), py::arg("nf")
+        )
+        .def(
+            "MuDependentTermsBand",
+            &HighScaleRescaledCoefficientFunction::MuDependentTermsBand, py::arg("x"),
+            py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf")
+        )
+        .def(
+            "fxBand", &HighScaleRescaledCoefficientFunction::fxBand, py::arg("x"),
+            py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf")
+        );
+
     // HighScaleSplitLogs
     py::class_<HighScaleSplitLogs, CoefficientFunction>(m, "HighScaleSplitLogs")
         .def(
             py::init<const int &, const char &, const char &, const string &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel"),
-            py::arg("version") = "klmv"
+            py::arg("version") = "exact"
         )
         .def(
             "fx",
