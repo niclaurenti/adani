@@ -34,10 +34,20 @@ HighScaleCoefficientFunction::HighScaleCoefficientFunction(
     }
 
     try {
+
+        if (GetOrder() < 3 && version != "exact") {
+            throw NotValidException(
+                "HighScaleCoefficientFunction at orders 1 and 2 are only 'exact'!",
+                __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+
         SetFunctions();
     } catch (NotPresentException &e) {
         e.runtime_error();
     } catch (UnexpectedException &e) {
+        e.runtime_error();
+    } catch (NotImplementedException &e) {
         e.runtime_error();
     }
 }

@@ -52,6 +52,8 @@ def test_asy():
                         continue
                     if channel == 'g' and hs_version == "exact":
                         continue
+                    if order < 3 and hs_version != "exact":
+                        continue
                     hs = ad.HighScaleCoefficientFunction(order, kind, channel, hs_version)
                     for nll in [True, False]:
                         pt = ad.PowerTermsCoefficientFunction(order, kind, channel, nll)

@@ -102,7 +102,7 @@ PYBIND11_MODULE(_core, m) {
                 const bool &, const double &, const double &, const int &,
                 const string &, const int &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel"),
-            py::arg("highscale_version") = "klmv", py::arg("lowxi") = false,
+            py::arg("highscale_version") = "exact", py::arg("lowxi") = false,
             py::arg("abserr") = 1e-3, py::arg("relerr") = 1e-3,
             py::arg("dim") = 1000, py::arg("double_int_method") = "analytical",
             py::arg("MCcalls") = 25000
@@ -347,7 +347,7 @@ PYBIND11_MODULE(_core, m) {
         .def(
             py::init<const int &, const char &, const char &, const string &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel"),
-            py::arg("version") = "klmv"
+            py::arg("version") = "exact"
         )
         .def(
             "MuIndependentTerms",
@@ -382,7 +382,7 @@ PYBIND11_MODULE(_core, m) {
         .def(
             py::init<const int &, const char &, const char &, const string &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel"),
-            py::arg("version") = "klmv"
+            py::arg("version") = "exact"
         )
         .def(
             "fx",
