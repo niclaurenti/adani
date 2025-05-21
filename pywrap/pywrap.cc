@@ -347,7 +347,7 @@ PYBIND11_MODULE(_core, m) {
         .def(
             py::init<const int &, const char &, const char &, const string &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel"),
-            py::arg("version") = "klmv"
+            py::arg("version") = "exact"
         )
         .def(
             "MuIndependentTerms",
@@ -382,7 +382,7 @@ PYBIND11_MODULE(_core, m) {
         .def(
             py::init<const int &, const char &, const char &, const string &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel"),
-            py::arg("version") = "klmv"
+            py::arg("version") = "exact"
         )
         .def(
             "fx",
