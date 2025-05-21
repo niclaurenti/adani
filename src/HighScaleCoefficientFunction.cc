@@ -164,6 +164,15 @@ void HighScaleCoefficientFunction::SetFunctions() {
 }
 
 //==========================================================================================//
+//  HighScaleRescaledCoefficientFunction: band of the highscale rescaled coefficient function
+//------------------------------------------------------------------------------------------//
+
+Value HighScaleRescaledCoefficientFunction::fxBand(double x, double m2Q2, double m2mu2, int nf) const {
+    return HighScaleCoefficientFunction::fxBand(x / (1. - 4 * m2Q2 * x), m2Q2, m2mu2, nf);
+}
+
+
+//==========================================================================================//
 // OBSERVATION: the highscale coefficient functions depend on the massless
 // coefficient function through C_massless(nf + 1)/(nf + 1). Since up to O(as^2)
 // the massless coefficient functions are proportional to nf, the (nf + 1)

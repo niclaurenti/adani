@@ -38,7 +38,7 @@ class HighScaleCoefficientFunction : public CoefficientFunction {
     public:
         HighScaleCoefficientFunction(
             const int &order, const char &kind, const char &channel,
-            const string &version = "klmv"
+            const string &version = "exact"
         );
         ~HighScaleCoefficientFunction() override;
 
@@ -123,6 +123,18 @@ class HighScaleCoefficientFunction : public CoefficientFunction {
             D2_g3_highscale(double x, double m2Q2, double m2mu2, int nf) const;
         Value
             D2_ps3_highscale(double x, double m2Q2, double m2mu2, int nf) const;
+};
+
+class HighScaleRescaledCoefficientFunction : public HighScaleCoefficientFunction {
+    public:
+        HighScaleRescaledCoefficientFunction(
+            const int &order, const char &kind, const char &channel,
+            const string &version = "exact"
+        ) : HighScaleCoefficientFunction(order, kind, channel, version) {};
+        ~HighScaleRescaledCoefficientFunction() override {};
+        Value
+            fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
+
 };
 
 #endif

@@ -50,8 +50,6 @@ def test_asy():
                 for hs_version in ["exact", "abmp", "klmv"]:
                     if channel == 'q' and hs_version == "abmp":
                         continue
-                    if channel == 'g' and hs_version == "exact":
-                        continue
                     hs = ad.HighScaleCoefficientFunction(order, kind, channel, hs_version)
                     for nll in [True, False]:
                         pt = ad.PowerTermsCoefficientFunction(order, kind, channel, nll)
