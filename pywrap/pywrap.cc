@@ -143,9 +143,10 @@ PYBIND11_MODULE(_core, m) {
         .def(
             py::init<
                 const int &, const char &, const char &, const bool &,
-                const string &>(),
+                const string &, const bool &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel"),
-            py::arg("NLL") = true, py::arg("highscale_version") = "exact"
+            py::arg("NLL") = true, py::arg("highscale_version") = "exact",
+            py::arg("rescaled_hs") = false
         )
         .def(
             "MuIndependentTerms",
