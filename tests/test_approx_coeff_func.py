@@ -22,9 +22,10 @@ def test_mudependent_terms():
                     for MCcalls in [20000]:
                         for mf in ["analytical", "double_numerical", "monte_carlo"]:
                             for abserr in [1e-3]:
+                                hscale = "klmv" if order == 3 else "exact"
                                 relerr = abserr
                                 massive = ad.ExactCoefficientFunction(order, kind, channel, abserr, relerr, dim, mf, MCcalls)
-                                app = ad.ApproximateCoefficientFunction(order, kind, channel, True, "klmv", abserr, relerr, dim, mf, MCcalls)
+                                app = ad.ApproximateCoefficientFunction(order, kind, channel, True, hscale, abserr, relerr, dim, mf, MCcalls)
                                 x = np.geomspace(1e-5, 1., 5, endpoint=True)
                                 for xi in np.geomspace(1e-2, 1e4, 4, endpoint=True):
                                     for nf in [4, 5]:
@@ -146,7 +147,7 @@ def test_mudep_as2_oldversion():
 
 def test_klmv_as2():
     for channel in ['g', 'q']:
-        app = ad.ApproximateCoefficientFunctionKLMV(2, '2', channel, "abmp")
+        app = ad.ApproximateCoefficientFunctionKLMV(2, '2', channel, "exact")
         for xi in np.geomspace(1e-2, 1e2, 10):
             m2Q2 = 1/xi
             for x in np.geomspace(1e-5, 1, 10):
