@@ -90,6 +90,10 @@ PYBIND11_MODULE(_core, m) {
         .def(
             "fxBand", &ApproximateCoefficientFunction::fxBand, py::arg("x"),
             py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf")
+        )
+        .def(
+            "SetLegacyThreshold", &ApproximateCoefficientFunction::SetLegacyThreshold,
+            py::arg("legacy_threshold")
         );
 
     // ApproximateCoefficientFunctionKLMV
