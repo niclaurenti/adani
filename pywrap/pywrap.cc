@@ -547,6 +547,10 @@ PYBIND11_MODULE(_core, m) {
         .def(
             "fxBand", &ThresholdCoefficientFunction::fxBand, py::arg("x"),
             py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf")
+        )
+        .def(
+            "SetLegacyThreshold", &ThresholdCoefficientFunction::SetLegacyThreshold,
+            py::arg("legacy_threshold")
         );
 
     // MatchingCondition

@@ -192,6 +192,14 @@ ApproximateCoefficientFunction::ApproximateCoefficientFunction(
 }
 
 //==========================================================================================//
+//  ApproximateCoefficientFunction: set legacy threshold behavior
+//------------------------------------------------------------------------------------------//
+
+void ApproximateCoefficientFunction::SetLegacyThreshold(const bool &legacy_threshold) {
+    threshold_ -> SetLegacyThreshold(legacy_threshold);
+}
+
+//==========================================================================================//
 //  ApproximateCoefficientFunction: destructor
 //------------------------------------------------------------------------------------------//
 
