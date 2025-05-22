@@ -61,7 +61,7 @@ Value ThresholdCoefficientFunction::fxBand(
     double exp = (this->*expansion_beta_)(x, m2Q2, m2mu2, nf) + (this->*expansion_no_beta_)(x, m2Q2);
     double res1 = exact_as1_->fx(x, m2Q2, m2mu2, nf) * exp;
 
-    if (!legacy_threshold_) return Value(res1);
+    if (legacy_threshold_) return Value(res1);
 
     double res2 = (this->*threshold_as1_)(x, m2Q2) * exp;
 
