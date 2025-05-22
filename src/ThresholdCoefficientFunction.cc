@@ -58,7 +58,7 @@ Value ThresholdCoefficientFunction::fxBand(
 
     if (GetOrder() == 1) return Value((this->*threshold_as1_)(x, m2Q2));
 
-    double exp = (this->*expansion_beta_)(x, m2Q2, m2mu2, nf) + (this->*expansion_no_beta_)(x, m2Q2);
+    double exp = (this->*expansion_beta_)(x, m2Q2, m2mu2, nf) + (this->*expansion_no_beta_)(m2Q2, m2mu2);
     double res1 = exact_as1_->fx(x, m2Q2, m2mu2, nf) * exp;
 
     if (legacy_threshold_) return Value(res1);
@@ -79,7 +79,7 @@ double ThresholdCoefficientFunction::BetaIndependentTerms(
     double x, double m2Q2, double m2mu2
 ) const {
     // exact_as1 is independent on nf so we call it with nf=0
-    return exact_as1_->fx(x, m2Q2, m2mu2, 0) * (this->*expansion_no_beta_)(x, m2Q2);
+    return exact_as1_->fx(x, m2Q2, m2mu2, 0) * (this->*expansion_no_beta_)(m2Q2, m2mu2);
 }
 
 //==========================================================================================//
