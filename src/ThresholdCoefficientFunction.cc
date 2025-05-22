@@ -54,9 +54,9 @@ Value ThresholdCoefficientFunction::fxBand(
     double x, double m2Q2, double m2mu2, int nf
 ) const {
 
-    if (GetOrder() == 1) {
-        return (this->*threshold_as1_)(x, m2Q2);
-    }
+    if (GetChannel() == 'q') return Value(0.);
+
+    if (GetOrder() == 1) return Value((this->*threshold_as1_)(x, m2Q2));
 
     double exp = (this->*expansion_beta_)(x, m2Q2, m2mu2, nf) + (this->*expansion_no_beta_)(x, m2Q2);
     double res1 = exact_as1_->fx(x, m2Q2, m2mu2, nf) * exp;
@@ -69,9 +69,6 @@ Value ThresholdCoefficientFunction::fxBand(
 
     if (res1 > res2) return Value(avrg, res1, res2);
     else return Value(avrg, res2, res1);
-
-
-
 }
 
 //==========================================================================================//
@@ -100,7 +97,7 @@ void ThresholdCoefficientFunction::SetFunctions() {
         } else if (GetOrder() == 2) {
             expansion_beta_ = &ThresholdCoefficientFunction::threshold_expansion_g2;
             expansion_no_beta_ = &ThresholdCoefficientFunction::threshold_expansion_g2_const;
-        } else if (GetOrder() == 2) {
+        } else if (GetOrder() == 3) {
             expansion_beta_ = &ThresholdCoefficientFunction::threshold_expansion_g3;
             expansion_no_beta_ = &ThresholdCoefficientFunction::threshold_expansion_g3_const;
         } else {
@@ -113,6 +110,7 @@ void ThresholdCoefficientFunction::SetFunctions() {
             "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
         );
     }
+
     if (GetKind() == '2') {
         threshold_as1_ = &ThresholdCoefficientFunction::C2_g1_threshold;
     } else if (GetKind() == 'L') {
@@ -135,7 +133,7 @@ void ThresholdCoefficientFunction::SetLegacyThreshold(const bool &legacy_thresho
 //==========================================================================================//
 //  Threshold limit (x->xmax) of the gluon coefficient function for F2 at
 //  O(as). In order to pass to klmv normalization multiply
-//  m2Q2*4*M_PI*M_PI*x
+//  m2Q2*M_PI*x
 //
 //  Eq. (3.15) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
@@ -151,7 +149,7 @@ double ThresholdCoefficientFunction:: C2_g1_threshold(double x, double m2Q2) con
 //==========================================================================================//
 //  Threshold limit (x->xmax) of the gluon coefficient function for FL at
 //  O(as). In order to pass to klmv normalization multiply
-//  m2Q2*4*M_PI*M_PI*x
+//  m2Q2*M_PI*x
 //
 //  Eq. (3.15) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
@@ -159,9 +157,12 @@ double ThresholdCoefficientFunction:: C2_g1_threshold(double x, double m2Q2) con
 double ThresholdCoefficientFunction::CL_g1_threshold(double x, double m2Q2) const {
 
     double beta = sqrt(1. - 4. * m2Q2 * x / (1. - x));
-    double xi = 1. / m2Q2;
+    double beta3 = beta * beta * beta;
 
-    return xi * TR * beta / (1. + xi / 4.) / x;
+    double xi = 1. / m2Q2;
+    double xi_p_4 = (4. + xi);
+
+    return 64. / 3 * xi * xi * beta3 / (xi_p_4 * xi_p_4 * xi_p_4) / x;
 }
 
 //==========================================================================================//
