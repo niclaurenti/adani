@@ -371,6 +371,7 @@ ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(
     }
 
     threshold_ = new ThresholdCoefficientFunction(order, kind, channel);
+    threshold_ -> SetLegacyThreshold(true);
 
     highscale_ = new HighScaleCoefficientFunction(
         order, kind, channel, highscale_version
