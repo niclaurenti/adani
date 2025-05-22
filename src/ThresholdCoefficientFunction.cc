@@ -78,6 +78,7 @@ Value ThresholdCoefficientFunction::fxBand(
 double ThresholdCoefficientFunction::BetaIndependentTerms(
     double x, double m2Q2, double m2mu2
 ) const {
+    if (GetChannel() == 'q') return 0.;
     // exact_as1 is independent on nf so we call it with nf=0
     return exact_as1_->fx(x, m2Q2, m2mu2, 0) * (this->*expansion_no_beta_)(m2Q2, m2mu2);
 }
