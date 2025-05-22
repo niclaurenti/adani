@@ -192,6 +192,14 @@ ApproximateCoefficientFunction::ApproximateCoefficientFunction(
 }
 
 //==========================================================================================//
+//  ApproximateCoefficientFunction: set legacy threshold behavior
+//------------------------------------------------------------------------------------------//
+
+void ApproximateCoefficientFunction::SetLegacyThreshold(const bool &legacy_threshold) {
+    threshold_ -> SetLegacyThreshold(legacy_threshold);
+}
+
+//==========================================================================================//
 //  ApproximateCoefficientFunction: destructor
 //------------------------------------------------------------------------------------------//
 
@@ -363,6 +371,7 @@ ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(
     }
 
     threshold_ = new ThresholdCoefficientFunction(order, kind, channel);
+    threshold_ -> SetLegacyThreshold(true);
 
     highscale_ = new HighScaleCoefficientFunction(
         order, kind, channel, highscale_version

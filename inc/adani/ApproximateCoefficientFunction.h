@@ -101,6 +101,8 @@ class ApproximateCoefficientFunction : public AbstractApproximate {
             double x, double m2Q2, int nf
         ) const override;
 
+        void SetLegacyThreshold(const bool &legacy_threshold);
+
     private:
         ThresholdCoefficientFunction *threshold_;
         AsymptoticCoefficientFunction *asymptotic_;

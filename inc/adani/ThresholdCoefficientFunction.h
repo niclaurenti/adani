@@ -44,15 +44,22 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
 
         double BetaIndependentTerms(double x, double m2Q2, double m2mu2) const;
 
+        void SetLegacyThreshold(const bool &legacy_threshold);
+
     private:
         // TODO: fx is the sum of a beta-dependent term and a beta-independent
         // in this way there is some repeated code. Split the pointers into
         // beta-indep and beta-dep
-        double (ThresholdCoefficientFunction::*fx_)(
+        bool legacy_threshold_;
+
+        double (ThresholdCoefficientFunction::*expansion_beta_)(
             double, double, double, int
         ) const;
-        double (ThresholdCoefficientFunction::*beta_indep_)(
-            double, double, double
+        double (ThresholdCoefficientFunction::*expansion_no_beta_)(
+            double, double
+        ) const;
+        double (ThresholdCoefficientFunction::*threshold_as1_)(
+            double, double
         ) const;
 
         ExactCoefficientFunction *exact_as1_;
@@ -64,9 +71,8 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
         //                      functions O(as)
         //------------------------------------------------------------------------------------------//
 
-        double
-            C2_g1_threshold(double x, double m2Q2, double /*m2mu2*/, int /*nf*/)
-                const;
+        double C2_g1_threshold(double x, double m2Q2) const;
+        double CL_g1_threshold(double x, double m2Q2) const;
 
         //==========================================================================================//
         //                      Threshold (s -> 4m^2) coefficient
@@ -79,7 +85,7 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
             const;
 
         double
-            threshold_expansion_g2(double x, double m2Q2, double m2mu2) const;
+            threshold_expansion_g2(double x, double m2Q2, double m2mu2, int /*nf*/) const;
         double threshold_expansion_g2_const(double m2Q2, double m2mu2) const;
 
         double C2_g2_threshold_const(double x, double m2Q2, double m2mu2) const;
@@ -120,9 +126,19 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
             return 0.;
         };
         double ZeroFunction(
-            double /*x*/, double /*m2Q2*/, double /*m2mu2*/
+            double /*x*/, double /*m2Q2*/
         ) const {
             return 0.;
+        };
+        double OneFunction(
+            double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/
+        ) const {
+            return 1.;
+        };
+        double OneFunction(
+            double /*x*/, double /*m2Q2*/
+        ) const {
+            return 1.;
         };
 };
 
