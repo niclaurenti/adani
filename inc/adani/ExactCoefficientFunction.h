@@ -57,8 +57,8 @@ class ExactCoefficientFunction : public CoefficientFunction {
             fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
 
         void SetDoubleIntegralMethod(
-            const string &double_int_method,
-            const double &abserr = 1e-3, const double &relerr = 1e-3, const int &dim = 100,
+            const string &double_int_method, const double &abserr = 1e-3,
+            const double &relerr = 1e-3, const int &dim = 100,
             const int &MCcalls = 25000
         );
 

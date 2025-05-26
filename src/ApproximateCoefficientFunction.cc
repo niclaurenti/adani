@@ -20,9 +20,8 @@ AbstractApproximate::AbstractApproximate(
 )
     : CoefficientFunction(order, kind, channel) {
 
-    muterms_ = new ExactCoefficientFunction(
-        order, kind, channel, abserr, relerr, dim
-    );
+    muterms_ =
+        new ExactCoefficientFunction(order, kind, channel, abserr, relerr, dim);
 }
 
 //==========================================================================================//
@@ -71,9 +70,12 @@ double AbstractApproximate::MuDependentTerms(
 //------------------------------------------------------------------------------------------//
 
 void AbstractApproximate::SetDoubleIntegralMethod(
-    const string &double_int_method, const double &abserr, const double &relerr, const int &dim, const int &MCcalls
+    const string &double_int_method, const double &abserr, const double &relerr,
+    const int &dim, const int &MCcalls
 ) {
-    muterms_ -> SetDoubleIntegralMethod(double_int_method, abserr, relerr, dim, MCcalls);
+    muterms_->SetDoubleIntegralMethod(
+        double_int_method, abserr, relerr, dim, MCcalls
+    );
 }
 
 //==========================================================================================//
@@ -108,9 +110,7 @@ ApproximateCoefficientFunction::ApproximateCoefficientFunction(
     const string &highscale_version, const double &abserr, const double &relerr,
     const int &dim
 )
-    : AbstractApproximate(
-          order, kind, channel, abserr, relerr, dim
-      ) {
+    : AbstractApproximate(order, kind, channel, abserr, relerr, dim) {
 
     threshold_ = new ThresholdCoefficientFunction(order, kind, channel);
     asymptotic_ = new AsymptoticCoefficientFunction(
@@ -312,9 +312,7 @@ ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(
     const string &highscale_version, const bool &lowxi, const double &abserr,
     const double &relerr, const int &dim
 )
-    : AbstractApproximate(
-          order, kind, channel, abserr, relerr, dim
-      ) {
+    : AbstractApproximate(order, kind, channel, abserr, relerr, dim) {
     try {
         if (GetOrder() == 1) {
             throw NotImplementedException(

@@ -41,29 +41,35 @@ ExactCoefficientFunction::ExactCoefficientFunction(
     }
 
     if (GetOrder() > 1) {
-        //needed in both channels
+        // needed in both channels
         gluon_as1_ = new ExactCoefficientFunction(1, GetKind(), 'g');
         delta_ = new Delta();
 
-        if (GetChannel() == 'q') Pgq0_ = new SplittingFunction(0, 'g', 'q');
-        if (GetChannel() == 'g') Pgg0_ = new SplittingFunction(0, 'g', 'g');
+        if (GetChannel() == 'q')
+            Pgq0_ = new SplittingFunction(0, 'g', 'q');
+        if (GetChannel() == 'g')
+            Pgg0_ = new SplittingFunction(0, 'g', 'g');
     }
     if (GetOrder() > 2) {
-        //needed in both channels
+        // needed in both channels
         gluon_as2_ = new ExactCoefficientFunction(2, GetKind(), 'g');
         quark_as2_ = new ExactCoefficientFunction(2, GetKind(), 'q');
 
         if (GetChannel() == 'q') {
             Pgq1_ = new SplittingFunction(1, 'g', 'q');
             Pqq0_ = new SplittingFunction(0, 'q', 'q');
-            Pgg0Pgq0_ = new ConvolutedSplittingFunctions(0, 'g', 'g', 0, 'g', 'q');
-            Pqq0Pgq0_ = new ConvolutedSplittingFunctions(0, 'q', 'q', 0, 'g', 'q');
+            Pgg0Pgq0_ =
+                new ConvolutedSplittingFunctions(0, 'g', 'g', 0, 'g', 'q');
+            Pqq0Pgq0_ =
+                new ConvolutedSplittingFunctions(0, 'q', 'q', 0, 'g', 'q');
         }
         if (GetChannel() == 'g') {
             Pgg1_ = new SplittingFunction(1, 'g', 'g');
             Pqg0_ = new SplittingFunction(0, 'q', 'g');
-            Pgq0Pqg0_ = new ConvolutedSplittingFunctions(0, 'g', 'q', 0, 'q', 'g');
-            Pgg0Pgg0_ = new ConvolutedSplittingFunctions(0, 'g', 'g', 0, 'g', 'g');
+            Pgq0Pqg0_ =
+                new ConvolutedSplittingFunctions(0, 'g', 'q', 0, 'q', 'g');
+            Pgg0Pgg0_ =
+                new ConvolutedSplittingFunctions(0, 'g', 'g', 0, 'g', 'g');
         }
     }
 
@@ -113,10 +119,11 @@ ExactCoefficientFunction::ExactCoefficientFunction(
             );
             convolutions_lmu1_.push_back(new Convolution(gluon_as2_, delta_));
 
-            // by default option I integrate with analytical double integral method
+            // by default option I integrate with analytical double integral
+            // method
             convolutions_lmu2_.push_back(
-                    new Convolution(gluon_as1_, Pgg0Pgg0_, abserr, relerr, dim)
-                );
+                new Convolution(gluon_as1_, Pgg0Pgg0_, abserr, relerr, dim)
+            );
             convolutions_lmu2_.push_back(
                 new Convolution(gluon_as1_, Pgq0Pqg0_, abserr, relerr, dim)
             );
@@ -264,13 +271,15 @@ void ExactCoefficientFunction::SetFunctions() {
 //------------------------------------------------------------------------------------------//
 
 void ExactCoefficientFunction::SetDoubleIntegralMethod(
-    const string &double_int_method, const double &abserr, const double &relerr, const int &dim, const int &MCcalls
+    const string &double_int_method, const double &abserr, const double &relerr,
+    const int &dim, const int &MCcalls
 ) {
     try {
 
         if (GetOrder() < 3) {
             throw NotPresentException(
-                "Double Integration is not needed at order="+to_string(GetOrder()),
+                "Double Integration is not needed at order="
+                    + to_string(GetOrder()),
                 __PRETTY_FUNCTION__, __LINE__
             );
         }
@@ -320,7 +329,6 @@ void ExactCoefficientFunction::SetDoubleIntegralMethod(
     } catch (const NotPresentException &e) {
         e.warning();
     }
-
 }
 
 //==========================================================================================//

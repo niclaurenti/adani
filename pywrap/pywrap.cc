@@ -48,28 +48,25 @@ PYBIND11_MODULE(_core, m) {
         .def("GetKind", &CoefficientFunction::GetKind)
         .def("GetChannel", &CoefficientFunction::GetChannel)
         .def(
-            "MuIndependentTerms",
-            &CoefficientFunction::MuIndependentTerms, py::arg("x"),
-            py::arg("m2Q2"), py::arg("nf")
-        )
-        .def(
-            "MuDependentTerms",
-            &CoefficientFunction::MuDependentTerms, py::arg("x"),
-            py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf")
-        )
-        .def(
-            "fx", &CoefficientFunction::fx, py::arg("x"),
-            py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf")
-        )
-        .def(
-            "MuIndependentTermsBand",
-            &CoefficientFunction::MuIndependentTermsBand,
+            "MuIndependentTerms", &CoefficientFunction::MuIndependentTerms,
             py::arg("x"), py::arg("m2Q2"), py::arg("nf")
         )
         .def(
-            "MuDependentTermsBand",
-            &CoefficientFunction::MuDependentTermsBand, py::arg("x"),
-            py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf")
+            "MuDependentTerms", &CoefficientFunction::MuDependentTerms,
+            py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf")
+        )
+        .def(
+            "fx", &CoefficientFunction::fx, py::arg("x"), py::arg("m2Q2"),
+            py::arg("m2mu2"), py::arg("nf")
+        )
+        .def(
+            "MuIndependentTermsBand",
+            &CoefficientFunction::MuIndependentTermsBand, py::arg("x"),
+            py::arg("m2Q2"), py::arg("nf")
+        )
+        .def(
+            "MuDependentTermsBand", &CoefficientFunction::MuDependentTermsBand,
+            py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf")
         )
         .def(
             "fxBand", &CoefficientFunction::fxBand, py::arg("x"),
@@ -81,17 +78,19 @@ PYBIND11_MODULE(_core, m) {
         m, "AbstractApproximate"
     )
         .def(
-            py::init<const int &, const char &, const char &,
-            const double &, const double &, const int &>(),
+            py::init<
+                const int &, const char &, const char &, const double &,
+                const double &, const int &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel"),
             py::arg("abserr") = 1e-3, py::arg("relerr") = 1e-3,
             py::arg("dim") = 1000
         )
         .def(
-            "SetDoubleIntegralMethod", &AbstractApproximate::SetDoubleIntegralMethod,
-            py::arg("double_int_method"),
-            py::arg("abserr") = 1e-3, py::arg("relerr") = 1e-3,
-            py::arg("dim") = 1000, py::arg("MCcalls") = 25000
+            "SetDoubleIntegralMethod",
+            &AbstractApproximate::SetDoubleIntegralMethod,
+            py::arg("double_int_method"), py::arg("abserr") = 1e-3,
+            py::arg("relerr") = 1e-3, py::arg("dim") = 1000,
+            py::arg("MCcalls") = 25000
         );
 
     // ApproximateCoefficientFunction
@@ -147,10 +146,11 @@ PYBIND11_MODULE(_core, m) {
             py::arg("dim") = 1000
         )
         .def(
-            "SetDoubleIntegralMethod", &ExactCoefficientFunction::SetDoubleIntegralMethod,
-            py::arg("double_int_method"),
-            py::arg("abserr") = 1e-3, py::arg("relerr") = 1e-3,
-            py::arg("dim") = 1000, py::arg("MCcalls") = 25000
+            "SetDoubleIntegralMethod",
+            &ExactCoefficientFunction::SetDoubleIntegralMethod,
+            py::arg("double_int_method"), py::arg("abserr") = 1e-3,
+            py::arg("relerr") = 1e-3, py::arg("dim") = 1000,
+            py::arg("MCcalls") = 25000
         );
 
     // AbstractHighEnergyCoefficientFunction
