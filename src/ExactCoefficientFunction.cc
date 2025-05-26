@@ -289,7 +289,7 @@ void ExactCoefficientFunction::SetDoubleIntegralMethod(
 
         if (GetChannel() == 'q') {
             throw NotPresentException(
-                "Double Integration is not for channel='q'",
+                "Double Integration is not present for channel='q'",
                 __PRETTY_FUNCTION__, __LINE__
             );
         }
@@ -307,6 +307,7 @@ void ExactCoefficientFunction::SetDoubleIntegralMethod(
             );
         } else {
             if (Pgg0Pgg0_ == nullptr) {
+                // TODO: this if is probably useless
                 Pgg0Pgg0_ =
                     new ConvolutedSplittingFunctions(0, 'g', 'g', 0, 'g', 'g');
             }
