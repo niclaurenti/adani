@@ -59,16 +59,15 @@ Value ThresholdCoefficientFunction::fxBand(
     if (GetOrder() == 1) return Value((this->*threshold_as1_)(x, m2Q2));
 
     double exp = (this->*expansion_beta_)(x, m2Q2, m2mu2, nf) + (this->*expansion_no_beta_)(m2Q2, m2mu2);
-    double res1 = exact_as1_->fx(x, m2Q2, m2mu2, nf) * exp;
+    double central = exact_as1_->fx(x, m2Q2, m2mu2, nf) * exp;
 
-    if (legacy_threshold_) return Value(res1);
+    if (legacy_threshold_) return Value(central);
 
-    double res2 = (this->*threshold_as1_)(x, m2Q2) * exp;
+    double variation = (this->*threshold_as1_)(x, m2Q2) * exp;
 
-    double avrg = 0.5 * (res1 + res2);
+    double delta =fabs(central - variation);
 
-    if (res1 > res2) return Value(avrg, res1, res2);
-    else return Value(avrg, res2, res1);
+    return Value(central, central + delta, central - delta);
 }
 
 //==========================================================================================//
@@ -89,12 +88,12 @@ double ThresholdCoefficientFunction::BetaIndependentTerms(
 
 void ThresholdCoefficientFunction::SetFunctions() {
     if (GetChannel() == 'q') {
-        expansion_beta_ = &ThresholdCoefficientFunction::ZeroFunction;
-        expansion_no_beta_ = &ThresholdCoefficientFunction::ZeroFunction;
+        expansion_beta_ = nullptr;
+        expansion_no_beta_ = nullptr;
     } else if (GetChannel() == 'g') {
         if (GetOrder() == 1) {
-            expansion_beta_ = &ThresholdCoefficientFunction::OneFunction;
-            expansion_no_beta_ = &ThresholdCoefficientFunction::ZeroFunction;
+            expansion_beta_ = nullptr;
+            expansion_no_beta_ = nullptr;
         } else if (GetOrder() == 2) {
             expansion_beta_ = &ThresholdCoefficientFunction::threshold_expansion_g2;
             expansion_no_beta_ = &ThresholdCoefficientFunction::threshold_expansion_g2_const;
