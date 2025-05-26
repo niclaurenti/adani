@@ -284,6 +284,13 @@ void ExactCoefficientFunction::SetDoubleIntegralMethod(
             );
         }
 
+        if (GetChannel() == 'q') {
+            throw NotPresentException(
+                "Double Integration is not present for channel='q'",
+                __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+
         // check double_int_method
         if (double_int_method != "analytical"
             && double_int_method != "double_numerical"
@@ -292,13 +299,6 @@ void ExactCoefficientFunction::SetDoubleIntegralMethod(
                 "double_int_method must be 'analytical', 'double_numerical' or "
                 "'monte_carlo'! Got '"
                     + double_int_method + "'",
-                __PRETTY_FUNCTION__, __LINE__
-            );
-        }
-
-        if (GetChannel() == 'q') {
-            throw NotPresentException(
-                "Double Integration is not present for channel='q'",
                 __PRETTY_FUNCTION__, __LINE__
             );
         }
