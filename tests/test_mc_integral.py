@@ -5,11 +5,11 @@ nf=4
 
 def test_mc_integrals():
     for kind in ['2', 'L']:
-        massive_mc = ad.ExactCoefficientFunction(3, kind, 'g', 1e-3, 1e-3, 1000, "monte_carlo", 1000000)
+        massive_mc = ad.ExactCoefficientFunction(3, kind, 'g', 1e-3, 1e-3, 1000)
         massive_mc.SetDoubleIntegralMethod("monte_carlo", 1e-3, 1e-3, 1000, 1000000)
-        massive_nomc = ad.ExactCoefficientFunction(3, kind, 'g', 1e-3, 1e-3, 1000, "double_numerical", 25000)
+        massive_nomc = ad.ExactCoefficientFunction(3, kind, 'g', 1e-3, 1e-3, 1000)
         massive_nomc.SetDoubleIntegralMethod("double_numerical", 1e-3, 1e-3, 1000, 1000000)
-        massive_analytical = ad.ExactCoefficientFunction(3, kind, 'g', 1e-3, 1e-3, 1000, "analytical")
+        massive_analytical = ad.ExactCoefficientFunction(3, kind, 'g', 1e-3, 1e-3, 1000)
         for xi in np.geomspace(1e-2, 1e4, 4, endpoint=True):
             m2Q2 = 1/xi
             xmax = 1. / (1. + 4 * m2Q2)
