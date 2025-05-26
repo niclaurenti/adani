@@ -43,9 +43,7 @@ class ExactCoefficientFunction : public CoefficientFunction {
         ExactCoefficientFunction(
             const int &order, const char &kind, const char &channel,
             const double &abserr = 1e-3, const double &relerr = 1e-3,
-            const int &dim = 1000,
-            const string &double_int_method = "analytical",
-            const int &MCcalls = 25000
+            const int &dim = 1000
         );
         ~ExactCoefficientFunction() override;
 
@@ -57,6 +55,12 @@ class ExactCoefficientFunction : public CoefficientFunction {
 
         Value
             fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
+
+        void SetDoubleIntegralMethod(
+            const string &double_int_method,
+            const double &abserr = 1e-3, const double &relerr = 1e-3, const int &dim = 100,
+            const int &MCcalls = 25000
+        );
 
     private:
         double (ExactCoefficientFunction::*mu_indep_)(
