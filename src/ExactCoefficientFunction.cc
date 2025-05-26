@@ -11,8 +11,7 @@
 
 ExactCoefficientFunction::ExactCoefficientFunction(
     const int &order, const char &kind, const char &channel,
-    const double &abserr, const double &relerr, const int &dim,
-    const string &double_int_method, const int &MCcalls
+    const double &abserr, const double &relerr, const int &dim
 )
     : CoefficientFunction(order, kind, channel) {
 
@@ -33,22 +32,6 @@ ExactCoefficientFunction::ExactCoefficientFunction(
 
     delta_ = nullptr;
 
-    try {
-        // check double_int_method
-        if (double_int_method != "analytical"
-            && double_int_method != "double_numerical"
-            && double_int_method != "monte_carlo") {
-            throw NotValidException(
-                "double_int_method must be 'analytical', 'double_numerical' or "
-                "'monte_carlo'! Got '"
-                    + double_int_method + "'",
-                __PRETTY_FUNCTION__, __LINE__
-            );
-        }
-    } catch (const NotValidException &e) {
-        e.runtime_error();
-    }
-
     if (GetOrder() == 2) {
         asy_ = new AsymptoticCoefficientFunction(order, kind, channel);
         thr_ = new ThresholdCoefficientFunction(order, kind, channel);
@@ -58,26 +41,36 @@ ExactCoefficientFunction::ExactCoefficientFunction(
     }
 
     if (GetOrder() > 1) {
+        // needed in both channels
         gluon_as1_ = new ExactCoefficientFunction(1, GetKind(), 'g');
-
-        Pgq0_ = new SplittingFunction(0, 'g', 'q');
-        Pgg0_ = new SplittingFunction(0, 'g', 'g');
         delta_ = new Delta();
+
+        if (GetChannel() == 'q')
+            Pgq0_ = new SplittingFunction(0, 'g', 'q');
+        if (GetChannel() == 'g')
+            Pgg0_ = new SplittingFunction(0, 'g', 'g');
     }
     if (GetOrder() > 2) {
+        // needed in both channels
         gluon_as2_ = new ExactCoefficientFunction(2, GetKind(), 'g');
         quark_as2_ = new ExactCoefficientFunction(2, GetKind(), 'q');
 
-        Pgq1_ = new SplittingFunction(1, 'g', 'q');
-        Pqq0_ = new SplittingFunction(0, 'q', 'q');
-        Pgg0Pgq0_ = new ConvolutedSplittingFunctions(0, 'g', 'g', 0, 'g', 'q');
-        Pqq0Pgq0_ = new ConvolutedSplittingFunctions(0, 'q', 'q', 0, 'g', 'q');
-        Pgg1_ = new SplittingFunction(1, 'g', 'g');
-        Pqg0_ = new SplittingFunction(0, 'q', 'g');
-        Pgq0Pqg0_ = new ConvolutedSplittingFunctions(0, 'g', 'q', 0, 'q', 'g');
-        if (double_int_method == "analytical")
+        if (GetChannel() == 'q') {
+            Pgq1_ = new SplittingFunction(1, 'g', 'q');
+            Pqq0_ = new SplittingFunction(0, 'q', 'q');
+            Pgg0Pgq0_ =
+                new ConvolutedSplittingFunctions(0, 'g', 'g', 0, 'g', 'q');
+            Pqq0Pgq0_ =
+                new ConvolutedSplittingFunctions(0, 'q', 'q', 0, 'g', 'q');
+        }
+        if (GetChannel() == 'g') {
+            Pgg1_ = new SplittingFunction(1, 'g', 'g');
+            Pqg0_ = new SplittingFunction(0, 'q', 'g');
+            Pgq0Pqg0_ =
+                new ConvolutedSplittingFunctions(0, 'g', 'q', 0, 'q', 'g');
             Pgg0Pgg0_ =
                 new ConvolutedSplittingFunctions(0, 'g', 'g', 0, 'g', 'g');
+        }
     }
 
     if (GetOrder() == 2) {
@@ -126,19 +119,11 @@ ExactCoefficientFunction::ExactCoefficientFunction(
             );
             convolutions_lmu1_.push_back(new Convolution(gluon_as2_, delta_));
 
-            if (double_int_method == "monte_carlo") {
-                convolutions_lmu2_.push_back(new DoubleConvolution(
-                    gluon_as1_, Pgg0_, abserr, relerr, dim, true, MCcalls
-                ));
-            } else if (double_int_method == "double_numerical") {
-                convolutions_lmu2_.push_back(new DoubleConvolution(
-                    gluon_as1_, Pgg0_, abserr, relerr, dim, false, MCcalls
-                ));
-            } else {
-                convolutions_lmu2_.push_back(
-                    new Convolution(gluon_as1_, Pgg0Pgg0_, abserr, relerr, dim)
-                );
-            }
+            // by default option I integrate with analytical double integral
+            // method
+            convolutions_lmu2_.push_back(
+                new Convolution(gluon_as1_, Pgg0Pgg0_, abserr, relerr, dim)
+            );
             convolutions_lmu2_.push_back(
                 new Convolution(gluon_as1_, Pgq0Pqg0_, abserr, relerr, dim)
             );
@@ -278,6 +263,71 @@ void ExactCoefficientFunction::SetFunctions() {
             mu_dep_ = &ExactCoefficientFunction::C_g3_MuDep;
         }
         mu_indep_ = &ExactCoefficientFunction::WarningFunc;
+    }
+}
+
+//==========================================================================================//
+//  ExactCoefficientFunction: function that sets the double integral method
+//------------------------------------------------------------------------------------------//
+
+void ExactCoefficientFunction::SetDoubleIntegralMethod(
+    const string &double_int_method, const double &abserr, const double &relerr,
+    const int &dim, const int &MCcalls
+) {
+    try {
+
+        if (GetOrder() < 3) {
+            throw NotPresentException(
+                "Double Integration is not needed at order="
+                    + to_string(GetOrder()),
+                __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+
+        if (GetChannel() == 'q') {
+            throw NotPresentException(
+                "Double Integration is not present for channel='q'",
+                __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+
+        // check double_int_method
+        if (double_int_method != "analytical"
+            && double_int_method != "double_numerical"
+            && double_int_method != "monte_carlo") {
+            throw NotValidException(
+                "double_int_method must be 'analytical', 'double_numerical' or "
+                "'monte_carlo'! Got '"
+                    + double_int_method + "'",
+                __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+
+        // at this point I must be in the g channel at order 3
+        delete convolutions_lmu2_[0];
+
+        if (double_int_method == "monte_carlo") {
+            convolutions_lmu2_[0] = new DoubleConvolution(
+                gluon_as1_, Pgg0_, abserr, relerr, dim, true, MCcalls
+            );
+        } else if (double_int_method == "double_numerical") {
+            convolutions_lmu2_[0] = new DoubleConvolution(
+                gluon_as1_, Pgg0_, abserr, relerr, dim, false, MCcalls
+            );
+        } else {
+            if (Pgg0Pgg0_ == nullptr) {
+                // TODO: this if is probably useless
+                Pgg0Pgg0_ =
+                    new ConvolutedSplittingFunctions(0, 'g', 'g', 0, 'g', 'g');
+            }
+            convolutions_lmu2_[0] =
+                new Convolution(gluon_as1_, Pgg0Pgg0_, abserr, relerr, dim);
+        }
+
+    } catch (const NotValidException &e) {
+        e.runtime_error();
+    } catch (const NotPresentException &e) {
+        e.warning();
     }
 }
 

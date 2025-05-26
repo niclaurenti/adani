@@ -24,8 +24,11 @@ def test_mudependent_terms():
                             for abserr in [1e-3]:
                                 hscale = "klmv" if order == 3 else "exact"
                                 relerr = abserr
-                                massive = ad.ExactCoefficientFunction(order, kind, channel, abserr, relerr, dim, mf, MCcalls)
-                                app = ad.ApproximateCoefficientFunction(order, kind, channel, True, hscale, abserr, relerr, dim, mf, MCcalls)
+                                massive = ad.ExactCoefficientFunction(order, kind, channel, abserr, relerr, dim)
+                                app = ad.ApproximateCoefficientFunction(order, kind, channel, True, hscale, abserr, relerr, dim)
+                                if mf in ["double_numerical", "monte_carlo"]:
+                                    massive.SetDoubleIntegralMethod(mf, abserr, relerr, dim, MCcalls)
+                                    app.SetDoubleIntegralMethod(mf, abserr, relerr, dim, MCcalls)
                                 x = np.geomspace(1e-5, 1., 5, endpoint=True)
                                 for xi in np.geomspace(1e-2, 1e4, 4, endpoint=True):
                                     for nf in [4, 5]:
