@@ -131,6 +131,9 @@ PYBIND11_MODULE(_core, m) {
                 const string &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel"),
             py::arg("NLL") = true, py::arg("highscale_version") = "exact"
+        )
+        .def(
+            "SetLegacyPowerTerms", &AsymptoticCoefficientFunction::SetLegacyPowerTerms
         );
 
     // ExactCoefficientFunction
@@ -182,10 +185,24 @@ PYBIND11_MODULE(_core, m) {
             py::arg("NLL") = true
         );
 
+    // AbstractPowerTerms
+    py::class_<AbstractPowerTerms, AbstractHighEnergyCoefficientFunction>(
+        m, "AbstractPowerTerms"
+    );
+
     // PowerTermsCoefficientFunction
-    py::class_<
-        PowerTermsCoefficientFunction, AbstractHighEnergyCoefficientFunction>(
+    py::class_<PowerTermsCoefficientFunction, AbstractPowerTerms>(
         m, "PowerTermsCoefficientFunction"
+    )
+        .def(
+            py::init<const int &, const char &, const char &, const bool &>(),
+            py::arg("order"), py::arg("kind"), py::arg("channel"),
+            py::arg("NLL") = true
+        );
+
+    // MultiplicativeAsymptotic
+    py::class_<MultiplicativeAsymptotic, AbstractPowerTerms>(
+        m, "MultiplicativeAsymptotic"
     )
         .def(
             py::init<const int &, const char &, const char &, const bool &>(),

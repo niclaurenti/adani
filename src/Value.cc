@@ -92,9 +92,71 @@ Value Value::operator+(const Value &rhs) const {
 //  Value: overload of operator - Value
 //------------------------------------------------------------------------------------------//
 
-// Value Value::operator-(const Value& rhs) const {
+Value Value::operator-(const Value& rhs) const {
+    double higher = higher_ - rhs.higher_;
+    double lower = lower_ - rhs.lower_;
+    if (higher > lower) {
+        return Value(
+            central_ - rhs.central_,
+            higher,
+            lower
+        );
+    } else {
+        return Value(
+            central_ - rhs.central_,
+            lower,
+            higher
+        );
+    }
+    // TODO: in this way the error is very small: should take all the
+    // combinations?
+}
 
-// }
+//==========================================================================================//
+//  Value: overload of operator * Value
+//------------------------------------------------------------------------------------------//
+
+Value Value::operator*(const Value& rhs) const {
+    double higher = higher_ * rhs.higher_;
+    double lower = lower_ * rhs.lower_;
+    if (higher > lower) {
+        return Value(
+            central_ * rhs.central_,
+            higher,
+            lower
+        );
+    } else {
+        return Value(
+            central_ * rhs.central_,
+            lower,
+            higher
+        );
+    }
+}
+
+//==========================================================================================//
+//  Value: overload of operator / Value
+//------------------------------------------------------------------------------------------//
+
+Value Value::operator/(const Value& rhs) const {
+    double higher = higher_ / rhs.higher_;
+    double lower = lower_ / rhs.lower_;
+    if (higher > lower) {
+        return Value(
+            central_ / rhs.central_,
+            higher,
+            lower
+        );
+    } else {
+        return Value(
+            central_ / rhs.central_,
+            lower,
+            higher
+        );
+    }
+    // TODO: in this way the error is very small: should take all the
+    // combinations?
+}
 
 //==========================================================================================//
 //  Value: overload of operator double +
