@@ -169,7 +169,7 @@ double ThresholdCoefficientFunction::CL_g1_threshold(double x, double m2Q2) cons
 //
 //------------------------------------------------------------------------------------------//
 
-double ThresholdCoefficientFunction::threshold_expansion_g2(
+double ThresholdCoefficientFunction::threshold_expansion2_g2(
     double x, double m2Q2, double m2mu2, int /*nf*/
 ) const {
 
@@ -178,7 +178,24 @@ double ThresholdCoefficientFunction::threshold_expansion_g2(
     double logb = log(beta);
     double log2b = logb * logb;
 
-    return 16. * CA * log2b + (48. * CA * ln2 - 40. * CA) * logb
+    return 16. * CA * log2b + 16. * CA * (3. * ln2 - 5./2) * logb
+           + (2 * CF - CA) * M_PI * M_PI / beta + 8. * CA * log(m2mu2) * logb;
+}
+
+//==========================================================================================//
+//
+//------------------------------------------------------------------------------------------//
+
+double ThresholdCoefficientFunction::threshold_expansionL_g2(
+    double x, double m2Q2, double m2mu2, int /*nf*/
+) const {
+
+    double beta = sqrt(1. - 4. * m2Q2 * x / (1. - x));
+
+    double logb = log(beta);
+    double log2b = logb * logb;
+
+    return 16. * CA * log2b + 16. * CA * (3. * ln2 - 19./6) * logb
            + (2 * CF - CA) * M_PI * M_PI / beta + 8. * CA * log(m2mu2) * logb;
 }
 
