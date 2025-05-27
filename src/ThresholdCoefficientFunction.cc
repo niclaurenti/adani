@@ -95,8 +95,13 @@ void ThresholdCoefficientFunction::SetFunctions() {
             expansion_beta_ = nullptr;
             expansion_no_beta_ = nullptr;
         } else if (GetOrder() == 2) {
-            expansion_beta_ = &ThresholdCoefficientFunction::threshold_expansion_g2;
-            expansion_no_beta_ = &ThresholdCoefficientFunction::threshold_expansion_g2_const;
+            if (GetKind() == '2') {
+                expansion_beta_ = &ThresholdCoefficientFunction::C2_g2_threshold_expansion;
+                expansion_no_beta_ = &ThresholdCoefficientFunction::C2_g2_threshold_expansion_const;
+            } else {
+                expansion_beta_ = &ThresholdCoefficientFunction::CL_g2_threshold_expansion;
+                expansion_no_beta_ = &ThresholdCoefficientFunction::CL_g2_threshold_expansion_const;
+            }
         } else if (GetOrder() == 3) {
             expansion_beta_ = &ThresholdCoefficientFunction::threshold_expansion_g3;
             expansion_no_beta_ = &ThresholdCoefficientFunction::threshold_expansion_g3_const;
@@ -169,7 +174,7 @@ double ThresholdCoefficientFunction::CL_g1_threshold(double x, double m2Q2) cons
 //
 //------------------------------------------------------------------------------------------//
 
-double ThresholdCoefficientFunction::threshold_expansion2_g2(
+double ThresholdCoefficientFunction::C2_g2_threshold_expansion(
     double x, double m2Q2, double m2mu2, int /*nf*/
 ) const {
 
@@ -186,7 +191,7 @@ double ThresholdCoefficientFunction::threshold_expansion2_g2(
 //
 //------------------------------------------------------------------------------------------//
 
-double ThresholdCoefficientFunction::threshold_expansionL_g2(
+double ThresholdCoefficientFunction::CL_g2_threshold_expansion(
     double x, double m2Q2, double m2mu2, int /*nf*/
 ) const {
 
@@ -203,7 +208,7 @@ double ThresholdCoefficientFunction::threshold_expansionL_g2(
 //
 //------------------------------------------------------------------------------------------//
 
-double ThresholdCoefficientFunction::threshold_expansion_g2_const(
+double ThresholdCoefficientFunction::C2_g2_threshold_expansion_const(
     double m2Q2, double m2mu2
 ) const {
 

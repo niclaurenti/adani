@@ -80,10 +80,11 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
         //------------------------------------------------------------------------------------------//
 
         double
-            threshold_expansion2_g2(double x, double m2Q2, double m2mu2, int /*nf*/) const;
+            C2_g2_threshold_expansion(double x, double m2Q2, double m2mu2, int /*nf*/) const;
         double
-            threshold_expansionL_g2(double x, double m2Q2, double m2mu2, int /*nf*/) const;
-        double threshold_expansion_g2_const(double m2Q2, double m2mu2) const;
+            CL_g2_threshold_expansion(double x, double m2Q2, double m2mu2, int /*nf*/) const;
+        double C2_g2_threshold_expansion_const(double m2Q2, double m2mu2) const;
+        double CL_g2_threshold_expansion_const(double m2Q2, double m2mu2) const;
 
         //==========================================================================================//
         //                      Threshold (s -> 4m^2) coefficient
