@@ -1,6 +1,8 @@
 #include "adani/Value.h"
 #include "adani/Exceptions.h"
 
+#include <cmath>
+
 //==========================================================================================//
 //  Value: constructor
 //------------------------------------------------------------------------------------------//
@@ -120,13 +122,13 @@ Value Value::operator-(const Value& rhs) const {
 
 Value Value::operator*(const Value& rhs) const {
     double central = central_ * rhs.central_;
-    double res = fabs(central);
+    double res = std::abs(central);
     double delta_lhs, delta_rhs;
 
-    double d_lhs_h=fabs(central_ - higher_);
-    double d_lhs_l = fabs(central_ - lower_);
-    double d_rhs_h = fabs(rhs.central_ - rhs.higher_);
-    double d_rhs_l = fabs(rhs.central_ - rhs.lower_);
+    double d_lhs_h=std::abs(central_ - higher_);
+    double d_lhs_l = std::abs(central_ - lower_);
+    double d_rhs_h = std::abs(rhs.central_ - rhs.higher_);
+    double d_rhs_l = std::abs(rhs.central_ - rhs.lower_);
 
     if (d_lhs_h > d_lhs_l) delta_lhs = d_lhs_h;
     else delta_lhs = d_lhs_l;
@@ -136,7 +138,7 @@ Value Value::operator*(const Value& rhs) const {
 
     // TODO: should I return the average of the errors?
 
-    double delta_res = res * (delta_lhs / fabs(central_) + delta_rhs / fabs(rhs.central_));
+    double delta_res = res * (delta_lhs / std::abs(central_) + delta_rhs / std::abs(rhs.central_));
 
     return Value(central, central + delta_res, central - delta_res);
 
@@ -150,13 +152,13 @@ Value Value::operator*(const Value& rhs) const {
 
 Value Value::operator/(const Value& rhs) const {
     double central = central_ / rhs.central_;
-    double res = fabs(central);
+    double res = std::abs(central);
     double delta_lhs, delta_rhs;
 
-    double d_lhs_h=fabs(central_ - higher_);
-    double d_lhs_l = fabs(central_ - lower_);
-    double d_rhs_h = fabs(rhs.central_ - rhs.higher_);
-    double d_rhs_l = fabs(rhs.central_ - rhs.lower_);
+    double d_lhs_h=std::abs(central_ - higher_);
+    double d_lhs_l = std::abs(central_ - lower_);
+    double d_rhs_h = std::abs(rhs.central_ - rhs.higher_);
+    double d_rhs_l = std::abs(rhs.central_ - rhs.lower_);
 
     if (d_lhs_h > d_lhs_l) delta_lhs = d_lhs_h;
     else delta_lhs = d_lhs_l;
@@ -166,7 +168,7 @@ Value Value::operator/(const Value& rhs) const {
 
     // TODO: should I return the average of the errors?
 
-    double delta_res = res * (delta_lhs / fabs(central_) + delta_rhs / fabs(rhs.central_));
+    double delta_res = res * (delta_lhs / std::abs(central_) + delta_rhs / std::abs(rhs.central_));
 
     return Value(central, central + delta_res, central - delta_res);
 }
