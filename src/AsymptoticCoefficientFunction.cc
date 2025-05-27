@@ -15,7 +15,7 @@ AsymptoticCoefficientFunction::AsymptoticCoefficientFunction(
     highscale_ = new HighScaleCoefficientFunction(
         GetOrder(), GetKind(), GetChannel(), highscale_version
     );
-    if (GetChannel() == 'g') {
+    if (GetKind() == '2') {
         powerterms_ = new PowerTermsCoefficientFunction(
             GetOrder(), GetKind(), GetChannel(), GetNLL()
         );
@@ -42,21 +42,31 @@ AsymptoticCoefficientFunction::~AsymptoticCoefficientFunction() {
 //------------------------------------------------------------------------------------------//
 
 void AsymptoticCoefficientFunction::SetLegacyPowerTerms(const bool &legacy_pt) {
-    if (GetChannel() == 'g') return;
-    else {
+    try {
         if (legacy_pt) {
-            delete powerterms_;
-            powerterms_ = new PowerTermsCoefficientFunction(
-                GetOrder(), GetKind(), GetChannel(), GetNLL()
-            );
-            fx_ = &AsymptoticCoefficientFunction::AdditiveMatching;
-        } else {
-            delete powerterms_;
-            powerterms_ = new MultiplicativeAsymptotic(
-                GetOrder(), GetKind(), GetChannel(), GetNLL()
-            );
-            fx_ = &AsymptoticCoefficientFunction::MultiplicativeMatching;
+            if (GetKind() == '2') {
+                throw NotPresentException(
+                    "For kind='2' legacy power terms are identical to the current ones!",
+                    __PRETTY_FUNCTION__, __LINE__
+                );
+            } else {
+                if (legacy_pt) {
+                    delete powerterms_;
+                    powerterms_ = new PowerTermsCoefficientFunction(
+                        GetOrder(), GetKind(), GetChannel(), GetNLL()
+                    );
+                    fx_ = &AsymptoticCoefficientFunction::AdditiveMatching;
+                } else {
+                    delete powerterms_;
+                    powerterms_ = new MultiplicativeAsymptotic(
+                        GetOrder(), GetKind(), GetChannel(), GetNLL()
+                    );
+                    fx_ = &AsymptoticCoefficientFunction::MultiplicativeMatching;
+                }
+            }
         }
+    } catch (const NotPresentException &e) {
+        e.warning();
     }
 }
 

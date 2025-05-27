@@ -29,6 +29,9 @@ PYBIND11_MODULE(_core, m) {
         )
         .def(py::init<const double &>(), py::arg("central"))
         .def(py::self + py::self)
+        .def(py::self - py::self)
+        .def(py::self * py::self)
+        .def(py::self / py::self)
         .def(py::self + double())
         .def(double() + py::self)
         .def(py::self - double())
@@ -105,6 +108,9 @@ PYBIND11_MODULE(_core, m) {
             py::arg("NLL") = true, py::arg("highscale_version") = "exact",
             py::arg("abserr") = 1e-3, py::arg("relerr") = 1e-3,
             py::arg("dim") = 1000
+        )
+        .def(
+            "SetLegacyPowerTerms", &ApproximateCoefficientFunction::SetLegacyPowerTerms
         );
 
     // ApproximateCoefficientFunctionKLMV

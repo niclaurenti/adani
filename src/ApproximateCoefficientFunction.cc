@@ -210,6 +210,14 @@ ApproximateCoefficientFunction::~ApproximateCoefficientFunction() {
 }
 
 //==========================================================================================//
+//  ApproximateCoefficientFunction: restore legacy behavior for power terms
+//------------------------------------------------------------------------------------------//
+
+void ApproximateCoefficientFunction::SetLegacyPowerTerms(const bool &legacy_pt) {
+    asymptotic_->SetLegacyPowerTerms(legacy_pt);
+}
+
+//==========================================================================================//
 //  ApproximateCoefficientFunction: band of the approximate mu independent terms
 //------------------------------------------------------------------------------------------//
 
