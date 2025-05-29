@@ -37,7 +37,8 @@ HighScaleCoefficientFunction::HighScaleCoefficientFunction(
 
         if (GetOrder() < 3 && version != "exact") {
             throw NotValidException(
-                "HighScaleCoefficientFunction at orders 1 and 2 are only 'exact'!",
+                "HighScaleCoefficientFunction at orders 1 and 2 are only "
+                "'exact'!",
                 __PRETTY_FUNCTION__, __LINE__
             );
         }

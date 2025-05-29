@@ -25,9 +25,12 @@ def test_mudependent_terms():
                             for abserr in [1e-3]:
                                 hscale = "klmv" if order == 3 else "exact"
                                 relerr = abserr
-                                massive = ad.ExactCoefficientFunction(order, kind, channel, abserr, relerr, dim, mf, MCcalls)
-                                app = ad.ApproximateCoefficientFunction(order, kind, channel, True, hscale, abserr, relerr, dim, mf, MCcalls)
+                                massive = ad.ExactCoefficientFunction(order, kind, channel, abserr, relerr, dim)
+                                app = ad.ApproximateCoefficientFunction(order, kind, channel, True, hscale, abserr, relerr, dim)
                                 app.SetLegacyThreshold(True)
+                                if mf in ["double_numerical", "monte_carlo"]:
+                                    massive.SetDoubleIntegralMethod(mf, abserr, relerr, dim, MCcalls)
+                                    app.SetDoubleIntegralMethod(mf, abserr, relerr, dim, MCcalls)
                                 x = np.geomspace(1e-5, 1., 5, endpoint=True)
                                 for xi in np.geomspace(1e-2, 1e4, 4, endpoint=True):
                                     for nf in [4, 5]:
@@ -41,6 +44,7 @@ def test_as2_muindep_oldversion():
     for channel in ['g', 'q']:
         for kind in ['2', 'L']:
             app = ad.ApproximateCoefficientFunction(2, kind, channel)
+            app.SetLegacyPowerTerms(True)
             app.SetLegacyThreshold(True)
             for xi in np.geomspace(1e-2, 1e2, 10):
                 m2Q2 = 1/xi
@@ -70,6 +74,7 @@ def test_as3_muindep_oldversion():
         for kind in ['2', 'L']:
             highscale_version = "exact" if channel == 'q' else "abmp"
             app = ad.ApproximateCoefficientFunction(3, kind, channel,True, highscale_version)
+            app.SetLegacyPowerTerms(True)
             app.SetLegacyThreshold(True)
             for xi in np.geomspace(1e-2, 1e2, 10):
                 m2Q2 = 1/xi

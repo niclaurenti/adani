@@ -16,14 +16,12 @@ using std::vector;
 
 AbstractApproximate::AbstractApproximate(
     const int &order, const char &kind, const char &channel,
-    const double &abserr, const double &relerr, const int &dim,
-    const string &double_int_method, const int &MCcalls
+    const double &abserr, const double &relerr, const int &dim
 )
     : CoefficientFunction(order, kind, channel) {
 
-    muterms_ = new ExactCoefficientFunction(
-        order, kind, channel, abserr, relerr, dim, double_int_method, MCcalls
-    );
+    muterms_ =
+        new ExactCoefficientFunction(order, kind, channel, abserr, relerr, dim);
 }
 
 //==========================================================================================//
@@ -68,6 +66,19 @@ double AbstractApproximate::MuDependentTerms(
 }
 
 //==========================================================================================//
+//  AbstractApproximate: function that sets the double integral method
+//------------------------------------------------------------------------------------------//
+
+void AbstractApproximate::SetDoubleIntegralMethod(
+    const string &double_int_method, const double &abserr, const double &relerr,
+    const int &dim, const int &MCcalls
+) {
+    muterms_->SetDoubleIntegralMethod(
+        double_int_method, abserr, relerr, dim, MCcalls
+    );
+}
+
+//==========================================================================================//
 //  ApproximateCoefficientFunction: parameters of the approximation
 //------------------------------------------------------------------------------------------//
 
@@ -97,11 +108,9 @@ struct variation_parameters CL_var = { 0.2, 2. };
 ApproximateCoefficientFunction::ApproximateCoefficientFunction(
     const int &order, const char &kind, const char &channel, const bool &NLL,
     const string &highscale_version, const double &abserr, const double &relerr,
-    const int &dim, const string &double_int_method, const int &MCcalls
+    const int &dim
 )
-    : AbstractApproximate(
-          order, kind, channel, abserr, relerr, dim, double_int_method, MCcalls
-      ) {
+    : AbstractApproximate(order, kind, channel, abserr, relerr, dim) {
 
     threshold_ = new ThresholdCoefficientFunction(order, kind, channel);
     asymptotic_ = new AsymptoticCoefficientFunction(
@@ -209,6 +218,14 @@ ApproximateCoefficientFunction::~ApproximateCoefficientFunction() {
 }
 
 //==========================================================================================//
+//  ApproximateCoefficientFunction: restore legacy behavior for power terms
+//------------------------------------------------------------------------------------------//
+
+void ApproximateCoefficientFunction::SetLegacyPowerTerms(const bool &legacy_pt) {
+    asymptotic_->SetLegacyPowerTerms(legacy_pt);
+}
+
+//==========================================================================================//
 //  ApproximateCoefficientFunction: band of the approximate mu independent terms
 //------------------------------------------------------------------------------------------//
 
@@ -309,12 +326,9 @@ struct klmv_params klmv_C2g3B_lowxi = { 0.8, 10.7, 0.055125, 2, 0.3825 };
 ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(
     const int &order, const char &kind, const char &channel,
     const string &highscale_version, const bool &lowxi, const double &abserr,
-    const double &relerr, const int &dim, const string &double_int_method,
-    const int &MCcalls
+    const double &relerr, const int &dim
 )
-    : AbstractApproximate(
-          order, kind, channel, abserr, relerr, dim, double_int_method, MCcalls
-      ) {
+    : AbstractApproximate(order, kind, channel, abserr, relerr, dim) {
     try {
         if (GetOrder() == 1) {
             throw NotImplementedException(

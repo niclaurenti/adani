@@ -63,9 +63,7 @@ class AbstractApproximate : public CoefficientFunction {
         AbstractApproximate(
             const int &order, const char &kind, const char &channel,
             const double &abserr = 1e-3, const double &relerr = 1e-3,
-            const int &dim = 1000,
-            const string &double_int_method = "analytical",
-            const int &MCcalls = 25000
+            const int &dim = 1000
         );
         ~AbstractApproximate();
 
@@ -76,6 +74,12 @@ class AbstractApproximate : public CoefficientFunction {
         double MuDependentTerms(
             double x, double m2Q2, double m2mu2, int nf
         ) const override;
+
+        void SetDoubleIntegralMethod(
+            const string &double_int_method, const double &abserr = 1e-3,
+            const double &relerr = 1e-3, const int &dim = 1000,
+            const int &MCcalls = 25000
+        );
 
     private:
         ExactCoefficientFunction *muterms_;
@@ -91,9 +95,7 @@ class ApproximateCoefficientFunction : public AbstractApproximate {
             const int &order, const char &kind, const char &channel,
             const bool &NLL = true, const string &highscale_version = "exact",
             const double &abserr = 1e-3, const double &relerr = 1e-3,
-            const int &dim = 1000,
-            const string &double_int_method = "analytical",
-            const int &MCcalls = 25000
+            const int &dim = 1000
         );
         ~ApproximateCoefficientFunction() override;
 
@@ -102,6 +104,7 @@ class ApproximateCoefficientFunction : public AbstractApproximate {
         ) const override;
 
         void SetLegacyThreshold(const bool &legacy_threshold);
+        void SetLegacyPowerTerms(const bool &legacy_pt);
 
     private:
         ThresholdCoefficientFunction *threshold_;
@@ -125,11 +128,9 @@ class ApproximateCoefficientFunctionKLMV : public AbstractApproximate {
     public:
         ApproximateCoefficientFunctionKLMV(
             const int &order, const char &kind, const char &channel,
-            const string &highscale_version = "exact", const bool &lowxi = false,
-            const double &abserr = 1e-3, const double &relerr = 1e-3,
-            const int &dim = 1000,
-            const string &double_int_method = "analytical",
-            const int &MCcalls = 25000
+            const string &highscale_version = "exact",
+            const bool &lowxi = false, const double &abserr = 1e-3,
+            const double &relerr = 1e-3, const int &dim = 1000
         );
         ~ApproximateCoefficientFunctionKLMV() override;
 
