@@ -1,6 +1,8 @@
 #include "adani/Value.h"
 #include "adani/Exceptions.h"
 
+#include <cmath>
+
 //==========================================================================================//
 //  Value: constructor
 //------------------------------------------------------------------------------------------//
@@ -92,9 +94,84 @@ Value Value::operator+(const Value &rhs) const {
 //  Value: overload of operator - Value
 //------------------------------------------------------------------------------------------//
 
-// Value Value::operator-(const Value& rhs) const {
+Value Value::operator-(const Value& rhs) const {
+    double higher = higher_ - rhs.higher_;
+    double lower = lower_ - rhs.lower_;
+    if (higher > lower) {
+        return Value(
+            central_ - rhs.central_,
+            higher,
+            lower
+        );
+    } else {
+        return Value(
+            central_ - rhs.central_,
+            lower,
+            higher
+        );
+    }
+    // TODO: in this way the error is very small: should take all the
+    // combinations?
+}
 
-// }
+//==========================================================================================//
+//  Value: overload of operator * Value
+//  since when some elements of the Value class are negative, it gives probles in the
+//  ordering of central, higher and lower, we compute the error as sum of the relative errors
+//------------------------------------------------------------------------------------------//
+
+Value Value::operator*(const Value& rhs) const {
+    double central = central_ * rhs.central_;
+    double res = std::abs(central);
+    double delta_lhs, delta_rhs;
+
+    double d_lhs_h=std::abs(central_ - higher_);
+    double d_lhs_l = std::abs(central_ - lower_);
+    double d_rhs_h = std::abs(rhs.central_ - rhs.higher_);
+    double d_rhs_l = std::abs(rhs.central_ - rhs.lower_);
+
+    if (d_lhs_h > d_lhs_l) delta_lhs = d_lhs_h;
+    else delta_lhs = d_lhs_l;
+
+    if (d_rhs_h > d_rhs_l) delta_rhs = d_rhs_h;
+    else delta_rhs = d_rhs_l;
+
+    // TODO: should I return the average of the errors?
+
+    double delta_res = res * (delta_lhs / std::abs(central_) + delta_rhs / std::abs(rhs.central_));
+
+    return Value(central, central + delta_res, central - delta_res);
+
+}
+
+//==========================================================================================//
+//  Value: overload of operator / Value
+//  since when some elements of the Value class are negative, it gives probles in the
+//  ordering of central, higher and lower, we compute the error as sum of the relative errors
+//------------------------------------------------------------------------------------------//
+
+Value Value::operator/(const Value& rhs) const {
+    double central = central_ / rhs.central_;
+    double res = std::abs(central);
+    double delta_lhs, delta_rhs;
+
+    double d_lhs_h=std::abs(central_ - higher_);
+    double d_lhs_l = std::abs(central_ - lower_);
+    double d_rhs_h = std::abs(rhs.central_ - rhs.higher_);
+    double d_rhs_l = std::abs(rhs.central_ - rhs.lower_);
+
+    if (d_lhs_h > d_lhs_l) delta_lhs = d_lhs_h;
+    else delta_lhs = d_lhs_l;
+
+    if (d_rhs_h > d_rhs_l) delta_rhs = d_rhs_h;
+    else delta_rhs = d_rhs_l;
+
+    // TODO: should I return the average of the errors?
+
+    double delta_res = res * (delta_lhs / std::abs(central_) + delta_rhs / std::abs(rhs.central_));
+
+    return Value(central, central + delta_res, central - delta_res);
+}
 
 //==========================================================================================//
 //  Value: overload of operator double +

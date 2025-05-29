@@ -62,6 +62,7 @@ class CoefficientFunction {
         virtual Value MuDependentTermsBand(
             double x, double m2Q2, double m2mu2, int nf
         ) const;
+        // TODO: is MuDependentTermsBand really needed?
 
         // get methods
         int GetOrder() const { return order_; };
