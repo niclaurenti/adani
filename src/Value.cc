@@ -152,23 +152,28 @@ Value Value::operator*(const Value& rhs) const {
 
 Value Value::operator/(const Value& rhs) const {
     double central = central_ / rhs.central_;
-    double res = std::abs(central);
-    double delta_lhs, delta_rhs;
+    //if (central > 1. ) central = 1.;
+    if (central < 0. ) central = -central;
 
-    double d_lhs_h=std::abs(central_ - higher_);
-    double d_lhs_l = std::abs(central_ - lower_);
-    double d_rhs_h = std::abs(rhs.central_ - rhs.higher_);
-    double d_rhs_l = std::abs(rhs.central_ - rhs.lower_);
+    // double res = std::abs(central);
+    // double delta_lhs, delta_rhs;
 
-    if (d_lhs_h > d_lhs_l) delta_lhs = d_lhs_h;
-    else delta_lhs = d_lhs_l;
+    // double d_lhs_h=std::abs(central_ - higher_);
+    // double d_lhs_l = std::abs(central_ - lower_);
+    // double d_rhs_h = std::abs(rhs.central_ - rhs.higher_);
+    // double d_rhs_l = std::abs(rhs.central_ - rhs.lower_);
 
-    if (d_rhs_h > d_rhs_l) delta_rhs = d_rhs_h;
-    else delta_rhs = d_rhs_l;
+    // if (d_lhs_h > d_lhs_l) delta_lhs = d_lhs_h;
+    // else delta_lhs = d_lhs_l;
+
+    // if (d_rhs_h > d_rhs_l) delta_rhs = d_rhs_h;
+    // else delta_rhs = d_rhs_l;
 
     // TODO: should I return the average of the errors?
 
-    double delta_res = res * (delta_lhs / std::abs(central_) + delta_rhs / std::abs(rhs.central_));
+    // double delta_res = res * (delta_lhs / std::abs(central_) + delta_rhs / std::abs(rhs.central_));
+    // for the moment let's remove the errors
+    double delta_res = 0.;
 
     return Value(central, central + delta_res, central - delta_res);
 }
