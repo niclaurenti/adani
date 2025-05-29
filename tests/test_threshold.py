@@ -5,7 +5,7 @@ import numpy as np
 def test_as1():
     for kind in ['2']:
         ml = ad.ThresholdCoefficientFunction(1, kind, 'g')
-
+        ml.SetLegacyThreshold(True)
         for m2Q2 in np.geomspace(1e-2, 1e4, 10):
             xmax = 1. / (1 + 4 * m2Q2)
             for x in np.geomspace(1e-5, xmax, 100, endpoint=False):
@@ -16,6 +16,7 @@ def test_as1():
 def test_as2():
     for kind in ['2', 'L']:
         thr = ad.ThresholdCoefficientFunction(2, kind, 'g')
+        thr.SetLegacyThreshold(True)
         for m2Q2 in np.geomspace(1e-2, 1e4, 10):
             for m2mu2 in np.geomspace(1e-2, 1e4, 10):
                 xmax = 1. / (1 + 4 * m2Q2)
@@ -37,6 +38,7 @@ def test_as2():
 def test_as3():
     for kind in ['2']:
         thr = ad.ThresholdCoefficientFunction(3, kind, 'g')
+        thr.SetLegacyThreshold(True)
         for m2Q2 in np.geomspace(1e-2, 1e4, 10):
             for m2mu2 in np.geomspace(1e-2, 1e4, 10):
                 xmax = 1. / (1 + 4 * m2Q2)
