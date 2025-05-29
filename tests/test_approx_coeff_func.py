@@ -24,7 +24,7 @@ def test_mudependent_terms():
                             for abserr in [1e-3]:
                                 relerr = abserr
                                 massive = ad.ExactCoefficientFunction(order, kind, channel, abserr, relerr, dim, mf, MCcalls)
-                                app = ad.ApproximateCoefficientFunction(order, kind, channel, True, "klmv", abserr, relerr, dim, mf, MCcalls)
+                                app = ad.ApproximateCoefficientFunction(order, kind, channel, True, "klmv", "m", abserr, relerr, dim, mf, MCcalls)
                                 x = np.geomspace(1e-5, 1., 5, endpoint=True)
                                 for xi in np.geomspace(1e-2, 1e4, 4, endpoint=True):
                                     for nf in [4, 5]:
