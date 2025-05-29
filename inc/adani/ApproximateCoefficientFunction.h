@@ -113,6 +113,8 @@ class ApproximateCoefficientFunction : public AbstractApproximate {
         struct approximation_parameters approximation_;
         struct variation_parameters variation_;
 
+        bool legacy_var_;
+
         double Approximation(
             double x, double m2Q2, double asy, double thresh, double A,
             double B, double C, double D

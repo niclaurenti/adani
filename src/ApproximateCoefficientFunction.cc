@@ -100,6 +100,8 @@ struct approximation_parameters CL_ps3_params = { 20., 11., 3., 2. };
 
 struct variation_parameters C2_var = { 3., 1.4 };
 struct variation_parameters CL_var = { 2., 1.3 };
+struct variation_parameters C2_var_legacy = { 3., 0.3 };
+struct variation_parameters CL_var_legacy = { 2., 0.2 };
 
 //==========================================================================================//
 //  ApproximateCoefficientFunction: constructor
@@ -319,9 +321,9 @@ void ApproximateCoefficientFunction::SetLegacyVariation(const bool &legacy_var) 
     legacy_var_ = legacy_var;
 
     if (GetKind() == '2') {
-        variation_.var2 = 0.3 ;
+        variation_=C2_var_legacy;
     } else if (GetKind() == 'L') {
-        variation_.var2 = 0.2 ;
+        variation_=CL_var_legacy;
     } else {
         throw UnexpectedException(
             "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
