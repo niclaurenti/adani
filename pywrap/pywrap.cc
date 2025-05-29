@@ -29,6 +29,9 @@ PYBIND11_MODULE(_core, m) {
         )
         .def(py::init<const double &>(), py::arg("central"))
         .def(py::self + py::self)
+        .def(py::self - py::self)
+        .def(py::self * py::self)
+        .def(py::self / py::self)
         .def(py::self + double())
         .def(double() + py::self)
         .def(py::self - double())
@@ -105,6 +108,9 @@ PYBIND11_MODULE(_core, m) {
             py::arg("NLL") = true, py::arg("highscale_version") = "exact",
             py::arg("abserr") = 1e-3, py::arg("relerr") = 1e-3,
             py::arg("dim") = 1000
+        )
+        .def(
+            "SetLegacyPowerTerms", &ApproximateCoefficientFunction::SetLegacyPowerTerms
         );
 
     // ApproximateCoefficientFunctionKLMV
@@ -131,6 +137,9 @@ PYBIND11_MODULE(_core, m) {
                 const string &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel"),
             py::arg("NLL") = true, py::arg("highscale_version") = "exact"
+        )
+        .def(
+            "SetLegacyPowerTerms", &AsymptoticCoefficientFunction::SetLegacyPowerTerms
         );
 
     // ExactCoefficientFunction
@@ -182,10 +191,24 @@ PYBIND11_MODULE(_core, m) {
             py::arg("NLL") = true
         );
 
+    // AbstractPowerTerms
+    py::class_<AbstractPowerTerms, AbstractHighEnergyCoefficientFunction>(
+        m, "AbstractPowerTerms"
+    );
+
     // PowerTermsCoefficientFunction
-    py::class_<
-        PowerTermsCoefficientFunction, AbstractHighEnergyCoefficientFunction>(
+    py::class_<PowerTermsCoefficientFunction, AbstractPowerTerms>(
         m, "PowerTermsCoefficientFunction"
+    )
+        .def(
+            py::init<const int &, const char &, const char &, const bool &>(),
+            py::arg("order"), py::arg("kind"), py::arg("channel"),
+            py::arg("NLL") = true
+        );
+
+    // MultiplicativeAsymptotic
+    py::class_<MultiplicativeAsymptotic, AbstractPowerTerms>(
+        m, "MultiplicativeAsymptotic"
     )
         .def(
             py::init<const int &, const char &, const char &, const bool &>(),

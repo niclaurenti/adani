@@ -255,26 +255,6 @@ class HighEnergyHighScaleCoefficientFunction
         };
 };
 
-//==========================================================================================//
-//  class PowerTermsCoefficientFunction
-//------------------------------------------------------------------------------------------//
 
-class PowerTermsCoefficientFunction
-    : public AbstractHighEnergyCoefficientFunction {
-
-    public:
-        PowerTermsCoefficientFunction(
-            const int &order, const char &kind, const char &channel,
-            const bool &NLL = true
-        );
-        ~PowerTermsCoefficientFunction() override;
-
-        Value
-            fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
-
-    private:
-        HighEnergyCoefficientFunction *highenergy_;
-        HighEnergyHighScaleCoefficientFunction *highenergyhighscale_;
-};
 
 #endif
