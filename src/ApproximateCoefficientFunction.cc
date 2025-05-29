@@ -96,9 +96,8 @@ struct variation_parameters CL_var = { 2., 1.3 };
 
 ApproximateCoefficientFunction::ApproximateCoefficientFunction(
     const int &order, const char &kind, const char &channel, const bool &NLL,
-    const string &highscale_version, const bool &approx_at_Q,
-    const double &abserr, const double &relerr, const int &dim,
-    const string &double_int_method, const int &MCcalls
+    const string &highscale_version, const double &abserr, const double &relerr,
+    const int &dim, const string &double_int_method, const int &MCcalls
 )
     : AbstractApproximate(
           order, kind, channel, abserr, relerr, dim, double_int_method, MCcalls
@@ -108,8 +107,6 @@ ApproximateCoefficientFunction::ApproximateCoefficientFunction(
     asymptotic_ = new AsymptoticCoefficientFunction(
         order, kind, channel, NLL, highscale_version
     );
-
-    approx_at_Q_ = approx_at_Q;
 
     try {
         if (order == 1) {
@@ -242,20 +239,11 @@ Value ApproximateCoefficientFunction::MuIndependentTermsBand(
     double Cvec[3] = { C, Cmax, Cmin };
     double Dvec[3] = { D, Dmax, Dmin };
 
-    vector<double> asy;
-    vector<double> thresh;
-
-    if (!approx_at_Q_) {
-        asy = (asymptotic_->MuIndependentTermsBand(x, m2Q2, nf)).ToVect();
-        thresh = (threshold_->MuIndependentTermsBand(x, m2Q2, nf)).ToVect();
-        // thresh contains three identical numbers since the band was not
-        // present
-    } else {
-        asy = (asymptotic_->fxBand(x, m2Q2, m2Q2, nf)).ToVect();
-        thresh = (threshold_->fxBand(x, m2Q2, m2Q2, nf)).ToVect();
-        // thresh contains three identical numbers since the band was not
-        // present
-    }
+    vector<double> asy =
+        (asymptotic_->MuIndependentTermsBand(x, m2Q2, nf)).ToVect();
+    vector<double> thresh =
+        (threshold_->MuIndependentTermsBand(x, m2Q2, nf)).ToVect();
+    // thresh contains three identical numbers since the band was not present
 
     double central = Approximation(x, m2Q2, asy[0], thresh[0], A, B, C, D);
     double higher = central, lower = central, tmp;
@@ -281,13 +269,7 @@ Value ApproximateCoefficientFunction::MuIndependentTermsBand(
         }
     }
 
-    Value res = Value(central, higher, lower);
-
-    if (approx_at_Q_) {
-        res = res - MuDependentTerms(x, m2Q2, m2Q2, nf);
-    }
-
-    return res;
+    return Value(central, higher, lower);
 }
 
 //==========================================================================================//
