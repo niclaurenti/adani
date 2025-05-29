@@ -38,8 +38,8 @@ struct approximation_parameters {
 //------------------------------------------------------------------------------------------//
 
 struct variation_parameters {
-        double var;
-        double fact;
+        double var1;
+        double var2;
 };
 
 //==========================================================================================//
@@ -104,6 +104,7 @@ class ApproximateCoefficientFunction : public AbstractApproximate {
         ) const override;
 
         void SetLegacyPowerTerms(const bool &legacy_pt);
+        void SetLegacyVariation(const bool &legacy_var);
 
     private:
         ThresholdCoefficientFunction *threshold_;
@@ -111,6 +112,8 @@ class ApproximateCoefficientFunction : public AbstractApproximate {
 
         struct approximation_parameters approximation_;
         struct variation_parameters variation_;
+
+        bool legacy_var_;
 
         double Approximation(
             double x, double m2Q2, double asy, double thresh, double A,
