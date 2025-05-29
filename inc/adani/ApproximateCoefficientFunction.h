@@ -104,7 +104,7 @@ class ApproximateCoefficientFunction : public AbstractApproximate {
         ) const override;
 
         void SetLegacyPowerTerms(const bool &legacy_pt);
-        void LegacyVariation(const bool &legacy_var);
+        void SetLegacyVariation(const bool &legacy_var);
 
     private:
         ThresholdCoefficientFunction *threshold_;

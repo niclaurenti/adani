@@ -196,7 +196,7 @@ ApproximateCoefficientFunction::ApproximateCoefficientFunction(
             );
         }
 
-        LegacyVariation(false);
+        SetLegacyVariation(false);
 
     } catch (UnexpectedException &e) {
         e.runtime_error();
@@ -314,7 +314,7 @@ double ApproximateCoefficientFunction::Approximation(
 //  ApproximateCoefficientFunction: set method to restore legacy behavior for variation
 //------------------------------------------------------------------------------------------//
 
-void ApproximateCoefficientFunction::LegacyVariation(const bool &legacy_var) {
+void ApproximateCoefficientFunction::SetLegacyVariation(const bool &legacy_var) {
 
     legacy_var_ = legacy_var;
 

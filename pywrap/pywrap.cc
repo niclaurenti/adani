@@ -110,7 +110,7 @@ PYBIND11_MODULE(_core, m) {
             py::arg("dim") = 1000
         )
         .def(
-            "LegacyVariation", &ApproximateCoefficientFunction::LegacyVariation,
+            "SetLegacyVariation", &ApproximateCoefficientFunction::SetLegacyVariation,
             py::arg("legacy_var")
         )
         .def(
