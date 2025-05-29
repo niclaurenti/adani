@@ -483,7 +483,7 @@ Value HighEnergyCoefficientFunction::C2_g3_highenergyNLL(
                                                - 14 * (-1 + m2Q2) * zeta3))))
                    / x;
 
-    double delta = fabs(central_value - error);
+    double delta = std::abs(central_value - error);
 
     double higher = central_value + delta;
     double lower = central_value - delta;
@@ -703,7 +703,7 @@ Value HighEnergyCoefficientFunction::CL_g3_highenergyNLL(
                                     - 56 * m2Q2 * (1 + 3 * m2Q2) * zeta3))))
         / x / (1. + 4. * m2Q2);
 
-    double delta = fabs(central - error);
+    double delta = std::abs(central - error);
 
     double higher = central + delta;
     double lower = central - delta;
@@ -854,7 +854,7 @@ Value HighEnergyHighScaleCoefficientFunction::C2_g3_highenergy_highscaleNLL(
                         * (-568 + 24 * pi2 - 1248 * ln2 + 819 * zeta3)))
         / x;
 
-    double delta = fabs(central - error);
+    double delta = std::abs(central - error);
 
     double higher = central + delta;
     double lower = central - delta;
@@ -975,7 +975,7 @@ Value HighEnergyHighScaleCoefficientFunction::CL_g3_highenergy_highscaleNLL(
          + 8. / 27 * a11 * beta_0 * (-272 + 12 * pi2 + 96 * ln2 - 63 * zeta3))
         / x;
 
-    double delta = fabs(central - error);
+    double delta = std::abs(central - error);
 
     double higher = central + delta;
     double lower = central - delta;

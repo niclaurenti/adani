@@ -65,7 +65,7 @@ Value ThresholdCoefficientFunction::fxBand(
 
     double variation = (this->*threshold_as1_)(x, m2Q2) * exp;
 
-    double delta =fabs(central - variation);
+    double delta =std::abs(central - variation);
 
     return Value(central, central + delta, central - delta);
 }
@@ -133,6 +133,15 @@ void ThresholdCoefficientFunction::SetFunctions() {
 
 void ThresholdCoefficientFunction::SetLegacyThreshold(const bool &legacy_threshold) {
     legacy_threshold_ = legacy_threshold;
+
+    if (legacy_threshold) {
+        if (GetOrder() == 2) {
+            if (GetKind() == 'L') {
+                expansion_beta_ = &ThresholdCoefficientFunction::C2_g2_threshold_expansion;
+                expansion_no_beta_ = &ThresholdCoefficientFunction::C2_g2_threshold_expansion_const;
+            }
+        }
+    }
 }
 
 //==========================================================================================//
