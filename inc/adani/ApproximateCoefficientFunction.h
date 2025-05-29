@@ -103,6 +103,7 @@ class ApproximateCoefficientFunction : public AbstractApproximate {
             double x, double m2Q2, int nf
         ) const override;
 
+        void SetLegacyThreshold(const bool &legacy_threshold);
         void SetLegacyPowerTerms(const bool &legacy_pt);
         void SetLegacyVariation(const bool &legacy_var);
 

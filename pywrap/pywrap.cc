@@ -110,6 +110,10 @@ PYBIND11_MODULE(_core, m) {
             py::arg("dim") = 1000
         )
         .def(
+            "SetLegacyThreshold", &ApproximateCoefficientFunction::SetLegacyThreshold,
+            py::arg("legacy_threshold")
+        )
+        .def(
             "SetLegacyVariation", &ApproximateCoefficientFunction::SetLegacyVariation,
             py::arg("legacy_var")
         )
@@ -335,6 +339,10 @@ PYBIND11_MODULE(_core, m) {
             "BetaIndependentTerms",
             &ThresholdCoefficientFunction::BetaIndependentTerms, py::arg("x"),
             py::arg("m2Q2"), py::arg("m2mu2")
+        )
+        .def(
+            "SetLegacyThreshold", &ThresholdCoefficientFunction::SetLegacyThreshold,
+            py::arg("legacy_threshold")
         );
 
     // MatchingCondition
