@@ -114,6 +114,10 @@ PYBIND11_MODULE(_core, m) {
             py::arg("legacy_threshold")
         )
         .def(
+            "SetLegacyVariation", &ApproximateCoefficientFunction::SetLegacyVariation,
+            py::arg("legacy_var")
+        )
+        .def(
             "SetLegacyPowerTerms", &ApproximateCoefficientFunction::SetLegacyPowerTerms,
             py::arg("legacy_pt")
         );
