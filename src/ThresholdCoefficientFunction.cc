@@ -199,9 +199,9 @@ double ThresholdCoefficientFunction::CL_g2_threshold_expansion(
 
     double logb = log(beta);
     double log2b = logb * logb;
-    return C2_g2_threshold_expansion(x, m2Q2, m2mu2, 0);
-    // return 16. * CA * log2b + 16. * CA * (3. * ln2 - 19./6) * logb
-    //        + (2 * CF - CA) * M_PI * M_PI / beta + 8. * CA * log(m2mu2) * logb;
+
+    return 16. * CA * log2b + 16. * CA * (3. * ln2 - 19./6) * logb
+            + (2 * CF - CA) * M_PI * M_PI / beta + 8. * CA * log(m2mu2) * logb;
 }
 
 //==========================================================================================//
@@ -227,9 +227,43 @@ double ThresholdCoefficientFunction::CL_g2_threshold_expansion_const(
 ) const {
 
     double xi = 1. / m2Q2;
-    //TODO: implement the correct one
-    return c0(xi) + 36. * CA * ln2 * ln2 - 60 * CA * ln2
-           + log(m2mu2) * (8. * CA * ln2 - c0_bar(xi));
+    double rhoq = -4. * m2Q2;
+    double betaq = sqrt(1. - rhoq);
+    double chiq = (betaq - 1) / (betaq + 1);
+    double rhoq_p_1_2 = (-1 + rhoq) * (-1 + rhoq);
+    double log_chi = log(chiq);
+    double log_chi_2 = log_chi * log_chi;
+
+    double g1 = (-M_PI * M_PI / 2. + Li2(-(rhoq / (-2 + rhoq)))
+                 - (2 * (1 - rhoq) * log_chi) / betaq - (3 * log_chi_2) / 2.
+                 + pow(log(rhoq / (-2 + rhoq)), 2) / 2.)
+                / 8.;
+
+    double g2 = (12.5 - 15 * ln2 + 9 * ln2 * ln2 + log_chi_2
+                 - pow(log(rhoq / (2. * (-1 + rhoq))), 2))
+                / 4.;
+
+    double a10_OK = 0.6805555555555556 + g2
+                    - (M_PI * M_PI * (-4 + rhoq) * rhoq) / (24. * rhoq_p_1_2)
+                    + (g1 * (1 + 2 * rhoq)) / rhoq_p_1_2 - ln2
+                    - ((-4 + rhoq) * rhoq * log_chi_2) / (8. * rhoq_p_1_2)
+                    + ((-1 + rhoq * (-3 - 2 * (-3 + rhoq) * rhoq))
+                       * log(rhoq / (2. * (-1 + rhoq))))
+                          / (4. * (-2 + rhoq) * rhoq_p_1_2);
+
+    double a10_QED =
+        (3 - 2 * rhoq) / (8. * (-2 + rhoq))
+        - (g1 * (-1 + 6 * rhoq)) / rhoq_p_1_2
+        - (M_PI * M_PI * (-1 + 6 * rhoq)) / (24. * rhoq_p_1_2)
+        + ((-6 + rhoq + rhoq * rhoq) * log_chi) / (8. * betaq * (-2 + rhoq))
+        - ((-1 + 6 * rhoq) * log_chi_2) / (8. * rhoq_p_1_2)
+        + ((3 + 2 * rhoq * (5 + (-5 + rhoq) * rhoq))
+           * log(rhoq / (2. * (-1 + rhoq))))
+              / (4. * (-2 + rhoq) * (-2 + rhoq) * (-1 + rhoq));
+
+    double muterm = -3. / 4 * ln2 + 0.5 + log((1 + chiq)*(1 + chiq) / 2 / chiq) + 1./6;
+
+    return 16 * (CA * a10_OK + 2. * CF * a10_QED - CA * log(m2mu2) * muterm);
 }
 
 //==========================================================================================//
