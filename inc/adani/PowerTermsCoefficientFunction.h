@@ -83,7 +83,7 @@ class MultiplicativeAsymptotic
         Value PlainRatio(double x, double m2Q2, double m2mu2, int nf) const;
         Value RegoularizedRatio(double x, double m2Q2, double m2mu2, int nf) const;
 
-        Value OneFunction(double x, double m2Q2, double m2mu2, int nf) const {
+        Value OneFunction(double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const {
             return Value(1.);
         }
 

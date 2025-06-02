@@ -49,7 +49,7 @@ Value AbstractApproximate::fxBand(
 ) const {
     double x_max = 1. / (1. + 4 * m2Q2);
     if (x >= x_max || x <= 0)
-        return 0;
+        return Value(0.);
 
     return MuIndependentTermsBand(x, m2Q2, nf)
            + MuDependentTerms(x, m2Q2, m2mu2, nf);
@@ -240,7 +240,7 @@ Value ApproximateCoefficientFunction::MuIndependentTermsBand(
 
     double x_max = 1. / (1 + 4 * m2Q2);
     if (x <= 0 || x > x_max)
-        return 0.;
+        return Value(0.);
 
     double A = approximation_.A, B = approximation_.B, C = approximation_.C,
            D = approximation_.D;
@@ -451,7 +451,7 @@ Value ApproximateCoefficientFunctionKLMV::MuIndependentTermsBand(
 
     double xmax = 1. / (1. + 4 * m2Q2);
     if (x <= 0 || x >= xmax)
-        return 0.;
+        return Value(0.);
 
     double thr = threshold_->MuIndependentTerms(x, m2Q2, nf);
     double thr_const = threshold_->BetaIndependentTerms(x, m2Q2, 1.);

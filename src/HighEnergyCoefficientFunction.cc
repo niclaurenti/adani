@@ -31,7 +31,7 @@ AbstractHighEnergyCoefficientFunction::AbstractHighEnergyCoefficientFunction(
 Value AbstractHighEnergyCoefficientFunction::Order2(
     double x, double m2Q2, double m2mu2, int /*nf*/
 ) const {
-    return LL(m2Q2, m2mu2) / x;
+    return Value(LL(m2Q2, m2mu2) / x);
 }
 
 //==========================================================================================//
@@ -51,7 +51,7 @@ Value AbstractHighEnergyCoefficientFunction::Order3(
 Value AbstractHighEnergyCoefficientFunction::Order3LL(
     double x, double m2Q2, double m2mu2, int /*nf*/
 ) const {
-    return LL(m2Q2, m2mu2) * log(x) / x;
+    return Value(LL(m2Q2, m2mu2) * log(x) / x);
 }
 
 //==========================================================================================//
