@@ -175,7 +175,15 @@ PYBIND11_MODULE(_core, m) {
     py::class_<AbstractHighEnergyCoefficientFunction, CoefficientFunction>(
         m, "AbstractHighEnergyCoefficientFunction"
     )
-        .def("GetNLL", &AbstractHighEnergyCoefficientFunction::GetNLL);
+        .def("GetNLL", &AbstractHighEnergyCoefficientFunction::GetNLL)
+        .def(
+            "LL", &AbstractHighEnergyCoefficientFunction::LL,
+            py::arg("m2Q2"), py::arg("m2mu2")
+        )
+        .def(
+            "NLL", &AbstractHighEnergyCoefficientFunction::NLL,
+            py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf")
+        );
 
     // HighEnergyCoefficientFunction
     py::class_<
@@ -201,7 +209,7 @@ PYBIND11_MODULE(_core, m) {
         );
 
     // AbstractPowerTerms
-    py::class_<AbstractPowerTerms, AbstractHighEnergyCoefficientFunction>(
+    py::class_<AbstractPowerTerms, CoefficientFunction>(
         m, "AbstractPowerTerms"
     );
 

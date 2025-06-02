@@ -10,19 +10,19 @@ AsymptoticCoefficientFunction::AsymptoticCoefficientFunction(
     const int &order, const char &kind, const char &channel, const bool &NLL,
     const string &highscale_version
 )
-    : AbstractHighEnergyCoefficientFunction(order, kind, channel, NLL) {
+    : CoefficientFunction(order, kind, channel), NLL_(NLL) {
 
     highscale_ = new HighScaleCoefficientFunction(
         GetOrder(), GetKind(), GetChannel(), highscale_version
     );
     if (GetKind() == '2') {
         powerterms_ = new PowerTermsCoefficientFunction(
-            GetOrder(), GetKind(), GetChannel(), GetNLL()
+            GetOrder(), GetKind(), GetChannel(), NLL
         );
         fx_ = &AsymptoticCoefficientFunction::AdditiveMatching;
     } else {
         powerterms_ = new MultiplicativeAsymptotic(
-            GetOrder(), GetKind(), GetChannel(), GetNLL()
+            GetOrder(), GetKind(), GetChannel(), NLL
         );
         fx_ = &AsymptoticCoefficientFunction::MultiplicativeMatching;
     }
@@ -53,13 +53,13 @@ void AsymptoticCoefficientFunction::SetLegacyPowerTerms(const bool &legacy_pt) {
                 if (legacy_pt) {
                     delete powerterms_;
                     powerterms_ = new PowerTermsCoefficientFunction(
-                        GetOrder(), GetKind(), GetChannel(), GetNLL()
+                        GetOrder(), GetKind(), GetChannel(), NLL_
                     );
                     fx_ = &AsymptoticCoefficientFunction::AdditiveMatching;
                 } else {
                     delete powerterms_;
                     powerterms_ = new MultiplicativeAsymptotic(
-                        GetOrder(), GetKind(), GetChannel(), GetNLL()
+                        GetOrder(), GetKind(), GetChannel(), NLL_
                     );
                     fx_ = &AsymptoticCoefficientFunction::MultiplicativeMatching;
                 }

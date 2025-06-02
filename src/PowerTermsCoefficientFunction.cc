@@ -1,4 +1,5 @@
 #include "adani/PowerTermsCoefficientFunction.h"
+#include <iostream>
 
 //==========================================================================================//
 //  AbstractPowerTerms: constructor
@@ -7,12 +8,12 @@
 AbstractPowerTerms::AbstractPowerTerms(
     const int &order, const char &kind, const char &channel, const bool &NLL
 )
-    : AbstractHighEnergyCoefficientFunction(order, kind, channel, NLL) {
+    : CoefficientFunction(order, kind, channel) {
     highenergy_ = new HighEnergyCoefficientFunction(
-        GetOrder(), GetKind(), GetChannel(), GetNLL()
+        GetOrder(), GetKind(), GetChannel(), NLL
     );
     highenergyhighscale_ = new HighEnergyHighScaleCoefficientFunction(
-        GetOrder(), GetKind(), GetChannel(), GetNLL()
+        GetOrder(), GetKind(), GetChannel(), NLL
     );
 }
 
@@ -88,12 +89,71 @@ Value PowerTermsCoefficientFunction::fxBand(
 // }
 
 //==========================================================================================//
+//  MultiplicativeAsymptotic: constructor
+//------------------------------------------------------------------------------------------//
+
+MultiplicativeAsymptotic::MultiplicativeAsymptotic(
+    const int &order, const char &kind, const char &channel,
+    const bool &NLL
+) : AbstractPowerTerms(order, kind, channel, NLL) {
+    if (order == 1) {
+        fx_ = &MultiplicativeAsymptotic::OneFunction;
+    } else if (order == 2) {
+        fx_ = &MultiplicativeAsymptotic::PlainRatio;
+    } else if (order == 3) {
+        fx_ = &MultiplicativeAsymptotic::RegoularizedRatio;
+    }
+};
+
+//==========================================================================================//
 //  MultiplicativeAsymptotic: band of the power terms
 //------------------------------------------------------------------------------------------//
 
 Value MultiplicativeAsymptotic::fxBand(
     double x, double m2Q2, double m2mu2, int nf
 ) const {
+    return (this->*fx_)(x, m2Q2, m2mu2, nf);;
+}
+
+//==========================================================================================//
+//  MultiplicativeAsymptotic: band of the power terms
+//------------------------------------------------------------------------------------------//
+
+Value MultiplicativeAsymptotic::PlainRatio(
+    double x, double m2Q2, double m2mu2, int nf
+) const {
     return GetHighEnergy()->fxBand(x, m2Q2, m2mu2, nf)
            / GetHighEnergyHighScale()->fxBand(x, m2Q2, m2mu2, nf);
+}
+
+//==========================================================================================//
+//  MultiplicativeAsymptotic: band of the power terms
+//------------------------------------------------------------------------------------------//
+
+Value MultiplicativeAsymptotic::RegoularizedRatio(
+    double x, double m2Q2, double m2mu2, int nf
+) const {
+    double xpole = exp(
+        -GetHighEnergyHighScale()->NLL(m2Q2, m2mu2, nf).GetCentral()
+        / GetHighEnergyHighScale()->LL(m2Q2, m2mu2)
+    );
+    xpole = 100;
+
+    double deltax = 0.01;
+    double xM = (xpole + deltax);
+    double xm = xpole - deltax;
+
+    std::cout << 1./m2Q2 << " " << xpole << std::endl;
+
+    if (x > xm && x < xM) {
+        std::cout << 1./m2Q2 << " " << xpole << " " << PlainRatio(xm, m2Q2, m2mu2, nf).GetCentral() << " " << PlainRatio(xM, m2Q2, m2mu2, nf).GetCentral() << std::endl;
+
+        return Value(0.);
+        double ym = PlainRatio(xm, m2Q2, m2mu2, nf).GetCentral();
+        double yM = PlainRatio(xM, m2Q2, m2mu2, nf).GetCentral();
+
+        return Value(ym + (yM - ym) / (xM - xm) * (x - xm));
+    } else {
+        return PlainRatio(xM, m2Q2, m2mu2, nf);
+    }
 }

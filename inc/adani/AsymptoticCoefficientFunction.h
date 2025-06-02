@@ -26,7 +26,7 @@
 //------------------------------------------------------------------------------------------//
 
 class AsymptoticCoefficientFunction
-    : public AbstractHighEnergyCoefficientFunction {
+    : public CoefficientFunction {
     public:
         AsymptoticCoefficientFunction(
             const int &order, const char &kind, const char &channel,
@@ -43,6 +43,7 @@ class AsymptoticCoefficientFunction
             AllVariations(double x, double m2Q2, double m2mu2, int nf) const;
 
     private:
+        const bool NLL_;
         HighScaleCoefficientFunction *highscale_;
         AbstractPowerTerms *powerterms_;
 

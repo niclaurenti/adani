@@ -235,7 +235,6 @@ double ThresholdCoefficientFunction::CL_g2_threshold_expansion_const(
     double m2Q2, double m2mu2
 ) const {
 
-    double xi = 1. / m2Q2;
     double rhoq = -4. * m2Q2;
     double betaq = sqrt(1. - rhoq);
     double chiq = (betaq - 1) / (betaq + 1);

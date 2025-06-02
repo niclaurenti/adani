@@ -22,7 +22,7 @@
 //  class AbstractPowerTerms
 //------------------------------------------------------------------------------------------//
 
-class AbstractPowerTerms : public AbstractHighEnergyCoefficientFunction {
+class AbstractPowerTerms : public CoefficientFunction {
 
     public:
         AbstractPowerTerms(
@@ -69,11 +69,24 @@ class MultiplicativeAsymptotic
         MultiplicativeAsymptotic(
             const int &order, const char &kind, const char &channel,
             const bool &NLL = true
-        ) : AbstractPowerTerms(order, kind, channel, NLL) {} ;
+        );
         ~MultiplicativeAsymptotic() override {};
 
         Value
             fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
+
+    private:
+        Value (MultiplicativeAsymptotic::*fx_)(
+            double, double, double, int
+        ) const;
+
+        Value PlainRatio(double x, double m2Q2, double m2mu2, int nf) const;
+        Value RegoularizedRatio(double x, double m2Q2, double m2mu2, int nf) const;
+
+        Value OneFunction(double x, double m2Q2, double m2mu2, int nf) const {
+            return Value(1.);
+        }
+
 };
 
 
