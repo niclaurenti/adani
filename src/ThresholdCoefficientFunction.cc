@@ -209,7 +209,7 @@ double ThresholdCoefficientFunction::CL_g2_threshold_expansion(
     double logb = log(beta);
     double log2b = logb * logb;
 
-    return 16. * CA * log2b + 16. * CA * (3. * ln2 - 19./6) * logb
+    return 16. * CA * log2b + 16. * CA * (3. * ln2 - 5./2 - 2./3) * logb
             + (2 * CF - CA) * M_PI * M_PI / beta + 8. * CA * log(m2mu2) * logb;
 }
 
