@@ -88,10 +88,4 @@ Value MultiplicativeAsymptotic::RegoularizedRatio(
         / GetHighEnergyHighScale()->LL(m2Q2, m2mu2)
     );
 
-    // return GetHighEnergy()->fxBand(x, m2Q2, m2mu2, nf)
-    //        / (GetHighEnergyHighScale()->LL(m2Q2, m2mu2) * log(x))
-    //        * (1 - GetHighEnergyHighScale()->NLL(m2Q2, m2mu2, nf).GetCentral() / (GetHighEnergyHighScale()->LL(m2Q2, m2mu2) * log(x))) ;
-    // return GetHighEnergy()->fxBand(x, m2Q2, m2mu2, nf)
-    //        / (GetHighEnergyHighScale()->LL(m2Q2, m2mu2) * log(x)) ;
-
 }
