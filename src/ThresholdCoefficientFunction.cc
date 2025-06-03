@@ -21,6 +21,7 @@ ThresholdCoefficientFunction::ThresholdCoefficientFunction(
 
     try {
         SetFunctions();
+        SetLegacyThreshold(false);
     } catch (UnexpectedException &e) {
         e.runtime_error();
     }
@@ -42,7 +43,7 @@ double ThresholdCoefficientFunction::fx(
     double x, double m2Q2, double m2mu2, int nf
 ) const {
 
-    return (this->*fx_)(x, m2Q2, m2mu2, nf);
+    return fxBand(x, m2Q2, m2mu2, nf).GetCentral();
 }
 
 //==========================================================================================//
@@ -52,7 +53,21 @@ double ThresholdCoefficientFunction::fx(
 Value ThresholdCoefficientFunction::fxBand(
     double x, double m2Q2, double m2mu2, int nf
 ) const {
-    return Value(fx(x, m2Q2, m2mu2, nf));
+
+    if (GetChannel() == 'q') return Value(0.);
+
+    if (GetOrder() == 1) return Value((this->*threshold_as1_)(x, m2Q2));
+
+    double exp = (this->*expansion_beta_)(x, m2Q2, m2mu2, nf) + (this->*expansion_no_beta_)(m2Q2, m2mu2);
+    double central = exact_as1_->fx(x, m2Q2, m2mu2, nf) * exp;
+
+    if (legacy_threshold_) return Value(central);
+
+    double variation = (this->*threshold_as1_)(x, m2Q2) * exp;
+
+    double delta =std::abs(central - variation);
+
+    return Value(central, central + delta, central - delta);
 }
 
 //==========================================================================================//
@@ -62,8 +77,9 @@ Value ThresholdCoefficientFunction::fxBand(
 double ThresholdCoefficientFunction::BetaIndependentTerms(
     double x, double m2Q2, double m2mu2
 ) const {
-
-    return (this->*beta_indep_)(x, m2Q2, m2mu2);
+    if (GetChannel() == 'q') return 0.;
+    // exact_as1 is independent on nf so we call it with nf=0
+    return exact_as1_->fx(x, m2Q2, m2mu2, 0) * (this->*expansion_no_beta_)(m2Q2, m2mu2);
 }
 
 //==========================================================================================//
@@ -72,27 +88,23 @@ double ThresholdCoefficientFunction::BetaIndependentTerms(
 
 void ThresholdCoefficientFunction::SetFunctions() {
     if (GetChannel() == 'q') {
-        fx_ = &ThresholdCoefficientFunction::ZeroFunction;
-        beta_indep_ = &ThresholdCoefficientFunction::ZeroFunction;
+        expansion_beta_ = nullptr;
+        expansion_no_beta_ = nullptr;
     } else if (GetChannel() == 'g') {
-        if (GetOrder() == 1 && GetKind() == '2') {
-            fx_ = &ThresholdCoefficientFunction::C2_g1_threshold;
-            beta_indep_ = &ThresholdCoefficientFunction::ZeroFunction;
-        } else if (GetOrder() == 1 && GetKind() == 'L') {
-            fx_ = &ThresholdCoefficientFunction::ZeroFunction;
-            beta_indep_ = &ThresholdCoefficientFunction::ZeroFunction;
-        } else if (GetOrder() == 2 && GetKind() == '2') {
-            fx_ = &ThresholdCoefficientFunction::C2_g2_threshold;
-            beta_indep_ = &ThresholdCoefficientFunction::C2_g2_threshold_const;
-        } else if (GetOrder() == 2 && GetKind() == 'L') {
-            fx_ = &ThresholdCoefficientFunction::CL_g2_threshold;
-            beta_indep_ = &ThresholdCoefficientFunction::CL_g2_threshold_const;
-        } else if (GetOrder() == 3 && GetKind() == '2') {
-            fx_ = &ThresholdCoefficientFunction::C2_g3_threshold;
-            beta_indep_ = &ThresholdCoefficientFunction::C2_g3_threshold_const;
-        } else if (GetOrder() == 3 && GetKind() == 'L') {
-            fx_ = &ThresholdCoefficientFunction::CL_g3_threshold;
-            beta_indep_ = &ThresholdCoefficientFunction::CL_g3_threshold_const;
+        if (GetOrder() == 1) {
+            expansion_beta_ = nullptr;
+            expansion_no_beta_ = nullptr;
+        } else if (GetOrder() == 2) {
+            if (GetKind() == '2') {
+                expansion_beta_ = &ThresholdCoefficientFunction::C2_g2_threshold_expansion;
+                expansion_no_beta_ = &ThresholdCoefficientFunction::C2_g2_threshold_expansion_const;
+            } else {
+                expansion_beta_ = &ThresholdCoefficientFunction::CL_g2_threshold_expansion;
+                expansion_no_beta_ = &ThresholdCoefficientFunction::CL_g2_threshold_expansion_const;
+            }
+        } else if (GetOrder() == 3) {
+            expansion_beta_ = &ThresholdCoefficientFunction::threshold_expansion_g3;
+            expansion_no_beta_ = &ThresholdCoefficientFunction::threshold_expansion_g3_const;
         } else {
             throw UnexpectedException(
                 "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
@@ -103,18 +115,44 @@ void ThresholdCoefficientFunction::SetFunctions() {
             "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
         );
     }
+
+    if (GetKind() == '2') {
+        threshold_as1_ = &ThresholdCoefficientFunction::C2_g1_threshold;
+    } else if (GetKind() == 'L') {
+        threshold_as1_ = &ThresholdCoefficientFunction::CL_g1_threshold;
+    } else {
+        throw UnexpectedException(
+            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+        );
+    }
+}
+
+//==========================================================================================//
+//  ThresholdCoefficientFunction: function that sets the legacy behavior for the threshold
+//------------------------------------------------------------------------------------------//
+
+void ThresholdCoefficientFunction::SetLegacyThreshold(const bool &legacy_threshold) {
+    legacy_threshold_ = legacy_threshold;
+
+    if (legacy_threshold) {
+        if (GetOrder() == 2) {
+            if (GetKind() == 'L') {
+                expansion_beta_ = &ThresholdCoefficientFunction::C2_g2_threshold_expansion;
+                expansion_no_beta_ = &ThresholdCoefficientFunction::C2_g2_threshold_expansion_const;
+            }
+        }
+    }
 }
 
 //==========================================================================================//
 //  Threshold limit (x->xmax) of the gluon coefficient function for F2 at
 //  O(as). In order to pass to klmv normalization multiply
-//  m2Q2*4*M_PI*M_PI*x
+//  m2Q2*M_PI*x
 //
 //  Eq. (3.15) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double ThresholdCoefficientFunction::
-    C2_g1_threshold(double x, double m2Q2, double /*m2mu2*/, int /*nf*/) const {
+double ThresholdCoefficientFunction:: C2_g1_threshold(double x, double m2Q2) const {
 
     double beta = sqrt(1. - 4. * m2Q2 * x / (1. - x));
     double xi = 1. / m2Q2;
@@ -123,11 +161,30 @@ double ThresholdCoefficientFunction::
 }
 
 //==========================================================================================//
+//  Threshold limit (x->xmax) of the gluon coefficient function for FL at
+//  O(as). In order to pass to klmv normalization multiply
+//  m2Q2*M_PI*x
+//
+//  Eq. (3.15) of Ref. [arXiv:1205.5727]
+//------------------------------------------------------------------------------------------//
+
+double ThresholdCoefficientFunction::CL_g1_threshold(double x, double m2Q2) const {
+
+    double beta = sqrt(1. - 4. * m2Q2 * x / (1. - x));
+    double beta3 = beta * beta * beta;
+
+    double xi = 1. / m2Q2;
+    double xi_p_4 = (4. + xi);
+
+    return 64. / 3 * xi * xi * beta3 / (xi_p_4 * xi_p_4 * xi_p_4) / x;
+}
+
+//==========================================================================================//
 //
 //------------------------------------------------------------------------------------------//
 
-double ThresholdCoefficientFunction::threshold_expansion_g2(
-    double x, double m2Q2, double m2mu2
+double ThresholdCoefficientFunction::C2_g2_threshold_expansion(
+    double x, double m2Q2, double m2mu2, int /*nf*/
 ) const {
 
     double beta = sqrt(1. - 4. * m2Q2 * x / (1. - x));
@@ -135,7 +192,7 @@ double ThresholdCoefficientFunction::threshold_expansion_g2(
     double logb = log(beta);
     double log2b = logb * logb;
 
-    return 16. * CA * log2b + (48. * CA * ln2 - 40. * CA) * logb
+    return 16. * CA * log2b + 16. * CA * (3. * ln2 - 5./2) * logb
            + (2 * CF - CA) * M_PI * M_PI / beta + 8. * CA * log(m2mu2) * logb;
 }
 
@@ -143,7 +200,24 @@ double ThresholdCoefficientFunction::threshold_expansion_g2(
 //
 //------------------------------------------------------------------------------------------//
 
-double ThresholdCoefficientFunction::threshold_expansion_g2_const(
+double ThresholdCoefficientFunction::CL_g2_threshold_expansion(
+    double x, double m2Q2, double m2mu2, int /*nf*/
+) const {
+
+    double beta = sqrt(1. - 4. * m2Q2 * x / (1. - x));
+
+    double logb = log(beta);
+    double log2b = logb * logb;
+
+    return 16. * CA * log2b + 16. * CA * (3. * ln2 - 5./2 - 2./3) * logb
+            + (2 * CF - CA) * M_PI * M_PI / beta + 8. * CA * log(m2mu2) * logb;
+}
+
+//==========================================================================================//
+//
+//------------------------------------------------------------------------------------------//
+
+double ThresholdCoefficientFunction::C2_g2_threshold_expansion_const(
     double m2Q2, double m2mu2
 ) const {
 
@@ -154,77 +228,50 @@ double ThresholdCoefficientFunction::threshold_expansion_g2_const(
 }
 
 //==========================================================================================//
-//  Threshold limit (x->xmax) of the gluon coefficient function for F2 at
-//  O(as^2). In order to pass to klmv normalization multiply m2Q2*M_PI*x
-//  and put mu^2=Q^2+4m^2
 //
-//  Eq. (3.16) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
-double ThresholdCoefficientFunction::
-    C2_g2_threshold(double x, double m2Q2, double m2mu2, int /*nf*/) const {
-
-    // defining nf as nan since they it is not needed
-    int nf = static_cast<int>(nan(""));
-
-    return exact_as1_->fx(x, m2Q2, m2mu2, nf)
-           * (threshold_expansion_g2(x, m2Q2, m2mu2)
-              + threshold_expansion_g2_const(m2Q2, m2mu2));
-}
-
-//==========================================================================================//
-//  Threshold limit (x->xmax) of the gluon coefficient function for FL at
-//  O(as^2). In order to pass to klmv normalization multiply m2Q2*M_PI*x
-//  and put mu^2=Q^2+4m^2
-//
-//  Eq. (3.16) of Ref. [arXiv:1205.5727] with C20 -> CL0
-//------------------------------------------------------------------------------------------//
-
-double ThresholdCoefficientFunction::
-    CL_g2_threshold(double x, double m2Q2, double m2mu2, int /*nf*/) const {
-
-    // defining nf as nan since they it is not needed
-    int nf = static_cast<int>(nan(""));
-
-    return exact_as1_->fx(x, m2Q2, m2mu2, nf)
-           * (threshold_expansion_g2(x, m2Q2, m2mu2)
-              + threshold_expansion_g2_const(m2Q2, m2mu2));
-}
-
-//==========================================================================================//
-//  beta independent term of the threshold limit (x->xmax) of the gluon
-//  coefficient function for F2 at O(as^2).
-//
-//  Eq. (3.17) of Ref. [arXiv:1205.5727]
-//------------------------------------------------------------------------------------------//
-
-double ThresholdCoefficientFunction::C2_g2_threshold_const(
-    double x, double m2Q2, double m2mu2
+double ThresholdCoefficientFunction::CL_g2_threshold_expansion_const(
+    double m2Q2, double m2mu2
 ) const {
 
-    // defining nf as nan since they it is not needed
-    int nf = static_cast<int>(nan(""));
+    double rhoq = -4. * m2Q2;
+    double betaq = sqrt(1. - rhoq);
+    double chiq = (betaq - 1) / (betaq + 1);
+    double rhoq_p_1_2 = (-1 + rhoq) * (-1 + rhoq);
+    double log_chi = log(chiq);
+    double log_chi_2 = log_chi * log_chi;
 
-    return exact_as1_->fx(x, m2Q2, m2mu2, nf)
-           * threshold_expansion_g2_const(m2Q2, m2mu2);
-}
+    double g1 = (-M_PI * M_PI / 2. + Li2(-(rhoq / (-2 + rhoq)))
+                 - (2 * (1 - rhoq) * log_chi) / betaq - (3 * log_chi_2) / 2.
+                 + pow(log(rhoq / (-2 + rhoq)), 2) / 2.)
+                / 8.;
 
-//==========================================================================================//
-//  beta independent term of the threshold limit (x->xmax) of the gluon
-//  coefficient function for FL at O(as^2).
-//
-//  Eq. (3.17) of Ref. [arXiv:1205.5727] with C20 -> CL0
-//------------------------------------------------------------------------------------------//
+    double g2 = (12.5 - 15 * ln2 + 9 * ln2 * ln2 + log_chi_2
+                 - pow(log(rhoq / (2. * (-1 + rhoq))), 2))
+                / 4.;
 
-double ThresholdCoefficientFunction::CL_g2_threshold_const(
-    double x, double m2Q2, double m2mu2
-) const {
+    double a10_OK = 0.6805555555555556 + g2
+                    - (M_PI * M_PI * (-4 + rhoq) * rhoq) / (24. * rhoq_p_1_2)
+                    + (g1 * (1 + 2 * rhoq)) / rhoq_p_1_2 - ln2
+                    - ((-4 + rhoq) * rhoq * log_chi_2) / (8. * rhoq_p_1_2)
+                    + ((-1 + rhoq * (-3 - 2 * (-3 + rhoq) * rhoq))
+                       * log(rhoq / (2. * (-1 + rhoq))))
+                          / (4. * (-2 + rhoq) * rhoq_p_1_2);
 
-    // defining nf as nan since they it is not needed
-    int nf = static_cast<int>(nan(""));
+    double a10_QED =
+        (3 - 2 * rhoq) / (8. * (-2 + rhoq))
+        - (g1 * (-1 + 6 * rhoq)) / rhoq_p_1_2
+        - (M_PI * M_PI * (-1 + 6 * rhoq)) / (24. * rhoq_p_1_2)
+        + ((-6 + rhoq + rhoq * rhoq) * log_chi) / (8. * betaq * (-2 + rhoq))
+        - ((-1 + 6 * rhoq) * log_chi_2) / (8. * rhoq_p_1_2)
+        + ((3 + 2 * rhoq * (5 + (-5 + rhoq) * rhoq))
+           * log(rhoq / (2. * (-1 + rhoq))))
+              / (4. * (-2 + rhoq) * (-2 + rhoq) * (-1 + rhoq));
 
-    return exact_as1_->fx(x, m2Q2, m2mu2, nf)
-           * threshold_expansion_g2_const(m2Q2, m2mu2);
+    double muterm = -3. / 4 * ln2 + 0.5 + log((1 + chiq)*(1 + chiq) / 2 / chiq) + 1./6;
+
+    return 16 * (CA * a10_OK + 2. * CF * a10_QED - CA * log(m2mu2) * muterm);
 }
 
 //==========================================================================================//
@@ -315,74 +362,6 @@ double ThresholdCoefficientFunction::threshold_expansion_g3_const(
                           + Lm * (8. * CA * ln2 - c0_bar(xi));
 
     return c_const_sqrt * c_const_sqrt;
-}
-
-//==========================================================================================//
-//  Threshold limit (x->xmax) of the gluon coefficient function for F2 at
-//  O(as^3).
-//
-//  Eq. (3.18) of Ref. [arXiv:1205.5727]
-//------------------------------------------------------------------------------------------//
-
-double ThresholdCoefficientFunction::C2_g3_threshold(
-    double x, double m2Q2, double m2mu2, int nf
-) const {
-
-    return exact_as1_->fx(x, m2Q2, m2mu2, nf)
-           * (threshold_expansion_g3(x, m2Q2, m2mu2, nf)
-              + threshold_expansion_g3_const(m2Q2, m2mu2));
-}
-
-//==========================================================================================//
-//  Threshold limit (x->xmax) of the gluon coefficient function for FL at
-//  O(as^3).
-//
-//  Eq. (3.18) of Ref. [arXiv:1205.5727] with C20 -> CL0
-//------------------------------------------------------------------------------------------//
-
-double ThresholdCoefficientFunction::CL_g3_threshold(
-    double x, double m2Q2, double m2mu2, int nf
-) const {
-
-    return exact_as1_->fx(x, m2Q2, m2mu2, nf)
-           * (threshold_expansion_g3(x, m2Q2, m2mu2, nf)
-              + threshold_expansion_g3_const(m2Q2, m2mu2));
-}
-
-//==========================================================================================//
-//  Approximation for the beta independent term of the threshold limit (x->xmax)
-//  of the gluon coefficient function for F2 at O(as^3).
-//
-//  Eq. (3.19) of Ref. [arXiv:1205.5727]
-//------------------------------------------------------------------------------------------//
-
-double ThresholdCoefficientFunction::C2_g3_threshold_const(
-    double x, double m2Q2, double m2mu2
-) const {
-
-    // defining nf as nan since they it is not needed
-    int nf = static_cast<int>(nan(""));
-
-    return exact_as1_->fx(x, m2Q2, m2mu2, nf)
-           * threshold_expansion_g3_const(m2Q2, m2mu2);
-}
-
-//==========================================================================================//
-//  Approximation for the beta independent term of the threshold limit (x->xmax)
-//  of the gluon coefficient function for FL at O(as^3).
-//
-//  Eq. (3.19) of Ref. [arXiv:1205.5727] with C20 -> CL0
-//------------------------------------------------------------------------------------------//
-
-double ThresholdCoefficientFunction::CL_g3_threshold_const(
-    double x, double m2Q2, double m2mu2
-) const {
-
-    // defining nf as nan since they it is not needed
-    int nf = static_cast<int>(nan(""));
-
-    return exact_as1_->fx(x, m2Q2, m2mu2, nf)
-           * threshold_expansion_g3_const(m2Q2, m2mu2);
 }
 
 //==========================================================================================//
