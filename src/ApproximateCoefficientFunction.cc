@@ -49,7 +49,7 @@ Value AbstractApproximate::fxBand(
 ) const {
     double x_max = 1. / (1. + 4 * m2Q2);
     if (x >= x_max || x <= 0)
-        return 0;
+        return Value(0.);
 
     return MuIndependentTermsBand(x, m2Q2, nf)
            + MuDependentTerms(x, m2Q2, m2mu2, nf);
@@ -98,8 +98,10 @@ struct approximation_parameters CL_g3_params = { 10., 11., 3., 2. };
 struct approximation_parameters C2_ps3_params = { 0.3, 2.5, 2.5, 1.2 };
 struct approximation_parameters CL_ps3_params = { 20., 11., 3., 2. };
 
-struct variation_parameters C2_var = { 0.3, 3. };
-struct variation_parameters CL_var = { 0.2, 2. };
+struct variation_parameters C2_var = { 3., 1.4 };
+struct variation_parameters CL_var = { 2., 1.3 };
+struct variation_parameters C2_var_legacy = { 3., 0.3 };
+struct variation_parameters CL_var_legacy = { 2., 0.2 };
 
 //==========================================================================================//
 //  ApproximateCoefficientFunction: constructor
@@ -195,9 +197,20 @@ ApproximateCoefficientFunction::ApproximateCoefficientFunction(
                 "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
             );
         }
+
+        SetLegacyVariation(false);
+
     } catch (UnexpectedException &e) {
         e.runtime_error();
     }
+}
+
+//==========================================================================================//
+//  ApproximateCoefficientFunction: set legacy threshold behavior
+//------------------------------------------------------------------------------------------//
+
+void ApproximateCoefficientFunction::SetLegacyThreshold(const bool &legacy_threshold) {
+    threshold_ -> SetLegacyThreshold(legacy_threshold);
 }
 
 //==========================================================================================//
@@ -210,6 +223,14 @@ ApproximateCoefficientFunction::~ApproximateCoefficientFunction() {
 }
 
 //==========================================================================================//
+//  ApproximateCoefficientFunction: restore legacy behavior for power terms
+//------------------------------------------------------------------------------------------//
+
+void ApproximateCoefficientFunction::SetLegacyPowerTerms(const bool &legacy_pt) {
+    asymptotic_->SetLegacyPowerTerms(legacy_pt);
+}
+
+//==========================================================================================//
 //  ApproximateCoefficientFunction: band of the approximate mu independent terms
 //------------------------------------------------------------------------------------------//
 
@@ -219,15 +240,26 @@ Value ApproximateCoefficientFunction::MuIndependentTermsBand(
 
     double x_max = 1. / (1 + 4 * m2Q2);
     if (x <= 0 || x > x_max)
-        return 0.;
+        return Value(0.);
 
     double A = approximation_.A, B = approximation_.B, C = approximation_.C,
            D = approximation_.D;
-    double var = variation_.var, fact = variation_.fact;
+    double var2 = variation_.var2, var1 = variation_.var1;
 
-    double Amax = fact * A, Amin = A / fact, Bmax = B * fact, Bmin = B / fact;
-    double Cmax = (1. + var) * C, Cmin = (1. - var) * C, Dmax = (1. + var) * D,
-           Dmin = (1. - var) * D;
+    double Amax = var1 * A, Amin = A / var1, Bmax = B * var1, Bmin = B / var1;
+    double Cmax, Cmin, Dmax, Dmin;
+
+    if (!legacy_var_) {
+        Cmax = var2 * C;
+        Cmin = C / var2;
+        Dmax = var2 * D;
+        Dmin = D / var2;
+    } else {
+        Cmax = (1. + var2) * C;
+        Cmin = (1. - var2) * C;
+        Dmax = (1. + var2) * D;
+        Dmin = (1. - var2) * D;
+    }
 
     double Avec[3] = { A, Amax, Amin };
     double Bvec[3] = { B, Bmax, Bmin };
@@ -286,6 +318,26 @@ double ApproximateCoefficientFunction::Approximation(
     double damp_asy = 1. - damp_thr;
 
     return asy * damp_asy + thresh * damp_thr;
+}
+
+//==========================================================================================//
+//  ApproximateCoefficientFunction: set method to restore legacy behavior for variation
+//------------------------------------------------------------------------------------------//
+
+void ApproximateCoefficientFunction::SetLegacyVariation(const bool &legacy_var) {
+
+    legacy_var_ = legacy_var;
+
+    if (GetKind() == '2') {
+        variation_=C2_var_legacy;
+    } else if (GetKind() == 'L') {
+        variation_=CL_var_legacy;
+    } else {
+        throw UnexpectedException(
+            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+        );
+    }
+
 }
 
 //==========================================================================================//
@@ -369,6 +421,7 @@ ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(
     }
 
     threshold_ = new ThresholdCoefficientFunction(order, kind, channel);
+    threshold_ -> SetLegacyThreshold(true);
 
     highscale_ = new HighScaleCoefficientFunction(
         order, kind, channel, highscale_version
@@ -398,7 +451,7 @@ Value ApproximateCoefficientFunctionKLMV::MuIndependentTermsBand(
 
     double xmax = 1. / (1. + 4 * m2Q2);
     if (x <= 0 || x >= xmax)
-        return 0.;
+        return Value(0.);
 
     double thr = threshold_->MuIndependentTerms(x, m2Q2, nf);
     double thr_const = threshold_->BetaIndependentTerms(x, m2Q2, 1.);
