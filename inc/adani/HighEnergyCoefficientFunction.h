@@ -77,6 +77,7 @@ class AbstractHighEnergyCoefficientFunction : public CoefficientFunction {
         double a_10(int nf) const;
         double a_11() const;
         double a_21(int nf) const;
+        double a_21_new(int nf) const;
 };
 
 //==========================================================================================//
@@ -142,6 +143,13 @@ class HighEnergyCoefficientFunction
         ) const;
         Value CL_ps3_highenergyNLL(
             double m2Q2, double m2mu2, int nf
+        ) const;
+
+        double C2_g3_highenergyNLL(
+            double m2Q2, double m2mu2, double a11, double a10, double a21, double beta0
+        ) const;
+        double CL_g3_highenergyNLL(
+            double m2Q2, double m2mu2, double a11, double a10, double a21, double beta0
         ) const;
 
 };
@@ -225,6 +233,13 @@ class HighEnergyHighScaleCoefficientFunction
         ) const;
         Value CL_ps3_highenergy_highscaleNLL(
             double m2Q2, double m2mu2, int nf
+        ) const;
+
+        double C2_g3_highenergy_highscaleNLL(
+            double m2Q2, double m2mu2, double a11, double a10, double a21, double beta0
+        ) const;
+        double CL_g3_highenergy_highscaleNLL(
+            double m2Q2, double m2mu2, double a11, double a10, double a21, double beta0
         ) const;
 
 };
