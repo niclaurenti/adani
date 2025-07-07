@@ -34,10 +34,10 @@ class AsymptoticCoefficientFunction
         );
         ~AsymptoticCoefficientFunction();
 
+        void SetLegacyPowerTerms(const bool &legacy_pt);
+
         Value
             fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
-
-        void SetLegacyPowerTerms(const bool &legacy_pt);
 
         vector<double>
             AllVariations(double x, double m2Q2, double m2mu2, int nf) const;

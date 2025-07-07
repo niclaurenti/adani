@@ -31,6 +31,19 @@ AbstractApproximate::AbstractApproximate(
 AbstractApproximate::~AbstractApproximate() { delete muterms_; }
 
 //==========================================================================================//
+//  AbstractApproximate: function that sets the double integral method
+//------------------------------------------------------------------------------------------//
+
+void AbstractApproximate::SetDoubleIntegralMethod(
+    const string &double_int_method, const double &abserr, const double &relerr,
+    const int &dim, const int &MCcalls
+) {
+    muterms_->SetDoubleIntegralMethod(
+        double_int_method, abserr, relerr, dim, MCcalls
+    );
+}
+
+//==========================================================================================//
 //  AbstractApproximate: central value of the mu-independent terms
 //------------------------------------------------------------------------------------------//
 
@@ -38,6 +51,16 @@ double AbstractApproximate::MuIndependentTerms(
     double x, double m2Q2, int nf
 ) const {
     return MuIndependentTermsBand(x, m2Q2, nf).GetCentral();
+}
+
+//==========================================================================================//
+//  AbstractApproximate: mu dependent terms
+//------------------------------------------------------------------------------------------//
+
+double AbstractApproximate::MuDependentTerms(
+    double x, double m2Q2, double m2mu2, int nf
+) const {
+    return muterms_->MuDependentTerms(x, m2Q2, m2mu2, nf);
 }
 
 //==========================================================================================//
@@ -53,29 +76,6 @@ Value AbstractApproximate::fxBand(
 
     return MuIndependentTermsBand(x, m2Q2, nf)
            + MuDependentTerms(x, m2Q2, m2mu2, nf);
-}
-
-//==========================================================================================//
-//  AbstractApproximate: mu dependent terms
-//------------------------------------------------------------------------------------------//
-
-double AbstractApproximate::MuDependentTerms(
-    double x, double m2Q2, double m2mu2, int nf
-) const {
-    return muterms_->MuDependentTerms(x, m2Q2, m2mu2, nf);
-}
-
-//==========================================================================================//
-//  AbstractApproximate: function that sets the double integral method
-//------------------------------------------------------------------------------------------//
-
-void AbstractApproximate::SetDoubleIntegralMethod(
-    const string &double_int_method, const double &abserr, const double &relerr,
-    const int &dim, const int &MCcalls
-) {
-    muterms_->SetDoubleIntegralMethod(
-        double_int_method, abserr, relerr, dim, MCcalls
-    );
 }
 
 //==========================================================================================//
@@ -206,14 +206,6 @@ ApproximateCoefficientFunction::ApproximateCoefficientFunction(
 }
 
 //==========================================================================================//
-//  ApproximateCoefficientFunction: set legacy threshold behavior
-//------------------------------------------------------------------------------------------//
-
-void ApproximateCoefficientFunction::SetLegacyThreshold(const bool &legacy_threshold) {
-    threshold_ -> SetLegacyThreshold(legacy_threshold);
-}
-
-//==========================================================================================//
 //  ApproximateCoefficientFunction: destructor
 //------------------------------------------------------------------------------------------//
 
@@ -223,11 +215,39 @@ ApproximateCoefficientFunction::~ApproximateCoefficientFunction() {
 }
 
 //==========================================================================================//
+//  ApproximateCoefficientFunction: set legacy threshold behavior
+//------------------------------------------------------------------------------------------//
+
+void ApproximateCoefficientFunction::SetLegacyThreshold(const bool &legacy_threshold) {
+    threshold_ -> SetLegacyThreshold(legacy_threshold);
+}
+
+//==========================================================================================//
 //  ApproximateCoefficientFunction: restore legacy behavior for power terms
 //------------------------------------------------------------------------------------------//
 
 void ApproximateCoefficientFunction::SetLegacyPowerTerms(const bool &legacy_pt) {
     asymptotic_->SetLegacyPowerTerms(legacy_pt);
+}
+
+//==========================================================================================//
+//  ApproximateCoefficientFunction: set method to restore legacy behavior for variation
+//------------------------------------------------------------------------------------------//
+
+void ApproximateCoefficientFunction::SetLegacyVariation(const bool &legacy_var) {
+
+    legacy_var_ = legacy_var;
+
+    if (GetKind() == '2') {
+        variation_=C2_var_legacy;
+    } else if (GetKind() == 'L') {
+        variation_=CL_var_legacy;
+    } else {
+        throw UnexpectedException(
+            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+        );
+    }
+
 }
 
 //==========================================================================================//
@@ -318,26 +338,6 @@ double ApproximateCoefficientFunction::Approximation(
     double damp_asy = 1. - damp_thr;
 
     return asy * damp_asy + thresh * damp_thr;
-}
-
-//==========================================================================================//
-//  ApproximateCoefficientFunction: set method to restore legacy behavior for variation
-//------------------------------------------------------------------------------------------//
-
-void ApproximateCoefficientFunction::SetLegacyVariation(const bool &legacy_var) {
-
-    legacy_var_ = legacy_var;
-
-    if (GetKind() == '2') {
-        variation_=C2_var_legacy;
-    } else if (GetKind() == 'L') {
-        variation_=CL_var_legacy;
-    } else {
-        throw UnexpectedException(
-            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-        );
-    }
-
 }
 
 //==========================================================================================//

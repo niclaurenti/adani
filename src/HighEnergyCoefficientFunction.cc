@@ -25,7 +25,7 @@ AbstractHighEnergyCoefficientFunction::AbstractHighEnergyCoefficientFunction(
     };
 
 //==========================================================================================//
-//  HighEnergyCoefficientFunction: band of the high energy coefficient function
+//  AbstractHighEnergyCoefficientFunction: band of the high energy coefficient function
 //------------------------------------------------------------------------------------------//
 
 Value AbstractHighEnergyCoefficientFunction::Order2(
@@ -35,7 +35,7 @@ Value AbstractHighEnergyCoefficientFunction::Order2(
 }
 
 //==========================================================================================//
-//  HighEnergyCoefficientFunction: band of the high energy coefficient function
+//  AbstractHighEnergyCoefficientFunction: band of the high energy coefficient function
 //------------------------------------------------------------------------------------------//
 
 Value AbstractHighEnergyCoefficientFunction::Order3(
@@ -45,7 +45,7 @@ Value AbstractHighEnergyCoefficientFunction::Order3(
 }
 
 //==========================================================================================//
-//  HighEnergyCoefficientFunction: band of the high energy coefficient function
+//  AbstractHighEnergyCoefficientFunction: band of the high energy coefficient function
 //------------------------------------------------------------------------------------------//
 
 Value AbstractHighEnergyCoefficientFunction::Order3LL(
@@ -55,7 +55,7 @@ Value AbstractHighEnergyCoefficientFunction::Order3LL(
 }
 
 //==========================================================================================//
-//  HighEnergyCoefficientFunction: band of the high energy coefficient function
+//  AbstractHighEnergyCoefficientFunction: band of the high energy coefficient function
 //------------------------------------------------------------------------------------------//
 
 Value AbstractHighEnergyCoefficientFunction::fxBand(
@@ -556,6 +556,11 @@ double HighEnergyCoefficientFunction::C2_ps3_highenergyLL(
     return CF / CA * C2_g3_highenergyLL(m2Q2, m2mu2);
 }
 
+//==========================================================================================//
+//  High energy limit of the quark coefficient function for F2 at O(as^3)
+//  at next-to-leading log.
+//------------------------------------------------------------------------------------------//
+
 Value HighEnergyCoefficientFunction::C2_ps3_highenergyNLL(
     double m2Q2, double m2mu2, int nf
 ) const {
@@ -721,6 +726,11 @@ double HighEnergyCoefficientFunction::CL_ps3_highenergyLL(
     return CF / CA * CL_g3_highenergyLL(m2Q2, m2mu2);
 }
 
+//==========================================================================================//
+//  High energy limit of the quark coefficient function for FL at O(as^3)
+//  at next-to-leading log.
+//------------------------------------------------------------------------------------------//
+
 Value HighEnergyCoefficientFunction::CL_ps3_highenergyNLL(
     double m2Q2, double m2mu2, int nf
 ) const {
@@ -837,6 +847,11 @@ double HighEnergyHighScaleCoefficientFunction::C2_ps3_highenergy_highscaleLL(
     return CF / CA * C2_g3_highenergy_highscaleLL(m2Q2, m2mu2);
 }
 
+//==========================================================================================//
+//  High scale limit of the high energy limit of the quark coefficient function
+//  for F2 at O(as^3) at next-to-leading log.
+//------------------------------------------------------------------------------------------//
+
 Value HighEnergyHighScaleCoefficientFunction::C2_ps3_highenergy_highscaleNLL(
     double m2Q2, double m2mu2, int nf
 ) const {
@@ -931,6 +946,11 @@ double HighEnergyHighScaleCoefficientFunction::CL_ps3_highenergy_highscaleLL(
 
     return CF / CA * CL_g3_highenergy_highscaleLL(m2Q2, m2mu2);
 }
+
+//==========================================================================================//
+//  High scale limit of the high energy limit of the quark coefficient function
+//  for F2 at O(as^3) at next-to-leading log.
+//------------------------------------------------------------------------------------------//
 
 Value HighEnergyHighScaleCoefficientFunction::CL_ps3_highenergy_highscaleNLL(
     double m2Q2, double m2mu2, int nf

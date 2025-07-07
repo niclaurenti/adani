@@ -68,10 +68,6 @@ PYBIND11_MODULE(_core, m) {
             py::arg("m2Q2"), py::arg("nf")
         )
         .def(
-            "MuDependentTermsBand", &CoefficientFunction::MuDependentTermsBand,
-            py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf")
-        )
-        .def(
             "fxBand", &CoefficientFunction::fxBand, py::arg("x"),
             py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf")
         );

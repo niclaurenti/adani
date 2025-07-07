@@ -47,6 +47,12 @@ class ExactCoefficientFunction : public CoefficientFunction {
         );
         ~ExactCoefficientFunction() override;
 
+        void SetDoubleIntegralMethod(
+            const string &double_int_method, const double &abserr = 1e-3,
+            const double &relerr = 1e-3, const int &dim = 100,
+            const int &MCcalls = 25000
+        );
+
         double fx(double x, double m2Q2, double m2mu2, int nf) const override;
         double MuIndependentTerms(double x, double m2Q2, int nf) const override;
         double MuDependentTerms(
@@ -55,12 +61,6 @@ class ExactCoefficientFunction : public CoefficientFunction {
 
         Value
             fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
-
-        void SetDoubleIntegralMethod(
-            const string &double_int_method, const double &abserr = 1e-3,
-            const double &relerr = 1e-3, const int &dim = 100,
-            const int &MCcalls = 25000
-        );
 
     private:
         double (ExactCoefficientFunction::*mu_indep_)(

@@ -38,13 +38,13 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
         );
         ~ThresholdCoefficientFunction() override;
 
+        void SetLegacyThreshold(const bool &legacy_threshold);
+
         double fx(double x, double m2Q2, double m2mu2, int nf) const override;
         Value
             fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
 
         double BetaIndependentTerms(double x, double m2Q2, double m2mu2) const;
-
-        void SetLegacyThreshold(const bool &legacy_threshold);
 
     private:
         // TODO: fx is the sum of a beta-dependent term and a beta-independent
@@ -61,8 +61,15 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
         double (ThresholdCoefficientFunction::*threshold_as1_)(
             double, double
         ) const;
+        Value (ThresholdCoefficientFunction::*fx_)(
+            double, double, double, int
+        ) const;
 
         ExactCoefficientFunction *exact_as1_;
+
+        Value Order1(double x, double m2Q2, double m2mu2, int nf) const;
+        Value PlainThreshold(double x, double m2Q2, double m2mu2, int nf) const;
+        Value ModifiedThreshold(double x, double m2Q2, double m2mu2, int nf) const;
 
         void SetFunctions();
 
@@ -91,10 +98,12 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
         //                      functions O(as^3)
         //------------------------------------------------------------------------------------------//
 
-        double threshold_expansion_g3(
-            double x, double m2Q2, double m2mu2, int nf
-        ) const;
-        double threshold_expansion_g3_const(double m2Q2, double m2mu2) const;
+        double
+            C2_g3_threshold_expansion(double x, double m2Q2, double m2mu2, int /*nf*/) const;
+        double
+            CL_g3_threshold_expansion(double x, double m2Q2, double m2mu2, int /*nf*/) const;
+        double C2_g3_threshold_expansion_const(double m2Q2, double m2mu2) const;
+        double CL_g3_threshold_expansion_const(double m2Q2, double m2mu2) const;
 
         //==========================================================================================//
         //  Functions needed for the threshold limit.
@@ -107,25 +116,10 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
         //  Function needed to make fx_ point to a zero function
         //------------------------------------------------------------------------------------------//
 
-        double ZeroFunction(
+        Value ZeroFunction(
             double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/
         ) const {
-            return 0.;
-        };
-        double ZeroFunction(
-            double /*x*/, double /*m2Q2*/
-        ) const {
-            return 0.;
-        };
-        double OneFunction(
-            double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/
-        ) const {
-            return 1.;
-        };
-        double OneFunction(
-            double /*x*/, double /*m2Q2*/
-        ) const {
-            return 1.;
+            return Value(0.);
         };
 };
 

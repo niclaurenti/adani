@@ -106,21 +106,3 @@ Value CoefficientFunction::MuIndependentTermsBand(
     return fxBand(x, m2Q2, 1., nf);
     ;
 }
-
-//==========================================================================================//
-//  CoefficientFunction: band for mu dependent terms
-//------------------------------------------------------------------------------------------//
-
-Value CoefficientFunction::MuDependentTermsBand(
-    double x, double m2Q2, double m2mu2, int nf
-) const {
-
-    double central = fxBand(x, m2Q2, m2mu2, nf).GetCentral()
-                     - MuIndependentTermsBand(x, m2Q2, nf).GetCentral();
-    double higher = fxBand(x, m2Q2, m2mu2, nf).GetHigher()
-                    - MuIndependentTermsBand(x, m2Q2, nf).GetHigher();
-    double lower = fxBand(x, m2Q2, m2mu2, nf).GetLower()
-                   - MuIndependentTermsBand(x, m2Q2, nf).GetLower();
-
-    return Value(central, higher, lower);
-}

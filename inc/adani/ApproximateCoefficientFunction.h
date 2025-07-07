@@ -67,6 +67,12 @@ class AbstractApproximate : public CoefficientFunction {
         );
         ~AbstractApproximate();
 
+        void SetDoubleIntegralMethod(
+            const string &double_int_method, const double &abserr = 1e-3,
+            const double &relerr = 1e-3, const int &dim = 1000,
+            const int &MCcalls = 25000
+        );
+
         double MuIndependentTerms(double x, double m2Q2, int nf) const override;
 
         Value
@@ -74,12 +80,6 @@ class AbstractApproximate : public CoefficientFunction {
         double MuDependentTerms(
             double x, double m2Q2, double m2mu2, int nf
         ) const override;
-
-        void SetDoubleIntegralMethod(
-            const string &double_int_method, const double &abserr = 1e-3,
-            const double &relerr = 1e-3, const int &dim = 1000,
-            const int &MCcalls = 25000
-        );
 
     private:
         ExactCoefficientFunction *muterms_;
@@ -99,13 +99,13 @@ class ApproximateCoefficientFunction : public AbstractApproximate {
         );
         ~ApproximateCoefficientFunction() override;
 
-        Value MuIndependentTermsBand(
-            double x, double m2Q2, int nf
-        ) const override;
-
         void SetLegacyThreshold(const bool &legacy_threshold);
         void SetLegacyPowerTerms(const bool &legacy_pt);
         void SetLegacyVariation(const bool &legacy_var);
+
+        Value MuIndependentTermsBand(
+            double x, double m2Q2, int nf
+        ) const override;
 
     private:
         ThresholdCoefficientFunction *threshold_;

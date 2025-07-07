@@ -65,58 +65,6 @@ HighScaleCoefficientFunction::~HighScaleCoefficientFunction() {
 }
 
 //==========================================================================================//
-//  HighScaleCoefficientFunction: central value of the highscale coefficient
-//  function
-//------------------------------------------------------------------------------------------//
-
-double HighScaleCoefficientFunction::fx(
-    double x, double m2Q2, double m2mu2, int nf
-) const {
-    return fxBand(x, m2Q2, m2mu2, nf).GetCentral();
-}
-
-//==========================================================================================//
-//  HighScaleCoefficientFunction: band of the highscale coefficient function
-//------------------------------------------------------------------------------------------//
-
-Value HighScaleCoefficientFunction::fxBand(
-    double x, double m2Q2, double m2mu2, int nf
-) const {
-    return (this->*fx_)(x, m2Q2, m2mu2, nf);
-}
-
-//==========================================================================================//
-//  HighScaleCoefficientFunction: band of the highscale coefficient function
-//  without ordering the upper and lower bands
-//------------------------------------------------------------------------------------------//
-
-vector<double> HighScaleCoefficientFunction::fxBand_NotOrdered(
-    double x, double m2Q2, double m2mu2, int nf
-) const {
-
-    if (GetOrder() == 2)
-        return fxBand(x, m2Q2, m2mu2, nf).ToVect();
-
-    double central, higher, lower;
-    central = fxBand(x, m2Q2, m2mu2, nf).GetCentral();
-
-    try {
-        higher = fxBand(x, m2Q2, m2mu2, nf).GetHigher()
-                 - a_muindep_->MuIndependentNfIndependentTerm(x).GetHigher()
-                 + (a_muindep_->NotOrdered(x))[1];
-        lower = fxBand(x, m2Q2, m2mu2, nf).GetLower()
-                - a_muindep_->MuIndependentNfIndependentTerm(x).GetLower()
-                + (a_muindep_->NotOrdered(x))[2];
-    } catch (NotImplementedException &e) {
-        e.runtime_error();
-    } catch (UnexpectedException &e) {
-        e.runtime_error();
-    }
-
-    return { central, higher, lower };
-}
-
-//==========================================================================================//
 //  HighScaleCoefficientFunction: function that sets the pointer for fxBand
 //------------------------------------------------------------------------------------------//
 
@@ -172,6 +120,58 @@ void HighScaleCoefficientFunction::SetFunctions() {
             "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
         );
     }
+}
+
+//==========================================================================================//
+//  HighScaleCoefficientFunction: central value of the highscale coefficient
+//  function
+//------------------------------------------------------------------------------------------//
+
+double HighScaleCoefficientFunction::fx(
+    double x, double m2Q2, double m2mu2, int nf
+) const {
+    return fxBand(x, m2Q2, m2mu2, nf).GetCentral();
+}
+
+//==========================================================================================//
+//  HighScaleCoefficientFunction: band of the highscale coefficient function
+//------------------------------------------------------------------------------------------//
+
+Value HighScaleCoefficientFunction::fxBand(
+    double x, double m2Q2, double m2mu2, int nf
+) const {
+    return (this->*fx_)(x, m2Q2, m2mu2, nf);
+}
+
+//==========================================================================================//
+//  HighScaleCoefficientFunction: band of the highscale coefficient function
+//  without ordering the upper and lower bands
+//------------------------------------------------------------------------------------------//
+
+vector<double> HighScaleCoefficientFunction::fxBand_NotOrdered(
+    double x, double m2Q2, double m2mu2, int nf
+) const {
+
+    if (GetOrder() == 2)
+        return fxBand(x, m2Q2, m2mu2, nf).ToVect();
+
+    double central, higher, lower;
+    central = fxBand(x, m2Q2, m2mu2, nf).GetCentral();
+
+    try {
+        higher = fxBand(x, m2Q2, m2mu2, nf).GetHigher()
+                 - a_muindep_->MuIndependentNfIndependentTerm(x).GetHigher()
+                 + (a_muindep_->NotOrdered(x))[1];
+        lower = fxBand(x, m2Q2, m2mu2, nf).GetLower()
+                - a_muindep_->MuIndependentNfIndependentTerm(x).GetLower()
+                + (a_muindep_->NotOrdered(x))[2];
+    } catch (NotImplementedException &e) {
+        e.runtime_error();
+    } catch (UnexpectedException &e) {
+        e.runtime_error();
+    }
+
+    return { central, higher, lower };
 }
 
 //==========================================================================================//

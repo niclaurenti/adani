@@ -24,17 +24,17 @@ class AbstractSplittingFunction {
         AbstractSplittingFunction() { mult_factor_ = 1.; };
         virtual ~AbstractSplittingFunction() = 0;
 
+        double GetMultFact() const { return mult_factor_; };
+        void SetMultFact(const double &mult_factor) {
+            mult_factor_ = mult_factor;
+        };
+
         // Components of the Splitting Function
         virtual double Regular(double x, int nf) const = 0;
         virtual double Singular(double x, int nf) const = 0;
         virtual double Local(int nf) const = 0;
         // Integral from 0 to x of the Singular part
         virtual double SingularIntegrated(double x, int nf) const = 0;
-
-        double GetMultFact() const { return mult_factor_; };
-        void SetMultFact(const double &mult_factor) {
-            mult_factor_ = mult_factor;
-        };
 
     protected:
         void CheckOrder(int order) const;
@@ -55,6 +55,11 @@ class SplittingFunction : public AbstractSplittingFunction {
         );
         ~SplittingFunction() override{};
 
+        // get methods
+        double GetOrder() const { return order_; };
+        char GetEntry1() const { return entry1_; };
+        char GetEntry2() const { return entry2_; };
+
         // overloading operators
         SplittingFunction operator*(const double &rhs) const;
         friend SplittingFunction
@@ -67,11 +72,6 @@ class SplittingFunction : public AbstractSplittingFunction {
         double Local(int nf) const override;
         // Integral from 0 to x of the Singular part
         double SingularIntegrated(double x, int nf) const override;
-
-        // get methods
-        double GetOrder() const { return order_; };
-        char GetEntry1() const { return entry1_; };
-        char GetEntry2() const { return entry2_; };
 
     private:
         const int order_;
