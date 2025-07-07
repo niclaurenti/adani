@@ -93,7 +93,7 @@ class Convolution : public AbstractConvolution {
         double LocalPart(double x, double m2Q2, int nf) const override;
 
     private:
-        static int NumberOfInstances_;
+        static int number_of_instances;
         static gsl_error_handler_t *old_handler_;
 
         // support function for the integral. It is static in order to be passed

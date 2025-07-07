@@ -109,7 +109,7 @@ double Convolution::regular_integrand(double z, void *p) {
 //  Convolution: initialize static data members
 //------------------------------------------------------------------------------------------//
 
-int Convolution::NumberOfInstances_ = 0;
+int Convolution::number_of_instances = 0;
 gsl_error_handler_t *Convolution::old_handler_ = nullptr;
 
 //==========================================================================================//
@@ -121,8 +121,8 @@ Convolution::Convolution(
     const double &abserr, const double &relerr, const int &dim
 )
     : AbstractConvolution(coefffunc, splitfunc, abserr, relerr, dim) {
-    NumberOfInstances_++;
-    if (NumberOfInstances_ == 1) {
+    number_of_instances++;
+    if (number_of_instances == 1) {
         old_handler_ = gsl_set_error_handler(NULL);
         gsl_set_error_handler_off();
     }
@@ -133,8 +133,8 @@ Convolution::Convolution(
 //------------------------------------------------------------------------------------------//
 
 Convolution::~Convolution() {
-    NumberOfInstances_--;
-    if (NumberOfInstances_ == 0) {
+    number_of_instances--;
+    if (number_of_instances == 0) {
         gsl_set_error_handler(old_handler_);
     }
 }

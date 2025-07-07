@@ -20,13 +20,13 @@ double beta1(int nf) {
 //  Theta function.
 //------------------------------------------------------------------------------------------//
 
-double theta(double x) {
+// double theta(double x) {
 
-    if (x > 0)
-        return 1.;
-    else
-        return 0.;
-}
+//     if (x > 0)
+//         return 1.;
+//     else
+//         return 0.;
+// }
 
 //==========================================================================================//
 //  Dilogarithm. From Marco Bonvini.

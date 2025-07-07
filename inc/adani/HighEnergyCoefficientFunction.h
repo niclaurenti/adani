@@ -22,9 +22,7 @@
 //                      Notation:
 //      High energy: small x limit
 //      High energy high scale: Q^2 >> m^2 limit of the
-//      small x limit (or the opposite) Power terms: power
-//      terms in the small x liimit, obtained via
-//      C_powerterms = C_highenergy - C_highenergy_highscale
+//      small x limit (or the opposite)
 //------------------------------------------------------------------------------------------//
 
 //==========================================================================================//

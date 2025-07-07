@@ -5,10 +5,12 @@
  *
  *         Author:  Daniele Adani
  *
- *    Description:  L'allenamento si fa!
+ *    Description:  Tutti in piedi! Tutti in piedi per il Brasile! Tutti a danzare
+ *    con la Selecao, per onorare il calcio. Non c'è posto per i deboli di spirito:
+ *    chi ama il calcio deve godere, gioire e, se può, ringraziare.
  *
- *  In this file there are the coefficient functions in the
- *  high energy limit, i.e. x -> 0
+ *  In this file there are the terms of the coefficient functions needed to match the
+ *  high scale coefficient function to the high energy coefficient functions
  *
  * =====================================================================================
  */
