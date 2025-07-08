@@ -65,7 +65,6 @@ Value MultiplicativeAsymptotic::fxBand(
     double x, double m2Q2, double m2mu2, int nf
 ) const {
     return (this->*fx_)(x, m2Q2, m2mu2, nf) + (this->*fx_err_)(x, m2Q2, m2mu2, nf);
-    ;
 }
 
 //==========================================================================================//
