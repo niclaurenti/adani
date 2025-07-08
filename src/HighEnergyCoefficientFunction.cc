@@ -10,22 +10,23 @@
 AbstractHighEnergyCoefficientFunction::AbstractHighEnergyCoefficientFunction(
     const int &order, const char &kind, const char &channel, const bool &NLL
 )
-    : CoefficientFunction(order, kind, channel), NLL_(NLL){
-        if(order == 1) {
-            fx_ = &AbstractHighEnergyCoefficientFunction::ZeroFunctionBand;
-        } else if (order == 2) {
-            fx_ = &AbstractHighEnergyCoefficientFunction::Order2;
+    : CoefficientFunction(order, kind, channel), NLL_(NLL) {
+    if (order == 1) {
+        fx_ = &AbstractHighEnergyCoefficientFunction::ZeroFunctionBand;
+    } else if (order == 2) {
+        fx_ = &AbstractHighEnergyCoefficientFunction::Order2;
+    } else {
+        if (NLL) {
+            fx_ = &AbstractHighEnergyCoefficientFunction::Order3;
         } else {
-            if (NLL) {
-                fx_ = &AbstractHighEnergyCoefficientFunction::Order3;
-            } else {
-                fx_ = &AbstractHighEnergyCoefficientFunction::Order3LL;
-            }
+            fx_ = &AbstractHighEnergyCoefficientFunction::Order3LL;
         }
-    };
+    }
+};
 
 //==========================================================================================//
-//  AbstractHighEnergyCoefficientFunction: band of the high energy coefficient function
+//  AbstractHighEnergyCoefficientFunction: band of the high energy coefficient
+//  function
 //------------------------------------------------------------------------------------------//
 
 Value AbstractHighEnergyCoefficientFunction::Order2(
@@ -35,7 +36,8 @@ Value AbstractHighEnergyCoefficientFunction::Order2(
 }
 
 //==========================================================================================//
-//  AbstractHighEnergyCoefficientFunction: band of the high energy coefficient function
+//  AbstractHighEnergyCoefficientFunction: band of the high energy coefficient
+//  function
 //------------------------------------------------------------------------------------------//
 
 Value AbstractHighEnergyCoefficientFunction::Order3(
@@ -45,7 +47,8 @@ Value AbstractHighEnergyCoefficientFunction::Order3(
 }
 
 //==========================================================================================//
-//  AbstractHighEnergyCoefficientFunction: band of the high energy coefficient function
+//  AbstractHighEnergyCoefficientFunction: band of the high energy coefficient
+//  function
 //------------------------------------------------------------------------------------------//
 
 Value AbstractHighEnergyCoefficientFunction::Order3LL(
@@ -55,7 +58,8 @@ Value AbstractHighEnergyCoefficientFunction::Order3LL(
 }
 
 //==========================================================================================//
-//  AbstractHighEnergyCoefficientFunction: band of the high energy coefficient function
+//  AbstractHighEnergyCoefficientFunction: band of the high energy coefficient
+//  function
 //------------------------------------------------------------------------------------------//
 
 Value AbstractHighEnergyCoefficientFunction::fxBand(
@@ -141,10 +145,9 @@ void HighEnergyCoefficientFunction::SetFunctions() {
 //  HighEnergyCoefficientFunction: band of the high energy coefficient function
 //------------------------------------------------------------------------------------------//
 
-double HighEnergyCoefficientFunction::LL(
-    double m2Q2, double m2mu2
-) const {
-    return (this->*LL_)(m2Q2, m2mu2);;
+double HighEnergyCoefficientFunction::LL(double m2Q2, double m2mu2) const {
+    return (this->*LL_)(m2Q2, m2mu2);
+    ;
 }
 
 //==========================================================================================//
@@ -154,7 +157,8 @@ double HighEnergyCoefficientFunction::LL(
 Value HighEnergyCoefficientFunction::NLL(
     double m2Q2, double m2mu2, int nf
 ) const {
-    return (this->*NLL_)(m2Q2, m2mu2, nf);;
+    return (this->*NLL_)(m2Q2, m2mu2, nf);
+    ;
 }
 
 //==========================================================================================//
@@ -249,7 +253,8 @@ void HighEnergyHighScaleCoefficientFunction::SetFunctions() {
 double HighEnergyHighScaleCoefficientFunction::LL(
     double m2Q2, double m2mu2
 ) const {
-    return (this->*LL_)(m2Q2, m2mu2);;
+    return (this->*LL_)(m2Q2, m2mu2);
+    ;
 }
 
 //==========================================================================================//
@@ -259,7 +264,8 @@ double HighEnergyHighScaleCoefficientFunction::LL(
 Value HighEnergyHighScaleCoefficientFunction::NLL(
     double m2Q2, double m2mu2, int nf
 ) const {
-    return (this->*NLL_)(m2Q2, m2mu2, nf);;
+    return (this->*NLL_)(m2Q2, m2mu2, nf);
+    ;
 }
 
 //==========================================================================================//
@@ -473,7 +479,8 @@ Value HighEnergyCoefficientFunction::C2_g3_highenergyNLL(
     double a10 = a_10(nf);
     double beta_0 = beta0(nf);
 
-    double central_value = C2_g3_highenergyNLL(m2Q2, m2mu2, a11, a10, a21, beta_0);
+    double central_value =
+        C2_g3_highenergyNLL(m2Q2, m2mu2, a11, a10, a21, beta_0);
     double error = C2_g3_highenergyNLL(m2Q2, m2mu2, a11, a10, a21_new, beta_0);
 
     double delta = std::abs(central_value - error);
@@ -631,7 +638,8 @@ Value HighEnergyCoefficientFunction::CL_g3_highenergyNLL(
     double a10 = a_10(nf);
     double beta_0 = beta0(nf);
 
-    double central_value = CL_g3_highenergyNLL(m2Q2, m2mu2, a11, a10, a21, beta_0);
+    double central_value =
+        CL_g3_highenergyNLL(m2Q2, m2mu2, a11, a10, a21, beta_0);
     double error = CL_g3_highenergyNLL(m2Q2, m2mu2, a11, a10, a21_new, beta_0);
 
     double delta = std::abs(central_value - error);
@@ -671,45 +679,44 @@ double HighEnergyCoefficientFunction::CL_g3_highenergyNLL(
 
     double Logxi = log(1. + 1. / (4. * m2Q2));
 
-    double res =
-        (a21
-             * (-64. / 3 * II * m2Q2 * (1. + 3. * m2Q2)
-                + 64. / 9 * (-1. + 12. * m2Q2)
-                - 16. / 9 * J * (-3. - 4. * m2Q2 + 24. * m4Q4))
-         + a10 * a11
-               * (64. / 3 * K * m2Q2 * (1. + 3. * m2Q2)
-                  + 256. / 27 * (17. + 120. * m2Q2)
-                  - 32. / 27 * J * (3. + 136. * m2Q2 + 480. * m4Q4)
-                  + II
-                        * (-64. / 3 * Logxi * m2Q2 * (1. + 3. * m2Q2)
-                           - 32. / 9 * (-3. - 4. * m2Q2 + 24. * m4Q4)))
-         + a11 * beta0
-               * (-32. / 3 * K * m2Q2 * (1. + 3. * m2Q2)
-                  - 128. / 27 * (17. + 120. * m2Q2)
-                  + 16. / 27 * J * (3. + 136. * m2Q2 + 480. * m4Q4)
-                  + II
-                        * (32. / 3 * Logxi * m2Q2 * (1. + 3. * m2Q2)
-                           + 16. / 9 * (-3. - 4. * m2Q2 + 24. * m4Q4)))
-         + (a21
-                * (-64. / 3 * J * m2Q2 * (1. + 3. * m2Q2)
-                   + 64. / 3 * (1. + 6. * m2Q2))
-            + a10 * a11
-                  * (-128. / 3 * II * m2Q2 * (1. + 3. * m2Q2)
-                     + 128. / 9 * (-1. + 12. * m2Q2)
-                     - 32. / 9 * J * (-3. - 4. * m2Q2 + 24. * m4Q4))
-            + a11 * beta0
-                  * (64. / 3 * II * m2Q2 * (1. + 3. * m2Q2)
-                     - 64. / 9 * (-1. + 12. * m2Q2)
-                     + 16. / 9 * J * (-3. - 4. * m2Q2 + 24. * m4Q4)))
-               * Lmu
-         + (a11 * beta0
-                * (32. / 3 * J * m2Q2 * (1. + 3. * m2Q2)
-                   - 32. / 3 * (1. + 6. * m2Q2))
-            + a10 * a11
-                  * (-64. / 3 * J * m2Q2 * (1. + 3. * m2Q2)
-                     + 64. / 3 * (1. + 6. * m2Q2)))
-               * Lmu2)
-        / (1. + 4. * m2Q2);
+    double res = (a21
+                      * (-64. / 3 * II * m2Q2 * (1. + 3. * m2Q2)
+                         + 64. / 9 * (-1. + 12. * m2Q2)
+                         - 16. / 9 * J * (-3. - 4. * m2Q2 + 24. * m4Q4))
+                  + a10 * a11
+                        * (64. / 3 * K * m2Q2 * (1. + 3. * m2Q2)
+                           + 256. / 27 * (17. + 120. * m2Q2)
+                           - 32. / 27 * J * (3. + 136. * m2Q2 + 480. * m4Q4)
+                           + II
+                                 * (-64. / 3 * Logxi * m2Q2 * (1. + 3. * m2Q2)
+                                    - 32. / 9 * (-3. - 4. * m2Q2 + 24. * m4Q4)))
+                  + a11 * beta0
+                        * (-32. / 3 * K * m2Q2 * (1. + 3. * m2Q2)
+                           - 128. / 27 * (17. + 120. * m2Q2)
+                           + 16. / 27 * J * (3. + 136. * m2Q2 + 480. * m4Q4)
+                           + II
+                                 * (32. / 3 * Logxi * m2Q2 * (1. + 3. * m2Q2)
+                                    + 16. / 9 * (-3. - 4. * m2Q2 + 24. * m4Q4)))
+                  + (a21
+                         * (-64. / 3 * J * m2Q2 * (1. + 3. * m2Q2)
+                            + 64. / 3 * (1. + 6. * m2Q2))
+                     + a10 * a11
+                           * (-128. / 3 * II * m2Q2 * (1. + 3. * m2Q2)
+                              + 128. / 9 * (-1. + 12. * m2Q2)
+                              - 32. / 9 * J * (-3. - 4. * m2Q2 + 24. * m4Q4))
+                     + a11 * beta0
+                           * (64. / 3 * II * m2Q2 * (1. + 3. * m2Q2)
+                              - 64. / 9 * (-1. + 12. * m2Q2)
+                              + 16. / 9 * J * (-3. - 4. * m2Q2 + 24. * m4Q4)))
+                        * Lmu
+                  + (a11 * beta0
+                         * (32. / 3 * J * m2Q2 * (1. + 3. * m2Q2)
+                            - 32. / 3 * (1. + 6. * m2Q2))
+                     + a10 * a11
+                           * (-64. / 3 * J * m2Q2 * (1. + 3. * m2Q2)
+                              + 64. / 3 * (1. + 6. * m2Q2)))
+                        * Lmu2)
+                 / (1. + 4. * m2Q2);
 
     return res;
 }
@@ -782,8 +789,10 @@ Value HighEnergyHighScaleCoefficientFunction::C2_g3_highenergy_highscaleNLL(
     double a10 = a_10(nf);
     double beta_0 = beta0(nf);
 
-    double central_value = C2_g3_highenergy_highscaleNLL(m2Q2, m2mu2, a11, a10, a21, beta_0);
-    double error = C2_g3_highenergy_highscaleNLL(m2Q2, m2mu2, a11, a10, a21_new, beta_0);
+    double central_value =
+        C2_g3_highenergy_highscaleNLL(m2Q2, m2mu2, a11, a10, a21, beta_0);
+    double error =
+        C2_g3_highenergy_highscaleNLL(m2Q2, m2mu2, a11, a10, a21_new, beta_0);
 
     double delta = std::abs(central_value - error);
 
@@ -813,24 +822,23 @@ double HighEnergyHighScaleCoefficientFunction::C2_g3_highenergy_highscaleNLL(
 
     double res =
         -32. / 9 * a21 * (-5. + pi2)
-         + (-416. * a21 / 9 + 64. / 27 * a10 * a11 * (-71. + 3. * pi2)
-            - 32. / 27 * a11 * beta0 * (-71. + 3. * pi2))
-               * LQ
-         + (416. * a10 * a11 / 9 + 32. * a21 / 3 - 208. * a11 * beta0 / 9)
-               * LQ2
-         + (-64. * a10 * a11 / 9 + 32. * a11 * beta0 / 9) * LQ3
-         + Lmu2
-               * (32. * a10 * a11 / 3 - 16. * a11 * beta0 / 3
-                  + (-64 * a10 * a11 / 3 + 32. * a11 * beta0 / 3) * LQ)
-         + Lmu
-               * (32. * a21 / 3 - 64. / 9 * a10 * a11 * (-5. + pi2)
-                  + 32. / 9 * a11 * beta0 * (-5. + pi2)
-                  + (-832. * a10 * a11 / 9 - 64 * a21 / 3
-                     + 416. * a11 * beta0 / 9)
-                        * LQ
-                  + (64. * a10 * a11 / 3 - 32. * a11 * beta0 / 3) * LQ2)
-         - 32. / 27 * a10 * a11 * (-92. + 13. * pi2 - 72. * zeta3)
-         + 16. / 27 * a11 * beta0 * (-92. + 13. * pi2 - 72. * zeta3);
+        + (-416. * a21 / 9 + 64. / 27 * a10 * a11 * (-71. + 3. * pi2)
+           - 32. / 27 * a11 * beta0 * (-71. + 3. * pi2))
+              * LQ
+        + (416. * a10 * a11 / 9 + 32. * a21 / 3 - 208. * a11 * beta0 / 9) * LQ2
+        + (-64. * a10 * a11 / 9 + 32. * a11 * beta0 / 9) * LQ3
+        + Lmu2
+              * (32. * a10 * a11 / 3 - 16. * a11 * beta0 / 3
+                 + (-64 * a10 * a11 / 3 + 32. * a11 * beta0 / 3) * LQ)
+        + Lmu
+              * (32. * a21 / 3 - 64. / 9 * a10 * a11 * (-5. + pi2)
+                 + 32. / 9 * a11 * beta0 * (-5. + pi2)
+                 + (-832. * a10 * a11 / 9 - 64 * a21 / 3
+                    + 416. * a11 * beta0 / 9)
+                       * LQ
+                 + (64. * a10 * a11 / 3 - 32. * a11 * beta0 / 3) * LQ2)
+        - 32. / 27 * a10 * a11 * (-92. + 13. * pi2 - 72. * zeta3)
+        + 16. / 27 * a11 * beta0 * (-92. + 13. * pi2 - 72. * zeta3);
 
     return res;
 }
@@ -894,8 +902,10 @@ Value HighEnergyHighScaleCoefficientFunction::CL_g3_highenergy_highscaleNLL(
     double a10 = a_10(nf);
     double beta_0 = beta0(nf);
 
-    double central_value = CL_g3_highenergy_highscaleNLL(m2Q2, m2mu2, a11, a10, a21, beta_0);
-    double error = CL_g3_highenergy_highscaleNLL(m2Q2, m2mu2, a11, a10, a21_new, beta_0);
+    double central_value =
+        CL_g3_highenergy_highscaleNLL(m2Q2, m2mu2, a11, a10, a21, beta_0);
+    double error =
+        CL_g3_highenergy_highscaleNLL(m2Q2, m2mu2, a11, a10, a21_new, beta_0);
 
     double delta = std::abs(central_value - error);
 

@@ -46,7 +46,8 @@ void AsymptoticCoefficientFunction::SetLegacyPowerTerms(const bool &legacy_pt) {
         if (legacy_pt) {
             if (GetKind() == '2') {
                 throw NotPresentException(
-                    "For kind='2' legacy power terms are identical to the current ones!",
+                    "For kind='2' legacy power terms are identical to the "
+                    "current ones!",
                     __PRETTY_FUNCTION__, __LINE__
                 );
             } else {
@@ -61,7 +62,8 @@ void AsymptoticCoefficientFunction::SetLegacyPowerTerms(const bool &legacy_pt) {
                     powerterms_ = new MultiplicativeAsymptotic(
                         GetOrder(), GetKind(), GetChannel(), NLL_
                     );
-                    fx_ = &AsymptoticCoefficientFunction::MultiplicativeMatching;
+                    fx_ =
+                        &AsymptoticCoefficientFunction::MultiplicativeMatching;
                 }
             }
         }

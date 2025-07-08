@@ -106,15 +106,18 @@ PYBIND11_MODULE(_core, m) {
             py::arg("dim") = 1000
         )
         .def(
-            "SetLegacyThreshold", &ApproximateCoefficientFunction::SetLegacyThreshold,
+            "SetLegacyThreshold",
+            &ApproximateCoefficientFunction::SetLegacyThreshold,
             py::arg("legacy_threshold")
         )
         .def(
-            "SetLegacyVariation", &ApproximateCoefficientFunction::SetLegacyVariation,
+            "SetLegacyVariation",
+            &ApproximateCoefficientFunction::SetLegacyVariation,
             py::arg("legacy_var")
         )
         .def(
-            "SetLegacyPowerTerms", &ApproximateCoefficientFunction::SetLegacyPowerTerms,
+            "SetLegacyPowerTerms",
+            &ApproximateCoefficientFunction::SetLegacyPowerTerms,
             py::arg("legacy_pt")
         );
 
@@ -144,7 +147,8 @@ PYBIND11_MODULE(_core, m) {
             py::arg("NLL") = true, py::arg("highscale_version") = "exact"
         )
         .def(
-            "SetLegacyPowerTerms", &AsymptoticCoefficientFunction::SetLegacyPowerTerms
+            "SetLegacyPowerTerms",
+            &AsymptoticCoefficientFunction::SetLegacyPowerTerms
         );
 
     // ExactCoefficientFunction
@@ -173,12 +177,12 @@ PYBIND11_MODULE(_core, m) {
     )
         .def("GetNLL", &AbstractHighEnergyCoefficientFunction::GetNLL)
         .def(
-            "LL", &AbstractHighEnergyCoefficientFunction::LL,
-            py::arg("m2Q2"), py::arg("m2mu2")
+            "LL", &AbstractHighEnergyCoefficientFunction::LL, py::arg("m2Q2"),
+            py::arg("m2mu2")
         )
         .def(
-            "NLL", &AbstractHighEnergyCoefficientFunction::NLL,
-            py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf")
+            "NLL", &AbstractHighEnergyCoefficientFunction::NLL, py::arg("m2Q2"),
+            py::arg("m2mu2"), py::arg("nf")
         );
 
     // HighEnergyCoefficientFunction
@@ -345,7 +349,8 @@ PYBIND11_MODULE(_core, m) {
             py::arg("m2Q2"), py::arg("m2mu2")
         )
         .def(
-            "SetLegacyThreshold", &ThresholdCoefficientFunction::SetLegacyThreshold,
+            "SetLegacyThreshold",
+            &ThresholdCoefficientFunction::SetLegacyThreshold,
             py::arg("legacy_threshold")
         );
 

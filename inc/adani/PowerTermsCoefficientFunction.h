@@ -5,12 +5,13 @@
  *
  *         Author:  Daniele Adani
  *
- *    Description:  Tutti in piedi! Tutti in piedi per il Brasile! Tutti a danzare
- *    con la Selecao, per onorare il calcio. Non c'è posto per i deboli di spirito:
- *    chi ama il calcio deve godere, gioire e, se può, ringraziare.
+ *    Description:  Tutti in piedi! Tutti in piedi per il Brasile! Tutti a
+ * danzare con la Selecao, per onorare il calcio. Non c'è posto per i deboli di
+ * spirito: chi ama il calcio deve godere, gioire e, se può, ringraziare.
  *
- *  In this file there are the terms of the coefficient functions needed to match the
- *  high scale coefficient function to the high energy coefficient functions
+ *  In this file there are the terms of the coefficient functions needed to
+ * match the high scale coefficient function to the high energy coefficient
+ * functions
  *
  * =====================================================================================
  */
@@ -33,28 +34,31 @@ class AbstractPowerTerms : public CoefficientFunction {
         );
         ~AbstractPowerTerms() override;
 
-        HighEnergyCoefficientFunction* GetHighEnergy() const {return highenergy_;};
-        HighEnergyHighScaleCoefficientFunction* GetHighEnergyHighScale() const {return highenergyhighscale_;};
+        HighEnergyCoefficientFunction *GetHighEnergy() const {
+            return highenergy_;
+        };
+        HighEnergyHighScaleCoefficientFunction *GetHighEnergyHighScale() const {
+            return highenergyhighscale_;
+        };
 
     private:
         HighEnergyCoefficientFunction *highenergy_;
         HighEnergyHighScaleCoefficientFunction *highenergyhighscale_;
 };
 
-
 //==========================================================================================//
 //  class PowerTermsCoefficientFunction
 //------------------------------------------------------------------------------------------//
 
-class PowerTermsCoefficientFunction
-    : public AbstractPowerTerms {
+class PowerTermsCoefficientFunction : public AbstractPowerTerms {
 
     public:
         PowerTermsCoefficientFunction(
             const int &order, const char &kind, const char &channel,
             const bool &NLL = true
-        ) : AbstractPowerTerms(order, kind, channel, NLL) {} ;
-        ~PowerTermsCoefficientFunction() override {};
+        )
+            : AbstractPowerTerms(order, kind, channel, NLL){};
+        ~PowerTermsCoefficientFunction() override{};
 
         Value
             fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
@@ -64,15 +68,14 @@ class PowerTermsCoefficientFunction
 //  class MultiplicativeAsymptotic
 //------------------------------------------------------------------------------------------//
 
-class MultiplicativeAsymptotic
-    : public AbstractPowerTerms {
+class MultiplicativeAsymptotic : public AbstractPowerTerms {
 
     public:
         MultiplicativeAsymptotic(
             const int &order, const char &kind, const char &channel,
             const bool &NLL = true
         );
-        ~MultiplicativeAsymptotic() override {};
+        ~MultiplicativeAsymptotic() override{};
 
         Value
             fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
@@ -81,15 +84,28 @@ class MultiplicativeAsymptotic
         Value (MultiplicativeAsymptotic::*fx_)(
             double, double, double, int
         ) const;
+        Value (MultiplicativeAsymptotic::*fx_err_)(
+            double, double, double, int
+        ) const;
 
         Value PlainRatio(double x, double m2Q2, double m2mu2, int nf) const;
-        Value RegoularizedRatio(double x, double m2Q2, double m2mu2, int nf) const;
+        Value RegoularizedRatio(
+            double x, double m2Q2, double m2mu2, int nf
+        ) const;
+        Value RegoularizedRatioError(
+            double x, double m2Q2, double m2mu2, int nf
+        ) const;
 
-        Value OneFunction(double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const {
+        Value OneFunction(
+            double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/
+        ) const {
             return Value(1.);
         }
-
+        Value ZeroFunction(
+            double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/
+        ) const {
+            return Value(0.);
+        }
 };
-
 
 #endif

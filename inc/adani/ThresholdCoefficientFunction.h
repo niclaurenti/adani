@@ -66,7 +66,9 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
 
         Value Order1(double x, double m2Q2, double m2mu2, int nf) const;
         Value PlainThreshold(double x, double m2Q2, double m2mu2, int nf) const;
-        Value ModifiedThreshold(double x, double m2Q2, double m2mu2, int nf) const;
+        Value ModifiedThreshold(
+            double x, double m2Q2, double m2mu2, int nf
+        ) const;
 
         void SetFunctions();
 
@@ -83,10 +85,12 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
         //                      functions O(as^2)
         //------------------------------------------------------------------------------------------//
 
-        double
-            C2_g2_threshold_expansion(double x, double m2Q2, double m2mu2, int /*nf*/) const;
-        double
-            CL_g2_threshold_expansion(double x, double m2Q2, double m2mu2, int /*nf*/) const;
+        double C2_g2_threshold_expansion(
+            double x, double m2Q2, double m2mu2, int /*nf*/
+        ) const;
+        double CL_g2_threshold_expansion(
+            double x, double m2Q2, double m2mu2, int /*nf*/
+        ) const;
         double C2_g2_threshold_expansion_const(double m2Q2, double m2mu2) const;
         double CL_g2_threshold_expansion_const(double m2Q2, double m2mu2) const;
 
@@ -95,10 +99,12 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
         //                      functions O(as^3)
         //------------------------------------------------------------------------------------------//
 
-        double
-            C2_g3_threshold_expansion(double x, double m2Q2, double m2mu2, int /*nf*/) const;
-        double
-            CL_g3_threshold_expansion(double x, double m2Q2, double m2mu2, int /*nf*/) const;
+        double C2_g3_threshold_expansion(
+            double x, double m2Q2, double m2mu2, int /*nf*/
+        ) const;
+        double CL_g3_threshold_expansion(
+            double x, double m2Q2, double m2mu2, int /*nf*/
+        ) const;
         double C2_g3_threshold_expansion_const(double m2Q2, double m2mu2) const;
         double CL_g3_threshold_expansion_const(double m2Q2, double m2mu2) const;
 

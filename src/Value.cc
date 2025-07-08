@@ -92,90 +92,68 @@ Value Value::operator+(const Value &rhs) const {
 
 //==========================================================================================//
 //  Value: overload of operator - Value
+//  the error on the result is the larger between the errors of rhs and lhs
 //------------------------------------------------------------------------------------------//
 
-Value Value::operator-(const Value& rhs) const {
-    double higher = higher_ - rhs.higher_;
-    double lower = lower_ - rhs.lower_;
-    if (higher > lower) {
-        return Value(
-            central_ - rhs.central_,
-            higher,
-            lower
-        );
-    } else {
-        return Value(
-            central_ - rhs.central_,
-            lower,
-            higher
-        );
-    }
-    // TODO: in this way the error is very small: should take all the
-    // combinations?
+Value Value::operator-(const Value &rhs) const {
+    double central = central_ - rhs.central_;
+
+    double delta_low_lhs = std::abs(central_ - lower_);
+    double delta_up_lhs = std::abs(central_ - higher_);
+
+    double delta_low_rhs = std::abs(rhs.central_ - rhs.lower_);
+    double delta_up_rhs = std::abs(rhs.central_ - rhs.higher_);
+
+    double delta_low =
+        delta_low_lhs > delta_low_rhs ? delta_low_lhs : delta_low_rhs;
+    double delta_up = delta_up_lhs > delta_up_rhs ? delta_up_lhs : delta_up_rhs;
+
+    return Value(central, central + delta_up, central - delta_low);
 }
 
 //==========================================================================================//
 //  Value: overload of operator * Value
-//  since when some elements of the Value class are negative, it gives probles in the
-//  ordering of central, higher and lower, we compute the error as sum of the relative errors
+//  since when some elements of the Value class are negative, it gives probles
+//  in the ordering of central, higher and lower, we compute the error as sum of
+//  the errors
 //------------------------------------------------------------------------------------------//
 
-Value Value::operator*(const Value& rhs) const {
+Value Value::operator*(const Value &rhs) const {
     double central = central_ * rhs.central_;
-    double res = std::abs(central);
-    double delta_lhs, delta_rhs;
 
-    double d_lhs_h=std::abs(central_ - higher_);
-    double d_lhs_l = std::abs(central_ - lower_);
-    double d_rhs_h = std::abs(rhs.central_ - rhs.higher_);
-    double d_rhs_l = std::abs(rhs.central_ - rhs.lower_);
+    double delta_low_lhs = std::abs(central_ - lower_);
+    double delta_up_lhs = std::abs(central_ - higher_);
 
-    if (d_lhs_h > d_lhs_l) delta_lhs = d_lhs_h;
-    else delta_lhs = d_lhs_l;
+    double delta_low_rhs = std::abs(rhs.central_ - rhs.lower_);
+    double delta_up_rhs = std::abs(rhs.central_ - rhs.higher_);
 
-    if (d_rhs_h > d_rhs_l) delta_rhs = d_rhs_h;
-    else delta_rhs = d_rhs_l;
+    double delta_low = delta_low_lhs + delta_low_rhs;
+    double delta_up = delta_up_lhs + delta_up_rhs;
 
-    // TODO: should I return the average of the errors?
-
-    double delta_res = res * (delta_lhs / std::abs(central_) + delta_rhs / std::abs(rhs.central_));
-
-    return Value(central, central + delta_res, central - delta_res);
-
+    return Value(central, central + delta_up, central - delta_low);
 }
 
 //==========================================================================================//
 //  Value: overload of operator / Value
-//  since when some elements of the Value class are negative, it gives probles in the
-//  ordering of central, higher and lower, we compute the error as sum of the relative errors
+//  since when some elements of the Value class are negative, it gives probles
+//  in the ordering of central, higher and lower, we compute the error as the
+//  larger error between lhs and rhs
 //------------------------------------------------------------------------------------------//
 
-Value Value::operator/(const Value& rhs) const {
+Value Value::operator/(const Value &rhs) const {
     double central = central_ / rhs.central_;
-    //if (central > 1. ) central = 1.;
-    if (central < 0. ) central = -central;
 
-    // double res = std::abs(central);
-    // double delta_lhs, delta_rhs;
+    double delta_low_lhs = std::abs(central_ - lower_);
+    double delta_up_lhs = std::abs(central_ - higher_);
 
-    // double d_lhs_h=std::abs(central_ - higher_);
-    // double d_lhs_l = std::abs(central_ - lower_);
-    // double d_rhs_h = std::abs(rhs.central_ - rhs.higher_);
-    // double d_rhs_l = std::abs(rhs.central_ - rhs.lower_);
+    double delta_low_rhs = std::abs(rhs.central_ - rhs.lower_);
+    double delta_up_rhs = std::abs(rhs.central_ - rhs.higher_);
 
-    // if (d_lhs_h > d_lhs_l) delta_lhs = d_lhs_h;
-    // else delta_lhs = d_lhs_l;
+    double delta_low =
+        delta_low_lhs > delta_low_rhs ? delta_low_lhs : delta_low_rhs;
+    double delta_up = delta_up_lhs > delta_up_rhs ? delta_up_lhs : delta_up_rhs;
 
-    // if (d_rhs_h > d_rhs_l) delta_rhs = d_rhs_h;
-    // else delta_rhs = d_rhs_l;
-
-    // TODO: should I return the average of the errors?
-
-    // double delta_res = res * (delta_lhs / std::abs(central_) + delta_rhs / std::abs(rhs.central_));
-    // for the moment let's remove the errors
-    double delta_res = 0.;
-
-    return Value(central, central + delta_res, central - delta_res);
+    return Value(central, central + delta_up, central - delta_low);
 }
 
 //==========================================================================================//

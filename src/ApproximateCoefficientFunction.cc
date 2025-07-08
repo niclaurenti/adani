@@ -218,36 +218,40 @@ ApproximateCoefficientFunction::~ApproximateCoefficientFunction() {
 //  ApproximateCoefficientFunction: set legacy threshold behavior
 //------------------------------------------------------------------------------------------//
 
-void ApproximateCoefficientFunction::SetLegacyThreshold(const bool &legacy_threshold) {
-    threshold_ -> SetLegacyThreshold(legacy_threshold);
+void ApproximateCoefficientFunction::SetLegacyThreshold(
+    const bool &legacy_threshold
+) {
+    threshold_->SetLegacyThreshold(legacy_threshold);
 }
 
 //==========================================================================================//
 //  ApproximateCoefficientFunction: restore legacy behavior for power terms
 //------------------------------------------------------------------------------------------//
 
-void ApproximateCoefficientFunction::SetLegacyPowerTerms(const bool &legacy_pt) {
+void ApproximateCoefficientFunction::SetLegacyPowerTerms(const bool &legacy_pt
+) {
     asymptotic_->SetLegacyPowerTerms(legacy_pt);
 }
 
 //==========================================================================================//
-//  ApproximateCoefficientFunction: set method to restore legacy behavior for variation
+//  ApproximateCoefficientFunction: set method to restore legacy behavior for
+//  variation
 //------------------------------------------------------------------------------------------//
 
-void ApproximateCoefficientFunction::SetLegacyVariation(const bool &legacy_var) {
+void ApproximateCoefficientFunction::SetLegacyVariation(const bool &legacy_var
+) {
 
     legacy_var_ = legacy_var;
 
     if (GetKind() == '2') {
-        variation_=C2_var_legacy;
+        variation_ = C2_var_legacy;
     } else if (GetKind() == 'L') {
-        variation_=CL_var_legacy;
+        variation_ = CL_var_legacy;
     } else {
         throw UnexpectedException(
             "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
         );
     }
-
 }
 
 //==========================================================================================//
@@ -421,7 +425,7 @@ ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(
     }
 
     threshold_ = new ThresholdCoefficientFunction(order, kind, channel);
-    threshold_ -> SetLegacyThreshold(true);
+    threshold_->SetLegacyThreshold(true);
 
     highscale_ = new HighScaleCoefficientFunction(
         order, kind, channel, highscale_version

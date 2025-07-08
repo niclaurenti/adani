@@ -53,19 +53,15 @@ class AbstractHighEnergyCoefficientFunction : public CoefficientFunction {
             double, double, double, int
         ) const;
 
-        Value
-            Order2(double x, double m2Q2, double m2mu2, int nf) const;
-        Value
-            Order3(double x, double m2Q2, double m2mu2, int nf) const;
-        Value
-            Order3LL(double x, double m2Q2, double m2mu2, int nf) const;
+        Value Order2(double x, double m2Q2, double m2mu2, int nf) const;
+        Value Order3(double x, double m2Q2, double m2mu2, int nf) const;
+        Value Order3LL(double x, double m2Q2, double m2mu2, int nf) const;
 
         Value ZeroFunctionBand(
             double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/
         ) const {
             return Value(0.);
         };
-
 
         //==========================================================================================//
         //                  Color factors O(as^3)
@@ -96,12 +92,8 @@ class HighEnergyCoefficientFunction
         Value NLL(double m2Q2, double m2mu2, int nf) const override;
 
     private:
-        double (HighEnergyCoefficientFunction::*LL_)(
-            double, double
-        ) const;
-        Value (HighEnergyCoefficientFunction::*NLL_)(
-            double, double, int
-        ) const;
+        double (HighEnergyCoefficientFunction::*LL_)(double, double) const;
+        Value (HighEnergyCoefficientFunction::*NLL_)(double, double, int) const;
 
         void SetFunctions();
 
@@ -130,26 +122,19 @@ class HighEnergyCoefficientFunction
         //                      O(as^3) at next-to-leading log
         //------------------------------------------------------------------------------------------//
 
-        Value C2_g3_highenergyNLL(
-            double m2Q2, double m2mu2, int nf
-        ) const;
-        Value CL_g3_highenergyNLL(
-            double m2Q2, double m2mu2, int nf
-        ) const;
-        Value C2_ps3_highenergyNLL(
-            double m2Q2, double m2mu2, int nf
-        ) const;
-        Value CL_ps3_highenergyNLL(
-            double m2Q2, double m2mu2, int nf
-        ) const;
+        Value C2_g3_highenergyNLL(double m2Q2, double m2mu2, int nf) const;
+        Value CL_g3_highenergyNLL(double m2Q2, double m2mu2, int nf) const;
+        Value C2_ps3_highenergyNLL(double m2Q2, double m2mu2, int nf) const;
+        Value CL_ps3_highenergyNLL(double m2Q2, double m2mu2, int nf) const;
 
         double C2_g3_highenergyNLL(
-            double m2Q2, double m2mu2, double a11, double a10, double a21, double beta0
+            double m2Q2, double m2mu2, double a11, double a10, double a21,
+            double beta0
         ) const;
         double CL_g3_highenergyNLL(
-            double m2Q2, double m2mu2, double a11, double a10, double a21, double beta0
+            double m2Q2, double m2mu2, double a11, double a10, double a21,
+            double beta0
         ) const;
-
 };
 
 //==========================================================================================//
@@ -184,36 +169,20 @@ class HighEnergyHighScaleCoefficientFunction
         //                      coefficient functions O(as^2)
         //------------------------------------------------------------------------------------------//
 
-        double C2_g2_highenergy_highscaleLL(
-            double m2Q2, double m2mu2
-        ) const;
-        double C2_ps2_highenergy_highscaleLL(
-            double m2Q2, double m2mu2
-        ) const;
-        double CL_g2_highenergy_highscaleLL(
-            double m2Q2, double m2mu2
-        ) const;
-        double CL_ps2_highenergy_highscaleLL(
-            double m2Q2, double m2mu2
-        ) const;
+        double C2_g2_highenergy_highscaleLL(double m2Q2, double m2mu2) const;
+        double C2_ps2_highenergy_highscaleLL(double m2Q2, double m2mu2) const;
+        double CL_g2_highenergy_highscaleLL(double m2Q2, double m2mu2) const;
+        double CL_ps2_highenergy_highscaleLL(double m2Q2, double m2mu2) const;
 
         //==========================================================================================//
         //  Q>>m limit of the high energy coefficient functions
         //  O(as^3) at leading log
         //------------------------------------------------------------------------------------------//
 
-        double C2_g3_highenergy_highscaleLL(
-            double m2Q2, double m2mu2
-        ) const;
-        double CL_g3_highenergy_highscaleLL(
-            double m2Q2, double m2mu2
-        ) const;
-        double C2_ps3_highenergy_highscaleLL(
-            double m2Q2, double m2mu2
-        ) const;
-        double CL_ps3_highenergy_highscaleLL(
-            double m2Q2, double m2mu2
-        ) const;
+        double C2_g3_highenergy_highscaleLL(double m2Q2, double m2mu2) const;
+        double CL_g3_highenergy_highscaleLL(double m2Q2, double m2mu2) const;
+        double C2_ps3_highenergy_highscaleLL(double m2Q2, double m2mu2) const;
+        double CL_ps3_highenergy_highscaleLL(double m2Q2, double m2mu2) const;
 
         //==========================================================================================//
         //  Q>>m limit of the high energy coefficient functions
@@ -234,14 +203,13 @@ class HighEnergyHighScaleCoefficientFunction
         ) const;
 
         double C2_g3_highenergy_highscaleNLL(
-            double m2Q2, double m2mu2, double a11, double a10, double a21, double beta0
+            double m2Q2, double m2mu2, double a11, double a10, double a21,
+            double beta0
         ) const;
         double CL_g3_highenergy_highscaleNLL(
-            double m2Q2, double m2mu2, double a11, double a10, double a21, double beta0
+            double m2Q2, double m2mu2, double a11, double a10, double a21,
+            double beta0
         ) const;
-
 };
-
-
 
 #endif

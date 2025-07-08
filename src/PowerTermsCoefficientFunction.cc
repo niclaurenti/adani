@@ -42,15 +42,18 @@ Value PowerTermsCoefficientFunction::fxBand(
 //------------------------------------------------------------------------------------------//
 
 MultiplicativeAsymptotic::MultiplicativeAsymptotic(
-    const int &order, const char &kind, const char &channel,
-    const bool &NLL
-) : AbstractPowerTerms(order, kind, channel, NLL) {
+    const int &order, const char &kind, const char &channel, const bool &NLL
+)
+    : AbstractPowerTerms(order, kind, channel, NLL) {
+        fx_ = nullptr;
+        fx_err_ = &MultiplicativeAsymptotic::ZeroFunction;
     if (order == 1) {
         fx_ = &MultiplicativeAsymptotic::OneFunction;
     } else if (order == 2) {
         fx_ = &MultiplicativeAsymptotic::PlainRatio;
     } else if (order == 3) {
         fx_ = &MultiplicativeAsymptotic::RegoularizedRatio;
+        if (NLL) fx_err_ = &MultiplicativeAsymptotic::RegoularizedRatioError;
     }
 };
 
@@ -61,7 +64,8 @@ MultiplicativeAsymptotic::MultiplicativeAsymptotic(
 Value MultiplicativeAsymptotic::fxBand(
     double x, double m2Q2, double m2mu2, int nf
 ) const {
-    return (this->*fx_)(x, m2Q2, m2mu2, nf);;
+    return (this->*fx_)(x, m2Q2, m2mu2, nf) + (this->*fx_err_)(x, m2Q2, m2mu2, nf);
+    ;
 }
 
 //==========================================================================================//
@@ -76,7 +80,7 @@ Value MultiplicativeAsymptotic::PlainRatio(
 }
 
 //==========================================================================================//
-//  MultiplicativeAsymptotic: band of the power terms
+//  MultiplicativeAsymptotic: central value of the power terms
 //------------------------------------------------------------------------------------------//
 
 Value MultiplicativeAsymptotic::RegoularizedRatio(
@@ -84,8 +88,22 @@ Value MultiplicativeAsymptotic::RegoularizedRatio(
 ) const {
 
     return Value(
-        GetHighEnergy()->LL(m2Q2, m2mu2)
-        / GetHighEnergyHighScale()->LL(m2Q2, m2mu2)
-    );
+               GetHighEnergy()->LL(m2Q2, m2mu2)
+               / GetHighEnergyHighScale()->LL(m2Q2, m2mu2)
+           );
+}
 
+//==========================================================================================//
+//  MultiplicativeAsymptotic: band of the power terms
+//------------------------------------------------------------------------------------------//
+
+Value MultiplicativeAsymptotic::RegoularizedRatioError(
+    double x, double m2Q2, double m2mu2, int nf
+) const {
+
+    return ((GetHighEnergy()->NLL(m2Q2, m2mu2, nf)
+             - GetHighEnergy()->NLL(m2Q2, m2mu2, nf).GetCentral())
+            + (GetHighEnergyHighScale()->NLL(m2Q2, m2mu2, nf)
+               - GetHighEnergyHighScale()->NLL(m2Q2, m2mu2, nf).GetCentral()))
+           / x / 2.;
 }

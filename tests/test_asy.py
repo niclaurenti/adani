@@ -65,7 +65,7 @@ def test_asy():
                             for m2mu2 in np.geomspace(1e-4, 1e2, 10):
                                 for m2Q2 in np.geomspace(1e-4, 1e2, 10):
                                     for x in np.geomspace(1e-5, 1., 10, endpoint=False):
-                                       # print(order, kind, channel, x, m2Q2, m2mu2, nf, hs_version, nll)
+                                        # print(order, kind, channel, x, m2Q2, m2mu2, nf, hs_version, nll)
                                         if kind=='2':
                                             res1 = pt.fxBand(x, m2Q2, m2mu2, nf) + hs.fxBand(x, m2Q2, m2mu2, nf)
                                         else:
@@ -83,3 +83,4 @@ def test_asy():
                                         np.testing.assert_allclose(res1.GetLower(), res2.GetLower(), rtol=1e-7)
                                         np.testing.assert_allclose(res1_c, res1.GetCentral(), rtol=1e-7)
                                         np.testing.assert_allclose(res2_c, res2.GetCentral(), rtol=1e-7)
+                                        np.testing.assert_allclose(res1_c, res2_c, rtol=1e-7)

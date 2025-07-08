@@ -25,8 +25,7 @@
 //  class AsymptoticCoefficientFunction
 //------------------------------------------------------------------------------------------//
 
-class AsymptoticCoefficientFunction
-    : public CoefficientFunction {
+class AsymptoticCoefficientFunction : public CoefficientFunction {
     public:
         AsymptoticCoefficientFunction(
             const int &order, const char &kind, const char &channel,
@@ -51,8 +50,11 @@ class AsymptoticCoefficientFunction
             double, double, double, int
         ) const;
 
-        Value AdditiveMatching(double x, double m2Q2, double m2mu2, int nf) const;
-        Value MultiplicativeMatching(double x, double m2Q2, double m2mu2, int nf) const;
+        Value
+            AdditiveMatching(double x, double m2Q2, double m2mu2, int nf) const;
+        Value MultiplicativeMatching(
+            double x, double m2Q2, double m2mu2, int nf
+        ) const;
 };
 
 #endif
