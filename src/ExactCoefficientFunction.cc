@@ -4,6 +4,7 @@
 #include "adani/ThresholdCoefficientFunction.h"
 
 #include <cmath>
+#include <future>
 
 //==========================================================================================//
 //  ExactCoefficientFunction: constructor
@@ -522,9 +523,12 @@ double ExactCoefficientFunction::C_g21(double x, double m2Q2) const {
     int nf_one = 1;
     // Put nf to 1 since the nf contribution cancels for any value of nf
 
+    std::future<double> future_f1 = std::async(std::launch::async, &AbstractConvolution::Convolute, convolutions_lmu1_[0], x, m2Q2, nf_one);
+    std::future<double> future_f2 = std::async(std::launch::async, &AbstractConvolution::Convolute, convolutions_lmu1_[1], x, m2Q2, nf_one);
+
     return -(
-        convolutions_lmu1_[0]->Convolute(x, m2Q2, nf_one)
-        - convolutions_lmu1_[1]->Convolute(x, m2Q2, nf_one) * beta0(nf_one)
+        future_f1.get()
+        - future_f2.get() * beta0(nf_one)
     );
 }
 
