@@ -42,18 +42,31 @@ AsymptoticCoefficientFunction::~AsymptoticCoefficientFunction() {
 void AsymptoticCoefficientFunction::SetFunctions() {
     if (GetOrder() == 1) {
         fx_ = &AsymptoticCoefficientFunction::PlainAdditiveMatching;
-    } else {
+    } else if (GetOrder() == 2) {
         if (GetKind() == '2') {
-            fx_ = &AsymptoticCoefficientFunction::C2_asymptotic;
+            fx_ = &AsymptoticCoefficientFunction::C2_2_asymptotic;
         } else if (GetKind() == 'L') {
-            fx_ = &AsymptoticCoefficientFunction::CL_asymptotic;
+            fx_ = &AsymptoticCoefficientFunction::CL_2_asymptotic;
         } else {
             throw UnexpectedException(
                 "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
             );
         }
+    } else if (GetOrder() == 3) {
+        if (GetKind() == '2') {
+            fx_ = &AsymptoticCoefficientFunction::C2_3_asymptotic;
+        } else if (GetKind() == 'L') {
+            fx_ = &AsymptoticCoefficientFunction::CL_3_asymptotic;
+        } else {
+            throw UnexpectedException(
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+    } else {
+        throw UnexpectedException(
+            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+        );
     }
-
 }
 
 //==========================================================================================//
@@ -114,7 +127,7 @@ Value AsymptoticCoefficientFunction::PlainAdditiveMatching(
 }
 
 //==========================================================================================//
-//  AsymptoticCoefficientFunction: band of fx with multiplicative matching
+//  AsymptoticCoefficientFunction: band of fx with pure LL multiplicative matching
 //------------------------------------------------------------------------------------------//
 
 Value AsymptoticCoefficientFunction::PlainMultiplicativeMatching(
@@ -126,7 +139,7 @@ Value AsymptoticCoefficientFunction::PlainMultiplicativeMatching(
 }
 
 //==========================================================================================//
-//  AsymptoticCoefficientFunction: ???
+//  AsymptoticCoefficientFunction: band of fx with multiplicative matching at NLL (version 1)
 //------------------------------------------------------------------------------------------//
 
 Value AsymptoticCoefficientFunction::ModifiedMultiplicativeMatching1(
@@ -139,7 +152,7 @@ Value AsymptoticCoefficientFunction::ModifiedMultiplicativeMatching1(
 }
 
 //==========================================================================================//
-//  AsymptoticCoefficientFunction: ???
+//  AsymptoticCoefficientFunction: band of fx with multiplicative matching at NLL (version 2)
 //------------------------------------------------------------------------------------------//
 
 Value AsymptoticCoefficientFunction::ModifiedMultiplicativeMatching2(
@@ -152,10 +165,38 @@ Value AsymptoticCoefficientFunction::ModifiedMultiplicativeMatching2(
 }
 
 //==========================================================================================//
-//  AsymptoticCoefficientFunction: asymptotic coefficient function for C2
+//  AsymptoticCoefficientFunction: asymptotic coefficient function for C2 at O(as^2)
 //------------------------------------------------------------------------------------------//
 
-Value AsymptoticCoefficientFunction::C2_asymptotic(
+Value AsymptoticCoefficientFunction::C2_2_asymptotic(
+    double x, double m2Q2, double m2mu2, int nf
+) const {
+
+    Value central = PlainAdditiveMatching(x, m2Q2, m2mu2, nf);
+    Value variation = PlainMultiplicativeMatching(x, m2Q2, m2mu2, nf);
+
+    return Delta2(central, variation, m2Q2, m2mu2);
+}
+
+//==========================================================================================//
+//  AsymptoticCoefficientFunction: asymptotic coefficient function for CL at O(as^2)
+//------------------------------------------------------------------------------------------//
+
+Value AsymptoticCoefficientFunction::CL_2_asymptotic(
+    double x, double m2Q2, double m2mu2, int nf
+) const {
+
+    Value central = PlainMultiplicativeMatching(x, m2Q2, m2mu2, nf);
+    Value variation = PlainAdditiveMatching(x, m2Q2, m2mu2, nf);
+
+    return Delta2(central, variation, m2Q2, m2mu2);
+}
+
+//==========================================================================================//
+//  AsymptoticCoefficientFunction: asymptotic coefficient function for C2 at O(as^3)
+//------------------------------------------------------------------------------------------//
+
+Value AsymptoticCoefficientFunction::C2_3_asymptotic(
     double x, double m2Q2, double m2mu2, int nf
 ) const {
 
@@ -163,14 +204,14 @@ Value AsymptoticCoefficientFunction::C2_asymptotic(
     Value variation1 = ModifiedMultiplicativeMatching1(x, m2Q2, m2mu2, nf);
     Value variation2 = ModifiedMultiplicativeMatching2(x, m2Q2, m2mu2, nf);
 
-    return Delta(central, variation1, variation2, m2Q2, m2mu2);
+    return Delta3(central, variation1, variation2, m2Q2, m2mu2);
 }
 
 //==========================================================================================//
-//  AsymptoticCoefficientFunction: asymptotic coefficient function for CL
+//  AsymptoticCoefficientFunction: asymptotic coefficient function for CL at O(as^3)
 //------------------------------------------------------------------------------------------//
 
-Value AsymptoticCoefficientFunction::CL_asymptotic(
+Value AsymptoticCoefficientFunction::CL_3_asymptotic(
     double x, double m2Q2, double m2mu2, int nf
 ) const {
 
@@ -178,7 +219,7 @@ Value AsymptoticCoefficientFunction::CL_asymptotic(
     Value variation1 = PlainAdditiveMatching(x, m2Q2, m2mu2, nf);
     Value variation2 = ModifiedMultiplicativeMatching2(x, m2Q2, m2mu2, nf);
 
-    return Delta(central, variation1, variation2, m2Q2, m2mu2);
+    return Delta3(central, variation1, variation2, m2Q2, m2mu2);
 }
 
 //==========================================================================================//
@@ -186,7 +227,25 @@ Value AsymptoticCoefficientFunction::CL_asymptotic(
 //  from the central value and the two variations
 //------------------------------------------------------------------------------------------//
 
-Value AsymptoticCoefficientFunction::Delta(Value central, Value variation1, Value variation2, double m2Q2, double m2mu2) const {
+Value AsymptoticCoefficientFunction::Delta2(Value central, Value variation, double m2Q2, double m2mu2) const {
+    double central_c = central.GetHigher();
+    double var_c = variation.GetHigher();
+
+    // double central_delta = central.GetAvgDelta();
+    // double var_delta = variation.GetAvgDelta();
+
+    double delta = std::abs(central_c - var_c);
+    // double delta = damp * sqrt(tmp * tmp + central_delta * central_delta + var_delta * var_delta);
+
+    return Value(central_c, central_c + delta, central_c - delta);
+}
+
+//==========================================================================================//
+//  AsymptoticCoefficientFunction: compute error of asymptotic cefficient function starting
+//  from the central value and the two variations
+//------------------------------------------------------------------------------------------//
+
+Value AsymptoticCoefficientFunction::Delta3(Value central, Value variation1, Value variation2, double m2Q2, double m2mu2) const {
     double central_c = central.GetHigher();
     double var1_c = variation1.GetHigher();
     double var2_c = variation2.GetHigher();

@@ -60,13 +60,20 @@ class AsymptoticCoefficientFunction : public CoefficientFunction {
         Value ModifiedMultiplicativeMatching2(
             double x, double m2Q2, double m2mu2, int nf
         ) const;
-        Value C2_asymptotic(
+        Value C2_2_asymptotic(
             double x, double m2Q2, double m2mu2, int nf
         ) const;
-        Value CL_asymptotic(
+        Value CL_2_asymptotic(
             double x, double m2Q2, double m2mu2, int nf
         ) const;
-        Value Delta(Value central, Value variation1, Value variation2, double m2Q2, double m2mu2) const;
+        Value C2_3_asymptotic(
+            double x, double m2Q2, double m2mu2, int nf
+        ) const;
+        Value CL_3_asymptotic(
+            double x, double m2Q2, double m2mu2, int nf
+        ) const;
+        Value Delta2(Value central, Value variation, double m2Q2, double m2mu2) const;
+        Value Delta3(Value central, Value variation1, Value variation2, double m2Q2, double m2mu2) const;
 };
 
 #endif
