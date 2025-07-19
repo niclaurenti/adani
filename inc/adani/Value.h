@@ -37,6 +37,12 @@ class Value {
         double GetHigher() const { return higher_; };
         double GetLower() const { return lower_; };
 
+        double GetHigherDelta() const;
+        double GetLowerDelta() const;
+        double GetMaxDelta() const;
+        double GetMinDelta() const;
+        double GetAvgDelta() const;
+
         vector<double> ToVect() const;
 
         // overload of operators
@@ -44,7 +50,7 @@ class Value {
         Value operator+(const Value &rhs) const;
         Value operator-(const Value &rhs) const;
         Value operator*(const Value &rhs) const;
-        Value operator/(const Value &rhs) const;
+        // Value operator/(const Value &rhs) const;
 
         Value operator+(const double &rhs) const;
         friend Value operator+(const double &lhs, const Value &rhs);

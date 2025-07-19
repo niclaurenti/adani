@@ -31,7 +31,7 @@ PYBIND11_MODULE(_core, m) {
         .def(py::self + py::self)
         .def(py::self - py::self)
         .def(py::self * py::self)
-        .def(py::self / py::self)
+        // .def(py::self / py::self)
         .def(py::self + double())
         .def(double() + py::self)
         .def(py::self - double())
@@ -212,26 +212,6 @@ PYBIND11_MODULE(_core, m) {
     py::class_<AbstractPowerTerms, CoefficientFunction>(
         m, "AbstractPowerTerms"
     );
-
-    // PowerTermsCoefficientFunction
-    py::class_<PowerTermsCoefficientFunction, AbstractPowerTerms>(
-        m, "PowerTermsCoefficientFunction"
-    )
-        .def(
-            py::init<const int &, const char &, const char &, const bool &>(),
-            py::arg("order"), py::arg("kind"), py::arg("channel"),
-            py::arg("NLL") = true
-        );
-
-    // MultiplicativeAsymptotic
-    py::class_<MultiplicativeAsymptotic, AbstractPowerTerms>(
-        m, "MultiplicativeAsymptotic"
-    )
-        .def(
-            py::init<const int &, const char &, const char &, const bool &>(),
-            py::arg("order"), py::arg("kind"), py::arg("channel"),
-            py::arg("NLL") = true
-        );
 
     // HighScaleCoefficientFunction
     py::class_<HighScaleCoefficientFunction, CoefficientFunction>(

@@ -19,7 +19,6 @@
 #include "adani/CoefficientFunction.h"
 #include "adani/HighEnergyCoefficientFunction.h"
 #include "adani/HighScaleCoefficientFunction.h"
-#include "adani/PowerTermsCoefficientFunction.h"
 
 //==========================================================================================//
 //  class AsymptoticCoefficientFunction
@@ -38,23 +37,36 @@ class AsymptoticCoefficientFunction : public CoefficientFunction {
         Value
             fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
 
-        vector<double>
-            AllVariations(double x, double m2Q2, double m2mu2, int nf) const;
-
     private:
-        const bool NLL_;
+        bool legacy_pt_;
         HighScaleCoefficientFunction *highscale_;
-        AbstractPowerTerms *powerterms_;
+        HighEnergyCoefficientFunction *highenergy_;
+        HighEnergyHighScaleCoefficientFunction *highenergyhighscale_;
 
         Value (AsymptoticCoefficientFunction::*fx_)(
             double, double, double, int
         ) const;
 
+        void SetFunctions();
+
         Value
-            AdditiveMatching(double x, double m2Q2, double m2mu2, int nf) const;
-        Value MultiplicativeMatching(
+            PlainAdditiveMatching(double x, double m2Q2, double m2mu2, int nf) const;
+        Value PlainMultiplicativeMatching(
             double x, double m2Q2, double m2mu2, int nf
         ) const;
+        Value ModifiedMultiplicativeMatching1(
+            double x, double m2Q2, double m2mu2, int nf
+        ) const;
+        Value ModifiedMultiplicativeMatching2(
+            double x, double m2Q2, double m2mu2, int nf
+        ) const;
+        Value C2_asymptotic(
+            double x, double m2Q2, double m2mu2, int nf
+        ) const;
+        Value CL_asymptotic(
+            double x, double m2Q2, double m2mu2, int nf
+        ) const;
+        Value Delta(Value central, Value variation1, Value variation2, double m2Q2, double m2mu2) const;
 };
 
 #endif

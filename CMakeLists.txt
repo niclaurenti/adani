@@ -86,7 +86,6 @@ if(PYTHON_ONLY)
         src/hqcoef.f
         src/MasslessCoefficientFunction.cc
         src/MatchingCondition.cc
-        src/PowerTermsCoefficientFunction.cc
         src/SpecialFunctions.cc
         src/SplittingFunction.cc
         src/ThresholdCoefficientFunction.cc
@@ -114,7 +113,6 @@ else(PYTHON_ONLY)
         src/hqcoef.f
         src/MasslessCoefficientFunction.cc
         src/MatchingCondition.cc
-        src/PowerTermsCoefficientFunction.cc
         src/SpecialFunctions.cc
         src/SplittingFunction.cc
         src/ThresholdCoefficientFunction.cc

@@ -167,7 +167,7 @@ Value ThresholdCoefficientFunction::fxBand(
 //------------------------------------------------------------------------------------------//
 
 Value ThresholdCoefficientFunction::Order1(
-    double x, double m2Q2, double m2mu2, int nf
+    double x, double m2Q2, double /*m2mu2*/, int /*nf*/
 ) const {
 
     return Value((this->*threshold_as1_)(x, m2Q2));
@@ -445,7 +445,7 @@ double ThresholdCoefficientFunction::C2_g3_threshold_expansion_const(
 double ThresholdCoefficientFunction::CL_g3_threshold_expansion(
     double x, double m2Q2, double m2mu2, int nf
 ) const {
-    return CL_g3_threshold_expansion(x, m2Q2, m2mu2, nf);
+    return C2_g3_threshold_expansion(x, m2Q2, m2mu2, nf);
 }
 
 //==========================================================================================//
@@ -455,7 +455,7 @@ double ThresholdCoefficientFunction::CL_g3_threshold_expansion(
 double ThresholdCoefficientFunction::CL_g3_threshold_expansion_const(
     double m2Q2, double m2mu2
 ) const {
-    return CL_g3_threshold_expansion_const(m2Q2, m2mu2);
+    return C2_g3_threshold_expansion_const(m2Q2, m2mu2);
 }
 
 //==========================================================================================//
