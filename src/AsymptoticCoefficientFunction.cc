@@ -146,8 +146,8 @@ Value AsymptoticCoefficientFunction::ModifiedMultiplicativeMatching1(
     double x, double m2Q2, double m2mu2, int nf
 ) const {
 
-    return highscale_->fxBand(x, m2Q2, m2mu2, nf)
-           * (highenergy_->NLL(m2Q2, m2mu2, nf) - highenergyhighscale_->NLL(m2Q2, m2mu2, nf))
+    return (highscale_->fxBand(x, m2Q2, m2mu2, nf)
+           + (highenergy_->NLL(m2Q2, m2mu2, nf) - highenergyhighscale_->NLL(m2Q2, m2mu2, nf)) / x)
            * highenergy_->LL(m2Q2, m2mu2) / highenergyhighscale_->LL(m2Q2, m2mu2);
 }
 
@@ -161,7 +161,7 @@ Value AsymptoticCoefficientFunction::ModifiedMultiplicativeMatching2(
 
     return highscale_->fxBand(x, m2Q2, m2mu2, nf)
            * highenergy_->LL(m2Q2, m2mu2) / highenergyhighscale_->LL(m2Q2, m2mu2)
-           + (highenergy_->NLL(m2Q2, m2mu2, nf) - highenergyhighscale_->NLL(m2Q2, m2mu2, nf));
+           + (highenergy_->NLL(m2Q2, m2mu2, nf) - highenergyhighscale_->NLL(m2Q2, m2mu2, nf)) / x;
 }
 
 //==========================================================================================//
@@ -233,8 +233,8 @@ Value AsymptoticCoefficientFunction::Delta2(Value central, Value variation, doub
 
     // double central_delta = central.GetAvgDelta();
     // double var_delta = variation.GetAvgDelta();
-
-    double delta = std::abs(central_c - var_c);
+    double damp = 1. / (1. + 2 * std::abs(log(highenergy_->LL(m2Q2, m2mu2) / highenergyhighscale_->LL(m2Q2, m2mu2))));
+    double delta = damp * std::abs(central_c - var_c);
     // double delta = damp * sqrt(tmp * tmp + central_delta * central_delta + var_delta * var_delta);
 
     return Value(central_c, central_c + delta, central_c - delta);
