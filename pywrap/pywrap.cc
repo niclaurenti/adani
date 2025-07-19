@@ -208,11 +208,6 @@ PYBIND11_MODULE(_core, m) {
             py::arg("NLL") = true
         );
 
-    // AbstractPowerTerms
-    py::class_<AbstractPowerTerms, CoefficientFunction>(
-        m, "AbstractPowerTerms"
-    );
-
     // HighScaleCoefficientFunction
     py::class_<HighScaleCoefficientFunction, CoefficientFunction>(
         m, "HighScaleCoefficientFunction"
