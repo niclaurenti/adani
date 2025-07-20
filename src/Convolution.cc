@@ -16,7 +16,7 @@ AbstractConvolution::AbstractConvolution(
     try {
         SetAbserr(abserr);
         SetRelerr(relerr);
-        AllocWorkspace(dim);
+        CheckWorkspace(dim);
     } catch (NotValidException &e) {
         e.runtime_error();
     }
@@ -30,8 +30,6 @@ AbstractConvolution::AbstractConvolution(
 //------------------------------------------------------------------------------------------//
 
 AbstractConvolution::~AbstractConvolution() {
-
-    gsl_integration_workspace_free(w_);
 };
 
 //==========================================================================================//
@@ -68,7 +66,7 @@ void AbstractConvolution::SetRelerr(const double &relerr) {
 //  AbstractConvolution: method for the allocation of workspace
 //------------------------------------------------------------------------------------------//
 
-void AbstractConvolution::AllocWorkspace(const int &dim) {
+void AbstractConvolution::CheckWorkspace(const int &dim) {
     // check dim
     if (dim <= 0) {
         throw NotValidException(
@@ -76,7 +74,6 @@ void AbstractConvolution::AllocWorkspace(const int &dim) {
             __PRETTY_FUNCTION__, __LINE__
         );
     }
-    w_ = gsl_integration_workspace_alloc(dim);
 }
 
 //==========================================================================================//
@@ -183,7 +180,7 @@ double Convolution::RegularPart(double x, double m2Q2, int nf) const {
     double abserr = GetAbserr();
     double relerr = GetRelerr();
     int dim = GetDim();
-    gsl_integration_workspace *w = GetWorkspace();
+    gsl_integration_workspace *w = gsl_integration_workspace_alloc(dim);
 
     double regular, error;
 
@@ -196,6 +193,8 @@ double Convolution::RegularPart(double x, double m2Q2, int nf) const {
     gsl_integration_qag(
         &F, x, x_max, abserr, relerr, dim, 4, w, &regular, &error
     );
+
+    gsl_integration_workspace_free(w);
 
     return regular;
 }
@@ -211,7 +210,7 @@ double Convolution::SingularPart(double x, double m2Q2, int nf) const {
     double abserr = GetAbserr();
     double relerr = GetRelerr();
     int dim = GetDim();
-    gsl_integration_workspace *w = GetWorkspace();
+    gsl_integration_workspace *w = gsl_integration_workspace_alloc(dim);
 
     double singular, error;
 
@@ -224,6 +223,8 @@ double Convolution::SingularPart(double x, double m2Q2, int nf) const {
     gsl_integration_qag(
         &F, x / x_max, 1., abserr, relerr, dim, 4, w, &singular, &error
     );
+
+    gsl_integration_workspace_free(w);
 
     return singular;
 }
@@ -320,10 +321,6 @@ DoubleConvolution::DoubleConvolution(
             new Convolution(coefffunc, splitfunc, abserr, relerr, dim);
         conv_coeff_ = nullptr;
 
-        s_ = gsl_monte_vegas_alloc(2);
-        gsl_rng_env_setup();
-        r_ = gsl_rng_alloc(gsl_rng_default);
-
     } else {
         conv_coeff_ = new ConvolutedCoefficientFunction(
             coefffunc, splitfunc, abserr, relerr, dim
@@ -338,11 +335,6 @@ DoubleConvolution::DoubleConvolution(
 //------------------------------------------------------------------------------------------//
 
 DoubleConvolution::~DoubleConvolution() {
-
-    if (MCintegral_) {
-        gsl_monte_vegas_free(s_);
-        gsl_rng_free(r_);
-    }
 
     delete convolution_;
     delete conv_coeff_;
@@ -456,23 +448,27 @@ double DoubleConvolution::RegularPart(double x, double m2Q2, int nf) const {
 
     double err, regular1, regular2, regular3, regular4;
 
+    gsl_monte_vegas_state *s = gsl_monte_vegas_alloc(2);
+    gsl_rng_env_setup();
+    gsl_rng *r = gsl_rng_alloc(gsl_rng_default);
+
     gsl_monte_function F;
 
     F.f = &regular1_integrand;
     F.dim = 2;
     F.params = &params;
 
-    gsl_monte_vegas_init(s_);
-    gsl_monte_vegas_integrate(&F, xl, xu, 2, MCcalls_, r_, s_, &regular1, &err);
+    gsl_monte_vegas_init(s);
+    gsl_monte_vegas_integrate(&F, xl, xu, 2, MCcalls_, r, s, &regular1, &err);
 
     F.f = &regular2_integrand;
-    gsl_monte_vegas_init(s_);
-    gsl_monte_vegas_integrate(&F, xl, xu, 2, MCcalls_, r_, s_, &regular2, &err);
+    gsl_monte_vegas_init(s);
+    gsl_monte_vegas_integrate(&F, xl, xu, 2, MCcalls_, r, s, &regular2, &err);
 
     double abserr = GetAbserr();
     double relerr = GetRelerr();
     int dim = GetDim();
-    gsl_integration_workspace *w = GetWorkspace();
+    gsl_integration_workspace *w = gsl_integration_workspace_alloc(dim);
 
     gsl_function f;
     f.function = &regular3_integrand;
@@ -481,6 +477,10 @@ double DoubleConvolution::RegularPart(double x, double m2Q2, int nf) const {
     gsl_integration_qag(
         &f, x, x_max, abserr, relerr, dim, 4, w, &regular3, &err
     );
+
+    gsl_monte_vegas_free(s);
+    gsl_rng_free(r);
+    gsl_integration_workspace_free(w);
 
     regular4 = convolution_->RegularPart(x, m2Q2, nf) * splitfunc_->Local(nf);
 
@@ -596,30 +596,34 @@ double DoubleConvolution::SingularPart(double x, double m2Q2, int nf) const {
 
     double err, singular1, singular2, singular3, singular4;
 
+    gsl_monte_vegas_state *s = gsl_monte_vegas_alloc(2);
+    gsl_rng_env_setup();
+    gsl_rng *r = gsl_rng_alloc(gsl_rng_default);
+
     gsl_monte_function F;
 
     F.f = &singular1_integrand;
     F.dim = 2;
     F.params = &params;
 
-    gsl_monte_vegas_init(s_);
+    gsl_monte_vegas_init(s);
     gsl_monte_vegas_integrate(
-        &F, xl, xu, 2, MCcalls_, r_, s_, &singular1, &err
+        &F, xl, xu, 2, MCcalls_, r, s, &singular1, &err
     );
 
     xl[1] = x / x_max;
     xu[1] = 1;
 
     F.f = &singular2_integrand;
-    gsl_monte_vegas_init(s_);
+    gsl_monte_vegas_init(s);
     gsl_monte_vegas_integrate(
-        &F, xl, xu, 2, MCcalls_, r_, s_, &singular2, &err
+        &F, xl, xu, 2, MCcalls_, r, s, &singular2, &err
     );
 
     double abserr = GetAbserr();
     double relerr = GetRelerr();
     int dim = GetDim();
-    gsl_integration_workspace *w = GetWorkspace();
+    gsl_integration_workspace *w = gsl_integration_workspace_alloc(dim);
 
     gsl_function f;
     f.function = &singular3_integrand;
@@ -628,6 +632,10 @@ double DoubleConvolution::SingularPart(double x, double m2Q2, int nf) const {
     gsl_integration_qag(
         &f, x / x_max, 1, abserr, relerr, dim, 4, w, &singular3, &err
     );
+
+    gsl_monte_vegas_free(s);
+    gsl_rng_free(r);
+    gsl_integration_workspace_free(w);
 
     singular4 = convolution_->SingularPart(x, m2Q2, nf) * splitfunc_->Local(nf);
 
