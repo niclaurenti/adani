@@ -78,17 +78,13 @@ Value::Value(const Value &value) {
 //  Value: get the delta of higher band
 //------------------------------------------------------------------------------------------//
 
-double Value::GetHigherDelta() const {
-    return higher_ - central_;
-}
+double Value::GetHigherDelta() const { return higher_ - central_; }
 
 //==========================================================================================//
 //  Value: get the delta of lower band
 //------------------------------------------------------------------------------------------//
 
-double Value::GetLowerDelta() const {
-    return central_ - lower_;
-}
+double Value::GetLowerDelta() const { return central_ - lower_; }
 
 //==========================================================================================//
 //  Value: get max between higher and lower delta
@@ -143,17 +139,9 @@ Value Value::operator-(const Value &rhs) const {
     double higher = higher_ - rhs.higher_;
     double lower = lower_ - rhs.lower_;
     if (higher > lower) {
-        return Value(
-            central_ - rhs.central_,
-            higher,
-            lower
-        );
+        return Value(central_ - rhs.central_, higher, lower);
     } else {
-        return Value(
-            central_ - rhs.central_,
-            lower,
-            higher
-        );
+        return Value(central_ - rhs.central_, lower, higher);
     }
 }
 
@@ -197,7 +185,8 @@ Value Value::operator*(const Value &rhs) const {
 
 //     double delta_low =
 //         delta_low_lhs > delta_low_rhs ? delta_low_lhs : delta_low_rhs;
-//     double delta_up = delta_up_lhs > delta_up_rhs ? delta_up_lhs : delta_up_rhs;
+//     double delta_up = delta_up_lhs > delta_up_rhs ? delta_up_lhs :
+//     delta_up_rhs;
 
 //     return Value(central, central + delta_up, central - delta_low);
 // }
