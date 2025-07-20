@@ -115,6 +115,9 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
         double c0(double xi) const;
         double c0_bar(double xi) const;
 
+        double aL_10_QED(double m2Q2) const;
+        double aL_10_OK(double m2Q2) const;
+
         //==========================================================================================//
         //  Function needed to make fx_ point to a zero function
         //------------------------------------------------------------------------------------------//
