@@ -6,6 +6,7 @@
 #include "adani/SpecialFunctions.h"
 
 #include <cmath>
+#include <future>
 #include <vector>
 
 using std::vector;
@@ -70,12 +71,18 @@ double AbstractApproximate::MuDependentTerms(
 Value AbstractApproximate::fxBand(
     double x, double m2Q2, double m2mu2, int nf
 ) const {
-    double x_max = 1. / (1. + 4 * m2Q2);
-    if (x >= x_max || x <= 0)
+    if (x >= xMax(m2Q2) || x <= 0)
         return Value(0.);
 
-    return MuIndependentTermsBand(x, m2Q2, nf)
-           + MuDependentTerms(x, m2Q2, m2mu2, nf);
+    std::future<Value> future_f1 = std::async(
+        std::launch::async, &AbstractApproximate::MuIndependentTermsBand, this, x, m2Q2, nf
+    );
+    std::future<double> future_f2 = std::async(
+        std::launch::async, &AbstractApproximate::MuDependentTerms, this, x, m2Q2, m2mu2,
+        nf
+    );
+
+    return future_f1.get() + future_f2.get();
 }
 
 //==========================================================================================//
@@ -262,8 +269,7 @@ Value ApproximateCoefficientFunction::MuIndependentTermsBand(
     double x, double m2Q2, int nf
 ) const {
 
-    double x_max = 1. / (1 + 4 * m2Q2);
-    if (x <= 0 || x > x_max)
+    if (x <= 0 || x > xMax(m2Q2))
         return Value(0.);
 
     double A = approximation_.A, B = approximation_.B, C = approximation_.C,
@@ -294,7 +300,6 @@ Value ApproximateCoefficientFunction::MuIndependentTermsBand(
         (asymptotic_->MuIndependentTermsBand(x, m2Q2, nf)).ToVect();
     vector<double> thresh =
         (threshold_->MuIndependentTermsBand(x, m2Q2, nf)).ToVect();
-    // thresh contains three identical numbers since the band was not present
 
     double central = Approximation(x, m2Q2, asy[0], thresh[0], A, B, C, D);
     double higher = central, lower = central, tmp;
