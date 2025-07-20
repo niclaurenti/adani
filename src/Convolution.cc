@@ -29,8 +29,7 @@ AbstractConvolution::AbstractConvolution(
 //  AbstractConvolution: destructor
 //------------------------------------------------------------------------------------------//
 
-AbstractConvolution::~AbstractConvolution() {
-};
+AbstractConvolution::~AbstractConvolution(){};
 
 //==========================================================================================//
 //  AbstractConvolution: set method for abserr
@@ -82,11 +81,15 @@ void AbstractConvolution::CheckWorkspace(const int &dim) {
 
 double AbstractConvolution::Convolute(double x, double m2Q2, int nf) const {
 
-    std::future<double> future_f1 = std::async(std::launch::async, &AbstractConvolution::RegularPart, this, x, m2Q2, nf);
-    std::future<double> future_f2 = std::async(std::launch::async, &AbstractConvolution::SingularPart, this, x, m2Q2, nf);
+    std::future<double> future_f1 = std::async(
+        std::launch::async, &AbstractConvolution::RegularPart, this, x, m2Q2, nf
+    );
+    std::future<double> future_f2 = std::async(
+        std::launch::async, &AbstractConvolution::SingularPart, this, x, m2Q2,
+        nf
+    );
 
-    return future_f1.get() + future_f2.get()
-           + LocalPart(x, m2Q2, nf);
+    return future_f1.get() + future_f2.get() + LocalPart(x, m2Q2, nf);
 }
 
 //==========================================================================================//
@@ -607,18 +610,14 @@ double DoubleConvolution::SingularPart(double x, double m2Q2, int nf) const {
     F.params = &params;
 
     gsl_monte_vegas_init(s);
-    gsl_monte_vegas_integrate(
-        &F, xl, xu, 2, MCcalls_, r, s, &singular1, &err
-    );
+    gsl_monte_vegas_integrate(&F, xl, xu, 2, MCcalls_, r, s, &singular1, &err);
 
     xl[1] = x / x_max;
     xu[1] = 1;
 
     F.f = &singular2_integrand;
     gsl_monte_vegas_init(s);
-    gsl_monte_vegas_integrate(
-        &F, xl, xu, 2, MCcalls_, r, s, &singular2, &err
-    );
+    gsl_monte_vegas_integrate(&F, xl, xu, 2, MCcalls_, r, s, &singular2, &err);
 
     double abserr = GetAbserr();
     double relerr = GetRelerr();
