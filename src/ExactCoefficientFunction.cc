@@ -523,13 +523,16 @@ double ExactCoefficientFunction::C_g21(double x, double m2Q2) const {
     int nf_one = 1;
     // Put nf to 1 since the nf contribution cancels for any value of nf
 
-    std::future<double> future_f0 = std::async(std::launch::async, &AbstractConvolution::Convolute, convolutions_lmu1_[0], x, m2Q2, nf_one);
-    std::future<double> future_f1 = std::async(std::launch::async, &AbstractConvolution::Convolute, convolutions_lmu1_[1], x, m2Q2, nf_one);
-
-    return -(
-        future_f0.get()
-        - future_f1.get() * beta0(nf_one)
+    std::future<double> future_f0 = std::async(
+        std::launch::async, &AbstractConvolution::Convolute,
+        convolutions_lmu1_[0], x, m2Q2, nf_one
     );
+    std::future<double> future_f1 = std::async(
+        std::launch::async, &AbstractConvolution::Convolute,
+        convolutions_lmu1_[1], x, m2Q2, nf_one
+    );
+
+    return -(future_f0.get() - future_f1.get() * beta0(nf_one));
 }
 
 //==========================================================================================//
@@ -595,15 +598,25 @@ double ExactCoefficientFunction::
 
 double ExactCoefficientFunction::C_ps31(double x, double m2Q2, int nf) const {
 
-    std::future<double> future_f0 = std::async(std::launch::async, &AbstractConvolution::Convolute, convolutions_lmu1_[0], x, m2Q2, nf);
-    std::future<double> future_f1 = std::async(std::launch::async, &AbstractConvolution::Convolute, convolutions_lmu1_[1], x, m2Q2, nf);
-    std::future<double> future_f2 = std::async(std::launch::async, &AbstractConvolution::Convolute, convolutions_lmu1_[2], x, m2Q2, nf);
-    std::future<double> future_f3 = std::async(std::launch::async, &AbstractConvolution::Convolute, convolutions_lmu1_[3], x, m2Q2, nf);
+    std::future<double> future_f0 = std::async(
+        std::launch::async, &AbstractConvolution::Convolute,
+        convolutions_lmu1_[0], x, m2Q2, nf
+    );
+    std::future<double> future_f1 = std::async(
+        std::launch::async, &AbstractConvolution::Convolute,
+        convolutions_lmu1_[1], x, m2Q2, nf
+    );
+    std::future<double> future_f2 = std::async(
+        std::launch::async, &AbstractConvolution::Convolute,
+        convolutions_lmu1_[2], x, m2Q2, nf
+    );
+    std::future<double> future_f3 = std::async(
+        std::launch::async, &AbstractConvolution::Convolute,
+        convolutions_lmu1_[3], x, m2Q2, nf
+    );
 
     return -(
-        future_f0.get()
-        + future_f1.get()
-        + future_f2.get()
+        future_f0.get() + future_f1.get() + future_f2.get()
         - 2. * beta0(nf) * future_f3.get()
     );
 }
@@ -617,13 +630,20 @@ double ExactCoefficientFunction::C_ps31(double x, double m2Q2, int nf) const {
 
 double ExactCoefficientFunction::C_ps32(double x, double m2Q2, int nf) const {
 
-    std::future<double> future_f0 = std::async(std::launch::async, &AbstractConvolution::Convolute, convolutions_lmu2_[0], x, m2Q2, nf);
-    std::future<double> future_f1 = std::async(std::launch::async, &AbstractConvolution::Convolute, convolutions_lmu2_[1], x, m2Q2, nf);
-    std::future<double> future_f2 = std::async(std::launch::async, &AbstractConvolution::Convolute, convolutions_lmu2_[2], x, m2Q2, nf);
+    std::future<double> future_f0 = std::async(
+        std::launch::async, &AbstractConvolution::Convolute,
+        convolutions_lmu2_[0], x, m2Q2, nf
+    );
+    std::future<double> future_f1 = std::async(
+        std::launch::async, &AbstractConvolution::Convolute,
+        convolutions_lmu2_[1], x, m2Q2, nf
+    );
+    std::future<double> future_f2 = std::async(
+        std::launch::async, &AbstractConvolution::Convolute,
+        convolutions_lmu2_[2], x, m2Q2, nf
+    );
 
-    return 0.5
-               * (future_f0.get()
-                  + future_f1.get())
+    return 0.5 * (future_f0.get() + future_f1.get())
            - 3. / 2 * beta0(nf) * future_f2.get();
 }
 
@@ -636,18 +656,30 @@ double ExactCoefficientFunction::C_ps32(double x, double m2Q2, int nf) const {
 
 double ExactCoefficientFunction::C_g31(double x, double m2Q2, int nf) const {
 
-    std::future<double> future_f0 = std::async(std::launch::async, &AbstractConvolution::Convolute, convolutions_lmu1_[0], x, m2Q2, nf);
-    std::future<double> future_f1 = std::async(std::launch::async, &AbstractConvolution::Convolute, convolutions_lmu1_[1], x, m2Q2, nf);
-    std::future<double> future_f2 = std::async(std::launch::async, &AbstractConvolution::Convolute, convolutions_lmu1_[2], x, m2Q2, nf);
-    std::future<double> future_f3 = std::async(std::launch::async, &AbstractConvolution::Convolute, convolutions_lmu1_[3], x, m2Q2, nf);
-    std::future<double> future_f4 = std::async(std::launch::async, &AbstractConvolution::Convolute, convolutions_lmu1_[4], x, m2Q2, nf);
+    std::future<double> future_f0 = std::async(
+        std::launch::async, &AbstractConvolution::Convolute,
+        convolutions_lmu1_[0], x, m2Q2, nf
+    );
+    std::future<double> future_f1 = std::async(
+        std::launch::async, &AbstractConvolution::Convolute,
+        convolutions_lmu1_[1], x, m2Q2, nf
+    );
+    std::future<double> future_f2 = std::async(
+        std::launch::async, &AbstractConvolution::Convolute,
+        convolutions_lmu1_[2], x, m2Q2, nf
+    );
+    std::future<double> future_f3 = std::async(
+        std::launch::async, &AbstractConvolution::Convolute,
+        convolutions_lmu1_[3], x, m2Q2, nf
+    );
+    std::future<double> future_f4 = std::async(
+        std::launch::async, &AbstractConvolution::Convolute,
+        convolutions_lmu1_[4], x, m2Q2, nf
+    );
 
     return -(
-        future_f0.get()
-        - beta1(nf) * future_f1.get()
-        + future_f2.get()
-        + future_f3.get()
-        - 2. * beta0(nf) * future_f4.get()
+        future_f0.get() - beta1(nf) * future_f1.get() + future_f2.get()
+        + future_f3.get() - 2. * beta0(nf) * future_f4.get()
     );
 }
 
@@ -662,13 +694,23 @@ double ExactCoefficientFunction::C_g32(double x, double m2Q2, int nf) const {
 
     double beta_0 = beta0(nf);
 
-    std::future<double> future_f0 = std::async(std::launch::async, &AbstractConvolution::Convolute, convolutions_lmu2_[0], x, m2Q2, nf);
-    std::future<double> future_f1 = std::async(std::launch::async, &AbstractConvolution::Convolute, convolutions_lmu2_[1], x, m2Q2, nf);
-    std::future<double> future_f2 = std::async(std::launch::async, &AbstractConvolution::Convolute, convolutions_lmu2_[2], x, m2Q2, nf);
-    std::future<double> future_f3 = std::async(std::launch::async, &AbstractConvolution::Convolute, convolutions_lmu2_[3], x, m2Q2, nf);
-    return 0.5
-               * (future_f0.get()
-                  + future_f1.get())
+    std::future<double> future_f0 = std::async(
+        std::launch::async, &AbstractConvolution::Convolute,
+        convolutions_lmu2_[0], x, m2Q2, nf
+    );
+    std::future<double> future_f1 = std::async(
+        std::launch::async, &AbstractConvolution::Convolute,
+        convolutions_lmu2_[1], x, m2Q2, nf
+    );
+    std::future<double> future_f2 = std::async(
+        std::launch::async, &AbstractConvolution::Convolute,
+        convolutions_lmu2_[2], x, m2Q2, nf
+    );
+    std::future<double> future_f3 = std::async(
+        std::launch::async, &AbstractConvolution::Convolute,
+        convolutions_lmu2_[3], x, m2Q2, nf
+    );
+    return 0.5 * (future_f0.get() + future_f1.get())
            - 3. / 2 * beta_0 * future_f2.get()
            + beta_0 * beta_0 * future_f3.get();
 }
@@ -684,7 +726,15 @@ double ExactCoefficientFunction::C_g3_MuDep(
 
     double lmu = log(1. / m2mu2);
 
-    return C_g31(x, m2Q2, nf) * lmu + C_g32(x, m2Q2, nf) * lmu * lmu;
+    std::future<double> future_f1 = std::async(
+        std::launch::async, &ExactCoefficientFunction::C_g31, this, x, m2Q2, nf
+    );
+    std::future<double> future_f2 = std::async(
+        std::launch::async, &ExactCoefficientFunction::C_g32, this, x, m2Q2,
+        nf
+    );
+
+    return future_f1.get() * lmu + future_f2.get() * lmu * lmu;
 }
 
 //==========================================================================================//
@@ -698,7 +748,15 @@ double ExactCoefficientFunction::C_ps3_MuDep(
 
     double lmu = log(1. / m2mu2);
 
-    return C_ps31(x, m2Q2, nf) * lmu + C_ps32(x, m2Q2, nf) * lmu * lmu;
+    std::future<double> future_f1 = std::async(
+        std::launch::async, &ExactCoefficientFunction::C_ps31, this, x, m2Q2, nf
+    );
+    std::future<double> future_f2 = std::async(
+        std::launch::async, &ExactCoefficientFunction::C_ps32, this, x, m2Q2,
+        nf
+    );
+
+    return future_f1.get() * lmu + future_f2.get() * lmu * lmu;
 }
 
 //==========================================================================================//
