@@ -88,8 +88,11 @@ double AbstractConvolution::Convolute(double x, double m2Q2, int nf) const {
         std::launch::async, &AbstractConvolution::SingularPart, this, x, m2Q2,
         nf
     );
+    std::future<double> future_f3 = std::async(
+        std::launch::async, &AbstractConvolution::LocalPart, this, x, m2Q2, nf
+    );
 
-    return future_f1.get() + future_f2.get() + LocalPart(x, m2Q2, nf);
+    return future_f1.get() + future_f2.get() + future_f3.get();
 }
 
 //==========================================================================================//
@@ -178,7 +181,7 @@ double Convolution::singular_integrand(double z, void *p) {
 //------------------------------------------------------------------------------------------//
 
 double Convolution::RegularPart(double x, double m2Q2, int nf) const {
-    double x_max = 1. / (1. + 4 * m2Q2);
+    double x_max = CoefficientFunction::xMax(m2Q2);
 
     double abserr = GetAbserr();
     double relerr = GetRelerr();
@@ -208,7 +211,7 @@ double Convolution::RegularPart(double x, double m2Q2, int nf) const {
 
 double Convolution::SingularPart(double x, double m2Q2, int nf) const {
 
-    double x_max = 1. / (1. + 4 * m2Q2);
+    double x_max = CoefficientFunction::xMax(m2Q2);
 
     double abserr = GetAbserr();
     double relerr = GetRelerr();
@@ -238,7 +241,7 @@ double Convolution::SingularPart(double x, double m2Q2, int nf) const {
 
 double Convolution::LocalPart(double x, double m2Q2, int nf) const {
 
-    double x_max = 1. / (1. + 4 * m2Q2);
+    double x_max = CoefficientFunction::xMax(m2Q2);
 
     return coefffunc_->MuIndependentTerms(x, m2Q2, nf)
            * (splitfunc_->Local(nf)
@@ -427,7 +430,7 @@ double DoubleConvolution::regular3_integrand(double z, void *p) {
     CoefficientFunction *coefffunc = (params->conv)->GetCoeffFunc();
     AbstractSplittingFunction *splitfunc = (params->conv)->GetSplitFunc();
 
-    double x_max = 1. / (1. + 4 * m2Q2);
+    double x_max = CoefficientFunction::xMax(m2Q2);
 
     return -1. / z * splitfunc->Regular(x / z, nf)
            * coefffunc->MuIndependentTerms(z, m2Q2, nf)
@@ -443,7 +446,7 @@ double DoubleConvolution::RegularPart(double x, double m2Q2, int nf) const {
     if (!MCintegral_)
         return convolution_->RegularPart(x, m2Q2, nf);
 
-    double x_max = 1. / (1. + 4 * m2Q2);
+    double x_max = CoefficientFunction::xMax(m2Q2);
     struct function_params params = { x, m2Q2, nf, this };
 
     double xl[2] = { x, x };
@@ -537,7 +540,7 @@ double DoubleConvolution::singular2_integrand(
     CoefficientFunction *coefffunc = (params->conv)->GetCoeffFunc();
     AbstractSplittingFunction *splitfunc = (params->conv)->GetSplitFunc();
 
-    double x_max = 1. / (1. + 4 * m2Q2);
+    double x_max = CoefficientFunction::xMax(m2Q2);
 
     double z1 = z[0], z2 = z[1];
 
@@ -571,7 +574,7 @@ double DoubleConvolution::singular3_integrand(double z, void *p) {
     CoefficientFunction *coefffunc = (params->conv)->GetCoeffFunc();
     AbstractSplittingFunction *splitfunc = (params->conv)->GetSplitFunc();
 
-    double x_max = 1. / (1. + 4 * m2Q2);
+    double x_max = CoefficientFunction::xMax(m2Q2);
 
     return -(
         splitfunc->Singular(z, nf)
@@ -591,7 +594,7 @@ double DoubleConvolution::SingularPart(double x, double m2Q2, int nf) const {
     if (!MCintegral_)
         return convolution_->SingularPart(x, m2Q2, nf);
 
-    double x_max = 1. / (1. + 4 * m2Q2);
+    double x_max = CoefficientFunction::xMax(m2Q2);
     struct function_params params = { x, m2Q2, nf, this };
 
     double xl[2] = { x / x_max, x };
@@ -650,7 +653,7 @@ double DoubleConvolution::LocalPart(double x, double m2Q2, int nf) const {
     if (!MCintegral_)
         return convolution_->LocalPart(x, m2Q2, nf);
 
-    double x_max = 1. / (1. + 4 * m2Q2);
+    double x_max = CoefficientFunction::xMax(m2Q2);
 
     return convolution_->Convolute(x, m2Q2, nf)
            * (splitfunc_->Local(nf)

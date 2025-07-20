@@ -314,8 +314,7 @@ double ExactCoefficientFunction::MuDependentTerms(
     double x, double m2Q2, double m2mu2, int nf
 ) const {
 
-    double x_max = 1. / (1 + 4 * m2Q2);
-    if (x <= 0 || x > x_max)
+    if (x <= 0 || x > xMax(m2Q2))
         return 0.;
 
     return (this->*mu_dep_)(x, m2Q2, m2mu2, nf);

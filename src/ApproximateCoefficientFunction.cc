@@ -6,6 +6,7 @@
 #include "adani/SpecialFunctions.h"
 
 #include <cmath>
+#include <future>
 #include <vector>
 
 using std::vector;
@@ -70,12 +71,18 @@ double AbstractApproximate::MuDependentTerms(
 Value AbstractApproximate::fxBand(
     double x, double m2Q2, double m2mu2, int nf
 ) const {
-    double x_max = 1. / (1. + 4 * m2Q2);
-    if (x >= x_max || x <= 0)
+    if (x >= xMax(m2Q2) || x <= 0)
         return Value(0.);
 
-    return MuIndependentTermsBand(x, m2Q2, nf)
-           + MuDependentTerms(x, m2Q2, m2mu2, nf);
+    std::future<Value> future_f1 = std::async(
+        std::launch::async, &AbstractApproximate::MuIndependentTermsBand, this, x, m2Q2, nf
+    );
+    std::future<double> future_f2 = std::async(
+        std::launch::async, &AbstractApproximate::MuDependentTerms, this, x, m2Q2, m2mu2,
+        nf
+    );
+
+    return future_f1.get() + future_f2.get();
 }
 
 //==========================================================================================//
@@ -291,8 +298,7 @@ Value ApproximateCoefficientFunction::Approximation(
     double x, double m2Q2, int nf
 ) const {
 
-    double x_max = 1. / (1 + 4 * m2Q2);
-    if (x <= 0 || x > x_max)
+    if (x <= 0 || x > xMax(m2Q2))
         return Value(0.);
 
     double rho = 1.3, eta0 = 2.;
