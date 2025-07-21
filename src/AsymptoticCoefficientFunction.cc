@@ -81,6 +81,7 @@ void AsymptoticCoefficientFunction::SetLegacyPowerTerms(const bool &legacy_pt) {
                 __PRETTY_FUNCTION__, __LINE__
             );
         }
+        legacy_pt_ = legacy_pt;
         if (GetOrder() == '1') {
             throw NotPresentException(
                 "For order='1' legacy power terms are identical to the "

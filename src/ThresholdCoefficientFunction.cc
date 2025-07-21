@@ -21,7 +21,7 @@ ThresholdCoefficientFunction::ThresholdCoefficientFunction(
 
     try {
         SetFunctions();
-        SetLegacyThreshold(false);
+        legacy_threshold_ = false;
     } catch (UnexpectedException &e) {
         e.runtime_error();
     }
@@ -61,6 +61,7 @@ void ThresholdCoefficientFunction::SetFunctions() {
                 expansion_no_beta_ = &ThresholdCoefficientFunction::
                                          CL_g2_threshold_expansion_const;
             }
+            fx_ = &ThresholdCoefficientFunction::ModifiedThreshold;
         } else if (GetOrder() == 3) {
             if (GetKind() == '2') {
                 expansion_beta_ =
@@ -73,6 +74,7 @@ void ThresholdCoefficientFunction::SetFunctions() {
                 expansion_no_beta_ = &ThresholdCoefficientFunction::
                                          CL_g3_threshold_expansion_const;
             }
+            fx_ = &ThresholdCoefficientFunction::ModifiedThreshold;
         } else {
             throw UnexpectedException(
                 "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
@@ -103,40 +105,58 @@ void ThresholdCoefficientFunction::SetFunctions() {
 void ThresholdCoefficientFunction::SetLegacyThreshold(
     const bool &legacy_threshold
 ) {
-    legacy_threshold_ = legacy_threshold;
+    try {
+        if (legacy_threshold == legacy_threshold_) {
+            throw NotValidException(
+                "Setting legacy power terms identical to its previous value!",
+                __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+        legacy_threshold_ = legacy_threshold;
 
-    if (GetOrder() > 1 && GetChannel() == 'g') {
-        if (legacy_threshold) {
-            fx_ = &ThresholdCoefficientFunction::PlainThreshold;
-            if (GetKind() == 'L') {
-                if (GetOrder() == 2) {
-                    expansion_beta_ = &ThresholdCoefficientFunction::
-                                          C2_g2_threshold_expansion;
-                    expansion_no_beta_ = &ThresholdCoefficientFunction::
-                                             C2_g2_threshold_expansion_const;
-                } else if (GetOrder() == 3) {
-                    expansion_beta_ = &ThresholdCoefficientFunction::
-                                          C2_g3_threshold_expansion;
-                    expansion_no_beta_ = &ThresholdCoefficientFunction::
-                                             C2_g3_threshold_expansion_const;
+        if (GetOrder() > 1 && GetChannel() == 'g') {
+            if (legacy_threshold) {
+                fx_ = &ThresholdCoefficientFunction::PlainThreshold;
+                if (GetKind() == 'L') {
+                    if (GetOrder() == 2) {
+                        expansion_beta_ = &ThresholdCoefficientFunction::
+                                            C2_g2_threshold_expansion;
+                        expansion_no_beta_ = &ThresholdCoefficientFunction::
+                                                C2_g2_threshold_expansion_const;
+                    } else if (GetOrder() == 3) {
+                        expansion_beta_ = &ThresholdCoefficientFunction::
+                                            C2_g3_threshold_expansion;
+                        expansion_no_beta_ = &ThresholdCoefficientFunction::
+                                                C2_g3_threshold_expansion_const;
+                    } else {
+                        throw UnexpectedException(
+                            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                        );
+                    }
                 }
-            }
-        } else {
-            fx_ = &ThresholdCoefficientFunction::ModifiedThreshold;
-            if (GetKind() == 'L') {
-                if (GetOrder() == 2) {
-                    expansion_beta_ = &ThresholdCoefficientFunction::
-                                          CL_g2_threshold_expansion;
-                    expansion_no_beta_ = &ThresholdCoefficientFunction::
-                                             CL_g2_threshold_expansion_const;
-                } else if (GetOrder() == 3) {
-                    expansion_beta_ = &ThresholdCoefficientFunction::
-                                          CL_g3_threshold_expansion;
-                    expansion_no_beta_ = &ThresholdCoefficientFunction::
-                                             CL_g3_threshold_expansion_const;
+            } else {
+                fx_ = &ThresholdCoefficientFunction::ModifiedThreshold;
+                if (GetKind() == 'L') {
+                    if (GetOrder() == 2) {
+                        expansion_beta_ = &ThresholdCoefficientFunction::
+                                            CL_g2_threshold_expansion;
+                        expansion_no_beta_ = &ThresholdCoefficientFunction::
+                                                CL_g2_threshold_expansion_const;
+                    } else if (GetOrder() == 3) {
+                        expansion_beta_ = &ThresholdCoefficientFunction::
+                                            CL_g3_threshold_expansion;
+                        expansion_no_beta_ = &ThresholdCoefficientFunction::
+                                                CL_g3_threshold_expansion_const;
+                    } else {
+                        throw UnexpectedException(
+                            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                        );
+                    }
                 }
             }
         }
+    } catch (UnexpectedException &e) {
+        e.warning();
     }
 }
 
@@ -196,7 +216,7 @@ Value ThresholdCoefficientFunction::ModifiedThreshold(
     double exp = (this->*expansion_beta_)(x, m2Q2, m2mu2, nf)
                  + (this->*expansion_no_beta_)(m2Q2, m2mu2);
     double central = exact_as1_->fx(x, m2Q2, m2mu2, nf) * exp;
-    double delta = std::abs(central - exact_as1_->fx(x, m2Q2, m2mu2, nf) * exp);
+    double delta = std::abs(central - (this->*threshold_as1_)(x, m2Q2) * exp);
 
     return Value(central, central + delta, central - delta);
 }
@@ -483,7 +503,8 @@ double ThresholdCoefficientFunction::CL_g3_threshold_expansion(
 double ThresholdCoefficientFunction::CL_g3_threshold_expansion_const(
     double m2Q2, double m2mu2
 ) const {
-    return C2_g3_threshold_expansion_const(m2Q2, m2mu2);
+    return 0.;
+    //return C2_g3_threshold_expansion_const(m2Q2, m2mu2);
 }
 
 //==========================================================================================//
