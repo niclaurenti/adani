@@ -108,10 +108,17 @@ void ThresholdCoefficientFunction::SetLegacyThreshold(
     try {
         if (legacy_threshold == legacy_threshold_) {
             throw NotValidException(
-                "Setting legacy power terms identical to its previous value!",
+                "Setting legacy threshold identical to its previous value!",
                 __PRETTY_FUNCTION__, __LINE__
             );
         }
+        if (GetKind() == '2') {
+            throw NotValidException(
+                "Legacy threshold of F2 are identical to the new ones!",
+                __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+
         legacy_threshold_ = legacy_threshold;
 
         if (GetOrder() > 1 && GetChannel() == 'g') {
@@ -133,6 +140,10 @@ void ThresholdCoefficientFunction::SetLegacyThreshold(
                             "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
                         );
                     }
+                } else {
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
                 }
             } else {
                 fx_ = &ThresholdCoefficientFunction::ModifiedThreshold;
@@ -152,11 +163,17 @@ void ThresholdCoefficientFunction::SetLegacyThreshold(
                             "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
                         );
                     }
+                } else {
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
                 }
             }
         }
-    } catch (UnexpectedException &e) {
+    } catch (NotValidException &e) {
         e.warning();
+    } catch (UnexpectedException &e) {
+        e.runtime_error();
     }
 }
 
