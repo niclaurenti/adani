@@ -112,12 +112,6 @@ void ThresholdCoefficientFunction::SetLegacyThreshold(
                 __PRETTY_FUNCTION__, __LINE__
             );
         }
-        if (GetKind() == '2') {
-            throw NotValidException(
-                "Legacy threshold of F2 are identical to the new ones!",
-                __PRETTY_FUNCTION__, __LINE__
-            );
-        }
 
         legacy_threshold_ = legacy_threshold;
 
@@ -140,10 +134,6 @@ void ThresholdCoefficientFunction::SetLegacyThreshold(
                             "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
                         );
                     }
-                } else {
-                    throw UnexpectedException(
-                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                    );
                 }
             } else {
                 fx_ = &ThresholdCoefficientFunction::ModifiedThreshold;
@@ -163,10 +153,6 @@ void ThresholdCoefficientFunction::SetLegacyThreshold(
                             "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
                         );
                     }
-                } else {
-                    throw UnexpectedException(
-                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                    );
                 }
             }
         }
