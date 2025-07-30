@@ -79,7 +79,7 @@ Value AbstractApproximate::fxBand(
 }
 
 //==========================================================================================//
-//  ApproximateCoefficientFunction: parameters of the approximation
+//  ApproximateCoefficientFunction: parameters of the legacy approximation
 //------------------------------------------------------------------------------------------//
 
 #define a 2.5
@@ -136,7 +136,7 @@ ApproximateCoefficientFunction::~ApproximateCoefficientFunction() {
 }
 
 //==========================================================================================//
-//  ApproximateCoefficientFunction: set legacy threshold behavior
+//  ApproximateCoefficientFunction: set parameters of legacy approximation
 //------------------------------------------------------------------------------------------//
 
 void ApproximateCoefficientFunction::SetLegacyParameters() {
@@ -243,8 +243,7 @@ void ApproximateCoefficientFunction::SetLegacyPowerTerms(const bool &legacy_pt
 }
 
 //==========================================================================================//
-//  ApproximateCoefficientFunction: set method to restore legacy behavior for
-//  variation
+//  ApproximateCoefficientFunction: restore legacy approximation
 //------------------------------------------------------------------------------------------//
 
 void ApproximateCoefficientFunction::SetLegacyApproximation(const bool &legacy_appr) {
@@ -285,7 +284,7 @@ Value ApproximateCoefficientFunction::MuIndependentTermsBand(
 }
 
 //==========================================================================================//
-//  ApproximateCoefficientFunction: band of the approximate mu independent terms
+//  ApproximateCoefficientFunction: band of the approximate mu independent terms (new)
 //------------------------------------------------------------------------------------------//
 
 Value ApproximateCoefficientFunction::Approximation(
@@ -371,7 +370,7 @@ Value ApproximateCoefficientFunction::ApproximationLegacy(
 }
 
 //==========================================================================================//
-//  ApproximateCoefficientFunction: functional form of the approximation
+//  ApproximateCoefficientFunction: functional form of the legacy approximation
 //------------------------------------------------------------------------------------------//
 
 double ApproximateCoefficientFunction::ApproximationLegacyForm(
