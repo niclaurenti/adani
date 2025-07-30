@@ -120,6 +120,8 @@ ApproximateCoefficientFunction::ApproximateCoefficientFunction(
     );
 
     try {
+        fx_ = &ApproximateCoefficientFunction::Approximation;
+
         if (order == 1) {
             if (kind == '2') {
                 if (channel == 'g')
@@ -240,17 +242,54 @@ void ApproximateCoefficientFunction::SetLegacyPowerTerms(const bool &legacy_pt
 
 void ApproximateCoefficientFunction::SetLegacyVariation(const bool &legacy_var
 ) {
+    try {
+        legacy_var_ = legacy_var;
 
-    legacy_var_ = legacy_var;
+        if (legacy_var == legacy_var_) {
+            throw NotValidException(
+                "Setting legacy variation identical to its previous value!",
+                __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+        if (legacy_var_) {
+            if (GetKind() == '2') {
+                variation_ = C2_var_legacy;
+            } else if (GetKind() == 'L') {
+                variation_ = CL_var_legacy;
+            } else {
+                throw UnexpectedException(
+                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                );
+            }
+        } else {
+            if (GetKind() == '2') {
+                variation_ = C2_var;
+            } else if (GetKind() == 'L') {
+                variation_ = CL_var;
+            } else {
+                throw UnexpectedException(
+                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                );
+            }
+        }
+    } catch (NotValidException &e) {
+        e.warning();
+    } catch (UnexpectedException &e) {
+        e.runtime_error();
+    }
+}
 
-    if (GetKind() == '2') {
-        variation_ = C2_var_legacy;
-    } else if (GetKind() == 'L') {
-        variation_ = CL_var_legacy;
+//==========================================================================================//
+//  ApproximateCoefficientFunction: set method to restore legacy behavior for
+//  variation
+//------------------------------------------------------------------------------------------//
+
+void ApproximateCoefficientFunction::SetLegacyApproximation(const bool &legacy_appr) {
+
+    if (legacy_appr) {
+        fx_ = &ApproximateCoefficientFunction::ApproximationLegacy;
     } else {
-        throw UnexpectedException(
-            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-        );
+        fx_ = &ApproximateCoefficientFunction::Approximation;
     }
 }
 
@@ -259,6 +298,36 @@ void ApproximateCoefficientFunction::SetLegacyVariation(const bool &legacy_var
 //------------------------------------------------------------------------------------------//
 
 Value ApproximateCoefficientFunction::MuIndependentTermsBand(
+    double x, double m2Q2, int nf
+) const {
+    return (this->*fx_)(x, m2Q2, nf);
+}
+
+//==========================================================================================//
+//  ApproximateCoefficientFunction: band of the approximate mu independent terms
+//------------------------------------------------------------------------------------------//
+
+Value ApproximateCoefficientFunction::Approximation(
+    double x, double m2Q2, int nf
+) const {
+
+    double x_max = 1. / (1 + 4 * m2Q2);
+    if (x <= 0 || x > x_max)
+        return Value(0.);
+
+    double rho = 1.3, eta0 = 2.;
+
+    Value thresh = threshold_->MuIndependentTermsBand(x, m2Q2, nf);
+    Value asy = asymptotic_->MuIndependentTermsBand(x, m2Q2, nf);
+
+    return Approximation(x, m2Q2, asy, thresh, eta0, rho);
+}
+
+//==========================================================================================//
+//  ApproximateCoefficientFunction: band of the approximate mu independent terms (legacy form)
+//------------------------------------------------------------------------------------------//
+
+Value ApproximateCoefficientFunction::ApproximationLegacy(
     double x, double m2Q2, int nf
 ) const {
 
@@ -321,6 +390,22 @@ Value ApproximateCoefficientFunction::MuIndependentTermsBand(
     }
 
     return Value(central, higher, lower);
+}
+
+//==========================================================================================//
+//  ApproximateCoefficientFunction: functional form of the approximation
+//------------------------------------------------------------------------------------------//
+
+Value ApproximateCoefficientFunction::Approximation(
+    double x, double m2Q2, const Value &asy, const Value &thresh, double h, double k
+) const {
+
+    double eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
+
+    double damp_thr = 1. / (1. + pow(eta / h, k));
+    double damp_asy = 1. - damp_thr;
+
+    return asy * damp_asy + thresh * damp_thr;
 }
 
 //==========================================================================================//

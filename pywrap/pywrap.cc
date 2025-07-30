@@ -119,6 +119,11 @@ PYBIND11_MODULE(_core, m) {
             "SetLegacyPowerTerms",
             &ApproximateCoefficientFunction::SetLegacyPowerTerms,
             py::arg("legacy_pt")
+        )
+        .def(
+            "SetLegacyApproximation",
+            &ApproximateCoefficientFunction::SetLegacyApproximation,
+            py::arg("legacy_appr")
         );
 
     // ApproximateCoefficientFunctionKLMV
