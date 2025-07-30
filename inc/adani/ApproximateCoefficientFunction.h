@@ -101,7 +101,6 @@ class ApproximateCoefficientFunction : public AbstractApproximate {
 
         void SetLegacyThreshold(const bool &legacy_threshold);
         void SetLegacyPowerTerms(const bool &legacy_pt);
-        void SetLegacyVariation(const bool &legacy_var);
         void SetLegacyApproximation(const bool &legacy_appr);
 
         Value MuIndependentTermsBand(
@@ -116,18 +115,20 @@ class ApproximateCoefficientFunction : public AbstractApproximate {
             double, double, int
         ) const;
 
-        struct approximation_parameters approximation_;
-        struct variation_parameters variation_;
+        bool legacy_appr_;
 
-        bool legacy_var_;
+        struct approximation_parameters *approximation_;
+        struct variation_parameters *variation_;
 
-        double Approximation(
+        double ApproximationLegacyForm(
             double x, double m2Q2, double asy, double thresh, double A,
             double B, double C, double D
         ) const;
-        Value Approximation(double x, double m2Q2, const Value &asy, const Value &thresh, double h, double k) const;
+
         Value Approximation(double x, double m2Q2, int nf) const;
         Value ApproximationLegacy(double x, double m2Q2, int nf) const;
+
+        void SetLegacyParameters();
 };
 
 //==========================================================================================//

@@ -98,10 +98,8 @@ struct approximation_parameters CL_g3_params = { 10., 11., 3., 2. };
 struct approximation_parameters C2_ps3_params = { 0.3, 2.5, 2.5, 1.2 };
 struct approximation_parameters CL_ps3_params = { 20., 11., 3., 2. };
 
-struct variation_parameters C2_var = { 3., 1.4 };
-struct variation_parameters CL_var = { 2., 1.3 };
-struct variation_parameters C2_var_legacy = { 3., 0.3 };
-struct variation_parameters CL_var_legacy = { 2., 0.2 };
+struct variation_parameters C2_var = { 3., 0.3 };
+struct variation_parameters CL_var = { 2., 0.2 };
 
 //==========================================================================================//
 //  ApproximateCoefficientFunction: constructor
@@ -119,92 +117,11 @@ ApproximateCoefficientFunction::ApproximateCoefficientFunction(
         order, kind, channel, NLL, highscale_version
     );
 
-    try {
-        fx_ = &ApproximateCoefficientFunction::Approximation;
+    fx_ = &ApproximateCoefficientFunction::Approximation;
 
-        if (order == 1) {
-            if (kind == '2') {
-                if (channel == 'g')
-                    approximation_ = C2_g1_params;
-                else {
-                    throw UnexpectedException(
-                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                    );
-                }
-                variation_ = C2_var;
-            } else if (kind == 'L') {
-                if (channel == 'g')
-                    approximation_ = CL_g2_params;
-                else {
-                    throw UnexpectedException(
-                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                    );
-                }
-                variation_ = CL_var;
-            } else {
-                throw UnexpectedException(
-                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                );
-            }
-        } else if (order == 2) {
-            if (kind == '2') {
-                if (channel == 'g')
-                    approximation_ = C2_g2_params;
-                else if (channel == 'q')
-                    approximation_ = C2_ps2_params;
-                else {
-                    throw UnexpectedException(
-                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                    );
-                }
-                variation_ = C2_var;
-            } else if (kind == 'L') {
-                if (channel == 'g')
-                    approximation_ = CL_g2_params;
-                else if (channel == 'q')
-                    approximation_ = CL_ps2_params;
-                else {
-                    throw UnexpectedException(
-                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                    );
-                }
-                variation_ = CL_var;
-            }
-        } else if (order == 3) {
-            if (kind == '2') {
-                if (channel == 'g')
-                    approximation_ = C2_g3_params;
-                else if (channel == 'q')
-                    approximation_ = C2_ps3_params;
-                else {
-                    throw UnexpectedException(
-                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                    );
-                }
-                variation_ = C2_var;
-            } else if (kind == 'L') {
-                if (channel == 'g')
-                    approximation_ = CL_g3_params;
-                else if (channel == 'q')
-                    approximation_ = CL_ps3_params;
-                else {
-                    throw UnexpectedException(
-                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                    );
-                }
-                variation_ = CL_var;
-            }
-        } else {
-            throw UnexpectedException(
-                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-            );
-        }
-
-        SetLegacyVariation(false);
-
-    } catch (UnexpectedException &e) {
-        e.runtime_error();
-    }
+    legacy_appr_ = false;
+    approximation_ = nullptr;
+    variation_ = nullptr;
 }
 
 //==========================================================================================//
@@ -214,6 +131,96 @@ ApproximateCoefficientFunction::ApproximateCoefficientFunction(
 ApproximateCoefficientFunction::~ApproximateCoefficientFunction() {
     delete threshold_;
     delete asymptotic_;
+    delete approximation_;
+    delete variation_;
+}
+
+//==========================================================================================//
+//  ApproximateCoefficientFunction: set legacy threshold behavior
+//------------------------------------------------------------------------------------------//
+
+void ApproximateCoefficientFunction::SetLegacyParameters() {
+    try {
+        if (GetOrder() == 1) {
+            if (GetKind() == '2') {
+                if (GetChannel() == 'g')
+                    approximation_ = new approximation_parameters(C2_g1_params);
+                else {
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
+                }
+                variation_ = new variation_parameters(C2_var);
+            } else if (GetKind() == 'L') {
+                if (GetChannel() == 'g')
+                    approximation_ = new approximation_parameters(CL_g2_params);
+                else {
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
+                }
+                variation_ = new variation_parameters(CL_var);
+            } else {
+                throw UnexpectedException(
+                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                );
+            }
+        } else if (GetOrder() == 2) {
+            if (GetKind() == '2') {
+                if (GetChannel() == 'g')
+                    approximation_ = new approximation_parameters(C2_g2_params);
+                else if (GetChannel() == 'q')
+                    approximation_ = new approximation_parameters(C2_ps2_params);
+                else {
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
+                }
+                variation_ = new variation_parameters(C2_var);
+            } else if (GetKind() == 'L') {
+                if (GetChannel() == 'g')
+                    approximation_ = new approximation_parameters(CL_g2_params);
+                else if (GetChannel() == 'q')
+                    approximation_ = new approximation_parameters(CL_ps2_params);
+                else {
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
+                }
+                variation_ = new variation_parameters(CL_var);
+            }
+        } else if (GetOrder() == 3) {
+            if (GetKind() == '2') {
+                if (GetChannel() == 'g')
+                    approximation_ = new approximation_parameters(C2_g3_params);
+                else if (GetChannel() == 'q')
+                    approximation_ = new approximation_parameters(C2_ps3_params);
+                else {
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
+                }
+                variation_ = new variation_parameters(C2_var);
+            } else if (GetKind() == 'L') {
+                if (GetChannel() == 'g')
+                    approximation_ = new approximation_parameters(CL_g3_params);
+                else if (GetChannel() == 'q')
+                    approximation_ = new approximation_parameters(CL_ps3_params);
+                else {
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
+                }
+                variation_ = new variation_parameters(CL_var);
+            }
+        } else {
+            throw UnexpectedException(
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+    } catch (UnexpectedException &e) {
+        e.runtime_error();
+    }
 }
 
 //==========================================================================================//
@@ -240,57 +247,30 @@ void ApproximateCoefficientFunction::SetLegacyPowerTerms(const bool &legacy_pt
 //  variation
 //------------------------------------------------------------------------------------------//
 
-void ApproximateCoefficientFunction::SetLegacyVariation(const bool &legacy_var
-) {
+void ApproximateCoefficientFunction::SetLegacyApproximation(const bool &legacy_appr) {
     try {
-        if (legacy_var == legacy_var_) {
+        if (legacy_appr == legacy_appr_) {
             throw NotValidException(
-                "Setting legacy variation identical to its previous value!",
+                "Setting legacy approximation identical to its previous value!",
                 __PRETTY_FUNCTION__, __LINE__
             );
         }
 
-        legacy_var_ = legacy_var;
+        if (legacy_appr) {
+            SetLegacyThreshold(true);
+            SetLegacyPowerTerms(true);
+            SetLegacyParameters();
+            fx_ = &ApproximateCoefficientFunction::ApproximationLegacy;
 
-        if (legacy_var_) {
-            if (GetKind() == '2') {
-                variation_ = C2_var_legacy;
-            } else if (GetKind() == 'L') {
-                variation_ = CL_var_legacy;
-            } else {
-                throw UnexpectedException(
-                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                );
-            }
         } else {
-            if (GetKind() == '2') {
-                variation_ = C2_var;
-            } else if (GetKind() == 'L') {
-                variation_ = CL_var;
-            } else {
-                throw UnexpectedException(
-                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                );
-            }
+            SetLegacyThreshold(false);
+            SetLegacyPowerTerms(false);
+            fx_ = &ApproximateCoefficientFunction::Approximation;
+            delete approximation_;
+            delete variation_;
         }
     } catch (NotValidException &e) {
         e.warning();
-    } catch (UnexpectedException &e) {
-        e.runtime_error();
-    }
-}
-
-//==========================================================================================//
-//  ApproximateCoefficientFunction: set method to restore legacy behavior for
-//  variation
-//------------------------------------------------------------------------------------------//
-
-void ApproximateCoefficientFunction::SetLegacyApproximation(const bool &legacy_appr) {
-
-    if (legacy_appr) {
-        fx_ = &ApproximateCoefficientFunction::ApproximationLegacy;
-    } else {
-        fx_ = &ApproximateCoefficientFunction::Approximation;
     }
 }
 
@@ -321,7 +301,12 @@ Value ApproximateCoefficientFunction::Approximation(
     Value thresh = threshold_->MuIndependentTermsBand(x, m2Q2, nf);
     Value asy = asymptotic_->MuIndependentTermsBand(x, m2Q2, nf);
 
-    return Approximation(x, m2Q2, asy, thresh, eta0, rho);
+    double eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
+
+    double damp_thr = 1. / (1. + pow(eta / eta0, rho));
+    double damp_asy = 1. - damp_thr;
+
+    return asy * damp_asy + thresh * damp_thr;
 }
 
 //==========================================================================================//
@@ -336,24 +321,17 @@ Value ApproximateCoefficientFunction::ApproximationLegacy(
     if (x <= 0 || x > x_max)
         return Value(0.);
 
-    double A = approximation_.A, B = approximation_.B, C = approximation_.C,
-           D = approximation_.D;
-    double var2 = variation_.var2, var1 = variation_.var1;
+    double A = approximation_->A, B = approximation_->B, C = approximation_->C,
+           D = approximation_->D;
+    double var2 = variation_->var2, var1 = variation_->var1;
 
     double Amax = var1 * A, Amin = A / var1, Bmax = B * var1, Bmin = B / var1;
     double Cmax, Cmin, Dmax, Dmin;
 
-    if (!legacy_var_) {
-        Cmax = var2 * C;
-        Cmin = C / var2;
-        Dmax = var2 * D;
-        Dmin = D / var2;
-    } else {
-        Cmax = (1. + var2) * C;
-        Cmin = (1. - var2) * C;
-        Dmax = (1. + var2) * D;
-        Dmin = (1. - var2) * D;
-    }
+    Cmax = (1. + var2) * C;
+    Cmin = (1. - var2) * C;
+    Dmax = (1. + var2) * D;
+    Dmin = (1. - var2) * D;
 
     double Avec[3] = { A, Amax, Amin };
     double Bvec[3] = { B, Bmax, Bmin };
@@ -365,7 +343,7 @@ Value ApproximateCoefficientFunction::ApproximationLegacy(
     vector<double> thresh =
         (threshold_->MuIndependentTermsBand(x, m2Q2, nf)).ToVect();
 
-    double central = Approximation(x, m2Q2, asy[0], thresh[0], A, B, C, D);
+    double central = ApproximationLegacyForm(x, m2Q2, asy[0], thresh[0], A, B, C, D);
     double higher = central, lower = central, tmp;
 
     for (int i = 0; i < int(asy.size()); i++) {
@@ -374,7 +352,7 @@ Value ApproximateCoefficientFunction::ApproximationLegacy(
                 for (int l = 0; l < 3; l++) {
                     for (int m = 0; m < 3; m++) {
                         for (int n = 0; n < 3; n++) {
-                            tmp = Approximation(
+                            tmp = ApproximationLegacyForm(
                                 x, m2Q2, asy[i], thresh[j], Avec[k], Bvec[l],
                                 Cvec[m], Dvec[n]
                             );
@@ -396,23 +374,7 @@ Value ApproximateCoefficientFunction::ApproximationLegacy(
 //  ApproximateCoefficientFunction: functional form of the approximation
 //------------------------------------------------------------------------------------------//
 
-Value ApproximateCoefficientFunction::Approximation(
-    double x, double m2Q2, const Value &asy, const Value &thresh, double h, double k
-) const {
-
-    double eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
-
-    double damp_thr = 1. / (1. + pow(eta / h, k));
-    double damp_asy = 1. - damp_thr;
-
-    return asy * damp_asy + thresh * damp_thr;
-}
-
-//==========================================================================================//
-//  ApproximateCoefficientFunction: functional form of the approximation
-//------------------------------------------------------------------------------------------//
-
-double ApproximateCoefficientFunction::Approximation(
+double ApproximateCoefficientFunction::ApproximationLegacyForm(
     double x, double m2Q2, double asy, double thresh, double A, double B,
     double C, double D
 ) const {

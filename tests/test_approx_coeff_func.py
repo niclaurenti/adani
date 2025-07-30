@@ -43,9 +43,6 @@ def test_as2_muindep_oldversion():
         for kind in ['2', 'L']:
             app = ad.ApproximateCoefficientFunction(2, kind, channel)
             app.SetLegacyApproximation(True)
-            app.SetLegacyVariation(True)
-            app.SetLegacyPowerTerms(True)
-            app.SetLegacyThreshold(True)
             for xi in np.geomspace(1e-2, 1e2, 10):
                 m2Q2 = 1/xi
                 for x in np.geomspace(1e-5, 1, 10):
@@ -75,9 +72,6 @@ def test_as3_muindep_oldversion():
             highscale_version = "exact" if channel == 'q' else "abmp"
             app = ad.ApproximateCoefficientFunction(3, kind, channel,True, highscale_version)
             app.SetLegacyApproximation(True)
-            app.SetLegacyVariation(True)
-            app.SetLegacyPowerTerms(True)
-            app.SetLegacyThreshold(True)
             for xi in np.geomspace(1e-2, 1e2, 10):
                 m2Q2 = 1/xi
                 for x in np.geomspace(1e-5, 1, 10):
