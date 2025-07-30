@@ -243,14 +243,15 @@ void ApproximateCoefficientFunction::SetLegacyPowerTerms(const bool &legacy_pt
 void ApproximateCoefficientFunction::SetLegacyVariation(const bool &legacy_var
 ) {
     try {
-        legacy_var_ = legacy_var;
-
         if (legacy_var == legacy_var_) {
             throw NotValidException(
                 "Setting legacy variation identical to its previous value!",
                 __PRETTY_FUNCTION__, __LINE__
             );
         }
+
+        legacy_var_ = legacy_var;
+
         if (legacy_var_) {
             if (GetKind() == '2') {
                 variation_ = C2_var_legacy;
@@ -363,7 +364,6 @@ Value ApproximateCoefficientFunction::ApproximationLegacy(
         (asymptotic_->MuIndependentTermsBand(x, m2Q2, nf)).ToVect();
     vector<double> thresh =
         (threshold_->MuIndependentTermsBand(x, m2Q2, nf)).ToVect();
-    // thresh contains three identical numbers since the band was not present
 
     double central = Approximation(x, m2Q2, asy[0], thresh[0], A, B, C, D);
     double higher = central, lower = central, tmp;

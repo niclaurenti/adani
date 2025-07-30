@@ -9,7 +9,6 @@ def test_coeff_func():
                 if order == 1 and channel == "q":
                     continue
                 app = ad.ApproximateCoefficientFunction(order, kind, channel)
-                app.SetLegacyThreshold(True)
                 assert app.GetOrder() == order
                 assert app.GetKind() == kind
                 assert app.GetChannel() == channel
@@ -27,8 +26,6 @@ def test_mudependent_terms():
                                 relerr = abserr
                                 massive = ad.ExactCoefficientFunction(order, kind, channel, abserr, relerr, dim)
                                 app = ad.ApproximateCoefficientFunction(order, kind, channel, True, hscale, abserr, relerr, dim)
-                                app.SetLegacyVariation(True)
-                                app.SetLegacyThreshold(True)
                                 if mf in ["double_numerical", "monte_carlo"]:
                                     massive.SetDoubleIntegralMethod(mf, abserr, relerr, dim, MCcalls)
                                     app.SetDoubleIntegralMethod(mf, abserr, relerr, dim, MCcalls)
@@ -45,6 +42,7 @@ def test_as2_muindep_oldversion():
     for channel in ['g', 'q']:
         for kind in ['2', 'L']:
             app = ad.ApproximateCoefficientFunction(2, kind, channel)
+            app.SetLegacyApproximation(True)
             app.SetLegacyVariation(True)
             app.SetLegacyPowerTerms(True)
             app.SetLegacyThreshold(True)
@@ -76,6 +74,7 @@ def test_as3_muindep_oldversion():
         for kind in ['2', 'L']:
             highscale_version = "exact" if channel == 'q' else "abmp"
             app = ad.ApproximateCoefficientFunction(3, kind, channel,True, highscale_version)
+            app.SetLegacyApproximation(True)
             app.SetLegacyVariation(True)
             app.SetLegacyPowerTerms(True)
             app.SetLegacyThreshold(True)
@@ -107,7 +106,6 @@ def test_mudep_as2_oldversion():
     for channel in ['g', 'q']:
         for kind in ['2', 'L']:
             app = ad.ApproximateCoefficientFunction(2, kind, channel)
-            app.SetLegacyThreshold(True)
             for xi in np.geomspace(1e-2, 1e2, 10):
                 m2Q2 = 1/xi
                 xmax = 1/(1 + 4*m2Q2)
