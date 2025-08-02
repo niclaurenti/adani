@@ -44,32 +44,42 @@ AsymptoticCoefficientFunction::~AsymptoticCoefficientFunction() {
 //------------------------------------------------------------------------------------------//
 
 void AsymptoticCoefficientFunction::SetFunctions() {
-    if (GetOrder() == 1) {
-        fx_ = &AsymptoticCoefficientFunction::PlainAdditiveMatching;
-    } else if (GetOrder() == 2) {
-        if (GetKind() == '2') {
-            fx_ = &AsymptoticCoefficientFunction::C2_2_asymptotic;
-        } else if (GetKind() == 'L') {
-            fx_ = &AsymptoticCoefficientFunction::CL_2_asymptotic;
-        } else {
+    switch (GetOrder()) {
+        case 1:
+            fx_ = &AsymptoticCoefficientFunction::PlainAdditiveMatching;
+            break;
+        case 2:
+            switch (GetKind()) {
+                case '2':
+                    fx_ = &AsymptoticCoefficientFunction::C2_2_asymptotic;
+                    break;
+                case 'L':
+                    fx_ = &AsymptoticCoefficientFunction::CL_2_asymptotic;
+                    break;
+                default:
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
+            }
+            break;
+        case 3:
+            switch (GetKind()) {
+                case '2':
+                    fx_ = &AsymptoticCoefficientFunction::C2_3_asymptotic;
+                    break;
+                case 'L':
+                    fx_ = &AsymptoticCoefficientFunction::CL_3_asymptotic;
+                    break;
+                default:
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
+            }
+            break;
+        default:
             throw UnexpectedException(
                 "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
             );
-        }
-    } else if (GetOrder() == 3) {
-        if (GetKind() == '2') {
-            fx_ = &AsymptoticCoefficientFunction::C2_3_asymptotic;
-        } else if (GetKind() == 'L') {
-            fx_ = &AsymptoticCoefficientFunction::CL_3_asymptotic;
-        } else {
-            throw UnexpectedException(
-                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-            );
-        }
-    } else {
-        throw UnexpectedException(
-            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-        );
     }
 }
 
@@ -86,18 +96,20 @@ void AsymptoticCoefficientFunction::SetLegacyPowerTerms(const bool &legacy_pt) {
             );
         }
         legacy_pt_ = legacy_pt;
-        if (GetOrder() == '1') {
-            throw NotPresentException(
-                "For order='1' legacy power terms are identical to the "
-                "current ones!",
-                __PRETTY_FUNCTION__, __LINE__
-            );
-        } else {
-            if (legacy_pt) {
-                fx_ = &AsymptoticCoefficientFunction::PlainAdditiveMatching;
-            } else {
-                SetFunctions();
-            }
+        switch (GetOrder()) {
+            case 1:
+                throw NotPresentException(
+                    "For order='1' legacy power terms are identical to the "
+                    "current ones!",
+                    __PRETTY_FUNCTION__, __LINE__
+                );
+                break;
+            default:
+                if (legacy_pt) {
+                    fx_ = &AsymptoticCoefficientFunction::PlainAdditiveMatching;
+                } else {
+                    SetFunctions();
+                }
         }
     } catch (const NotPresentException &e) {
         e.warning();
