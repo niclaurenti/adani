@@ -148,82 +148,119 @@ ApproximateCoefficientFunction::~ApproximateCoefficientFunction() {
 
 void ApproximateCoefficientFunction::SetLegacyParameters() {
     try {
-        if (GetOrder() == 1) {
-            if (GetKind() == '2') {
-                if (GetChannel() == 'g')
-                    approximation_ = new approximation_parameters(C2_g1_params);
-                else {
-                    throw UnexpectedException(
-                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                    );
+        switch (GetOrder()) {
+            case 1:
+                switch (GetKind()) {
+                    case '2':
+                        switch (GetChannel()) {
+                            case 'g':
+                                approximation_ = new approximation_parameters(C2_g1_params);
+                                break;
+                            default:
+                                throw UnexpectedException(
+                                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                                );
+                        }
+                        variation_ = new variation_parameters(C2_var);
+                        break;
+                    case 'L':
+                        switch (GetChannel()) {
+                            case 'g':
+                                approximation_ = new approximation_parameters(CL_g2_params);
+                                break;
+                            default:
+                                throw UnexpectedException(
+                                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                                );
+                        }
+                        variation_ = new variation_parameters(CL_var);
+                        break;
+                    default:
+                        throw UnexpectedException(
+                            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                        );
                 }
-                variation_ = new variation_parameters(C2_var);
-            } else if (GetKind() == 'L') {
-                if (GetChannel() == 'g')
-                    approximation_ = new approximation_parameters(CL_g2_params);
-                else {
-                    throw UnexpectedException(
-                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                    );
+                break;
+            case 2:
+                switch (GetKind()) {
+                    case '2':
+                        switch (GetChannel()) {
+                            case 'g':
+                                approximation_ = new approximation_parameters(C2_g2_params);
+                                break;
+                            case 'q':
+                                approximation_ = new approximation_parameters(C2_ps2_params);
+                                break;
+                            default:
+                                throw UnexpectedException(
+                                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                                );
+                        }
+                        variation_ = new variation_parameters(C2_var);
+                        break;
+                    case 'L':
+                        switch (GetChannel()) {
+                            case 'g':
+                                approximation_ = new approximation_parameters(CL_g2_params);
+                                break;
+                            case 'q':
+                                approximation_ = new approximation_parameters(CL_ps2_params);
+                                break;
+                            default:
+                                throw UnexpectedException(
+                                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                                );
+                        }
+                        variation_ = new variation_parameters(CL_var);
+                        break;
+                    default:
+                        throw UnexpectedException(
+                            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                        );
                 }
-                variation_ = new variation_parameters(CL_var);
-            } else {
+                break;
+            case 3:
+                switch (GetKind()) {
+                    case '2':
+                        switch (GetChannel()) {
+                            case 'g':
+                                approximation_ = new approximation_parameters(C2_g3_params);
+                                break;
+                            case 'q':
+                                approximation_ = new approximation_parameters(C2_ps3_params);
+                                break;
+                            default:
+                                throw UnexpectedException(
+                                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                                );
+                        }
+                        variation_ = new variation_parameters(C2_var);
+                        break;
+                    case 'L':
+                        switch (GetChannel()) {
+                            case 'g':
+                                approximation_ = new approximation_parameters(CL_g3_params);
+                                break;
+                            case 'q':
+                                approximation_ = new approximation_parameters(CL_ps3_params);
+                                break;
+                            default:
+                                throw UnexpectedException(
+                                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                                );
+                        }
+                        variation_ = new variation_parameters(CL_var);
+                        break;
+                    default:
+                        throw UnexpectedException(
+                            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                        );
+                }
+                break;
+            default:
                 throw UnexpectedException(
                     "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
                 );
-            }
-        } else if (GetOrder() == 2) {
-            if (GetKind() == '2') {
-                if (GetChannel() == 'g')
-                    approximation_ = new approximation_parameters(C2_g2_params);
-                else if (GetChannel() == 'q')
-                    approximation_ = new approximation_parameters(C2_ps2_params);
-                else {
-                    throw UnexpectedException(
-                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                    );
-                }
-                variation_ = new variation_parameters(C2_var);
-            } else if (GetKind() == 'L') {
-                if (GetChannel() == 'g')
-                    approximation_ = new approximation_parameters(CL_g2_params);
-                else if (GetChannel() == 'q')
-                    approximation_ = new approximation_parameters(CL_ps2_params);
-                else {
-                    throw UnexpectedException(
-                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                    );
-                }
-                variation_ = new variation_parameters(CL_var);
-            }
-        } else if (GetOrder() == 3) {
-            if (GetKind() == '2') {
-                if (GetChannel() == 'g')
-                    approximation_ = new approximation_parameters(C2_g3_params);
-                else if (GetChannel() == 'q')
-                    approximation_ = new approximation_parameters(C2_ps3_params);
-                else {
-                    throw UnexpectedException(
-                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                    );
-                }
-                variation_ = new variation_parameters(C2_var);
-            } else if (GetKind() == 'L') {
-                if (GetChannel() == 'g')
-                    approximation_ = new approximation_parameters(CL_g3_params);
-                else if (GetChannel() == 'q')
-                    approximation_ = new approximation_parameters(CL_ps3_params);
-                else {
-                    throw UnexpectedException(
-                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                    );
-                }
-                variation_ = new variation_parameters(CL_var);
-            }
-        } else {
-            throw UnexpectedException(
-                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-            );
         }
     } catch (UnexpectedException &e) {
         e.runtime_error();
@@ -437,37 +474,46 @@ ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(
             );
         }
 
-        if (GetOrder() == 2) {
-            if (GetChannel() == 'g') {
-                params_A_ = klmv_C2g2A;
-                params_B_ = klmv_C2g2B;
-            } else if (GetChannel() == 'q') {
-                params_A_ = klmv_C2q2A;
-                params_B_ = klmv_C2q2B;
-            } else {
+        switch (GetOrder()) {
+            case 2:
+                switch (GetChannel()) {
+                    case 'g':
+                        params_A_ = klmv_C2g2A;
+                        params_B_ = klmv_C2g2B;
+                        break;
+                    case 'q':
+                        params_A_ = klmv_C2q2A;
+                        params_B_ = klmv_C2q2B;
+                        break;
+                    default:
+                        throw UnexpectedException(
+                            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                        );
+                }
+                break;
+            case 3:
+                switch (GetChannel()) {
+                    case 'g':
+                        params_A_ = klmv_C2g3A;
+                        if (lowxi)
+                            params_B_ = klmv_C2g3B_lowxi;
+                        else
+                            params_B_ = klmv_C2g3B;
+                        break;
+                    case 'q':
+                        params_A_ = klmv_C2q3A;
+                        params_B_ = klmv_C2q3B;
+                        break;
+                    default:
+                        throw UnexpectedException(
+                            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                        );
+                }
+                break;
+            default:
                 throw UnexpectedException(
                     "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
                 );
-            }
-        } else if (GetOrder() == 3) {
-            if (GetChannel() == 'g') {
-                params_A_ = klmv_C2g3A;
-                if (lowxi)
-                    params_B_ = klmv_C2g3B_lowxi;
-                else
-                    params_B_ = klmv_C2g3B;
-            } else if (GetChannel() == 'q') {
-                params_A_ = klmv_C2q3A;
-                params_B_ = klmv_C2q3B;
-            } else {
-                throw UnexpectedException(
-                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                );
-            }
-        } else {
-            throw UnexpectedException(
-                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-            );
         }
     } catch (const NotImplementedException &e) {
         e.runtime_error();
