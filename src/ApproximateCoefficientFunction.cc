@@ -322,8 +322,7 @@ Value ApproximateCoefficientFunction::ApproximationLegacy(
     double x, double m2Q2, int nf
 ) const {
 
-    double x_max = 1. / (1 + 4 * m2Q2);
-    if (x <= 0 || x > x_max)
+    if (x <= 0 || x > xMax(m2Q2))
         return Value(0.);
 
     double A = approximation_->A, B = approximation_->B, C = approximation_->C,
