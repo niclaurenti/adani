@@ -81,65 +81,86 @@ SplittingFunction::SplittingFunction(
 
 void SplittingFunction::SetFunctions() {
 
-    if (order_ == 0) {
-        if (entry1_ == 'g' && entry2_ == 'q') {
-
-            reg_ = &SplittingFunction::Pgq0;
-            sing_ = &SplittingFunction::ZeroFunction_x_nf;
-            loc_ = &SplittingFunction::ZeroFunction_nf;
-            sing_int_ = &SplittingFunction::ZeroFunction_x_nf;
-
-        } else if (entry1_ == 'q' && entry2_ == 'g') {
-
-            reg_ = &SplittingFunction::Pqg0;
-
-            sing_ = &SplittingFunction::ZeroFunction_x_nf;
-            loc_ = &SplittingFunction::ZeroFunction_nf;
-            sing_int_ = &SplittingFunction::ZeroFunction_x_nf;
-
-        } else if (entry1_ == 'g' && entry2_ == 'g') {
-
-            reg_ = &SplittingFunction::Pgg0reg;
-            sing_ = &SplittingFunction::Pgg0sing;
-            loc_ = &SplittingFunction::Pgg0loc;
-            sing_int_ = &SplittingFunction::Pgg0sing_integrated;
-
-        } else if (entry1_ == 'q' && entry2_ == 'q') {
-
-            reg_ = &SplittingFunction::Pqq0reg;
-            sing_ = &SplittingFunction::Pqq0sing;
-            loc_ = &SplittingFunction::Pqq0loc;
-            sing_int_ = &SplittingFunction::Pqq0sing_integrated;
-
-        } else {
+    switch (order_) {
+        case 0:
+            switch (entry1_) {
+                case 'g':
+                    switch (entry2_) {
+                        case 'g':
+                            reg_ = &SplittingFunction::Pgq0;
+                            sing_ = &SplittingFunction::ZeroFunction_x_nf;
+                            loc_ = &SplittingFunction::ZeroFunction_nf;
+                            sing_int_ = &SplittingFunction::ZeroFunction_x_nf;
+                            break;
+                        case 'q':
+                            reg_ = &SplittingFunction::Pgg0reg;
+                            sing_ = &SplittingFunction::Pgg0sing;
+                            loc_ = &SplittingFunction::Pgg0loc;
+                            sing_int_ = &SplittingFunction::Pgg0sing_integrated;
+                            break;
+                        default:
+                            throw UnexpectedException(
+                                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                            );
+                    }
+                    break;
+                case 'q':
+                    switch (entry2_) {
+                        case 'g':
+                            reg_ = &SplittingFunction::Pqg0;
+                            sing_ = &SplittingFunction::ZeroFunction_x_nf;
+                            loc_ = &SplittingFunction::ZeroFunction_nf;
+                            sing_int_ = &SplittingFunction::ZeroFunction_x_nf;
+                            break;
+                        case 'q':
+                            reg_ = &SplittingFunction::Pqq0reg;
+                            sing_ = &SplittingFunction::Pqq0sing;
+                            loc_ = &SplittingFunction::Pqq0loc;
+                            sing_int_ = &SplittingFunction::Pqq0sing_integrated;
+                            break;
+                        default:
+                            throw UnexpectedException(
+                                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                            );
+                    }
+                    break;
+                default:
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
+            }
+            break;
+        case 1:
+            switch (entry1_) {
+                case 'g':
+                    switch (entry2_) {
+                        case 'q':
+                            reg_ = &SplittingFunction::Pgq1;
+                            sing_ = &SplittingFunction::ZeroFunction_x_nf;
+                            loc_ = &SplittingFunction::ZeroFunction_nf;
+                            sing_int_ = &SplittingFunction::ZeroFunction_x_nf;
+                            break;
+                        case 'g':
+                            reg_ = &SplittingFunction::Pgg1reg;
+                            sing_ = &SplittingFunction::Pgg1sing;
+                            loc_ = &SplittingFunction::Pgg1loc;
+                            sing_int_ = &SplittingFunction::Pgg1sing_integrated;
+                        default:
+                            throw UnexpectedException(
+                                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                            );
+                    }
+                    break;
+                default:
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
+            }
+            break;
+        default:
             throw UnexpectedException(
                 "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
             );
-        }
-    } else if (order_ == 1) {
-        if (entry1_ == 'g' && entry2_ == 'q') {
-
-            reg_ = &SplittingFunction::Pgq1;
-            sing_ = &SplittingFunction::ZeroFunction_x_nf;
-            loc_ = &SplittingFunction::ZeroFunction_nf;
-            sing_int_ = &SplittingFunction::ZeroFunction_x_nf;
-
-        } else if (entry1_ == 'g' && entry2_ == 'g') {
-
-            reg_ = &SplittingFunction::Pgg1reg;
-            sing_ = &SplittingFunction::Pgg1sing;
-            loc_ = &SplittingFunction::Pgg1loc;
-            sing_int_ = &SplittingFunction::Pgg1sing_integrated;
-
-        } else {
-            throw UnexpectedException(
-                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-            );
-        }
-    } else {
-        throw UnexpectedException(
-            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-        );
     }
 }
 
