@@ -159,6 +159,7 @@ void HighScaleCoefficientFunction::SetFunctions() {
                         "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
                     );
             }
+            break;
         default:
             throw UnexpectedException(
                 "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
