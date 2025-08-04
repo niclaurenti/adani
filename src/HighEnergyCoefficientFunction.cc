@@ -24,6 +24,7 @@ AbstractHighEnergyCoefficientFunction::AbstractHighEnergyCoefficientFunction(
             } else {
                 fx_ = &AbstractHighEnergyCoefficientFunction::Order3LL;
             }
+            break;
         default:
             throw UnexpectedException(
                 "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
