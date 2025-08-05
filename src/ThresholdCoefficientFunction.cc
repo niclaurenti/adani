@@ -140,20 +140,23 @@ void ThresholdCoefficientFunction::SetLegacyThreshold(
             if (legacy_threshold) {
                 fx_ = &ThresholdCoefficientFunction::PlainThreshold;
                 if (GetKind() == 'L') {
-                    if (GetOrder() == 2) {
-                        expansion_beta_ = &ThresholdCoefficientFunction::
-                                            C2_g2_threshold_expansion;
-                        expansion_no_beta_ = &ThresholdCoefficientFunction::
-                                                C2_g2_threshold_expansion_const;
-                    } else if (GetOrder() == 3) {
-                        expansion_beta_ = &ThresholdCoefficientFunction::
-                                            C2_g3_threshold_expansion;
-                        expansion_no_beta_ = &ThresholdCoefficientFunction::
-                                                C2_g3_threshold_expansion_const;
-                    } else {
-                        throw UnexpectedException(
-                            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                        );
+                    switch (GetOrder()) {
+                        case 2:
+                            expansion_beta_ = &ThresholdCoefficientFunction::
+                                                C2_g2_threshold_expansion;
+                            expansion_no_beta_ = &ThresholdCoefficientFunction::
+                                                    C2_g2_threshold_expansion_const;
+                            break;
+                        case 3:
+                            expansion_beta_ = &ThresholdCoefficientFunction::
+                                                C2_g3_threshold_expansion;
+                            expansion_no_beta_ = &ThresholdCoefficientFunction::
+                                                    C2_g3_threshold_expansion_const;
+                            break;
+                        default:
+                            throw UnexpectedException(
+                                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                            );
                     }
                 }
             } else {
@@ -171,17 +174,20 @@ void ThresholdCoefficientFunction::SetLegacyThreshold(
                 }
 
                 if (GetKind() == 'L') {
-                    if (GetOrder() == 2) {
-                        expansion_beta_ = &ThresholdCoefficientFunction::
-                                            CL_g2_threshold_expansion;
-                        expansion_no_beta_ = &ThresholdCoefficientFunction::
-                                                CL_g2_threshold_expansion_const;
-                    } else if (GetOrder() == 3) {
-                        expansion_beta_ = &ThresholdCoefficientFunction::
-                                            CL_g3_threshold_expansion;
-                        expansion_no_beta_ = &ThresholdCoefficientFunction::
-                                                CL_g3_threshold_expansion_const;
-                    } else {
+                    switch (GetOrder()) {
+                        case 2:
+                            expansion_beta_ = &ThresholdCoefficientFunction::
+                                                CL_g2_threshold_expansion;
+                            expansion_no_beta_ = &ThresholdCoefficientFunction::
+                                                    CL_g2_threshold_expansion_const;
+                            break;
+                        case 3:
+                            expansion_beta_ = &ThresholdCoefficientFunction::
+                                                CL_g3_threshold_expansion;
+                            expansion_no_beta_ = &ThresholdCoefficientFunction::
+                                                    CL_g3_threshold_expansion_const;
+                            break;
+                        default:
                         throw UnexpectedException(
                             "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
                         );
