@@ -346,9 +346,10 @@ double MatchingCondition::a_Qg_30(double x, int v) const {
     double L13 = L12 * L1;
 
     switch (v) {
-        case 0:
+        case 0: {
             double aQg3red = (x < 0.5 ? red0_(&x) : red1_(&x));
             return aQg3(&x) / 2 + aQg3red;
+        }
         case 1:
             return (
                 354.1002 * L13 + 479.3838 * L12 - 7856.784 * (2. - x)
@@ -365,7 +366,7 @@ double MatchingCondition::a_Qg_30(double x, int v) const {
                 -2658.323 * L12 - 7449.948 * L1 - 7460.002 * (2. - x)
                 + 3178.819 * L2 + 4710.725 / x + 1548.891 / x * L
             );
-        case 2:
+        case 2: {
             double L14 = L13 * L1;
             double L15 = L14 * L1;
             double L3 = L2 * L;
@@ -378,6 +379,7 @@ double MatchingCondition::a_Qg_30(double x, int v) const {
                 + 10739.21741 * L + 1548.8916669999999 * L / x
                 - 7861.809052567688 * x * L - 720.0483828 * L2 + 514.0912722 * L3
                 - 21.75925926 * L4 + 4.844444444 * L5;
+        }
         default:
             throw NotValidException(
                 "Choose either v=0, v=1, v=-1, v=-12 or v=2! Got " + to_string(v),
@@ -409,7 +411,7 @@ double MatchingCondition::a_Qq_PS_30(double x, int v) const {
     double x2 = x * x;
 
     switch (v) {
-        case 0:
+        case 0: {
             double x3 = x2 * x;
             double x4 = x3 * x;
             double x5 = x4 * x;
@@ -1052,7 +1054,8 @@ double MatchingCondition::a_Qq_PS_30(double x, int v) const {
                         * ln2_2));
 
             return aQqPS30 + tildeaQqPS30;
-        case 1:
+        }
+        case 1: {
             double L1 = log(1. - x);
             double L = log(x);
             return (
@@ -1061,7 +1064,8 @@ double MatchingCondition::a_Qq_PS_30(double x, int v) const {
                     + 66638.193 * x + 2825.641 / x)
                 + 41850.518 * x * L + 688.396 / x * L
             );
-        case -1:
+        }
+        case -1: {
             double L1 = log(1. - x);
             double L = log(x);
             return (
@@ -1070,6 +1074,7 @@ double MatchingCondition::a_Qq_PS_30(double x, int v) const {
                     + 3780.192 / x)
                 + 8571.165 * x * L - 2346.893 * L * L + 688.396 / x * L
             );
+        }
         default:
             throw NotValidException(
                 "Choose either v=0, v=1 or v=-1! Got " + to_string(v),
