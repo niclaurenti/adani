@@ -16,7 +16,7 @@ AbstractConvolution::AbstractConvolution(
     try {
         SetAbserr(abserr);
         SetRelerr(relerr);
-        CheckWorkspace(dim);
+        CheckDim(dim);
     } catch (NotValidException &e) {
         e.runtime_error();
     }
@@ -65,7 +65,7 @@ void AbstractConvolution::SetRelerr(const double &relerr) {
 //  AbstractConvolution: method for the allocation of workspace
 //------------------------------------------------------------------------------------------//
 
-void AbstractConvolution::CheckWorkspace(const int &dim) {
+void AbstractConvolution::CheckDim(const int &dim) {
     // check dim
     if (dim <= 0) {
         throw NotValidException(

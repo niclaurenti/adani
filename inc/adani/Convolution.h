@@ -52,7 +52,7 @@ class AbstractConvolution {
         // set methods
         void SetAbserr(const double &abserr);
         void SetRelerr(const double &relerr);
-        void CheckWorkspace(const int &dim);
+        void CheckDim(const int &dim);
 
         // result of the convolution
         double Convolute(double x, double m2Q2, int nf) const;
