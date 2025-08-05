@@ -176,6 +176,12 @@ void ThresholdCoefficientFunction::SetLegacyThreshold(
                     }
                 }
             }
+        } else {
+            throw NotValidException(
+                "Legacy threshold for order=" + to_string(GetOrder()) +
+                ", channel=" + string(1, GetChannel()) + " are identical to the new ones!",
+                __PRETTY_FUNCTION__, __LINE__
+            );
         }
     } catch (NotValidException &e) {
         e.warning();
