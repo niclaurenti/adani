@@ -87,16 +87,16 @@ void SplittingFunction::SetFunctions() {
                 case 'g':
                     switch (entry2_) {
                         case 'g':
-                            reg_ = &SplittingFunction::Pgq0;
-                            sing_ = &SplittingFunction::ZeroFunction_x_nf;
-                            loc_ = &SplittingFunction::ZeroFunction_nf;
-                            sing_int_ = &SplittingFunction::ZeroFunction_x_nf;
-                            break;
-                        case 'q':
                             reg_ = &SplittingFunction::Pgg0reg;
                             sing_ = &SplittingFunction::Pgg0sing;
                             loc_ = &SplittingFunction::Pgg0loc;
                             sing_int_ = &SplittingFunction::Pgg0sing_integrated;
+                            break;
+                        case 'q':
+                            reg_ = &SplittingFunction::Pgq0;
+                            sing_ = &SplittingFunction::ZeroFunction_x_nf;
+                            loc_ = &SplittingFunction::ZeroFunction_nf;
+                            sing_int_ = &SplittingFunction::ZeroFunction_x_nf;
                             break;
                         default:
                             throw UnexpectedException(
@@ -145,6 +145,7 @@ void SplittingFunction::SetFunctions() {
                             sing_ = &SplittingFunction::Pgg1sing;
                             loc_ = &SplittingFunction::Pgg1loc;
                             sing_int_ = &SplittingFunction::Pgg1sing_integrated;
+                            break;
                         default:
                             throw UnexpectedException(
                                 "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
