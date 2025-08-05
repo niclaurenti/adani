@@ -40,50 +40,71 @@ ThresholdCoefficientFunction::~ThresholdCoefficientFunction() {
 //------------------------------------------------------------------------------------------//
 
 void ThresholdCoefficientFunction::SetFunctions() {
-    if (GetChannel() == 'q') {
-        expansion_beta_ = nullptr;
-        expansion_no_beta_ = nullptr;
-        fx_ = &ThresholdCoefficientFunction::ZeroFunction;
-    } else if (GetChannel() == 'g') {
-        if (GetOrder() == 1) {
+    switch (GetChannel()) {
+        case 'q':
             expansion_beta_ = nullptr;
             expansion_no_beta_ = nullptr;
-            fx_ = &ThresholdCoefficientFunction::Order1;
-        } else if (GetOrder() == 2) {
-            if (GetKind() == '2') {
-                expansion_beta_ =
-                    &ThresholdCoefficientFunction::C2_g2_threshold_expansion;
-                expansion_no_beta_ = &ThresholdCoefficientFunction::
-                                         C2_g2_threshold_expansion_const;
-            } else {
-                expansion_beta_ =
-                    &ThresholdCoefficientFunction::CL_g2_threshold_expansion;
-                expansion_no_beta_ = &ThresholdCoefficientFunction::
-                                         CL_g2_threshold_expansion_const;
+            fx_ = &ThresholdCoefficientFunction::ZeroFunction;
+            break;
+        case 'g':
+            switch (GetOrder()) {
+                case 1:
+                    expansion_beta_ = nullptr;
+                    expansion_no_beta_ = nullptr;
+                    fx_ = &ThresholdCoefficientFunction::Order1;
+                    break;
+                case 2:
+                    switch (GetKind()) {
+                        case '2':
+                            expansion_beta_ =
+                                &ThresholdCoefficientFunction::C2_g2_threshold_expansion;
+                            expansion_no_beta_ = &ThresholdCoefficientFunction::
+                                                    C2_g2_threshold_expansion_const;
+                            break;
+                        case 'L':
+                            expansion_beta_ =
+                                &ThresholdCoefficientFunction::CL_g2_threshold_expansion;
+                            expansion_no_beta_ = &ThresholdCoefficientFunction::
+                                                    CL_g2_threshold_expansion_const;
+                            break;
+                        default:
+                            throw UnexpectedException(
+                                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                            );
+                    }
+                    fx_ = &ThresholdCoefficientFunction::ModifiedThreshold2;
+                    break;
+                case 3:
+                    switch (GetKind()) {
+                        case '2':
+                            expansion_beta_ =
+                                &ThresholdCoefficientFunction::C2_g3_threshold_expansion;
+                            expansion_no_beta_ = &ThresholdCoefficientFunction::
+                                                    C2_g3_threshold_expansion_const;
+                            break;
+                        case 'L':
+                            expansion_beta_ =
+                                &ThresholdCoefficientFunction::CL_g3_threshold_expansion;
+                            expansion_no_beta_ = &ThresholdCoefficientFunction::
+                                                    CL_g3_threshold_expansion_const;
+                            break;
+                        default:
+                            throw UnexpectedException(
+                                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                            );
+                    }
+                    fx_ = &ThresholdCoefficientFunction::ModifiedThreshold3;
+                    break;
+                default:
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                );
             }
-            fx_ = &ThresholdCoefficientFunction::ModifiedThreshold2;
-        } else if (GetOrder() == 3) {
-            if (GetKind() == '2') {
-                expansion_beta_ =
-                    &ThresholdCoefficientFunction::C2_g3_threshold_expansion;
-                expansion_no_beta_ = &ThresholdCoefficientFunction::
-                                         C2_g3_threshold_expansion_const;
-            } else {
-                expansion_beta_ =
-                    &ThresholdCoefficientFunction::CL_g3_threshold_expansion;
-                expansion_no_beta_ = &ThresholdCoefficientFunction::
-                                         CL_g3_threshold_expansion_const;
-            }
-            fx_ = &ThresholdCoefficientFunction::ModifiedThreshold3;
-        } else {
+            break;
+        default:
             throw UnexpectedException(
                 "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
             );
-        }
-    } else {
-        throw UnexpectedException(
-            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-        );
     }
 
     if (GetKind() == '2') {
