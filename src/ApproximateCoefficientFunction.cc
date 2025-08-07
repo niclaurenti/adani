@@ -576,18 +576,16 @@ double ApproximateCoefficientFunctionKLMV::Approximation2A(
 
     double hs = highscale_->MuIndependentTerms(x, m2Q2, nf);
 
-    double gamma = params_A_->gamma, C = params_A_->C;
-
     double xi = 1. / m2Q2;
     double f = 1. / (1. + exp(2. * (xi - 4.)));
 
-    double eta_gamma = pow(eta, gamma);
+    double eta_gamma = pow(eta, params_A_->gamma);
 
     double beta3 = beta * beta * beta;
 
     return thr - thr_const + (1. - f) * beta * hs
            + f * beta3
-                 * he_ll * eta_gamma / (C + eta_gamma);
+                 * he_ll * eta_gamma / (params_A_->C + eta_gamma);
 }
 
 //==========================================================================================//
@@ -606,18 +604,16 @@ double ApproximateCoefficientFunctionKLMV::Approximation2B(
 
     double hs = highscale_->MuIndependentTerms(x, m2Q2, nf);
 
-    double delta = params_B_->gamma, D = params_B_->C;
-
     double xi = 1. / m2Q2;
     double f = 1. / (1. + exp(2. * (xi - 4.)));
 
-    double eta_delta = pow(eta, delta);
+    double eta_delta = pow(eta, params_B_->gamma);
 
     double beta3 = beta * beta * beta;
 
     return thr + (1. - f) * beta3 * hs
            + f * beta3
-                 * he_ll * eta_delta / (D + eta_delta);
+                 * he_ll * eta_delta / (params_B_->C + eta_delta);
 }
 
 //==========================================================================================//
@@ -638,19 +634,17 @@ double ApproximateCoefficientFunctionKLMV::Approximation3A(
 
     double hs = highscale_->fxBand_NotOrdered(x, m2Q2, 1., nf)[1];
 
-    double gamma = params_A_->gamma, C = params_A_->C;
-
     double xi = 1. / m2Q2;
     double f = 1. / (1. + exp(2. * (xi - 4.)));
 
-    double eta_gamma = pow(eta, gamma);
+    double eta_gamma = pow(eta, params_A_->gamma);
 
     double beta3 = beta * beta * beta;
 
     return thr - thr_const + (1. - f) * beta * hs
            + f * beta3
                  * (-log(eta) / log(x) * he_ll
-                    + he_nll * eta_gamma / (C + eta_gamma));
+                    + he_nll * eta_gamma / (params_A_->C + eta_gamma));
 }
 
 //==========================================================================================//
@@ -671,19 +665,17 @@ double ApproximateCoefficientFunctionKLMV::Approximation3B(
 
     double hs = highscale_->fxBand_NotOrdered(x, m2Q2, 1., nf)[2];
 
-    double delta = params_B_->gamma, D = params_B_->C;
-
     double xi = 1. / m2Q2;
     double f = 1. / (1. + exp(2. * (xi - 4.)));
 
-    double eta_delta = pow(eta, delta);
+    double eta_delta = pow(eta, params_B_->gamma);
 
     double beta3 = beta * beta * beta;
 
     return thr - thr_const + 2 * f * thr_const + (1. - f) * beta3 * hs
            + f * beta3
                  * (-log(eta) / log(x) * he_ll
-                    + he_nll * eta_delta / (D + eta_delta));
+                    + he_nll * eta_delta / (params_B_->C + eta_delta));
 }
 
 //==========================================================================================//
