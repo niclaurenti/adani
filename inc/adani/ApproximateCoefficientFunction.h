@@ -146,6 +146,9 @@ class ApproximateCoefficientFunctionKLMV : public AbstractApproximate {
         );
         ~ApproximateCoefficientFunctionKLMV() override;
 
+        bool GetLowXi() const {return lowxi_;}
+        void SetLowXi(const bool& lowxi);
+
         Value MuIndependentTermsBand(
             double x, double m2Q2, int nf
         ) const override;
@@ -155,18 +158,33 @@ class ApproximateCoefficientFunctionKLMV : public AbstractApproximate {
         HighScaleCoefficientFunction *highscale_;
         HighEnergyCoefficientFunction *highenergy_;
 
-        struct klmv_params params_A_;
-        struct klmv_params params_B_;
+        double (ApproximateCoefficientFunctionKLMV::*fx_A_)(
+                    double, double, int
+                ) const;
+        double (ApproximateCoefficientFunctionKLMV::*fx_B_)(
+                    double, double, int
+                ) const;
 
-        double ApproximationA(
-            double x, double m2Q2, double he_ll, double he_nll, double hs,
-            double thr, double thr_const, double gamma, double C
+        struct klmv_params *params_A_;
+        struct klmv_params *params_B_;
+
+        bool lowxi_;
+
+        double Approximation2A(
+            double x, double m2Q2, int nf
         ) const;
-        double ApproximationB(
-            double x, double m2Q2, double he_ll, double he_nll, double hs,
-            double thr, double thr_const, double delta, double D
+        double Approximation2B(
+            double x, double m2Q2, int nf
+        ) const;
+        double Approximation3A(
+            double x, double m2Q2, int nf
+        ) const;
+        double Approximation3B(
+            double x, double m2Q2, int nf
         ) const;
         Value ApproximateNLL(double x, double m2Q2) const;
+
+        void SetFunctions();
 };
 
 #endif

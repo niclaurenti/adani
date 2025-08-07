@@ -414,7 +414,7 @@ ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(
     const string &highscale_version, const bool &lowxi, const double &abserr,
     const double &relerr, const int &dim
 )
-    : AbstractApproximate(order, kind, channel, abserr, relerr, dim) {
+    : AbstractApproximate(order, kind, channel, abserr, relerr, dim), lowxi_(lowxi) {
     try {
         if (GetOrder() == 1) {
             throw NotImplementedException(
@@ -432,38 +432,7 @@ ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(
             );
         }
 
-        if (GetOrder() == 2) {
-            if (GetChannel() == 'g') {
-                params_A_ = klmv_C2g2A;
-                params_B_ = klmv_C2g2B;
-            } else if (GetChannel() == 'q') {
-                params_A_ = klmv_C2q2A;
-                params_B_ = klmv_C2q2B;
-            } else {
-                throw UnexpectedException(
-                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                );
-            }
-        } else if (GetOrder() == 3) {
-            if (GetChannel() == 'g') {
-                params_A_ = klmv_C2g3A;
-                if (lowxi)
-                    params_B_ = klmv_C2g3B_lowxi;
-                else
-                    params_B_ = klmv_C2g3B;
-            } else if (GetChannel() == 'q') {
-                params_A_ = klmv_C2q3A;
-                params_B_ = klmv_C2q3B;
-            } else {
-                throw UnexpectedException(
-                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                );
-            }
-        } else {
-            throw UnexpectedException(
-                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-            );
-        }
+        SetFunctions();
     } catch (const NotImplementedException &e) {
         e.runtime_error();
     } catch (UnexpectedException &e) {
@@ -489,6 +458,84 @@ ApproximateCoefficientFunctionKLMV::~ApproximateCoefficientFunctionKLMV() {
     delete threshold_;
     delete highscale_;
     delete highenergy_;
+    delete params_A_;
+    delete params_B_;
+}
+
+//==========================================================================================//
+//  ApproximateCoefficientFunctionKLMV: set lowxi
+//------------------------------------------------------------------------------------------//
+
+void ApproximateCoefficientFunctionKLMV::SetLowXi(const bool &lowxi) {
+    try {
+        if (lowxi == lowxi_) {
+            throw NotValidException(
+                "Setting lowxi approximation identical to its previous value!",
+                __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+
+        delete params_B_;
+        if (lowxi_)
+            params_B_ = new klmv_params(klmv_C2g3B_lowxi);
+        else
+            params_B_ = new klmv_params(klmv_C2g3B);
+
+    } catch (NotValidException &e) {
+        e.warning();
+    }
+}
+
+//==========================================================================================//
+//  ApproximateCoefficientFunctionKLMV: set function to be used
+//------------------------------------------------------------------------------------------//
+
+void ApproximateCoefficientFunctionKLMV::SetFunctions() {
+    switch (GetOrder()) {
+        case 2:
+            fx_A_=&ApproximateCoefficientFunctionKLMV::Approximation2A;
+            fx_B_=&ApproximateCoefficientFunctionKLMV::Approximation2B;
+            switch (GetChannel()) {
+                case 'g':
+                    params_A_ = new klmv_params(klmv_C2g2A);
+                    params_B_ = new klmv_params(klmv_C2g2B);
+                    break;
+                case 'q':
+                    params_A_ = new klmv_params(klmv_C2q2A);
+                    params_B_ = new klmv_params(klmv_C2q2B);
+                    break;
+                default:
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
+            }
+            break;
+        case 3:
+            fx_A_=&ApproximateCoefficientFunctionKLMV::Approximation3A;
+            fx_B_=&ApproximateCoefficientFunctionKLMV::Approximation3B;
+            switch (GetChannel()) {
+                case 'g':
+                    params_A_ = new klmv_params(klmv_C2g3A);
+                    if (lowxi_)
+                        params_B_ = new klmv_params(klmv_C2g3B_lowxi);
+                    else
+                        params_B_ = new klmv_params(klmv_C2g3B);
+                    break;
+                case 'q':
+                    params_A_ = new klmv_params(klmv_C2q3A);
+                    params_B_ = new klmv_params(klmv_C2q3B);
+                    break;
+                default:
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
+            }
+            break;
+        default:
+            throw UnexpectedException(
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+            );
+    }
 }
 
 //==========================================================================================//
@@ -503,33 +550,8 @@ Value ApproximateCoefficientFunctionKLMV::MuIndependentTermsBand(
     if (x <= 0 || x >= xmax)
         return Value(0.);
 
-    double thr = threshold_->MuIndependentTerms(x, m2Q2, nf);
-    double thr_const = threshold_->BetaIndependentTerms(x, m2Q2, 1.);
-
-    double he_ll = highenergy_->MuIndependentTerms(x, m2Q2, nf);
-
-    vector<double> hs = highscale_->fxBand_NotOrdered(x, m2Q2, 1., nf);
-
-    double gamma = params_A_.gamma, C = params_A_.C, delta = params_B_.gamma,
-           D = params_B_.C;
-
-    double res_A, res_B;
-
-    // order=1 is checked in the constructor
-
-    if (GetOrder() == 2) {
-        res_A =
-            ApproximationA(x, m2Q2, 0., he_ll, hs[0], thr, thr_const, gamma, C);
-        res_B = ApproximationB(x, m2Q2, 0., he_ll, hs[0], thr, 0., delta, D);
-    } else { // order = 3
-        Value he_nll = ApproximateNLL(x, m2Q2);
-        res_A = ApproximationA(
-            x, m2Q2, he_ll, he_nll.GetHigher(), hs[1], thr, thr_const, gamma, C
-        );
-        res_B = ApproximationB(
-            x, m2Q2, he_ll, he_nll.GetLower(), hs[2], thr, thr_const, delta, D
-        );
-    }
+    double res_A = (this->*fx_A_)(x, m2Q2, nf);
+    double res_B = (this->*fx_B_)(x, m2Q2, nf);
 
     if (res_A > res_B)
         return Value(res_A, res_B);
@@ -538,15 +560,23 @@ Value ApproximateCoefficientFunctionKLMV::MuIndependentTermsBand(
 }
 
 //==========================================================================================//
-//  ApproximateCoefficientFunctionKLMV: functional form of the approximation A
+//  ApproximateCoefficientFunctionKLMV: functional form of the approximation A at O(2)
 //------------------------------------------------------------------------------------------//
 
-double ApproximateCoefficientFunctionKLMV::ApproximationA(
-    double x, double m2Q2, double he_logx, double he_const, double hs,
-    double thr, double thr_const, double gamma, double C
+double ApproximateCoefficientFunctionKLMV::Approximation2A(
+    double x, double m2Q2, int nf
 ) const {
     double beta = sqrt(1. - 4 * m2Q2 * x / (1. - x));
     double eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
+
+    double thr = threshold_->MuIndependentTerms(x, m2Q2, nf);
+    double thr_const = threshold_->BetaIndependentTerms(x, m2Q2, 1.);
+
+    double he_ll = highenergy_->MuIndependentTerms(x, m2Q2, nf);
+
+    double hs = highscale_->MuIndependentTerms(x, m2Q2, nf);
+
+    double gamma = params_A_->gamma, C = params_A_->C;
 
     double xi = 1. / m2Q2;
     double f = 1. / (1. + exp(2. * (xi - 4.)));
@@ -557,33 +587,103 @@ double ApproximateCoefficientFunctionKLMV::ApproximationA(
 
     return thr - thr_const + (1. - f) * beta * hs
            + f * beta3
-                 * (-log(eta) / log(x) * he_logx
-                    + he_const * eta_gamma / (C + eta_gamma));
+                 * he_ll * eta_gamma / (C + eta_gamma);
 }
 
 //==========================================================================================//
-//  ApproximateCoefficientFunctionKLMV: functional form of the approximation B
+//  ApproximateCoefficientFunctionKLMV: functional form of the approximation B at O(2)
 //------------------------------------------------------------------------------------------//
 
-double ApproximateCoefficientFunctionKLMV::ApproximationB(
-    double x, double m2Q2, double he_logx, double he_const, double hs,
-    double thr, double thr_const, double delta, double D
+double ApproximateCoefficientFunctionKLMV::Approximation2B(
+    double x, double m2Q2, int nf
 ) const {
-
     double beta = sqrt(1. - 4 * m2Q2 * x / (1. - x));
     double eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
+
+    double thr = threshold_->MuIndependentTerms(x, m2Q2, nf);
+
+    double he_ll = highenergy_->MuIndependentTerms(x, m2Q2, nf);
+
+    double hs = highscale_->MuIndependentTerms(x, m2Q2, nf);
+
+    double delta = params_B_->gamma, D = params_B_->C;
 
     double xi = 1. / m2Q2;
     double f = 1. / (1. + exp(2. * (xi - 4.)));
 
-    double eta_gamma = pow(eta, delta);
+    double eta_delta = pow(eta, delta);
+
+    double beta3 = beta * beta * beta;
+
+    return thr + (1. - f) * beta3 * hs
+           + f * beta3
+                 * he_ll * eta_delta / (D + eta_delta);
+}
+
+//==========================================================================================//
+//  ApproximateCoefficientFunctionKLMV: functional form of the approximation A at O(3)
+//------------------------------------------------------------------------------------------//
+
+double ApproximateCoefficientFunctionKLMV::Approximation3A(
+    double x, double m2Q2, int nf
+) const {
+    double beta = sqrt(1. - 4 * m2Q2 * x / (1. - x));
+    double eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
+
+    double thr = threshold_->MuIndependentTerms(x, m2Q2, nf);
+    double thr_const = threshold_->BetaIndependentTerms(x, m2Q2, 1.);
+
+    double he_ll = highenergy_->MuIndependentTerms(x, m2Q2, nf);
+    double he_nll = ApproximateNLL(x, m2Q2).GetHigher();
+
+    double hs = highscale_->fxBand_NotOrdered(x, m2Q2, 1., nf)[1];
+
+    double gamma = params_A_->gamma, C = params_A_->C;
+
+    double xi = 1. / m2Q2;
+    double f = 1. / (1. + exp(2. * (xi - 4.)));
+
+    double eta_gamma = pow(eta, gamma);
+
+    double beta3 = beta * beta * beta;
+
+    return thr - thr_const + (1. - f) * beta * hs
+           + f * beta3
+                 * (-log(eta) / log(x) * he_ll
+                    + he_nll * eta_gamma / (C + eta_gamma));
+}
+
+//==========================================================================================//
+//  ApproximateCoefficientFunctionKLMV: functional form of the approximation B at O(3)
+//------------------------------------------------------------------------------------------//
+
+double ApproximateCoefficientFunctionKLMV::Approximation3B(
+    double x, double m2Q2, int nf
+) const {
+    double beta = sqrt(1. - 4 * m2Q2 * x / (1. - x));
+    double eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
+
+    double thr = threshold_->MuIndependentTerms(x, m2Q2, nf);
+    double thr_const = threshold_->BetaIndependentTerms(x, m2Q2, 1.);
+
+    double he_ll = highenergy_->MuIndependentTerms(x, m2Q2, nf);
+    double he_nll = ApproximateNLL(x, m2Q2).GetLower();
+
+    double hs = highscale_->fxBand_NotOrdered(x, m2Q2, 1., nf)[2];
+
+    double delta = params_B_->gamma, D = params_B_->C;
+
+    double xi = 1. / m2Q2;
+    double f = 1. / (1. + exp(2. * (xi - 4.)));
+
+    double eta_delta = pow(eta, delta);
 
     double beta3 = beta * beta * beta;
 
     return thr - thr_const + 2 * f * thr_const + (1. - f) * beta3 * hs
            + f * beta3
-                 * (-log(eta) / log(x) * he_logx
-                    + he_const * eta_gamma / (D + eta_gamma));
+                 * (-log(eta) / log(x) * he_ll
+                    + he_nll * eta_delta / (D + eta_delta));
 }
 
 //==========================================================================================//
@@ -597,13 +697,13 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(
     double pi3 = M_PI * M_PI * M_PI;
     double tmp_A =
         (64. * pi3)
-        * (params_A_.log_coeff * pow(log(1. / m2Q2) / log(5), params_A_.log_pow)
-           - params_A_.const_coeff)
+        * (params_A_->log_coeff * pow(log(1. / m2Q2) / log(5), params_A_->log_pow)
+           - params_A_->const_coeff)
         * 4. / m2Q2 / x;
     double tmp_B =
         (64. * pi3)
-        * (params_B_.log_coeff * pow(log(1. / m2Q2) / log(5), params_B_.log_pow)
-           - params_B_.const_coeff)
+        * (params_B_->log_coeff * pow(log(1. / m2Q2) / log(5), params_B_->log_pow)
+           - params_B_->const_coeff)
         * 4. / m2Q2 / x;
     return Value(tmp_A, tmp_B);
 }
