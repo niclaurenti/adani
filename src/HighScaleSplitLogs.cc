@@ -10,7 +10,7 @@
 
 HighScaleSplitLogs::HighScaleSplitLogs(
     const int &order, const char &kind, const char &channel,
-    const string &version
+    const HighScaleVersion &version
 )
     : CoefficientFunction(order, kind, channel) {
 

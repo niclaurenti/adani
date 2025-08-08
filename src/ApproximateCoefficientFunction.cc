@@ -36,7 +36,7 @@ AbstractApproximate::~AbstractApproximate() { delete muterms_; }
 //------------------------------------------------------------------------------------------//
 
 void AbstractApproximate::SetDoubleIntegralMethod(
-    const string &double_int_method, const double &abserr, const double &relerr,
+    const DoubleIntegralMethod &double_int_method, const double &abserr, const double &relerr,
     const int &dim, const int &MCcalls
 ) {
     muterms_->SetDoubleIntegralMethod(
@@ -114,7 +114,7 @@ struct variation_parameters CL_var = { 2., 0.2 };
 
 ApproximateCoefficientFunction::ApproximateCoefficientFunction(
     const int &order, const char &kind, const char &channel, const bool &NLL,
-    const string &highscale_version, const double &abserr, const double &relerr,
+    const HighScaleVersion &highscale_version, const double &abserr, const double &relerr,
     const int &dim
 )
     : AbstractApproximate(order, kind, channel, abserr, relerr, dim) {
@@ -453,7 +453,7 @@ struct klmv_params klmv_C2g3B_lowxi = { 0.8, 10.7, 0.055125, 2, 0.3825 };
 
 ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(
     const int &order, const char &kind, const char &channel,
-    const string &highscale_version, const bool &lowxi, const double &abserr,
+    const HighScaleVersion &highscale_version, const bool &lowxi, const double &abserr,
     const double &relerr, const int &dim
 )
     : AbstractApproximate(order, kind, channel, abserr, relerr, dim), lowxi_(lowxi) {

@@ -18,10 +18,10 @@
 
 #include "adani/AsymptoticCoefficientFunction.h"
 #include "adani/CoefficientFunction.h"
+#include "adani/CommonTypes.h"
 #include "adani/Convolution.h"
 #include "adani/SplittingFunction.h"
 
-#include <string>
 #include <vector>
 
 using std::string;
@@ -48,7 +48,7 @@ class ExactCoefficientFunction : public CoefficientFunction {
         ~ExactCoefficientFunction() override;
 
         void SetDoubleIntegralMethod(
-            const string &double_int_method, const double &abserr = 1e-3,
+            const DoubleIntegralMethod &double_int_method, const double &abserr = 1e-3,
             const double &relerr = 1e-3, const int &dim = 100,
             const int &MCcalls = 25000
         );
