@@ -4,6 +4,7 @@
 #include "adani/ApproximateCoefficientFunction.h"
 #include "adani/AsymptoticCoefficientFunction.h"
 #include "adani/CoefficientFunction.h"
+#include "adani/CommonTypes.h"
 #include "adani/Constants.h"
 #include "adani/Convolution.h"
 #include "adani/ExactCoefficientFunction.h"

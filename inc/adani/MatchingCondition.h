@@ -17,10 +17,7 @@
 #define Match_h
 
 #include "CoefficientFunction.h"
-
-#include <string>
-
-using std::string;
+#include "adani/CommonTypes.h"
 
 //==========================================================================================//
 //  class MatchingCondition
@@ -30,14 +27,14 @@ class MatchingCondition {
     public:
         MatchingCondition(
             const int &order, const char &entry1, const char &entry2,
-            const string &version = "exact"
+            const HighScaleVersion &version = HighScaleVersion::Exact
         );
         ~MatchingCondition(){};
 
         int GetOrder() const { return order_; };
         char GetEntry1() const { return entry1_; };
         char GetEntry2() const { return entry2_; };
-        string GetVersion() const { return version_; };
+        HighScaleVersion GetVersion() const { return version_; };
 
         Value MuIndependentNfIndependentTerm(double x) const;
         double MuIndependentNfDependentTerm(double x) const;
@@ -48,10 +45,10 @@ class MatchingCondition {
         const int order_;
         const char entry1_;
         const char entry2_;
-        const string version_;
+        const HighScaleVersion version_;
 
         void CheckEntry(char entry) const;
-        void CheckVersion(string version) const;
+        // void CheckVersion(string version) const;
 
         //==========================================================================================//
         //  Matching conditions O(as)

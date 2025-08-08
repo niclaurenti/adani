@@ -17,6 +17,7 @@
 #define Asymptotic_h
 
 #include "adani/CoefficientFunction.h"
+#include "adani/CommonTypes.h"
 #include "adani/HighEnergyCoefficientFunction.h"
 #include "adani/HighScaleCoefficientFunction.h"
 
@@ -28,7 +29,7 @@ class AsymptoticCoefficientFunction : public CoefficientFunction {
     public:
         AsymptoticCoefficientFunction(
             const int &order, const char &kind, const char &channel,
-            const bool &NLL = true, const string &highscale_version = "exact"
+            const bool &NLL = true, const HighScaleVersion &highscale_version = HighScaleVersion::Exact
         );
         ~AsymptoticCoefficientFunction();
 
