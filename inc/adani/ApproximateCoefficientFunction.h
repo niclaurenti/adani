@@ -47,8 +47,8 @@ struct variation_parameters {
 //------------------------------------------------------------------------------------------//
 
 struct klmv_params {
-        double gamma;
-        double C;
+        double eta_exponent;
+        double shift;
         double log_coeff;
         double log_pow;
         double const_coeff;

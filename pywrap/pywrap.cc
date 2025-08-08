@@ -133,6 +133,11 @@ PYBIND11_MODULE(_core, m) {
             py::arg("highscale_version") = "exact", py::arg("lowxi") = false,
             py::arg("abserr") = 1e-3, py::arg("relerr") = 1e-3,
             py::arg("dim") = 1000
+        )
+        .def(
+            "SetLowXi",
+            &ApproximateCoefficientFunctionKLMV::SetLowXi,
+            py::arg("lowxi")
         );
 
     // AsymptoticCoefficientFunction
