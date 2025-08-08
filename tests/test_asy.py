@@ -1,3 +1,5 @@
+from adani import Analytical, DoubleNumerical, MonteCarlo
+from adani import Exact, GM, ABMP, KLMV
 import adani as ad
 import oldadani as old
 import numpy as np
@@ -25,7 +27,7 @@ def test_as2():
 def test_as3():
     for kind in ['2', 'L']:
         for channel in ['g', 'q']:
-            hs_version = "exact" if channel == 'q' else "abmp"
+            hs_version = Exact if channel == 'q' else ABMP
             asy = ad.AsymptoticCoefficientFunction(3, kind, channel, True, hs_version)
             asy.SetLegacyPowerTerms(True)
             for m2Q2 in np.geomspace(1e-2, 1e4, 10):

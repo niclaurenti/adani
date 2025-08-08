@@ -10,7 +10,7 @@
 
 MatchingCondition::MatchingCondition(
     const int &order, const char &entry1, const char &entry2,
-    const string &version
+    const HighScaleVersion &version
 )
     : order_(order), entry1_(entry1), entry2_(entry2), version_(version) {
     // check order
@@ -18,7 +18,7 @@ MatchingCondition::MatchingCondition(
 
         CheckEntry(entry1);
         CheckEntry(entry2);
-        CheckVersion(version);
+        // CheckVersion(version);
 
         if (order != 3) {
             throw NotImplementedException(
@@ -43,10 +43,10 @@ MatchingCondition::MatchingCondition(
             );
         }
 
-        if (entry2 == 'q' && (version == "abmp" || version == "gm")) {
+        if (entry2 == 'q' && (version == HighScaleVersion::ABMP || version == HighScaleVersion::GM)) {
             throw NotImplementedException(
                 "aQq channel doesn't have 'abmp' or 'gm' version! Got '"
-                    + version + "'",
+                    + to_string(version) + "'",
                 __PRETTY_FUNCTION__, __LINE__
             );
         }
@@ -70,20 +70,20 @@ void MatchingCondition::CheckEntry(char entry) const {
     }
 }
 
-//==========================================================================================//
-//  MatchingCondition: CheckVersion
-//------------------------------------------------------------------------------------------//
+// //==========================================================================================//
+// //  MatchingCondition: CheckVersion
+// //------------------------------------------------------------------------------------------//
 
-void MatchingCondition::CheckVersion(string version) const {
-    if (version != "exact" && version != "abmp" && version != "klmv"
-        && version != "gm") {
-        throw NotValidException(
-            "version must be 'exact', 'abmp', 'gm' or 'klmv'! Got'" + version
-                + "'",
-            __PRETTY_FUNCTION__, __LINE__
-        );
-    }
-}
+// void MatchingCondition::CheckVersion(string version) const {
+//     if (version != "exact" && version != "abmp" && version != "klmv"
+//         && version != "gm") {
+//         throw NotValidException(
+//             "version must be 'exact', 'abmp', 'gm' or 'klmv'! Got'" + version
+//                 + "'",
+//             __PRETTY_FUNCTION__, __LINE__
+//         );
+//     }
+// }
 
 //==========================================================================================//
 //  MatchingCondition: Total a_Qi (i=q,g) term.
@@ -151,49 +151,46 @@ double MatchingCondition::MuIndependentNfDependentTerm(double x) const {
 vector<double> MatchingCondition::NotOrdered(double x) const {
 
     double central, higher, lower;
-    if (entry2_ == 'q') {
-        if (version_ == "exact") {
-            central = a_Qq_PS_30(x, 0);
-            return { central, central, central };
-        } else if (version_ == "klmv") {
-            higher = a_Qq_PS_30(x, 1);
-            lower = a_Qq_PS_30(x, -1);
+    switch (entry2_) {
+        case 'q':
+            switch (version_) {
+                case HighScaleVersion::Exact:
+                    central = a_Qq_PS_30(x, 0);
+                    return { central, central, central };
+                case HighScaleVersion::KLMV:
+                    higher = a_Qq_PS_30(x, 1);
+                    lower = a_Qq_PS_30(x, -1);
+                    central = 0.5 * (higher + lower);
+                    return { central, higher, lower };
+            }
+        case 'g':
+            int low_id;
+            switch (version_) {
+                case HighScaleVersion::Exact:
+                    central = a_Qg_30(x, 0);
+                    return { central, central, central };
+                case HighScaleVersion::GM:
+                    central = a_Qg_30(x, 2);
+                    return { central, central, central };
+                case HighScaleVersion::ABMP:
+                    low_id = -1;
+                    break;
+                case HighScaleVersion::KLMV:
+                    low_id = -12;
+                    break;
+            }
+
+            higher = a_Qg_30(x, 1);
+            lower = a_Qg_30(x, low_id);
             central = 0.5 * (higher + lower);
 
             return { central, higher, lower };
-        } else {
+            break;
+        default:
             throw UnexpectedException(
                 "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
             );
         }
-    } else if (entry2_ == 'g') {
-        int low_id;
-        if (version_ == "exact") {
-            central = a_Qg_30(x, 0);
-            return { central, central, central };
-        } else if (version_ == "gm") {
-            central = a_Qg_30(x, 2);
-            return { central, central, central };
-        } else if (version_ == "abmp")
-            low_id = -1;
-        else if (version_ == "klmv")
-            low_id = -12;
-        else {
-            throw UnexpectedException(
-                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-            );
-        }
-
-        higher = a_Qg_30(x, 1);
-        lower = a_Qg_30(x, low_id);
-        central = 0.5 * (higher + lower);
-
-        return { central, higher, lower };
-    } else {
-        throw UnexpectedException(
-            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-        );
-    }
 }
 
 //==========================================================================================//

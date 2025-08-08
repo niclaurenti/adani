@@ -68,7 +68,7 @@ class AbstractApproximate : public CoefficientFunction {
         ~AbstractApproximate();
 
         void SetDoubleIntegralMethod(
-            const string &double_int_method, const double &abserr = 1e-3,
+            const DoubleIntegralMethod &double_int_method, const double &abserr = 1e-3,
             const double &relerr = 1e-3, const int &dim = 1000,
             const int &MCcalls = 25000
         );
@@ -93,7 +93,7 @@ class ApproximateCoefficientFunction : public AbstractApproximate {
     public:
         ApproximateCoefficientFunction(
             const int &order, const char &kind, const char &channel,
-            const bool &NLL = true, const string &highscale_version = "exact",
+            const bool &NLL = true, const HighScaleVersion &highscale_version = HighScaleVersion::Exact,
             const double &abserr = 1e-3, const double &relerr = 1e-3,
             const int &dim = 1000
         );
@@ -140,7 +140,7 @@ class ApproximateCoefficientFunctionKLMV : public AbstractApproximate {
     public:
         ApproximateCoefficientFunctionKLMV(
             const int &order, const char &kind, const char &channel,
-            const string &highscale_version = "exact",
+            const HighScaleVersion &highscale_version = HighScaleVersion::Exact,
             const bool &lowxi = false, const double &abserr = 1e-3,
             const double &relerr = 1e-3, const int &dim = 1000
         );
