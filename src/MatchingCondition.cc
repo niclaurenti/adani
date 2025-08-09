@@ -18,7 +18,6 @@ MatchingCondition::MatchingCondition(
 
         CheckEntry(entry1);
         CheckEntry(entry2);
-        // CheckVersion(version);
 
         if (order != 3) {
             throw NotImplementedException(
@@ -69,21 +68,6 @@ void MatchingCondition::CheckEntry(char entry) const {
         );
     }
 }
-
-// //==========================================================================================//
-// //  MatchingCondition: CheckVersion
-// //------------------------------------------------------------------------------------------//
-
-// void MatchingCondition::CheckVersion(string version) const {
-//     if (version != "exact" && version != "abmp" && version != "klmv"
-//         && version != "gm") {
-//         throw NotValidException(
-//             "version must be 'exact', 'abmp', 'gm' or 'klmv'! Got'" + version
-//                 + "'",
-//             __PRETTY_FUNCTION__, __LINE__
-//         );
-//     }
-// }
 
 //==========================================================================================//
 //  MatchingCondition: Total a_Qi (i=q,g) term.
@@ -162,6 +146,10 @@ vector<double> MatchingCondition::NotOrdered(double x) const {
                     lower = a_Qq_PS_30(x, -1);
                     central = 0.5 * (higher + lower);
                     return { central, higher, lower };
+                default:
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
             }
         case 'g':
             int low_id;

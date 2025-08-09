@@ -48,7 +48,6 @@ class MatchingCondition {
         const HighScaleVersion version_;
 
         void CheckEntry(char entry) const;
-        // void CheckVersion(string version) const;
 
         //==========================================================================================//
         //  Matching conditions O(as)
