@@ -24,8 +24,6 @@
 
 #include <vector>
 
-using std::string;
-
 //==========================================================================================//
 //  forward declaration of class ThresholdCoefficientFunction to avoid circular
 //  dependencies
