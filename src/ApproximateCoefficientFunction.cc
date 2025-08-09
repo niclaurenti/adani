@@ -493,8 +493,7 @@ void ApproximateCoefficientFunctionKLMV::SetLowXi(const bool &lowxi) {
 void ApproximateCoefficientFunctionKLMV::SetFunctions() {
     switch (GetOrder()) {
         case 2:
-            fx_A_=&ApproximateCoefficientFunctionKLMV::Approximation2A;
-            fx_B_=&ApproximateCoefficientFunctionKLMV::Approximation2B;
+            fx_=&ApproximateCoefficientFunctionKLMV::Order2;
             switch (GetChannel()) {
                 case 'g':
                     params_A_ = new klmv_params(klmv_C2g2A);
@@ -511,8 +510,7 @@ void ApproximateCoefficientFunctionKLMV::SetFunctions() {
             }
             break;
         case 3:
-            fx_A_=&ApproximateCoefficientFunctionKLMV::Approximation3A;
-            fx_B_=&ApproximateCoefficientFunctionKLMV::Approximation3B;
+            fx_=&ApproximateCoefficientFunctionKLMV::Order3;
             switch (GetChannel()) {
                 case 'g':
                     params_A_ = new klmv_params(klmv_C2g3A);
@@ -546,12 +544,45 @@ Value ApproximateCoefficientFunctionKLMV::MuIndependentTermsBand(
     double x, double m2Q2, int nf
 ) const {
 
+    return (this->*fx_)(x, m2Q2, nf);
+}
+
+//==========================================================================================//
+//  ApproximateCoefficientFunctionKLMV: functional form of the approximation A at O(2)
+//------------------------------------------------------------------------------------------//
+
+Value ApproximateCoefficientFunctionKLMV::Order2(
+    double x, double m2Q2, int nf
+) const {
+
     double xmax = 1. / (1. + 4 * m2Q2);
     if (x <= 0 || x >= xmax)
         return Value(0.);
 
-    double res_A = (this->*fx_A_)(x, m2Q2, nf);
-    double res_B = (this->*fx_B_)(x, m2Q2, nf);
+    double beta = sqrt(1. - 4 * m2Q2 * x / (1. - x));
+    double eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
+
+    double thr = threshold_->MuIndependentTerms(x, m2Q2, nf);
+    double thr_const = threshold_->BetaIndependentTerms(x, m2Q2, 1.);
+
+    double he_ll = highenergy_->MuIndependentTerms(x, m2Q2, nf);
+
+    double hs = highscale_->MuIndependentTerms(x, m2Q2, nf);
+
+    double xi = 1. / m2Q2;
+    double f = 1. / (1. + exp(2. * (xi - 4.)));
+
+    double eta_gamma = pow(eta, params_A_->eta_exponent);
+    double eta_delta = pow(eta, params_B_->eta_exponent);
+
+    double beta3 = beta * beta * beta;
+
+    double res_A =  thr - thr_const + (1. - f) * beta * hs
+           + f * beta3
+                 * he_ll * eta_gamma / (params_A_->shift + eta_gamma);
+    double res_B = thr + (1. - f) * beta3 * hs
+           + f * beta3
+                 * he_ll * eta_delta / (params_B_->shift + eta_delta);
 
     if (res_A > res_B)
         return Value(res_A, res_B);
@@ -560,69 +591,16 @@ Value ApproximateCoefficientFunctionKLMV::MuIndependentTermsBand(
 }
 
 //==========================================================================================//
-//  ApproximateCoefficientFunctionKLMV: functional form of the approximation A at O(2)
-//------------------------------------------------------------------------------------------//
-
-double ApproximateCoefficientFunctionKLMV::Approximation2A(
-    double x, double m2Q2, int nf
-) const {
-    double beta = sqrt(1. - 4 * m2Q2 * x / (1. - x));
-    double eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
-
-    double thr = threshold_->MuIndependentTerms(x, m2Q2, nf);
-    double thr_const = threshold_->BetaIndependentTerms(x, m2Q2, 1.);
-
-    double he_ll = highenergy_->MuIndependentTerms(x, m2Q2, nf);
-
-    double hs = highscale_->MuIndependentTerms(x, m2Q2, nf);
-
-    double xi = 1. / m2Q2;
-    double f = 1. / (1. + exp(2. * (xi - 4.)));
-
-    double eta_gamma = pow(eta, params_A_->eta_exponent);
-
-    double beta3 = beta * beta * beta;
-
-    return thr - thr_const + (1. - f) * beta * hs
-           + f * beta3
-                 * he_ll * eta_gamma / (params_A_->shift + eta_gamma);
-}
-
-//==========================================================================================//
-//  ApproximateCoefficientFunctionKLMV: functional form of the approximation B at O(2)
-//------------------------------------------------------------------------------------------//
-
-double ApproximateCoefficientFunctionKLMV::Approximation2B(
-    double x, double m2Q2, int nf
-) const {
-    double beta = sqrt(1. - 4 * m2Q2 * x / (1. - x));
-    double eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
-
-    double thr = threshold_->MuIndependentTerms(x, m2Q2, nf);
-
-    double he_ll = highenergy_->MuIndependentTerms(x, m2Q2, nf);
-
-    double hs = highscale_->MuIndependentTerms(x, m2Q2, nf);
-
-    double xi = 1. / m2Q2;
-    double f = 1. / (1. + exp(2. * (xi - 4.)));
-
-    double eta_delta = pow(eta, params_B_->eta_exponent);
-
-    double beta3 = beta * beta * beta;
-
-    return thr + (1. - f) * beta3 * hs
-           + f * beta3
-                 * he_ll * eta_delta / (params_B_->shift + eta_delta);
-}
-
-//==========================================================================================//
 //  ApproximateCoefficientFunctionKLMV: functional form of the approximation A at O(3)
 //------------------------------------------------------------------------------------------//
 
-double ApproximateCoefficientFunctionKLMV::Approximation3A(
+Value ApproximateCoefficientFunctionKLMV::Order3(
     double x, double m2Q2, int nf
 ) const {
+    double xmax = 1. / (1. + 4 * m2Q2);
+    if (x <= 0 || x >= xmax)
+        return Value(0.);
+
     double beta = sqrt(1. - 4 * m2Q2 * x / (1. - x));
     double eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
 
@@ -630,52 +608,31 @@ double ApproximateCoefficientFunctionKLMV::Approximation3A(
     double thr_const = threshold_->BetaIndependentTerms(x, m2Q2, 1.);
 
     double he_ll = highenergy_->MuIndependentTerms(x, m2Q2, nf);
-    double he_nll = ApproximateNLL(x, m2Q2).GetHigher();
+    Value he_nll = ApproximateNLL(x, m2Q2);
 
-    double hs = highscale_->fxBand_NotOrdered(x, m2Q2, 1., nf)[1];
+    vector<double> hs = highscale_->fxBand_NotOrdered(x, m2Q2, 1., nf);
 
     double xi = 1. / m2Q2;
     double f = 1. / (1. + exp(2. * (xi - 4.)));
 
     double eta_gamma = pow(eta, params_A_->eta_exponent);
-
-    double beta3 = beta * beta * beta;
-
-    return thr - thr_const + (1. - f) * beta * hs
-           + f * beta3
-                 * (-log(eta) / log(x) * he_ll
-                    + he_nll * eta_gamma / (params_A_->shift + eta_gamma));
-}
-
-//==========================================================================================//
-//  ApproximateCoefficientFunctionKLMV: functional form of the approximation B at O(3)
-//------------------------------------------------------------------------------------------//
-
-double ApproximateCoefficientFunctionKLMV::Approximation3B(
-    double x, double m2Q2, int nf
-) const {
-    double beta = sqrt(1. - 4 * m2Q2 * x / (1. - x));
-    double eta = 0.25 / m2Q2 * (1. - x) / x - 1.;
-
-    double thr = threshold_->MuIndependentTerms(x, m2Q2, nf);
-    double thr_const = threshold_->BetaIndependentTerms(x, m2Q2, 1.);
-
-    double he_ll = highenergy_->MuIndependentTerms(x, m2Q2, nf);
-    double he_nll = ApproximateNLL(x, m2Q2).GetLower();
-
-    double hs = highscale_->fxBand_NotOrdered(x, m2Q2, 1., nf)[2];
-
-    double xi = 1. / m2Q2;
-    double f = 1. / (1. + exp(2. * (xi - 4.)));
-
     double eta_delta = pow(eta, params_B_->eta_exponent);
 
     double beta3 = beta * beta * beta;
 
-    return thr - thr_const + 2 * f * thr_const + (1. - f) * beta3 * hs
+    double res_A = thr - thr_const + (1. - f) * beta * hs[1]
            + f * beta3
                  * (-log(eta) / log(x) * he_ll
-                    + he_nll * eta_delta / (params_B_->shift + eta_delta));
+                    + he_nll.GetHigher() * eta_gamma / (params_A_->shift + eta_gamma));
+    double res_B = thr - thr_const + 2 * f * thr_const + (1. - f) * beta3 * hs[2]
+           + f * beta3
+                 * (-log(eta) / log(x) * he_ll
+                    + he_nll.GetLower() * eta_delta / (params_B_->shift + eta_delta));
+
+    if (res_A > res_B)
+        return Value(res_A, res_B);
+    else
+        return Value(res_B, res_A);
 }
 
 //==========================================================================================//

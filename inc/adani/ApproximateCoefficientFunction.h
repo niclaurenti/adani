@@ -158,10 +158,7 @@ class ApproximateCoefficientFunctionKLMV : public AbstractApproximate {
         HighScaleCoefficientFunction *highscale_;
         HighEnergyCoefficientFunction *highenergy_;
 
-        double (ApproximateCoefficientFunctionKLMV::*fx_A_)(
-                    double, double, int
-                ) const;
-        double (ApproximateCoefficientFunctionKLMV::*fx_B_)(
+        Value (ApproximateCoefficientFunctionKLMV::*fx_)(
                     double, double, int
                 ) const;
 
@@ -170,18 +167,9 @@ class ApproximateCoefficientFunctionKLMV : public AbstractApproximate {
 
         bool lowxi_;
 
-        double Approximation2A(
-            double x, double m2Q2, int nf
-        ) const;
-        double Approximation2B(
-            double x, double m2Q2, int nf
-        ) const;
-        double Approximation3A(
-            double x, double m2Q2, int nf
-        ) const;
-        double Approximation3B(
-            double x, double m2Q2, int nf
-        ) const;
+        Value Order2(double x, double m2Q2, int nf) const;
+        Value Order3(double x, double m2Q2, int nf) const;
+
         Value ApproximateNLL(double x, double m2Q2) const;
 
         void SetFunctions();
