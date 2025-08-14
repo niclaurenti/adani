@@ -8,7 +8,7 @@
 
 AsymptoticCoefficientFunction::AsymptoticCoefficientFunction(
     const int &order, const char &kind, const char &channel, const bool &NLL,
-    const string &highscale_version
+    const HighScaleVersion &highscale_version
 )
     : CoefficientFunction(order, kind, channel), legacy_pt_(false) {
 

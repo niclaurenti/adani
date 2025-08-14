@@ -299,7 +299,7 @@ void ExactCoefficientFunction::SetFunctions() {
 //------------------------------------------------------------------------------------------//
 
 void ExactCoefficientFunction::SetDoubleIntegralMethod(
-    const string &double_int_method, const double &abserr, const double &relerr,
+    const DoubleIntegralMethod &double_int_method, const double &abserr, const double &relerr,
     const int &dim, const int &MCcalls
 ) {
     try {
@@ -319,37 +319,40 @@ void ExactCoefficientFunction::SetDoubleIntegralMethod(
             );
         }
 
-        // check double_int_method
-        if (double_int_method != "analytical"
-            && double_int_method != "double_numerical"
-            && double_int_method != "monte_carlo") {
-            throw NotValidException(
-                "double_int_method must be 'analytical', 'double_numerical' or "
-                "'monte_carlo'! Got '"
-                    + double_int_method + "'",
-                __PRETTY_FUNCTION__, __LINE__
-            );
-        }
+        // // check double_int_method
+        // if (double_int_method != "analytical"
+        //     && double_int_method != "double_numerical"
+        //     && double_int_method != "monte_carlo") {
+        //     throw NotValidException(
+        //         "double_int_method must be 'analytical', 'double_numerical' or "
+        //         "'monte_carlo'! Got '"
+        //             + double_int_method + "'",
+        //         __PRETTY_FUNCTION__, __LINE__
+        //     );
+        // }
 
         // at this point I must be in the g channel at order 3
         delete convolutions_lmu2_[0];
 
-        if (double_int_method == "monte_carlo") {
-            convolutions_lmu2_[0] = new DoubleConvolution(
-                gluon_as1_, Pgg0_, abserr, relerr, dim, true, MCcalls
-            );
-        } else if (double_int_method == "double_numerical") {
-            convolutions_lmu2_[0] = new DoubleConvolution(
-                gluon_as1_, Pgg0_, abserr, relerr, dim, false, MCcalls
-            );
-        } else {
-            if (Pgg0Pgg0_ == nullptr) {
-                // TODO: this if is probably useless
-                Pgg0Pgg0_ =
-                    new ConvolutedSplittingFunctions(0, 'g', 'g', 0, 'g', 'g');
-            }
-            convolutions_lmu2_[0] =
-                new Convolution(gluon_as1_, Pgg0Pgg0_, abserr, relerr, dim);
+        switch (double_int_method) {
+            case DoubleIntegralMethod::MonteCarlo:
+                convolutions_lmu2_[0] = new DoubleConvolution(
+                    gluon_as1_, Pgg0_, abserr, relerr, dim, true, MCcalls
+                );
+                break;
+            case DoubleIntegralMethod::DoubleNumerical:
+                convolutions_lmu2_[0] = new DoubleConvolution(
+                    gluon_as1_, Pgg0_, abserr, relerr, dim, false, MCcalls
+                );
+                break;
+            case DoubleIntegralMethod::Analytical:
+                if (Pgg0Pgg0_ == nullptr) {
+                    // TODO: this if is probably useless
+                    Pgg0Pgg0_ =
+                        new ConvolutedSplittingFunctions(0, 'g', 'g', 0, 'g', 'g');
+                }
+                convolutions_lmu2_[0] =
+                    new Convolution(gluon_as1_, Pgg0Pgg0_, abserr, relerr, dim);
         }
 
     } catch (const NotValidException &e) {

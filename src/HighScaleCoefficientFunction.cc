@@ -10,7 +10,7 @@
 
 HighScaleCoefficientFunction::HighScaleCoefficientFunction(
     const int &order, const char &kind, const char &channel,
-    const string &version
+    const HighScaleVersion &version
 )
     : CoefficientFunction(order, kind, channel) {
     massless_as1_ = nullptr;
@@ -34,7 +34,7 @@ HighScaleCoefficientFunction::HighScaleCoefficientFunction(
     }
 
     try {
-        if (GetOrder() < 3 && version != "exact") {
+        if (GetOrder() < 3 && version != HighScaleVersion::Exact) {
             throw NotValidException(
                 "HighScaleCoefficientFunction at orders 1 and 2 are only "
                 "'exact'!",
