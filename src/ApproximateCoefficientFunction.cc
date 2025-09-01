@@ -580,7 +580,7 @@ Value ApproximateCoefficientFunctionKLMV::Order2(
     double res_A =  thr - thr_const + (1. - f) * beta * hs
            + f * beta3
                  * he_ll * eta_gamma / (params_A_->shift + eta_gamma);
-    double res_B = thr + (1. - f) * beta3 * hs
+    double res_B = thr - thr_const + 2 * f * thr_const + (1. - f) * beta3 * hs
            + f * beta3
                  * he_ll * eta_delta / (params_B_->shift + eta_delta);
 
