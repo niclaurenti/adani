@@ -163,6 +163,29 @@ void ThresholdCoefficientFunction::SetLegacyThreshold(
     }
 }
 
+void ThresholdCoefficientFunction::SetKLMVThresholdExpansion(
+    const bool &klmv_threshold_exp
+) {
+    try {
+
+        if (GetOrder() == 3 && GetKind() == '2' && GetChannel() == 'g') {
+            if (klmv_threshold_exp) {
+                fx_ = &ThresholdCoefficientFunction::PlainThreshold;
+                expansion_beta_ = &ThresholdCoefficientFunction::C2_g3_threshold_expansion_klmv;
+                expansion_no_beta_ = &ThresholdCoefficientFunction::C2_g3_threshold_expansion_const_klmv;
+            } else {
+                fx_ = &ThresholdCoefficientFunction::ModifiedThreshold;
+                expansion_beta_ = &ThresholdCoefficientFunction::C2_g3_threshold_expansion;
+                expansion_no_beta_ = &ThresholdCoefficientFunction::C2_g3_threshold_expansion_const;
+            }
+        }
+    } catch (NotValidException &e) {
+        e.warning();
+    } catch (UnexpectedException &e) {
+        e.runtime_error();
+    }
+}
+
 //==========================================================================================//
 //  ThresholdCoefficientFunction: contral value of the full contribution
 //------------------------------------------------------------------------------------------//
@@ -237,6 +260,15 @@ double ThresholdCoefficientFunction::BetaIndependentTerms(
     return exact_as1_->fx(x, m2Q2, m2mu2, 0)
            * (this->*expansion_no_beta_)(m2Q2, m2mu2);
 }
+
+extern "C" {
+    // double c2log_(double *wr,double *xi);
+    double cgt2_(double *eta, double *xi, int *nf);
+    double cgt2br1_(double *eta, double *xi);
+    double cgt2br2_(double *eta, double *xi);
+    double cgt2pade_(double *eta, double *xi);
+}
+
 
 //==========================================================================================//
 //  Threshold limit (x->xmax) of the gluon coefficient function for F2 at
@@ -414,6 +446,16 @@ double ThresholdCoefficientFunction::C2_g3_threshold_expansion(
            + c_fracbeta / beta + c_fracbeta2 / beta / beta;
 }
 
+double ThresholdCoefficientFunction::C2_g3_threshold_expansion_klmv(
+    double x, double m2Q2, double m2mu2, int nf
+) const {
+    double xi = 1. / m2Q2;
+    double eta = 0.25 * xi * (1 - x) / x - 1.;
+    double Lm = log(m2mu2);
+    double Lm2 = Lm * Lm;
+    return cgt2_(&eta, &xi, &nf) + cgt2br1_(&eta, &xi) * Lm + cgt2br2_(&eta, &xi) * Lm2;
+}
+
 //==========================================================================================//
 //
 //------------------------------------------------------------------------------------------//
@@ -429,6 +471,14 @@ double ThresholdCoefficientFunction::C2_g3_threshold_expansion_const(
                           + Lm * (8. * CA * ln2 - c0_bar(xi));
 
     return c_const_sqrt * c_const_sqrt;
+}
+
+double ThresholdCoefficientFunction::C2_g3_threshold_expansion_const_klmv(
+    double m2Q2, double m2mu2
+) const {
+    double xi = 1. / m2Q2;
+    double eta = 0.0;
+    return cgt2pade_(&eta, &xi);
 }
 
 //==========================================================================================//

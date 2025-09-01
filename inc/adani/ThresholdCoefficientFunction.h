@@ -39,6 +39,7 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
         ~ThresholdCoefficientFunction() override;
 
         void SetLegacyThreshold(const bool &legacy_threshold);
+        void SetKLMVThresholdExpansion(const bool &klmv_threshold_exp);
 
         double fx(double x, double m2Q2, double m2mu2, int nf) const override;
         Value
@@ -102,10 +103,14 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
         double C2_g3_threshold_expansion(
             double x, double m2Q2, double m2mu2, int /*nf*/
         ) const;
+        double C2_g3_threshold_expansion_klmv(
+            double x, double m2Q2, double m2mu2, int /*nf*/
+        ) const;
         double CL_g3_threshold_expansion(
             double x, double m2Q2, double m2mu2, int /*nf*/
         ) const;
         double C2_g3_threshold_expansion_const(double m2Q2, double m2mu2) const;
+        double C2_g3_threshold_expansion_const_klmv(double m2Q2, double m2mu2) const;
         double CL_g3_threshold_expansion_const(double m2Q2, double m2mu2) const;
 
         //==========================================================================================//

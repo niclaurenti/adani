@@ -332,6 +332,11 @@ PYBIND11_MODULE(_core, m) {
             "SetLegacyThreshold",
             &ThresholdCoefficientFunction::SetLegacyThreshold,
             py::arg("legacy_threshold")
+        )
+        .def(
+            "SetKLMVThresholdExpansion",
+            &ThresholdCoefficientFunction::SetKLMVThresholdExpansion,
+            py::arg("klmv_threshold_exp")
         );
 
     // MatchingCondition

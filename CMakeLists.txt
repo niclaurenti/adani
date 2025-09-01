@@ -75,6 +75,7 @@ if(PYTHON_ONLY)
         src/AQg3mod.f90
         src/AQg3red.f
         src/AsymptoticCoefficientFunction.cc
+        src/cgt2.f
         src/CoefficientFunction.cc
         src/Convolution.cc
         src/ExactCoefficientFunction.cc
@@ -102,6 +103,7 @@ else(PYTHON_ONLY)
         src/AQg3mod.f90
         src/AQg3red.f
         src/AsymptoticCoefficientFunction.cc
+        src/cgt2.f
         src/CoefficientFunction.cc
         src/Convolution.cc
         src/ExactCoefficientFunction.cc
