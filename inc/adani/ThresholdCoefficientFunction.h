@@ -66,7 +66,10 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
 
         Value Order1(double x, double m2Q2, double /*m2mu2*/, int /*nf*/) const;
         Value PlainThreshold(double x, double m2Q2, double m2mu2, int nf) const;
-        Value ModifiedThreshold(
+        Value ModifiedThreshold2(
+            double x, double m2Q2, double m2mu2, int nf
+        ) const;
+        Value ModifiedThreshold3(
             double x, double m2Q2, double m2mu2, int nf
         ) const;
 

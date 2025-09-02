@@ -61,7 +61,7 @@ void ThresholdCoefficientFunction::SetFunctions() {
                 expansion_no_beta_ = &ThresholdCoefficientFunction::
                                          CL_g2_threshold_expansion_const;
             }
-            fx_ = &ThresholdCoefficientFunction::ModifiedThreshold;
+            fx_ = &ThresholdCoefficientFunction::ModifiedThreshold2;
         } else if (GetOrder() == 3) {
             if (GetKind() == '2') {
                 expansion_beta_ =
@@ -74,7 +74,7 @@ void ThresholdCoefficientFunction::SetFunctions() {
                 expansion_no_beta_ = &ThresholdCoefficientFunction::
                                          CL_g3_threshold_expansion_const;
             }
-            fx_ = &ThresholdCoefficientFunction::ModifiedThreshold;
+            fx_ = &ThresholdCoefficientFunction::ModifiedThreshold3;
         } else {
             throw UnexpectedException(
                 "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
@@ -136,7 +136,19 @@ void ThresholdCoefficientFunction::SetLegacyThreshold(
                     }
                 }
             } else {
-                fx_ = &ThresholdCoefficientFunction::ModifiedThreshold;
+                switch (GetOrder()) {
+                    case 2:
+                        fx_ = &ThresholdCoefficientFunction::ModifiedThreshold2;
+                        break;
+                    case 3:
+                        fx_ = &ThresholdCoefficientFunction::ModifiedThreshold3;
+                        break;
+                    default:
+                        throw UnexpectedException(
+                            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                        );
+                }
+
                 if (GetKind() == 'L') {
                     if (GetOrder() == 2) {
                         expansion_beta_ = &ThresholdCoefficientFunction::
@@ -213,13 +225,31 @@ Value ThresholdCoefficientFunction::PlainThreshold(
 //  ThresholdCoefficientFunction:
 //------------------------------------------------------------------------------------------//
 
-Value ThresholdCoefficientFunction::ModifiedThreshold(
+Value ThresholdCoefficientFunction::ModifiedThreshold2(
     double x, double m2Q2, double m2mu2, int nf
 ) const {
     double exp = (this->*expansion_beta_)(x, m2Q2, m2mu2, nf)
                  + (this->*expansion_no_beta_)(m2Q2, m2mu2);
     double central = exact_as1_->fx(x, m2Q2, m2mu2, nf) * exp;
     double delta = std::abs(central - (this->*threshold_as1_)(x, m2Q2) * exp);
+
+    return Value(central, central + delta, central - delta);
+}
+
+//==========================================================================================//
+//  ThresholdCoefficientFunction:
+//------------------------------------------------------------------------------------------//
+
+Value ThresholdCoefficientFunction::ModifiedThreshold3(
+    double x, double m2Q2, double m2mu2, int nf
+) const {
+    double exp = (this->*expansion_beta_)(x, m2Q2, m2mu2, nf)
+                 + (this->*expansion_no_beta_)(m2Q2, m2mu2);
+    double central = exact_as1_->fx(x, m2Q2, m2mu2, nf) * exp;
+    double delta_prefactor = std::abs(central - (this->*threshold_as1_)(x, m2Q2) * exp);
+    double delta_const = std::abs(BetaIndependentTerms(x, m2Q2, m2mu2));
+
+    double delta = sqrt(delta_prefactor * delta_prefactor + delta_const * delta_const);
 
     return Value(central, central + delta, central - delta);
 }
@@ -425,8 +455,7 @@ double ThresholdCoefficientFunction::C2_g3_threshold_expansion_const(
     double xi = 1. / m2Q2;
     double Lm = log(m2mu2);
 
-    double c_const_sqrt = c0(xi) + 36. * CA * ln2 * ln2 - 60. * CA * ln2
-                          + Lm * (8. * CA * ln2 - c0_bar(xi));
+    double c_const_sqrt = C2_g2_threshold_expansion_const(m2Q2, m2mu2);
 
     return c_const_sqrt * c_const_sqrt;
 }
@@ -504,10 +533,14 @@ double ThresholdCoefficientFunction::CL_g3_threshold_expansion(
 //------------------------------------------------------------------------------------------//
 
 double ThresholdCoefficientFunction::CL_g3_threshold_expansion_const(
-    double /*m2Q2*/, double /*m2mu2*/
+    double m2Q2, double m2mu2
 ) const {
-    return 0.;
-    //return C2_g3_threshold_expansion_const(m2Q2, m2mu2);
+    double xi = 1. / m2Q2;
+    double Lm = log(m2mu2);
+
+    double c_const_sqrt = CL_g2_threshold_expansion_const(m2Q2, m2mu2);
+
+    return c_const_sqrt * c_const_sqrt;
 }
 
 //==========================================================================================//
