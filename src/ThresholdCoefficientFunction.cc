@@ -480,47 +480,42 @@ double ThresholdCoefficientFunction::CL_g3_threshold_expansion(
     double log3b = log2b * logb;
     double log4b = log3b * logb;
 
-    double BOH = 0;
-    double deltaE = 0;
-
     double pi2 = M_PI * M_PI;
     double pi4 = pi2 * pi2;
 
     double c_log4 = 128. * CA * CA;
 
-    double c_log3 = (128 * CA * CA * Lmu + 64. / 9 * CA * (2 * nf + CA * (-125 + 108 * ln2)));
+    double c_log3 = (128 * CA * CA * Lmu + 128 * CA * nf / 9 + CA * CA * (-8000./9 + 768 * ln2));
 
-    double c_log2 = 32 * CA * CA * Lmu2
-                    - (16 * CA * (CA - 2 * CF) * pi2) / beta
-                    - 16./9 * CA * (-12. * (24 * aL_10_QED(m2Q2) * CF + nf * (-4 + 3 * ln2))
-                    + CA * (-1318 - 144 * aL_10_OK(m2Q2) + 39 * pi2 - 54 * ln2 * (-29. + 12 * ln2)))
-                    + 16./3 * CA * Lmu * (2 * nf + CA * (-119 + 120 * ln2) - 12 * CA * log(2 + 1/chiq + chiq));
+    double c_log2 = (32 * CA * CA * Lmu2 + CA * CA * (21088./9 + 256 * aL_10_OK(m2Q2)
+                    - 208 * pi2 / 3 - 2784 * ln2 + 1152 * ln2 * ln2)
+                    + CA * (512 * aL_10_QED(m2Q2) * CF + nf * (-256./3 + 64 * ln2))
+                    + Lmu * (32 * CA * nf/3 + CA * CA * (-1904./3 + 576 * ln2
+                        - 64 * log((1 + chiq) * (1 + chiq)/(2 * chiq)))))
+                    + (32 * CA * (-CA/2 + CF) * pi2 / beta) ;
 
-    double c_log_const = - 8./27 * (
-        108 * CF * CF * pi2
-        - 2 * CA * (27 * CF * pi2 + 144 * aL_10_QED(m2Q2) * CF * (-19 + 18 * ln2) + nf * (383 - 9 * pi2 + 54 * ln2 * (-8 + 3 * ln2)))
-        + CA * CA * (14099 + 144 * aL_10_OK(m2Q2) * (19 - 18 * ln2)
-        + 18 * ln2 * (-596 + 33 * 3 * ln2) + 6 * pi2 * (-140 + 39 * 3 * ln2) - 3159 * zeta3)) ;
+    double c_log = (-32 * CF * CF * pi2
+                          + CA * (CF * (-4864 * aL_10_QED(m2Q2) / 3 + 16 * pi2
+                            + 1536 * aL_10_QED(m2Q2) * ln2)
+                            + nf * (6128./27 - 16 * pi2 / 3 - 256 * ln2 + 96 * ln2*ln2))
+                           + Lmu2 * (8 * CA * nf/3 + CA * CA * (-100 + 96 * ln2 - 32 * log((1 + chiq) * (1 + chiq)/(2 * chiq))))
+                           + Lmu * (CA * (256 * aL_10_QED(m2Q2) * CF + nf * (-128./3 + 32 * ln2))
+                           + CA * CA * (9632./9 + 128 * aL_10_OK(m2Q2) - (104 * pi2) / 3
+                                 - 1296 * ln2 + 576 * ln2 * ln2 + 608./3 * log((1 + chiq) * (1 + chiq)/(2 * chiq))
+                                 - 192 * ln2 * log((1 + chiq) * (1 + chiq)/(2 * chiq))))
+                           + CA * CA * (-112792./27 - 2432 * aL_10_OK(m2Q2)/3
+                           + 2240 * pi2/9 + 9536 * ln2 / 3 + 768 * aL_10_OK(m2Q2) * ln2
+                           - 208 * pi2 * ln2 - 528 * ln2 * ln2 + 936 * zeta3)) ;
+                        + (-CA/2 + CF) * (16 * CA * Lmu * pi2
+                        + (8 * nf * pi2)/3
+                        + CA * (-92./3 * pi2 + 32 * pi2 * ln2)) / beta;
 
-    double c_log_fracbeta =
-        -8 * CA * (CA - 2 * CF) * Lmu * pi2 - 2./3 * (CA - 2 * CF) * pi2 * (2 * nf + CA * (-47 + 24 * BOH + 12 * 2*ln2));
-
-    double c_log_Lm = 8./9 * CA * (
-        288 * aL_10_QED(m2Q2) * CF
-        + 12 * nf * (-4 + 3 * ln2)
-        + CA * (1204 + 144 * aL_10_OK(m2Q2) - 39 * pi2 + (-562 + 288 * ln2) * 3 * ln2)
-        + 12 * CA * (19 - 18 * ln2) * log(2 + 1/chiq + chiq));
-
-    double c_log_Lm2 = 4. / 3 * CA * (2 * nf + CA * (-75 + 96 * ln2) - 24 * CA * log(2 + 1/chiq + chiq));
-
-    double c_log =
-        c_log_const + c_log_fracbeta / beta + c_log_Lm * Lmu + c_log_Lm2 * Lmu2;
-
-    double c_fracbeta = -1./18 * (CA - 2 * CF) * pi2 * (
-        32 * (18 * aL_10_QED(m2Q2) * CF + nf * (-1 + ln2))
-        + CA * (-680 + 288 * aL_10_OK(m2Q2) - 144 * BOH + 9 * deltaE + 24 * pi2 + 8 * (85 - 48 * ln2) * 2 * ln2)
-    ) - 1./3 * (CA - 2 * CF) * Lmu * pi2 * (2 * nf + CA * (-23 + 24 * ln2)
-    - 12 * CA * log(2 + 1/chiq + chiq));
+    double c_fracbeta = (-CA/2 + CF) * (64 * aL_10_QED(m2Q2) * CF * pi2
+                        + CA * (-962 * pi2 /9 + 32 * aL_10_OK(m2Q2) * pi2
+                            + 8 * pi4/3 + 388./3 * pi2 * ln2 - 64 * pi2 * ln2 * ln2)
+                        + nf * (-20 * pi2 / 9 + 4. /9 * pi2 * 6 * ln2)
+                        + Lmu * (4 * nf * pi2/3
+                            + CA * (-22 * pi2 /3 + 16 * pi2 * ln2 - 8 * pi2 * log(2 + 1/chiq + chiq))));
 
     double c_fracbeta2 = (CA - 2 * CF) * (CA - 2 * CF) * pi4 / 3. ;
 
