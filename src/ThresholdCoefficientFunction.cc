@@ -368,7 +368,7 @@ double ThresholdCoefficientFunction::CL_g2_threshold_expansion_const(
     double muterm =
         -3. / 4 * ln2 + 0.5 + log((1 + chiq) * (1 + chiq) / 2 / chiq) + 1. / 6;
 
-    return 16 * (CA * aL_10_OK(m2Q2) + 2. * CF * aL_10_OK(m2Q2) - CA * log(m2mu2) * muterm);
+    return 16 * (CA * aL_10_OK(m2Q2) + 2. * CF * aL_10_QED(m2Q2) - CA * log(m2mu2) * muterm);
 }
 
 //==========================================================================================//
