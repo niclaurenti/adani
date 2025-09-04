@@ -29,6 +29,9 @@ PYBIND11_MODULE(_core, m) {
         )
         .def(py::init<const double &>(), py::arg("central"))
         .def(py::self + py::self)
+        .def(py::self - py::self)
+        .def(py::self * py::self)
+        // .def(py::self / py::self)
         .def(py::self + double())
         .def(double() + py::self)
         .def(py::self - double())
@@ -63,10 +66,6 @@ PYBIND11_MODULE(_core, m) {
             "MuIndependentTermsBand",
             &CoefficientFunction::MuIndependentTermsBand, py::arg("x"),
             py::arg("m2Q2"), py::arg("nf")
-        )
-        .def(
-            "MuDependentTermsBand", &CoefficientFunction::MuDependentTermsBand,
-            py::arg("x"), py::arg("m2Q2"), py::arg("m2mu2"), py::arg("nf")
         )
         .def(
             "fxBand", &CoefficientFunction::fxBand, py::arg("x"),
@@ -105,6 +104,21 @@ PYBIND11_MODULE(_core, m) {
             py::arg("NLL") = true, py::arg("highscale_version") = "exact",
             py::arg("abserr") = 1e-3, py::arg("relerr") = 1e-3,
             py::arg("dim") = 1000
+        )
+        .def(
+            "SetLegacyThreshold",
+            &ApproximateCoefficientFunction::SetLegacyThreshold,
+            py::arg("legacy_threshold")
+        )
+        .def(
+            "SetLegacyPowerTerms",
+            &ApproximateCoefficientFunction::SetLegacyPowerTerms,
+            py::arg("legacy_pt")
+        )
+        .def(
+            "SetLegacyApproximation",
+            &ApproximateCoefficientFunction::SetLegacyApproximation,
+            py::arg("legacy_appr")
         );
 
     // ApproximateCoefficientFunctionKLMV
@@ -119,6 +133,11 @@ PYBIND11_MODULE(_core, m) {
             py::arg("highscale_version") = "exact", py::arg("lowxi") = false,
             py::arg("abserr") = 1e-3, py::arg("relerr") = 1e-3,
             py::arg("dim") = 1000
+        )
+        .def(
+            "SetLowXi",
+            &ApproximateCoefficientFunctionKLMV::SetLowXi,
+            py::arg("lowxi")
         );
 
     // AsymptoticCoefficientFunction
@@ -131,6 +150,10 @@ PYBIND11_MODULE(_core, m) {
                 const string &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel"),
             py::arg("NLL") = true, py::arg("highscale_version") = "exact"
+        )
+        .def(
+            "SetLegacyPowerTerms",
+            &AsymptoticCoefficientFunction::SetLegacyPowerTerms
         );
 
     // ExactCoefficientFunction
@@ -157,7 +180,15 @@ PYBIND11_MODULE(_core, m) {
     py::class_<AbstractHighEnergyCoefficientFunction, CoefficientFunction>(
         m, "AbstractHighEnergyCoefficientFunction"
     )
-        .def("GetNLL", &AbstractHighEnergyCoefficientFunction::GetNLL);
+        .def("GetNLL", &AbstractHighEnergyCoefficientFunction::GetNLL)
+        .def(
+            "LL", &AbstractHighEnergyCoefficientFunction::LL, py::arg("m2Q2"),
+            py::arg("m2mu2")
+        )
+        .def(
+            "NLL", &AbstractHighEnergyCoefficientFunction::NLL, py::arg("m2Q2"),
+            py::arg("m2mu2"), py::arg("nf")
+        );
 
     // HighEnergyCoefficientFunction
     py::class_<
@@ -175,17 +206,6 @@ PYBIND11_MODULE(_core, m) {
         HighEnergyHighScaleCoefficientFunction,
         AbstractHighEnergyCoefficientFunction>(
         m, "HighEnergyHighScaleCoefficientFunction"
-    )
-        .def(
-            py::init<const int &, const char &, const char &, const bool &>(),
-            py::arg("order"), py::arg("kind"), py::arg("channel"),
-            py::arg("NLL") = true
-        );
-
-    // PowerTermsCoefficientFunction
-    py::class_<
-        PowerTermsCoefficientFunction, AbstractHighEnergyCoefficientFunction>(
-        m, "PowerTermsCoefficientFunction"
     )
         .def(
             py::init<const int &, const char &, const char &, const bool &>(),
@@ -307,6 +327,11 @@ PYBIND11_MODULE(_core, m) {
             "BetaIndependentTerms",
             &ThresholdCoefficientFunction::BetaIndependentTerms, py::arg("x"),
             py::arg("m2Q2"), py::arg("m2mu2")
+        )
+        .def(
+            "SetLegacyThreshold",
+            &ThresholdCoefficientFunction::SetLegacyThreshold,
+            py::arg("legacy_threshold")
         );
 
     // MatchingCondition

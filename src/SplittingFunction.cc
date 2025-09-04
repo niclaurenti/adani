@@ -76,68 +76,6 @@ SplittingFunction::SplittingFunction(
 }
 
 //==========================================================================================//
-//  SplittingFunction: Regular part
-//------------------------------------------------------------------------------------------//
-
-double SplittingFunction::Regular(double x, int nf) const {
-    return GetMultFact() * (this->*reg_)(x, nf);
-}
-
-//==========================================================================================//
-//  SplittingFunction: Singular part
-//------------------------------------------------------------------------------------------//
-
-double SplittingFunction::Singular(double x, int nf) const {
-    return GetMultFact() * (this->*sing_)(x, nf);
-}
-
-//==========================================================================================//
-//  SplittingFunction: Integral from 0 to x of the singular part
-//------------------------------------------------------------------------------------------//
-
-double SplittingFunction::SingularIntegrated(double x, int nf) const {
-    return GetMultFact() * (this->*sing_int_)(x, nf);
-}
-
-//==========================================================================================//
-//  SplittingFunction: Local part
-//------------------------------------------------------------------------------------------//
-
-double SplittingFunction::Local(int nf) const {
-    return GetMultFact() * (this->*loc_)(nf);
-}
-
-//==========================================================================================//
-//  SplittingFunction: overload of operator * double
-//-------------------------------------------------------------constructor-----------------------------//
-
-SplittingFunction SplittingFunction::operator*(const double &rhs) const {
-    SplittingFunction res(order_, entry1_, entry2_);
-    res.SetMultFact(GetMultFact() * rhs);
-    return res;
-}
-
-//==========================================================================================//
-//  SplittingFunction: overload of operator double *
-//------------------------------------------------------------------------------------------//
-
-SplittingFunction operator*(const double &lhs, const SplittingFunction &rhs) {
-    SplittingFunction res(rhs.order_, res.entry1_, res.entry2_);
-    res.SetMultFact(rhs.GetMultFact() * lhs);
-    return res;
-}
-
-//==========================================================================================//
-//  SplittingFunction: overload of operator / double
-//------------------------------------------------------------------------------------------//
-
-SplittingFunction SplittingFunction::operator/(const double &rhs) const {
-    SplittingFunction res(order_, entry1_, entry2_);
-    res.SetMultFact(GetMultFact() / rhs);
-    return res;
-}
-
-//==========================================================================================//
 //  SplittingFunction: function that sets all pointers to the right function
 //------------------------------------------------------------------------------------------//
 
@@ -206,6 +144,68 @@ void SplittingFunction::SetFunctions() {
 }
 
 //==========================================================================================//
+//  SplittingFunction: Regular part
+//------------------------------------------------------------------------------------------//
+
+double SplittingFunction::Regular(double x, int nf) const {
+    return GetMultFact() * (this->*reg_)(x, nf);
+}
+
+//==========================================================================================//
+//  SplittingFunction: Singular part
+//------------------------------------------------------------------------------------------//
+
+double SplittingFunction::Singular(double x, int nf) const {
+    return GetMultFact() * (this->*sing_)(x, nf);
+}
+
+//==========================================================================================//
+//  SplittingFunction: Integral from 0 to x of the singular part
+//------------------------------------------------------------------------------------------//
+
+double SplittingFunction::SingularIntegrated(double x, int nf) const {
+    return GetMultFact() * (this->*sing_int_)(x, nf);
+}
+
+//==========================================================================================//
+//  SplittingFunction: Local part
+//------------------------------------------------------------------------------------------//
+
+double SplittingFunction::Local(int nf) const {
+    return GetMultFact() * (this->*loc_)(nf);
+}
+
+//==========================================================================================//
+//  SplittingFunction: overload of operator * double
+//-------------------------------------------------------------constructor-----------------------------//
+
+SplittingFunction SplittingFunction::operator*(const double &rhs) const {
+    SplittingFunction res(order_, entry1_, entry2_);
+    res.SetMultFact(GetMultFact() * rhs);
+    return res;
+}
+
+//==========================================================================================//
+//  SplittingFunction: overload of operator double *
+//------------------------------------------------------------------------------------------//
+
+SplittingFunction operator*(const double &lhs, const SplittingFunction &rhs) {
+    SplittingFunction res(rhs.order_, res.entry1_, res.entry2_);
+    res.SetMultFact(rhs.GetMultFact() * lhs);
+    return res;
+}
+
+//==========================================================================================//
+//  SplittingFunction: overload of operator / double
+//------------------------------------------------------------------------------------------//
+
+SplittingFunction SplittingFunction::operator/(const double &rhs) const {
+    SplittingFunction res(order_, entry1_, entry2_);
+    res.SetMultFact(GetMultFact() / rhs);
+    return res;
+}
+
+//==========================================================================================//
 //  ConvolutedSplittingFunctions: constructor
 //------------------------------------------------------------------------------------------//
 
@@ -253,7 +253,63 @@ ConvolutedSplittingFunctions::ConvolutedSplittingFunctions(
     }
 }
 
+//==========================================================================================//
+//  ConvolutedSplittingFunctions: destructor
+//------------------------------------------------------------------------------------------//
+
 ConvolutedSplittingFunctions::~ConvolutedSplittingFunctions() { delete Pgg0_; }
+
+//==========================================================================================//
+//  ConvolutedSplittingFunctions: function that sets all pointers to the right
+//  function
+//------------------------------------------------------------------------------------------//
+
+void ConvolutedSplittingFunctions::SetFunctions() {
+
+    if (order1_ == 0 && order2_ == 0) {
+        if (entry1_ == 'g' && entry2_ == 'q' && entry3_ == 'q'
+            && entry4_ == 'g') {
+            reg_ = &ConvolutedSplittingFunctions::Pgq0_x_Pqg0;
+            sing_ = &ConvolutedSplittingFunctions::ZeroFunction_x_nf;
+            sing_int_ = &ConvolutedSplittingFunctions::ZeroFunction_x_nf;
+            loc_ = &ConvolutedSplittingFunctions::ZeroFunction_nf;
+        } else if (entry1_ == 'g' && entry2_ == 'g' && entry3_ == 'g'
+                   && entry4_ == 'q') {
+            reg_ = &ConvolutedSplittingFunctions::Pgg0_x_Pgq0;
+            sing_ = &ConvolutedSplittingFunctions::ZeroFunction_x_nf;
+            sing_int_ = &ConvolutedSplittingFunctions::ZeroFunction_x_nf;
+            loc_ = &ConvolutedSplittingFunctions::ZeroFunction_nf;
+        } else if (entry1_ == 'q' && entry2_ == 'q' && entry3_ == 'g'
+                   && entry4_ == 'q') {
+            reg_ = &ConvolutedSplittingFunctions::Pqq0_x_Pgq0;
+            sing_ = &ConvolutedSplittingFunctions::ZeroFunction_x_nf;
+            sing_int_ = &ConvolutedSplittingFunctions::ZeroFunction_x_nf;
+            loc_ = &ConvolutedSplittingFunctions::ZeroFunction_nf;
+        } else if (entry1_ == 'g' && entry2_ == 'g' && entry3_ == 'g'
+                   && entry4_ == 'g') {
+            reg_ = &ConvolutedSplittingFunctions::Pgg0_x_Pgg0_reg;
+            sing_ = &ConvolutedSplittingFunctions::Pgg0_x_Pgg0_sing;
+            sing_int_ =
+                &ConvolutedSplittingFunctions::Pgg0_x_Pgg0_sing_integrated;
+            loc_ = &ConvolutedSplittingFunctions::Pgg0_x_Pgg0_loc;
+        } else {
+            throw NotImplementedException(
+                "P" + string(1, entry1_) + string(1, entry2_)
+                    + to_string(order1_) + " x " + "P" + string(1, entry3_)
+                    + string(1, entry4_) + to_string(order2_)
+                    + " is not implemented",
+                __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+    } else {
+        throw NotImplementedException(
+            "P" + string(1, entry1_) + string(1, entry2_) + to_string(order1_)
+                + " x " + "P" + string(1, entry3_) + string(1, entry4_)
+                + to_string(order2_) + " is not implemented",
+            __PRETTY_FUNCTION__, __LINE__
+        );
+    }
+}
 
 //==========================================================================================//
 //  ConvolutedSplittingFunctions: regular part
@@ -326,58 +382,6 @@ ConvolutedSplittingFunctions
     );
     res.SetMultFact(GetMultFact() / rhs);
     return res;
-}
-
-//==========================================================================================//
-//  ConvolutedSplittingFunctions: function that sets all pointers to the right
-//  function
-//------------------------------------------------------------------------------------------//
-
-void ConvolutedSplittingFunctions::SetFunctions() {
-
-    if (order1_ == 0 && order2_ == 0) {
-        if (entry1_ == 'g' && entry2_ == 'q' && entry3_ == 'q'
-            && entry4_ == 'g') {
-            reg_ = &ConvolutedSplittingFunctions::Pgq0_x_Pqg0;
-            sing_ = &ConvolutedSplittingFunctions::ZeroFunction_x_nf;
-            sing_int_ = &ConvolutedSplittingFunctions::ZeroFunction_x_nf;
-            loc_ = &ConvolutedSplittingFunctions::ZeroFunction_nf;
-        } else if (entry1_ == 'g' && entry2_ == 'g' && entry3_ == 'g'
-                   && entry4_ == 'q') {
-            reg_ = &ConvolutedSplittingFunctions::Pgg0_x_Pgq0;
-            sing_ = &ConvolutedSplittingFunctions::ZeroFunction_x_nf;
-            sing_int_ = &ConvolutedSplittingFunctions::ZeroFunction_x_nf;
-            loc_ = &ConvolutedSplittingFunctions::ZeroFunction_nf;
-        } else if (entry1_ == 'q' && entry2_ == 'q' && entry3_ == 'g'
-                   && entry4_ == 'q') {
-            reg_ = &ConvolutedSplittingFunctions::Pqq0_x_Pgq0;
-            sing_ = &ConvolutedSplittingFunctions::ZeroFunction_x_nf;
-            sing_int_ = &ConvolutedSplittingFunctions::ZeroFunction_x_nf;
-            loc_ = &ConvolutedSplittingFunctions::ZeroFunction_nf;
-        } else if (entry1_ == 'g' && entry2_ == 'g' && entry3_ == 'g'
-                   && entry4_ == 'g') {
-            reg_ = &ConvolutedSplittingFunctions::Pgg0_x_Pgg0_reg;
-            sing_ = &ConvolutedSplittingFunctions::Pgg0_x_Pgg0_sing;
-            sing_int_ =
-                &ConvolutedSplittingFunctions::Pgg0_x_Pgg0_sing_integrated;
-            loc_ = &ConvolutedSplittingFunctions::Pgg0_x_Pgg0_loc;
-        } else {
-            throw NotImplementedException(
-                "P" + string(1, entry1_) + string(1, entry2_)
-                    + to_string(order1_) + " x " + "P" + string(1, entry3_)
-                    + string(1, entry4_) + to_string(order2_)
-                    + " is not implemented",
-                __PRETTY_FUNCTION__, __LINE__
-            );
-        }
-    } else {
-        throw NotImplementedException(
-            "P" + string(1, entry1_) + string(1, entry2_) + to_string(order1_)
-                + " x " + "P" + string(1, entry3_) + string(1, entry4_)
-                + to_string(order2_) + " is not implemented",
-            __PRETTY_FUNCTION__, __LINE__
-        );
-    }
 }
 
 //==========================================================================================//

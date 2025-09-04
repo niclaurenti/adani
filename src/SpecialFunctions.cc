@@ -20,13 +20,13 @@ double beta1(int nf) {
 //  Theta function.
 //------------------------------------------------------------------------------------------//
 
-double theta(double x) {
+// double theta(double x) {
 
-    if (x > 0)
-        return 1.;
-    else
-        return 0.;
-}
+//     if (x > 0)
+//         return 1.;
+//     else
+//         return 0.;
+// }
 
 //==========================================================================================//
 //  Dilogarithm. From Marco Bonvini.
@@ -42,7 +42,7 @@ double Li2(double x) {
         return zeta2;
 
     if (x <= x_0) {
-        double temp = log(fabs(1.0 - x));
+        double temp = log(std::abs(1.0 - x));
         return -Li2(-x / (1.0 - x)) - temp * temp / 2;
     }
 
@@ -64,7 +64,7 @@ double Li2(double x) {
         return -Li2(-x) + Li2(x * x) / 2.0;
 
     else {
-        return zeta2 - Li2(1.0 - x) - log(fabs(x)) * log(fabs(1.0 - x));
+        return zeta2 - Li2(1.0 - x) - log(std::abs(x)) * log(std::abs(1.0 - x));
     };
 }
 

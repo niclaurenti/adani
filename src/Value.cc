@@ -1,6 +1,8 @@
 #include "adani/Value.h"
 #include "adani/Exceptions.h"
 
+#include <cmath>
+
 //==========================================================================================//
 //  Value: constructor
 //------------------------------------------------------------------------------------------//
@@ -73,6 +75,50 @@ Value::Value(const Value &value) {
 }
 
 //==========================================================================================//
+//  Value: get the delta of higher band
+//------------------------------------------------------------------------------------------//
+
+double Value::GetHigherDelta() const {
+    return higher_ - central_;
+}
+
+//==========================================================================================//
+//  Value: get the delta of lower band
+//------------------------------------------------------------------------------------------//
+
+double Value::GetLowerDelta() const {
+    return central_ - lower_;
+}
+
+//==========================================================================================//
+//  Value: get max between higher and lower delta
+//------------------------------------------------------------------------------------------//
+
+double Value::GetMaxDelta() const {
+    double high = GetHigherDelta();
+    double low = GetLowerDelta();
+    return high > low ? high : low;
+}
+
+//==========================================================================================//
+//  Value: get min between higher and lower delta
+//------------------------------------------------------------------------------------------//
+
+double Value::GetMinDelta() const {
+    double high = GetHigherDelta();
+    double low = GetLowerDelta();
+    return high < low ? high : low;
+}
+
+//==========================================================================================//
+//  Value: get average between higher and lower delta
+//------------------------------------------------------------------------------------------//
+
+double Value::GetAvgDelta() const {
+    return 0.5 * (GetHigherDelta() + GetLowerDelta());
+}
+
+//==========================================================================================//
 //  Value: export to vector<double>
 //------------------------------------------------------------------------------------------//
 
@@ -90,10 +136,70 @@ Value Value::operator+(const Value &rhs) const {
 
 //==========================================================================================//
 //  Value: overload of operator - Value
+//  the error on the result is the larger between the errors of rhs and lhs
 //------------------------------------------------------------------------------------------//
 
-// Value Value::operator-(const Value& rhs) const {
+Value Value::operator-(const Value &rhs) const {
+    double higher = higher_ - rhs.higher_;
+    double lower = lower_ - rhs.lower_;
+    if (higher > lower) {
+        return Value(
+            central_ - rhs.central_,
+            higher,
+            lower
+        );
+    } else {
+        return Value(
+            central_ - rhs.central_,
+            lower,
+            higher
+        );
+    }
+}
 
+//==========================================================================================//
+//  Value: overload of operator * Value
+//  since when some elements of the Value class are negative, it gives probles
+//  in the ordering of central, higher and lower, we compute the error as sum of
+//  the errors
+//------------------------------------------------------------------------------------------//
+
+Value Value::operator*(const Value &rhs) const {
+    double central = central_ * rhs.central_;
+
+    double delta_low_lhs = GetLowerDelta();
+    double delta_up_lhs = GetHigherDelta();
+
+    double delta_low_rhs = rhs.GetLowerDelta();
+    double delta_up_rhs = rhs.GetHigherDelta();
+
+    double delta_low = delta_low_lhs + delta_low_rhs;
+    double delta_up = delta_up_lhs + delta_up_rhs;
+
+    return Value(central, central + delta_up, central - delta_low);
+}
+
+//==========================================================================================//
+//  Value: overload of operator / Value
+//  since when some elements of the Value class are negative, it gives probles
+//  in the ordering of central, higher and lower, we compute the error as the
+//  larger error between lhs and rhs
+//------------------------------------------------------------------------------------------//
+
+// Value Value::operator/(const Value &rhs) const {
+//     double central = central_ / rhs.central_;
+
+//     double delta_low_lhs = GetLowerDelta();
+//     double delta_up_lhs = GetHigherDelta();
+
+//     double delta_low_rhs = rhs.GetLowerDelta();
+//     double delta_up_rhs = rhs.GetHigherDelta();
+
+//     double delta_low =
+//         delta_low_lhs > delta_low_rhs ? delta_low_lhs : delta_low_rhs;
+//     double delta_up = delta_up_lhs > delta_up_rhs ? delta_up_lhs : delta_up_rhs;
+
+//     return Value(central, central + delta_up, central - delta_low);
 // }
 
 //==========================================================================================//

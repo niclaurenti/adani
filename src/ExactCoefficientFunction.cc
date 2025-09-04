@@ -173,61 +173,6 @@ ExactCoefficientFunction::~ExactCoefficientFunction() {
 }
 
 //==========================================================================================//
-//  ExactCoefficientFunction: central value of the exact coefficient function
-//------------------------------------------------------------------------------------------//
-
-double ExactCoefficientFunction::fx(
-    double x, double m2Q2, double m2mu2, int nf
-) const {
-    return MuIndependentTerms(x, m2Q2, nf)
-           + MuDependentTerms(x, m2Q2, m2mu2, nf);
-}
-
-//==========================================================================================//
-//  ExactCoefficientFunction: mu-independent terms
-//------------------------------------------------------------------------------------------//
-
-double ExactCoefficientFunction::MuIndependentTerms(
-    double x, double m2Q2, int nf
-) const {
-    double res;
-    try {
-        res = (this->*mu_indep_)(x, m2Q2, nf);
-    } catch (NotValidException &e) {
-        e.runtime_error();
-    } catch (NotKnownException &e) {
-        e.runtime_error();
-    }
-    return res;
-}
-
-//==========================================================================================//
-//  ExactCoefficientFunction: mu dependent terms
-//------------------------------------------------------------------------------------------//
-
-double ExactCoefficientFunction::MuDependentTerms(
-    double x, double m2Q2, double m2mu2, int nf
-) const {
-
-    double x_max = 1. / (1 + 4 * m2Q2);
-    if (x <= 0 || x > x_max)
-        return 0.;
-
-    return (this->*mu_dep_)(x, m2Q2, m2mu2, nf);
-}
-
-//==========================================================================================//
-//  ExactCoefficientFunction: implemented only because it is pure virtual in
-//  base class. Returning three identical values
-//------------------------------------------------------------------------------------------//
-
-Value ExactCoefficientFunction::fxBand(
-    double x, double m2Q2, double m2mu2, int nf
-) const {
-    return Value(fx(x, m2Q2, m2mu2, nf));
-}
-
-//==========================================================================================//
 //  ExactCoefficientFunction: function that sets the pointer for mu_indep_ and
 //  mu_dep_
 //------------------------------------------------------------------------------------------//
@@ -329,6 +274,61 @@ void ExactCoefficientFunction::SetDoubleIntegralMethod(
     } catch (const NotPresentException &e) {
         e.warning();
     }
+}
+
+//==========================================================================================//
+//  ExactCoefficientFunction: central value of the exact coefficient function
+//------------------------------------------------------------------------------------------//
+
+double ExactCoefficientFunction::fx(
+    double x, double m2Q2, double m2mu2, int nf
+) const {
+    return MuIndependentTerms(x, m2Q2, nf)
+           + MuDependentTerms(x, m2Q2, m2mu2, nf);
+}
+
+//==========================================================================================//
+//  ExactCoefficientFunction: mu-independent terms
+//------------------------------------------------------------------------------------------//
+
+double ExactCoefficientFunction::MuIndependentTerms(
+    double x, double m2Q2, int nf
+) const {
+    double res;
+    try {
+        res = (this->*mu_indep_)(x, m2Q2, nf);
+    } catch (NotValidException &e) {
+        e.runtime_error();
+    } catch (NotKnownException &e) {
+        e.runtime_error();
+    }
+    return res;
+}
+
+//==========================================================================================//
+//  ExactCoefficientFunction: mu dependent terms
+//------------------------------------------------------------------------------------------//
+
+double ExactCoefficientFunction::MuDependentTerms(
+    double x, double m2Q2, double m2mu2, int nf
+) const {
+
+    double x_max = 1. / (1 + 4 * m2Q2);
+    if (x <= 0 || x > x_max)
+        return 0.;
+
+    return (this->*mu_dep_)(x, m2Q2, m2mu2, nf);
+}
+
+//==========================================================================================//
+//  ExactCoefficientFunction: implemented only because it is pure virtual in
+//  base class. Returning three identical values
+//------------------------------------------------------------------------------------------//
+
+Value ExactCoefficientFunction::fxBand(
+    double x, double m2Q2, double m2mu2, int nf
+) const {
+    return Value(fx(x, m2Q2, m2mu2, nf));
 }
 
 //==========================================================================================//

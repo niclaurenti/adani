@@ -42,14 +42,6 @@ class AbstractConvolution {
         );
         virtual ~AbstractConvolution() = 0;
 
-        // result of the convolution
-        double Convolute(double x, double m2Q2, int nf) const;
-
-        // integrals of the reular, singular and local parts of the splittings
-        virtual double RegularPart(double x, double m2Q2, int nf) const = 0;
-        virtual double SingularPart(double x, double m2Q2, int nf) const = 0;
-        virtual double LocalPart(double x, double m2Q2, int nf) const = 0;
-
         // get methods
         double GetAbserr() const { return abserr_; };
         double GetRelerr() const { return relerr_; };
@@ -62,6 +54,14 @@ class AbstractConvolution {
         void SetAbserr(const double &abserr);
         void SetRelerr(const double &relerr);
         void AllocWorkspace(const int &dim);
+
+        // result of the convolution
+        double Convolute(double x, double m2Q2, int nf) const;
+
+        // integrals of the reular, singular and local parts of the splittings
+        virtual double RegularPart(double x, double m2Q2, int nf) const = 0;
+        virtual double SingularPart(double x, double m2Q2, int nf) const = 0;
+        virtual double LocalPart(double x, double m2Q2, int nf) const = 0;
 
     private:
         double abserr_;
@@ -93,7 +93,7 @@ class Convolution : public AbstractConvolution {
         double LocalPart(double x, double m2Q2, int nf) const override;
 
     private:
-        static int NumberOfInstances_;
+        static int number_of_instances;
         static gsl_error_handler_t *old_handler_;
 
         // support function for the integral. It is static in order to be passed
@@ -150,16 +150,16 @@ class DoubleConvolution : public AbstractConvolution {
         );
         ~DoubleConvolution() override;
 
-        double RegularPart(double x, double m2Q2, int nf) const override;
-        double SingularPart(double x, double m2Q2, int nf) const override;
-        double LocalPart(double x, double m2Q2, int nf) const override;
-
         // get methods
         bool GetMCintegral() const { return MCintegral_; };
         int GetMCcalls() const { return MCcalls_; };
 
         // set methods
         void SetMCcalls(const int &MCcalls);
+
+        double RegularPart(double x, double m2Q2, int nf) const override;
+        double SingularPart(double x, double m2Q2, int nf) const override;
+        double LocalPart(double x, double m2Q2, int nf) const override;
 
     private:
         const bool MCintegral_;

@@ -10,14 +10,19 @@ AsymptoticCoefficientFunction::AsymptoticCoefficientFunction(
     const int &order, const char &kind, const char &channel, const bool &NLL,
     const string &highscale_version
 )
-    : AbstractHighEnergyCoefficientFunction(order, kind, channel, NLL) {
+    : CoefficientFunction(order, kind, channel), legacy_pt_(false) {
 
-    highscale_ = new HighScaleCoefficientFunction(
-        GetOrder(), GetKind(), GetChannel(), highscale_version
-    );
-    powerterms_ = new PowerTermsCoefficientFunction(
-        GetOrder(), GetKind(), GetChannel(), GetNLL()
-    );
+    try {
+        highscale_ = new HighScaleCoefficientFunction(
+            GetOrder(), GetKind(), GetChannel(), highscale_version
+        );
+        highenergy_ = new HighEnergyCoefficientFunction(GetOrder(), GetKind(), GetChannel(), NLL);
+        highenergyhighscale_ = new HighEnergyHighScaleCoefficientFunction(GetOrder(), GetKind(), GetChannel(), NLL);
+
+        SetFunctions();
+    } catch (const UnexpectedException &e) {
+        e.runtime_error();
+    }
 }
 
 //==========================================================================================//
@@ -26,19 +31,77 @@ AsymptoticCoefficientFunction::AsymptoticCoefficientFunction(
 
 AsymptoticCoefficientFunction::~AsymptoticCoefficientFunction() {
     delete highscale_;
-    delete powerterms_;
+    delete highenergy_;
+    delete highenergyhighscale_;
 }
 
 //==========================================================================================//
-//  AsymptoticCoefficientFunction: central value of fx
+//  AsymptoticCoefficientFunction: SetFunctions
 //------------------------------------------------------------------------------------------//
 
-double AsymptoticCoefficientFunction::fx(
-    double x, double m2Q2, double m2mu2, int nf
-) const {
+void AsymptoticCoefficientFunction::SetFunctions() {
+    if (GetOrder() == 1) {
+        fx_ = &AsymptoticCoefficientFunction::PlainAdditiveMatching;
+    } else if (GetOrder() == 2) {
+        if (GetKind() == '2') {
+            fx_ = &AsymptoticCoefficientFunction::C2_2_asymptotic;
+        } else if (GetKind() == 'L') {
+            fx_ = &AsymptoticCoefficientFunction::CL_2_asymptotic;
+        } else {
+            throw UnexpectedException(
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+    } else if (GetOrder() == 3) {
+        if (GetKind() == '2') {
+            fx_ = &AsymptoticCoefficientFunction::C2_3_asymptotic;
+        } else if (GetKind() == 'L') {
+            fx_ = &AsymptoticCoefficientFunction::CL_3_asymptotic;
+        } else {
+            throw UnexpectedException(
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+    } else {
+        throw UnexpectedException(
+            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+        );
+    }
+}
 
-    return highscale_->fx(x, m2Q2, m2mu2, nf)
-           + powerterms_->fx(x, m2Q2, m2mu2, nf);
+//==========================================================================================//
+//  AsymptoticCoefficientFunction: restore legacy behavior for power terms
+//------------------------------------------------------------------------------------------//
+
+void AsymptoticCoefficientFunction::SetLegacyPowerTerms(const bool &legacy_pt) {
+    try {
+        if (legacy_pt == legacy_pt_) {
+            throw NotValidException(
+                "Setting legacy power terms identical to its previous value!",
+                __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+        legacy_pt_ = legacy_pt;
+        if (GetOrder() == '1') {
+            throw NotPresentException(
+                "For order='1' legacy power terms are identical to the "
+                "current ones!",
+                __PRETTY_FUNCTION__, __LINE__
+            );
+        } else {
+            if (legacy_pt) {
+                fx_ = &AsymptoticCoefficientFunction::PlainAdditiveMatching;
+            } else {
+                SetFunctions();
+            }
+        }
+    } catch (const NotPresentException &e) {
+        e.warning();
+    } catch (const NotValidException &e) {
+        e.warning();
+    } catch (UnexpectedException &e) {
+        e.runtime_error();
+    }
 }
 
 //==========================================================================================//
@@ -48,30 +111,157 @@ double AsymptoticCoefficientFunction::fx(
 Value AsymptoticCoefficientFunction::fxBand(
     double x, double m2Q2, double m2mu2, int nf
 ) const {
-
-    return highscale_->fxBand(x, m2Q2, m2mu2, nf)
-           + powerterms_->fxBand(x, m2Q2, m2mu2, nf);
+    return (this->*fx_)(x, m2Q2, m2mu2, nf);
 }
 
 //==========================================================================================//
-//  AsymptoticCoefficientFunction: all possible variation (3x3=9) of the
-//  combination between high scale and power terms
+//  AsymptoticCoefficientFunction: band of fx with additive matching
 //------------------------------------------------------------------------------------------//
 
-vector<double> AsymptoticCoefficientFunction::AllVariations(
+Value AsymptoticCoefficientFunction::PlainAdditiveMatching(
     double x, double m2Q2, double m2mu2, int nf
 ) const {
 
-    vector<double> hs_vec = (highscale_->fxBand(x, m2Q2, m2mu2, nf)).ToVect();
-    vector<double> pt_vec = (powerterms_->fxBand(x, m2Q2, m2mu2, nf)).ToVect();
+    return highscale_->fxBand(x, m2Q2, m2mu2, nf)
+           + (highenergy_->fxBand(x, m2Q2, m2mu2, nf)
+              - highenergyhighscale_->fxBand(x, m2Q2, m2mu2, nf));
+}
 
-    vector<double> res;
+//==========================================================================================//
+//  AsymptoticCoefficientFunction: band of fx with pure LL multiplicative matching
+//------------------------------------------------------------------------------------------//
 
-    for (double hs : hs_vec) {
-        for (double pt : pt_vec) {
-            res.push_back(hs + pt);
-        }
-    }
+Value AsymptoticCoefficientFunction::PlainMultiplicativeMatching(
+    double x, double m2Q2, double m2mu2, int nf
+) const {
 
-    return res;
+    return highscale_->fxBand(x, m2Q2, m2mu2, nf)
+           * highenergy_->LL(m2Q2, m2mu2) / highenergyhighscale_->LL(m2Q2, m2mu2);
+}
+
+//==========================================================================================//
+//  AsymptoticCoefficientFunction: band of fx with multiplicative matching at NLL (version 1)
+//------------------------------------------------------------------------------------------//
+
+Value AsymptoticCoefficientFunction::ModifiedMultiplicativeMatching1(
+    double x, double m2Q2, double m2mu2, int nf
+) const {
+
+    return (highscale_->fxBand(x, m2Q2, m2mu2, nf)
+           + (highenergy_->NLL(m2Q2, m2mu2, nf) - highenergyhighscale_->NLL(m2Q2, m2mu2, nf)) / x)
+           * highenergy_->LL(m2Q2, m2mu2) / highenergyhighscale_->LL(m2Q2, m2mu2);
+}
+
+//==========================================================================================//
+//  AsymptoticCoefficientFunction: band of fx with multiplicative matching at NLL (version 2)
+//------------------------------------------------------------------------------------------//
+
+Value AsymptoticCoefficientFunction::ModifiedMultiplicativeMatching2(
+    double x, double m2Q2, double m2mu2, int nf
+) const {
+
+    return highscale_->fxBand(x, m2Q2, m2mu2, nf)
+           * highenergy_->LL(m2Q2, m2mu2) / highenergyhighscale_->LL(m2Q2, m2mu2)
+           + (highenergy_->NLL(m2Q2, m2mu2, nf) - highenergyhighscale_->NLL(m2Q2, m2mu2, nf)) / x;
+}
+
+//==========================================================================================//
+//  AsymptoticCoefficientFunction: asymptotic coefficient function for C2 at O(as^2)
+//------------------------------------------------------------------------------------------//
+
+Value AsymptoticCoefficientFunction::C2_2_asymptotic(
+    double x, double m2Q2, double m2mu2, int nf
+) const {
+
+    Value central = PlainAdditiveMatching(x, m2Q2, m2mu2, nf);
+    Value variation = PlainMultiplicativeMatching(x, m2Q2, m2mu2, nf);
+
+    return Delta2(central, variation, m2Q2, m2mu2);
+}
+
+//==========================================================================================//
+//  AsymptoticCoefficientFunction: asymptotic coefficient function for CL at O(as^2)
+//------------------------------------------------------------------------------------------//
+
+Value AsymptoticCoefficientFunction::CL_2_asymptotic(
+    double x, double m2Q2, double m2mu2, int nf
+) const {
+
+    Value central = PlainMultiplicativeMatching(x, m2Q2, m2mu2, nf);
+    Value variation = PlainAdditiveMatching(x, m2Q2, m2mu2, nf);
+
+    return Delta2(central, variation, m2Q2, m2mu2);
+}
+
+//==========================================================================================//
+//  AsymptoticCoefficientFunction: asymptotic coefficient function for C2 at O(as^3)
+//------------------------------------------------------------------------------------------//
+
+Value AsymptoticCoefficientFunction::C2_3_asymptotic(
+    double x, double m2Q2, double m2mu2, int nf
+) const {
+
+    Value central = PlainAdditiveMatching(x, m2Q2, m2mu2, nf);
+    Value variation1 = ModifiedMultiplicativeMatching1(x, m2Q2, m2mu2, nf);
+    Value variation2 = ModifiedMultiplicativeMatching2(x, m2Q2, m2mu2, nf);
+
+    return Delta3(central, variation1, variation2, m2Q2, m2mu2);
+}
+
+//==========================================================================================//
+//  AsymptoticCoefficientFunction: asymptotic coefficient function for CL at O(as^3)
+//------------------------------------------------------------------------------------------//
+
+Value AsymptoticCoefficientFunction::CL_3_asymptotic(
+    double x, double m2Q2, double m2mu2, int nf
+) const {
+
+    Value central = ModifiedMultiplicativeMatching1(x, m2Q2, m2mu2, nf);
+    Value variation1 = PlainAdditiveMatching(x, m2Q2, m2mu2, nf);
+    Value variation2 = ModifiedMultiplicativeMatching2(x, m2Q2, m2mu2, nf);
+
+    return Delta3(central, variation1, variation2, m2Q2, m2mu2);
+}
+
+//==========================================================================================//
+//  AsymptoticCoefficientFunction: compute error of asymptotic cefficient function starting
+//  from the central value and the two variations
+//------------------------------------------------------------------------------------------//
+
+Value AsymptoticCoefficientFunction::Delta2(Value central, Value variation, double m2Q2, double m2mu2) const {
+    double central_c = central.GetHigher();
+    double var_c = variation.GetHigher();
+
+    // double central_delta = central.GetAvgDelta();
+    // double var_delta = variation.GetAvgDelta();
+    double damp = 1. / (1. + 2 * std::abs(log(highenergy_->LL(m2Q2, m2mu2) / highenergyhighscale_->LL(m2Q2, m2mu2))));
+    double delta = damp * std::abs(central_c - var_c);
+    // double delta = damp * sqrt(tmp * tmp + central_delta * central_delta + var_delta * var_delta);
+
+    return Value(central_c, central_c + delta, central_c - delta);
+}
+
+//==========================================================================================//
+//  AsymptoticCoefficientFunction: compute error of asymptotic cefficient function starting
+//  from the central value and the two variations
+//------------------------------------------------------------------------------------------//
+
+Value AsymptoticCoefficientFunction::Delta3(Value central, Value variation1, Value variation2, double m2Q2, double m2mu2) const {
+    double central_c = central.GetHigher();
+    double var1_c = variation1.GetHigher();
+    double var2_c = variation2.GetHigher();
+
+    // double central_delta = central.GetAvgDelta();
+    // double var1_delta = variation1.GetAvgDelta();
+    // double var2_delta = variation2.GetAvgDelta();
+
+    double damp = 1. / (1. + 2 * std::abs(log(highenergy_->LL(m2Q2, m2mu2) / highenergyhighscale_->LL(m2Q2, m2mu2))));
+
+    double tmp1 = central_c - var1_c;
+    double tmp2 = central_c - var2_c;
+
+    double delta = damp * sqrt(tmp1 * tmp1 + tmp2 * tmp2);
+    // double delta = damp * sqrt(tmp1 * tmp1 + tmp2 * tmp2 + central_delta * central_delta + var1_delta * var1_delta + var2_delta * var2_delta);
+
+    return Value(central_c, central_c + delta, central_c - delta);
 }

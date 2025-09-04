@@ -51,6 +51,11 @@ class CoefficientFunction {
 
         virtual ~CoefficientFunction() = 0;
 
+        // get methods
+        int GetOrder() const { return order_; };
+        char GetKind() const { return kind_; };
+        char GetChannel() const { return channel_; };
+
         virtual double MuIndependentTerms(double x, double m2Q2, int nf) const;
         virtual double fx(double x, double m2Q2, double m2mu2, int nf) const;
         virtual double
@@ -59,15 +64,6 @@ class CoefficientFunction {
             fxBand(double x, double m2Q2, double m2mu2, int nf) const = 0;
         virtual Value
             MuIndependentTermsBand(double x, double m2Q2, int nf) const;
-        virtual Value MuDependentTermsBand(
-            double x, double m2Q2, double m2mu2, int nf
-        ) const;
-        // TODO: is MuDependentTermsBand really needed?
-
-        // get methods
-        int GetOrder() const { return order_; };
-        char GetKind() const { return kind_; };
-        char GetChannel() const { return channel_; };
 
     private:
         const int order_;    // order = 1, 2, or 3
