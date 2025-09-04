@@ -65,6 +65,8 @@ class CoefficientFunction {
         virtual Value
             MuIndependentTermsBand(double x, double m2Q2, int nf) const;
 
+        static double xMax(double m2Q2) {return 1. / (1. + 4 * m2Q2);};
+
     private:
         const int order_;    // order = 1, 2, or 3
         const char kind_;    // kind_ = '2' for F2 and 'L' for FL

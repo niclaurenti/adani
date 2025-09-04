@@ -76,6 +76,7 @@ if(PYTHON_ONLY)
         src/AQg3red.f
         src/AsymptoticCoefficientFunction.cc
         src/CoefficientFunction.cc
+        src/CommonTypes.cc
         src/Convolution.cc
         src/ExactCoefficientFunction.cc
         src/Exceptions.cc
@@ -103,6 +104,7 @@ else(PYTHON_ONLY)
         src/AQg3red.f
         src/AsymptoticCoefficientFunction.cc
         src/CoefficientFunction.cc
+        src/CommonTypes.cc
         src/Convolution.cc
         src/ExactCoefficientFunction.cc
         src/Exceptions.cc

@@ -4,6 +4,7 @@
 #include "adani/ThresholdCoefficientFunction.h"
 
 #include <cmath>
+#include <future>
 
 //==========================================================================================//
 //  ExactCoefficientFunction: constructor
@@ -32,109 +33,148 @@ ExactCoefficientFunction::ExactCoefficientFunction(
 
     delta_ = nullptr;
 
-    if (GetOrder() == 2) {
-        asy_ = new AsymptoticCoefficientFunction(order, kind, channel);
-        thr_ = new ThresholdCoefficientFunction(order, kind, channel);
-    } else {
-        asy_ = nullptr;
-        thr_ = nullptr;
-    }
+    asy_ = nullptr;
+    thr_ = nullptr;
 
-    if (GetOrder() > 1) {
-        // needed in both channels
-        gluon_as1_ = new ExactCoefficientFunction(1, GetKind(), 'g');
-        delta_ = new Delta();
+    try {
 
-        if (GetChannel() == 'q')
-            Pgq0_ = new SplittingFunction(0, 'g', 'q');
-        if (GetChannel() == 'g')
-            Pgg0_ = new SplittingFunction(0, 'g', 'g');
-    }
-    if (GetOrder() > 2) {
-        // needed in both channels
-        gluon_as2_ = new ExactCoefficientFunction(2, GetKind(), 'g');
-        quark_as2_ = new ExactCoefficientFunction(2, GetKind(), 'q');
+        if (GetOrder() > 1) {
+            // needed in both channels
+            gluon_as1_ = new ExactCoefficientFunction(1, GetKind(), 'g');
+            delta_ = new Delta();
 
-        if (GetChannel() == 'q') {
-            Pgq1_ = new SplittingFunction(1, 'g', 'q');
-            Pqq0_ = new SplittingFunction(0, 'q', 'q');
-            Pgg0Pgq0_ =
-                new ConvolutedSplittingFunctions(0, 'g', 'g', 0, 'g', 'q');
-            Pqq0Pgq0_ =
-                new ConvolutedSplittingFunctions(0, 'q', 'q', 0, 'g', 'q');
+            switch (GetChannel()) {
+                case 'q':
+                    Pgq0_ = new SplittingFunction(0, 'g', 'q');
+                    break;
+                case 'g':
+                    Pgg0_ = new SplittingFunction(0, 'g', 'g');
+                    break;
+                default:
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
+            }
         }
-        if (GetChannel() == 'g') {
-            Pgg1_ = new SplittingFunction(1, 'g', 'g');
-            Pqg0_ = new SplittingFunction(0, 'q', 'g');
-            Pgq0Pqg0_ =
-                new ConvolutedSplittingFunctions(0, 'g', 'q', 0, 'q', 'g');
-            Pgg0Pgg0_ =
-                new ConvolutedSplittingFunctions(0, 'g', 'g', 0, 'g', 'g');
+        if (GetOrder() > 2) {
+            // needed in both channels
+            gluon_as2_ = new ExactCoefficientFunction(2, GetKind(), 'g');
+            quark_as2_ = new ExactCoefficientFunction(2, GetKind(), 'q');
+
+            switch (GetChannel()) {
+                case 'q':
+                    Pgq1_ = new SplittingFunction(1, 'g', 'q');
+                    Pqq0_ = new SplittingFunction(0, 'q', 'q');
+                    Pgg0Pgq0_ =
+                        new ConvolutedSplittingFunctions(0, 'g', 'g', 0, 'g', 'q');
+                    Pqq0Pgq0_ =
+                        new ConvolutedSplittingFunctions(0, 'q', 'q', 0, 'g', 'q');
+                    break;
+                case 'g':
+                    Pgg1_ = new SplittingFunction(1, 'g', 'g');
+                    Pqg0_ = new SplittingFunction(0, 'q', 'g');
+                    Pgq0Pqg0_ =
+                        new ConvolutedSplittingFunctions(0, 'g', 'q', 0, 'q', 'g');
+                    Pgg0Pgg0_ =
+                        new ConvolutedSplittingFunctions(0, 'g', 'g', 0, 'g', 'g');
+                    break;
+                default:
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
+            }
         }
+
+        switch (GetOrder()) {
+            case 1:
+                break;
+            case 2:
+                asy_ = new AsymptoticCoefficientFunction(order, kind, channel);
+                thr_ = new ThresholdCoefficientFunction(order, kind, channel);
+                switch (GetChannel()) {
+                    case 'q':
+                        convolutions_lmu1_.push_back(
+                            new Convolution(gluon_as1_, Pgq0_, abserr, relerr, dim)
+                        );
+                        break;
+                    case 'g':
+                        convolutions_lmu1_.push_back(
+                            new Convolution(gluon_as1_, Pgg0_, abserr, relerr, dim)
+                        );
+                        convolutions_lmu1_.push_back(new Convolution(gluon_as1_, delta_));
+                        break;
+                    default:
+                        throw UnexpectedException(
+                            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                        );
+                }
+                break;
+            case 3:
+                switch (GetChannel()) {
+                    case 'q':
+                        convolutions_lmu1_.push_back(
+                            new Convolution(gluon_as1_, Pgq1_, abserr, relerr, dim)
+                        );
+                        convolutions_lmu1_.push_back(
+                            new Convolution(gluon_as2_, Pgq0_, abserr, relerr, dim)
+                        );
+                        convolutions_lmu1_.push_back(
+                            new Convolution(quark_as2_, Pqq0_, abserr, relerr, dim)
+                        );
+                        convolutions_lmu1_.push_back(new Convolution(quark_as2_, delta_));
+
+                        convolutions_lmu2_.push_back(
+                            new Convolution(gluon_as1_, Pgg0Pgq0_, abserr, relerr, dim)
+                        );
+                        convolutions_lmu2_.push_back(
+                            new Convolution(gluon_as1_, Pqq0Pgq0_, abserr, relerr, dim)
+                        );
+                        convolutions_lmu2_.push_back(
+                            new Convolution(gluon_as1_, Pgq0_, abserr, relerr, dim)
+                        );
+                        break;
+                    case 'g':
+                        convolutions_lmu1_.push_back(
+                            new Convolution(gluon_as1_, Pgg1_, abserr, relerr, dim)
+                        );
+                        convolutions_lmu1_.push_back(new Convolution(gluon_as1_, delta_));
+                        convolutions_lmu1_.push_back(
+                            new Convolution(quark_as2_, Pqg0_, abserr, relerr, dim)
+                        );
+                        convolutions_lmu1_.push_back(
+                            new Convolution(gluon_as2_, Pgg0_, abserr, relerr, dim)
+                        );
+                        convolutions_lmu1_.push_back(new Convolution(gluon_as2_, delta_));
+
+                        // by default option I integrate with analytical double integral
+                        // method
+                        convolutions_lmu2_.push_back(
+                            new Convolution(gluon_as1_, Pgg0Pgg0_, abserr, relerr, dim)
+                        );
+                        convolutions_lmu2_.push_back(
+                            new Convolution(gluon_as1_, Pgq0Pqg0_, abserr, relerr, dim)
+                        );
+                        convolutions_lmu2_.push_back(
+                            new Convolution(gluon_as1_, Pgg0_, abserr, relerr, dim)
+                        );
+                        convolutions_lmu2_.push_back(new Convolution(gluon_as1_, delta_));
+                        break;
+                    default:
+                        throw UnexpectedException(
+                            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                        );
+                }
+                break;
+            default:
+                throw UnexpectedException(
+                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                );
+        }
+
+        SetFunctions();
+    } catch (UnexpectedException &e) {
+        e.runtime_error();
     }
-
-    if (GetOrder() == 2) {
-        if (GetChannel() == 'q') {
-            convolutions_lmu1_.push_back(
-                new Convolution(gluon_as1_, Pgq0_, abserr, relerr, dim)
-            );
-        } else if (GetChannel() == 'g') {
-            convolutions_lmu1_.push_back(
-                new Convolution(gluon_as1_, Pgg0_, abserr, relerr, dim)
-            );
-            convolutions_lmu1_.push_back(new Convolution(gluon_as1_, delta_));
-        }
-    } else if (GetOrder() == 3) {
-        if (GetChannel() == 'q') {
-            convolutions_lmu1_.push_back(
-                new Convolution(gluon_as1_, Pgq1_, abserr, relerr, dim)
-            );
-            convolutions_lmu1_.push_back(
-                new Convolution(gluon_as2_, Pgq0_, abserr, relerr, dim)
-            );
-            convolutions_lmu1_.push_back(
-                new Convolution(quark_as2_, Pqq0_, abserr, relerr, dim)
-            );
-            convolutions_lmu1_.push_back(new Convolution(quark_as2_, delta_));
-
-            convolutions_lmu2_.push_back(
-                new Convolution(gluon_as1_, Pgg0Pgq0_, abserr, relerr, dim)
-            );
-            convolutions_lmu2_.push_back(
-                new Convolution(gluon_as1_, Pqq0Pgq0_, abserr, relerr, dim)
-            );
-            convolutions_lmu2_.push_back(
-                new Convolution(gluon_as1_, Pgq0_, abserr, relerr, dim)
-            );
-        } else {
-            convolutions_lmu1_.push_back(
-                new Convolution(gluon_as1_, Pgg1_, abserr, relerr, dim)
-            );
-            convolutions_lmu1_.push_back(new Convolution(gluon_as1_, delta_));
-            convolutions_lmu1_.push_back(
-                new Convolution(quark_as2_, Pqg0_, abserr, relerr, dim)
-            );
-            convolutions_lmu1_.push_back(
-                new Convolution(gluon_as2_, Pgg0_, abserr, relerr, dim)
-            );
-            convolutions_lmu1_.push_back(new Convolution(gluon_as2_, delta_));
-
-            // by default option I integrate with analytical double integral
-            // method
-            convolutions_lmu2_.push_back(
-                new Convolution(gluon_as1_, Pgg0Pgg0_, abserr, relerr, dim)
-            );
-            convolutions_lmu2_.push_back(
-                new Convolution(gluon_as1_, Pgq0Pqg0_, abserr, relerr, dim)
-            );
-            convolutions_lmu2_.push_back(
-                new Convolution(gluon_as1_, Pgg0_, abserr, relerr, dim)
-            );
-            convolutions_lmu2_.push_back(new Convolution(gluon_as1_, delta_));
-        }
-    }
-
-    SetFunctions();
 }
 
 //==========================================================================================//
@@ -178,36 +218,79 @@ ExactCoefficientFunction::~ExactCoefficientFunction() {
 //------------------------------------------------------------------------------------------//
 
 void ExactCoefficientFunction::SetFunctions() {
-    if (GetOrder() == 1) {
-        if (GetKind() == '2') {
-            mu_indep_ = &ExactCoefficientFunction::C2_g1;
-        } else if (GetKind() == 'L') {
-            mu_indep_ = &ExactCoefficientFunction::CL_g1;
-        }
-        mu_dep_ = &ExactCoefficientFunction::ZeroFunction;
-    } else if (GetOrder() == 2) {
-        if (GetChannel() == 'q') {
-            if (GetKind() == '2') {
-                mu_indep_ = &ExactCoefficientFunction::C2_ps20;
-            } else if (GetKind() == 'L') {
-                mu_indep_ = &ExactCoefficientFunction::CL_ps20;
+    switch (GetOrder()) {
+        case 1:
+            switch (GetKind()) {
+                case '2':
+                    mu_indep_ = &ExactCoefficientFunction::C2_g1;
+                    break;
+                case 'L':
+                    mu_indep_ = &ExactCoefficientFunction::CL_g1;
+                    break;
+                default:
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
             }
-            mu_dep_ = &ExactCoefficientFunction::C_ps2_MuDep;
-        } else if (GetChannel() == 'g') {
-            if (GetKind() == '2') {
-                mu_indep_ = &ExactCoefficientFunction::C2_g20;
-            } else if (GetKind() == 'L') {
-                mu_indep_ = &ExactCoefficientFunction::CL_g20;
+            mu_dep_ = &ExactCoefficientFunction::ZeroFunction;
+            break;
+        case 2:
+            switch (GetChannel()) {
+                case 'q':
+                    switch (GetKind()) {
+                        case '2':
+                            mu_indep_ = &ExactCoefficientFunction::C2_ps20;
+                            break;
+                        case 'L':
+                            mu_indep_ = &ExactCoefficientFunction::CL_ps20;
+                            break;
+                        default:
+                            throw UnexpectedException(
+                                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                            );
+                    }
+                    mu_dep_ = &ExactCoefficientFunction::C_ps2_MuDep;
+                    break;
+                case 'g':
+                    switch (GetKind()) {
+                        case '2':
+                            mu_indep_ = &ExactCoefficientFunction::C2_g20;
+                            break;
+                        case 'L':
+                            mu_indep_ = &ExactCoefficientFunction::CL_g20;
+                            break;
+                        default:
+                            throw UnexpectedException(
+                                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                            );
+                    }
+                    mu_dep_ = &ExactCoefficientFunction::C_g2_MuDep;
+                    break;
+                default:
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
             }
-            mu_dep_ = &ExactCoefficientFunction::C_g2_MuDep;
-        }
-    } else if (GetOrder() == 3) {
-        if (GetChannel() == 'q') {
-            mu_dep_ = &ExactCoefficientFunction::C_ps3_MuDep;
-        } else if (GetChannel() == 'g') {
-            mu_dep_ = &ExactCoefficientFunction::C_g3_MuDep;
-        }
-        mu_indep_ = &ExactCoefficientFunction::WarningFunc;
+            break;
+        case 3:
+            switch (GetChannel()) {
+                case 'q':
+                    mu_dep_ = &ExactCoefficientFunction::C_ps3_MuDep;
+                    break;
+                case 'g':
+                    mu_dep_ = &ExactCoefficientFunction::C_g3_MuDep;
+                    break;
+                default:
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
+            }
+            mu_indep_ = &ExactCoefficientFunction::WarningFunc;
+            break;
+        default:
+            throw UnexpectedException(
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+            );
     }
 }
 
@@ -216,7 +299,7 @@ void ExactCoefficientFunction::SetFunctions() {
 //------------------------------------------------------------------------------------------//
 
 void ExactCoefficientFunction::SetDoubleIntegralMethod(
-    const string &double_int_method, const double &abserr, const double &relerr,
+    const DoubleIntegralMethod &double_int_method, const double &abserr, const double &relerr,
     const int &dim, const int &MCcalls
 ) {
     try {
@@ -236,37 +319,40 @@ void ExactCoefficientFunction::SetDoubleIntegralMethod(
             );
         }
 
-        // check double_int_method
-        if (double_int_method != "analytical"
-            && double_int_method != "double_numerical"
-            && double_int_method != "monte_carlo") {
-            throw NotValidException(
-                "double_int_method must be 'analytical', 'double_numerical' or "
-                "'monte_carlo'! Got '"
-                    + double_int_method + "'",
-                __PRETTY_FUNCTION__, __LINE__
-            );
-        }
+        // // check double_int_method
+        // if (double_int_method != "analytical"
+        //     && double_int_method != "double_numerical"
+        //     && double_int_method != "monte_carlo") {
+        //     throw NotValidException(
+        //         "double_int_method must be 'analytical', 'double_numerical' or "
+        //         "'monte_carlo'! Got '"
+        //             + double_int_method + "'",
+        //         __PRETTY_FUNCTION__, __LINE__
+        //     );
+        // }
 
         // at this point I must be in the g channel at order 3
         delete convolutions_lmu2_[0];
 
-        if (double_int_method == "monte_carlo") {
-            convolutions_lmu2_[0] = new DoubleConvolution(
-                gluon_as1_, Pgg0_, abserr, relerr, dim, true, MCcalls
-            );
-        } else if (double_int_method == "double_numerical") {
-            convolutions_lmu2_[0] = new DoubleConvolution(
-                gluon_as1_, Pgg0_, abserr, relerr, dim, false, MCcalls
-            );
-        } else {
-            if (Pgg0Pgg0_ == nullptr) {
-                // TODO: this if is probably useless
-                Pgg0Pgg0_ =
-                    new ConvolutedSplittingFunctions(0, 'g', 'g', 0, 'g', 'g');
-            }
-            convolutions_lmu2_[0] =
-                new Convolution(gluon_as1_, Pgg0Pgg0_, abserr, relerr, dim);
+        switch (double_int_method) {
+            case DoubleIntegralMethod::MonteCarlo:
+                convolutions_lmu2_[0] = new DoubleConvolution(
+                    gluon_as1_, Pgg0_, abserr, relerr, dim, true, MCcalls
+                );
+                break;
+            case DoubleIntegralMethod::DoubleNumerical:
+                convolutions_lmu2_[0] = new DoubleConvolution(
+                    gluon_as1_, Pgg0_, abserr, relerr, dim, false, MCcalls
+                );
+                break;
+            case DoubleIntegralMethod::Analytical:
+                if (Pgg0Pgg0_ == nullptr) {
+                    // TODO: this if is probably useless
+                    Pgg0Pgg0_ =
+                        new ConvolutedSplittingFunctions(0, 'g', 'g', 0, 'g', 'g');
+                }
+                convolutions_lmu2_[0] =
+                    new Convolution(gluon_as1_, Pgg0Pgg0_, abserr, relerr, dim);
         }
 
     } catch (const NotValidException &e) {
@@ -313,8 +399,7 @@ double ExactCoefficientFunction::MuDependentTerms(
     double x, double m2Q2, double m2mu2, int nf
 ) const {
 
-    double x_max = 1. / (1 + 4 * m2Q2);
-    if (x <= 0 || x > x_max)
+    if (x <= 0 || x > xMax(m2Q2))
         return 0.;
 
     return (this->*mu_dep_)(x, m2Q2, m2mu2, nf);
@@ -522,10 +607,16 @@ double ExactCoefficientFunction::C_g21(double x, double m2Q2) const {
     int nf_one = 1;
     // Put nf to 1 since the nf contribution cancels for any value of nf
 
-    return -(
-        convolutions_lmu1_[0]->Convolute(x, m2Q2, nf_one)
-        - convolutions_lmu1_[1]->Convolute(x, m2Q2, nf_one) * beta0(nf_one)
+    std::future<double> future_f0 = std::async(
+        std::launch::async, &AbstractConvolution::Convolute,
+        convolutions_lmu1_[0], x, m2Q2, nf_one
     );
+    std::future<double> future_f1 = std::async(
+        std::launch::async, &AbstractConvolution::Convolute,
+        convolutions_lmu1_[1], x, m2Q2, nf_one
+    );
+
+    return -(future_f0.get() - future_f1.get() * beta0(nf_one));
 }
 
 //==========================================================================================//
@@ -591,11 +682,26 @@ double ExactCoefficientFunction::
 
 double ExactCoefficientFunction::C_ps31(double x, double m2Q2, int nf) const {
 
+    std::future<double> future_f0 = std::async(
+        std::launch::async, &AbstractConvolution::Convolute,
+        convolutions_lmu1_[0], x, m2Q2, nf
+    );
+    std::future<double> future_f1 = std::async(
+        std::launch::async, &AbstractConvolution::Convolute,
+        convolutions_lmu1_[1], x, m2Q2, nf
+    );
+    std::future<double> future_f2 = std::async(
+        std::launch::async, &AbstractConvolution::Convolute,
+        convolutions_lmu1_[2], x, m2Q2, nf
+    );
+    std::future<double> future_f3 = std::async(
+        std::launch::async, &AbstractConvolution::Convolute,
+        convolutions_lmu1_[3], x, m2Q2, nf
+    );
+
     return -(
-        convolutions_lmu1_[0]->Convolute(x, m2Q2, nf)
-        + convolutions_lmu1_[1]->Convolute(x, m2Q2, nf)
-        + convolutions_lmu1_[2]->Convolute(x, m2Q2, nf)
-        - 2. * beta0(nf) * convolutions_lmu1_[3]->Convolute(x, m2Q2, nf)
+        future_f0.get() + future_f1.get() + future_f2.get()
+        - 2. * beta0(nf) * future_f3.get()
     );
 }
 
@@ -608,10 +714,21 @@ double ExactCoefficientFunction::C_ps31(double x, double m2Q2, int nf) const {
 
 double ExactCoefficientFunction::C_ps32(double x, double m2Q2, int nf) const {
 
-    return 0.5
-               * (convolutions_lmu2_[0]->Convolute(x, m2Q2, nf)
-                  + convolutions_lmu2_[1]->Convolute(x, m2Q2, nf))
-           - 3. / 2 * beta0(nf) * convolutions_lmu2_[2]->Convolute(x, m2Q2, nf);
+    std::future<double> future_f0 = std::async(
+        std::launch::async, &AbstractConvolution::Convolute,
+        convolutions_lmu2_[0], x, m2Q2, nf
+    );
+    std::future<double> future_f1 = std::async(
+        std::launch::async, &AbstractConvolution::Convolute,
+        convolutions_lmu2_[1], x, m2Q2, nf
+    );
+    std::future<double> future_f2 = std::async(
+        std::launch::async, &AbstractConvolution::Convolute,
+        convolutions_lmu2_[2], x, m2Q2, nf
+    );
+
+    return 0.5 * (future_f0.get() + future_f1.get())
+           - 3. / 2 * beta0(nf) * future_f2.get();
 }
 
 //==========================================================================================//
@@ -623,12 +740,30 @@ double ExactCoefficientFunction::C_ps32(double x, double m2Q2, int nf) const {
 
 double ExactCoefficientFunction::C_g31(double x, double m2Q2, int nf) const {
 
+    std::future<double> future_f0 = std::async(
+        std::launch::async, &AbstractConvolution::Convolute,
+        convolutions_lmu1_[0], x, m2Q2, nf
+    );
+    std::future<double> future_f1 = std::async(
+        std::launch::async, &AbstractConvolution::Convolute,
+        convolutions_lmu1_[1], x, m2Q2, nf
+    );
+    std::future<double> future_f2 = std::async(
+        std::launch::async, &AbstractConvolution::Convolute,
+        convolutions_lmu1_[2], x, m2Q2, nf
+    );
+    std::future<double> future_f3 = std::async(
+        std::launch::async, &AbstractConvolution::Convolute,
+        convolutions_lmu1_[3], x, m2Q2, nf
+    );
+    std::future<double> future_f4 = std::async(
+        std::launch::async, &AbstractConvolution::Convolute,
+        convolutions_lmu1_[4], x, m2Q2, nf
+    );
+
     return -(
-        convolutions_lmu1_[0]->Convolute(x, m2Q2, nf)
-        - beta1(nf) * convolutions_lmu1_[1]->Convolute(x, m2Q2, nf)
-        + convolutions_lmu1_[2]->Convolute(x, m2Q2, nf)
-        + convolutions_lmu1_[3]->Convolute(x, m2Q2, nf)
-        - 2. * beta0(nf) * convolutions_lmu1_[4]->Convolute(x, m2Q2, nf)
+        future_f0.get() - beta1(nf) * future_f1.get() + future_f2.get()
+        + future_f3.get() - 2. * beta0(nf) * future_f4.get()
     );
 }
 
@@ -643,11 +778,25 @@ double ExactCoefficientFunction::C_g32(double x, double m2Q2, int nf) const {
 
     double beta_0 = beta0(nf);
 
-    return 0.5
-               * (convolutions_lmu2_[0]->Convolute(x, m2Q2, nf)
-                  + convolutions_lmu2_[1]->Convolute(x, m2Q2, nf))
-           - 3. / 2 * beta_0 * convolutions_lmu2_[2]->Convolute(x, m2Q2, nf)
-           + beta_0 * beta_0 * convolutions_lmu2_[3]->Convolute(x, m2Q2, nf);
+    std::future<double> future_f0 = std::async(
+        std::launch::async, &AbstractConvolution::Convolute,
+        convolutions_lmu2_[0], x, m2Q2, nf
+    );
+    std::future<double> future_f1 = std::async(
+        std::launch::async, &AbstractConvolution::Convolute,
+        convolutions_lmu2_[1], x, m2Q2, nf
+    );
+    std::future<double> future_f2 = std::async(
+        std::launch::async, &AbstractConvolution::Convolute,
+        convolutions_lmu2_[2], x, m2Q2, nf
+    );
+    std::future<double> future_f3 = std::async(
+        std::launch::async, &AbstractConvolution::Convolute,
+        convolutions_lmu2_[3], x, m2Q2, nf
+    );
+    return 0.5 * (future_f0.get() + future_f1.get())
+           - 3. / 2 * beta_0 * future_f2.get()
+           + beta_0 * beta_0 * future_f3.get();
 }
 
 //==========================================================================================//
@@ -661,7 +810,15 @@ double ExactCoefficientFunction::C_g3_MuDep(
 
     double lmu = log(1. / m2mu2);
 
-    return C_g31(x, m2Q2, nf) * lmu + C_g32(x, m2Q2, nf) * lmu * lmu;
+    std::future<double> future_f1 = std::async(
+        std::launch::async, &ExactCoefficientFunction::C_g31, this, x, m2Q2, nf
+    );
+    std::future<double> future_f2 = std::async(
+        std::launch::async, &ExactCoefficientFunction::C_g32, this, x, m2Q2,
+        nf
+    );
+
+    return future_f1.get() * lmu + future_f2.get() * lmu * lmu;
 }
 
 //==========================================================================================//
@@ -675,7 +832,15 @@ double ExactCoefficientFunction::C_ps3_MuDep(
 
     double lmu = log(1. / m2mu2);
 
-    return C_ps31(x, m2Q2, nf) * lmu + C_ps32(x, m2Q2, nf) * lmu * lmu;
+    std::future<double> future_f1 = std::async(
+        std::launch::async, &ExactCoefficientFunction::C_ps31, this, x, m2Q2, nf
+    );
+    std::future<double> future_f2 = std::async(
+        std::launch::async, &ExactCoefficientFunction::C_ps32, this, x, m2Q2,
+        nf
+    );
+
+    return future_f1.get() * lmu + future_f2.get() * lmu * lmu;
 }
 
 //==========================================================================================//

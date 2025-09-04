@@ -10,7 +10,7 @@
 
 HighScaleCoefficientFunction::HighScaleCoefficientFunction(
     const int &order, const char &kind, const char &channel,
-    const string &version
+    const HighScaleVersion &version
 )
     : CoefficientFunction(order, kind, channel) {
     massless_as1_ = nullptr;
@@ -34,8 +34,7 @@ HighScaleCoefficientFunction::HighScaleCoefficientFunction(
     }
 
     try {
-
-        if (GetOrder() < 3 && version != "exact") {
+        if (GetOrder() < 3 && version != HighScaleVersion::Exact) {
             throw NotValidException(
                 "HighScaleCoefficientFunction at orders 1 and 2 are only "
                 "'exact'!",
@@ -70,55 +69,101 @@ HighScaleCoefficientFunction::~HighScaleCoefficientFunction() {
 
 void HighScaleCoefficientFunction::SetFunctions() {
 
-    if (GetOrder() == 1) {
-
-        if (GetKind() == '2' && GetChannel() == 'g')
-            fx_ = &HighScaleCoefficientFunction::C2_g1_highscale;
-        else if (GetKind() == 'L' && GetChannel() == 'g')
-            fx_ = &HighScaleCoefficientFunction::CL_g1_highscale;
-        else {
-            throw NotPresentException(
-                "quark coefficient function is not present at order 1! Got "
-                "order="
-                    + to_string(GetOrder()),
-                __PRETTY_FUNCTION__, __LINE__
-            );
-        }
-
-    } else if (GetOrder() == 2) {
-
-        if (GetKind() == '2' && GetChannel() == 'g')
-            fx_ = &HighScaleCoefficientFunction::C2_g2_highscale;
-        else if (GetKind() == '2' && GetChannel() == 'q')
-            fx_ = &HighScaleCoefficientFunction::C2_ps2_highscale;
-        else if (GetKind() == 'L' && GetChannel() == 'g')
-            fx_ = &HighScaleCoefficientFunction::CL_g2_highscale;
-        else if (GetKind() == 'L' && GetChannel() == 'q')
-            fx_ = &HighScaleCoefficientFunction::CL_ps2_highscale;
-        else {
+    switch (GetOrder()) {
+        case 1:
+            switch (GetChannel()) {
+                case 'g':
+                    switch (GetKind()) {
+                        case '2':
+                            fx_ = &HighScaleCoefficientFunction::C2_g1_highscale;
+                            break;
+                        case 'L':
+                            fx_ = &HighScaleCoefficientFunction::CL_g1_highscale;
+                            break;
+                    }
+                    break;
+                default:
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
+            }
+            break;
+        case 2:
+            switch (GetKind()) {
+                case '2':
+                    switch (GetChannel()) {
+                        case 'g':
+                            fx_ = &HighScaleCoefficientFunction::C2_g2_highscale;
+                            break;
+                        case 'q':
+                            fx_ = &HighScaleCoefficientFunction::C2_ps2_highscale;
+                            break;
+                        default:
+                            throw UnexpectedException(
+                                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                            );
+                    }
+                    break;
+                case 'L':
+                    switch (GetChannel()) {
+                        case 'g':
+                            fx_ = &HighScaleCoefficientFunction::CL_g2_highscale;
+                            break;
+                        case 'q':
+                            fx_ = &HighScaleCoefficientFunction::CL_ps2_highscale;
+                            break;
+                        default:
+                            throw UnexpectedException(
+                                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                            );
+                    }
+                    break;
+                default:
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
+            }
+            break;
+        case 3:
+            switch (GetKind()) {
+                case '2':
+                    switch (GetChannel()) {
+                        case 'g':
+                            fx_ = &HighScaleCoefficientFunction::C2_g3_highscale;
+                            break;
+                        case 'q':
+                            fx_ = &HighScaleCoefficientFunction::C2_ps3_highscale;
+                            break;
+                        default:
+                            throw UnexpectedException(
+                                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                            );
+                    }
+                    break;
+                case 'L':
+                    switch (GetChannel()) {
+                        case 'g':
+                            fx_ = &HighScaleCoefficientFunction::CL_g3_highscale;
+                            break;
+                        case 'q':
+                            fx_ = &HighScaleCoefficientFunction::CL_ps3_highscale;
+                            break;
+                        default:
+                            throw UnexpectedException(
+                                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                            );
+                    }
+                    break;
+                default:
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
+            }
+            break;
+        default:
             throw UnexpectedException(
                 "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
             );
-        }
-    } else if (GetOrder() == 3) {
-
-        if (GetKind() == '2' && GetChannel() == 'g')
-            fx_ = &HighScaleCoefficientFunction::C2_g3_highscale;
-        else if (GetKind() == '2' && GetChannel() == 'q')
-            fx_ = &HighScaleCoefficientFunction::C2_ps3_highscale;
-        else if (GetKind() == 'L' && GetChannel() == 'g')
-            fx_ = &HighScaleCoefficientFunction::CL_g3_highscale;
-        else if (GetKind() == 'L' && GetChannel() == 'q')
-            fx_ = &HighScaleCoefficientFunction::CL_ps3_highscale;
-        else {
-            throw UnexpectedException(
-                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-            );
-        }
-    } else {
-        throw UnexpectedException(
-            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-        );
     }
 }
 

@@ -25,32 +25,101 @@ MasslessCoefficientFunction::MasslessCoefficientFunction(
 //------------------------------------------------------------------------------------------//
 
 void MasslessCoefficientFunction::SetFunctions() {
-    if (GetOrder() == 1 && GetKind() == '2' && GetChannel() == 'g')
-        mu_indep_ = &MasslessCoefficientFunction::C2_g1_massless;
-    else if (GetOrder() == 1 && GetKind() == 'L' && GetChannel() == 'g')
-        mu_indep_ = &MasslessCoefficientFunction::CL_g1_massless;
-
-    else if (GetOrder() == 2 && GetKind() == '2' && GetChannel() == 'g')
-        mu_indep_ = &MasslessCoefficientFunction::C2_g2_massless;
-    else if (GetOrder() == 2 && GetKind() == '2' && GetChannel() == 'q')
-        mu_indep_ = &MasslessCoefficientFunction::C2_ps2_massless;
-    else if (GetOrder() == 2 && GetKind() == 'L' && GetChannel() == 'g')
-        mu_indep_ = &MasslessCoefficientFunction::CL_g2_massless;
-    else if (GetOrder() == 2 && GetKind() == 'L' && GetChannel() == 'q')
-        mu_indep_ = &MasslessCoefficientFunction::CL_ps2_massless;
-
-    else if (GetOrder() == 3 && GetKind() == '2' && GetChannel() == 'g')
-        mu_indep_ = &MasslessCoefficientFunction::C2_g3_massless;
-    else if (GetOrder() == 3 && GetKind() == '2' && GetChannel() == 'q')
-        mu_indep_ = &MasslessCoefficientFunction::C2_ps3_massless;
-    else if (GetOrder() == 3 && GetKind() == 'L' && GetChannel() == 'g')
-        mu_indep_ = &MasslessCoefficientFunction::CL_g3_massless;
-    else if (GetOrder() == 3 && GetKind() == 'L' && GetChannel() == 'q')
-        mu_indep_ = &MasslessCoefficientFunction::CL_ps3_massless;
-    else {
-        throw UnexpectedException(
-            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-        );
+    switch (GetOrder()) {
+        case 1:
+            switch (GetChannel()) {
+                case 'g':
+                    switch (GetKind()) {
+                        case '2':
+                            mu_indep_ = &MasslessCoefficientFunction::C2_g1_massless;
+                            break;
+                        case 'L':
+                            mu_indep_ = &MasslessCoefficientFunction::CL_g1_massless;
+                            break;
+                    }
+                    break;
+                default:
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
+            }
+            break;
+        case 2:
+            switch (GetKind()) {
+                case '2':
+                    switch (GetChannel()) {
+                        case 'g':
+                            mu_indep_ = &MasslessCoefficientFunction::C2_g2_massless;
+                            break;
+                        case 'q':
+                            mu_indep_ = &MasslessCoefficientFunction::C2_ps2_massless;
+                            break;
+                        default:
+                            throw UnexpectedException(
+                                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                            );
+                    }
+                    break;
+                case 'L':
+                    switch (GetChannel()) {
+                        case 'g':
+                            mu_indep_ = &MasslessCoefficientFunction::CL_g2_massless;
+                            break;
+                        case 'q':
+                            mu_indep_ = &MasslessCoefficientFunction::CL_ps2_massless;
+                            break;
+                        default:
+                            throw UnexpectedException(
+                                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                            );
+                    }
+                    break;
+                default:
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
+            }
+            break;
+        case 3:
+            switch (GetKind()) {
+                case '2':
+                    switch (GetChannel()) {
+                        case 'g':
+                            mu_indep_ = &MasslessCoefficientFunction::C2_g3_massless;
+                            break;
+                        case 'q':
+                            mu_indep_ = &MasslessCoefficientFunction::C2_ps3_massless;
+                            break;
+                        default:
+                            throw UnexpectedException(
+                                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                            );
+                    }
+                    break;
+                case 'L':
+                    switch (GetChannel()) {
+                        case 'g':
+                            mu_indep_ = &MasslessCoefficientFunction::CL_g3_massless;
+                            break;
+                        case 'q':
+                            mu_indep_ = &MasslessCoefficientFunction::CL_ps3_massless;
+                            break;
+                        default:
+                            throw UnexpectedException(
+                                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                            );
+                    }
+                    break;
+                default:
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
+            }
+            break;
+        default:
+            throw UnexpectedException(
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+            );
     }
 }
 

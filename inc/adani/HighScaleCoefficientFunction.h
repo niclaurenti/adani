@@ -17,6 +17,7 @@
 #define HighScale_h
 
 #include "adani/CoefficientFunction.h"
+#include "adani/CommonTypes.h"
 #include "adani/MasslessCoefficientFunction.h"
 #include "adani/MatchingCondition.h"
 
@@ -38,7 +39,7 @@ class HighScaleCoefficientFunction : public CoefficientFunction {
     public:
         HighScaleCoefficientFunction(
             const int &order, const char &kind, const char &channel,
-            const string &version = "exact"
+            const HighScaleVersion &version = HighScaleVersion::Exact
         );
         ~HighScaleCoefficientFunction() override;
 
