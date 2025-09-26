@@ -96,12 +96,23 @@ double AbstractConvolution::Convolute(double x, double m2Q2, int nf) const {
 }
 
 //==========================================================================================//
+//  struct function_params to be passed to gsl
+//------------------------------------------------------------------------------------------//
+
+struct function_params {
+        double x;
+        double m2Q2;
+        int nf;
+        const AbstractConvolution *conv;
+};
+
+//==========================================================================================//
 //  AbstractConvolution: integrand of the regular part
 //------------------------------------------------------------------------------------------//
 
 double Convolution::regular_integrand(double z, void *p) {
 
-    struct function_params *params = (struct function_params *)p;
+    function_params *params = (function_params *)p;
 
     double m2Q2 = (params->m2Q2);
     double x = (params->x);
@@ -152,7 +163,7 @@ Convolution::~Convolution() {
 //------------------------------------------------------------------------------------------//
 
 double Convolution::singular_integrand(double z, void *p) {
-    struct function_params *params = (struct function_params *)p;
+    function_params *params = (function_params *)p;
 
     double m2Q2 = (params->m2Q2);
     double x = (params->x);
@@ -190,7 +201,7 @@ double Convolution::RegularPart(double x, double m2Q2, int nf) const {
 
     double regular, error;
 
-    struct function_params params = { x, m2Q2, nf, this };
+    function_params params = { x, m2Q2, nf, this };
 
     gsl_function F;
     F.function = &regular_integrand;
@@ -220,7 +231,7 @@ double Convolution::SingularPart(double x, double m2Q2, int nf) const {
 
     double singular, error;
 
-    struct function_params params = { x, m2Q2, nf, this };
+    function_params params = { x, m2Q2, nf, this };
 
     gsl_function F;
     F.function = &singular_integrand;
@@ -368,7 +379,7 @@ void DoubleConvolution::SetMCcalls(const int &MCcalls) {
 double
     DoubleConvolution::regular1_integrand(double z[], size_t /*dim*/, void *p) {
 
-    struct function_params *params = (struct function_params *)p;
+    function_params *params = (function_params *)p;
 
     double m2Q2 = (params->m2Q2);
     double x = (params->x);
@@ -394,7 +405,7 @@ double
 
 double
     DoubleConvolution::regular2_integrand(double z[], size_t /*dim*/, void *p) {
-    struct function_params *params = (struct function_params *)p;
+    function_params *params = (function_params *)p;
 
     double m2Q2 = (params->m2Q2);
     double x = (params->x);
@@ -421,7 +432,7 @@ double
 
 double DoubleConvolution::regular3_integrand(double z, void *p) {
 
-    struct function_params *params = (struct function_params *)p;
+    function_params *params = (function_params *)p;
 
     double m2Q2 = (params->m2Q2);
     double x = (params->x);
@@ -447,7 +458,7 @@ double DoubleConvolution::RegularPart(double x, double m2Q2, int nf) const {
         return convolution_->RegularPart(x, m2Q2, nf);
 
     double x_max = CoefficientFunction::xMax(m2Q2);
-    struct function_params params = { x, m2Q2, nf, this };
+    function_params params = { x, m2Q2, nf, this };
 
     double xl[2] = { x, x };
     double xu[2] = { x_max, x_max };
@@ -501,7 +512,7 @@ double DoubleConvolution::singular1_integrand(
     double z[], size_t /*dim*/, void *p
 ) {
 
-    struct function_params *params = (struct function_params *)p;
+    function_params *params = (function_params *)p;
 
     double m2Q2 = (params->m2Q2);
     double x = (params->x);
@@ -531,7 +542,7 @@ double DoubleConvolution::singular2_integrand(
     double z[], size_t /*dim*/, void *p
 ) {
 
-    struct function_params *params = (struct function_params *)p;
+    function_params *params = (function_params *)p;
 
     double m2Q2 = (params->m2Q2);
     double x = (params->x);
@@ -565,7 +576,7 @@ double DoubleConvolution::singular2_integrand(
 
 double DoubleConvolution::singular3_integrand(double z, void *p) {
 
-    struct function_params *params = (struct function_params *)p;
+    function_params *params = (function_params *)p;
 
     double m2Q2 = (params->m2Q2);
     double x = (params->x);
@@ -595,7 +606,7 @@ double DoubleConvolution::SingularPart(double x, double m2Q2, int nf) const {
         return convolution_->SingularPart(x, m2Q2, nf);
 
     double x_max = CoefficientFunction::xMax(m2Q2);
-    struct function_params params = { x, m2Q2, nf, this };
+    function_params params = { x, m2Q2, nf, this };
 
     double xl[2] = { x / x_max, x };
     double xu[2] = { 1, x_max };

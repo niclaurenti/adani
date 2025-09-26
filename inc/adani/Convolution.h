@@ -176,15 +176,4 @@ class DoubleConvolution : public AbstractConvolution {
         static double singular3_integrand(double z, void *p);
 };
 
-//==========================================================================================//
-//  struct function_params to be passed to gsl
-//------------------------------------------------------------------------------------------//
-
-struct function_params {
-        double x;
-        double m2Q2;
-        int nf;
-        const AbstractConvolution *conv;
-};
-
 #endif

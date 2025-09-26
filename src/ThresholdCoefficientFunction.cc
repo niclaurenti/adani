@@ -209,7 +209,7 @@ void ThresholdCoefficientFunction::SetLegacyThreshold(
 }
 
 //==========================================================================================//
-//  ThresholdCoefficientFunction: contral value of the full contribution
+//  ThresholdCoefficientFunction: central value of the full contribution
 //------------------------------------------------------------------------------------------//
 
 double ThresholdCoefficientFunction::fx(
@@ -242,7 +242,8 @@ Value ThresholdCoefficientFunction::Order1(
 }
 
 //==========================================================================================//
-//  ThresholdCoefficientFunction:
+//  ThresholdCoefficientFunction: threshold given by LO term multiplied for the expansion
+//  factor given by resummation
 //------------------------------------------------------------------------------------------//
 
 Value ThresholdCoefficientFunction::PlainThreshold(
@@ -255,7 +256,8 @@ Value ThresholdCoefficientFunction::PlainThreshold(
 }
 
 //==========================================================================================//
-//  ThresholdCoefficientFunction:
+//  ThresholdCoefficientFunction: variation of PlainThreshold in which we vary the LO factor
+//  between exact and threshold expanded. Used at O(as^2)
 //------------------------------------------------------------------------------------------//
 
 Value ThresholdCoefficientFunction::ModifiedThreshold2(
@@ -270,7 +272,8 @@ Value ThresholdCoefficientFunction::ModifiedThreshold2(
 }
 
 //==========================================================================================//
-//  ThresholdCoefficientFunction:
+//  ThresholdCoefficientFunction: variation of PlainThreshold in which we vary the LO factor
+//  between exact and threshold expanded. Used at O(as^3)
 //------------------------------------------------------------------------------------------//
 
 Value ThresholdCoefficientFunction::ModifiedThreshold3(
@@ -339,7 +342,10 @@ double
 }
 
 //==========================================================================================//
+//  Beta dependent term of the xpansion coefficient of the threshold coefficient function
+//  at O(as^2) for F2.
 //
+//  See Eq. (3.16) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
 double ThresholdCoefficientFunction::C2_g2_threshold_expansion(
@@ -356,7 +362,8 @@ double ThresholdCoefficientFunction::C2_g2_threshold_expansion(
 }
 
 //==========================================================================================//
-//
+//  Beta dependent term of the xpansion coefficient of the threshold coefficient function
+//  at O(as^2) for FL.
 //------------------------------------------------------------------------------------------//
 
 double ThresholdCoefficientFunction::CL_g2_threshold_expansion(
@@ -373,7 +380,10 @@ double ThresholdCoefficientFunction::CL_g2_threshold_expansion(
 }
 
 //==========================================================================================//
+//  Beta independent term of the xpansion coefficient of the threshold coefficient function
+//  at O(as^2) for F2.
 //
+//  See Eq. (3.17) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
 double ThresholdCoefficientFunction::C2_g2_threshold_expansion_const(
@@ -387,7 +397,8 @@ double ThresholdCoefficientFunction::C2_g2_threshold_expansion_const(
 }
 
 //==========================================================================================//
-//
+//  Beta independent term of the xpansion coefficient of the threshold coefficient function
+//  at O(as^2) for FL.
 //------------------------------------------------------------------------------------------//
 
 double ThresholdCoefficientFunction::CL_g2_threshold_expansion_const(
@@ -405,7 +416,10 @@ double ThresholdCoefficientFunction::CL_g2_threshold_expansion_const(
 }
 
 //==========================================================================================//
+//  Beta dependent term of the xpansion coefficient of the threshold coefficient function
+//  at O(as^3) for F2.
 //
+//  See Eq. (3.18) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
 double ThresholdCoefficientFunction::C2_g3_threshold_expansion(
@@ -478,15 +492,15 @@ double ThresholdCoefficientFunction::C2_g3_threshold_expansion(
 }
 
 //==========================================================================================//
+//  Beta independent term of the xpansion coefficient of the threshold coefficient function
+//  at O(as^3) for F2.
 //
+//  See Eq. (3.19) of Ref. [arXiv:1205.5727]
 //------------------------------------------------------------------------------------------//
 
 double ThresholdCoefficientFunction::C2_g3_threshold_expansion_const(
     double m2Q2, double m2mu2
 ) const {
-
-    double xi = 1. / m2Q2;
-    double Lm = log(m2mu2);
 
     double c_const_sqrt = C2_g2_threshold_expansion_const(m2Q2, m2mu2);
 
@@ -494,7 +508,8 @@ double ThresholdCoefficientFunction::C2_g3_threshold_expansion_const(
 }
 
 //==========================================================================================//
-//
+//  Beta dependent term of the xpansion coefficient of the threshold coefficient function
+//  at O(as^3) for FL.
 //------------------------------------------------------------------------------------------//
 
 double ThresholdCoefficientFunction::CL_g3_threshold_expansion(
@@ -538,9 +553,9 @@ double ThresholdCoefficientFunction::CL_g3_threshold_expansion(
                                  - 192 * ln2 * log((1 + chiq) * (1 + chiq)/(2 * chiq))))
                            + CA * CA * (-112792./27 - 2432 * aL_10_OK(m2Q2)/3
                            + 2240 * pi2/9 + 9536 * ln2 / 3 + 768 * aL_10_OK(m2Q2) * ln2
-                           - 208 * pi2 * ln2 - 528 * ln2 * ln2 + 936 * zeta3)) ;
+                           - 208 * pi2 * ln2 - 528 * ln2 * ln2 + 936 * zeta3))
                         + (-CA/2 + CF) * (16 * CA * Lmu * pi2
-                        + (8 * nf * pi2)/3
+                        + 8 * nf * pi2/3
                         + CA * (-92./3 * pi2 + 32 * pi2 * ln2)) / beta;
 
     double c_fracbeta = (-CA/2 + CF) * (64 * aL_10_QED(m2Q2) * CF * pi2
@@ -557,14 +572,13 @@ double ThresholdCoefficientFunction::CL_g3_threshold_expansion(
 }
 
 //==========================================================================================//
-//
+//  Beta dependent term of the xpansion coefficient of the threshold coefficient function
+//  at O(as^3) for FL.
 //------------------------------------------------------------------------------------------//
 
 double ThresholdCoefficientFunction::CL_g3_threshold_expansion_const(
     double m2Q2, double m2mu2
 ) const {
-    double xi = 1. / m2Q2;
-    double Lm = log(m2mu2);
 
     double c_const_sqrt = CL_g2_threshold_expansion_const(m2Q2, m2mu2);
 
@@ -621,6 +635,10 @@ double ThresholdCoefficientFunction::c0_bar(double xi) const {
     return 4. * CA * (2. + log(1. + xi / 4.)) - 4. / 3. * TR;
 }
 
+//==========================================================================================//
+//  Function needed for the threshold limit for FL.
+//------------------------------------------------------------------------------------------//
+
 double ThresholdCoefficientFunction::aL_10_QED(double m2Q2) const {
     double rhoq = -4. * m2Q2;
     double betaq = sqrt(1. - rhoq);
@@ -643,6 +661,10 @@ double ThresholdCoefficientFunction::aL_10_QED(double m2Q2) const {
               * log(rhoq / (2. * (-1 + rhoq))))
                  / (4. * (-2 + rhoq) * (-2 + rhoq) * (-1 + rhoq));
 }
+
+//==========================================================================================//
+//  Function needed for the threshold limit for FL.
+//------------------------------------------------------------------------------------------//
 
 double ThresholdCoefficientFunction::aL_10_OK(double m2Q2) const {
     double rhoq = -4. * m2Q2;

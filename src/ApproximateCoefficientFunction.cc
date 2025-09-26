@@ -92,21 +92,21 @@ Value AbstractApproximate::fxBand(
 #define a 2.5
 #define b 5.
 
-struct approximation_parameters C2_g1_params = { 0.2, 2.5, 2.5, 1.2 };
-struct approximation_parameters CL_g1_params = { 20., 11., 3., 2. };
+approximation_parameters CL_g1_params = { 20., 11., 3., 2. };
+approximation_parameters C2_g1_params = { 0.2, 2.5, 2.5, 1.2 };
 
-struct approximation_parameters C2_g2_params = { 1.7, 2.5, 2.5, 1.2 };
-struct approximation_parameters CL_g2_params = { 20., 11., 3., 2. };
-struct approximation_parameters C2_ps2_params = { 1.7, 2.5, 2.5, 1.2 };
-struct approximation_parameters CL_ps2_params = { 20., 11., 3., 2. };
+approximation_parameters C2_g2_params = { 1.7, 2.5, 2.5, 1.2 };
+approximation_parameters CL_g2_params = { 20., 11., 3., 2. };
+approximation_parameters C2_ps2_params = { 1.7, 2.5, 2.5, 1.2 };
+approximation_parameters CL_ps2_params = { 20., 11., 3., 2. };
 
-struct approximation_parameters C2_g3_params = { 0.3, 2.5, 2.5, 1.2 };
-struct approximation_parameters CL_g3_params = { 10., 11., 3., 2. };
-struct approximation_parameters C2_ps3_params = { 0.3, 2.5, 2.5, 1.2 };
-struct approximation_parameters CL_ps3_params = { 20., 11., 3., 2. };
+approximation_parameters C2_g3_params = { 0.3, 2.5, 2.5, 1.2 };
+approximation_parameters CL_g3_params = { 10., 11., 3., 2. };
+approximation_parameters C2_ps3_params = { 0.3, 2.5, 2.5, 1.2 };
+approximation_parameters CL_ps3_params = { 20., 11., 3., 2. };
 
-struct variation_parameters C2_var = { 3., 0.3 };
-struct variation_parameters CL_var = { 2., 0.2 };
+variation_parameters C2_var = { 3., 0.3 };
+variation_parameters CL_var = { 2., 0.2 };
 
 //==========================================================================================//
 //  ApproximateCoefficientFunction: constructor
@@ -436,16 +436,16 @@ double ApproximateCoefficientFunction::ApproximationLegacyForm(
 //  ApproximateCoefficientFunctionKLMV: parameters of the approximation
 //------------------------------------------------------------------------------------------//
 
-struct klmv_params klmv_C2g2A = { 1., 42.5, 0, 0, 0 };
-struct klmv_params klmv_C2g2B = { 0.8, 19.4, 0, 0, 0 };
-struct klmv_params klmv_C2q2A = { 1., 42.5, 0, 0, 0 };
-struct klmv_params klmv_C2q2B = { 0.8, 19.4, 0, 0, 0 };
+klmv_params klmv_C2g2A = { 1., 42.5, 0, 0, 0 };
+klmv_params klmv_C2g2B = { 0.8, 19.4, 0, 0, 0 };
+klmv_params klmv_C2q2A = { 1., 42.5, 0, 0, 0 };
+klmv_params klmv_C2q2B = { 0.8, 19.4, 0, 0, 0 };
 
-struct klmv_params klmv_C2g3A = { 1., 20., 0.007, 4, 0.28 };
-struct klmv_params klmv_C2g3B = { 0.8, 10.7, 0.055, 2, 0.423 };
-struct klmv_params klmv_C2q3A = { 1., 20., 0.004, 4, 0.125 };
-struct klmv_params klmv_C2q3B = { 0.8, 10.7, 0.0245, 2, 0.17 };
-struct klmv_params klmv_C2g3B_lowxi = { 0.8, 10.7, 0.055125, 2, 0.3825 };
+klmv_params klmv_C2g3A = { 1., 20., 0.007, 4, 0.28 };
+klmv_params klmv_C2g3B = { 0.8, 10.7, 0.055, 2, 0.423 };
+klmv_params klmv_C2q3A = { 1., 20., 0.004, 4, 0.125 };
+klmv_params klmv_C2q3B = { 0.8, 10.7, 0.0245, 2, 0.17 };
+klmv_params klmv_C2g3B_lowxi = { 0.8, 10.7, 0.055125, 2, 0.3825 };
 
 //==========================================================================================//
 //  ApproximateCoefficientFunctionKLMV: constructor

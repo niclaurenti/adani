@@ -39,7 +39,7 @@ PYBIND11_MODULE(_core, m) {
         .def(py::init<const double &>(), py::arg("central"))
         .def(py::self + py::self)
         .def(py::self - py::self)
-        .def(py::self * py::self)
+        // .def(py::self * py::self)
         // .def(py::self / py::self)
         .def(py::self + double())
         .def(double() + py::self)

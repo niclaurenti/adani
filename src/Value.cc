@@ -152,20 +152,20 @@ Value Value::operator-(const Value &rhs) const {
 //  the errors
 //------------------------------------------------------------------------------------------//
 
-Value Value::operator*(const Value &rhs) const {
-    double central = central_ * rhs.central_;
+// Value Value::operator*(const Value &rhs) const {
+//     double central = central_ * rhs.central_;
 
-    double delta_low_lhs = GetLowerDelta();
-    double delta_up_lhs = GetHigherDelta();
+//     double delta_low_lhs = GetLowerDelta();
+//     double delta_up_lhs = GetHigherDelta();
 
-    double delta_low_rhs = rhs.GetLowerDelta();
-    double delta_up_rhs = rhs.GetHigherDelta();
+//     double delta_low_rhs = rhs.GetLowerDelta();
+//     double delta_up_rhs = rhs.GetHigherDelta();
 
-    double delta_low = delta_low_lhs + delta_low_rhs;
-    double delta_up = delta_up_lhs + delta_up_rhs;
+//     double delta_low = delta_low_lhs + delta_low_rhs;
+//     double delta_up = delta_up_lhs + delta_up_rhs;
 
-    return Value(central, central + delta_up, central - delta_low);
-}
+//     return Value(central, central + delta_up, central - delta_low);
+// }
 
 //==========================================================================================//
 //  Value: overload of operator / Value
