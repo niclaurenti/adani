@@ -22,39 +22,6 @@
 #include "adani/ThresholdCoefficientFunction.h"
 
 //==========================================================================================//
-//  struct approximation_parameters: parameters of the damping functions
-//------------------------------------------------------------------------------------------//
-
-struct approximation_parameters {
-        double A;
-        double B;
-        double C;
-        double D;
-};
-
-//==========================================================================================//
-//  struct variation_parameters: parameters of the variation of the damping
-//  functions
-//------------------------------------------------------------------------------------------//
-
-struct variation_parameters {
-        double var1;
-        double var2;
-};
-
-//==========================================================================================//
-//  struct klmv_params: parameters for klmv approximation
-//------------------------------------------------------------------------------------------//
-
-struct klmv_params {
-        double eta_exponent;
-        double shift;
-        double log_coeff;
-        double log_pow;
-        double const_coeff;
-};
-
-//==========================================================================================//
 //  class AbstractApproximate
 //------------------------------------------------------------------------------------------//
 
@@ -68,7 +35,7 @@ class AbstractApproximate : public CoefficientFunction {
         ~AbstractApproximate();
 
         void SetDoubleIntegralMethod(
-            const string &double_int_method, const double &abserr = 1e-3,
+            const DoubleIntegralMethod &double_int_method, const double &abserr = 1e-3,
             const double &relerr = 1e-3, const int &dim = 1000,
             const int &MCcalls = 25000
         );
@@ -93,7 +60,7 @@ class ApproximateCoefficientFunction : public AbstractApproximate {
     public:
         ApproximateCoefficientFunction(
             const int &order, const char &kind, const char &channel,
-            const bool &NLL = true, const string &highscale_version = "exact",
+            const bool &NLL = true, const HighScaleVersion &highscale_version = HighScaleVersion::Exact,
             const double &abserr = 1e-3, const double &relerr = 1e-3,
             const int &dim = 1000
         );
@@ -117,8 +84,8 @@ class ApproximateCoefficientFunction : public AbstractApproximate {
 
         bool legacy_appr_;
 
-        struct approximation_parameters *approximation_;
-        struct variation_parameters *variation_;
+        approximation_parameters *approximation_;
+        variation_parameters *variation_;
 
         double ApproximationLegacyForm(
             double x, double m2Q2, double asy, double thresh, double A,
@@ -140,7 +107,7 @@ class ApproximateCoefficientFunctionKLMV : public AbstractApproximate {
     public:
         ApproximateCoefficientFunctionKLMV(
             const int &order, const char &kind, const char &channel,
-            const string &highscale_version = "exact",
+            const HighScaleVersion &highscale_version = HighScaleVersion::Exact,
             const bool &lowxi = false, const double &abserr = 1e-3,
             const double &relerr = 1e-3, const int &dim = 1000
         );
@@ -162,8 +129,8 @@ class ApproximateCoefficientFunctionKLMV : public AbstractApproximate {
                     double, double, int
                 ) const;
 
-        struct klmv_params *params_A_;
-        struct klmv_params *params_B_;
+        klmv_params *params_A_;
+        klmv_params *params_B_;
 
         bool lowxi_;
 

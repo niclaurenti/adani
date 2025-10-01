@@ -46,14 +46,13 @@ class AbstractConvolution {
         double GetAbserr() const { return abserr_; };
         double GetRelerr() const { return relerr_; };
         int GetDim() const { return dim_; };
-        gsl_integration_workspace *GetWorkspace() const { return w_; };
         CoefficientFunction *GetCoeffFunc() const { return coefffunc_; };
         AbstractSplittingFunction *GetSplitFunc() const { return splitfunc_; };
 
         // set methods
         void SetAbserr(const double &abserr);
         void SetRelerr(const double &relerr);
-        void AllocWorkspace(const int &dim);
+        void CheckDim(const int &dim);
 
         // result of the convolution
         double Convolute(double x, double m2Q2, int nf) const;
@@ -67,8 +66,6 @@ class AbstractConvolution {
         double abserr_;
         double relerr_;
         const int dim_;
-
-        gsl_integration_workspace *w_;
 
     protected:
         CoefficientFunction *coefffunc_;
@@ -164,8 +161,6 @@ class DoubleConvolution : public AbstractConvolution {
     private:
         const bool MCintegral_;
         int MCcalls_;
-        gsl_monte_vegas_state *s_;
-        gsl_rng *r_;
 
         Convolution *convolution_;
         ConvolutedCoefficientFunction *conv_coeff_;
@@ -179,17 +174,6 @@ class DoubleConvolution : public AbstractConvolution {
         static double singular1_integrand(double z[], size_t /*dim*/, void *p);
         static double singular2_integrand(double z[], size_t /*dim*/, void *p);
         static double singular3_integrand(double z, void *p);
-};
-
-//==========================================================================================//
-//  struct function_params to be passed to gsl
-//------------------------------------------------------------------------------------------//
-
-struct function_params {
-        double x;
-        double m2Q2;
-        int nf;
-        const AbstractConvolution *conv;
 };
 
 #endif

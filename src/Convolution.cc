@@ -1,6 +1,7 @@
 #include "adani/Convolution.h"
 
 #include <cmath>
+#include <future>
 
 //==========================================================================================//
 //  AbstractConvolution: constructor
@@ -15,7 +16,7 @@ AbstractConvolution::AbstractConvolution(
     try {
         SetAbserr(abserr);
         SetRelerr(relerr);
-        AllocWorkspace(dim);
+        CheckDim(dim);
     } catch (NotValidException &e) {
         e.runtime_error();
     }
@@ -28,10 +29,7 @@ AbstractConvolution::AbstractConvolution(
 //  AbstractConvolution: destructor
 //------------------------------------------------------------------------------------------//
 
-AbstractConvolution::~AbstractConvolution() {
-
-    gsl_integration_workspace_free(w_);
-};
+AbstractConvolution::~AbstractConvolution(){};
 
 //==========================================================================================//
 //  AbstractConvolution: set method for abserr
@@ -67,7 +65,7 @@ void AbstractConvolution::SetRelerr(const double &relerr) {
 //  AbstractConvolution: method for the allocation of workspace
 //------------------------------------------------------------------------------------------//
 
-void AbstractConvolution::AllocWorkspace(const int &dim) {
+void AbstractConvolution::CheckDim(const int &dim) {
     // check dim
     if (dim <= 0) {
         throw NotValidException(
@@ -75,7 +73,6 @@ void AbstractConvolution::AllocWorkspace(const int &dim) {
             __PRETTY_FUNCTION__, __LINE__
         );
     }
-    w_ = gsl_integration_workspace_alloc(dim);
 }
 
 //==========================================================================================//
@@ -83,9 +80,31 @@ void AbstractConvolution::AllocWorkspace(const int &dim) {
 //------------------------------------------------------------------------------------------//
 
 double AbstractConvolution::Convolute(double x, double m2Q2, int nf) const {
-    return RegularPart(x, m2Q2, nf) + SingularPart(x, m2Q2, nf)
-           + LocalPart(x, m2Q2, nf);
+
+    std::future<double> future_f1 = std::async(
+        std::launch::async, &AbstractConvolution::RegularPart, this, x, m2Q2, nf
+    );
+    std::future<double> future_f2 = std::async(
+        std::launch::async, &AbstractConvolution::SingularPart, this, x, m2Q2,
+        nf
+    );
+    std::future<double> future_f3 = std::async(
+        std::launch::async, &AbstractConvolution::LocalPart, this, x, m2Q2, nf
+    );
+
+    return future_f1.get() + future_f2.get() + future_f3.get();
 }
+
+//==========================================================================================//
+//  struct function_params to be passed to gsl
+//------------------------------------------------------------------------------------------//
+
+struct function_params {
+        double x;
+        double m2Q2;
+        int nf;
+        const AbstractConvolution *conv;
+};
 
 //==========================================================================================//
 //  AbstractConvolution: integrand of the regular part
@@ -93,7 +112,7 @@ double AbstractConvolution::Convolute(double x, double m2Q2, int nf) const {
 
 double Convolution::regular_integrand(double z, void *p) {
 
-    struct function_params *params = (struct function_params *)p;
+    function_params *params = (function_params *)p;
 
     double m2Q2 = (params->m2Q2);
     double x = (params->x);
@@ -144,7 +163,7 @@ Convolution::~Convolution() {
 //------------------------------------------------------------------------------------------//
 
 double Convolution::singular_integrand(double z, void *p) {
-    struct function_params *params = (struct function_params *)p;
+    function_params *params = (function_params *)p;
 
     double m2Q2 = (params->m2Q2);
     double x = (params->x);
@@ -173,16 +192,16 @@ double Convolution::singular_integrand(double z, void *p) {
 //------------------------------------------------------------------------------------------//
 
 double Convolution::RegularPart(double x, double m2Q2, int nf) const {
-    double x_max = 1. / (1. + 4 * m2Q2);
+    double x_max = CoefficientFunction::xMax(m2Q2);
 
     double abserr = GetAbserr();
     double relerr = GetRelerr();
     int dim = GetDim();
-    gsl_integration_workspace *w = GetWorkspace();
+    gsl_integration_workspace *w = gsl_integration_workspace_alloc(dim);
 
     double regular, error;
 
-    struct function_params params = { x, m2Q2, nf, this };
+    function_params params = { x, m2Q2, nf, this };
 
     gsl_function F;
     F.function = &regular_integrand;
@@ -191,6 +210,8 @@ double Convolution::RegularPart(double x, double m2Q2, int nf) const {
     gsl_integration_qag(
         &F, x, x_max, abserr, relerr, dim, 4, w, &regular, &error
     );
+
+    gsl_integration_workspace_free(w);
 
     return regular;
 }
@@ -201,16 +222,16 @@ double Convolution::RegularPart(double x, double m2Q2, int nf) const {
 
 double Convolution::SingularPart(double x, double m2Q2, int nf) const {
 
-    double x_max = 1. / (1. + 4 * m2Q2);
+    double x_max = CoefficientFunction::xMax(m2Q2);
 
     double abserr = GetAbserr();
     double relerr = GetRelerr();
     int dim = GetDim();
-    gsl_integration_workspace *w = GetWorkspace();
+    gsl_integration_workspace *w = gsl_integration_workspace_alloc(dim);
 
     double singular, error;
 
-    struct function_params params = { x, m2Q2, nf, this };
+    function_params params = { x, m2Q2, nf, this };
 
     gsl_function F;
     F.function = &singular_integrand;
@@ -219,6 +240,8 @@ double Convolution::SingularPart(double x, double m2Q2, int nf) const {
     gsl_integration_qag(
         &F, x / x_max, 1., abserr, relerr, dim, 4, w, &singular, &error
     );
+
+    gsl_integration_workspace_free(w);
 
     return singular;
 }
@@ -229,7 +252,7 @@ double Convolution::SingularPart(double x, double m2Q2, int nf) const {
 
 double Convolution::LocalPart(double x, double m2Q2, int nf) const {
 
-    double x_max = 1. / (1. + 4 * m2Q2);
+    double x_max = CoefficientFunction::xMax(m2Q2);
 
     return coefffunc_->MuIndependentTerms(x, m2Q2, nf)
            * (splitfunc_->Local(nf)
@@ -315,10 +338,6 @@ DoubleConvolution::DoubleConvolution(
             new Convolution(coefffunc, splitfunc, abserr, relerr, dim);
         conv_coeff_ = nullptr;
 
-        s_ = gsl_monte_vegas_alloc(2);
-        gsl_rng_env_setup();
-        r_ = gsl_rng_alloc(gsl_rng_default);
-
     } else {
         conv_coeff_ = new ConvolutedCoefficientFunction(
             coefffunc, splitfunc, abserr, relerr, dim
@@ -333,11 +352,6 @@ DoubleConvolution::DoubleConvolution(
 //------------------------------------------------------------------------------------------//
 
 DoubleConvolution::~DoubleConvolution() {
-
-    if (MCintegral_) {
-        gsl_monte_vegas_free(s_);
-        gsl_rng_free(r_);
-    }
 
     delete convolution_;
     delete conv_coeff_;
@@ -365,7 +379,7 @@ void DoubleConvolution::SetMCcalls(const int &MCcalls) {
 double
     DoubleConvolution::regular1_integrand(double z[], size_t /*dim*/, void *p) {
 
-    struct function_params *params = (struct function_params *)p;
+    function_params *params = (function_params *)p;
 
     double m2Q2 = (params->m2Q2);
     double x = (params->x);
@@ -391,7 +405,7 @@ double
 
 double
     DoubleConvolution::regular2_integrand(double z[], size_t /*dim*/, void *p) {
-    struct function_params *params = (struct function_params *)p;
+    function_params *params = (function_params *)p;
 
     double m2Q2 = (params->m2Q2);
     double x = (params->x);
@@ -418,7 +432,7 @@ double
 
 double DoubleConvolution::regular3_integrand(double z, void *p) {
 
-    struct function_params *params = (struct function_params *)p;
+    function_params *params = (function_params *)p;
 
     double m2Q2 = (params->m2Q2);
     double x = (params->x);
@@ -427,7 +441,7 @@ double DoubleConvolution::regular3_integrand(double z, void *p) {
     CoefficientFunction *coefffunc = (params->conv)->GetCoeffFunc();
     AbstractSplittingFunction *splitfunc = (params->conv)->GetSplitFunc();
 
-    double x_max = 1. / (1. + 4 * m2Q2);
+    double x_max = CoefficientFunction::xMax(m2Q2);
 
     return -1. / z * splitfunc->Regular(x / z, nf)
            * coefffunc->MuIndependentTerms(z, m2Q2, nf)
@@ -443,13 +457,17 @@ double DoubleConvolution::RegularPart(double x, double m2Q2, int nf) const {
     if (!MCintegral_)
         return convolution_->RegularPart(x, m2Q2, nf);
 
-    double x_max = 1. / (1. + 4 * m2Q2);
-    struct function_params params = { x, m2Q2, nf, this };
+    double x_max = CoefficientFunction::xMax(m2Q2);
+    function_params params = { x, m2Q2, nf, this };
 
     double xl[2] = { x, x };
     double xu[2] = { x_max, x_max };
 
     double err, regular1, regular2, regular3, regular4;
+
+    gsl_monte_vegas_state *s = gsl_monte_vegas_alloc(2);
+    gsl_rng_env_setup();
+    gsl_rng *r = gsl_rng_alloc(gsl_rng_default);
 
     gsl_monte_function F;
 
@@ -457,17 +475,17 @@ double DoubleConvolution::RegularPart(double x, double m2Q2, int nf) const {
     F.dim = 2;
     F.params = &params;
 
-    gsl_monte_vegas_init(s_);
-    gsl_monte_vegas_integrate(&F, xl, xu, 2, MCcalls_, r_, s_, &regular1, &err);
+    gsl_monte_vegas_init(s);
+    gsl_monte_vegas_integrate(&F, xl, xu, 2, MCcalls_, r, s, &regular1, &err);
 
     F.f = &regular2_integrand;
-    gsl_monte_vegas_init(s_);
-    gsl_monte_vegas_integrate(&F, xl, xu, 2, MCcalls_, r_, s_, &regular2, &err);
+    gsl_monte_vegas_init(s);
+    gsl_monte_vegas_integrate(&F, xl, xu, 2, MCcalls_, r, s, &regular2, &err);
 
     double abserr = GetAbserr();
     double relerr = GetRelerr();
     int dim = GetDim();
-    gsl_integration_workspace *w = GetWorkspace();
+    gsl_integration_workspace *w = gsl_integration_workspace_alloc(dim);
 
     gsl_function f;
     f.function = &regular3_integrand;
@@ -476,6 +494,10 @@ double DoubleConvolution::RegularPart(double x, double m2Q2, int nf) const {
     gsl_integration_qag(
         &f, x, x_max, abserr, relerr, dim, 4, w, &regular3, &err
     );
+
+    gsl_monte_vegas_free(s);
+    gsl_rng_free(r);
+    gsl_integration_workspace_free(w);
 
     regular4 = convolution_->RegularPart(x, m2Q2, nf) * splitfunc_->Local(nf);
 
@@ -490,7 +512,7 @@ double DoubleConvolution::singular1_integrand(
     double z[], size_t /*dim*/, void *p
 ) {
 
-    struct function_params *params = (struct function_params *)p;
+    function_params *params = (function_params *)p;
 
     double m2Q2 = (params->m2Q2);
     double x = (params->x);
@@ -520,7 +542,7 @@ double DoubleConvolution::singular2_integrand(
     double z[], size_t /*dim*/, void *p
 ) {
 
-    struct function_params *params = (struct function_params *)p;
+    function_params *params = (function_params *)p;
 
     double m2Q2 = (params->m2Q2);
     double x = (params->x);
@@ -529,7 +551,7 @@ double DoubleConvolution::singular2_integrand(
     CoefficientFunction *coefffunc = (params->conv)->GetCoeffFunc();
     AbstractSplittingFunction *splitfunc = (params->conv)->GetSplitFunc();
 
-    double x_max = 1. / (1. + 4 * m2Q2);
+    double x_max = CoefficientFunction::xMax(m2Q2);
 
     double z1 = z[0], z2 = z[1];
 
@@ -554,7 +576,7 @@ double DoubleConvolution::singular2_integrand(
 
 double DoubleConvolution::singular3_integrand(double z, void *p) {
 
-    struct function_params *params = (struct function_params *)p;
+    function_params *params = (function_params *)p;
 
     double m2Q2 = (params->m2Q2);
     double x = (params->x);
@@ -563,7 +585,7 @@ double DoubleConvolution::singular3_integrand(double z, void *p) {
     CoefficientFunction *coefffunc = (params->conv)->GetCoeffFunc();
     AbstractSplittingFunction *splitfunc = (params->conv)->GetSplitFunc();
 
-    double x_max = 1. / (1. + 4 * m2Q2);
+    double x_max = CoefficientFunction::xMax(m2Q2);
 
     return -(
         splitfunc->Singular(z, nf)
@@ -583,13 +605,17 @@ double DoubleConvolution::SingularPart(double x, double m2Q2, int nf) const {
     if (!MCintegral_)
         return convolution_->SingularPart(x, m2Q2, nf);
 
-    double x_max = 1. / (1. + 4 * m2Q2);
-    struct function_params params = { x, m2Q2, nf, this };
+    double x_max = CoefficientFunction::xMax(m2Q2);
+    function_params params = { x, m2Q2, nf, this };
 
     double xl[2] = { x / x_max, x };
     double xu[2] = { 1, x_max };
 
     double err, singular1, singular2, singular3, singular4;
+
+    gsl_monte_vegas_state *s = gsl_monte_vegas_alloc(2);
+    gsl_rng_env_setup();
+    gsl_rng *r = gsl_rng_alloc(gsl_rng_default);
 
     gsl_monte_function F;
 
@@ -597,24 +623,20 @@ double DoubleConvolution::SingularPart(double x, double m2Q2, int nf) const {
     F.dim = 2;
     F.params = &params;
 
-    gsl_monte_vegas_init(s_);
-    gsl_monte_vegas_integrate(
-        &F, xl, xu, 2, MCcalls_, r_, s_, &singular1, &err
-    );
+    gsl_monte_vegas_init(s);
+    gsl_monte_vegas_integrate(&F, xl, xu, 2, MCcalls_, r, s, &singular1, &err);
 
     xl[1] = x / x_max;
     xu[1] = 1;
 
     F.f = &singular2_integrand;
-    gsl_monte_vegas_init(s_);
-    gsl_monte_vegas_integrate(
-        &F, xl, xu, 2, MCcalls_, r_, s_, &singular2, &err
-    );
+    gsl_monte_vegas_init(s);
+    gsl_monte_vegas_integrate(&F, xl, xu, 2, MCcalls_, r, s, &singular2, &err);
 
     double abserr = GetAbserr();
     double relerr = GetRelerr();
     int dim = GetDim();
-    gsl_integration_workspace *w = GetWorkspace();
+    gsl_integration_workspace *w = gsl_integration_workspace_alloc(dim);
 
     gsl_function f;
     f.function = &singular3_integrand;
@@ -623,6 +645,10 @@ double DoubleConvolution::SingularPart(double x, double m2Q2, int nf) const {
     gsl_integration_qag(
         &f, x / x_max, 1, abserr, relerr, dim, 4, w, &singular3, &err
     );
+
+    gsl_monte_vegas_free(s);
+    gsl_rng_free(r);
+    gsl_integration_workspace_free(w);
 
     singular4 = convolution_->SingularPart(x, m2Q2, nf) * splitfunc_->Local(nf);
 
@@ -638,7 +664,7 @@ double DoubleConvolution::LocalPart(double x, double m2Q2, int nf) const {
     if (!MCintegral_)
         return convolution_->LocalPart(x, m2Q2, nf);
 
-    double x_max = 1. / (1. + 4 * m2Q2);
+    double x_max = CoefficientFunction::xMax(m2Q2);
 
     return convolution_->Convolute(x, m2Q2, nf)
            * (splitfunc_->Local(nf)

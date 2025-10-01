@@ -6,6 +6,7 @@
 #include "adani/SpecialFunctions.h"
 
 #include <cmath>
+#include <future>
 #include <vector>
 
 using std::vector;
@@ -35,7 +36,7 @@ AbstractApproximate::~AbstractApproximate() { delete muterms_; }
 //------------------------------------------------------------------------------------------//
 
 void AbstractApproximate::SetDoubleIntegralMethod(
-    const string &double_int_method, const double &abserr, const double &relerr,
+    const DoubleIntegralMethod &double_int_method, const double &abserr, const double &relerr,
     const int &dim, const int &MCcalls
 ) {
     muterms_->SetDoubleIntegralMethod(
@@ -70,12 +71,18 @@ double AbstractApproximate::MuDependentTerms(
 Value AbstractApproximate::fxBand(
     double x, double m2Q2, double m2mu2, int nf
 ) const {
-    double x_max = 1. / (1. + 4 * m2Q2);
-    if (x >= x_max || x <= 0)
+    if (x >= xMax(m2Q2) || x <= 0)
         return Value(0.);
 
-    return MuIndependentTermsBand(x, m2Q2, nf)
-           + MuDependentTerms(x, m2Q2, m2mu2, nf);
+    std::future<Value> future_f1 = std::async(
+        std::launch::async, &AbstractApproximate::MuIndependentTermsBand, this, x, m2Q2, nf
+    );
+    std::future<double> future_f2 = std::async(
+        std::launch::async, &AbstractApproximate::MuDependentTerms, this, x, m2Q2, m2mu2,
+        nf
+    );
+
+    return future_f1.get() + future_f2.get();
 }
 
 //==========================================================================================//
@@ -85,21 +92,21 @@ Value AbstractApproximate::fxBand(
 #define a 2.5
 #define b 5.
 
-struct approximation_parameters C2_g1_params = { 0.2, 2.5, 2.5, 1.2 };
-struct approximation_parameters CL_g1_params = { 20., 11., 3., 2. };
+approximation_parameters CL_g1_params = { 20., 11., 3., 2. };
+approximation_parameters C2_g1_params = { 0.2, 2.5, 2.5, 1.2 };
 
-struct approximation_parameters C2_g2_params = { 1.7, 2.5, 2.5, 1.2 };
-struct approximation_parameters CL_g2_params = { 20., 11., 3., 2. };
-struct approximation_parameters C2_ps2_params = { 1.7, 2.5, 2.5, 1.2 };
-struct approximation_parameters CL_ps2_params = { 20., 11., 3., 2. };
+approximation_parameters C2_g2_params = { 1.7, 2.5, 2.5, 1.2 };
+approximation_parameters CL_g2_params = { 20., 11., 3., 2. };
+approximation_parameters C2_ps2_params = { 1.7, 2.5, 2.5, 1.2 };
+approximation_parameters CL_ps2_params = { 20., 11., 3., 2. };
 
-struct approximation_parameters C2_g3_params = { 0.3, 2.5, 2.5, 1.2 };
-struct approximation_parameters CL_g3_params = { 10., 11., 3., 2. };
-struct approximation_parameters C2_ps3_params = { 0.3, 2.5, 2.5, 1.2 };
-struct approximation_parameters CL_ps3_params = { 20., 11., 3., 2. };
+approximation_parameters C2_g3_params = { 0.3, 2.5, 2.5, 1.2 };
+approximation_parameters CL_g3_params = { 10., 11., 3., 2. };
+approximation_parameters C2_ps3_params = { 0.3, 2.5, 2.5, 1.2 };
+approximation_parameters CL_ps3_params = { 20., 11., 3., 2. };
 
-struct variation_parameters C2_var = { 3., 0.3 };
-struct variation_parameters CL_var = { 2., 0.2 };
+variation_parameters C2_var = { 3., 0.3 };
+variation_parameters CL_var = { 2., 0.2 };
 
 //==========================================================================================//
 //  ApproximateCoefficientFunction: constructor
@@ -107,7 +114,7 @@ struct variation_parameters CL_var = { 2., 0.2 };
 
 ApproximateCoefficientFunction::ApproximateCoefficientFunction(
     const int &order, const char &kind, const char &channel, const bool &NLL,
-    const string &highscale_version, const double &abserr, const double &relerr,
+    const HighScaleVersion &highscale_version, const double &abserr, const double &relerr,
     const int &dim
 )
     : AbstractApproximate(order, kind, channel, abserr, relerr, dim) {
@@ -141,82 +148,119 @@ ApproximateCoefficientFunction::~ApproximateCoefficientFunction() {
 
 void ApproximateCoefficientFunction::SetLegacyParameters() {
     try {
-        if (GetOrder() == 1) {
-            if (GetKind() == '2') {
-                if (GetChannel() == 'g')
-                    approximation_ = new approximation_parameters(C2_g1_params);
-                else {
-                    throw UnexpectedException(
-                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                    );
+        switch (GetOrder()) {
+            case 1:
+                switch (GetKind()) {
+                    case '2':
+                        switch (GetChannel()) {
+                            case 'g':
+                                approximation_ = new approximation_parameters(C2_g1_params);
+                                break;
+                            default:
+                                throw UnexpectedException(
+                                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                                );
+                        }
+                        variation_ = new variation_parameters(C2_var);
+                        break;
+                    case 'L':
+                        switch (GetChannel()) {
+                            case 'g':
+                                approximation_ = new approximation_parameters(CL_g2_params);
+                                break;
+                            default:
+                                throw UnexpectedException(
+                                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                                );
+                        }
+                        variation_ = new variation_parameters(CL_var);
+                        break;
+                    default:
+                        throw UnexpectedException(
+                            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                        );
                 }
-                variation_ = new variation_parameters(C2_var);
-            } else if (GetKind() == 'L') {
-                if (GetChannel() == 'g')
-                    approximation_ = new approximation_parameters(CL_g2_params);
-                else {
-                    throw UnexpectedException(
-                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                    );
+                break;
+            case 2:
+                switch (GetKind()) {
+                    case '2':
+                        switch (GetChannel()) {
+                            case 'g':
+                                approximation_ = new approximation_parameters(C2_g2_params);
+                                break;
+                            case 'q':
+                                approximation_ = new approximation_parameters(C2_ps2_params);
+                                break;
+                            default:
+                                throw UnexpectedException(
+                                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                                );
+                        }
+                        variation_ = new variation_parameters(C2_var);
+                        break;
+                    case 'L':
+                        switch (GetChannel()) {
+                            case 'g':
+                                approximation_ = new approximation_parameters(CL_g2_params);
+                                break;
+                            case 'q':
+                                approximation_ = new approximation_parameters(CL_ps2_params);
+                                break;
+                            default:
+                                throw UnexpectedException(
+                                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                                );
+                        }
+                        variation_ = new variation_parameters(CL_var);
+                        break;
+                    default:
+                        throw UnexpectedException(
+                            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                        );
                 }
-                variation_ = new variation_parameters(CL_var);
-            } else {
+                break;
+            case 3:
+                switch (GetKind()) {
+                    case '2':
+                        switch (GetChannel()) {
+                            case 'g':
+                                approximation_ = new approximation_parameters(C2_g3_params);
+                                break;
+                            case 'q':
+                                approximation_ = new approximation_parameters(C2_ps3_params);
+                                break;
+                            default:
+                                throw UnexpectedException(
+                                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                                );
+                        }
+                        variation_ = new variation_parameters(C2_var);
+                        break;
+                    case 'L':
+                        switch (GetChannel()) {
+                            case 'g':
+                                approximation_ = new approximation_parameters(CL_g3_params);
+                                break;
+                            case 'q':
+                                approximation_ = new approximation_parameters(CL_ps3_params);
+                                break;
+                            default:
+                                throw UnexpectedException(
+                                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                                );
+                        }
+                        variation_ = new variation_parameters(CL_var);
+                        break;
+                    default:
+                        throw UnexpectedException(
+                            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                        );
+                }
+                break;
+            default:
                 throw UnexpectedException(
                     "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
                 );
-            }
-        } else if (GetOrder() == 2) {
-            if (GetKind() == '2') {
-                if (GetChannel() == 'g')
-                    approximation_ = new approximation_parameters(C2_g2_params);
-                else if (GetChannel() == 'q')
-                    approximation_ = new approximation_parameters(C2_ps2_params);
-                else {
-                    throw UnexpectedException(
-                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                    );
-                }
-                variation_ = new variation_parameters(C2_var);
-            } else if (GetKind() == 'L') {
-                if (GetChannel() == 'g')
-                    approximation_ = new approximation_parameters(CL_g2_params);
-                else if (GetChannel() == 'q')
-                    approximation_ = new approximation_parameters(CL_ps2_params);
-                else {
-                    throw UnexpectedException(
-                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                    );
-                }
-                variation_ = new variation_parameters(CL_var);
-            }
-        } else if (GetOrder() == 3) {
-            if (GetKind() == '2') {
-                if (GetChannel() == 'g')
-                    approximation_ = new approximation_parameters(C2_g3_params);
-                else if (GetChannel() == 'q')
-                    approximation_ = new approximation_parameters(C2_ps3_params);
-                else {
-                    throw UnexpectedException(
-                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                    );
-                }
-                variation_ = new variation_parameters(C2_var);
-            } else if (GetKind() == 'L') {
-                if (GetChannel() == 'g')
-                    approximation_ = new approximation_parameters(CL_g3_params);
-                else if (GetChannel() == 'q')
-                    approximation_ = new approximation_parameters(CL_ps3_params);
-                else {
-                    throw UnexpectedException(
-                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                    );
-                }
-                variation_ = new variation_parameters(CL_var);
-            }
-        } else {
-            throw UnexpectedException(
-                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-            );
         }
     } catch (UnexpectedException &e) {
         e.runtime_error();
@@ -291,8 +335,7 @@ Value ApproximateCoefficientFunction::Approximation(
     double x, double m2Q2, int nf
 ) const {
 
-    double x_max = 1. / (1 + 4 * m2Q2);
-    if (x <= 0 || x > x_max)
+    if (x <= 0 || x > xMax(m2Q2))
         return Value(0.);
 
     double rho = 1.3, eta0 = 2.;
@@ -316,8 +359,7 @@ Value ApproximateCoefficientFunction::ApproximationLegacy(
     double x, double m2Q2, int nf
 ) const {
 
-    double x_max = 1. / (1 + 4 * m2Q2);
-    if (x <= 0 || x > x_max)
+    if (x <= 0 || x > xMax(m2Q2))
         return Value(0.);
 
     double A = approximation_->A, B = approximation_->B, C = approximation_->C,
@@ -394,16 +436,16 @@ double ApproximateCoefficientFunction::ApproximationLegacyForm(
 //  ApproximateCoefficientFunctionKLMV: parameters of the approximation
 //------------------------------------------------------------------------------------------//
 
-struct klmv_params klmv_C2g2A = { 1., 42.5, 0, 0, 0 };
-struct klmv_params klmv_C2g2B = { 0.8, 19.4, 0, 0, 0 };
-struct klmv_params klmv_C2q2A = { 1., 42.5, 0, 0, 0 };
-struct klmv_params klmv_C2q2B = { 0.8, 19.4, 0, 0, 0 };
+klmv_params klmv_C2g2A = { 1., 42.5, 0, 0, 0 };
+klmv_params klmv_C2g2B = { 0.8, 19.4, 0, 0, 0 };
+klmv_params klmv_C2q2A = { 1., 42.5, 0, 0, 0 };
+klmv_params klmv_C2q2B = { 0.8, 19.4, 0, 0, 0 };
 
-struct klmv_params klmv_C2g3A = { 1., 20., 0.007, 4, 0.28 };
-struct klmv_params klmv_C2g3B = { 0.8, 10.7, 0.055, 2, 0.423 };
-struct klmv_params klmv_C2q3A = { 1., 20., 0.004, 4, 0.125 };
-struct klmv_params klmv_C2q3B = { 0.8, 10.7, 0.0245, 2, 0.17 };
-struct klmv_params klmv_C2g3B_lowxi = { 0.8, 10.7, 0.055125, 2, 0.3825 };
+klmv_params klmv_C2g3A = { 1., 20., 0.007, 4, 0.28 };
+klmv_params klmv_C2g3B = { 0.8, 10.7, 0.055, 2, 0.423 };
+klmv_params klmv_C2q3A = { 1., 20., 0.004, 4, 0.125 };
+klmv_params klmv_C2q3B = { 0.8, 10.7, 0.0245, 2, 0.17 };
+klmv_params klmv_C2g3B_lowxi = { 0.8, 10.7, 0.055125, 2, 0.3825 };
 
 //==========================================================================================//
 //  ApproximateCoefficientFunctionKLMV: constructor
@@ -411,7 +453,7 @@ struct klmv_params klmv_C2g3B_lowxi = { 0.8, 10.7, 0.055125, 2, 0.3825 };
 
 ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(
     const int &order, const char &kind, const char &channel,
-    const string &highscale_version, const bool &lowxi, const double &abserr,
+    const HighScaleVersion &highscale_version, const bool &lowxi, const double &abserr,
     const double &relerr, const int &dim
 )
     : AbstractApproximate(order, kind, channel, abserr, relerr, dim), lowxi_(lowxi) {
@@ -549,6 +591,8 @@ Value ApproximateCoefficientFunctionKLMV::MuIndependentTermsBand(
 
 //==========================================================================================//
 //  ApproximateCoefficientFunctionKLMV: functional form of the approximation A at O(2)
+//
+//  Eq. (4.10,4.11) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
 Value ApproximateCoefficientFunctionKLMV::Order2(
@@ -592,6 +636,8 @@ Value ApproximateCoefficientFunctionKLMV::Order2(
 
 //==========================================================================================//
 //  ApproximateCoefficientFunctionKLMV: functional form of the approximation A at O(3)
+//
+//  Eq. (4.17,4.18,4.21,4.22) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
 Value ApproximateCoefficientFunctionKLMV::Order3(
@@ -638,6 +684,8 @@ Value ApproximateCoefficientFunctionKLMV::Order3(
 //==========================================================================================//
 //  ApproximateCoefficientFunctionKLMV: NLL coefficient of the small-x
 //  approximation
+//
+//  Eq. (4.19,4.20,4.23,4.24) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
 Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(
