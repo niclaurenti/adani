@@ -243,6 +243,8 @@ Value HighScaleCoefficientFunction::
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for FL at
 //  O(as) expanded in terms of \alpha_s^{[nf]}
+//
+//  See Eq. (603) of Ref. [arXiv:1403.6356]
 //------------------------------------------------------------------------------------------//
 
 Value HighScaleCoefficientFunction::
@@ -268,6 +270,8 @@ double
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for FL at
 //  O(as) expanded in terms of \alpha_s^{[nf+1]}
+//
+//  See Eq. (603) of Ref. [arXiv:1403.6356]
 //------------------------------------------------------------------------------------------//
 
 double HighScaleCoefficientFunction::DL_g1_highscale(double x) const {
@@ -350,6 +354,8 @@ double HighScaleCoefficientFunction::D2_ps2_highscale(
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for FL at
 //  O(as^2) expanded in terms of \alpha_s^{[nf]}
+//
+//  See Eq. (603) of Ref. [arXiv:1403.6356]
 //------------------------------------------------------------------------------------------//
 
 Value HighScaleCoefficientFunction::
@@ -366,6 +372,8 @@ Value HighScaleCoefficientFunction::
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for FL at
 //  O(as^2) expanded in terms of \alpha_s^{[nf]}
+//
+//  See Eq. (602) of Ref. [arXiv:1403.6356]
 //------------------------------------------------------------------------------------------//
 
 Value HighScaleCoefficientFunction::
@@ -493,6 +501,8 @@ Value HighScaleCoefficientFunction::
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the quark coefficient functions for FL at
 //  O(as^2) expanded in terms of \alpha_s^{[nf+1]}
+//
+//  See Eq. (603) of Ref. [arXiv:1403.6356]
 //------------------------------------------------------------------------------------------//
 
 double HighScaleCoefficientFunction::DL_g2_highscale(
@@ -540,6 +550,8 @@ double HighScaleCoefficientFunction::DL_g2_highscale(
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the quark coefficient functions for FL at
 //  O(as^2) expanded in terms of \alpha_s^{[nf+1]}
+//
+//  See Eq. (602) of Ref. [arXiv:1403.6356]
 //------------------------------------------------------------------------------------------//
 
 double HighScaleCoefficientFunction::DL_ps2_highscale(
@@ -606,6 +618,8 @@ Value HighScaleCoefficientFunction::C2_ps3_highscale(
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for FL at
 //  O(as^3) expanded in terms of \alpha_s^{[nf+1]}
+//
+//  See Eq. (603) of Ref. [arXiv:1403.6356]
 //------------------------------------------------------------------------------------------//
 
 double HighScaleCoefficientFunction::DL_g3_highscale(
@@ -1117,6 +1131,8 @@ double HighScaleCoefficientFunction::DL_g3_highscale(
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the gluon coefficient functions for FL at
 //  O(as^3) expanded in terms of \alpha_s^{[nf]}
+//
+// See Eq. (603) of Ref. [arXiv:1403.6356]
 //------------------------------------------------------------------------------------------//
 
 Value HighScaleCoefficientFunction::CL_g3_highscale(
@@ -1137,6 +1153,8 @@ Value HighScaleCoefficientFunction::CL_g3_highscale(
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the quark coefficient functions for FL at
 //  O(as^3) expanded in terms of \alpha_s^{[nf+1]}
+//
+//  See Eq. (602) of Ref. [arXiv:1403.6356]
 //------------------------------------------------------------------------------------------//
 
 double HighScaleCoefficientFunction::DL_ps3_highscale(
@@ -1302,6 +1320,8 @@ double HighScaleCoefficientFunction::DL_ps3_highscale(
 //==========================================================================================//
 //  High scale (Q^2 >> m^2) limit of the quark coefficient functions for FL at
 //  O(as^3) expanded in terms of \alpha_s^{[nf]}
+//
+//  See Eq. (602) of Ref. [arXiv:1403.6356]
 //------------------------------------------------------------------------------------------//
 
 Value HighScaleCoefficientFunction::CL_ps3_highscale(

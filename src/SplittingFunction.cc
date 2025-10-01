@@ -545,6 +545,8 @@ double SplittingFunction::Pqq0reg(double x, int /*nf*/) const {
 
 //==========================================================================================//
 //  Local part of the quark-quark splitting functions O(as)
+//
+//  Eq. (4.6) from Ref. [arXiv:hep-ph/0404111]
 //------------------------------------------------------------------------------------------//
 
 double SplittingFunction::Pqq0loc(int /*nf*/) const { return CF * 3.; }

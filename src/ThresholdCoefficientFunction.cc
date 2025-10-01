@@ -364,6 +364,8 @@ double ThresholdCoefficientFunction::C2_g2_threshold_expansion(
 //==========================================================================================//
 //  Beta dependent term of the xpansion coefficient of the threshold coefficient function
 //  at O(as^2) for FL.
+//
+//  See Eq. (80-82) from Ref. [arXiv:1805.09026]
 //------------------------------------------------------------------------------------------//
 
 double ThresholdCoefficientFunction::CL_g2_threshold_expansion(
@@ -399,6 +401,8 @@ double ThresholdCoefficientFunction::C2_g2_threshold_expansion_const(
 //==========================================================================================//
 //  Beta independent term of the xpansion coefficient of the threshold coefficient function
 //  at O(as^2) for FL.
+//
+//  See Eq. (80-82) from Ref. [arXiv:1805.09026]
 //------------------------------------------------------------------------------------------//
 
 double ThresholdCoefficientFunction::CL_g2_threshold_expansion_const(
@@ -510,6 +514,8 @@ double ThresholdCoefficientFunction::C2_g3_threshold_expansion_const(
 //==========================================================================================//
 //  Beta dependent term of the xpansion coefficient of the threshold coefficient function
 //  at O(as^3) for FL.
+//
+// See Eq. (??) of Ref. [arXiv:??] TODO: add reference from our paper
 //------------------------------------------------------------------------------------------//
 
 double ThresholdCoefficientFunction::CL_g3_threshold_expansion(
@@ -574,6 +580,8 @@ double ThresholdCoefficientFunction::CL_g3_threshold_expansion(
 //==========================================================================================//
 //  Beta dependent term of the xpansion coefficient of the threshold coefficient function
 //  at O(as^3) for FL.
+//
+// See Eq. (??) of Ref. [arXiv:??] TODO: add reference from our paper
 //------------------------------------------------------------------------------------------//
 
 double ThresholdCoefficientFunction::CL_g3_threshold_expansion_const(
@@ -637,6 +645,8 @@ double ThresholdCoefficientFunction::c0_bar(double xi) const {
 
 //==========================================================================================//
 //  Function needed for the threshold limit for FL.
+//
+//  See Eq. (B15) from Ref. [arXiv:1805.09026]
 //------------------------------------------------------------------------------------------//
 
 double ThresholdCoefficientFunction::aL_10_QED(double m2Q2) const {
@@ -664,6 +674,8 @@ double ThresholdCoefficientFunction::aL_10_QED(double m2Q2) const {
 
 //==========================================================================================//
 //  Function needed for the threshold limit for FL.
+//
+//  See Eq. (B13) from Ref. [arXiv:1805.09026]
 //------------------------------------------------------------------------------------------//
 
 double ThresholdCoefficientFunction::aL_10_OK(double m2Q2) const {

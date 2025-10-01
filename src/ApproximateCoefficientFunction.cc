@@ -591,6 +591,8 @@ Value ApproximateCoefficientFunctionKLMV::MuIndependentTermsBand(
 
 //==========================================================================================//
 //  ApproximateCoefficientFunctionKLMV: functional form of the approximation A at O(2)
+//
+//  Eq. (4.10,4.11) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
 Value ApproximateCoefficientFunctionKLMV::Order2(
@@ -634,6 +636,8 @@ Value ApproximateCoefficientFunctionKLMV::Order2(
 
 //==========================================================================================//
 //  ApproximateCoefficientFunctionKLMV: functional form of the approximation A at O(3)
+//
+//  Eq. (4.17,4.18,4.21,4.22) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
 Value ApproximateCoefficientFunctionKLMV::Order3(
@@ -680,6 +684,8 @@ Value ApproximateCoefficientFunctionKLMV::Order3(
 //==========================================================================================//
 //  ApproximateCoefficientFunctionKLMV: NLL coefficient of the small-x
 //  approximation
+//
+//  Eq. (4.19,4.20,4.23,4.24) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
 Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(
