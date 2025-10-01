@@ -5,7 +5,8 @@
  *
  *         Author:  Daniele Adani
  *
- *    Description:  ???
+ *    Description:  Noi parliamo di idee che danno animo a un gioco che poi è
+ *                  quello che amiamo, ovvero il calcio
  *
  * =====================================================================================
  */
