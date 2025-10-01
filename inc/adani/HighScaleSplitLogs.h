@@ -22,6 +22,8 @@
 #include "adani/MasslessCoefficientFunction.h"
 #include "adani/MatchingCondition.h"
 
+#include <memory>
+
 //==========================================================================================//
 //           Legend:
 //           at order O(alpha_s^n)

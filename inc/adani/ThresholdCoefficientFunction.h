@@ -19,6 +19,8 @@
 
 #include "adani/CoefficientFunction.h"
 
+#include <memory>
+
 //==========================================================================================//
 //  forward declaration of class ExactCoefficientFunction to avoid circular
 //  dependencies

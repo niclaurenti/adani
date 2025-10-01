@@ -21,6 +21,8 @@
 #include "adani/MasslessCoefficientFunction.h"
 #include "adani/MatchingCondition.h"
 
+#include <memory>
+
 //==========================================================================================//
 //                      The notation used is the following:
 //
