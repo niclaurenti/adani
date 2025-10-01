@@ -21,6 +21,8 @@
 #include "adani/HighEnergyCoefficientFunction.h"
 #include "adani/HighScaleCoefficientFunction.h"
 
+#include <memory>
+
 //==========================================================================================//
 //  class AsymptoticCoefficientFunction
 //------------------------------------------------------------------------------------------//
@@ -40,9 +42,9 @@ class AsymptoticCoefficientFunction : public CoefficientFunction {
 
     private:
         bool legacy_pt_;
-        HighScaleCoefficientFunction *highscale_;
-        HighEnergyCoefficientFunction *highenergy_;
-        HighEnergyHighScaleCoefficientFunction *highenergyhighscale_;
+        std::unique_ptr<HighScaleCoefficientFunction> highscale_;
+        std::unique_ptr<HighEnergyCoefficientFunction> highenergy_;
+        std::unique_ptr<HighEnergyHighScaleCoefficientFunction> highenergyhighscale_;
 
         Value (AsymptoticCoefficientFunction::*fx_)(
             double, double, double, int

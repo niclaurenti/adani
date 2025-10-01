@@ -13,13 +13,13 @@ AsymptoticCoefficientFunction::AsymptoticCoefficientFunction(
     : CoefficientFunction(order, kind, channel), legacy_pt_(false) {
 
     try {
-        highscale_ = new HighScaleCoefficientFunction(
+        highscale_ = std::make_unique<HighScaleCoefficientFunction>(
             GetOrder(), GetKind(), GetChannel(), highscale_version
         );
-        highenergy_ = new HighEnergyCoefficientFunction(
+        highenergy_ = std::make_unique<HighEnergyCoefficientFunction>(
             GetOrder(), GetKind(), GetChannel(), NLL
         );
-        highenergyhighscale_ = new HighEnergyHighScaleCoefficientFunction(
+        highenergyhighscale_ = std::make_unique<HighEnergyHighScaleCoefficientFunction>(
             GetOrder(), GetKind(), GetChannel(), NLL
         );
 
@@ -33,11 +33,7 @@ AsymptoticCoefficientFunction::AsymptoticCoefficientFunction(
 //  AsymptoticCoefficientFunction: destructor
 //------------------------------------------------------------------------------------------//
 
-AsymptoticCoefficientFunction::~AsymptoticCoefficientFunction() {
-    delete highscale_;
-    delete highenergy_;
-    delete highenergyhighscale_;
-}
+AsymptoticCoefficientFunction::~AsymptoticCoefficientFunction() {}
 
 //==========================================================================================//
 //  AsymptoticCoefficientFunction: SetFunctions

@@ -62,7 +62,7 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
             double, double, double, int
         ) const;
 
-        ExactCoefficientFunction *exact_as1_;
+        std::unique_ptr<ExactCoefficientFunction> exact_as1_;
 
         Value Order1(double x, double m2Q2, double /*m2mu2*/, int /*nf*/) const;
         Value PlainThreshold(double x, double m2Q2, double m2mu2, int nf) const;

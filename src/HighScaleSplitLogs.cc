@@ -33,13 +33,13 @@ HighScaleSplitLogs::HighScaleSplitLogs(
 
     if (GetChannel() == 'g')
         massless_as1_ =
-            new MasslessCoefficientFunction(1, GetKind(), GetChannel());
+            std::make_unique<MasslessCoefficientFunction>(1, GetKind(), GetChannel());
 
     massless_ =
-        new MasslessCoefficientFunction(GetOrder(), GetKind(), GetChannel());
+        std::make_unique<MasslessCoefficientFunction>(GetOrder(), GetKind(), GetChannel());
 
     if (GetOrder() == 3 && GetKind() == '2') {
-        a_muindep_ = new MatchingCondition(3, 'Q', GetChannel(), version);
+        a_muindep_ = std::make_unique<MatchingCondition>(3, 'Q', GetChannel(), version);
     }
 }
 
@@ -47,11 +47,7 @@ HighScaleSplitLogs::HighScaleSplitLogs(
 //  HighScaleSplitLogs: destructor
 //------------------------------------------------------------------------------------------//
 
-HighScaleSplitLogs::~HighScaleSplitLogs() {
-    delete massless_;
-    delete massless_as1_;
-    delete a_muindep_;
-}
+HighScaleSplitLogs::~HighScaleSplitLogs() {}
 
 //==========================================================================================//
 //  HighScaleSplitLogs: function that sets the pointers to the correct function

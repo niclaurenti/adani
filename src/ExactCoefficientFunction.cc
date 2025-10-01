@@ -40,15 +40,15 @@ ExactCoefficientFunction::ExactCoefficientFunction(
 
         if (GetOrder() > 1) {
             // needed in both channels
-            gluon_as1_ = new ExactCoefficientFunction(1, GetKind(), 'g');
-            delta_ = new Delta();
+            gluon_as1_ = std::make_shared<const ExactCoefficientFunction>(1, GetKind(), 'g');
+            delta_ = std::make_shared<const Delta>();
 
             switch (GetChannel()) {
                 case 'q':
-                    Pgq0_ = new SplittingFunction(0, 'g', 'q');
+                    Pgq0_ = std::make_shared<const SplittingFunction>(0, 'g', 'q');
                     break;
                 case 'g':
-                    Pgg0_ = new SplittingFunction(0, 'g', 'g');
+                    Pgg0_ = std::make_shared<const SplittingFunction>(0, 'g', 'g');
                     break;
                 default:
                     throw UnexpectedException(
@@ -58,25 +58,25 @@ ExactCoefficientFunction::ExactCoefficientFunction(
         }
         if (GetOrder() > 2) {
             // needed in both channels
-            gluon_as2_ = new ExactCoefficientFunction(2, GetKind(), 'g');
-            quark_as2_ = new ExactCoefficientFunction(2, GetKind(), 'q');
+            gluon_as2_ = std::make_shared<const ExactCoefficientFunction>(2, GetKind(), 'g');
+            quark_as2_ = std::make_shared<const ExactCoefficientFunction>(2, GetKind(), 'q');
 
             switch (GetChannel()) {
                 case 'q':
-                    Pgq1_ = new SplittingFunction(1, 'g', 'q');
-                    Pqq0_ = new SplittingFunction(0, 'q', 'q');
+                    Pgq1_ = std::make_shared<const SplittingFunction>(1, 'g', 'q');
+                    Pqq0_ = std::make_shared<const SplittingFunction>(0, 'q', 'q');
                     Pgg0Pgq0_ =
-                        new ConvolutedSplittingFunctions(0, 'g', 'g', 0, 'g', 'q');
+                        std::make_shared<const ConvolutedSplittingFunctions>(0, 'g', 'g', 0, 'g', 'q');
                     Pqq0Pgq0_ =
-                        new ConvolutedSplittingFunctions(0, 'q', 'q', 0, 'g', 'q');
+                        std::make_shared<const ConvolutedSplittingFunctions>(0, 'q', 'q', 0, 'g', 'q');
                     break;
                 case 'g':
-                    Pgg1_ = new SplittingFunction(1, 'g', 'g');
-                    Pqg0_ = new SplittingFunction(0, 'q', 'g');
+                    Pgg1_ = std::make_shared<const SplittingFunction>(1, 'g', 'g');
+                    Pqg0_ = std::make_shared<const SplittingFunction>(0, 'q', 'g');
                     Pgq0Pqg0_ =
-                        new ConvolutedSplittingFunctions(0, 'g', 'q', 0, 'q', 'g');
+                        std::make_shared<const ConvolutedSplittingFunctions>(0, 'g', 'q', 0, 'q', 'g');
                     Pgg0Pgg0_ =
-                        new ConvolutedSplittingFunctions(0, 'g', 'g', 0, 'g', 'g');
+                        std::make_shared<const ConvolutedSplittingFunctions>(0, 'g', 'g', 0, 'g', 'g');
                     break;
                 default:
                     throw UnexpectedException(
@@ -89,19 +89,19 @@ ExactCoefficientFunction::ExactCoefficientFunction(
             case 1:
                 break;
             case 2:
-                asy_ = new AsymptoticCoefficientFunction(order, kind, channel);
-                thr_ = new ThresholdCoefficientFunction(order, kind, channel);
+                asy_ = std::make_unique<AsymptoticCoefficientFunction>(order, kind, channel);
+                thr_ = std::make_unique<ThresholdCoefficientFunction>(order, kind, channel);
                 switch (GetChannel()) {
                     case 'q':
                         convolutions_lmu1_.push_back(
-                            new Convolution(gluon_as1_, Pgq0_, abserr, relerr, dim)
+                            std::make_unique<Convolution>(gluon_as1_, Pgq0_, abserr, relerr, dim)
                         );
                         break;
                     case 'g':
                         convolutions_lmu1_.push_back(
-                            new Convolution(gluon_as1_, Pgg0_, abserr, relerr, dim)
+                            std::make_unique<Convolution>(gluon_as1_, Pgg0_, abserr, relerr, dim)
                         );
-                        convolutions_lmu1_.push_back(new Convolution(gluon_as1_, delta_));
+                        convolutions_lmu1_.push_back(std::make_unique<Convolution>(gluon_as1_, delta_));
                         break;
                     default:
                         throw UnexpectedException(
@@ -113,51 +113,51 @@ ExactCoefficientFunction::ExactCoefficientFunction(
                 switch (GetChannel()) {
                     case 'q':
                         convolutions_lmu1_.push_back(
-                            new Convolution(gluon_as1_, Pgq1_, abserr, relerr, dim)
+                            std::make_unique<Convolution>(gluon_as1_, Pgq1_, abserr, relerr, dim)
                         );
                         convolutions_lmu1_.push_back(
-                            new Convolution(gluon_as2_, Pgq0_, abserr, relerr, dim)
+                            std::make_unique<Convolution>(gluon_as2_, Pgq0_, abserr, relerr, dim)
                         );
                         convolutions_lmu1_.push_back(
-                            new Convolution(quark_as2_, Pqq0_, abserr, relerr, dim)
+                            std::make_unique<Convolution>(quark_as2_, Pqq0_, abserr, relerr, dim)
                         );
-                        convolutions_lmu1_.push_back(new Convolution(quark_as2_, delta_));
+                        convolutions_lmu1_.push_back(std::make_unique<Convolution>(quark_as2_, delta_));
 
                         convolutions_lmu2_.push_back(
-                            new Convolution(gluon_as1_, Pgg0Pgq0_, abserr, relerr, dim)
+                            std::make_unique<Convolution>(gluon_as1_, Pgg0Pgq0_, abserr, relerr, dim)
                         );
                         convolutions_lmu2_.push_back(
-                            new Convolution(gluon_as1_, Pqq0Pgq0_, abserr, relerr, dim)
+                            std::make_unique<Convolution>(gluon_as1_, Pqq0Pgq0_, abserr, relerr, dim)
                         );
                         convolutions_lmu2_.push_back(
-                            new Convolution(gluon_as1_, Pgq0_, abserr, relerr, dim)
+                            std::make_unique<Convolution>(gluon_as1_, Pgq0_, abserr, relerr, dim)
                         );
                         break;
                     case 'g':
                         convolutions_lmu1_.push_back(
-                            new Convolution(gluon_as1_, Pgg1_, abserr, relerr, dim)
+                            std::make_unique<Convolution>(gluon_as1_, Pgg1_, abserr, relerr, dim)
                         );
-                        convolutions_lmu1_.push_back(new Convolution(gluon_as1_, delta_));
+                        convolutions_lmu1_.push_back(std::make_unique<Convolution>(gluon_as1_, delta_));
                         convolutions_lmu1_.push_back(
-                            new Convolution(quark_as2_, Pqg0_, abserr, relerr, dim)
+                            std::make_unique<Convolution>(quark_as2_, Pqg0_, abserr, relerr, dim)
                         );
                         convolutions_lmu1_.push_back(
-                            new Convolution(gluon_as2_, Pgg0_, abserr, relerr, dim)
+                            std::make_unique<Convolution>(gluon_as2_, Pgg0_, abserr, relerr, dim)
                         );
-                        convolutions_lmu1_.push_back(new Convolution(gluon_as2_, delta_));
+                        convolutions_lmu1_.push_back(std::make_unique<Convolution>(gluon_as2_, delta_));
 
                         // by default option I integrate with analytical double integral
                         // method
                         convolutions_lmu2_.push_back(
-                            new Convolution(gluon_as1_, Pgg0Pgg0_, abserr, relerr, dim)
+                            std::make_unique<Convolution>(gluon_as1_, Pgg0Pgg0_, abserr, relerr, dim)
                         );
                         convolutions_lmu2_.push_back(
-                            new Convolution(gluon_as1_, Pgq0Pqg0_, abserr, relerr, dim)
+                            std::make_unique<Convolution>(gluon_as1_, Pgq0Pqg0_, abserr, relerr, dim)
                         );
                         convolutions_lmu2_.push_back(
-                            new Convolution(gluon_as1_, Pgg0_, abserr, relerr, dim)
+                            std::make_unique<Convolution>(gluon_as1_, Pgg0_, abserr, relerr, dim)
                         );
-                        convolutions_lmu2_.push_back(new Convolution(gluon_as1_, delta_));
+                        convolutions_lmu2_.push_back(std::make_unique<Convolution>(gluon_as1_, delta_));
                         break;
                     default:
                         throw UnexpectedException(
@@ -181,36 +181,7 @@ ExactCoefficientFunction::ExactCoefficientFunction(
 //  ExactCoefficientFunction: destructor
 //------------------------------------------------------------------------------------------//
 
-ExactCoefficientFunction::~ExactCoefficientFunction() {
-
-    delete gluon_as1_;
-    delete gluon_as2_;
-    delete quark_as2_;
-
-    for (long unsigned int i = 0; i < convolutions_lmu1_.size(); i++) {
-        delete convolutions_lmu1_[i];
-    }
-
-    for (long unsigned int i = 0; i < convolutions_lmu2_.size(); i++) {
-        delete convolutions_lmu2_[i];
-    }
-
-    delete Pgq0_;
-    delete Pgg0_;
-    delete Pgq1_;
-    delete Pqq0_;
-    delete Pgg0Pgq0_;
-    delete Pqq0Pgq0_;
-    delete Pgg1_;
-    delete Pqg0_;
-    delete Pgq0Pqg0_;
-    delete Pgg0Pgg0_;
-
-    delete delta_;
-
-    delete asy_;
-    delete thr_;
-}
+ExactCoefficientFunction::~ExactCoefficientFunction() {}
 
 //==========================================================================================//
 //  ExactCoefficientFunction: function that sets the pointer for mu_indep_ and
@@ -319,29 +290,16 @@ void ExactCoefficientFunction::SetDoubleIntegralMethod(
             );
         }
 
-        // // check double_int_method
-        // if (double_int_method != "analytical"
-        //     && double_int_method != "double_numerical"
-        //     && double_int_method != "monte_carlo") {
-        //     throw NotValidException(
-        //         "double_int_method must be 'analytical', 'double_numerical' or "
-        //         "'monte_carlo'! Got '"
-        //             + double_int_method + "'",
-        //         __PRETTY_FUNCTION__, __LINE__
-        //     );
-        // }
-
         // at this point I must be in the g channel at order 3
-        delete convolutions_lmu2_[0];
 
         switch (double_int_method) {
             case DoubleIntegralMethod::MonteCarlo:
-                convolutions_lmu2_[0] = new DoubleConvolution(
+                convolutions_lmu2_[0] = std::make_unique<DoubleConvolution>(
                     gluon_as1_, Pgg0_, abserr, relerr, dim, true, MCcalls
                 );
                 break;
             case DoubleIntegralMethod::DoubleNumerical:
-                convolutions_lmu2_[0] = new DoubleConvolution(
+                convolutions_lmu2_[0] = std::make_unique<DoubleConvolution>(
                     gluon_as1_, Pgg0_, abserr, relerr, dim, false, MCcalls
                 );
                 break;
@@ -349,10 +307,10 @@ void ExactCoefficientFunction::SetDoubleIntegralMethod(
                 if (Pgg0Pgg0_ == nullptr) {
                     // TODO: this if is probably useless
                     Pgg0Pgg0_ =
-                        new ConvolutedSplittingFunctions(0, 'g', 'g', 0, 'g', 'g');
+                        std::make_shared<const ConvolutedSplittingFunctions>(0, 'g', 'g', 0, 'g', 'g');
                 }
                 convolutions_lmu2_[0] =
-                    new Convolution(gluon_as1_, Pgg0Pgg0_, abserr, relerr, dim);
+                    std::make_unique<Convolution>(gluon_as1_, Pgg0Pgg0_, abserr, relerr, dim);
         }
 
     } catch (const NotValidException &e) {
@@ -609,11 +567,11 @@ double ExactCoefficientFunction::C_g21(double x, double m2Q2) const {
 
     std::future<double> future_f0 = std::async(
         std::launch::async, &AbstractConvolution::Convolute,
-        convolutions_lmu1_[0], x, m2Q2, nf_one
+        std::ref(*convolutions_lmu1_[0]), x, m2Q2, nf_one
     );
     std::future<double> future_f1 = std::async(
         std::launch::async, &AbstractConvolution::Convolute,
-        convolutions_lmu1_[1], x, m2Q2, nf_one
+        std::ref(*convolutions_lmu1_[1]), x, m2Q2, nf_one
     );
 
     return -(future_f0.get() - future_f1.get() * beta0(nf_one));
@@ -684,19 +642,19 @@ double ExactCoefficientFunction::C_ps31(double x, double m2Q2, int nf) const {
 
     std::future<double> future_f0 = std::async(
         std::launch::async, &AbstractConvolution::Convolute,
-        convolutions_lmu1_[0], x, m2Q2, nf
+        std::ref(*convolutions_lmu1_[0]), x, m2Q2, nf
     );
     std::future<double> future_f1 = std::async(
         std::launch::async, &AbstractConvolution::Convolute,
-        convolutions_lmu1_[1], x, m2Q2, nf
+        std::ref(*convolutions_lmu1_[1]), x, m2Q2, nf
     );
     std::future<double> future_f2 = std::async(
         std::launch::async, &AbstractConvolution::Convolute,
-        convolutions_lmu1_[2], x, m2Q2, nf
+        std::ref(*convolutions_lmu1_[2]), x, m2Q2, nf
     );
     std::future<double> future_f3 = std::async(
         std::launch::async, &AbstractConvolution::Convolute,
-        convolutions_lmu1_[3], x, m2Q2, nf
+        std::ref(*convolutions_lmu1_[3]), x, m2Q2, nf
     );
 
     return -(
@@ -716,15 +674,15 @@ double ExactCoefficientFunction::C_ps32(double x, double m2Q2, int nf) const {
 
     std::future<double> future_f0 = std::async(
         std::launch::async, &AbstractConvolution::Convolute,
-        convolutions_lmu2_[0], x, m2Q2, nf
+        std::ref(*convolutions_lmu2_[0]), x, m2Q2, nf
     );
     std::future<double> future_f1 = std::async(
         std::launch::async, &AbstractConvolution::Convolute,
-        convolutions_lmu2_[1], x, m2Q2, nf
+        std::ref(*convolutions_lmu2_[1]), x, m2Q2, nf
     );
     std::future<double> future_f2 = std::async(
         std::launch::async, &AbstractConvolution::Convolute,
-        convolutions_lmu2_[2], x, m2Q2, nf
+        std::ref(*convolutions_lmu2_[2]), x, m2Q2, nf
     );
 
     return 0.5 * (future_f0.get() + future_f1.get())
@@ -742,23 +700,23 @@ double ExactCoefficientFunction::C_g31(double x, double m2Q2, int nf) const {
 
     std::future<double> future_f0 = std::async(
         std::launch::async, &AbstractConvolution::Convolute,
-        convolutions_lmu1_[0], x, m2Q2, nf
+        std::ref(*convolutions_lmu1_[0]), x, m2Q2, nf
     );
     std::future<double> future_f1 = std::async(
         std::launch::async, &AbstractConvolution::Convolute,
-        convolutions_lmu1_[1], x, m2Q2, nf
+        std::ref(*convolutions_lmu1_[1]), x, m2Q2, nf
     );
     std::future<double> future_f2 = std::async(
         std::launch::async, &AbstractConvolution::Convolute,
-        convolutions_lmu1_[2], x, m2Q2, nf
+        std::ref(*convolutions_lmu1_[2]), x, m2Q2, nf
     );
     std::future<double> future_f3 = std::async(
         std::launch::async, &AbstractConvolution::Convolute,
-        convolutions_lmu1_[3], x, m2Q2, nf
+        std::ref(*convolutions_lmu1_[3]), x, m2Q2, nf
     );
     std::future<double> future_f4 = std::async(
         std::launch::async, &AbstractConvolution::Convolute,
-        convolutions_lmu1_[4], x, m2Q2, nf
+        std::ref(*convolutions_lmu1_[4]), x, m2Q2, nf
     );
 
     return -(
@@ -780,19 +738,19 @@ double ExactCoefficientFunction::C_g32(double x, double m2Q2, int nf) const {
 
     std::future<double> future_f0 = std::async(
         std::launch::async, &AbstractConvolution::Convolute,
-        convolutions_lmu2_[0], x, m2Q2, nf
+        std::ref(*convolutions_lmu2_[0]), x, m2Q2, nf
     );
     std::future<double> future_f1 = std::async(
         std::launch::async, &AbstractConvolution::Convolute,
-        convolutions_lmu2_[1], x, m2Q2, nf
+        std::ref(*convolutions_lmu2_[1]), x, m2Q2, nf
     );
     std::future<double> future_f2 = std::async(
         std::launch::async, &AbstractConvolution::Convolute,
-        convolutions_lmu2_[2], x, m2Q2, nf
+        std::ref(*convolutions_lmu2_[2]), x, m2Q2, nf
     );
     std::future<double> future_f3 = std::async(
         std::launch::async, &AbstractConvolution::Convolute,
-        convolutions_lmu2_[3], x, m2Q2, nf
+        std::ref(*convolutions_lmu2_[3]), x, m2Q2, nf
     );
     return 0.5 * (future_f0.get() + future_f1.get())
            - 3. / 2 * beta_0 * future_f2.get()

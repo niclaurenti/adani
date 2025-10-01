@@ -44,9 +44,9 @@ class CoefficientFunction {
         CoefficientFunction(
             const int &order, const char &kind, const char &channel
         );
-        CoefficientFunction(CoefficientFunction *coeff)
+        CoefficientFunction(CoefficientFunction& coeff)
             : CoefficientFunction(
-                  coeff->GetOrder(), coeff->GetKind(), coeff->GetChannel()
+                  coeff.GetOrder(), coeff.GetKind(), coeff.GetChannel()
               ){};
 
         virtual ~CoefficientFunction() = 0;

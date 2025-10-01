@@ -15,19 +15,15 @@
 #ifndef Split
 #define Split
 
+#include <memory>
+
 //==========================================================================================//
 //  class AbstractSplittingFunction
 //------------------------------------------------------------------------------------------//
 
 class AbstractSplittingFunction {
     public:
-        AbstractSplittingFunction() { mult_factor_ = 1.; };
         virtual ~AbstractSplittingFunction() = 0;
-
-        double GetMultFact() const { return mult_factor_; };
-        void SetMultFact(const double &mult_factor) {
-            mult_factor_ = mult_factor;
-        };
 
         // Components of the Splitting Function
         virtual double Regular(double x, int nf) const = 0;
@@ -40,8 +36,6 @@ class AbstractSplittingFunction {
         void CheckOrder(int order) const;
         void CheckEntry(char entry) const;
 
-    private:
-        double mult_factor_;
 };
 
 //==========================================================================================//
@@ -179,7 +173,7 @@ class ConvolutedSplittingFunctions : public AbstractSplittingFunction {
         double (ConvolutedSplittingFunctions::*sing_int_)(double, int) const;
         double (ConvolutedSplittingFunctions::*loc_)(int) const;
 
-        SplittingFunction *Pgg0_;
+        std::unique_ptr<SplittingFunction> Pgg0_;
 
         void SetFunctions();
 
@@ -232,7 +226,7 @@ class Delta : public AbstractSplittingFunction {
 
         double Regular(double /*x*/, int /*nf*/) const override { return 0.; };
         double Singular(double /*x*/, int /*nf*/) const override { return 0.; };
-        double Local(int /*nf*/) const override { return GetMultFact() * 1.; };
+        double Local(int /*nf*/) const override { return 1.; };
         double SingularIntegrated(double /*x*/, int /*nf*/) const override {
             return 0.;
         };

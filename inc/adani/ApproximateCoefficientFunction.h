@@ -21,6 +21,8 @@
 #include "adani/ExactCoefficientFunction.h"
 #include "adani/ThresholdCoefficientFunction.h"
 
+#include <memory>
+
 //==========================================================================================//
 //  class AbstractApproximate
 //------------------------------------------------------------------------------------------//
@@ -49,7 +51,7 @@ class AbstractApproximate : public CoefficientFunction {
         ) const override;
 
     private:
-        ExactCoefficientFunction *muterms_;
+        std::unique_ptr<ExactCoefficientFunction> muterms_;
 };
 
 //==========================================================================================//
@@ -75,8 +77,8 @@ class ApproximateCoefficientFunction : public AbstractApproximate {
         ) const override;
 
     private:
-        ThresholdCoefficientFunction *threshold_;
-        AsymptoticCoefficientFunction *asymptotic_;
+        std::unique_ptr<ThresholdCoefficientFunction> threshold_;
+        std::unique_ptr<AsymptoticCoefficientFunction> asymptotic_;
 
         Value (ApproximateCoefficientFunction::*fx_)(
             double, double, int
@@ -84,8 +86,8 @@ class ApproximateCoefficientFunction : public AbstractApproximate {
 
         bool legacy_appr_;
 
-        approximation_parameters *approximation_;
-        variation_parameters *variation_;
+        std::unique_ptr<approximation_parameters> approximation_;
+        std::unique_ptr<variation_parameters> variation_;
 
         double ApproximationLegacyForm(
             double x, double m2Q2, double asy, double thresh, double A,
@@ -121,16 +123,16 @@ class ApproximateCoefficientFunctionKLMV : public AbstractApproximate {
         ) const override;
 
     private:
-        ThresholdCoefficientFunction *threshold_;
-        HighScaleCoefficientFunction *highscale_;
-        HighEnergyCoefficientFunction *highenergy_;
+        std::unique_ptr<ThresholdCoefficientFunction> threshold_;
+        std::unique_ptr<HighScaleCoefficientFunction> highscale_;
+        std::unique_ptr<HighEnergyCoefficientFunction> highenergy_;
 
         Value (ApproximateCoefficientFunctionKLMV::*fx_)(
                     double, double, int
                 ) const;
 
-        klmv_params *params_A_;
-        klmv_params *params_B_;
+        std::unique_ptr<klmv_params> params_A_;
+        std::unique_ptr<klmv_params> params_B_;
 
         bool lowxi_;
 

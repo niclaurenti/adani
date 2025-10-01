@@ -69,9 +69,9 @@ class HighScaleSplitLogs : public CoefficientFunction {
         Value N3LL(double x, int nf) const { return (this->*N3LL_)(x, nf); }
 
     private:
-        MasslessCoefficientFunction *massless_as1_;
-        MasslessCoefficientFunction *massless_;
-        MatchingCondition *a_muindep_;
+        std::unique_ptr<MasslessCoefficientFunction> massless_as1_;
+        std::unique_ptr<MasslessCoefficientFunction> massless_;
+        std::unique_ptr<MatchingCondition> a_muindep_;
 
         double (HighScaleSplitLogs::*LL_)(double, int) const;
         double (HighScaleSplitLogs::*NLL_)(double, int) const;

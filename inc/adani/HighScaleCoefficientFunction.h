@@ -57,10 +57,10 @@ class HighScaleCoefficientFunction : public CoefficientFunction {
             double, double, double, int
         ) const;
 
-        MasslessCoefficientFunction *massless_as1_;
-        MasslessCoefficientFunction *massless_as2_;
-        MasslessCoefficientFunction *massless_as3_;
-        MatchingCondition *a_muindep_;
+        std::unique_ptr<MasslessCoefficientFunction> massless_as1_;
+        std::unique_ptr<MasslessCoefficientFunction> massless_as2_;
+        std::unique_ptr<MasslessCoefficientFunction> massless_as3_;
+        std::unique_ptr<MatchingCondition> a_muindep_;
 
         void SetFunctions();
 

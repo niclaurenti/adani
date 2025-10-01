@@ -15,7 +15,7 @@ ThresholdCoefficientFunction::ThresholdCoefficientFunction(
     : CoefficientFunction(order, kind, channel) {
 
     if (GetChannel() == 'g') {
-        exact_as1_ = new ExactCoefficientFunction(1, GetKind(), GetChannel());
+        exact_as1_ = std::make_unique<ExactCoefficientFunction>(1, GetKind(), GetChannel());
     } else
         exact_as1_ = nullptr;
 
@@ -31,9 +31,7 @@ ThresholdCoefficientFunction::ThresholdCoefficientFunction(
 //  ThresholdCoefficientFunction: destructor
 //------------------------------------------------------------------------------------------//
 
-ThresholdCoefficientFunction::~ThresholdCoefficientFunction() {
-    delete exact_as1_;
-}
+ThresholdCoefficientFunction::~ThresholdCoefficientFunction() {}
 
 //==========================================================================================//
 //  ThresholdCoefficientFunction: function that sets the pointer for fx

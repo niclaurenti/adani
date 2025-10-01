@@ -20,17 +20,17 @@ HighScaleCoefficientFunction::HighScaleCoefficientFunction(
 
     if (GetChannel() == 'g')
         massless_as1_ =
-            new MasslessCoefficientFunction(1, GetKind(), GetChannel());
+            std::make_unique<MasslessCoefficientFunction>(1, GetKind(), GetChannel());
 
     if (order > 1)
         massless_as2_ =
-            new MasslessCoefficientFunction(2, GetKind(), GetChannel());
+            std::make_unique<MasslessCoefficientFunction>(2, GetKind(), GetChannel());
     if (order > 2)
         massless_as3_ =
-            new MasslessCoefficientFunction(3, GetKind(), GetChannel());
+            std::make_unique<MasslessCoefficientFunction>(3, GetKind(), GetChannel());
 
     if (GetOrder() == 3 && GetKind() == '2') {
-        a_muindep_ = new MatchingCondition(3, 'Q', GetChannel(), version);
+        a_muindep_ = std::make_unique<MatchingCondition>(3, 'Q', GetChannel(), version);
     }
 
     try {
@@ -56,12 +56,7 @@ HighScaleCoefficientFunction::HighScaleCoefficientFunction(
 //  HighScaleCoefficientFunction: destructor
 //------------------------------------------------------------------------------------------//
 
-HighScaleCoefficientFunction::~HighScaleCoefficientFunction() {
-    delete massless_as1_;
-    delete massless_as2_;
-    delete massless_as3_;
-    delete a_muindep_;
-}
+HighScaleCoefficientFunction::~HighScaleCoefficientFunction() {}
 
 //==========================================================================================//
 //  HighScaleCoefficientFunction: function that sets the pointer for fxBand
