@@ -57,6 +57,13 @@ MatchingCondition::MatchingCondition(
 }
 
 //==========================================================================================//
+//  MatchingCondition: copy constructor
+//------------------------------------------------------------------------------------------//
+
+MatchingCondition::MatchingCondition(const MatchingCondition& obj)
+    : MatchingCondition(obj.GetOrder(), obj.GetEntry1(), obj.GetEntry2(), obj.GetHighScaleVersion()) {}
+
+//==========================================================================================//
 //  MatchingCondition: CheckEntry
 //------------------------------------------------------------------------------------------//
 

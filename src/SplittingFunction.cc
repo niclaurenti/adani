@@ -9,7 +9,7 @@
 //  AbstractSplittingFunction: destructor
 //------------------------------------------------------------------------------------------//
 
-AbstractSplittingFunction::~AbstractSplittingFunction(){};
+AbstractSplittingFunction::~AbstractSplittingFunction() = default;
 
 //==========================================================================================//
 //  AbstractSplittingFunction: CheckOrder
@@ -74,6 +74,14 @@ SplittingFunction::SplittingFunction(
         e.runtime_error();
     }
 }
+
+//==========================================================================================//
+//  SplittingFunction: copy constructor
+//------------------------------------------------------------------------------------------//
+
+SplittingFunction::SplittingFunction(const SplittingFunction& obj)
+    : SplittingFunction(obj.GetOrder(), obj.GetEntry1(), obj.GetEntry2()) {}
+
 
 //==========================================================================================//
 //  SplittingFunction: function that sets all pointers to the right function
@@ -246,10 +254,11 @@ ConvolutedSplittingFunctions::ConvolutedSplittingFunctions(
 }
 
 //==========================================================================================//
-//  ConvolutedSplittingFunctions: destructor
+//  ConvolutedSplittingFunctions: copy constructor
 //------------------------------------------------------------------------------------------//
 
-ConvolutedSplittingFunctions::~ConvolutedSplittingFunctions() {}
+ConvolutedSplittingFunctions::ConvolutedSplittingFunctions(const ConvolutedSplittingFunctions& obj)
+    : ConvolutedSplittingFunctions(obj.GetOrder1(), obj.GetEntry1(), obj.GetEntry2(), obj.GetOrder2(), obj.GetEntry3(), obj.GetEntry4()) {}
 
 //==========================================================================================//
 //  ConvolutedSplittingFunctions: function that sets all pointers to the right

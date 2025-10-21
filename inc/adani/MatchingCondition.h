@@ -29,12 +29,13 @@ class MatchingCondition {
             const int &order, const char &entry1, const char &entry2,
             const HighScaleVersion &version = HighScaleVersion::Exact
         );
-        ~MatchingCondition(){};
+        MatchingCondition(const MatchingCondition& obj);
+        ~MatchingCondition() = default;
 
         int GetOrder() const { return order_; };
         char GetEntry1() const { return entry1_; };
         char GetEntry2() const { return entry2_; };
-        HighScaleVersion GetVersion() const { return version_; };
+        HighScaleVersion GetHighScaleVersion() const { return version_; };
 
         Value MuIndependentNfIndependentTerm(double x) const;
         double MuIndependentNfDependentTerm(double x) const;

@@ -33,7 +33,11 @@ class AsymptoticCoefficientFunction : public CoefficientFunction {
             const int &order, const char &kind, const char &channel,
             const bool &NLL = true, const HighScaleVersion &highscale_version = HighScaleVersion::Exact
         );
-        ~AsymptoticCoefficientFunction();
+        AsymptoticCoefficientFunction(const AsymptoticCoefficientFunction& obj);
+        ~AsymptoticCoefficientFunction() override = default;
+
+        bool GetNLL() const {return highenergy_->GetNLL();};
+        HighScaleVersion GetHighScaleVersion() const {return highscale_->GetHighScaleVersion();};
 
         void SetLegacyPowerTerms(const bool &legacy_pt);
 

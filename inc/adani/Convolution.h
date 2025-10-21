@@ -45,8 +45,8 @@ class AbstractConvolution {
         virtual ~AbstractConvolution() = 0;
 
         // get methods
-        double GetAbserr() const { return abserr_; };
-        double GetRelerr() const { return relerr_; };
+        double GetAbsErr() const { return abserr_; };
+        double GetRelErr() const { return relerr_; };
         int GetDim() const { return dim_; };
         std::shared_ptr<const CoefficientFunction> GetCoeffFunc() const { return coefffunc_; };
         std::shared_ptr<const AbstractSplittingFunction> GetSplitFunc() const { return splitfunc_; };
@@ -113,7 +113,7 @@ class ConvolutedCoefficientFunction : public CoefficientFunction {
             std::shared_ptr<const AbstractSplittingFunction> splitfunc, const double &abserr = 1e-3,
             const double &relerr = 1e-3, const int &dim = 1000
         );
-        ~ConvolutedCoefficientFunction() override;
+        ~ConvolutedCoefficientFunction() override = default;
 
         // get method
         std::shared_ptr<const Convolution> GetConv() const { return conv_; };
@@ -147,7 +147,7 @@ class DoubleConvolution : public AbstractConvolution {
             const double &relerr = 1e-3, const int &dim = 1000,
             const bool &MCintegral = false, const int &MCcalls = 25000
         );
-        ~DoubleConvolution() override;
+        ~DoubleConvolution() override = default;
 
         // get methods
         bool GetMCintegral() const { return MCintegral_; };

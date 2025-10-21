@@ -30,10 +30,11 @@ AsymptoticCoefficientFunction::AsymptoticCoefficientFunction(
 }
 
 //==========================================================================================//
-//  AsymptoticCoefficientFunction: destructor
+//  AsymptoticCoefficientFunction: copy constructor
 //------------------------------------------------------------------------------------------//
 
-AsymptoticCoefficientFunction::~AsymptoticCoefficientFunction() {}
+AsymptoticCoefficientFunction::AsymptoticCoefficientFunction(const AsymptoticCoefficientFunction& obj)
+    : AsymptoticCoefficientFunction(obj.GetOrder(), obj.GetKind(), obj.GetChannel(), obj.GetNLL(), obj.GetHighScaleVersion()) {}
 
 //==========================================================================================//
 //  AsymptoticCoefficientFunction: SetFunctions

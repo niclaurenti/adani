@@ -47,18 +47,13 @@ class SplittingFunction : public AbstractSplittingFunction {
         SplittingFunction(
             const int &order, const char &entry1, const char &entry2
         );
-        ~SplittingFunction() override{};
+        SplittingFunction(const SplittingFunction& obj);
+        ~SplittingFunction() override = default;
 
         // get methods
         double GetOrder() const { return order_; };
         char GetEntry1() const { return entry1_; };
         char GetEntry2() const { return entry2_; };
-
-        // overloading operators
-        SplittingFunction operator*(const double &rhs) const;
-        friend SplittingFunction
-            operator*(const double &lhs, const SplittingFunction &rhs);
-        SplittingFunction operator/(const double &rhs) const;
 
         // Components of the Splitting Function
         double Regular(double x, int nf) const override;
@@ -136,14 +131,8 @@ class ConvolutedSplittingFunctions : public AbstractSplittingFunction {
             const int &order1, const char &entry1, const char &entry2,
             const int &order2, const char &entry3, const char &entry4
         );
-        ~ConvolutedSplittingFunctions() override;
-
-        // overloading operators
-        ConvolutedSplittingFunctions operator*(const double &rhs) const;
-        friend ConvolutedSplittingFunctions operator*(
-            const double &lhs, const ConvolutedSplittingFunctions &rhs
-        );
-        ConvolutedSplittingFunctions operator/(const double &rhs) const;
+        ConvolutedSplittingFunctions(const ConvolutedSplittingFunctions& obj);
+        ~ConvolutedSplittingFunctions() override = default;
 
         // Components of the Convoluted Splitting Function
         double Regular(double x, int nf) const override;
@@ -222,7 +211,7 @@ class ConvolutedSplittingFunctions : public AbstractSplittingFunction {
 class Delta : public AbstractSplittingFunction {
     public:
         Delta() : AbstractSplittingFunction(){};
-        ~Delta() override{};
+        ~Delta() override = default;
 
         double Regular(double /*x*/, int /*nf*/) const override { return 0.; };
         double Singular(double /*x*/, int /*nf*/) const override { return 0.; };
@@ -230,11 +219,6 @@ class Delta : public AbstractSplittingFunction {
         double SingularIntegrated(double /*x*/, int /*nf*/) const override {
             return 0.;
         };
-
-        Delta operator*(const double &rhs) const;
-        friend Delta operator*(const double &lhs, const Delta &rhs);
-
-        Delta operator/(const double &rhs) const;
 };
 
 #endif

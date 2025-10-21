@@ -178,10 +178,40 @@ ExactCoefficientFunction::ExactCoefficientFunction(
 }
 
 //==========================================================================================//
-//  ExactCoefficientFunction: destructor
+//  ExactCoefficientFunction: constructor
 //------------------------------------------------------------------------------------------//
 
-ExactCoefficientFunction::~ExactCoefficientFunction() {}
+ExactCoefficientFunction::ExactCoefficientFunction(ExactCoefficientFunction &obj)
+    : ExactCoefficientFunction(obj.GetOrder(), obj.GetKind(), obj.GetChannel(),
+                               obj.GetAbsErr(), obj.GetRelErr(), obj.GetDim()) {
+}
+
+//==========================================================================================//
+//  ExactCoefficientFunction: get method for abserr
+//------------------------------------------------------------------------------------------//
+
+double ExactCoefficientFunction::GetAbsErr() const {
+    if (GetOrder() > 1) return convolutions_lmu1_[0]->GetAbsErr();
+    else return 1e-3;
+}
+
+//==========================================================================================//
+//  ExactCoefficientFunction: get method for relerr
+//------------------------------------------------------------------------------------------//
+
+double ExactCoefficientFunction::GetRelErr() const {
+    if (GetOrder() > 1) return convolutions_lmu1_[0]->GetRelErr();
+    else return 1e-3;
+}
+
+//==========================================================================================//
+//  ExactCoefficientFunction: get method for dim
+//------------------------------------------------------------------------------------------//
+
+int ExactCoefficientFunction::GetDim() const {
+    if (GetOrder() > 1) return convolutions_lmu1_[0]->GetDim();
+    else return 1000;
+}
 
 //==========================================================================================//
 //  ExactCoefficientFunction: function that sets the pointer for mu_indep_ and

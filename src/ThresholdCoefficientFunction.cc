@@ -28,10 +28,11 @@ ThresholdCoefficientFunction::ThresholdCoefficientFunction(
 }
 
 //==========================================================================================//
-//  ThresholdCoefficientFunction: destructor
+//  ThresholdCoefficientFunction: copy constructor
 //------------------------------------------------------------------------------------------//
 
-ThresholdCoefficientFunction::~ThresholdCoefficientFunction() {}
+ThresholdCoefficientFunction::ThresholdCoefficientFunction(const ThresholdCoefficientFunction& obj)
+    : ThresholdCoefficientFunction(obj.GetOrder(), obj.GetKind(), obj.GetChannel()) {}
 
 //==========================================================================================//
 //  ThresholdCoefficientFunction: function that sets the pointer for fx

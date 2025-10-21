@@ -65,7 +65,7 @@ CoefficientFunction::CoefficientFunction(
 //  CoefficientFunction: destructor
 //------------------------------------------------------------------------------------------//
 
-CoefficientFunction::~CoefficientFunction(){};
+CoefficientFunction::~CoefficientFunction() = default;
 
 //==========================================================================================//
 //  CoefficientFunction: central value of fx

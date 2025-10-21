@@ -38,7 +38,8 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
         ThresholdCoefficientFunction(
             const int &order, const char &kind, const char &channel
         );
-        ~ThresholdCoefficientFunction() override;
+        ThresholdCoefficientFunction(const ThresholdCoefficientFunction& obj);
+        ~ThresholdCoefficientFunction() override = default;
 
         void SetLegacyThreshold(const bool &legacy_threshold);
 

@@ -41,7 +41,7 @@ class HighScaleSplitLogs : public CoefficientFunction {
             const int &order, const char &kind, const char &channel,
             const HighScaleVersion &version = HighScaleVersion::Exact
         );
-        ~HighScaleSplitLogs() override;
+        ~HighScaleSplitLogs() override = default;
 
         double fx(double x, double m2Q2, int nf) const;
         Value fxBand(double x, double m2Q2, int nf) const;

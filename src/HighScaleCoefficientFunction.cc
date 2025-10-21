@@ -53,10 +53,21 @@ HighScaleCoefficientFunction::HighScaleCoefficientFunction(
 }
 
 //==========================================================================================//
-//  HighScaleCoefficientFunction: destructor
+//  HighScaleCoefficientFunction: copy constructor
 //------------------------------------------------------------------------------------------//
 
-HighScaleCoefficientFunction::~HighScaleCoefficientFunction() {}
+HighScaleCoefficientFunction::HighScaleCoefficientFunction(const HighScaleCoefficientFunction& obj)
+    : HighScaleCoefficientFunction(obj.GetOrder(), obj.GetKind(), obj.GetChannel(), obj.GetHighScaleVersion())
+{};
+
+//==========================================================================================//
+//  HighScaleCoefficientFunction: get high scale version
+//------------------------------------------------------------------------------------------//
+
+HighScaleVersion HighScaleCoefficientFunction::GetHighScaleVersion() const {
+    if (GetOrder() == 3 && GetKind() == '2') return a_muindep_->GetHighScaleVersion();
+    else return HighScaleVersion::Exact;
+}
 
 //==========================================================================================//
 //  HighScaleCoefficientFunction: function that sets the pointer for fxBand

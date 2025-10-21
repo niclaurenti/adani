@@ -34,7 +34,11 @@ class AbstractApproximate : public CoefficientFunction {
             const double &abserr = 1e-3, const double &relerr = 1e-3,
             const int &dim = 1000
         );
-        ~AbstractApproximate();
+        ~AbstractApproximate() override = default;
+
+        double GetAbsErr() const;
+        double GetRelErr() const;
+        int GetDim() const;
 
         void SetDoubleIntegralMethod(
             const DoubleIntegralMethod &double_int_method, const double &abserr = 1e-3,
@@ -66,7 +70,11 @@ class ApproximateCoefficientFunction : public AbstractApproximate {
             const double &abserr = 1e-3, const double &relerr = 1e-3,
             const int &dim = 1000
         );
-        ~ApproximateCoefficientFunction() override;
+        ApproximateCoefficientFunction(const ApproximateCoefficientFunction& obj);
+        ~ApproximateCoefficientFunction() override = default;
+
+        bool GetNLL() const {return asymptotic_->GetNLL();};
+        HighScaleVersion GetHighScaleVersion() const {return asymptotic_->GetHighScaleVersion();};
 
         void SetLegacyThreshold(const bool &legacy_threshold);
         void SetLegacyPowerTerms(const bool &legacy_pt);
@@ -113,8 +121,10 @@ class ApproximateCoefficientFunctionKLMV : public AbstractApproximate {
             const bool &lowxi = false, const double &abserr = 1e-3,
             const double &relerr = 1e-3, const int &dim = 1000
         );
-        ~ApproximateCoefficientFunctionKLMV() override;
+        ApproximateCoefficientFunctionKLMV(const ApproximateCoefficientFunctionKLMV& obj);
+        ~ApproximateCoefficientFunctionKLMV() override = default;
 
+        HighScaleVersion GetHighScaleVersion() const {return highscale_->GetHighScaleVersion();};
         bool GetLowXi() const {return lowxi_;}
         void SetLowXi(const bool& lowxi);
 

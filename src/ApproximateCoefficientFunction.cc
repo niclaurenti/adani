@@ -25,10 +25,28 @@ AbstractApproximate::AbstractApproximate(
 }
 
 //==========================================================================================//
-//  AbstractApproximate: destructor
+//  AbstractApproximate: get method for abserr
 //------------------------------------------------------------------------------------------//
 
-AbstractApproximate::~AbstractApproximate() {}
+double AbstractApproximate::GetAbsErr() const {
+    return muterms_->GetAbsErr();
+}
+
+//==========================================================================================//
+//  AbstractApproximate: get method for relerr
+//------------------------------------------------------------------------------------------//
+
+double AbstractApproximate::GetRelErr() const {
+    return muterms_->GetRelErr();
+}
+
+//==========================================================================================//
+//  ExactCoefficientFunction: get method for dim
+//------------------------------------------------------------------------------------------//
+
+int AbstractApproximate::GetDim() const {
+    return muterms_->GetDim();
+}
 
 //==========================================================================================//
 //  AbstractApproximate: function that sets the double integral method
@@ -131,11 +149,13 @@ ApproximateCoefficientFunction::ApproximateCoefficientFunction(
 }
 
 //==========================================================================================//
-//  ApproximateCoefficientFunction: destructor
+//  ApproximateCoefficientFunction: copy constructor
 //------------------------------------------------------------------------------------------//
 
-ApproximateCoefficientFunction::~ApproximateCoefficientFunction() {}
-
+ApproximateCoefficientFunction::ApproximateCoefficientFunction(const ApproximateCoefficientFunction& obj)
+    : ApproximateCoefficientFunction(obj.GetOrder(), obj.GetKind(), obj.GetChannel(), obj.GetNLL(),
+                                    obj.GetHighScaleVersion(), obj.GetAbsErr(), obj.GetRelErr(), obj.GetDim())
+{}
 //==========================================================================================//
 //  ApproximateCoefficientFunction: set parameters of legacy approximation
 //------------------------------------------------------------------------------------------//
@@ -485,10 +505,13 @@ ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(
 }
 
 //==========================================================================================//
-//  ApproximateCoefficientFunctionKLMV: destructor
+//  ApproximateCoefficientFunctionKLMV: copy constructor
 //------------------------------------------------------------------------------------------//
 
-ApproximateCoefficientFunctionKLMV::~ApproximateCoefficientFunctionKLMV() {}
+ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(const ApproximateCoefficientFunctionKLMV& obj)
+    : ApproximateCoefficientFunctionKLMV(obj.GetOrder(), obj.GetKind(), obj.GetChannel(),
+                                    obj.GetHighScaleVersion(), obj.GetAbsErr(), obj.GetRelErr(), obj.GetDim())
+{}
 
 //==========================================================================================//
 //  ApproximateCoefficientFunctionKLMV: set lowxi

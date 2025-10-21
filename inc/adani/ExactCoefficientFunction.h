@@ -44,7 +44,14 @@ class ExactCoefficientFunction : public CoefficientFunction {
             const double &abserr = 1e-3, const double &relerr = 1e-3,
             const int &dim = 1000
         );
-        ~ExactCoefficientFunction() override;
+        ExactCoefficientFunction(ExactCoefficientFunction &obj);
+        ~ExactCoefficientFunction() override = default;
+
+        // ExactCoefficientFunction& operator=(ExactCoefficientFunction& rhs) = delete;
+
+        double GetAbsErr() const;
+        double GetRelErr() const;
+        int GetDim() const;
 
         void SetDoubleIntegralMethod(
             const DoubleIntegralMethod &double_int_method, const double &abserr = 1e-3,
@@ -62,6 +69,7 @@ class ExactCoefficientFunction : public CoefficientFunction {
             fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
 
     private:
+
         double (ExactCoefficientFunction::*mu_indep_)(
             double, double, int
         ) const;

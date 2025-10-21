@@ -92,6 +92,16 @@ HighEnergyCoefficientFunction::HighEnergyCoefficientFunction(
 }
 
 //==========================================================================================//
+//  HighEnergyCoefficientFunction: copy constructor
+//------------------------------------------------------------------------------------------//
+
+HighEnergyCoefficientFunction::HighEnergyCoefficientFunction(
+    const HighEnergyCoefficientFunction& obj
+)
+    : HighEnergyCoefficientFunction(obj.GetOrder(), obj.GetKind(), obj.GetChannel(), obj.GetNLL()) {
+}
+
+//==========================================================================================//
 //  HighEnergyCoefficientFunction: function that sets the pointer for LL_ and
 //  NLL_
 //------------------------------------------------------------------------------------------//
@@ -223,6 +233,16 @@ HighEnergyHighScaleCoefficientFunction::HighEnergyHighScaleCoefficientFunction(
     } catch (UnexpectedException &e) {
         e.runtime_error();
     }
+}
+
+//==========================================================================================//
+//  HighEnergyHighScaleCoefficientFunction: copy constructor
+//------------------------------------------------------------------------------------------//
+
+HighEnergyHighScaleCoefficientFunction::HighEnergyHighScaleCoefficientFunction(
+    const HighEnergyHighScaleCoefficientFunction& obj
+)
+    : HighEnergyHighScaleCoefficientFunction(obj.GetOrder(), obj.GetKind(), obj.GetChannel(), obj.GetNLL()) {
 }
 
 //==========================================================================================//

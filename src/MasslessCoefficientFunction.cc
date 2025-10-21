@@ -20,6 +20,13 @@ MasslessCoefficientFunction::MasslessCoefficientFunction(
 }
 
 //==========================================================================================//
+//  MasslessCoefficientFunction: copy constructor
+//------------------------------------------------------------------------------------------//
+
+MasslessCoefficientFunction::MasslessCoefficientFunction(const MasslessCoefficientFunction& obj)
+    : MasslessCoefficientFunction(obj.GetOrder(), obj.GetKind(), obj.GetChannel()) {}
+
+//==========================================================================================//
 //  MasslessCoefficientFunction: function that sets the pointer mu_indep_ to the
 //  correct function
 //------------------------------------------------------------------------------------------//
