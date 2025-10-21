@@ -85,6 +85,7 @@ class Convolution : public AbstractConvolution {
             std::shared_ptr<const AbstractSplittingFunction> splitfunc, const double &abserr = 1e-3,
             const double &relerr = 1e-3, const int &dim = 1000
         );
+        Convolution(const Convolution& obj);
         ~Convolution() override;
 
         double RegularPart(double x, double m2Q2, int nf) const override;
@@ -113,6 +114,7 @@ class ConvolutedCoefficientFunction : public CoefficientFunction {
             std::shared_ptr<const AbstractSplittingFunction> splitfunc, const double &abserr = 1e-3,
             const double &relerr = 1e-3, const int &dim = 1000
         );
+        ConvolutedCoefficientFunction(const ConvolutedCoefficientFunction& obj);
         ~ConvolutedCoefficientFunction() override = default;
 
         // get method
@@ -147,6 +149,7 @@ class DoubleConvolution : public AbstractConvolution {
             const double &relerr = 1e-3, const int &dim = 1000,
             const bool &MCintegral = false, const int &MCcalls = 25000
         );
+        DoubleConvolution(const DoubleConvolution& obj);
         ~DoubleConvolution() override = default;
 
         // get methods

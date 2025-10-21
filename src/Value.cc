@@ -251,7 +251,7 @@ Value Value::operator/(const double &rhs) const {
 //  Value: overload of operator =
 //------------------------------------------------------------------------------------------//
 
-const Value &Value::operator=(const Value &rhs) {
+Value &Value::operator=(const Value &rhs) {
     central_ = rhs.central_;
     higher_ = rhs.higher_;
     lower_ = rhs.lower_;
@@ -263,7 +263,7 @@ const Value &Value::operator=(const Value &rhs) {
 //  Value: overload of operator *= double
 //------------------------------------------------------------------------------------------//
 
-const Value &Value::operator*=(const double &rhs) {
+Value &Value::operator*=(const double &rhs) {
     if (rhs > 0) {
         central_ *= rhs;
         higher_ *= rhs;
@@ -281,7 +281,7 @@ const Value &Value::operator*=(const double &rhs) {
 //  Value: overload of operator /= double
 //------------------------------------------------------------------------------------------//
 
-const Value &Value::operator/=(const double &rhs) {
+Value &Value::operator/=(const double &rhs) {
     if (rhs > 0) {
         central_ /= rhs;
         higher_ /= rhs;
@@ -291,6 +291,32 @@ const Value &Value::operator/=(const double &rhs) {
         higher_ = lower_ / rhs;
         lower_ = higher_ / rhs;
     }
+
+    return *this;
+}
+
+//==========================================================================================//
+//  Value: overload of operator += double
+//------------------------------------------------------------------------------------------//
+
+Value &Value::operator+=(const double &rhs) {
+
+    central_ += rhs;
+    higher_ += rhs;
+    lower_ += rhs;
+
+    return *this;
+}
+
+//==========================================================================================//
+//  Value: overload of operator -= double
+//------------------------------------------------------------------------------------------//
+
+Value &Value::operator-=(const double &rhs) {
+
+    central_ -= rhs;
+    higher_ -= rhs;
+    lower_ -= rhs;
 
     return *this;
 }

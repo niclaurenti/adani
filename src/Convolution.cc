@@ -145,6 +145,13 @@ Convolution::Convolution(
 };
 
 //==========================================================================================//
+//  Convolution: copy constructor
+//------------------------------------------------------------------------------------------//
+
+Convolution::Convolution(const Convolution& obj)
+    : Convolution(obj.GetCoeffFunc(), obj.GetSplitFunc(), obj.GetAbsErr(), obj.GetRelErr(), obj.GetDim()) {}
+
+//==========================================================================================//
 //  Convolution: destructor
 //------------------------------------------------------------------------------------------//
 
@@ -261,6 +268,13 @@ ConvolutedCoefficientFunction::ConvolutedCoefficientFunction(
 }
 
 //==========================================================================================//
+//  ConvolutedCoefficientFunction: copy constructor
+//------------------------------------------------------------------------------------------//
+
+ConvolutedCoefficientFunction::ConvolutedCoefficientFunction(const ConvolutedCoefficientFunction& obj)
+    : ConvolutedCoefficientFunction(obj.GetConv()->GetCoeffFunc(), obj.GetConv()->GetSplitFunc(), obj.GetConv()->GetAbsErr(), obj.GetConv()->GetRelErr(), obj.GetConv()->GetDim()) {}
+
+//==========================================================================================//
 //  ConvolutedCoefficientFunction: mu independent terms
 //------------------------------------------------------------------------------------------//
 
@@ -325,6 +339,13 @@ DoubleConvolution::DoubleConvolution(
             std::make_shared<const Convolution>(conv_coeff_, splitfunc, abserr, relerr, dim);
     }
 }
+
+//==========================================================================================//
+//  Convolution: copy constructor
+//------------------------------------------------------------------------------------------//
+
+DoubleConvolution::DoubleConvolution(const DoubleConvolution& obj)
+    : DoubleConvolution(obj.GetCoeffFunc(), obj.GetSplitFunc(), obj.GetAbsErr(), obj.GetRelErr(), obj.GetDim(), obj.GetMCintegral(), obj.GetMCcalls()) {}
 
 //==========================================================================================//
 //  DoubleConvolution: set method for MCcalls
