@@ -21,40 +21,36 @@ AbstractApproximate::AbstractApproximate(
 )
     : CoefficientFunction(order, kind, channel) {
 
-    muterms_ = std::make_unique<ExactCoefficientFunction>(order, kind, channel, abserr, relerr, dim);
+    muterms_ = std::make_unique<ExactCoefficientFunction>(
+        order, kind, channel, abserr, relerr, dim
+    );
 }
 
 //==========================================================================================//
 //  AbstractApproximate: get method for abserr
 //------------------------------------------------------------------------------------------//
 
-double AbstractApproximate::GetAbsErr() const {
-    return muterms_->GetAbsErr();
-}
+double AbstractApproximate::GetAbsErr() const { return muterms_->GetAbsErr(); }
 
 //==========================================================================================//
 //  AbstractApproximate: get method for relerr
 //------------------------------------------------------------------------------------------//
 
-double AbstractApproximate::GetRelErr() const {
-    return muterms_->GetRelErr();
-}
+double AbstractApproximate::GetRelErr() const { return muterms_->GetRelErr(); }
 
 //==========================================================================================//
 //  ExactCoefficientFunction: get method for dim
 //------------------------------------------------------------------------------------------//
 
-int AbstractApproximate::GetDim() const {
-    return muterms_->GetDim();
-}
+int AbstractApproximate::GetDim() const { return muterms_->GetDim(); }
 
 //==========================================================================================//
 //  AbstractApproximate: function that sets the double integral method
 //------------------------------------------------------------------------------------------//
 
 void AbstractApproximate::SetDoubleIntegralMethod(
-    const DoubleIntegralMethod &double_int_method, const double &abserr, const double &relerr,
-    const int &dim, const int &MCcalls
+    const DoubleIntegralMethod &double_int_method, const double &abserr,
+    const double &relerr, const int &dim, const int &MCcalls
 ) {
     muterms_->SetDoubleIntegralMethod(
         double_int_method, abserr, relerr, dim, MCcalls
@@ -92,11 +88,12 @@ Value AbstractApproximate::fxBand(
         return Value(0.);
 
     std::future<Value> future_f1 = std::async(
-        std::launch::async, &AbstractApproximate::MuIndependentTermsBand, this, x, m2Q2, nf
+        std::launch::async, &AbstractApproximate::MuIndependentTermsBand, this,
+        x, m2Q2, nf
     );
     std::future<double> future_f2 = std::async(
-        std::launch::async, &AbstractApproximate::MuDependentTerms, this, x, m2Q2, m2mu2,
-        nf
+        std::launch::async, &AbstractApproximate::MuDependentTerms, this, x,
+        m2Q2, m2mu2, nf
     );
 
     return future_f1.get() + future_f2.get();
@@ -131,12 +128,13 @@ variation_parameters CL_var = { 2., 0.2 };
 
 ApproximateCoefficientFunction::ApproximateCoefficientFunction(
     const int &order, const char &kind, const char &channel, const bool &NLL,
-    const HighScaleVersion &highscale_version, const double &abserr, const double &relerr,
-    const int &dim
+    const HighScaleVersion &highscale_version, const double &abserr,
+    const double &relerr, const int &dim
 )
     : AbstractApproximate(order, kind, channel, abserr, relerr, dim) {
 
-    threshold_ = std::make_unique<ThresholdCoefficientFunction>(order, kind, channel);
+    threshold_ =
+        std::make_unique<ThresholdCoefficientFunction>(order, kind, channel);
     asymptotic_ = std::make_unique<AsymptoticCoefficientFunction>(
         order, kind, channel, NLL, highscale_version
     );
@@ -152,10 +150,14 @@ ApproximateCoefficientFunction::ApproximateCoefficientFunction(
 //  ApproximateCoefficientFunction: copy constructor
 //------------------------------------------------------------------------------------------//
 
-ApproximateCoefficientFunction::ApproximateCoefficientFunction(const ApproximateCoefficientFunction& obj)
-    : ApproximateCoefficientFunction(obj.GetOrder(), obj.GetKind(), obj.GetChannel(), obj.GetNLL(),
-                                    obj.GetHighScaleVersion(), obj.GetAbsErr(), obj.GetRelErr(), obj.GetDim())
-{}
+ApproximateCoefficientFunction::ApproximateCoefficientFunction(
+    const ApproximateCoefficientFunction &obj
+)
+    : ApproximateCoefficientFunction(
+          obj.GetOrder(), obj.GetKind(), obj.GetChannel(), obj.GetNLL(),
+          obj.GetHighScaleVersion(), obj.GetAbsErr(), obj.GetRelErr(),
+          obj.GetDim()
+      ) {}
 //==========================================================================================//
 //  ApproximateCoefficientFunction: set parameters of legacy approximation
 //------------------------------------------------------------------------------------------//
@@ -163,118 +165,138 @@ ApproximateCoefficientFunction::ApproximateCoefficientFunction(const Approximate
 void ApproximateCoefficientFunction::SetLegacyParameters() {
     try {
         switch (GetOrder()) {
-            case 1:
-                switch (GetKind()) {
-                    case '2':
-                        switch (GetChannel()) {
-                            case 'g':
-                                approximation_ = std::make_unique<approximation_parameters>(C2_g1_params);
-                                break;
-                            default:
-                                throw UnexpectedException(
-                                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                                );
-                        }
-                        variation_ = std::make_unique<variation_parameters>(C2_var);
-                        break;
-                    case 'L':
-                        switch (GetChannel()) {
-                            case 'g':
-                                approximation_ = std::make_unique<approximation_parameters>(CL_g2_params);
-                                break;
-                            default:
-                                throw UnexpectedException(
-                                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                                );
-                        }
-                        variation_ = std::make_unique<variation_parameters>(CL_var);
-                        break;
-                    default:
-                        throw UnexpectedException(
-                            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+        case 1:
+            switch (GetKind()) {
+            case '2':
+                switch (GetChannel()) {
+                case 'g':
+                    approximation_ =
+                        std::make_unique<approximation_parameters>(C2_g1_params
                         );
+                    break;
+                default:
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
                 }
+                variation_ = std::make_unique<variation_parameters>(C2_var);
                 break;
-            case 2:
-                switch (GetKind()) {
-                    case '2':
-                        switch (GetChannel()) {
-                            case 'g':
-                                approximation_ = std::make_unique<approximation_parameters>(C2_g2_params);
-                                break;
-                            case 'q':
-                                approximation_ = std::make_unique<approximation_parameters>(C2_ps2_params);
-                                break;
-                            default:
-                                throw UnexpectedException(
-                                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                                );
-                        }
-                        variation_ = std::make_unique<variation_parameters>(C2_var);
-                        break;
-                    case 'L':
-                        switch (GetChannel()) {
-                            case 'g':
-                                approximation_ = std::make_unique<approximation_parameters>(CL_g2_params);
-                                break;
-                            case 'q':
-                                approximation_ = std::make_unique<approximation_parameters>(CL_ps2_params);
-                                break;
-                            default:
-                                throw UnexpectedException(
-                                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                                );
-                        }
-                        variation_ = std::make_unique<variation_parameters>(CL_var);
-                        break;
-                    default:
-                        throw UnexpectedException(
-                            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+            case 'L':
+                switch (GetChannel()) {
+                case 'g':
+                    approximation_ =
+                        std::make_unique<approximation_parameters>(CL_g2_params
                         );
+                    break;
+                default:
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
                 }
-                break;
-            case 3:
-                switch (GetKind()) {
-                    case '2':
-                        switch (GetChannel()) {
-                            case 'g':
-                                approximation_ = std::make_unique<approximation_parameters>(C2_g3_params);
-                                break;
-                            case 'q':
-                                approximation_ = std::make_unique<approximation_parameters>(C2_ps3_params);
-                                break;
-                            default:
-                                throw UnexpectedException(
-                                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                                );
-                        }
-                        variation_ = std::make_unique<variation_parameters>(C2_var);
-                        break;
-                    case 'L':
-                        switch (GetChannel()) {
-                            case 'g':
-                                approximation_ = std::make_unique<approximation_parameters>(CL_g3_params);
-                                break;
-                            case 'q':
-                                approximation_ = std::make_unique<approximation_parameters>(CL_ps3_params);
-                                break;
-                            default:
-                                throw UnexpectedException(
-                                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                                );
-                        }
-                        variation_ = std::make_unique<variation_parameters>(CL_var);
-                        break;
-                    default:
-                        throw UnexpectedException(
-                            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                        );
-                }
+                variation_ = std::make_unique<variation_parameters>(CL_var);
                 break;
             default:
                 throw UnexpectedException(
                     "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
                 );
+            }
+            break;
+        case 2:
+            switch (GetKind()) {
+            case '2':
+                switch (GetChannel()) {
+                case 'g':
+                    approximation_ =
+                        std::make_unique<approximation_parameters>(C2_g2_params
+                        );
+                    break;
+                case 'q':
+                    approximation_ =
+                        std::make_unique<approximation_parameters>(C2_ps2_params
+                        );
+                    break;
+                default:
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
+                }
+                variation_ = std::make_unique<variation_parameters>(C2_var);
+                break;
+            case 'L':
+                switch (GetChannel()) {
+                case 'g':
+                    approximation_ =
+                        std::make_unique<approximation_parameters>(CL_g2_params
+                        );
+                    break;
+                case 'q':
+                    approximation_ =
+                        std::make_unique<approximation_parameters>(CL_ps2_params
+                        );
+                    break;
+                default:
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
+                }
+                variation_ = std::make_unique<variation_parameters>(CL_var);
+                break;
+            default:
+                throw UnexpectedException(
+                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                );
+            }
+            break;
+        case 3:
+            switch (GetKind()) {
+            case '2':
+                switch (GetChannel()) {
+                case 'g':
+                    approximation_ =
+                        std::make_unique<approximation_parameters>(C2_g3_params
+                        );
+                    break;
+                case 'q':
+                    approximation_ =
+                        std::make_unique<approximation_parameters>(C2_ps3_params
+                        );
+                    break;
+                default:
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
+                }
+                variation_ = std::make_unique<variation_parameters>(C2_var);
+                break;
+            case 'L':
+                switch (GetChannel()) {
+                case 'g':
+                    approximation_ =
+                        std::make_unique<approximation_parameters>(CL_g3_params
+                        );
+                    break;
+                case 'q':
+                    approximation_ =
+                        std::make_unique<approximation_parameters>(CL_ps3_params
+                        );
+                    break;
+                default:
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
+                }
+                variation_ = std::make_unique<variation_parameters>(CL_var);
+                break;
+            default:
+                throw UnexpectedException(
+                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                );
+            }
+            break;
+        default:
+            throw UnexpectedException(
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+            );
         }
     } catch (UnexpectedException &e) {
         e.runtime_error();
@@ -304,7 +326,9 @@ void ApproximateCoefficientFunction::SetLegacyPowerTerms(const bool &legacy_pt
 //  ApproximateCoefficientFunction: restore legacy approximation
 //------------------------------------------------------------------------------------------//
 
-void ApproximateCoefficientFunction::SetLegacyApproximation(const bool &legacy_appr) {
+void ApproximateCoefficientFunction::SetLegacyApproximation(
+    const bool &legacy_appr
+) {
     try {
         if (legacy_appr == legacy_appr_) {
             throw NotValidException(
@@ -340,7 +364,8 @@ Value ApproximateCoefficientFunction::MuIndependentTermsBand(
 }
 
 //==========================================================================================//
-//  ApproximateCoefficientFunction: band of the approximate mu independent terms (new)
+//  ApproximateCoefficientFunction: band of the approximate mu independent terms
+//  (new)
 //------------------------------------------------------------------------------------------//
 
 Value ApproximateCoefficientFunction::Approximation(
@@ -364,7 +389,8 @@ Value ApproximateCoefficientFunction::Approximation(
 }
 
 //==========================================================================================//
-//  ApproximateCoefficientFunction: band of the approximate mu independent terms (legacy form)
+//  ApproximateCoefficientFunction: band of the approximate mu independent terms
+//  (legacy form)
 //------------------------------------------------------------------------------------------//
 
 Value ApproximateCoefficientFunction::ApproximationLegacy(
@@ -396,7 +422,8 @@ Value ApproximateCoefficientFunction::ApproximationLegacy(
     vector<double> thresh =
         (threshold_->MuIndependentTermsBand(x, m2Q2, nf)).ToVect();
 
-    double central = ApproximationLegacyForm(x, m2Q2, asy[0], thresh[0], A, B, C, D);
+    double central =
+        ApproximationLegacyForm(x, m2Q2, asy[0], thresh[0], A, B, C, D);
     double higher = central, lower = central, tmp;
 
     for (int i = 0; i < int(asy.size()); i++) {
@@ -465,10 +492,11 @@ klmv_params klmv_C2g3B_lowxi = { 0.8, 10.7, 0.055125, 2, 0.3825 };
 
 ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(
     const int &order, const char &kind, const char &channel,
-    const HighScaleVersion &highscale_version, const bool &lowxi, const double &abserr,
-    const double &relerr, const int &dim
+    const HighScaleVersion &highscale_version, const bool &lowxi,
+    const double &abserr, const double &relerr, const int &dim
 )
-    : AbstractApproximate(order, kind, channel, abserr, relerr, dim), lowxi_(lowxi) {
+    : AbstractApproximate(order, kind, channel, abserr, relerr, dim),
+      lowxi_(lowxi) {
     try {
         if (GetOrder() == 1) {
             throw NotImplementedException(
@@ -493,25 +521,31 @@ ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(
         e.runtime_error();
     }
 
-    threshold_ = std::make_unique<ThresholdCoefficientFunction>(order, kind, channel);
+    threshold_ =
+        std::make_unique<ThresholdCoefficientFunction>(order, kind, channel);
     threshold_->SetLegacyThreshold(true);
 
     highscale_ = std::make_unique<HighScaleCoefficientFunction>(
         order, kind, channel, highscale_version
     );
 
-    highenergy_ =
-        std::make_unique<HighEnergyCoefficientFunction>(order, kind, channel, false);
+    highenergy_ = std::make_unique<HighEnergyCoefficientFunction>(
+        order, kind, channel, false
+    );
 }
 
 //==========================================================================================//
 //  ApproximateCoefficientFunctionKLMV: copy constructor
 //------------------------------------------------------------------------------------------//
 
-ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(const ApproximateCoefficientFunctionKLMV& obj)
-    : ApproximateCoefficientFunctionKLMV(obj.GetOrder(), obj.GetKind(), obj.GetChannel(),
-                                    obj.GetHighScaleVersion(), obj.GetAbsErr(), obj.GetRelErr(), obj.GetDim())
-{}
+ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(
+    const ApproximateCoefficientFunctionKLMV &obj
+)
+    : ApproximateCoefficientFunctionKLMV(
+          obj.GetOrder(), obj.GetKind(), obj.GetChannel(),
+          obj.GetHighScaleVersion(), obj.GetAbsErr(), obj.GetRelErr(),
+          obj.GetDim()
+      ) {}
 
 //==========================================================================================//
 //  ApproximateCoefficientFunctionKLMV: set lowxi
@@ -542,47 +576,47 @@ void ApproximateCoefficientFunctionKLMV::SetLowXi(const bool &lowxi) {
 
 void ApproximateCoefficientFunctionKLMV::SetFunctions() {
     switch (GetOrder()) {
-        case 2:
-            fx_=&ApproximateCoefficientFunctionKLMV::Order2;
-            switch (GetChannel()) {
-                case 'g':
-                    params_A_ = std::make_unique<klmv_params>(klmv_C2g2A);
-                    params_B_ = std::make_unique<klmv_params>(klmv_C2g2B);
-                    break;
-                case 'q':
-                    params_A_ = std::make_unique<klmv_params>(klmv_C2q2A);
-                    params_B_ = std::make_unique<klmv_params>(klmv_C2q2B);
-                    break;
-                default:
-                    throw UnexpectedException(
-                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                    );
-            }
+    case 2:
+        fx_ = &ApproximateCoefficientFunctionKLMV::Order2;
+        switch (GetChannel()) {
+        case 'g':
+            params_A_ = std::make_unique<klmv_params>(klmv_C2g2A);
+            params_B_ = std::make_unique<klmv_params>(klmv_C2g2B);
             break;
-        case 3:
-            fx_=&ApproximateCoefficientFunctionKLMV::Order3;
-            switch (GetChannel()) {
-                case 'g':
-                    params_A_ = std::make_unique<klmv_params>(klmv_C2g3A);
-                    if (lowxi_)
-                        params_B_ = std::make_unique<klmv_params>(klmv_C2g3B_lowxi);
-                    else
-                        params_B_ = std::make_unique<klmv_params>(klmv_C2g3B);
-                    break;
-                case 'q':
-                    params_A_ = std::make_unique<klmv_params>(klmv_C2q3A);
-                    params_B_ = std::make_unique<klmv_params>(klmv_C2q3B);
-                    break;
-                default:
-                    throw UnexpectedException(
-                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                    );
-            }
+        case 'q':
+            params_A_ = std::make_unique<klmv_params>(klmv_C2q2A);
+            params_B_ = std::make_unique<klmv_params>(klmv_C2q2B);
             break;
         default:
             throw UnexpectedException(
                 "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
             );
+        }
+        break;
+    case 3:
+        fx_ = &ApproximateCoefficientFunctionKLMV::Order3;
+        switch (GetChannel()) {
+        case 'g':
+            params_A_ = std::make_unique<klmv_params>(klmv_C2g3A);
+            if (lowxi_)
+                params_B_ = std::make_unique<klmv_params>(klmv_C2g3B_lowxi);
+            else
+                params_B_ = std::make_unique<klmv_params>(klmv_C2g3B);
+            break;
+        case 'q':
+            params_A_ = std::make_unique<klmv_params>(klmv_C2q3A);
+            params_B_ = std::make_unique<klmv_params>(klmv_C2q3B);
+            break;
+        default:
+            throw UnexpectedException(
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+        break;
+    default:
+        throw UnexpectedException(
+            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+        );
     }
 }
 
@@ -598,7 +632,8 @@ Value ApproximateCoefficientFunctionKLMV::MuIndependentTermsBand(
 }
 
 //==========================================================================================//
-//  ApproximateCoefficientFunctionKLMV: functional form of the approximation A at O(2)
+//  ApproximateCoefficientFunctionKLMV: functional form of the approximation A
+//  at O(2)
 //
 //  Eq. (4.10,4.11) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
@@ -629,12 +664,12 @@ Value ApproximateCoefficientFunctionKLMV::Order2(
 
     double beta3 = beta * beta * beta;
 
-    double res_A =  thr - thr_const + (1. - f) * beta * hs
-           + f * beta3
-                 * he_ll * eta_gamma / (params_A_->shift + eta_gamma);
-    double res_B = thr + (1. - f) * beta3 * hs
-           + f * beta3
-                 * he_ll * eta_delta / (params_B_->shift + eta_delta);
+    double res_A =
+        thr - thr_const + (1. - f) * beta * hs
+        + f * beta3 * he_ll * eta_gamma / (params_A_->shift + eta_gamma);
+    double res_B =
+        thr + (1. - f) * beta3 * hs
+        + f * beta3 * he_ll * eta_delta / (params_B_->shift + eta_delta);
 
     if (res_A > res_B)
         return Value(res_A, res_B);
@@ -643,7 +678,8 @@ Value ApproximateCoefficientFunctionKLMV::Order2(
 }
 
 //==========================================================================================//
-//  ApproximateCoefficientFunctionKLMV: functional form of the approximation A at O(3)
+//  ApproximateCoefficientFunctionKLMV: functional form of the approximation A
+//  at O(3)
 //
 //  Eq. (4.17,4.18,4.21,4.22) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
@@ -675,13 +711,16 @@ Value ApproximateCoefficientFunctionKLMV::Order3(
     double beta3 = beta * beta * beta;
 
     double res_A = thr - thr_const + (1. - f) * beta * hs[1]
-           + f * beta3
-                 * (-log(eta) / log(x) * he_ll
-                    + he_nll.GetHigher() * eta_gamma / (params_A_->shift + eta_gamma));
-    double res_B = thr - thr_const + 2 * f * thr_const + (1. - f) * beta3 * hs[2]
-           + f * beta3
-                 * (-log(eta) / log(x) * he_ll
-                    + he_nll.GetLower() * eta_delta / (params_B_->shift + eta_delta));
+                   + f * beta3
+                         * (-log(eta) / log(x) * he_ll
+                            + he_nll.GetHigher() * eta_gamma
+                                  / (params_A_->shift + eta_gamma));
+    double res_B = thr - thr_const + 2 * f * thr_const
+                   + (1. - f) * beta3 * hs[2]
+                   + f * beta3
+                         * (-log(eta) / log(x) * he_ll
+                            + he_nll.GetLower() * eta_delta
+                                  / (params_B_->shift + eta_delta));
 
     if (res_A > res_B)
         return Value(res_A, res_B);
@@ -700,15 +739,15 @@ Value ApproximateCoefficientFunctionKLMV::ApproximateNLL(
     double x, double m2Q2
 ) const {
     double pi3 = M_PI * M_PI * M_PI;
-    double tmp_A =
-        (64. * pi3)
-        * (params_A_->log_coeff * pow(log(1. / m2Q2) / log(5), params_A_->log_pow)
-           - params_A_->const_coeff)
-        * 4. / m2Q2 / x;
-    double tmp_B =
-        (64. * pi3)
-        * (params_B_->log_coeff * pow(log(1. / m2Q2) / log(5), params_B_->log_pow)
-           - params_B_->const_coeff)
-        * 4. / m2Q2 / x;
+    double tmp_A = (64. * pi3)
+                   * (params_A_->log_coeff
+                          * pow(log(1. / m2Q2) / log(5), params_A_->log_pow)
+                      - params_A_->const_coeff)
+                   * 4. / m2Q2 / x;
+    double tmp_B = (64. * pi3)
+                   * (params_B_->log_coeff
+                          * pow(log(1. / m2Q2) / log(5), params_B_->log_pow)
+                      - params_B_->const_coeff)
+                   * 4. / m2Q2 / x;
     return Value(tmp_A, tmp_B);
 }

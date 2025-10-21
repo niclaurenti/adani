@@ -108,9 +108,11 @@ PYBIND11_MODULE(_core, m) {
         .def(
             py::init<
                 const int &, const char &, const char &, const bool &,
-                const HighScaleVersion &, const double &, const double &, const int &>(),
+                const HighScaleVersion &, const double &, const double &,
+                const int &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel"),
-            py::arg("NLL") = true, py::arg("highscale_version") = HighScaleVersion::Exact,
+            py::arg("NLL") = true,
+            py::arg("highscale_version") = HighScaleVersion::Exact,
             py::arg("abserr") = 1e-3, py::arg("relerr") = 1e-3,
             py::arg("dim") = 1000
         )
@@ -136,16 +138,16 @@ PYBIND11_MODULE(_core, m) {
     )
         .def(
             py::init<
-                const int &, const char &, const char &, const HighScaleVersion &,
-                const bool &, const double &, const double &, const int &>(),
+                const int &, const char &, const char &,
+                const HighScaleVersion &, const bool &, const double &,
+                const double &, const int &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel"),
-            py::arg("highscale_version") = HighScaleVersion::Exact, py::arg("lowxi") = false,
-            py::arg("abserr") = 1e-3, py::arg("relerr") = 1e-3,
-            py::arg("dim") = 1000
+            py::arg("highscale_version") = HighScaleVersion::Exact,
+            py::arg("lowxi") = false, py::arg("abserr") = 1e-3,
+            py::arg("relerr") = 1e-3, py::arg("dim") = 1000
         )
         .def(
-            "SetLowXi",
-            &ApproximateCoefficientFunctionKLMV::SetLowXi,
+            "SetLowXi", &ApproximateCoefficientFunctionKLMV::SetLowXi,
             py::arg("lowxi")
         );
 
@@ -158,7 +160,8 @@ PYBIND11_MODULE(_core, m) {
                 const int &, const char &, const char &, const bool &,
                 const HighScaleVersion &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel"),
-            py::arg("NLL") = true, py::arg("highscale_version") = HighScaleVersion::Exact
+            py::arg("NLL") = true,
+            py::arg("highscale_version") = HighScaleVersion::Exact
         )
         .def(
             "SetLegacyPowerTerms",
@@ -227,7 +230,9 @@ PYBIND11_MODULE(_core, m) {
         m, "HighScaleCoefficientFunction"
     )
         .def(
-            py::init<const int &, const char &, const char &, const HighScaleVersion &>(),
+            py::init<
+                const int &, const char &, const char &,
+                const HighScaleVersion &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel"),
             py::arg("version") = HighScaleVersion::Exact
         );
@@ -235,7 +240,9 @@ PYBIND11_MODULE(_core, m) {
     // HighScaleSplitLogs
     py::class_<HighScaleSplitLogs, CoefficientFunction>(m, "HighScaleSplitLogs")
         .def(
-            py::init<const int &, const char &, const char &, const HighScaleVersion &>(),
+            py::init<
+                const int &, const char &, const char &,
+                const HighScaleVersion &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel"),
             py::arg("version") = HighScaleVersion::Exact
         )
@@ -346,7 +353,9 @@ PYBIND11_MODULE(_core, m) {
     // MatchingCondition
     py::class_<MatchingCondition>(m, "MatchingCondition")
         .def(
-            py::init<const int &, const char &, const char &, const HighScaleVersion &>(),
+            py::init<
+                const int &, const char &, const char &,
+                const HighScaleVersion &>(),
             py::arg("order"), py::arg("entry1"), py::arg("entry2"),
             py::arg("version") = HighScaleVersion::Exact
         )

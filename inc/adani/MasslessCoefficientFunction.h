@@ -30,7 +30,7 @@ class MasslessCoefficientFunction : public CoefficientFunction {
         MasslessCoefficientFunction(
             const int &order, const char &kind, const char &channel
         );
-        MasslessCoefficientFunction(const MasslessCoefficientFunction& obj);
+        MasslessCoefficientFunction(const MasslessCoefficientFunction &obj);
         ~MasslessCoefficientFunction() override = default;
 
         [[deprecated(

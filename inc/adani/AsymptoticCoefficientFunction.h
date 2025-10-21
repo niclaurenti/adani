@@ -31,13 +31,16 @@ class AsymptoticCoefficientFunction : public CoefficientFunction {
     public:
         AsymptoticCoefficientFunction(
             const int &order, const char &kind, const char &channel,
-            const bool &NLL = true, const HighScaleVersion &highscale_version = HighScaleVersion::Exact
+            const bool &NLL = true,
+            const HighScaleVersion &highscale_version = HighScaleVersion::Exact
         );
-        AsymptoticCoefficientFunction(const AsymptoticCoefficientFunction& obj);
+        AsymptoticCoefficientFunction(const AsymptoticCoefficientFunction &obj);
         ~AsymptoticCoefficientFunction() override = default;
 
-        bool GetNLL() const {return highenergy_->GetNLL();};
-        HighScaleVersion GetHighScaleVersion() const {return highscale_->GetHighScaleVersion();};
+        bool GetNLL() const { return highenergy_->GetNLL(); };
+        HighScaleVersion GetHighScaleVersion() const {
+            return highscale_->GetHighScaleVersion();
+        };
 
         void SetLegacyPowerTerms(const bool &legacy_pt);
 
@@ -48,7 +51,8 @@ class AsymptoticCoefficientFunction : public CoefficientFunction {
         bool legacy_pt_;
         std::unique_ptr<HighScaleCoefficientFunction> highscale_;
         std::unique_ptr<HighEnergyCoefficientFunction> highenergy_;
-        std::unique_ptr<HighEnergyHighScaleCoefficientFunction> highenergyhighscale_;
+        std::unique_ptr<HighEnergyHighScaleCoefficientFunction>
+            highenergyhighscale_;
 
         Value (AsymptoticCoefficientFunction::*fx_)(
             double, double, double, int

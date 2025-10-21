@@ -29,8 +29,14 @@ class MatchingCondition {
             const int &order, const char &entry1, const char &entry2,
             const HighScaleVersion &version = HighScaleVersion::Exact
         );
-        MatchingCondition(const MatchingCondition& obj);
+        MatchingCondition(const MatchingCondition &obj);
         ~MatchingCondition() = default;
+
+        // copy operator is deleted since the possibility to change
+        // the state of an instance of MatchingCondition is not implemented yet
+        // For this reason the data members are declared const
+        // TODO: implement it!!!
+        MatchingCondition &operator=(MatchingCondition &rhs) = delete;
 
         int GetOrder() const { return order_; };
         char GetEntry1() const { return entry1_; };

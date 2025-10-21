@@ -152,8 +152,9 @@ int main(int argc, char **argv) {
         res_l[i] = new double[cols];
     }
 
-    ApproximateCoefficientFunction Approx =
-        ApproximateCoefficientFunction(3, kind, channel, true, HighScaleVersion::Exact);
+    ApproximateCoefficientFunction Approx = ApproximateCoefficientFunction(
+        3, kind, channel, true, HighScaleVersion::Exact
+    );
 
     int iterationsPerThread = rows / numThreads;
 

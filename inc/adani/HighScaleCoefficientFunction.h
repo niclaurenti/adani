@@ -43,7 +43,7 @@ class HighScaleCoefficientFunction : public CoefficientFunction {
             const int &order, const char &kind, const char &channel,
             const HighScaleVersion &version = HighScaleVersion::Exact
         );
-        HighScaleCoefficientFunction(const HighScaleCoefficientFunction& obj);
+        HighScaleCoefficientFunction(const HighScaleCoefficientFunction &obj);
         ~HighScaleCoefficientFunction() override = default;
 
         HighScaleVersion GetHighScaleVersion() const;

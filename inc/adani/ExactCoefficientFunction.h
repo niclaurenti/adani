@@ -47,16 +47,14 @@ class ExactCoefficientFunction : public CoefficientFunction {
         ExactCoefficientFunction(ExactCoefficientFunction &obj);
         ~ExactCoefficientFunction() override = default;
 
-        // ExactCoefficientFunction& operator=(ExactCoefficientFunction& rhs) = delete;
-
         double GetAbsErr() const;
         double GetRelErr() const;
         int GetDim() const;
 
         void SetDoubleIntegralMethod(
-            const DoubleIntegralMethod &double_int_method, const double &abserr = 1e-3,
-            const double &relerr = 1e-3, const int &dim = 100,
-            const int &MCcalls = 25000
+            const DoubleIntegralMethod &double_int_method,
+            const double &abserr = 1e-3, const double &relerr = 1e-3,
+            const int &dim = 100, const int &MCcalls = 25000
         );
 
         double fx(double x, double m2Q2, double m2mu2, int nf) const override;
@@ -69,7 +67,6 @@ class ExactCoefficientFunction : public CoefficientFunction {
             fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
 
     private:
-
         double (ExactCoefficientFunction::*mu_indep_)(
             double, double, int
         ) const;
@@ -80,8 +77,8 @@ class ExactCoefficientFunction : public CoefficientFunction {
         std::unique_ptr<AsymptoticCoefficientFunction> asy_;
         std::unique_ptr<ThresholdCoefficientFunction> thr_;
 
-        std::vector<std::unique_ptr<AbstractConvolution>> convolutions_lmu1_;
-        std::vector<std::unique_ptr<AbstractConvolution>> convolutions_lmu2_;
+        std::vector<std::unique_ptr<AbstractConvolution> > convolutions_lmu1_;
+        std::vector<std::unique_ptr<AbstractConvolution> > convolutions_lmu2_;
 
         std::shared_ptr<const ExactCoefficientFunction> gluon_as1_;
         std::shared_ptr<const ExactCoefficientFunction> gluon_as2_;

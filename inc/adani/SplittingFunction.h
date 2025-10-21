@@ -25,6 +25,14 @@ class AbstractSplittingFunction {
     public:
         virtual ~AbstractSplittingFunction() = 0;
 
+        // copy operator is deleted since the possibility to change
+        // the state of an instance of AbstractSplittingFunction is not
+        // implemented yet For this reason the data members (of the derived
+        // classes) are declared const
+        // TODO: implement it!!!
+        AbstractSplittingFunction &operator=(AbstractSplittingFunction &rhs
+        ) = delete;
+
         // Components of the Splitting Function
         virtual double Regular(double x, int nf) const = 0;
         virtual double Singular(double x, int nf) const = 0;
@@ -35,7 +43,6 @@ class AbstractSplittingFunction {
     protected:
         void CheckOrder(int order) const;
         void CheckEntry(char entry) const;
-
 };
 
 //==========================================================================================//
@@ -47,7 +54,7 @@ class SplittingFunction : public AbstractSplittingFunction {
         SplittingFunction(
             const int &order, const char &entry1, const char &entry2
         );
-        SplittingFunction(const SplittingFunction& obj);
+        SplittingFunction(const SplittingFunction &obj);
         ~SplittingFunction() override = default;
 
         // get methods
@@ -131,7 +138,7 @@ class ConvolutedSplittingFunctions : public AbstractSplittingFunction {
             const int &order1, const char &entry1, const char &entry2,
             const int &order2, const char &entry3, const char &entry4
         );
-        ConvolutedSplittingFunctions(const ConvolutedSplittingFunctions& obj);
+        ConvolutedSplittingFunctions(const ConvolutedSplittingFunctions &obj);
         ~ConvolutedSplittingFunctions() override = default;
 
         // Components of the Convoluted Splitting Function

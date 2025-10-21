@@ -8,7 +8,8 @@
 //------------------------------------------------------------------------------------------//
 
 AbstractConvolution::AbstractConvolution(
-    std::shared_ptr<const CoefficientFunction> coefffunc, std::shared_ptr<const AbstractSplittingFunction> splitfunc,
+    std::shared_ptr<const CoefficientFunction> coefffunc,
+    std::shared_ptr<const AbstractSplittingFunction> splitfunc,
     const double &abserr, const double &relerr, const int &dim
 )
     : dim_(dim) {
@@ -16,7 +17,7 @@ AbstractConvolution::AbstractConvolution(
     try {
         SetAbserr(abserr);
         SetRelerr(relerr);
-        CheckDim(dim);
+        SetDim(dim);
     } catch (NotValidException &e) {
         e.runtime_error();
     }
@@ -30,6 +31,23 @@ AbstractConvolution::AbstractConvolution(
 //------------------------------------------------------------------------------------------//
 
 AbstractConvolution::~AbstractConvolution() = default;
+
+//==========================================================================================//
+//  AbstractConvolution: copy operator
+//------------------------------------------------------------------------------------------//
+
+AbstractConvolution &
+    AbstractConvolution::operator=(const AbstractConvolution &obj) {
+    if (this != &obj) {
+        abserr_ = obj.abserr_;
+        relerr_ = obj.relerr_;
+        dim_ = obj.dim_;
+
+        coefffunc_ = obj.coefffunc_;
+        splitfunc_ = obj.splitfunc_;
+    }
+    return *this;
+}
 
 //==========================================================================================//
 //  AbstractConvolution: set method for abserr
@@ -65,7 +83,7 @@ void AbstractConvolution::SetRelerr(const double &relerr) {
 //  AbstractConvolution: method for the allocation of workspace
 //------------------------------------------------------------------------------------------//
 
-void AbstractConvolution::CheckDim(const int &dim) {
+void AbstractConvolution::SetDim(const int &dim) {
     // check dim
     if (dim <= 0) {
         throw NotValidException(
@@ -73,6 +91,7 @@ void AbstractConvolution::CheckDim(const int &dim) {
             __PRETTY_FUNCTION__, __LINE__
         );
     }
+    dim_ = dim;
 }
 
 //==========================================================================================//
@@ -118,7 +137,8 @@ double Convolution::regular_integrand(double z, void *p) {
     double x = (params->x);
     int nf = (params->nf);
 
-    return (params->conv)->GetCoeffFunc()->MuIndependentTerms(z, m2Q2, nf) * (params->conv)->GetSplitFunc()->Regular(x / z, nf) / z;
+    return (params->conv)->GetCoeffFunc()->MuIndependentTerms(z, m2Q2, nf)
+           * (params->conv)->GetSplitFunc()->Regular(x / z, nf) / z;
 }
 
 //==========================================================================================//
@@ -133,7 +153,8 @@ gsl_error_handler_t *Convolution::old_handler_ = nullptr;
 //------------------------------------------------------------------------------------------//
 
 Convolution::Convolution(
-    std::shared_ptr<const CoefficientFunction> coefffunc, std::shared_ptr<const AbstractSplittingFunction> splitfunc,
+    std::shared_ptr<const CoefficientFunction> coefffunc,
+    std::shared_ptr<const AbstractSplittingFunction> splitfunc,
     const double &abserr, const double &relerr, const int &dim
 )
     : AbstractConvolution(coefffunc, splitfunc, abserr, relerr, dim) {
@@ -148,8 +169,11 @@ Convolution::Convolution(
 //  Convolution: copy constructor
 //------------------------------------------------------------------------------------------//
 
-Convolution::Convolution(const Convolution& obj)
-    : Convolution(obj.GetCoeffFunc(), obj.GetSplitFunc(), obj.GetAbsErr(), obj.GetRelErr(), obj.GetDim()) {}
+Convolution::Convolution(const Convolution &obj)
+    : Convolution(
+          obj.GetCoeffFunc(), obj.GetSplitFunc(), obj.GetAbsErr(),
+          obj.GetRelErr(), obj.GetDim()
+      ) {}
 
 //==========================================================================================//
 //  Convolution: destructor
@@ -160,6 +184,18 @@ Convolution::~Convolution() {
     if (number_of_instances == 0) {
         gsl_set_error_handler(old_handler_);
     }
+}
+
+//==========================================================================================//
+//  Convolution: copy operator
+//------------------------------------------------------------------------------------------//
+
+Convolution &Convolution::operator=(const Convolution &obj) {
+    if (this != &obj) {
+        AbstractConvolution::operator=(obj);
+    }
+
+    return *this;
 }
 
 //==========================================================================================//
@@ -174,8 +210,12 @@ double Convolution::singular_integrand(double z, void *p) {
     int nf = (params->nf);
 
     return (params->conv)->GetSplitFunc()->Singular(z, nf)
-           * ((params->conv)->GetCoeffFunc()->MuIndependentTerms(x / z, m2Q2, nf) / z
-              - (params->conv)->GetCoeffFunc()->MuIndependentTerms(x, m2Q2, nf));
+           * ((params->conv)
+                      ->GetCoeffFunc()
+                      ->MuIndependentTerms(x / z, m2Q2, nf)
+                  / z
+              - (params->conv)->GetCoeffFunc()->MuIndependentTerms(x, m2Q2, nf)
+           );
 }
 
 //==========================================================================================//
@@ -233,7 +273,8 @@ double Convolution::SingularPart(double x, double m2Q2, int nf) const {
     F.params = &params;
 
     gsl_integration_qag(
-        &F, x / x_max, 1., GetAbsErr(), GetRelErr(), GetDim(), 4, w, &singular, &error
+        &F, x / x_max, 1., GetAbsErr(), GetRelErr(), GetDim(), 4, w, &singular,
+        &error
     );
 
     gsl_integration_workspace_free(w);
@@ -249,9 +290,9 @@ double Convolution::LocalPart(double x, double m2Q2, int nf) const {
 
     double x_max = CoefficientFunction::xMax(m2Q2);
 
-    return coefffunc_->MuIndependentTerms(x, m2Q2, nf)
-           * (splitfunc_->Local(nf)
-              - splitfunc_->SingularIntegrated(x / x_max, nf));
+    return GetCoeffFunc()->MuIndependentTerms(x, m2Q2, nf)
+           * (GetSplitFunc()->Local(nf)
+              - GetSplitFunc()->SingularIntegrated(x / x_max, nf));
 }
 
 //==========================================================================================//
@@ -259,20 +300,31 @@ double Convolution::LocalPart(double x, double m2Q2, int nf) const {
 //------------------------------------------------------------------------------------------//
 
 ConvolutedCoefficientFunction::ConvolutedCoefficientFunction(
-    std::shared_ptr<const CoefficientFunction> coefffunc, std::shared_ptr<const AbstractSplittingFunction> splitfunc,
+    std::shared_ptr<const CoefficientFunction> coefffunc,
+    std::shared_ptr<const AbstractSplittingFunction> splitfunc,
     const double &abserr, const double &relerr, const int &dim
 )
-    : CoefficientFunction(coefffunc->GetOrder(), coefffunc->GetKind(), coefffunc->GetChannel()) {
+    : CoefficientFunction(
+          coefffunc->GetOrder(), coefffunc->GetKind(), coefffunc->GetChannel()
+      ) {
 
-    conv_ = std::make_shared<Convolution>(coefffunc, splitfunc, abserr, relerr, dim);
+    conv_ = std::make_shared<Convolution>(
+        coefffunc, splitfunc, abserr, relerr, dim
+    );
 }
 
 //==========================================================================================//
 //  ConvolutedCoefficientFunction: copy constructor
 //------------------------------------------------------------------------------------------//
 
-ConvolutedCoefficientFunction::ConvolutedCoefficientFunction(const ConvolutedCoefficientFunction& obj)
-    : ConvolutedCoefficientFunction(obj.GetConv()->GetCoeffFunc(), obj.GetConv()->GetSplitFunc(), obj.GetConv()->GetAbsErr(), obj.GetConv()->GetRelErr(), obj.GetConv()->GetDim()) {}
+ConvolutedCoefficientFunction::ConvolutedCoefficientFunction(
+    const ConvolutedCoefficientFunction &obj
+)
+    : ConvolutedCoefficientFunction(
+          obj.GetConv()->GetCoeffFunc(), obj.GetConv()->GetSplitFunc(),
+          obj.GetConv()->GetAbsErr(), obj.GetConv()->GetRelErr(),
+          obj.GetConv()->GetDim()
+      ) {}
 
 //==========================================================================================//
 //  ConvolutedCoefficientFunction: mu independent terms
@@ -313,7 +365,8 @@ Value ConvolutedCoefficientFunction::fxBand(
 //------------------------------------------------------------------------------------------//
 
 DoubleConvolution::DoubleConvolution(
-    std::shared_ptr<const CoefficientFunction> coefffunc, std::shared_ptr<const AbstractSplittingFunction> splitfunc,
+    std::shared_ptr<const CoefficientFunction> coefffunc,
+    std::shared_ptr<const AbstractSplittingFunction> splitfunc,
     const double &abserr, const double &relerr, const int &dim,
     const bool &MCintegral, const int &MCcalls
 )
@@ -327,16 +380,18 @@ DoubleConvolution::DoubleConvolution(
     }
 
     if (MCintegral) {
-        convolution_ =
-            std::make_shared<const Convolution>(coefffunc, splitfunc, abserr, relerr, dim);
+        convolution_ = std::make_unique<const Convolution>(
+            coefffunc, splitfunc, abserr, relerr, dim
+        );
         conv_coeff_ = nullptr;
 
     } else {
         conv_coeff_ = std::make_shared<const ConvolutedCoefficientFunction>(
             coefffunc, splitfunc, abserr, relerr, dim
         );
-        convolution_ =
-            std::make_shared<const Convolution>(conv_coeff_, splitfunc, abserr, relerr, dim);
+        convolution_ = std::make_unique<const Convolution>(
+            conv_coeff_, splitfunc, abserr, relerr, dim
+        );
     }
 }
 
@@ -344,8 +399,29 @@ DoubleConvolution::DoubleConvolution(
 //  Convolution: copy constructor
 //------------------------------------------------------------------------------------------//
 
-DoubleConvolution::DoubleConvolution(const DoubleConvolution& obj)
-    : DoubleConvolution(obj.GetCoeffFunc(), obj.GetSplitFunc(), obj.GetAbsErr(), obj.GetRelErr(), obj.GetDim(), obj.GetMCintegral(), obj.GetMCcalls()) {}
+DoubleConvolution::DoubleConvolution(const DoubleConvolution &obj)
+    : DoubleConvolution(
+          obj.GetCoeffFunc(), obj.GetSplitFunc(), obj.GetAbsErr(),
+          obj.GetRelErr(), obj.GetDim(), obj.GetMCintegral(), obj.GetMCcalls()
+      ) {}
+
+//==========================================================================================//
+//  DoubleConvolution: copy operator
+//------------------------------------------------------------------------------------------//
+
+DoubleConvolution &DoubleConvolution::operator=(const DoubleConvolution &obj) {
+    if (this != &obj) {
+        AbstractConvolution::operator=(obj);
+
+        MCintegral_ = obj.MCintegral_;
+        MCcalls_ = obj.MCcalls_;
+
+        conv_coeff_ = obj.conv_coeff_;
+        convolution_ = std::make_unique<const Convolution>(*obj.convolution_);
+    }
+
+    return *this;
+}
 
 //==========================================================================================//
 //  DoubleConvolution: set method for MCcalls
@@ -360,6 +436,32 @@ void DoubleConvolution::SetMCcalls(const int &MCcalls) {
         );
     }
     MCcalls_ = MCcalls;
+}
+
+//==========================================================================================//
+//  DoubleConvolution: set method for MCcalls
+//------------------------------------------------------------------------------------------//
+
+void DoubleConvolution::SetMCintegral(const bool &MCintegral) {
+    if (MCintegral != MCintegral_) {
+        MCintegral_ = MCintegral;
+
+        if (MCintegral) {
+            convolution_ = std::make_unique<const Convolution>(
+                GetCoeffFunc(), GetSplitFunc(), GetAbsErr(), GetRelErr(),
+                GetDim()
+            );
+            conv_coeff_ = nullptr;
+        } else {
+            conv_coeff_ = std::make_shared<const ConvolutedCoefficientFunction>(
+                GetCoeffFunc(), GetSplitFunc(), GetAbsErr(), GetRelErr(),
+                GetDim()
+            );
+            convolution_ = std::make_unique<const Convolution>(
+                conv_coeff_, GetSplitFunc(), GetAbsErr(), GetRelErr(), GetDim()
+            );
+        }
+    }
 }
 
 //==========================================================================================//
@@ -378,9 +480,12 @@ double
     double z1 = z[0], z2 = z[1];
 
     if (z2 > z1) {
-        return 1. / (z1 * z2) * (params->conv)->GetSplitFunc()->Regular(x / z1, nf)
+        return 1. / (z1 * z2)
+               * (params->conv)->GetSplitFunc()->Regular(x / z1, nf)
                * (params->conv)->GetSplitFunc()->Regular(z1 / z2, nf)
-               * (params->conv)->GetCoeffFunc()->MuIndependentTerms(z2, m2Q2, nf);
+               * (params->conv)
+                     ->GetCoeffFunc()
+                     ->MuIndependentTerms(z2, m2Q2, nf);
     } else {
         return 0.;
     }
@@ -401,10 +506,16 @@ double
     double z1 = z[0], z2 = z[1];
 
     if (z2 > z1) {
-        return 1. / (z1 * z2) * (params->conv)->GetSplitFunc()->Regular(x / z1, nf)
+        return 1. / (z1 * z2)
+               * (params->conv)->GetSplitFunc()->Regular(x / z1, nf)
                * (params->conv)->GetSplitFunc()->Singular(z1 / z2, nf)
-               * ((params->conv)->GetCoeffFunc()->MuIndependentTerms(z2, m2Q2, nf)
-                  - z1 / z2 * (params->conv)->GetCoeffFunc()->MuIndependentTerms(z1, m2Q2, nf));
+               * ((params->conv)
+                      ->GetCoeffFunc()
+                      ->MuIndependentTerms(z2, m2Q2, nf)
+                  - z1 / z2
+                        * (params->conv)
+                              ->GetCoeffFunc()
+                              ->MuIndependentTerms(z1, m2Q2, nf));
     } else {
         return 0.;
     }
@@ -477,7 +588,8 @@ double DoubleConvolution::RegularPart(double x, double m2Q2, int nf) const {
     gsl_rng_free(r);
     gsl_integration_workspace_free(w);
 
-    regular4 = convolution_->RegularPart(x, m2Q2, nf) * splitfunc_->Local(nf);
+    regular4 =
+        convolution_->RegularPart(x, m2Q2, nf) * GetSplitFunc()->Local(nf);
 
     return regular1 + regular2 + regular3 + regular4;
 }
@@ -505,8 +617,10 @@ double DoubleConvolution::singular1_integrand(
         tmp = 0.;
     }
 
-    return (params->conv)->GetSplitFunc()->Singular(z1, nf) * (tmp - (params->conv)->GetSplitFunc()->Regular(x / z2, nf))
-           * (params->conv)->GetCoeffFunc()->MuIndependentTerms(z2, m2Q2, nf) / z2;
+    return (params->conv)->GetSplitFunc()->Singular(z1, nf)
+           * (tmp - (params->conv)->GetSplitFunc()->Regular(x / z2, nf))
+           * (params->conv)->GetCoeffFunc()->MuIndependentTerms(z2, m2Q2, nf)
+           / z2;
 }
 
 //==========================================================================================//
@@ -529,17 +643,28 @@ double DoubleConvolution::singular2_integrand(
 
     double tmp;
     if (z2 > x / (x_max * z1)) {
-        tmp = ((params->conv)->GetCoeffFunc()->MuIndependentTerms(x / (z1 * z2), m2Q2, nf) / z2
-               - (params->conv)->GetCoeffFunc()->MuIndependentTerms(x / z1, m2Q2, nf))
+        tmp = ((params->conv)
+                       ->GetCoeffFunc()
+                       ->MuIndependentTerms(x / (z1 * z2), m2Q2, nf)
+                   / z2
+               - (params->conv)
+                     ->GetCoeffFunc()
+                     ->MuIndependentTerms(x / z1, m2Q2, nf))
               / z1;
     } else {
         tmp = 0.;
     }
 
-    return (params->conv)->GetSplitFunc()->Singular(z1, nf) * (params->conv)->GetSplitFunc()->Singular(z2, nf)
+    return (params->conv)->GetSplitFunc()->Singular(z1, nf)
+           * (params->conv)->GetSplitFunc()->Singular(z2, nf)
            * (tmp
-              - ((params->conv)->GetCoeffFunc()->MuIndependentTerms(x / z2, m2Q2, nf) / z2
-                 - (params->conv)->GetCoeffFunc()->MuIndependentTerms(x, m2Q2, nf)));
+              - ((params->conv)
+                         ->GetCoeffFunc()
+                         ->MuIndependentTerms(x / z2, m2Q2, nf)
+                     / z2
+                 - (params->conv)
+                       ->GetCoeffFunc()
+                       ->MuIndependentTerms(x, m2Q2, nf)));
 }
 
 //==========================================================================================//
@@ -559,9 +684,14 @@ double DoubleConvolution::singular3_integrand(double z, void *p) {
     return -(
         (params->conv)->GetSplitFunc()->Singular(z, nf)
         * ((params->conv)->GetCoeffFunc()->MuIndependentTerms(x / z, m2Q2, nf)
-               * (params->conv)->GetSplitFunc()->SingularIntegrated(x / (x_max * z), nf) / z
+               * (params->conv)
+                     ->GetSplitFunc()
+                     ->SingularIntegrated(x / (x_max * z), nf)
+               / z
            - (params->conv)->GetCoeffFunc()->MuIndependentTerms(x, m2Q2, nf)
-                 * (params->conv)->GetSplitFunc()->SingularIntegrated(x / x_max, nf))
+                 * (params->conv)
+                       ->GetSplitFunc()
+                       ->SingularIntegrated(x / x_max, nf))
     );
 }
 
@@ -609,14 +739,16 @@ double DoubleConvolution::SingularPart(double x, double m2Q2, int nf) const {
     f.params = &params;
 
     gsl_integration_qag(
-        &f, x / x_max, 1, GetAbsErr(), GetRelErr(), GetDim(), 4, w, &singular3, &err
+        &f, x / x_max, 1, GetAbsErr(), GetRelErr(), GetDim(), 4, w, &singular3,
+        &err
     );
 
     gsl_monte_vegas_free(s);
     gsl_rng_free(r);
     gsl_integration_workspace_free(w);
 
-    singular4 = convolution_->SingularPart(x, m2Q2, nf) * splitfunc_->Local(nf);
+    singular4 =
+        convolution_->SingularPart(x, m2Q2, nf) * GetSplitFunc()->Local(nf);
 
     return singular1 + singular2 + singular3 + singular4;
 }
@@ -633,6 +765,6 @@ double DoubleConvolution::LocalPart(double x, double m2Q2, int nf) const {
     double x_max = CoefficientFunction::xMax(m2Q2);
 
     return convolution_->Convolute(x, m2Q2, nf)
-           * (splitfunc_->Local(nf)
-              - splitfunc_->SingularIntegrated(x / x_max, nf));
+           * (GetSplitFunc()->Local(nf)
+              - GetSplitFunc()->SingularIntegrated(x / x_max, nf));
 }

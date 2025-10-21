@@ -19,9 +19,10 @@ AsymptoticCoefficientFunction::AsymptoticCoefficientFunction(
         highenergy_ = std::make_unique<HighEnergyCoefficientFunction>(
             GetOrder(), GetKind(), GetChannel(), NLL
         );
-        highenergyhighscale_ = std::make_unique<HighEnergyHighScaleCoefficientFunction>(
-            GetOrder(), GetKind(), GetChannel(), NLL
-        );
+        highenergyhighscale_ =
+            std::make_unique<HighEnergyHighScaleCoefficientFunction>(
+                GetOrder(), GetKind(), GetChannel(), NLL
+            );
 
         SetFunctions();
     } catch (const UnexpectedException &e) {
@@ -33,8 +34,13 @@ AsymptoticCoefficientFunction::AsymptoticCoefficientFunction(
 //  AsymptoticCoefficientFunction: copy constructor
 //------------------------------------------------------------------------------------------//
 
-AsymptoticCoefficientFunction::AsymptoticCoefficientFunction(const AsymptoticCoefficientFunction& obj)
-    : AsymptoticCoefficientFunction(obj.GetOrder(), obj.GetKind(), obj.GetChannel(), obj.GetNLL(), obj.GetHighScaleVersion()) {}
+AsymptoticCoefficientFunction::AsymptoticCoefficientFunction(
+    const AsymptoticCoefficientFunction &obj
+)
+    : AsymptoticCoefficientFunction(
+          obj.GetOrder(), obj.GetKind(), obj.GetChannel(), obj.GetNLL(),
+          obj.GetHighScaleVersion()
+      ) {}
 
 //==========================================================================================//
 //  AsymptoticCoefficientFunction: SetFunctions
@@ -42,41 +48,41 @@ AsymptoticCoefficientFunction::AsymptoticCoefficientFunction(const AsymptoticCoe
 
 void AsymptoticCoefficientFunction::SetFunctions() {
     switch (GetOrder()) {
-        case 1:
-            fx_ = &AsymptoticCoefficientFunction::PlainAdditiveMatching;
+    case 1:
+        fx_ = &AsymptoticCoefficientFunction::PlainAdditiveMatching;
+        break;
+    case 2:
+        switch (GetKind()) {
+        case '2':
+            fx_ = &AsymptoticCoefficientFunction::C2_2_asymptotic;
             break;
-        case 2:
-            switch (GetKind()) {
-                case '2':
-                    fx_ = &AsymptoticCoefficientFunction::C2_2_asymptotic;
-                    break;
-                case 'L':
-                    fx_ = &AsymptoticCoefficientFunction::CL_2_asymptotic;
-                    break;
-                default:
-                    throw UnexpectedException(
-                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                    );
-            }
-            break;
-        case 3:
-            switch (GetKind()) {
-                case '2':
-                    fx_ = &AsymptoticCoefficientFunction::C2_3_asymptotic;
-                    break;
-                case 'L':
-                    fx_ = &AsymptoticCoefficientFunction::CL_3_asymptotic;
-                    break;
-                default:
-                    throw UnexpectedException(
-                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                    );
-            }
+        case 'L':
+            fx_ = &AsymptoticCoefficientFunction::CL_2_asymptotic;
             break;
         default:
             throw UnexpectedException(
                 "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
             );
+        }
+        break;
+    case 3:
+        switch (GetKind()) {
+        case '2':
+            fx_ = &AsymptoticCoefficientFunction::C2_3_asymptotic;
+            break;
+        case 'L':
+            fx_ = &AsymptoticCoefficientFunction::CL_3_asymptotic;
+            break;
+        default:
+            throw UnexpectedException(
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+        break;
+    default:
+        throw UnexpectedException(
+            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+        );
     }
 }
 
@@ -94,19 +100,19 @@ void AsymptoticCoefficientFunction::SetLegacyPowerTerms(const bool &legacy_pt) {
         }
         legacy_pt_ = legacy_pt;
         switch (GetOrder()) {
-            case 1:
-                throw NotPresentException(
-                    "For order='1' legacy power terms are identical to the "
-                    "current ones!",
-                    __PRETTY_FUNCTION__, __LINE__
-                );
-                break;
-            default:
-                if (legacy_pt) {
-                    fx_ = &AsymptoticCoefficientFunction::PlainAdditiveMatching;
-                } else {
-                    SetFunctions();
-                }
+        case 1:
+            throw NotPresentException(
+                "For order='1' legacy power terms are identical to the "
+                "current ones!",
+                __PRETTY_FUNCTION__, __LINE__
+            );
+            break;
+        default:
+            if (legacy_pt) {
+                fx_ = &AsymptoticCoefficientFunction::PlainAdditiveMatching;
+            } else {
+                SetFunctions();
+            }
         }
     } catch (const NotPresentException &e) {
         e.warning();

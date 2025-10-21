@@ -49,8 +49,8 @@ class Value {
 
         Value operator+(const Value &rhs) const;
         Value operator-(const Value &rhs) const;
-        //Value operator*(const Value &rhs) const;
-        // Value operator/(const Value &rhs) const;
+        // Value operator*(const Value &rhs) const;
+        //  Value operator/(const Value &rhs) const;
 
         Value operator+(const double &rhs) const;
         friend Value operator+(const double &lhs, const Value &rhs);

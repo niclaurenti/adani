@@ -41,9 +41,9 @@ class AbstractApproximate : public CoefficientFunction {
         int GetDim() const;
 
         void SetDoubleIntegralMethod(
-            const DoubleIntegralMethod &double_int_method, const double &abserr = 1e-3,
-            const double &relerr = 1e-3, const int &dim = 1000,
-            const int &MCcalls = 25000
+            const DoubleIntegralMethod &double_int_method,
+            const double &abserr = 1e-3, const double &relerr = 1e-3,
+            const int &dim = 1000, const int &MCcalls = 25000
         );
 
         double MuIndependentTerms(double x, double m2Q2, int nf) const override;
@@ -66,15 +66,19 @@ class ApproximateCoefficientFunction : public AbstractApproximate {
     public:
         ApproximateCoefficientFunction(
             const int &order, const char &kind, const char &channel,
-            const bool &NLL = true, const HighScaleVersion &highscale_version = HighScaleVersion::Exact,
+            const bool &NLL = true,
+            const HighScaleVersion &highscale_version = HighScaleVersion::Exact,
             const double &abserr = 1e-3, const double &relerr = 1e-3,
             const int &dim = 1000
         );
-        ApproximateCoefficientFunction(const ApproximateCoefficientFunction& obj);
+        ApproximateCoefficientFunction(const ApproximateCoefficientFunction &obj
+        );
         ~ApproximateCoefficientFunction() override = default;
 
-        bool GetNLL() const {return asymptotic_->GetNLL();};
-        HighScaleVersion GetHighScaleVersion() const {return asymptotic_->GetHighScaleVersion();};
+        bool GetNLL() const { return asymptotic_->GetNLL(); };
+        HighScaleVersion GetHighScaleVersion() const {
+            return asymptotic_->GetHighScaleVersion();
+        };
 
         void SetLegacyThreshold(const bool &legacy_threshold);
         void SetLegacyPowerTerms(const bool &legacy_pt);
@@ -88,9 +92,7 @@ class ApproximateCoefficientFunction : public AbstractApproximate {
         std::unique_ptr<ThresholdCoefficientFunction> threshold_;
         std::unique_ptr<AsymptoticCoefficientFunction> asymptotic_;
 
-        Value (ApproximateCoefficientFunction::*fx_)(
-            double, double, int
-        ) const;
+        Value (ApproximateCoefficientFunction::*fx_)(double, double, int) const;
 
         bool legacy_appr_;
 
@@ -121,12 +123,16 @@ class ApproximateCoefficientFunctionKLMV : public AbstractApproximate {
             const bool &lowxi = false, const double &abserr = 1e-3,
             const double &relerr = 1e-3, const int &dim = 1000
         );
-        ApproximateCoefficientFunctionKLMV(const ApproximateCoefficientFunctionKLMV& obj);
+        ApproximateCoefficientFunctionKLMV(
+            const ApproximateCoefficientFunctionKLMV &obj
+        );
         ~ApproximateCoefficientFunctionKLMV() override = default;
 
-        HighScaleVersion GetHighScaleVersion() const {return highscale_->GetHighScaleVersion();};
-        bool GetLowXi() const {return lowxi_;}
-        void SetLowXi(const bool& lowxi);
+        HighScaleVersion GetHighScaleVersion() const {
+            return highscale_->GetHighScaleVersion();
+        };
+        bool GetLowXi() const { return lowxi_; }
+        void SetLowXi(const bool &lowxi);
 
         Value MuIndependentTermsBand(
             double x, double m2Q2, int nf
@@ -138,8 +144,8 @@ class ApproximateCoefficientFunctionKLMV : public AbstractApproximate {
         std::unique_ptr<HighEnergyCoefficientFunction> highenergy_;
 
         Value (ApproximateCoefficientFunctionKLMV::*fx_)(
-                    double, double, int
-                ) const;
+            double, double, int
+        ) const;
 
         std::unique_ptr<klmv_params> params_A_;
         std::unique_ptr<klmv_params> params_B_;

@@ -12,23 +12,23 @@ AbstractHighEnergyCoefficientFunction::AbstractHighEnergyCoefficientFunction(
 )
     : CoefficientFunction(order, kind, channel), NLL_(NLL) {
     switch (order) {
-        case 1:
-            fx_ = &AbstractHighEnergyCoefficientFunction::ZeroFunctionBand;
-            break;
-        case 2:
-            fx_ = &AbstractHighEnergyCoefficientFunction::Order2;
-            break;
-        case 3:
-            if (NLL) {
-                fx_ = &AbstractHighEnergyCoefficientFunction::Order3;
-            } else {
-                fx_ = &AbstractHighEnergyCoefficientFunction::Order3LL;
-            }
-            break;
-        default:
-            throw UnexpectedException(
-                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-            );
+    case 1:
+        fx_ = &AbstractHighEnergyCoefficientFunction::ZeroFunctionBand;
+        break;
+    case 2:
+        fx_ = &AbstractHighEnergyCoefficientFunction::Order2;
+        break;
+    case 3:
+        if (NLL) {
+            fx_ = &AbstractHighEnergyCoefficientFunction::Order3;
+        } else {
+            fx_ = &AbstractHighEnergyCoefficientFunction::Order3LL;
+        }
+        break;
+    default:
+        throw UnexpectedException(
+            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+        );
     }
 };
 
@@ -96,10 +96,11 @@ HighEnergyCoefficientFunction::HighEnergyCoefficientFunction(
 //------------------------------------------------------------------------------------------//
 
 HighEnergyCoefficientFunction::HighEnergyCoefficientFunction(
-    const HighEnergyCoefficientFunction& obj
+    const HighEnergyCoefficientFunction &obj
 )
-    : HighEnergyCoefficientFunction(obj.GetOrder(), obj.GetKind(), obj.GetChannel(), obj.GetNLL()) {
-}
+    : HighEnergyCoefficientFunction(
+          obj.GetOrder(), obj.GetKind(), obj.GetChannel(), obj.GetNLL()
+      ) {}
 
 //==========================================================================================//
 //  HighEnergyCoefficientFunction: function that sets the pointer for LL_ and
@@ -109,91 +110,91 @@ HighEnergyCoefficientFunction::HighEnergyCoefficientFunction(
 void HighEnergyCoefficientFunction::SetFunctions() {
 
     switch (GetOrder()) {
-        case 1:
-            LL_ = nullptr;
-            NLL_ = nullptr;
-            break;
-        case 2:
-            NLL_ = nullptr;
-            switch (GetKind()) {
-                case '2':
-                    switch (GetChannel()) {
-                        case 'g':
-                            LL_ = &HighEnergyCoefficientFunction::C2_g2_highenergyLL;
-                            break;
-                        case 'q':
-                            LL_ = &HighEnergyCoefficientFunction::C2_ps2_highenergyLL;
-                            break;
-                        default:
-                            throw UnexpectedException(
-                                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                            );
-                    }
-                    break;
-                case 'L':
-                    switch (GetChannel()) {
-                        case 'g':
-                            LL_ = &HighEnergyCoefficientFunction::CL_g2_highenergyLL;
-                            break;
-                        case 'q':
-                            LL_ = &HighEnergyCoefficientFunction::CL_ps2_highenergyLL;
-                            break;
-                        default:
-                            throw UnexpectedException(
-                                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                            );
-                    }
-                    break;
-                default:
-                    throw UnexpectedException(
-                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                    );
+    case 1:
+        LL_ = nullptr;
+        NLL_ = nullptr;
+        break;
+    case 2:
+        NLL_ = nullptr;
+        switch (GetKind()) {
+        case '2':
+            switch (GetChannel()) {
+            case 'g':
+                LL_ = &HighEnergyCoefficientFunction::C2_g2_highenergyLL;
+                break;
+            case 'q':
+                LL_ = &HighEnergyCoefficientFunction::C2_ps2_highenergyLL;
+                break;
+            default:
+                throw UnexpectedException(
+                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                );
             }
             break;
-        case 3:
-            switch (GetKind()) {
-                case '2':
-                    switch (GetChannel()) {
-                        case 'g':
-                            LL_ = &HighEnergyCoefficientFunction::C2_g3_highenergyLL;
-                            NLL_ = &HighEnergyCoefficientFunction::C2_g3_highenergyNLL;
-                            break;
-                        case 'q':
-                            LL_ = &HighEnergyCoefficientFunction::C2_ps3_highenergyLL;
-                            NLL_ = &HighEnergyCoefficientFunction::C2_ps3_highenergyNLL;
-                            break;
-                        default:
-                            throw UnexpectedException(
-                                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                            );
-                    }
-                    break;
-                case 'L':
-                    switch (GetChannel()) {
-                        case 'g':
-                            LL_ = &HighEnergyCoefficientFunction::CL_g3_highenergyLL;
-                            NLL_ = &HighEnergyCoefficientFunction::CL_g3_highenergyNLL;
-                            break;
-                        case 'q':
-                            LL_ = &HighEnergyCoefficientFunction::CL_ps3_highenergyLL;
-                            NLL_ = &HighEnergyCoefficientFunction::CL_ps3_highenergyNLL;
-                            break;
-                        default:
-                            throw UnexpectedException(
-                                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                            );
-                    }
-                    break;
-                default:
-                    throw UnexpectedException(
-                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                    );
+        case 'L':
+            switch (GetChannel()) {
+            case 'g':
+                LL_ = &HighEnergyCoefficientFunction::CL_g2_highenergyLL;
+                break;
+            case 'q':
+                LL_ = &HighEnergyCoefficientFunction::CL_ps2_highenergyLL;
+                break;
+            default:
+                throw UnexpectedException(
+                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                );
             }
             break;
         default:
             throw UnexpectedException(
                 "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
             );
+        }
+        break;
+    case 3:
+        switch (GetKind()) {
+        case '2':
+            switch (GetChannel()) {
+            case 'g':
+                LL_ = &HighEnergyCoefficientFunction::C2_g3_highenergyLL;
+                NLL_ = &HighEnergyCoefficientFunction::C2_g3_highenergyNLL;
+                break;
+            case 'q':
+                LL_ = &HighEnergyCoefficientFunction::C2_ps3_highenergyLL;
+                NLL_ = &HighEnergyCoefficientFunction::C2_ps3_highenergyNLL;
+                break;
+            default:
+                throw UnexpectedException(
+                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                );
+            }
+            break;
+        case 'L':
+            switch (GetChannel()) {
+            case 'g':
+                LL_ = &HighEnergyCoefficientFunction::CL_g3_highenergyLL;
+                NLL_ = &HighEnergyCoefficientFunction::CL_g3_highenergyNLL;
+                break;
+            case 'q':
+                LL_ = &HighEnergyCoefficientFunction::CL_ps3_highenergyLL;
+                NLL_ = &HighEnergyCoefficientFunction::CL_ps3_highenergyNLL;
+                break;
+            default:
+                throw UnexpectedException(
+                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                );
+            }
+            break;
+        default:
+            throw UnexpectedException(
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+        break;
+    default:
+        throw UnexpectedException(
+            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+        );
     }
 
     if (!GetNLL())
@@ -240,10 +241,11 @@ HighEnergyHighScaleCoefficientFunction::HighEnergyHighScaleCoefficientFunction(
 //------------------------------------------------------------------------------------------//
 
 HighEnergyHighScaleCoefficientFunction::HighEnergyHighScaleCoefficientFunction(
-    const HighEnergyHighScaleCoefficientFunction& obj
+    const HighEnergyHighScaleCoefficientFunction &obj
 )
-    : HighEnergyHighScaleCoefficientFunction(obj.GetOrder(), obj.GetKind(), obj.GetChannel(), obj.GetNLL()) {
-}
+    : HighEnergyHighScaleCoefficientFunction(
+          obj.GetOrder(), obj.GetKind(), obj.GetChannel(), obj.GetNLL()
+      ) {}
 
 //==========================================================================================//
 //  HighEnergyHighScaleCoefficientFunction: function that sets the pointer for
@@ -253,91 +255,103 @@ HighEnergyHighScaleCoefficientFunction::HighEnergyHighScaleCoefficientFunction(
 void HighEnergyHighScaleCoefficientFunction::SetFunctions() {
 
     switch (GetOrder()) {
-        case 1:
-            LL_ = nullptr;
-            NLL_ = nullptr;
-            break;
-        case 2:
-            NLL_ = nullptr;
-            switch (GetKind()) {
-                case '2':
-                    switch (GetChannel()) {
-                        case 'g':
-                            LL_ = &HighEnergyHighScaleCoefficientFunction::C2_g2_highenergy_highscaleLL;
-                            break;
-                        case 'q':
-                            LL_ = &HighEnergyHighScaleCoefficientFunction::C2_ps2_highenergy_highscaleLL;
-                            break;
-                        default:
-                            throw UnexpectedException(
-                                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                            );
-                    }
-                    break;
-                case 'L':
-                    switch (GetChannel()) {
-                        case 'g':
-                            LL_ = &HighEnergyHighScaleCoefficientFunction::CL_g2_highenergy_highscaleLL;
-                            break;
-                        case 'q':
-                            LL_ = &HighEnergyHighScaleCoefficientFunction::CL_ps2_highenergy_highscaleLL;
-                            break;
-                        default:
-                            throw UnexpectedException(
-                                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                            );
-                    }
-                    break;
-                default:
-                    throw UnexpectedException(
-                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                    );
+    case 1:
+        LL_ = nullptr;
+        NLL_ = nullptr;
+        break;
+    case 2:
+        NLL_ = nullptr;
+        switch (GetKind()) {
+        case '2':
+            switch (GetChannel()) {
+            case 'g':
+                LL_ = &HighEnergyHighScaleCoefficientFunction::
+                          C2_g2_highenergy_highscaleLL;
+                break;
+            case 'q':
+                LL_ = &HighEnergyHighScaleCoefficientFunction::
+                          C2_ps2_highenergy_highscaleLL;
+                break;
+            default:
+                throw UnexpectedException(
+                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                );
             }
             break;
-        case 3:
-            switch (GetKind()) {
-                case '2':
-                    switch (GetChannel()) {
-                        case 'g':
-                            LL_ = &HighEnergyHighScaleCoefficientFunction::C2_g3_highenergy_highscaleLL;
-                            NLL_ = &HighEnergyHighScaleCoefficientFunction::C2_g3_highenergy_highscaleNLL;
-                            break;
-                        case 'q':
-                            LL_ = &HighEnergyHighScaleCoefficientFunction::C2_ps3_highenergy_highscaleLL;
-                            NLL_ = &HighEnergyHighScaleCoefficientFunction::C2_ps3_highenergy_highscaleNLL;
-                            break;
-                        default:
-                            throw UnexpectedException(
-                                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                            );
-                    }
-                    break;
-                case 'L':
-                    switch (GetChannel()) {
-                        case 'g':
-                            LL_ = &HighEnergyHighScaleCoefficientFunction::CL_g3_highenergy_highscaleLL;
-                            NLL_ = &HighEnergyHighScaleCoefficientFunction::CL_g3_highenergy_highscaleNLL;
-                            break;
-                        case 'q':
-                            LL_ = &HighEnergyHighScaleCoefficientFunction::CL_ps3_highenergy_highscaleLL;
-                            NLL_ = &HighEnergyHighScaleCoefficientFunction::CL_ps3_highenergy_highscaleNLL;
-                            break;
-                        default:
-                            throw UnexpectedException(
-                                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                            );
-                    }
-                    break;
-                default:
-                    throw UnexpectedException(
-                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                    );
+        case 'L':
+            switch (GetChannel()) {
+            case 'g':
+                LL_ = &HighEnergyHighScaleCoefficientFunction::
+                          CL_g2_highenergy_highscaleLL;
+                break;
+            case 'q':
+                LL_ = &HighEnergyHighScaleCoefficientFunction::
+                          CL_ps2_highenergy_highscaleLL;
+                break;
+            default:
+                throw UnexpectedException(
+                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                );
             }
             break;
         default:
             throw UnexpectedException(
                 "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
             );
+        }
+        break;
+    case 3:
+        switch (GetKind()) {
+        case '2':
+            switch (GetChannel()) {
+            case 'g':
+                LL_ = &HighEnergyHighScaleCoefficientFunction::
+                          C2_g3_highenergy_highscaleLL;
+                NLL_ = &HighEnergyHighScaleCoefficientFunction::
+                           C2_g3_highenergy_highscaleNLL;
+                break;
+            case 'q':
+                LL_ = &HighEnergyHighScaleCoefficientFunction::
+                          C2_ps3_highenergy_highscaleLL;
+                NLL_ = &HighEnergyHighScaleCoefficientFunction::
+                           C2_ps3_highenergy_highscaleNLL;
+                break;
+            default:
+                throw UnexpectedException(
+                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                );
+            }
+            break;
+        case 'L':
+            switch (GetChannel()) {
+            case 'g':
+                LL_ = &HighEnergyHighScaleCoefficientFunction::
+                          CL_g3_highenergy_highscaleLL;
+                NLL_ = &HighEnergyHighScaleCoefficientFunction::
+                           CL_g3_highenergy_highscaleNLL;
+                break;
+            case 'q':
+                LL_ = &HighEnergyHighScaleCoefficientFunction::
+                          CL_ps3_highenergy_highscaleLL;
+                NLL_ = &HighEnergyHighScaleCoefficientFunction::
+                           CL_ps3_highenergy_highscaleNLL;
+                break;
+            default:
+                throw UnexpectedException(
+                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                );
+            }
+            break;
+        default:
+            throw UnexpectedException(
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+        break;
+    default:
+        throw UnexpectedException(
+            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+        );
     }
 
     if (!GetNLL())

@@ -44,12 +44,18 @@ class CoefficientFunction {
         CoefficientFunction(
             const int &order, const char &kind, const char &channel
         );
-        CoefficientFunction(CoefficientFunction& coeff)
+        CoefficientFunction(CoefficientFunction &coeff)
             : CoefficientFunction(
                   coeff.GetOrder(), coeff.GetKind(), coeff.GetChannel()
               ){};
 
         virtual ~CoefficientFunction() = 0;
+
+        // copy operator is deleted since the possibility to change
+        // the state of an instance of CoefficientFunction is not implemented
+        // yet For this reason the data members are declared const
+        // TODO: implement it!!!
+        CoefficientFunction &operator=(CoefficientFunction &rhs) = delete;
 
         // get methods
         int GetOrder() const { return order_; };
@@ -65,7 +71,7 @@ class CoefficientFunction {
         virtual Value
             MuIndependentTermsBand(double x, double m2Q2, int nf) const;
 
-        static double xMax(double m2Q2) {return 1. / (1. + 4 * m2Q2);};
+        static double xMax(double m2Q2) { return 1. / (1. + 4 * m2Q2); };
 
     private:
         const int order_;    // order = 1, 2, or 3

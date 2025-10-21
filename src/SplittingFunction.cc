@@ -79,9 +79,8 @@ SplittingFunction::SplittingFunction(
 //  SplittingFunction: copy constructor
 //------------------------------------------------------------------------------------------//
 
-SplittingFunction::SplittingFunction(const SplittingFunction& obj)
+SplittingFunction::SplittingFunction(const SplittingFunction &obj)
     : SplittingFunction(obj.GetOrder(), obj.GetEntry1(), obj.GetEntry2()) {}
-
 
 //==========================================================================================//
 //  SplittingFunction: function that sets all pointers to the right function
@@ -90,86 +89,86 @@ SplittingFunction::SplittingFunction(const SplittingFunction& obj)
 void SplittingFunction::SetFunctions() {
 
     switch (order_) {
-        case 0:
-            switch (entry1_) {
-                case 'g':
-                    switch (entry2_) {
-                        case 'g':
-                            reg_ = &SplittingFunction::Pgg0reg;
-                            sing_ = &SplittingFunction::Pgg0sing;
-                            loc_ = &SplittingFunction::Pgg0loc;
-                            sing_int_ = &SplittingFunction::Pgg0sing_integrated;
-                            break;
-                        case 'q':
-                            reg_ = &SplittingFunction::Pgq0;
-                            sing_ = &SplittingFunction::ZeroFunction_x_nf;
-                            loc_ = &SplittingFunction::ZeroFunction_nf;
-                            sing_int_ = &SplittingFunction::ZeroFunction_x_nf;
-                            break;
-                        default:
-                            throw UnexpectedException(
-                                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                            );
-                    }
-                    break;
-                case 'q':
-                    switch (entry2_) {
-                        case 'g':
-                            reg_ = &SplittingFunction::Pqg0;
-                            sing_ = &SplittingFunction::ZeroFunction_x_nf;
-                            loc_ = &SplittingFunction::ZeroFunction_nf;
-                            sing_int_ = &SplittingFunction::ZeroFunction_x_nf;
-                            break;
-                        case 'q':
-                            reg_ = &SplittingFunction::Pqq0reg;
-                            sing_ = &SplittingFunction::Pqq0sing;
-                            loc_ = &SplittingFunction::Pqq0loc;
-                            sing_int_ = &SplittingFunction::Pqq0sing_integrated;
-                            break;
-                        default:
-                            throw UnexpectedException(
-                                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                            );
-                    }
-                    break;
-                default:
-                    throw UnexpectedException(
-                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                    );
+    case 0:
+        switch (entry1_) {
+        case 'g':
+            switch (entry2_) {
+            case 'g':
+                reg_ = &SplittingFunction::Pgg0reg;
+                sing_ = &SplittingFunction::Pgg0sing;
+                loc_ = &SplittingFunction::Pgg0loc;
+                sing_int_ = &SplittingFunction::Pgg0sing_integrated;
+                break;
+            case 'q':
+                reg_ = &SplittingFunction::Pgq0;
+                sing_ = &SplittingFunction::ZeroFunction_x_nf;
+                loc_ = &SplittingFunction::ZeroFunction_nf;
+                sing_int_ = &SplittingFunction::ZeroFunction_x_nf;
+                break;
+            default:
+                throw UnexpectedException(
+                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                );
             }
             break;
-        case 1:
-            switch (entry1_) {
-                case 'g':
-                    switch (entry2_) {
-                        case 'q':
-                            reg_ = &SplittingFunction::Pgq1;
-                            sing_ = &SplittingFunction::ZeroFunction_x_nf;
-                            loc_ = &SplittingFunction::ZeroFunction_nf;
-                            sing_int_ = &SplittingFunction::ZeroFunction_x_nf;
-                            break;
-                        case 'g':
-                            reg_ = &SplittingFunction::Pgg1reg;
-                            sing_ = &SplittingFunction::Pgg1sing;
-                            loc_ = &SplittingFunction::Pgg1loc;
-                            sing_int_ = &SplittingFunction::Pgg1sing_integrated;
-                            break;
-                        default:
-                            throw UnexpectedException(
-                                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                            );
-                    }
-                    break;
-                default:
-                    throw UnexpectedException(
-                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                    );
+        case 'q':
+            switch (entry2_) {
+            case 'g':
+                reg_ = &SplittingFunction::Pqg0;
+                sing_ = &SplittingFunction::ZeroFunction_x_nf;
+                loc_ = &SplittingFunction::ZeroFunction_nf;
+                sing_int_ = &SplittingFunction::ZeroFunction_x_nf;
+                break;
+            case 'q':
+                reg_ = &SplittingFunction::Pqq0reg;
+                sing_ = &SplittingFunction::Pqq0sing;
+                loc_ = &SplittingFunction::Pqq0loc;
+                sing_int_ = &SplittingFunction::Pqq0sing_integrated;
+                break;
+            default:
+                throw UnexpectedException(
+                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                );
             }
             break;
         default:
             throw UnexpectedException(
                 "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
             );
+        }
+        break;
+    case 1:
+        switch (entry1_) {
+        case 'g':
+            switch (entry2_) {
+            case 'q':
+                reg_ = &SplittingFunction::Pgq1;
+                sing_ = &SplittingFunction::ZeroFunction_x_nf;
+                loc_ = &SplittingFunction::ZeroFunction_nf;
+                sing_int_ = &SplittingFunction::ZeroFunction_x_nf;
+                break;
+            case 'g':
+                reg_ = &SplittingFunction::Pgg1reg;
+                sing_ = &SplittingFunction::Pgg1sing;
+                loc_ = &SplittingFunction::Pgg1loc;
+                sing_int_ = &SplittingFunction::Pgg1sing_integrated;
+                break;
+            default:
+                throw UnexpectedException(
+                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                );
+            }
+            break;
+        default:
+            throw UnexpectedException(
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+        break;
+    default:
+        throw UnexpectedException(
+            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+        );
     }
 }
 
@@ -201,9 +200,7 @@ double SplittingFunction::SingularIntegrated(double x, int nf) const {
 //  SplittingFunction: Local part
 //------------------------------------------------------------------------------------------//
 
-double SplittingFunction::Local(int nf) const {
-    return (this->*loc_)(nf);
-}
+double SplittingFunction::Local(int nf) const { return (this->*loc_)(nf); }
 
 //==========================================================================================//
 //  ConvolutedSplittingFunctions: constructor
@@ -257,8 +254,13 @@ ConvolutedSplittingFunctions::ConvolutedSplittingFunctions(
 //  ConvolutedSplittingFunctions: copy constructor
 //------------------------------------------------------------------------------------------//
 
-ConvolutedSplittingFunctions::ConvolutedSplittingFunctions(const ConvolutedSplittingFunctions& obj)
-    : ConvolutedSplittingFunctions(obj.GetOrder1(), obj.GetEntry1(), obj.GetEntry2(), obj.GetOrder2(), obj.GetEntry3(), obj.GetEntry4()) {}
+ConvolutedSplittingFunctions::ConvolutedSplittingFunctions(
+    const ConvolutedSplittingFunctions &obj
+)
+    : ConvolutedSplittingFunctions(
+          obj.GetOrder1(), obj.GetEntry1(), obj.GetEntry2(), obj.GetOrder2(),
+          obj.GetEntry3(), obj.GetEntry4()
+      ) {}
 
 //==========================================================================================//
 //  ConvolutedSplittingFunctions: function that sets all pointers to the right
