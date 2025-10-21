@@ -80,6 +80,14 @@ class ApproximateCoefficientFunction : public AbstractApproximate {
             return asymptotic_->GetHighScaleVersion();
         };
 
+        bool IsLegacyThreshold() const {
+            return threshold_->IsLegacyThreshold();
+        };
+        bool IsLegacyPowerTerms() const {
+            return asymptotic_->IsLegacyPowerTerms();
+        };
+        bool IsLegacyApproximation() const { return legacy_appr_; };
+
         void SetLegacyThreshold(const bool &legacy_threshold);
         void SetLegacyPowerTerms(const bool &legacy_pt);
         void SetLegacyApproximation(const bool &legacy_appr);

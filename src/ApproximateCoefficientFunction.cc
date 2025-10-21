@@ -157,7 +157,11 @@ ApproximateCoefficientFunction::ApproximateCoefficientFunction(
           obj.GetOrder(), obj.GetKind(), obj.GetChannel(), obj.GetNLL(),
           obj.GetHighScaleVersion(), obj.GetAbsErr(), obj.GetRelErr(),
           obj.GetDim()
-      ) {}
+      ) {
+    SetLegacyThreshold(obj.IsLegacyThreshold());
+    SetLegacyPowerTerms(obj.IsLegacyPowerTerms());
+    SetLegacyApproximation(obj.IsLegacyApproximation());
+}
 //==========================================================================================//
 //  ApproximateCoefficientFunction: set parameters of legacy approximation
 //------------------------------------------------------------------------------------------//
@@ -337,6 +341,8 @@ void ApproximateCoefficientFunction::SetLegacyApproximation(
             );
         }
 
+        legacy_appr_ = legacy_appr;
+
         if (legacy_appr) {
             SetLegacyThreshold(true);
             SetLegacyPowerTerms(true);
@@ -346,6 +352,8 @@ void ApproximateCoefficientFunction::SetLegacyApproximation(
         } else {
             SetLegacyThreshold(false);
             SetLegacyPowerTerms(false);
+            approximation_ = nullptr;
+            variation_ = nullptr;
             fx_ = &ApproximateCoefficientFunction::Approximation;
         }
     } catch (NotValidException &e) {

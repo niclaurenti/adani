@@ -38,7 +38,9 @@ ThresholdCoefficientFunction::ThresholdCoefficientFunction(
 )
     : ThresholdCoefficientFunction(
           obj.GetOrder(), obj.GetKind(), obj.GetChannel()
-      ) {}
+      ) {
+    SetLegacyThreshold(obj.IsLegacyThreshold());
+}
 
 //==========================================================================================//
 //  ThresholdCoefficientFunction: function that sets the pointer for fx

@@ -36,6 +36,8 @@ ExactCoefficientFunction::ExactCoefficientFunction(
     asy_ = nullptr;
     thr_ = nullptr;
 
+    double_int_meth_ = DoubleIntegralMethod::Analytical;
+
     try {
 
         if (GetOrder() > 1) {
@@ -214,7 +216,12 @@ ExactCoefficientFunction::ExactCoefficientFunction(ExactCoefficientFunction &obj
     : ExactCoefficientFunction(
           obj.GetOrder(), obj.GetKind(), obj.GetChannel(), obj.GetAbsErr(),
           obj.GetRelErr(), obj.GetDim()
-      ) {}
+      ) {
+    SetDoubleIntegralMethod(
+        obj.GetDoubleIntegralMethod(), obj.GetAbsErr(), obj.GetRelErr(),
+        obj.GetDim(), obj.GetMCcalls()
+    );
+}
 
 //==========================================================================================//
 //  ExactCoefficientFunction: get method for abserr
@@ -247,6 +254,19 @@ int ExactCoefficientFunction::GetDim() const {
         return convolutions_lmu1_[0]->GetDim();
     else
         return 1000;
+}
+
+//==========================================================================================//
+//  ExactCoefficientFunction: get method for dim
+//------------------------------------------------------------------------------------------//
+
+int ExactCoefficientFunction::GetMCcalls() const {
+    if (auto ptr =
+            dynamic_cast<DoubleConvolution *>(convolutions_lmu2_[0].get())) {
+        return ptr->GetMCcalls();
+    } else {
+        return 25000;
+    }
 }
 
 //==========================================================================================//
@@ -341,6 +361,14 @@ void ExactCoefficientFunction::SetDoubleIntegralMethod(
 ) {
     try {
 
+        if (double_int_meth_ == double_int_method) {
+            throw NotValidException(
+                "Setting double integral method identical to its previous "
+                "value!",
+                __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+
         if (GetOrder() < 3) {
             throw NotPresentException(
                 "Double Integration is not needed at order="
@@ -357,6 +385,8 @@ void ExactCoefficientFunction::SetDoubleIntegralMethod(
         }
 
         // at this point I must be in the g channel at order 3
+
+        double_int_meth_ = double_int_method;
 
         switch (double_int_method) {
         case DoubleIntegralMethod::MonteCarlo:

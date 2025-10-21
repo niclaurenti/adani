@@ -50,6 +50,10 @@ class ExactCoefficientFunction : public CoefficientFunction {
         double GetAbsErr() const;
         double GetRelErr() const;
         int GetDim() const;
+        int GetMCcalls() const;
+        DoubleIntegralMethod GetDoubleIntegralMethod() const {
+            return double_int_meth_;
+        };
 
         void SetDoubleIntegralMethod(
             const DoubleIntegralMethod &double_int_method,
@@ -96,6 +100,8 @@ class ExactCoefficientFunction : public CoefficientFunction {
         std::shared_ptr<const ConvolutedSplittingFunctions> Pgg0Pgg0_;
 
         std::shared_ptr<const Delta> delta_;
+
+        DoubleIntegralMethod double_int_meth_;
 
         void SetFunctions();
 

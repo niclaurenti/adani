@@ -40,7 +40,9 @@ AsymptoticCoefficientFunction::AsymptoticCoefficientFunction(
     : AsymptoticCoefficientFunction(
           obj.GetOrder(), obj.GetKind(), obj.GetChannel(), obj.GetNLL(),
           obj.GetHighScaleVersion()
-      ) {}
+      ) {
+    SetLegacyPowerTerms(obj.IsLegacyPowerTerms());
+}
 
 //==========================================================================================//
 //  AsymptoticCoefficientFunction: SetFunctions

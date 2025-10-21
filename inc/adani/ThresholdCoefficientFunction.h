@@ -41,6 +41,7 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
         ThresholdCoefficientFunction(const ThresholdCoefficientFunction &obj);
         ~ThresholdCoefficientFunction() override = default;
 
+        bool IsLegacyThreshold() const { return legacy_threshold_; };
         void SetLegacyThreshold(const bool &legacy_threshold);
 
         double fx(double x, double m2Q2, double m2mu2, int nf) const override;
