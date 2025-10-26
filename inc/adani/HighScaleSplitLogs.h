@@ -22,6 +22,8 @@
 #include "adani/MasslessCoefficientFunction.h"
 #include "adani/MatchingCondition.h"
 
+#include <memory>
+
 //==========================================================================================//
 //           Legend:
 //           at order O(alpha_s^n)
@@ -39,7 +41,7 @@ class HighScaleSplitLogs : public CoefficientFunction {
             const int &order, const char &kind, const char &channel,
             const HighScaleVersion &version = HighScaleVersion::Exact
         );
-        ~HighScaleSplitLogs() override;
+        ~HighScaleSplitLogs() override = default;
 
         double fx(double x, double m2Q2, int nf) const;
         Value fxBand(double x, double m2Q2, int nf) const;
@@ -69,9 +71,9 @@ class HighScaleSplitLogs : public CoefficientFunction {
         Value N3LL(double x, int nf) const { return (this->*N3LL_)(x, nf); }
 
     private:
-        MasslessCoefficientFunction *massless_as1_;
-        MasslessCoefficientFunction *massless_;
-        MatchingCondition *a_muindep_;
+        std::unique_ptr<MasslessCoefficientFunction> massless_as1_;
+        std::unique_ptr<MasslessCoefficientFunction> massless_;
+        std::unique_ptr<MatchingCondition> a_muindep_;
 
         double (HighScaleSplitLogs::*LL_)(double, int) const;
         double (HighScaleSplitLogs::*NLL_)(double, int) const;

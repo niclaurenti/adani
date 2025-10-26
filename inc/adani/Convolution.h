@@ -29,6 +29,8 @@
 #include <gsl/gsl_monte.h>
 #include <gsl/gsl_monte_vegas.h>
 
+#include <memory>
+
 //==========================================================================================//
 //  class AbstractConvolution
 //------------------------------------------------------------------------------------------//
@@ -36,23 +38,30 @@
 class AbstractConvolution {
     public:
         AbstractConvolution(
-            CoefficientFunction *coefffunc,
-            AbstractSplittingFunction *splitfunc, const double &abserr = 1e-3,
-            const double &relerr = 1e-3, const int &dim = 1000
+            std::shared_ptr<const CoefficientFunction> coefffunc,
+            std::shared_ptr<const AbstractSplittingFunction> splitfunc,
+            const double &abserr = 1e-3, const double &relerr = 1e-3,
+            const int &dim = 1000
         );
         virtual ~AbstractConvolution() = 0;
 
+        AbstractConvolution &operator=(const AbstractConvolution &obj);
+
         // get methods
-        double GetAbserr() const { return abserr_; };
-        double GetRelerr() const { return relerr_; };
+        double GetAbsErr() const { return abserr_; };
+        double GetRelErr() const { return relerr_; };
         int GetDim() const { return dim_; };
-        CoefficientFunction *GetCoeffFunc() const { return coefffunc_; };
-        AbstractSplittingFunction *GetSplitFunc() const { return splitfunc_; };
+        std::shared_ptr<const CoefficientFunction> GetCoeffFunc() const {
+            return coefffunc_;
+        };
+        std::shared_ptr<const AbstractSplittingFunction> GetSplitFunc() const {
+            return splitfunc_;
+        };
 
         // set methods
         void SetAbserr(const double &abserr);
         void SetRelerr(const double &relerr);
-        void CheckDim(const int &dim);
+        void SetDim(const int &dim);
 
         // result of the convolution
         double Convolute(double x, double m2Q2, int nf) const;
@@ -65,11 +74,10 @@ class AbstractConvolution {
     private:
         double abserr_;
         double relerr_;
-        const int dim_;
+        int dim_;
 
-    protected:
-        CoefficientFunction *coefffunc_;
-        AbstractSplittingFunction *splitfunc_;
+        std::shared_ptr<const CoefficientFunction> coefffunc_;
+        std::shared_ptr<const AbstractSplittingFunction> splitfunc_;
 };
 
 //==========================================================================================//
@@ -79,11 +87,15 @@ class AbstractConvolution {
 class Convolution : public AbstractConvolution {
     public:
         Convolution(
-            CoefficientFunction *coefffunc,
-            AbstractSplittingFunction *splitfunc, const double &abserr = 1e-3,
-            const double &relerr = 1e-3, const int &dim = 1000
+            std::shared_ptr<const CoefficientFunction> coefffunc,
+            std::shared_ptr<const AbstractSplittingFunction> splitfunc,
+            const double &abserr = 1e-3, const double &relerr = 1e-3,
+            const int &dim = 1000
         );
+        Convolution(const Convolution &obj);
         ~Convolution() override;
+
+        Convolution &operator=(const Convolution &obj);
 
         double RegularPart(double x, double m2Q2, int nf) const override;
         double SingularPart(double x, double m2Q2, int nf) const override;
@@ -107,14 +119,16 @@ class Convolution : public AbstractConvolution {
 class ConvolutedCoefficientFunction : public CoefficientFunction {
     public:
         ConvolutedCoefficientFunction(
-            CoefficientFunction *coefffunc,
-            AbstractSplittingFunction *splitfunc, const double &abserr = 1e-3,
-            const double &relerr = 1e-3, const int &dim = 1000
+            std::shared_ptr<const CoefficientFunction> coefffunc,
+            std::shared_ptr<const AbstractSplittingFunction> splitfunc,
+            const double &abserr = 1e-3, const double &relerr = 1e-3,
+            const int &dim = 1000
         );
-        ~ConvolutedCoefficientFunction() override;
+        ConvolutedCoefficientFunction(const ConvolutedCoefficientFunction &obj);
+        ~ConvolutedCoefficientFunction() override = default;
 
         // get method
-        Convolution *GetConv() const { return conv_; };
+        std::shared_ptr<const Convolution> GetConv() const { return conv_; };
 
         double MuIndependentTerms(double x, double m2Q2, int nf) const override;
 
@@ -130,7 +144,7 @@ class ConvolutedCoefficientFunction : public CoefficientFunction {
             fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
 
     private:
-        Convolution *conv_;
+        std::shared_ptr<const Convolution> conv_;
 };
 
 //==========================================================================================//
@@ -140,12 +154,16 @@ class ConvolutedCoefficientFunction : public CoefficientFunction {
 class DoubleConvolution : public AbstractConvolution {
     public:
         DoubleConvolution(
-            CoefficientFunction *coefffunc,
-            AbstractSplittingFunction *splitfunc, const double &abserr = 1e-3,
-            const double &relerr = 1e-3, const int &dim = 1000,
-            const bool &MCintegral = false, const int &MCcalls = 25000
+            std::shared_ptr<const CoefficientFunction> coefffunc,
+            std::shared_ptr<const AbstractSplittingFunction> splitfunc,
+            const double &abserr = 1e-3, const double &relerr = 1e-3,
+            const int &dim = 1000, const bool &MCintegral = false,
+            const int &MCcalls = 25000
         );
-        ~DoubleConvolution() override;
+        DoubleConvolution(const DoubleConvolution &obj);
+        ~DoubleConvolution() override = default;
+
+        DoubleConvolution &operator=(const DoubleConvolution &obj);
 
         // get methods
         bool GetMCintegral() const { return MCintegral_; };
@@ -153,17 +171,18 @@ class DoubleConvolution : public AbstractConvolution {
 
         // set methods
         void SetMCcalls(const int &MCcalls);
+        void SetMCintegral(const bool &MCintegral);
 
         double RegularPart(double x, double m2Q2, int nf) const override;
         double SingularPart(double x, double m2Q2, int nf) const override;
         double LocalPart(double x, double m2Q2, int nf) const override;
 
     private:
-        const bool MCintegral_;
+        bool MCintegral_;
         int MCcalls_;
 
-        Convolution *convolution_;
-        ConvolutedCoefficientFunction *conv_coeff_;
+        std::unique_ptr<const Convolution> convolution_;
+        std::shared_ptr<const ConvolutedCoefficientFunction> conv_coeff_;
 
         // support function for the integral. it is static in order to be passed
         // to gsl

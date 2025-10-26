@@ -18,21 +18,21 @@
 #include <string>
 
 //==========================================================================================//
-//  method used for solving the double integral in the log(mu^2/m^2)^2 terms of the exact
-//  coefficient function
+//  method used for solving the double integral in the log(mu^2/m^2)^2 terms of
+//  the exact coefficient function
 //------------------------------------------------------------------------------------------//
 
 enum class DoubleIntegralMethod : uint8_t {
-    Analytical, DoubleNumerical, MonteCarlo
+    Analytical,
+    DoubleNumerical,
+    MonteCarlo
 };
 
 //==========================================================================================//
 //  version of aQg30
 //------------------------------------------------------------------------------------------//
 
-enum class HighScaleVersion : uint8_t {
-    Exact, GM, ABMP, KLMV
-};
+enum class HighScaleVersion : uint8_t { Exact, GM, ABMP, KLMV };
 
 std::string to_string(HighScaleVersion hs_version);
 

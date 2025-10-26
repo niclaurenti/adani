@@ -21,6 +21,8 @@
 #include "adani/MasslessCoefficientFunction.h"
 #include "adani/MatchingCondition.h"
 
+#include <memory>
+
 //==========================================================================================//
 //                      The notation used is the following:
 //
@@ -41,7 +43,10 @@ class HighScaleCoefficientFunction : public CoefficientFunction {
             const int &order, const char &kind, const char &channel,
             const HighScaleVersion &version = HighScaleVersion::Exact
         );
-        ~HighScaleCoefficientFunction() override;
+        HighScaleCoefficientFunction(const HighScaleCoefficientFunction &obj);
+        ~HighScaleCoefficientFunction() override = default;
+
+        HighScaleVersion GetHighScaleVersion() const;
 
         double fx(double x, double m2Q2, double m2mu2, int nf) const override;
 
@@ -57,10 +62,10 @@ class HighScaleCoefficientFunction : public CoefficientFunction {
             double, double, double, int
         ) const;
 
-        MasslessCoefficientFunction *massless_as1_;
-        MasslessCoefficientFunction *massless_as2_;
-        MasslessCoefficientFunction *massless_as3_;
-        MatchingCondition *a_muindep_;
+        std::unique_ptr<MasslessCoefficientFunction> massless_as1_;
+        std::unique_ptr<MasslessCoefficientFunction> massless_as2_;
+        std::unique_ptr<MasslessCoefficientFunction> massless_as3_;
+        std::unique_ptr<MatchingCondition> a_muindep_;
 
         void SetFunctions();
 

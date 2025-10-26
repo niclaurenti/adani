@@ -19,6 +19,8 @@
 
 #include "adani/CoefficientFunction.h"
 
+#include <memory>
+
 //==========================================================================================//
 //  forward declaration of class ExactCoefficientFunction to avoid circular
 //  dependencies
@@ -36,8 +38,10 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
         ThresholdCoefficientFunction(
             const int &order, const char &kind, const char &channel
         );
-        ~ThresholdCoefficientFunction() override;
+        ThresholdCoefficientFunction(const ThresholdCoefficientFunction &obj);
+        ~ThresholdCoefficientFunction() override = default;
 
+        bool IsLegacyThreshold() const { return legacy_threshold_; };
         void SetLegacyThreshold(const bool &legacy_threshold);
 
         double fx(double x, double m2Q2, double m2mu2, int nf) const override;
@@ -62,7 +66,7 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
             double, double, double, int
         ) const;
 
-        ExactCoefficientFunction *exact_as1_;
+        std::unique_ptr<ExactCoefficientFunction> exact_as1_;
 
         Value Order1(double x, double m2Q2, double /*m2mu2*/, int /*nf*/) const;
         Value PlainThreshold(double x, double m2Q2, double m2mu2, int nf) const;

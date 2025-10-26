@@ -22,6 +22,7 @@
 #include "adani/Convolution.h"
 #include "adani/SplittingFunction.h"
 
+#include <memory>
 #include <vector>
 
 //==========================================================================================//
@@ -43,12 +44,21 @@ class ExactCoefficientFunction : public CoefficientFunction {
             const double &abserr = 1e-3, const double &relerr = 1e-3,
             const int &dim = 1000
         );
-        ~ExactCoefficientFunction() override;
+        ExactCoefficientFunction(ExactCoefficientFunction &obj);
+        ~ExactCoefficientFunction() override = default;
+
+        double GetAbsErr() const;
+        double GetRelErr() const;
+        int GetDim() const;
+        int GetMCcalls() const;
+        DoubleIntegralMethod GetDoubleIntegralMethod() const {
+            return double_int_meth_;
+        };
 
         void SetDoubleIntegralMethod(
-            const DoubleIntegralMethod &double_int_method, const double &abserr = 1e-3,
-            const double &relerr = 1e-3, const int &dim = 100,
-            const int &MCcalls = 25000
+            const DoubleIntegralMethod &double_int_method,
+            const double &abserr = 1e-3, const double &relerr = 1e-3,
+            const int &dim = 100, const int &MCcalls = 25000
         );
 
         double fx(double x, double m2Q2, double m2mu2, int nf) const override;
@@ -68,28 +78,30 @@ class ExactCoefficientFunction : public CoefficientFunction {
             double, double, double, int
         ) const;
 
-        AsymptoticCoefficientFunction *asy_;
-        ThresholdCoefficientFunction *thr_;
+        std::unique_ptr<AsymptoticCoefficientFunction> asy_;
+        std::unique_ptr<ThresholdCoefficientFunction> thr_;
 
-        std::vector<AbstractConvolution *> convolutions_lmu1_;
-        std::vector<AbstractConvolution *> convolutions_lmu2_;
+        std::vector<std::unique_ptr<AbstractConvolution> > convolutions_lmu1_;
+        std::vector<std::unique_ptr<AbstractConvolution> > convolutions_lmu2_;
 
-        ExactCoefficientFunction *gluon_as1_;
-        ExactCoefficientFunction *gluon_as2_;
-        ExactCoefficientFunction *quark_as2_;
+        std::shared_ptr<const ExactCoefficientFunction> gluon_as1_;
+        std::shared_ptr<const ExactCoefficientFunction> gluon_as2_;
+        std::shared_ptr<const ExactCoefficientFunction> quark_as2_;
 
-        SplittingFunction *Pgq0_;
-        SplittingFunction *Pgg0_;
-        SplittingFunction *Pgq1_;
-        SplittingFunction *Pqq0_;
-        ConvolutedSplittingFunctions *Pgg0Pgq0_;
-        ConvolutedSplittingFunctions *Pqq0Pgq0_;
-        SplittingFunction *Pgg1_;
-        SplittingFunction *Pqg0_;
-        ConvolutedSplittingFunctions *Pgq0Pqg0_;
-        ConvolutedSplittingFunctions *Pgg0Pgg0_;
+        std::shared_ptr<const SplittingFunction> Pgq0_;
+        std::shared_ptr<const SplittingFunction> Pgg0_;
+        std::shared_ptr<const SplittingFunction> Pgq1_;
+        std::shared_ptr<const SplittingFunction> Pqq0_;
+        std::shared_ptr<const ConvolutedSplittingFunctions> Pgg0Pgq0_;
+        std::shared_ptr<const ConvolutedSplittingFunctions> Pqq0Pgq0_;
+        std::shared_ptr<const SplittingFunction> Pgg1_;
+        std::shared_ptr<const SplittingFunction> Pqg0_;
+        std::shared_ptr<const ConvolutedSplittingFunctions> Pgq0Pqg0_;
+        std::shared_ptr<const ConvolutedSplittingFunctions> Pgg0Pgg0_;
 
-        Delta *delta_;
+        std::shared_ptr<const Delta> delta_;
+
+        DoubleIntegralMethod double_int_meth_;
 
         void SetFunctions();
 

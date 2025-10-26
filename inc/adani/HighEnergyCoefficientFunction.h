@@ -35,7 +35,7 @@ class AbstractHighEnergyCoefficientFunction : public CoefficientFunction {
             const int &order, const char &kind, const char &channel,
             const bool &NLL = true
         );
-        ~AbstractHighEnergyCoefficientFunction() override{};
+        ~AbstractHighEnergyCoefficientFunction() override = default;
 
         // get methods
         bool GetNLL() const { return NLL_; };
@@ -86,7 +86,8 @@ class HighEnergyCoefficientFunction
             const int &order, const char &kind, const char &channel,
             const bool &NLL = true
         );
-        ~HighEnergyCoefficientFunction() override{};
+        HighEnergyCoefficientFunction(const HighEnergyCoefficientFunction &obj);
+        ~HighEnergyCoefficientFunction() override = default;
 
         double LL(double m2Q2, double m2mu2) const override;
         Value NLL(double m2Q2, double m2mu2, int nf) const override;
@@ -149,7 +150,10 @@ class HighEnergyHighScaleCoefficientFunction
             const int &order, const char &kind, const char &channel,
             const bool &NLL = true
         );
-        ~HighEnergyHighScaleCoefficientFunction() override{};
+        HighEnergyHighScaleCoefficientFunction(
+            const HighEnergyHighScaleCoefficientFunction &obj
+        );
+        ~HighEnergyHighScaleCoefficientFunction() override = default;
 
         double LL(double m2Q2, double m2mu2) const override;
         Value NLL(double m2Q2, double m2mu2, int nf) const override;

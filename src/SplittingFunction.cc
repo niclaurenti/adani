@@ -9,7 +9,7 @@
 //  AbstractSplittingFunction: destructor
 //------------------------------------------------------------------------------------------//
 
-AbstractSplittingFunction::~AbstractSplittingFunction(){};
+AbstractSplittingFunction::~AbstractSplittingFunction() = default;
 
 //==========================================================================================//
 //  AbstractSplittingFunction: CheckOrder
@@ -76,92 +76,99 @@ SplittingFunction::SplittingFunction(
 }
 
 //==========================================================================================//
+//  SplittingFunction: copy constructor
+//------------------------------------------------------------------------------------------//
+
+SplittingFunction::SplittingFunction(const SplittingFunction &obj)
+    : SplittingFunction(obj.GetOrder(), obj.GetEntry1(), obj.GetEntry2()) {}
+
+//==========================================================================================//
 //  SplittingFunction: function that sets all pointers to the right function
 //------------------------------------------------------------------------------------------//
 
 void SplittingFunction::SetFunctions() {
 
     switch (order_) {
-        case 0:
-            switch (entry1_) {
-                case 'g':
-                    switch (entry2_) {
-                        case 'g':
-                            reg_ = &SplittingFunction::Pgg0reg;
-                            sing_ = &SplittingFunction::Pgg0sing;
-                            loc_ = &SplittingFunction::Pgg0loc;
-                            sing_int_ = &SplittingFunction::Pgg0sing_integrated;
-                            break;
-                        case 'q':
-                            reg_ = &SplittingFunction::Pgq0;
-                            sing_ = &SplittingFunction::ZeroFunction_x_nf;
-                            loc_ = &SplittingFunction::ZeroFunction_nf;
-                            sing_int_ = &SplittingFunction::ZeroFunction_x_nf;
-                            break;
-                        default:
-                            throw UnexpectedException(
-                                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                            );
-                    }
-                    break;
-                case 'q':
-                    switch (entry2_) {
-                        case 'g':
-                            reg_ = &SplittingFunction::Pqg0;
-                            sing_ = &SplittingFunction::ZeroFunction_x_nf;
-                            loc_ = &SplittingFunction::ZeroFunction_nf;
-                            sing_int_ = &SplittingFunction::ZeroFunction_x_nf;
-                            break;
-                        case 'q':
-                            reg_ = &SplittingFunction::Pqq0reg;
-                            sing_ = &SplittingFunction::Pqq0sing;
-                            loc_ = &SplittingFunction::Pqq0loc;
-                            sing_int_ = &SplittingFunction::Pqq0sing_integrated;
-                            break;
-                        default:
-                            throw UnexpectedException(
-                                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                            );
-                    }
-                    break;
-                default:
-                    throw UnexpectedException(
-                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                    );
+    case 0:
+        switch (entry1_) {
+        case 'g':
+            switch (entry2_) {
+            case 'g':
+                reg_ = &SplittingFunction::Pgg0reg;
+                sing_ = &SplittingFunction::Pgg0sing;
+                loc_ = &SplittingFunction::Pgg0loc;
+                sing_int_ = &SplittingFunction::Pgg0sing_integrated;
+                break;
+            case 'q':
+                reg_ = &SplittingFunction::Pgq0;
+                sing_ = &SplittingFunction::ZeroFunction_x_nf;
+                loc_ = &SplittingFunction::ZeroFunction_nf;
+                sing_int_ = &SplittingFunction::ZeroFunction_x_nf;
+                break;
+            default:
+                throw UnexpectedException(
+                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                );
             }
             break;
-        case 1:
-            switch (entry1_) {
-                case 'g':
-                    switch (entry2_) {
-                        case 'q':
-                            reg_ = &SplittingFunction::Pgq1;
-                            sing_ = &SplittingFunction::ZeroFunction_x_nf;
-                            loc_ = &SplittingFunction::ZeroFunction_nf;
-                            sing_int_ = &SplittingFunction::ZeroFunction_x_nf;
-                            break;
-                        case 'g':
-                            reg_ = &SplittingFunction::Pgg1reg;
-                            sing_ = &SplittingFunction::Pgg1sing;
-                            loc_ = &SplittingFunction::Pgg1loc;
-                            sing_int_ = &SplittingFunction::Pgg1sing_integrated;
-                            break;
-                        default:
-                            throw UnexpectedException(
-                                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                            );
-                    }
-                    break;
-                default:
-                    throw UnexpectedException(
-                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                    );
+        case 'q':
+            switch (entry2_) {
+            case 'g':
+                reg_ = &SplittingFunction::Pqg0;
+                sing_ = &SplittingFunction::ZeroFunction_x_nf;
+                loc_ = &SplittingFunction::ZeroFunction_nf;
+                sing_int_ = &SplittingFunction::ZeroFunction_x_nf;
+                break;
+            case 'q':
+                reg_ = &SplittingFunction::Pqq0reg;
+                sing_ = &SplittingFunction::Pqq0sing;
+                loc_ = &SplittingFunction::Pqq0loc;
+                sing_int_ = &SplittingFunction::Pqq0sing_integrated;
+                break;
+            default:
+                throw UnexpectedException(
+                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                );
             }
             break;
         default:
             throw UnexpectedException(
                 "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
             );
+        }
+        break;
+    case 1:
+        switch (entry1_) {
+        case 'g':
+            switch (entry2_) {
+            case 'q':
+                reg_ = &SplittingFunction::Pgq1;
+                sing_ = &SplittingFunction::ZeroFunction_x_nf;
+                loc_ = &SplittingFunction::ZeroFunction_nf;
+                sing_int_ = &SplittingFunction::ZeroFunction_x_nf;
+                break;
+            case 'g':
+                reg_ = &SplittingFunction::Pgg1reg;
+                sing_ = &SplittingFunction::Pgg1sing;
+                loc_ = &SplittingFunction::Pgg1loc;
+                sing_int_ = &SplittingFunction::Pgg1sing_integrated;
+                break;
+            default:
+                throw UnexpectedException(
+                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                );
+            }
+            break;
+        default:
+            throw UnexpectedException(
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+        break;
+    default:
+        throw UnexpectedException(
+            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+        );
     }
 }
 
@@ -170,7 +177,7 @@ void SplittingFunction::SetFunctions() {
 //------------------------------------------------------------------------------------------//
 
 double SplittingFunction::Regular(double x, int nf) const {
-    return GetMultFact() * (this->*reg_)(x, nf);
+    return (this->*reg_)(x, nf);
 }
 
 //==========================================================================================//
@@ -178,7 +185,7 @@ double SplittingFunction::Regular(double x, int nf) const {
 //------------------------------------------------------------------------------------------//
 
 double SplittingFunction::Singular(double x, int nf) const {
-    return GetMultFact() * (this->*sing_)(x, nf);
+    return (this->*sing_)(x, nf);
 }
 
 //==========================================================================================//
@@ -186,46 +193,14 @@ double SplittingFunction::Singular(double x, int nf) const {
 //------------------------------------------------------------------------------------------//
 
 double SplittingFunction::SingularIntegrated(double x, int nf) const {
-    return GetMultFact() * (this->*sing_int_)(x, nf);
+    return (this->*sing_int_)(x, nf);
 }
 
 //==========================================================================================//
 //  SplittingFunction: Local part
 //------------------------------------------------------------------------------------------//
 
-double SplittingFunction::Local(int nf) const {
-    return GetMultFact() * (this->*loc_)(nf);
-}
-
-//==========================================================================================//
-//  SplittingFunction: overload of operator * double
-//-------------------------------------------------------------constructor-----------------------------//
-
-SplittingFunction SplittingFunction::operator*(const double &rhs) const {
-    SplittingFunction res(order_, entry1_, entry2_);
-    res.SetMultFact(GetMultFact() * rhs);
-    return res;
-}
-
-//==========================================================================================//
-//  SplittingFunction: overload of operator double *
-//------------------------------------------------------------------------------------------//
-
-SplittingFunction operator*(const double &lhs, const SplittingFunction &rhs) {
-    SplittingFunction res(rhs.order_, res.entry1_, res.entry2_);
-    res.SetMultFact(rhs.GetMultFact() * lhs);
-    return res;
-}
-
-//==========================================================================================//
-//  SplittingFunction: overload of operator / double
-//------------------------------------------------------------------------------------------//
-
-SplittingFunction SplittingFunction::operator/(const double &rhs) const {
-    SplittingFunction res(order_, entry1_, entry2_);
-    res.SetMultFact(GetMultFact() / rhs);
-    return res;
-}
+double SplittingFunction::Local(int nf) const { return (this->*loc_)(nf); }
 
 //==========================================================================================//
 //  ConvolutedSplittingFunctions: constructor
@@ -259,7 +234,7 @@ ConvolutedSplittingFunctions::ConvolutedSplittingFunctions(
 
         if (order1_ == 0 && entry1_ == 'g' && entry2_ == 'g' && order2_ == 0
             && entry3_ == 'g' && entry4_ == 'g') {
-            Pgg0_ = new SplittingFunction(0, 'g', 'g');
+            Pgg0_ = std::make_unique<SplittingFunction>(0, 'g', 'g');
         } else {
             Pgg0_ = nullptr;
         }
@@ -276,10 +251,16 @@ ConvolutedSplittingFunctions::ConvolutedSplittingFunctions(
 }
 
 //==========================================================================================//
-//  ConvolutedSplittingFunctions: destructor
+//  ConvolutedSplittingFunctions: copy constructor
 //------------------------------------------------------------------------------------------//
 
-ConvolutedSplittingFunctions::~ConvolutedSplittingFunctions() { delete Pgg0_; }
+ConvolutedSplittingFunctions::ConvolutedSplittingFunctions(
+    const ConvolutedSplittingFunctions &obj
+)
+    : ConvolutedSplittingFunctions(
+          obj.GetOrder1(), obj.GetEntry1(), obj.GetEntry2(), obj.GetOrder2(),
+          obj.GetEntry3(), obj.GetEntry4()
+      ) {}
 
 //==========================================================================================//
 //  ConvolutedSplittingFunctions: function that sets all pointers to the right
@@ -338,7 +319,7 @@ void ConvolutedSplittingFunctions::SetFunctions() {
 //------------------------------------------------------------------------------------------//
 
 double ConvolutedSplittingFunctions::Regular(double x, int nf) const {
-    return GetMultFact() * (this->*reg_)(x, nf);
+    return (this->*reg_)(x, nf);
 }
 
 //==========================================================================================//
@@ -346,7 +327,7 @@ double ConvolutedSplittingFunctions::Regular(double x, int nf) const {
 //------------------------------------------------------------------------------------------//
 
 double ConvolutedSplittingFunctions::Singular(double x, int nf) const {
-    return GetMultFact() * (this->*sing_)(x, nf);
+    return (this->*sing_)(x, nf);
 }
 
 //==========================================================================================//
@@ -355,7 +336,7 @@ double ConvolutedSplittingFunctions::Singular(double x, int nf) const {
 
 double
     ConvolutedSplittingFunctions::SingularIntegrated(double x, int nf) const {
-    return GetMultFact() * (this->*sing_int_)(x, nf);
+    return (this->*sing_int_)(x, nf);
 }
 
 //==========================================================================================//
@@ -363,77 +344,7 @@ double
 //------------------------------------------------------------------------------------------//
 
 double ConvolutedSplittingFunctions::Local(int nf) const {
-    return GetMultFact() * (this->*loc_)(nf);
-}
-
-//==========================================================================================//
-//  ConvolutedSplittingFunctions: overload of operator * double
-//------------------------------------------------------------------------------------------//
-
-ConvolutedSplittingFunctions
-    ConvolutedSplittingFunctions::operator*(const double &rhs) const {
-    ConvolutedSplittingFunctions res(
-        order1_, entry1_, entry2_, order2_, entry3_, entry4_
-    );
-    res.SetMultFact(GetMultFact() * rhs);
-    return res;
-}
-
-//==========================================================================================//
-//  ConvolutedSplittingFunctions: overload of operator double *
-//------------------------------------------------------------------------------------------//
-
-ConvolutedSplittingFunctions
-    operator*(const double &lhs, const ConvolutedSplittingFunctions &rhs) {
-    ConvolutedSplittingFunctions res(
-        rhs.order1_, rhs.entry1_, rhs.entry2_, rhs.order2_, rhs.entry3_,
-        rhs.entry4_
-    );
-    res.SetMultFact(rhs.GetMultFact() * lhs);
-    return res;
-}
-
-//==========================================================================================//
-//  ConvolutedSplittingFunctions: overload of operator / double
-//------------------------------------------------------------------------------------------//
-
-ConvolutedSplittingFunctions
-    ConvolutedSplittingFunctions::operator/(const double &rhs) const {
-    ConvolutedSplittingFunctions res(
-        order1_, entry1_, entry2_, order2_, entry3_, entry4_
-    );
-    res.SetMultFact(GetMultFact() / rhs);
-    return res;
-}
-
-//==========================================================================================//
-//  Delta: overload of operator * double
-//------------------------------------------------------------------------------------------//
-
-Delta Delta::operator*(const double &rhs) const {
-    Delta res = Delta();
-    res.SetMultFact(GetMultFact() * rhs);
-    return res;
-}
-
-//==========================================================================================//
-//  Delta: overload of operator double *
-//------------------------------------------------------------------------------------------//
-
-Delta operator*(const double &lhs, const Delta &rhs) {
-    Delta res = Delta();
-    res.SetMultFact(rhs.GetMultFact() * lhs);
-    return res;
-}
-
-//==========================================================================================//
-//  Delta: overload of operator double /
-//------------------------------------------------------------------------------------------//
-
-Delta Delta::operator/(const double &rhs) const {
-    Delta res = Delta();
-    res.SetMultFact(GetMultFact() / rhs);
-    return res;
+    return (this->*loc_)(nf);
 }
 
 //==========================================================================================//

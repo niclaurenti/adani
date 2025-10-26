@@ -32,25 +32,18 @@ HighScaleSplitLogs::HighScaleSplitLogs(
     }
 
     if (GetChannel() == 'g')
-        massless_as1_ =
-            new MasslessCoefficientFunction(1, GetKind(), GetChannel());
+        massless_as1_ = std::make_unique<MasslessCoefficientFunction>(
+            1, GetKind(), GetChannel()
+        );
 
-    massless_ =
-        new MasslessCoefficientFunction(GetOrder(), GetKind(), GetChannel());
+    massless_ = std::make_unique<MasslessCoefficientFunction>(
+        GetOrder(), GetKind(), GetChannel()
+    );
 
     if (GetOrder() == 3 && GetKind() == '2') {
-        a_muindep_ = new MatchingCondition(3, 'Q', GetChannel(), version);
+        a_muindep_ =
+            std::make_unique<MatchingCondition>(3, 'Q', GetChannel(), version);
     }
-}
-
-//==========================================================================================//
-//  HighScaleSplitLogs: destructor
-//------------------------------------------------------------------------------------------//
-
-HighScaleSplitLogs::~HighScaleSplitLogs() {
-    delete massless_;
-    delete massless_as1_;
-    delete a_muindep_;
 }
 
 //==========================================================================================//
@@ -60,50 +53,50 @@ HighScaleSplitLogs::~HighScaleSplitLogs() {
 void HighScaleSplitLogs::SetFunctions() {
 
     switch (GetKind()) {
-        case '2':
-            switch (GetChannel()) {
-                case 'q':
-                    LL_ = &HighScaleSplitLogs::C2_ps3_highscale_LL;
-                    NLL_ = &HighScaleSplitLogs::C2_ps3_highscale_NLL;
-                    N2LL_ = &HighScaleSplitLogs::C2_ps3_highscale_N2LL;
-                    N3LL_ = &HighScaleSplitLogs::C2_ps3_highscale_N3LL;
-                    break;
-                case 'g':
-                    LL_ = &HighScaleSplitLogs::C2_g3_highscale_LL;
-                    NLL_ = &HighScaleSplitLogs::C2_g3_highscale_NLL;
-                    N2LL_ = &HighScaleSplitLogs::C2_g3_highscale_N2LL;
-                    N3LL_ = &HighScaleSplitLogs::C2_g3_highscale_N3LL;
-                    break;
-                default:
-                    throw UnexpectedException(
-                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                    );
-            }
+    case '2':
+        switch (GetChannel()) {
+        case 'q':
+            LL_ = &HighScaleSplitLogs::C2_ps3_highscale_LL;
+            NLL_ = &HighScaleSplitLogs::C2_ps3_highscale_NLL;
+            N2LL_ = &HighScaleSplitLogs::C2_ps3_highscale_N2LL;
+            N3LL_ = &HighScaleSplitLogs::C2_ps3_highscale_N3LL;
             break;
-        case 'L':
-            switch (GetChannel()) {
-                case 'q':
-                    LL_ = &HighScaleSplitLogs::ZeroFunction;
-                    NLL_ = &HighScaleSplitLogs::CL_ps3_highscale_NLL;
-                    N2LL_ = &HighScaleSplitLogs::CL_ps3_highscale_N2LL;
-                    N3LL_ = &HighScaleSplitLogs::CL_ps3_highscale_N3LL;
-                    break;
-                case 'g':
-                    LL_ = &HighScaleSplitLogs::ZeroFunction;
-                    NLL_ = &HighScaleSplitLogs::CL_g3_highscale_NLL;
-                    N2LL_ = &HighScaleSplitLogs::CL_g3_highscale_N2LL;
-                    N3LL_ = &HighScaleSplitLogs::CL_g3_highscale_N3LL;
-                    break;
-                default:
-                    throw UnexpectedException(
-                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-                    );
-            }
+        case 'g':
+            LL_ = &HighScaleSplitLogs::C2_g3_highscale_LL;
+            NLL_ = &HighScaleSplitLogs::C2_g3_highscale_NLL;
+            N2LL_ = &HighScaleSplitLogs::C2_g3_highscale_N2LL;
+            N3LL_ = &HighScaleSplitLogs::C2_g3_highscale_N3LL;
             break;
         default:
             throw UnexpectedException(
                 "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
             );
+        }
+        break;
+    case 'L':
+        switch (GetChannel()) {
+        case 'q':
+            LL_ = &HighScaleSplitLogs::ZeroFunction;
+            NLL_ = &HighScaleSplitLogs::CL_ps3_highscale_NLL;
+            N2LL_ = &HighScaleSplitLogs::CL_ps3_highscale_N2LL;
+            N3LL_ = &HighScaleSplitLogs::CL_ps3_highscale_N3LL;
+            break;
+        case 'g':
+            LL_ = &HighScaleSplitLogs::ZeroFunction;
+            NLL_ = &HighScaleSplitLogs::CL_g3_highscale_NLL;
+            N2LL_ = &HighScaleSplitLogs::CL_g3_highscale_N2LL;
+            N3LL_ = &HighScaleSplitLogs::CL_g3_highscale_N3LL;
+            break;
+        default:
+            throw UnexpectedException(
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+        break;
+    default:
+        throw UnexpectedException(
+            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+        );
     }
 }
 

@@ -152,15 +152,9 @@ int main(int argc, char **argv) {
         res_l[i] = new double[cols];
     }
 
-    string hs_version;
-
-    if (channel == 'q')
-        hs_version = "exact";
-    else
-        hs_version = "abmp";
-
-    ApproximateCoefficientFunction Approx =
-        ApproximateCoefficientFunction(3, kind, channel, true, hs_version);
+    ApproximateCoefficientFunction Approx = ApproximateCoefficientFunction(
+        3, kind, channel, true, HighScaleVersion::Exact
+    );
 
     int iterationsPerThread = rows / numThreads;
 

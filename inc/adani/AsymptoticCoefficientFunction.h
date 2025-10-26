@@ -21,6 +21,8 @@
 #include "adani/HighEnergyCoefficientFunction.h"
 #include "adani/HighScaleCoefficientFunction.h"
 
+#include <memory>
+
 //==========================================================================================//
 //  class AsymptoticCoefficientFunction
 //------------------------------------------------------------------------------------------//
@@ -29,10 +31,18 @@ class AsymptoticCoefficientFunction : public CoefficientFunction {
     public:
         AsymptoticCoefficientFunction(
             const int &order, const char &kind, const char &channel,
-            const bool &NLL = true, const HighScaleVersion &highscale_version = HighScaleVersion::Exact
+            const bool &NLL = true,
+            const HighScaleVersion &highscale_version = HighScaleVersion::Exact
         );
-        ~AsymptoticCoefficientFunction();
+        AsymptoticCoefficientFunction(const AsymptoticCoefficientFunction &obj);
+        ~AsymptoticCoefficientFunction() override = default;
 
+        bool GetNLL() const { return highenergy_->GetNLL(); };
+        HighScaleVersion GetHighScaleVersion() const {
+            return highscale_->GetHighScaleVersion();
+        };
+
+        bool IsLegacyPowerTerms() const { return legacy_pt_; };
         void SetLegacyPowerTerms(const bool &legacy_pt);
 
         Value
@@ -40,9 +50,10 @@ class AsymptoticCoefficientFunction : public CoefficientFunction {
 
     private:
         bool legacy_pt_;
-        HighScaleCoefficientFunction *highscale_;
-        HighEnergyCoefficientFunction *highenergy_;
-        HighEnergyHighScaleCoefficientFunction *highenergyhighscale_;
+        std::unique_ptr<HighScaleCoefficientFunction> highscale_;
+        std::unique_ptr<HighEnergyCoefficientFunction> highenergy_;
+        std::unique_ptr<HighEnergyHighScaleCoefficientFunction>
+            highenergyhighscale_;
 
         Value (AsymptoticCoefficientFunction::*fx_)(
             double, double, double, int

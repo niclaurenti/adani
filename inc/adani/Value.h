@@ -49,8 +49,8 @@ class Value {
 
         Value operator+(const Value &rhs) const;
         Value operator-(const Value &rhs) const;
-        //Value operator*(const Value &rhs) const;
-        // Value operator/(const Value &rhs) const;
+        // Value operator*(const Value &rhs) const;
+        //  Value operator/(const Value &rhs) const;
 
         Value operator+(const double &rhs) const;
         friend Value operator+(const double &lhs, const Value &rhs);
@@ -62,10 +62,12 @@ class Value {
 
         Value operator/(const double &rhs) const;
 
-        const Value &operator=(const Value &rhs);
+        Value &operator=(const Value &rhs);
 
-        const Value &operator*=(const double &rhs);
-        const Value &operator/=(const double &rhs);
+        Value &operator*=(const double &rhs);
+        Value &operator/=(const double &rhs);
+        Value &operator+=(const double &rhs);
+        Value &operator-=(const double &rhs);
 
         friend ostream &operator<<(ostream &os, const Value &rhs);
 
