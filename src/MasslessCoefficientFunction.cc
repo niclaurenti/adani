@@ -158,6 +158,7 @@ double MasslessCoefficientFunction::fx(
 //  MasslessCoefficientFunction: mu-dependent terms
 //------------------------------------------------------------------------------------------//
 
+// TODO: to be implemented
 double MasslessCoefficientFunction::MuDependentTerms(
     double /*x*/, double /*m2Q2*/, double /*Q2mu2*/, int /*nf*/
 ) const {
@@ -172,6 +173,7 @@ double MasslessCoefficientFunction::MuDependentTerms(
 //  MasslessCoefficientFunction: mu-dependent terms
 //------------------------------------------------------------------------------------------//
 
+// TODO: to be implemented
 double MasslessCoefficientFunction::MuDependentTerms(
     double /*x*/, double /*Q2mu2*/, int /*nf*/
 ) const {

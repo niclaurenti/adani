@@ -12,6 +12,12 @@
  *  O(as^3) it is used a parameterization of the exact
  *  result, being the latter a very long equation.
  *
+ *  OBSERVATION: massless coefficient functions depend on x, Q2/mu2, nf
+ *  but in order to achieve polymorfism with the class CoefficientFunction
+ *  (the aim is call it inside the class Convolution) for all the methods,
+ *  it's always present also a function fx(double, double, double, int)
+ *  that returns fx(double, double, int)
+ *
  * =====================================================================================
  */
 
@@ -43,9 +49,11 @@ class MasslessCoefficientFunction : public CoefficientFunction {
                 const override;
         double MuIndependentTerms(double x, int nf) const;
 
+        // TODO: to be implemented
         double MuDependentTerms(
                 double /*x*/, double /*m2Q2*/, double /*Q2mu2*/, int /*nf*/
             ) const override;
+        // TODO: to be implemented
         double MuDependentTerms(
                 double /*x*/, double /*Q2mu2*/, int /*nf*/
             ) const;
