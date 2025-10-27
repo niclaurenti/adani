@@ -139,16 +139,19 @@ void MasslessCoefficientFunction::SetFunctions() {
 //------------------------------------------------------------------------------------------//
 
 double MasslessCoefficientFunction::fx(
-    double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/
+    double x, double /*m2Q2*/, double Q2mu2, int nf
 ) const {
-    throw NotImplementedException(
-        "this function is deprecated and should not be used since it depends "
-        "on the MuDependent terms that are not implemented. Call "
-        "MasslessCoefficientFunction::MuIndependentTerms(double x, int nf) for "
-        "the mu-independent terms",
-        __PRETTY_FUNCTION__, __LINE__
-    );
-    // return MuIndependentTerms(x, nf) + MuDependentTerms(x, m2Q2, m2mu2, nf);
+    return fx(x, Q2mu2, nf);
+}
+
+//==========================================================================================//
+//  MasslessCoefficientFunction: mu-dependent + mu-independent terms
+//------------------------------------------------------------------------------------------//
+
+double MasslessCoefficientFunction::fx(
+    double x, double Q2mu2, int nf
+) const {
+    return MuIndependentTerms(x, nf) + MuDependentTerms(x, Q2mu2, nf);
 }
 
 //==========================================================================================//
@@ -156,14 +159,27 @@ double MasslessCoefficientFunction::fx(
 //------------------------------------------------------------------------------------------//
 
 double MasslessCoefficientFunction::MuDependentTerms(
-    double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/
+    double /*x*/, double /*m2Q2*/, double /*Q2mu2*/, int /*nf*/
 ) const {
     throw NotImplementedException(
-        "this function is deprecated and should not be used since "
-        "MasslessCoefficientFunction is implemented only for Q=mu.",
+        "mu-dependent terms of massless coefficeint functions are not implemented yet!",
         __PRETTY_FUNCTION__, __LINE__
     );
-    // return 0:;
+    return 0.;
+}
+
+//==========================================================================================//
+//  MasslessCoefficientFunction: mu-dependent terms
+//------------------------------------------------------------------------------------------//
+
+double MasslessCoefficientFunction::MuDependentTerms(
+    double /*x*/, double /*Q2mu2*/, int /*nf*/
+) const {
+    throw NotImplementedException(
+        "mu-dependent terms of massless coefficeint functions are not implemented yet!",
+        __PRETTY_FUNCTION__, __LINE__
+    );
+    return 0.;
 }
 
 //==========================================================================================//
@@ -172,15 +188,8 @@ double MasslessCoefficientFunction::MuDependentTerms(
 //------------------------------------------------------------------------------------------//
 
 double MasslessCoefficientFunction::
-    MuIndependentTerms(double /*x*/, double /*m2Q2*/, int /*nf*/) const {
-    throw NotValidException(
-        "this function is deprecated and should not be used since "
-        "MasslessCoefficientFunction do not depend on m^2/Q^2!. Call "
-        "MasslessCoefficientFunction::MuIndependentTerms(double x, int nf) "
-        "instead",
-        __PRETTY_FUNCTION__, __LINE__
-    );
-    // return 0.;
+    MuIndependentTerms(double x, double /*m2Q2*/, int nf) const {
+    return MuIndependentTerms(x, nf);
 }
 
 //==========================================================================================//
@@ -198,16 +207,20 @@ double MasslessCoefficientFunction::MuIndependentTerms(double x, int nf) const {
 //------------------------------------------------------------------------------------------//
 
 Value MasslessCoefficientFunction::fxBand(
-    double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/
+    double x, double /*m2Q2*/, double Q2mu2, int nf
 ) const {
-    throw NotImplementedException(
-        "this function is deprecated and should not be used since it depends "
-        "on the MuDependent terms that are not implemented. Call "
-        "MasslessCoefficientFunction::MuIndependentTerms(double x, int nf) for "
-        "the mu-independent terms",
-        __PRETTY_FUNCTION__, __LINE__
-    );
-    // return Value(fx(x, m2Q2, m2mu2, nf));
+    return fxBand(x, Q2mu2, nf);
+}
+
+//==========================================================================================//
+//  MasslessCoefficientFunction: done beacuse it is required by the abstract
+//  base class CoefficientFunction. It returns three identical values
+//------------------------------------------------------------------------------------------//
+
+Value MasslessCoefficientFunction::fxBand(
+    double x, double Q2mu2, int nf
+) const {
+    return Value(fx(x, Q2mu2, nf));
 }
 
 //==========================================================================================//
