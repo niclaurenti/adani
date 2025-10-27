@@ -1,7 +1,6 @@
 #include "adani/Convolution.h"
 
 #include <cmath>
-#include <future>
 
 //==========================================================================================//
 //  AbstractConvolution: constructor
@@ -100,18 +99,8 @@ void AbstractConvolution::SetDim(const int &dim) {
 
 double AbstractConvolution::Convolute(double x, double m2Q2, int nf) const {
 
-    std::future<double> future_f1 = std::async(
-        std::launch::async, &AbstractConvolution::RegularPart, this, x, m2Q2, nf
-    );
-    std::future<double> future_f2 = std::async(
-        std::launch::async, &AbstractConvolution::SingularPart, this, x, m2Q2,
-        nf
-    );
-    std::future<double> future_f3 = std::async(
-        std::launch::async, &AbstractConvolution::LocalPart, this, x, m2Q2, nf
-    );
-
-    return future_f1.get() + future_f2.get() + future_f3.get();
+    return RegularPart(x, m2Q2, nf) + SingularPart(x, m2Q2, nf)
+           + LocalPart(x, m2Q2, nf);
 }
 
 //==========================================================================================//
