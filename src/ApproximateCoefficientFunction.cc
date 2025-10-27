@@ -6,7 +6,6 @@
 #include "adani/SpecialFunctions.h"
 
 #include <cmath>
-#include <future>
 #include <vector>
 
 using std::vector;
@@ -87,16 +86,8 @@ Value AbstractApproximate::fxBand(
     if (x >= xMax(m2Q2) || x <= 0)
         return Value(0.);
 
-    std::future<Value> future_f1 = std::async(
-        std::launch::async, &AbstractApproximate::MuIndependentTermsBand, this,
-        x, m2Q2, nf
-    );
-    std::future<double> future_f2 = std::async(
-        std::launch::async, &AbstractApproximate::MuDependentTerms, this, x,
-        m2Q2, m2mu2, nf
-    );
-
-    return future_f1.get() + future_f2.get();
+    return MuIndependentTermsBand(x, m2Q2, nf)
+           + MuDependentTerms(x, m2Q2, m2mu2, nf);
 }
 
 //==========================================================================================//
