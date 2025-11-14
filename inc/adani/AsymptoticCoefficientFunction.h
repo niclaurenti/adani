@@ -88,6 +88,7 @@ class AsymptoticCoefficientFunction : public CoefficientFunction {
             Value central, Value variation1, Value variation2, double m2Q2,
             double m2mu2
         ) const;
+        double ComputeDampDelta(double m2Q2, double m2mu2) const;
 };
 
 #endif

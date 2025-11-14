@@ -269,14 +269,8 @@ Value AsymptoticCoefficientFunction::Delta2(
 
     // double central_delta = central.GetAvgDelta();
     // double var_delta = variation.GetAvgDelta();
-    double damp = 1.
-                  / (1.
-                     + 2
-                           * std::abs(
-                               log(highenergy_->LL(m2Q2, m2mu2)
-                                   / highenergyhighscale_->LL(m2Q2, m2mu2))
-                           ));
-    double delta = damp * std::abs(central_c - var_c);
+
+    double delta = ComputeDampDelta(m2Q2, m2mu2) * std::abs(central_c - var_c);
     // double delta = damp * sqrt(tmp * tmp + central_delta * central_delta +
     // var_delta * var_delta);
 
@@ -295,22 +289,29 @@ Value AsymptoticCoefficientFunction::Delta3(
     double var1_c = variation1.GetCentral();
     double var2_c = variation2.GetCentral();
 
+    double delta1 = central_c - var1_c;
+    double delta2 = central_c - var2_c;
+
+    double delta = ComputeDampDelta(m2Q2, m2mu2) * sqrt(delta1 * delta1 + delta2 * delta2);
+    // double delta = damp * sqrt(tmp1 * tmp1 + tmp2 * tmp2 + central_delta *
+    // central_delta + var1_delta * var1_delta + var2_delta * var2_delta);
+
+    return Value(central_c, central_c + delta, central_c - delta);
+}
+
+//==========================================================================================//
+//  AsymptoticCoefficientFunction: compute Damp function for the Delta2 and Delta3 functions
+//------------------------------------------------------------------------------------------//
+
+double AsymptoticCoefficientFunction::ComputeDampDelta(double m2Q2, double m2mu2) const {
+    double tmp;
     double ratio = highenergy_->LL(m2Q2, m2mu2) / highenergyhighscale_->LL(m2Q2, m2mu2);
 
-    double tmp;
-    
     if(ratio >= 0) tmp = std::abs(log(ratio));
     else {
         double logr = log(-ratio);
         tmp = sqrt( logr * logr + M_PI * M_PI );
     }
 
-    double delta1 = central_c - var1_c;
-    double delta2 = central_c - var2_c;
-
-    double delta = 1. / (1. + 2 * tmp) * sqrt(delta1 * delta1 + delta2 * delta2);
-    // double delta = damp * sqrt(tmp1 * tmp1 + tmp2 * tmp2 + central_delta *
-    // central_delta + var1_delta * var1_delta + var2_delta * var2_delta);
-
-    return Value(central_c, central_c + delta, central_c - delta);
+    return 1. / (1. + 2 * tmp);
 }
