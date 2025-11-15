@@ -430,38 +430,38 @@ double MatchingCondition::a_Qq_PS_30(double x, int v) const {
         apf_hplog_(&wx, &nw, Hr1, Hr2, Hr3, Hr4, Hr5, &n1, &n2);
 
         // weight 1
-        const double Hm1 = Hr1[0];
-        const double H0 = Hr1[1];
-        const double H1 = Hr1[2];
+        const double Hm1 = Hr1[HPL_map(-1)];
+        const double H0 = Hr1[HPL_map(0)];
+        const double H1 = Hr1[HPL_map(1)];
 
         // weight 2
-        const double H0m1 = Hr2[1];
-        const double H01 = Hr2[7];
+        const double H0m1 = Hr2[HPL_map(0, -1)];
+        const double H01 = Hr2[HPL_map(0, 1)];
 
         // weight 3
-        const double H0m1m1 = Hr3[1];
-        const double H00m1 = Hr3[4];
-        const double H01m1 = Hr3[7];
-        const double H0m11 = Hr3[19];
-        const double H001 = Hr3[22];
-        const double H011 = Hr3[25];
+        const double H0m1m1 = Hr3[HPL_map(0, -1, -1)];
+        const double H00m1 = Hr3[HPL_map(0, 0, -1)];
+        const double H01m1 = Hr3[HPL_map(0, 1, -1)];
+        const double H0m11 = Hr3[HPL_map(0, -1, 1)];
+        const double H001 = Hr3[HPL_map(0, 0, 1)];
+        const double H011 = Hr3[HPL_map(0, 1, 1)];
 
         // weight 4
         const double H0m1m1m1 = Hr4[1];
         const double H00m1m1 = Hr4[4];
         const double H01m1m1 = Hr4[7];
-        const double H000m1 = Hr4[13];
+        const double H000m1 = Hr4[HPL_map(0, 0, 0, -1)];
         const double H0m11m1 = Hr4[19];
         const double H001m1 = Hr4[22];
         const double H011m1 = Hr4[25];
         const double H0m1m11 = Hr4[55];
         const double H00m11 = Hr4[58];
         const double H01m11 = Hr4[61];
-        const double H0m101 = Hr4[64];
-        const double H0001 = Hr4[67];
+        const double H0m101 = Hr4[HPL_map(0, -1, 0, 1)];
+        const double H0001 = Hr4[HPL_map(0, 0, 0, 1)];
         const double H0m111 = Hr4[73];
-        const double H0011 = Hr4[76];
-        const double H0111 = Hr4[79];
+        const double H0011 = Hr4[HPL_map(0, 0, 1, 1)];
+        const double H0111 = Hr4[HPL_map(0, 1, 1, 1)];
 
         //  weight 5
         const double H00m1m1m1 = Hr5[4];
@@ -1108,20 +1108,20 @@ double MatchingCondition::a_Qq_PS_31(double x) const {
     apf_hplog_(&wx, &nw, Hr1, Hr2, Hr3, Hr4, Hr5, &n1, &n2);
 
     // weight 1
-    const double H0 = Hr1[1];
-    const double H1 = Hr1[2];
+    const double H0 = Hr1[HPL_map(0)];
+    const double H1 = Hr1[HPL_map(1)];
 
     // weight 2
-    const double H01 = Hr2[7];
+    const double H01 = Hr2[HPL_map(0, 1)];
 
     // weight 3
-    const double H001 = Hr3[22];
-    const double H011 = Hr3[25];
+    const double H001 = Hr3[HPL_map(0, 0, 1)];
+    const double H011 = Hr3[HPL_map(0, 1, 1)];
 
     // weight 4
-    const double H0001 = Hr4[67];
-    const double H0011 = Hr4[76];
-    const double H0111 = Hr4[79];
+    const double H0001 = Hr4[HPL_map(0, 0, 0, 1)];
+    const double H0011 = Hr4[HPL_map(0, 0, 1, 1)];
+    const double H0111 = Hr4[HPL_map(0, 1, 1, 1)];
 
     delete[] Hr1;
     delete[] Hr2;
