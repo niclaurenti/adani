@@ -226,13 +226,19 @@ vector<double> HighScaleCoefficientFunction::fxBand_NotOrdered(
         lower = fxBand(x, m2Q2, m2mu2, nf).GetLower()
                 - a_muindep_->MuIndependentNfIndependentTerm(x).GetLower()
                 + (a_muindep_->NotOrdered(x))[2];
+
+        return { central, higher, lower };
     } catch (NotImplementedException &e) {
         e.runtime_error();
+        higher = 0;
+        lower = 0;
     } catch (UnexpectedException &e) {
         e.runtime_error();
+        higher = 0;
+        lower = 0;
     }
 
-    return { central, higher, lower };
+    return { 0., 0., 0. }; // for removing the warning
 }
 
 //==========================================================================================//

@@ -55,6 +55,8 @@ MatchingCondition::MatchingCondition(
         e.runtime_error();
     } catch (NotValidException &e) {
         e.runtime_error();
+    } catch (UnexpectedException &e) {
+        e.runtime_error();
     }
 }
 
@@ -164,7 +166,7 @@ vector<double> MatchingCondition::NotOrdered(double x) const {
             );
         }
     case 'g':
-        int low_id;
+
         switch (version_) {
         case HighScaleVersion::Exact:
             central = a_Qg_30(x, 0);
@@ -173,18 +175,23 @@ vector<double> MatchingCondition::NotOrdered(double x) const {
             central = a_Qg_30(x, 2);
             return { central, central, central };
         case HighScaleVersion::ABMP:
-            low_id = -1;
+            higher = a_Qg_30(x, 1);
+            lower = a_Qg_30(x, -1);
+            central = 0.5 * (higher + lower);
+            return { central, higher, lower };
             break;
         case HighScaleVersion::KLMV:
-            low_id = -12;
+            higher = a_Qg_30(x, 1);
+            lower = a_Qg_30(x, -12);
+            central = 0.5 * (higher + lower);
+            return { central, higher, lower };
             break;
+        default:
+            throw UnexpectedException(
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+            );
         }
 
-        higher = a_Qg_30(x, 1);
-        lower = a_Qg_30(x, low_id);
-        central = 0.5 * (higher + lower);
-
-        return { central, higher, lower };
         break;
     default:
         throw UnexpectedException(

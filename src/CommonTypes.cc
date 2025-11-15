@@ -1,4 +1,5 @@
 #include "adani/CommonTypes.h"
+#include "adani/Exceptions.h"
 
 #include <iostream>
 
@@ -16,5 +17,9 @@ std::string to_string(HighScaleVersion hs_version) {
         return "ABMP";
     case HighScaleVersion::KLMV:
         return "KLMV";
+    default:
+        throw UnexpectedException(
+            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+        );
     }
 }
