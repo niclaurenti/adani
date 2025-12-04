@@ -50,6 +50,7 @@ class AsymptoticCoefficientFunction : public CoefficientFunction {
 
     private:
         bool legacy_pt_;
+        double a_fact_;
         std::unique_ptr<HighScaleCoefficientFunction> highscale_;
         std::unique_ptr<HighEnergyCoefficientFunction> highenergy_;
         std::unique_ptr<HighEnergyHighScaleCoefficientFunction>
@@ -82,11 +83,13 @@ class AsymptoticCoefficientFunction : public CoefficientFunction {
         Value
             CL_3_asymptotic(double x, double m2Q2, double m2mu2, int nf) const;
         Value Delta2(
-            Value central, Value variation, double m2Q2, double m2mu2
+            Value central, Value variation
         ) const;
         Value Delta3(
-            Value central, Value variation1, Value variation2, double m2Q2,
-            double m2mu2
+            Value central, Value variation1, Value variation2
+        ) const;
+        double C_highenergy_lim(
+            double highenergy_ll, double highscalehighenergy_ll, double a_fact
         ) const;
 };
 
