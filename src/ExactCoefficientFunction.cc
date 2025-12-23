@@ -436,15 +436,14 @@ double ExactCoefficientFunction::fx(
 double ExactCoefficientFunction::MuIndependentTerms(
     double x, double m2Q2, int nf
 ) const {
-    double res;
     try {
-        res = (this->*mu_indep_)(x, m2Q2, nf);
+        return (this->*mu_indep_)(x, m2Q2, nf);
     } catch (NotValidException &e) {
         e.runtime_error();
     } catch (NotKnownException &e) {
         e.runtime_error();
     }
-    return res;
+    return 0.; // for removing the warning
 }
 
 //==========================================================================================//

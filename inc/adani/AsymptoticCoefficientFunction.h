@@ -91,6 +91,7 @@ class AsymptoticCoefficientFunction : public CoefficientFunction {
         double C_highenergy_lim(
             double highenergy_ll, double highscalehighenergy_ll, double a_fact
         ) const;
+        double ComputeDampDelta(double m2Q2, double m2mu2) const;
 };
 
 #endif

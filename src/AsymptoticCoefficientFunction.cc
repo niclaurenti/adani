@@ -288,8 +288,8 @@ double AsymptoticCoefficientFunction::C_highenergy_lim(
 Value AsymptoticCoefficientFunction::Delta2(
     Value central, Value variation
 ) const {
-    double central_c = central.GetHigher();
-    double var_c = variation.GetHigher();
+    double central_c = central.GetCentral();
+    double var_c = variation.GetCentral();
 
     double delta = std::abs(central_c - var_c);
 
@@ -304,9 +304,9 @@ Value AsymptoticCoefficientFunction::Delta2(
 Value AsymptoticCoefficientFunction::Delta3(
     Value central, Value variation1, Value variation2
 ) const {
-    double central_c = central.GetHigher();
-    double var1_c = variation1.GetHigher();
-    double var2_c = variation2.GetHigher();
+    double central_c = central.GetCentral();
+    double var1_c = variation1.GetCentral();
+    double var2_c = variation2.GetCentral();
 
     double tmp1 = central_c - var1_c;
     double tmp2 = central_c - var2_c;
@@ -314,4 +314,21 @@ Value AsymptoticCoefficientFunction::Delta3(
     double delta = sqrt(tmp1 * tmp1 + tmp2 * tmp2);
 
     return Value(central_c, central_c + delta, central_c - delta);
+}
+
+//==========================================================================================//
+//  AsymptoticCoefficientFunction: compute Damp function for the Delta2 and Delta3 functions
+//------------------------------------------------------------------------------------------//
+
+double AsymptoticCoefficientFunction::ComputeDampDelta(double m2Q2, double m2mu2) const {
+    double tmp;
+    double ratio = highenergy_->LL(m2Q2, m2mu2) / highenergyhighscale_->LL(m2Q2, m2mu2);
+
+    if(ratio >= 0) tmp = std::abs(log(ratio));
+    else {
+        double logr = log(-ratio);
+        tmp = sqrt( logr * logr + M_PI * M_PI );
+    }
+
+    return 1. / (1. + 2 * tmp);
 }
