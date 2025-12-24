@@ -117,7 +117,7 @@ extern "C" {
 }
 
 //==========================================================================================//
-//  map between HPL indeces and index of the array
+//  map between HPL index and array index
 //------------------------------------------------------------------------------------------//
 
 constexpr unsigned int HPL_map(int id0 = -1, int id1 = -1, int id2 = -1, int id3 = -1, int id4 = -1) {
