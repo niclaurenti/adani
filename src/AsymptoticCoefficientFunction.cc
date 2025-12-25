@@ -70,12 +70,20 @@ void AsymptoticCoefficientFunction::SetFunctions() {
     case 3:
         switch (GetKind()) {
         case '2':
-            fx_ = &AsymptoticCoefficientFunction::C2_3_asymptotic;
-            a_fact_ = 1.2;
+            if (GetNLL()) {
+                fx_ = &AsymptoticCoefficientFunction::C2_3_asymptotic;
+                a_fact_ = 1.2;
+            } else {
+                fx_ = &AsymptoticCoefficientFunction::C2_2_asymptotic;
+            }
             break;
         case 'L':
-            a_fact_ = 1.5;
-            fx_ = &AsymptoticCoefficientFunction::CL_3_asymptotic;
+            if (GetNLL()) {
+                a_fact_ = 1.5;
+                fx_ = &AsymptoticCoefficientFunction::CL_3_asymptotic;
+            } else {
+                fx_ = &AsymptoticCoefficientFunction::CL_2_asymptotic;
+            }
             break;
         default:
             throw UnexpectedException(

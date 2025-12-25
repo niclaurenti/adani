@@ -207,7 +207,6 @@ void HighEnergyCoefficientFunction::SetFunctions() {
 
 double HighEnergyCoefficientFunction::LL(double m2Q2, double m2mu2) const {
     return (this->*LL_)(m2Q2, m2mu2);
-    ;
 }
 
 //==========================================================================================//
@@ -218,7 +217,6 @@ Value HighEnergyCoefficientFunction::NLL(
     double m2Q2, double m2mu2, int nf
 ) const {
     return (this->*NLL_)(m2Q2, m2mu2, nf);
-    ;
 }
 
 //==========================================================================================//
