@@ -329,15 +329,6 @@ extern "C" {
 
 vector<double> MatchingCondition::a_Qg_30_exact(double x) const {
 
-    double L = log(x);
-    double L2 = L * L;
-
-    double x1 = 1. - x;
-
-    double L1 = log(x1);
-    double L12 = L1 * L1;
-    double L13 = L12 * L1;
-
     double aQg3red = (x < 0.5 ? red0_(&x) : red1_(&x));
     double res = aQg3(&x) / 2 + aQg3red;
 
@@ -439,7 +430,6 @@ vector<double> MatchingCondition::a_Qg_30_klmv(double x) const {
 
     double L1 = log(x1);
     double L12 = L1 * L1;
-    double L13 = L12 * L1;
 
     double upper = a_Qg_30_klmv_up(x);
 
@@ -1129,9 +1119,6 @@ vector<double> MatchingCondition::a_Qq_PS_30_klmv(double x) const {
                + 66638.193 * x + 2825.641 / x)
         + 41850.518 * x * L + 688.396 / x * L
     );
-
-    double L1 = log(1. - x);
-    double L = log(x);
     double lower = (
         (1. - x)
             * (126.3546 * L1 * L1 + 353.8539 * L1 + 6787.608 * x
