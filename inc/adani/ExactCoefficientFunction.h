@@ -22,7 +22,7 @@
 #include "adani/Convolution.h"
 #include "adani/SplittingFunction.h"
 
-#include <array>
+#include <vector>
 #include <memory>
 
 //==========================================================================================//
