@@ -51,6 +51,9 @@ MatchingCondition::MatchingCondition(
                 __PRETTY_FUNCTION__, __LINE__
             );
         }
+
+        SetFunctions();
+
     } catch (NotImplementedException &e) {
         e.runtime_error();
     } catch (NotValidException &e) {
@@ -69,6 +72,57 @@ MatchingCondition::MatchingCondition(const MatchingCondition &obj)
           obj.GetOrder(), obj.GetEntry1(), obj.GetEntry2(),
           obj.GetHighScaleVersion()
       ) {}
+
+//==========================================================================================//
+//  MatchingCondition: CheckEntry
+//------------------------------------------------------------------------------------------//
+
+void MatchingCondition::SetFunctions() {
+
+    switch (GetEntry2()) {
+        case 'g':
+            switch (GetHighScaleVersion()) {
+                case HighScaleVersion::Exact:
+                    nf_indep_term_ = &MatchingCondition::a_Qg_30_exact;
+                    break;
+                case HighScaleVersion::GM:
+                    nf_indep_term_ = &MatchingCondition::a_Qg_30_gm;
+                    break;
+                case HighScaleVersion::ABMP:
+                    nf_indep_term_ = &MatchingCondition::a_Qg_30_abmp;
+                    break;
+                case HighScaleVersion::KLMV:
+                    nf_indep_term_ = &MatchingCondition::a_Qg_30_klmv;
+                    break;
+                default:
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
+            }
+            nf_dep_term_ = &MatchingCondition::a_Qg_31;
+            break;
+        case 'q':
+            switch (GetHighScaleVersion()) {
+                case HighScaleVersion::Exact:
+                    nf_indep_term_ = &MatchingCondition::a_Qq_PS_30_exact;
+                    break;
+                case HighScaleVersion::KLMV:
+                    nf_indep_term_ = &MatchingCondition::a_Qq_PS_30_klmv;
+                    break;
+                default:
+                    throw UnexpectedException(
+                        "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                    );
+            }
+            nf_dep_term_ = &MatchingCondition::a_Qq_PS_31;
+            break;
+        default:
+            throw UnexpectedException(
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+            );
+            break;
+    }
+}
 
 //==========================================================================================//
 //  MatchingCondition: CheckEntry
@@ -130,15 +184,7 @@ Value MatchingCondition::MuIndependentNfIndependentTerm(double x) const {
 //------------------------------------------------------------------------------------------//
 
 double MatchingCondition::MuIndependentNfDependentTerm(double x) const {
-    if (entry2_ == 'q')
-        return a_Qq_PS_31(x);
-    else if (entry2_ == 'g')
-        return a_Qg_31(x);
-    else {
-        throw UnexpectedException(
-            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-        );
-    }
+    return (this->*nf_dep_term_)(x);
 }
 
 //==========================================================================================//
@@ -148,56 +194,7 @@ double MatchingCondition::MuIndependentNfDependentTerm(double x) const {
 
 vector<double> MatchingCondition::NotOrdered(double x) const {
 
-    double central, higher, lower;
-    switch (entry2_) {
-    case 'q':
-        switch (version_) {
-        case HighScaleVersion::Exact:
-            central = a_Qq_PS_30(x, 0);
-            return { central, central, central };
-        case HighScaleVersion::KLMV:
-            higher = a_Qq_PS_30(x, 1);
-            lower = a_Qq_PS_30(x, -1);
-            central = 0.5 * (higher + lower);
-            return { central, higher, lower };
-        default:
-            throw UnexpectedException(
-                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-            );
-        }
-    case 'g':
-
-        switch (version_) {
-        case HighScaleVersion::Exact:
-            central = a_Qg_30(x, 0);
-            return { central, central, central };
-        case HighScaleVersion::GM:
-            central = a_Qg_30(x, 2);
-            return { central, central, central };
-        case HighScaleVersion::ABMP:
-            higher = a_Qg_30(x, 1);
-            lower = a_Qg_30(x, -1);
-            central = 0.5 * (higher + lower);
-            return { central, higher, lower };
-            break;
-        case HighScaleVersion::KLMV:
-            higher = a_Qg_30(x, 1);
-            lower = a_Qg_30(x, -12);
-            central = 0.5 * (higher + lower);
-            return { central, higher, lower };
-            break;
-        default:
-            throw UnexpectedException(
-                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-            );
-        }
-
-        break;
-    default:
-        throw UnexpectedException(
-            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-        );
-    }
+    return (this->*nf_indep_term_)(x);
 }
 
 //==========================================================================================//
@@ -327,18 +324,11 @@ extern "C" {
 }
 
 //==========================================================================================//
-//  Approximation of the nf-independent part of the mu-independent part of the
-//  unrenormalized matching condition Qg at O(as^3).
-//
-//  v = 0 : exact result
-//  v = 1 : Eq. (3.49) of Ref. [arXiv:1205.5727]
-//  v = -1 : Eq. (16) Ref. of [arXiv:1701.05838]
-//  v = -12 : Eq. (3.50) of Ref. [arXiv:1205.5727]
-//  v = 2 : approximation from Giacomo Magni, based on the results of
-//  [arXiv:2403.00513]
+//  nf-independent part of the mu-independent part of the unrenormalized matching
+//  condition Qg at O(as^3). Exact result.
 //------------------------------------------------------------------------------------------//
 
-double MatchingCondition::a_Qg_30(double x, int v) const {
+vector<double> MatchingCondition::a_Qg_30_exact(double x) const {
 
     double L = log(x);
     double L2 = L * L;
@@ -349,47 +339,116 @@ double MatchingCondition::a_Qg_30(double x, int v) const {
     double L12 = L1 * L1;
     double L13 = L12 * L1;
 
-    switch (v) {
-    case 0: {
-        double aQg3red = (x < 0.5 ? red0_(&x) : red1_(&x));
-        return aQg3(&x) / 2 + aQg3red;
-    }
-    case 1:
-        return (
-            354.1002 * L13 + 479.3838 * L12 - 7856.784 * (2. - x)
-            - 6233.530 * L2 + 9416.621 / x + 1548.891 / x * L
-        );
-    case -1:
-        return (
-            226.3840 * L13 - 652.2045 * L12 - 2686.387 * L1
-            - 7714.786 * (2. - x) - 2841.851 * L2 + 7721.120 / x
-            + 1548.891 / x * L
-        );
-    case -12:
-        return (
-            -2658.323 * L12 - 7449.948 * L1 - 7460.002 * (2. - x)
-            + 3178.819 * L2 + 4710.725 / x + 1548.891 / x * L
-        );
-    case 2: {
-        double L14 = L13 * L1;
-        double L15 = L14 * L1;
-        double L3 = L2 * L;
-        double L4 = L3 * L;
-        double L5 = L4 * L;
-        return -7685.812499211437 + 8956.649545 / x - 18891.90044109861 * x
+    double aQg3red = (x < 0.5 ? red0_(&x) : red1_(&x));
+    double res = aQg3(&x) / 2 + aQg3red;
+
+    return {res, res, res};
+}
+
+//==========================================================================================//
+//  nf-independent part of the mu-independent part of the unrenormalized matching
+//  condition Qg at O(as^3). Approximation from Giacomo Magni, based on the results of
+//  [arXiv:2403.00513].
+//------------------------------------------------------------------------------------------//
+
+vector<double> MatchingCondition::a_Qg_30_gm(double x) const {
+
+    double L = log(x);
+    double L2 = L * L;
+
+    double x1 = 1. - x;
+
+    double L1 = log(x1);
+    double L12 = L1 * L1;
+    double L13 = L12 * L1;
+
+    double L14 = L13 * L1;
+    double L15 = L14 * L1;
+    double L3 = L2 * L;
+    double L4 = L3 * L;
+    double L5 = L4 * L;
+    double res = -7685.812499211437 + 8956.649545 / x - 18891.90044109861 * x
                + 19687.320434140434 * x * x + 737.165347 * L1
                - 12429.982192922555 * (1. - x) * L1 - 332.5368214 * L12
                + 4.380199906 * L13 - 8.20987654 * L14 + 3.7037037039999996 * L15
                + 10739.21741 * L + 1548.8916669999999 * L / x
                - 7861.809052567688 * x * L - 720.0483828 * L2 + 514.0912722 * L3
                - 21.75925926 * L4 + 4.844444444 * L5;
-    }
-    default:
-        throw NotValidException(
-            "Choose either v=0, v=1, v=-1, v=-12 or v=2! Got " + to_string(v),
-            __PRETTY_FUNCTION__, __LINE__
-        );
-    }
+
+    return {res, res, res};
+}
+
+//==========================================================================================//
+//  nf-independent part of the mu-independent part of the unrenormalized matching
+//  condition Qg at O(as^3). Approximation from Eq. (3.49) of Ref. [arXiv:1205.5727].
+//------------------------------------------------------------------------------------------//
+
+double MatchingCondition::a_Qg_30_klmv_up(double x) const {
+
+    double L = log(x);
+    double L2 = L * L;
+
+    double x1 = 1. - x;
+
+    double L1 = log(x1);
+    double L12 = L1 * L1;
+    double L13 = L12 * L1;
+
+    return (
+        354.1002 * L13 + 479.3838 * L12 - 7856.784 * (2. - x)
+        - 6233.530 * L2 + 9416.621 / x + 1548.891 / x * L
+    );
+}
+
+//==========================================================================================//
+//  nf-independent part of the mu-independent part of the unrenormalized matching
+//  condition Qg at O(as^3). Approximation from Eq. (15-16) Ref. of [arXiv:1701.05838]
+//------------------------------------------------------------------------------------------//
+
+vector<double> MatchingCondition::a_Qg_30_abmp(double x) const {
+
+    double L = log(x);
+    double L2 = L * L;
+
+    double x1 = 1. - x;
+
+    double L1 = log(x1);
+    double L12 = L1 * L1;
+    double L13 = L12 * L1;
+
+    double upper = a_Qg_30_klmv_up(x);
+
+    double lower =
+            226.3840 * L13 - 652.2045 * L12 - 2686.387 * L1
+            - 7714.786 * (2. - x) - 2841.851 * L2 + 7721.120 / x
+            + 1548.891 / x * L;
+
+    return {0.5 * (upper + lower), upper, lower};
+}
+
+//==========================================================================================//
+//  nf-independent part of the mu-independent part of the unrenormalized matching
+//  condition Qg at O(as^3). Approximation from Eq. (3.49-50) of Ref. [arXiv:1205.5727].
+//------------------------------------------------------------------------------------------//
+
+vector<double> MatchingCondition::a_Qg_30_klmv(double x) const {
+
+    double L = log(x);
+    double L2 = L * L;
+
+    double x1 = 1. - x;
+
+    double L1 = log(x1);
+    double L12 = L1 * L1;
+    double L13 = L12 * L1;
+
+    double upper = a_Qg_30_klmv_up(x);
+
+    double lower =
+            -2658.323 * L12 - 7449.948 * L1 - 7460.002 * (2. - x)
+            + 3178.819 * L2 + 4710.725 / x + 1548.891 / x * L;
+
+    return {0.5 * (upper + lower), upper, lower};
 }
 
 //==========================================================================================//
@@ -401,25 +460,17 @@ double MatchingCondition::a_Qg_31(double x) const { return aqg3nf_(&x); }
 
 //==========================================================================================//
 //  nf-independent part of the mu-independent part of the unrenormalized
-//  matching condition Qq at O(as^3). Both the exact resul and the
-//  approximate one are implemented. The latter is used just as benchmark for
-//  the plots of the paper.
-//
-//  v = 0 : exact result from Eq. (5.41, 5.42, 5.45) of Ref. [arXiv:1409.1135]
-//  v = 1 : approximation from Eq. (3.53) of [arXiv:1205.5727]
-//  v = 2 : approximation from Eq. (3.53) of [arXiv:1205.5727]
+//  matching condition Qq at O(as^3). exact result from Eq. (5.41, 5.42, 5.45)
+//. of Ref. [arXiv:1409.1135].
 //------------------------------------------------------------------------------------------//
 
-double MatchingCondition::a_Qq_PS_30(double x, int v) const {
+vector<double> MatchingCondition::a_Qq_PS_30_exact(double x) const {
 
     double x2 = x * x;
-
-    switch (v) {
-    case 0: {
-        double x3 = x2 * x;
-        double x4 = x3 * x;
-        double x5 = x4 * x;
-        double x6 = x5 * x;
+    double x3 = x2 * x;
+    double x4 = x3 * x;
+    double x5 = x4 * x;
+    double x6 = x5 * x;
 
         // Allocate pointers for the harmonic polylogs
         double wx = x;
@@ -1056,35 +1107,41 @@ double MatchingCondition::a_Qq_PS_30(double x, int v) const {
                    + 512 * (x + 1)
                          * (tildeH0m1m1 + tildeH0m11 + tildeH01m1 + tildeH011))
                       * ln2_2));
+    double res = aQqPS30 + tildeaQqPS30;
 
-        return aQqPS30 + tildeaQqPS30;
-    }
-    case 1: {
-        double L1 = log(1. - x);
-        double L = log(x);
-        return (
-            (1. - x)
-                * (232.9555 * L1 * L1 * L1 + 1309.528 * L1 * L1 - 31729.716 * x2
-                   + 66638.193 * x + 2825.641 / x)
-            + 41850.518 * x * L + 688.396 / x * L
-        );
-    }
-    case -1: {
-        double L1 = log(1. - x);
-        double L = log(x);
-        return (
-            (1. - x)
-                * (126.3546 * L1 * L1 + 353.8539 * L1 + 6787.608 * x
-                   + 3780.192 / x)
-            + 8571.165 * x * L - 2346.893 * L * L + 688.396 / x * L
-        );
-    }
-    default:
-        throw NotValidException(
-            "Choose either v=0, v=1 or v=-1! Got " + to_string(v),
-            __PRETTY_FUNCTION__, __LINE__
-        );
-    }
+    return {res, res, res};
+}
+
+//==========================================================================================//
+//  nf-independent part of the mu-independent part of the unrenormalized
+//  matching condition Qq at O(as^3). approximation from Eq. (3.53) of [arXiv:1205.5727]
+//  used just as benchmark for the plots of the paper.
+//------------------------------------------------------------------------------------------//
+
+vector<double> MatchingCondition::a_Qq_PS_30_klmv(double x) const {
+
+    double x2 = x * x;
+
+    double L1 = log(1. - x);
+    double L = log(x);
+    double upper = (
+        (1. - x)
+            * (232.9555 * L1 * L1 * L1 + 1309.528 * L1 * L1 - 31729.716 * x2
+               + 66638.193 * x + 2825.641 / x)
+        + 41850.518 * x * L + 688.396 / x * L
+    );
+
+    double L1 = log(1. - x);
+    double L = log(x);
+    double lower = (
+        (1. - x)
+            * (126.3546 * L1 * L1 + 353.8539 * L1 + 6787.608 * x
+               + 3780.192 / x)
+        + 8571.165 * x * L - 2346.893 * L * L + 688.396 / x * L
+    );
+
+    return {0.5 * (upper + lower), upper, lower};
+
 }
 
 //==========================================================================================//

@@ -54,7 +54,12 @@ class MatchingCondition {
         const char entry2_;
         const HighScaleVersion version_;
 
+        vector<double> (MatchingCondition::*nf_indep_term_)(double) const;
+        double (MatchingCondition::*nf_dep_term_)(double) const;
+
         void CheckEntry(char entry) const;
+
+        void SetFunctions();
 
         //==========================================================================================//
         //  Matching conditions O(as)
@@ -73,9 +78,18 @@ class MatchingCondition {
         //  Matching conditions O(as^3)
         //------------------------------------------------------------------------------------------//
 
-        double a_Qg_30(double x, int v) const;
+        vector<double> a_Qg_30_exact(double x) const;
+        vector<double> a_Qg_30_gm(double x) const;
+        vector<double> a_Qg_30_abmp(double x) const;
+        vector<double> a_Qg_30_klmv(double x) const;
+
+        double a_Qg_30_klmv_up(double x) const;
+
         double a_Qg_31(double x) const;
-        double a_Qq_PS_30(double x, int v) const;
+
+
+        vector<double> a_Qq_PS_30_exact(double x) const;
+        vector<double> a_Qq_PS_30_klmv(double x) const;
         double a_Qq_PS_31(double x) const;
 };
 
