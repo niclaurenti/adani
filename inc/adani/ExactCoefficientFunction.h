@@ -22,8 +22,8 @@
 #include "adani/Convolution.h"
 #include "adani/SplittingFunction.h"
 
-#include <memory>
 #include <array>
+#include <memory>
 
 //==========================================================================================//
 //  forward declaration of class ThresholdCoefficientFunction to avoid circular

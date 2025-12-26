@@ -87,7 +87,6 @@ class MatchingCondition {
 
         double a_Qg_31(double x) const;
 
-
         array<double, 3> a_Qq_PS_30_exact(double x) const;
         array<double, 3> a_Qq_PS_30_klmv(double x) const;
         double a_Qq_PS_31(double x) const;

@@ -223,11 +223,12 @@ Value HighEnergyCoefficientFunction::NLL(
 //  HighEnergyCoefficientFunction: function to be used when NLL_=false
 //------------------------------------------------------------------------------------------//
 
-Value HighEnergyCoefficientFunction::ThrowException(double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const {
+Value HighEnergyCoefficientFunction::
+    ThrowException(double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const {
     throw NotValidException(
         "Called HighEnergyCoefficientFunction::NLL with NLL_=false!",
-        __PRETTY_FUNCTION__,
-        __LINE__);
+        __PRETTY_FUNCTION__, __LINE__
+    );
 }
 
 //==========================================================================================//
@@ -393,11 +394,12 @@ Value HighEnergyHighScaleCoefficientFunction::NLL(
 //  HighEnergyHighScaleCoefficientFunction: function to be used when NLL_=false
 //------------------------------------------------------------------------------------------//
 
-Value HighEnergyHighScaleCoefficientFunction::ThrowException(double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const {
+Value HighEnergyHighScaleCoefficientFunction::
+    ThrowException(double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const {
     throw NotValidException(
         "Called HighEnergyHighScaleCoefficientFunction::NLL with NLL_=false!",
-        __PRETTY_FUNCTION__,
-        __LINE__);
+        __PRETTY_FUNCTION__, __LINE__
+    );
 }
 
 //==========================================================================================//

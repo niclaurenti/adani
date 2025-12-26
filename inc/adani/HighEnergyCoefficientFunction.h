@@ -137,7 +137,8 @@ class HighEnergyCoefficientFunction
             double beta0
         ) const;
 
-        Value ThrowException(double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const;
+        Value
+            ThrowException(double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const;
 };
 
 //==========================================================================================//
@@ -217,7 +218,8 @@ class HighEnergyHighScaleCoefficientFunction
             double beta0
         ) const;
 
-        Value ThrowException(double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const;
+        Value
+            ThrowException(double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const;
 };
 
 #endif

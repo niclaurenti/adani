@@ -1399,66 +1399,66 @@ Value HighScaleCoefficientFunction::D2_g3_highscale(
 
     // weight 1
     const double Hm1 = Hr1[HPL_map(-1)];
-    const double H0  = Hr1[HPL_map(0)];
-    const double H1  = Hr1[HPL_map(1)];
+    const double H0 = Hr1[HPL_map(0)];
+    const double H1 = Hr1[HPL_map(1)];
 
     // weight 2
     const double Hm1m1 = Hr2[HPL_map(-1, -1)];
-    const double H0m1  = Hr2[HPL_map(0, -1)];
-    const double Hm10  = Hr2[HPL_map(-1, 0)];
-    const double H00   = Hr2[HPL_map(0, 0)];
-    const double H10   = Hr2[HPL_map(1, 0)];
-    const double H01   = Hr2[HPL_map(0, 1)];
-    const double H11   = Hr2[HPL_map(1, 1)];
+    const double H0m1 = Hr2[HPL_map(0, -1)];
+    const double Hm10 = Hr2[HPL_map(-1, 0)];
+    const double H00 = Hr2[HPL_map(0, 0)];
+    const double H10 = Hr2[HPL_map(1, 0)];
+    const double H01 = Hr2[HPL_map(0, 1)];
+    const double H11 = Hr2[HPL_map(1, 1)];
 
     // weight 3
     const double Hm1m1m1 = Hr3[HPL_map(-1, -1, -1)];
-    const double H0m1m1  = Hr3[HPL_map(0, -1, -1)];
-    const double Hm10m1  = Hr3[HPL_map(-1, 0, -1)];
-    const double H00m1   = Hr3[HPL_map(0, 0, -1)];
-    const double Hm1m10  = Hr3[HPL_map(-1, -1, 0)];
-    const double H0m10   = Hr3[HPL_map(0, -1, 0)];
-    const double Hm100   = Hr3[HPL_map(-1, 0, 0)];
-    const double H000    = Hr3[HPL_map(0, 0, 0)];
-    const double H100    = Hr3[HPL_map(1, 0, 0)];
-    const double H010    = Hr3[HPL_map(0, 1, 0)];
-    const double H110    = Hr3[HPL_map(1, 1, 0)];
-    const double Hm101   = Hr3[HPL_map(-1, 0, 1)];
-    const double H001    = Hr3[HPL_map(0, 0, 1)];
-    const double H101    = Hr3[HPL_map(1, 0, 1)];
-    const double H011    = Hr3[HPL_map(0, 1, 1)];
-    const double H111    = Hr3[HPL_map(1, 1, 1)];
+    const double H0m1m1 = Hr3[HPL_map(0, -1, -1)];
+    const double Hm10m1 = Hr3[HPL_map(-1, 0, -1)];
+    const double H00m1 = Hr3[HPL_map(0, 0, -1)];
+    const double Hm1m10 = Hr3[HPL_map(-1, -1, 0)];
+    const double H0m10 = Hr3[HPL_map(0, -1, 0)];
+    const double Hm100 = Hr3[HPL_map(-1, 0, 0)];
+    const double H000 = Hr3[HPL_map(0, 0, 0)];
+    const double H100 = Hr3[HPL_map(1, 0, 0)];
+    const double H010 = Hr3[HPL_map(0, 1, 0)];
+    const double H110 = Hr3[HPL_map(1, 1, 0)];
+    const double Hm101 = Hr3[HPL_map(-1, 0, 1)];
+    const double H001 = Hr3[HPL_map(0, 0, 1)];
+    const double H101 = Hr3[HPL_map(1, 0, 1)];
+    const double H011 = Hr3[HPL_map(0, 1, 1)];
+    const double H111 = Hr3[HPL_map(1, 1, 1)];
 
     // weight 4
     const double Hm1m1m10 = Hr4[HPL_map(-1, -1, -1, 0)];
-    const double H0m1m10  = Hr4[HPL_map(0, -1, -1, 0)];
-    const double Hm10m10  = Hr4[HPL_map(-1, 0, -1, 0)];
-    const double H00m10   = Hr4[HPL_map(0, 0, -1, 0)];
-    const double H10m10   = Hr4[HPL_map(1, 0, -1, 0)];
-    const double Hm1m100  = Hr4[HPL_map(-1, -1, 0, 0)];
-    const double H0m100   = Hr4[HPL_map(0, -1, 0, 0)];
-    const double Hm1000   = Hr4[HPL_map(-1, 0, 0, 0)];
-    const double H0000    = Hr4[HPL_map(0, 0, 0, 0)];
-    const double H1000    = Hr4[HPL_map(1, 0, 0, 0)];
-    const double H0100    = Hr4[HPL_map(0, 1, 0, 0)];
-    const double H1100    = Hr4[HPL_map(1, 1, 0, 0)];
-    const double Hm1010   = Hr4[HPL_map(-1, 0, 1, 0)];
-    const double H0010    = Hr4[HPL_map(0, 0, 1, 0)];
-    const double H1010    = Hr4[HPL_map(1, 0, 1, 0)];
-    const double H0110    = Hr4[HPL_map(0, 1, 1, 0)];
-    const double H1110    = Hr4[HPL_map(1, 1, 1, 0)];
-    const double Hm1m101  = Hr4[HPL_map(-1, -1, 0, 1)];
-    const double H0m101   = Hr4[HPL_map(0, -1, 0, 1)];
-    const double Hm1001   = Hr4[HPL_map(-1, 0, 0, 1)];
-    const double H0001    = Hr4[HPL_map(0, 0, 0, 1)];
-    const double H1001    = Hr4[HPL_map(1, 0, 0, 1)];
-    const double H0101    = Hr4[HPL_map(0, 1, 0, 1)];
-    const double H1101    = Hr4[HPL_map(1, 1, 0, 1)];
-    const double Hm1011   = Hr4[HPL_map(-1, 0, 1, 1)];
-    const double H0011    = Hr4[HPL_map(0, 0, 1, 1)];
-    const double H1011    = Hr4[HPL_map(1, 0, 1, 1)];
-    const double H0111    = Hr4[HPL_map(0, 1, 1, 1)];
-    const double H1111    = Hr4[HPL_map(1, 1, 1, 1)];
+    const double H0m1m10 = Hr4[HPL_map(0, -1, -1, 0)];
+    const double Hm10m10 = Hr4[HPL_map(-1, 0, -1, 0)];
+    const double H00m10 = Hr4[HPL_map(0, 0, -1, 0)];
+    const double H10m10 = Hr4[HPL_map(1, 0, -1, 0)];
+    const double Hm1m100 = Hr4[HPL_map(-1, -1, 0, 0)];
+    const double H0m100 = Hr4[HPL_map(0, -1, 0, 0)];
+    const double Hm1000 = Hr4[HPL_map(-1, 0, 0, 0)];
+    const double H0000 = Hr4[HPL_map(0, 0, 0, 0)];
+    const double H1000 = Hr4[HPL_map(1, 0, 0, 0)];
+    const double H0100 = Hr4[HPL_map(0, 1, 0, 0)];
+    const double H1100 = Hr4[HPL_map(1, 1, 0, 0)];
+    const double Hm1010 = Hr4[HPL_map(-1, 0, 1, 0)];
+    const double H0010 = Hr4[HPL_map(0, 0, 1, 0)];
+    const double H1010 = Hr4[HPL_map(1, 0, 1, 0)];
+    const double H0110 = Hr4[HPL_map(0, 1, 1, 0)];
+    const double H1110 = Hr4[HPL_map(1, 1, 1, 0)];
+    const double Hm1m101 = Hr4[HPL_map(-1, -1, 0, 1)];
+    const double H0m101 = Hr4[HPL_map(0, -1, 0, 1)];
+    const double Hm1001 = Hr4[HPL_map(-1, 0, 0, 1)];
+    const double H0001 = Hr4[HPL_map(0, 0, 0, 1)];
+    const double H1001 = Hr4[HPL_map(1, 0, 0, 1)];
+    const double H0101 = Hr4[HPL_map(0, 1, 0, 1)];
+    const double H1101 = Hr4[HPL_map(1, 1, 0, 1)];
+    const double Hm1011 = Hr4[HPL_map(-1, 0, 1, 1)];
+    const double H0011 = Hr4[HPL_map(0, 0, 1, 1)];
+    const double H1011 = Hr4[HPL_map(1, 0, 1, 1)];
+    const double H0111 = Hr4[HPL_map(0, 1, 1, 1)];
+    const double H1111 = Hr4[HPL_map(1, 1, 1, 1)];
 
     //  weight 5
     const double Hm1m1m1m10 = Hr5[HPL_map(-1, -1, -1, -1, 0)];

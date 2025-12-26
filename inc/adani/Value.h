@@ -15,11 +15,11 @@
 #ifndef Value_h
 #define Value_h
 
-#include <iostream>
 #include <array>
+#include <iostream>
 
-using std::ostream;
 using std::array;
+using std::ostream;
 
 //==========================================================================================//
 //  class Value

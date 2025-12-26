@@ -120,8 +120,11 @@ extern "C" {
 //  map between HPL index and array index
 //------------------------------------------------------------------------------------------//
 
-constexpr unsigned int HPL_map(int id0 = -1, int id1 = -1, int id2 = -1, int id3 = -1, int id4 = -1) {
-    return (id0 + 1) + (id1 + 1) * 3 + (id2 + 1) * 3 * 3 + (id3 + 1) * 3 * 3 * 3 + (id4 + 1) * 3 * 3 * 3 * 3;
+constexpr unsigned int HPL_map(
+    int id0 = -1, int id1 = -1, int id2 = -1, int id3 = -1, int id4 = -1
+) {
+    return (id0 + 1) + (id1 + 1) * 3 + (id2 + 1) * 3 * 3 + (id3 + 1) * 3 * 3 * 3
+           + (id4 + 1) * 3 * 3 * 3 * 3;
 }
 
 #endif

@@ -5,8 +5,8 @@
 #include "adani/HighScaleCoefficientFunction.h"
 #include "adani/SpecialFunctions.h"
 
-#include <cmath>
 #include <array>
+#include <cmath>
 
 using std::array;
 
