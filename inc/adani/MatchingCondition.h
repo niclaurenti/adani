@@ -46,7 +46,7 @@ class MatchingCondition {
         Value MuIndependentNfIndependentTerm(double x) const;
         double MuIndependentNfDependentTerm(double x) const;
         Value MuIndependentTerm(double x, int nf) const;
-        vector<double> NotOrdered(double x) const;
+        array<double, 3> NotOrdered(double x) const;
 
     private:
         const int order_;
@@ -54,7 +54,7 @@ class MatchingCondition {
         const char entry2_;
         const HighScaleVersion version_;
 
-        vector<double> (MatchingCondition::*nf_indep_term_)(double) const;
+        array<double, 3> (MatchingCondition::*nf_indep_term_)(double) const;
         double (MatchingCondition::*nf_dep_term_)(double) const;
 
         void CheckEntry(char entry) const;
@@ -78,18 +78,18 @@ class MatchingCondition {
         //  Matching conditions O(as^3)
         //------------------------------------------------------------------------------------------//
 
-        vector<double> a_Qg_30_exact(double x) const;
-        vector<double> a_Qg_30_gm(double x) const;
-        vector<double> a_Qg_30_abmp(double x) const;
-        vector<double> a_Qg_30_klmv(double x) const;
+        array<double, 3> a_Qg_30_exact(double x) const;
+        array<double, 3> a_Qg_30_gm(double x) const;
+        array<double, 3> a_Qg_30_abmp(double x) const;
+        array<double, 3> a_Qg_30_klmv(double x) const;
 
         double a_Qg_30_klmv_up(double x) const;
 
         double a_Qg_31(double x) const;
 
 
-        vector<double> a_Qq_PS_30_exact(double x) const;
-        vector<double> a_Qq_PS_30_klmv(double x) const;
+        array<double, 3> a_Qq_PS_30_exact(double x) const;
+        array<double, 3> a_Qq_PS_30_klmv(double x) const;
         double a_Qq_PS_31(double x) const;
 };
 

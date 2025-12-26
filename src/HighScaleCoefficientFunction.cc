@@ -209,7 +209,7 @@ Value HighScaleCoefficientFunction::fxBand(
 //  without ordering the upper and lower bands
 //------------------------------------------------------------------------------------------//
 
-vector<double> HighScaleCoefficientFunction::fxBand_NotOrdered(
+array<double, 3> HighScaleCoefficientFunction::fxBand_NotOrdered(
     double x, double m2Q2, double m2mu2, int nf
 ) const {
 

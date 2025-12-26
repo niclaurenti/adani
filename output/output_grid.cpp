@@ -9,7 +9,7 @@
 #include <sstream>
 #include <string.h>
 #include <thread>
-#include <vector>
+#include <array>
 
 using namespace std;
 

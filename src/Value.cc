@@ -115,10 +115,10 @@ double Value::GetAvgDelta() const {
 }
 
 //==========================================================================================//
-//  Value: export to vector<double>
+//  Value: export to array<double, 3>
 //------------------------------------------------------------------------------------------//
 
-vector<double> Value::ToVect() const { return { central_, higher_, lower_ }; }
+array<double, 3> Value::ToVect() const { return { central_, higher_, lower_ }; }
 
 //==========================================================================================//
 //  Value: overload of operator + double

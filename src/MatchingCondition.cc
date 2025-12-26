@@ -156,7 +156,7 @@ Value MatchingCondition::MuIndependentNfIndependentTerm(double x) const {
 
     double central, higher, lower;
 
-    vector<double> res;
+    array<double, 3> res;
     try {
         res = NotOrdered(x);
     } catch (NotImplementedException &e) {
@@ -192,7 +192,7 @@ double MatchingCondition::MuIndependentNfDependentTerm(double x) const {
 //  ordering the upper and lower bands
 //------------------------------------------------------------------------------------------//
 
-vector<double> MatchingCondition::NotOrdered(double x) const {
+array<double, 3> MatchingCondition::NotOrdered(double x) const {
     return (this->*nf_indep_term_)(x);
 }
 
@@ -327,7 +327,7 @@ extern "C" {
 //  condition Qg at O(as^3). Exact result.
 //------------------------------------------------------------------------------------------//
 
-vector<double> MatchingCondition::a_Qg_30_exact(double x) const {
+array<double, 3> MatchingCondition::a_Qg_30_exact(double x) const {
 
     double aQg3red = (x < 0.5 ? red0_(&x) : red1_(&x));
     double res = aQg3(&x) / 2 + aQg3red;
@@ -341,7 +341,7 @@ vector<double> MatchingCondition::a_Qg_30_exact(double x) const {
 //  [arXiv:2403.00513].
 //------------------------------------------------------------------------------------------//
 
-vector<double> MatchingCondition::a_Qg_30_gm(double x) const {
+array<double, 3> MatchingCondition::a_Qg_30_gm(double x) const {
 
     double L = log(x);
     double L2 = L * L;
@@ -395,7 +395,7 @@ double MatchingCondition::a_Qg_30_klmv_up(double x) const {
 //  condition Qg at O(as^3). Approximation from Eq. (15-16) Ref. of [arXiv:1701.05838]
 //------------------------------------------------------------------------------------------//
 
-vector<double> MatchingCondition::a_Qg_30_abmp(double x) const {
+array<double, 3> MatchingCondition::a_Qg_30_abmp(double x) const {
 
     double L = log(x);
     double L2 = L * L;
@@ -421,7 +421,7 @@ vector<double> MatchingCondition::a_Qg_30_abmp(double x) const {
 //  condition Qg at O(as^3). Approximation from Eq. (3.49-50) of Ref. [arXiv:1205.5727].
 //------------------------------------------------------------------------------------------//
 
-vector<double> MatchingCondition::a_Qg_30_klmv(double x) const {
+array<double, 3> MatchingCondition::a_Qg_30_klmv(double x) const {
 
     double L = log(x);
     double L2 = L * L;
@@ -453,7 +453,7 @@ double MatchingCondition::a_Qg_31(double x) const { return aqg3nf_(&x); }
 //. of Ref. [arXiv:1409.1135].
 //------------------------------------------------------------------------------------------//
 
-vector<double> MatchingCondition::a_Qq_PS_30_exact(double x) const {
+array<double, 3> MatchingCondition::a_Qq_PS_30_exact(double x) const {
 
     double x2 = x * x;
     double x3 = x2 * x;
@@ -1107,7 +1107,7 @@ vector<double> MatchingCondition::a_Qq_PS_30_exact(double x) const {
 //  used just as benchmark for the plots of the paper.
 //------------------------------------------------------------------------------------------//
 
-vector<double> MatchingCondition::a_Qq_PS_30_klmv(double x) const {
+array<double, 3> MatchingCondition::a_Qq_PS_30_klmv(double x) const {
 
     double x2 = x * x;
 

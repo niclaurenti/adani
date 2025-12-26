@@ -19,7 +19,7 @@
 #include "adani/Exceptions.h"
 #include "adani/Value.h"
 
-#include <vector>
+#include <array>
 
 //==========================================================================================//
 //                      The notation used is the following:
