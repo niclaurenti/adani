@@ -193,7 +193,6 @@ double MatchingCondition::MuIndependentNfDependentTerm(double x) const {
 //------------------------------------------------------------------------------------------//
 
 vector<double> MatchingCondition::NotOrdered(double x) const {
-
     return (this->*nf_indep_term_)(x);
 }
 
