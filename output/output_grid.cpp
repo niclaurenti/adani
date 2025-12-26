@@ -2,7 +2,7 @@
 
 #include "adani/adani.h"
 
-#include <array>
+#include <vector>
 #include <cmath>
 #include <ctime>
 #include <fstream>
