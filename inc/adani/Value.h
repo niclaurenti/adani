@@ -15,11 +15,11 @@
 #ifndef Value_h
 #define Value_h
 
+#include <array>
 #include <iostream>
-#include <vector>
 
+using std::array;
 using std::ostream;
-using std::vector;
 
 //==========================================================================================//
 //  class Value
@@ -43,7 +43,7 @@ class Value {
         double GetMinDelta() const;
         double GetAvgDelta() const;
 
-        vector<double> ToVect() const;
+        array<double, 3> ToVect() const;
 
         // overload of operators
 

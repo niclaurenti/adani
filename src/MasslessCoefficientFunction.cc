@@ -148,9 +148,7 @@ double MasslessCoefficientFunction::fx(
 //  MasslessCoefficientFunction: mu-dependent + mu-independent terms
 //------------------------------------------------------------------------------------------//
 
-double MasslessCoefficientFunction::fx(
-    double x, double Q2mu2, int nf
-) const {
+double MasslessCoefficientFunction::fx(double x, double Q2mu2, int nf) const {
     return MuIndependentTerms(x, nf) + MuDependentTerms(x, Q2mu2, nf);
 }
 
@@ -163,7 +161,8 @@ double MasslessCoefficientFunction::MuDependentTerms(
     double /*x*/, double /*m2Q2*/, double /*Q2mu2*/, int /*nf*/
 ) const {
     throw NotImplementedException(
-        "mu-dependent terms of massless coefficeint functions are not implemented yet!",
+        "mu-dependent terms of massless coefficeint functions are not "
+        "implemented yet!",
         __PRETTY_FUNCTION__, __LINE__
     );
     return 0.;
@@ -178,7 +177,8 @@ double MasslessCoefficientFunction::MuDependentTerms(
     double /*x*/, double /*Q2mu2*/, int /*nf*/
 ) const {
     throw NotImplementedException(
-        "mu-dependent terms of massless coefficeint functions are not implemented yet!",
+        "mu-dependent terms of massless coefficeint functions are not "
+        "implemented yet!",
         __PRETTY_FUNCTION__, __LINE__
     );
     return 0.;
@@ -189,8 +189,9 @@ double MasslessCoefficientFunction::MuDependentTerms(
 //  base class CoefficientFunction
 //------------------------------------------------------------------------------------------//
 
-double MasslessCoefficientFunction::
-    MuIndependentTerms(double x, double /*m2Q2*/, int nf) const {
+double MasslessCoefficientFunction::MuIndependentTerms(
+    double x, double /*m2Q2*/, int nf
+) const {
     return MuIndependentTerms(x, nf);
 }
 

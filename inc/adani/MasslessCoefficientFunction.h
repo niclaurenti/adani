@@ -40,25 +40,25 @@ class MasslessCoefficientFunction : public CoefficientFunction {
         ~MasslessCoefficientFunction() override = default;
 
         double
-            fx(double x, double /*m2Q2*/, double Q2mu2, int nf
-            ) const override;
-        double fx(double x, double Q2mu2, int nf
-            ) const;
+            fx(double x, double /*m2Q2*/, double Q2mu2, int nf) const override;
+        double fx(double x, double Q2mu2, int nf) const;
 
-        double MuIndependentTerms(double x, double /*m2mu2*/, int nf)
-                const override;
+        double MuIndependentTerms(
+            double x, double /*m2mu2*/, int nf
+        ) const override;
         double MuIndependentTerms(double x, int nf) const;
 
         // TODO: to be implemented
         double MuDependentTerms(
-                double /*x*/, double /*m2Q2*/, double /*Q2mu2*/, int /*nf*/
-            ) const override;
+            double /*x*/, double /*m2Q2*/, double /*Q2mu2*/, int /*nf*/
+        ) const override;
         // TODO: to be implemented
         double MuDependentTerms(
-                double /*x*/, double /*Q2mu2*/, int /*nf*/
-            ) const;
+            double /*x*/, double /*Q2mu2*/, int /*nf*/
+        ) const;
 
-        Value fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
+        Value
+            fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
         Value fxBand(double x, double Q2mu2, int nf) const;
 
     private:

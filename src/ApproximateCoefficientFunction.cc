@@ -5,10 +5,10 @@
 #include "adani/HighScaleCoefficientFunction.h"
 #include "adani/SpecialFunctions.h"
 
+#include <array>
 #include <cmath>
-#include <vector>
 
-using std::vector;
+using std::array;
 
 //==========================================================================================//
 //  AbstractApproximate: constructor
@@ -416,9 +416,9 @@ Value ApproximateCoefficientFunction::ApproximationLegacy(
     double Cvec[3] = { C, Cmax, Cmin };
     double Dvec[3] = { D, Dmax, Dmin };
 
-    vector<double> asy =
+    array<double, 3> asy =
         (asymptotic_->MuIndependentTermsBand(x, m2Q2, nf)).ToVect();
-    vector<double> thresh =
+    array<double, 3> thresh =
         (threshold_->MuIndependentTermsBand(x, m2Q2, nf)).ToVect();
 
     double central =
@@ -699,7 +699,7 @@ Value ApproximateCoefficientFunctionKLMV::Order3(
     double he_ll = highenergy_->MuIndependentTerms(x, m2Q2, nf);
     Value he_nll = ApproximateNLL(x, m2Q2);
 
-    vector<double> hs = highscale_->fxBand_NotOrdered(x, m2Q2, 1., nf);
+    array<double, 3> hs = highscale_->fxBand_NotOrdered(x, m2Q2, 1., nf);
 
     double xi = 1. / m2Q2;
     double f = 1. / (1. + exp(2. * (xi - 4.)));

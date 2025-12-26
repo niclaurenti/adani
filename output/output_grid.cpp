@@ -2,6 +2,7 @@
 
 #include "adani/adani.h"
 
+#include <vector>
 #include <cmath>
 #include <ctime>
 #include <fstream>
@@ -9,7 +10,6 @@
 #include <sstream>
 #include <string.h>
 #include <thread>
-#include <vector>
 
 using namespace std;
 

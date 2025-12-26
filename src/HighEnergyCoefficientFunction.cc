@@ -198,7 +198,7 @@ void HighEnergyCoefficientFunction::SetFunctions() {
     }
 
     if (!GetNLL())
-        NLL_ = nullptr;
+        NLL_ = &HighEnergyCoefficientFunction::ThrowException;
 }
 
 //==========================================================================================//
@@ -217,6 +217,18 @@ Value HighEnergyCoefficientFunction::NLL(
     double m2Q2, double m2mu2, int nf
 ) const {
     return (this->*NLL_)(m2Q2, m2mu2, nf);
+}
+
+//==========================================================================================//
+//  HighEnergyCoefficientFunction: function to be used when NLL_=false
+//------------------------------------------------------------------------------------------//
+
+Value HighEnergyCoefficientFunction::
+    ThrowException(double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const {
+    throw NotValidException(
+        "Called HighEnergyCoefficientFunction::NLL with NLL_=false!",
+        __PRETTY_FUNCTION__, __LINE__
+    );
 }
 
 //==========================================================================================//
@@ -353,7 +365,7 @@ void HighEnergyHighScaleCoefficientFunction::SetFunctions() {
     }
 
     if (!GetNLL())
-        NLL_ = nullptr;
+        NLL_ = &HighEnergyHighScaleCoefficientFunction::ThrowException;
 }
 
 //==========================================================================================//
@@ -376,6 +388,18 @@ Value HighEnergyHighScaleCoefficientFunction::NLL(
 ) const {
     return (this->*NLL_)(m2Q2, m2mu2, nf);
     ;
+}
+
+//==========================================================================================//
+//  HighEnergyHighScaleCoefficientFunction: function to be used when NLL_=false
+//------------------------------------------------------------------------------------------//
+
+Value HighEnergyHighScaleCoefficientFunction::
+    ThrowException(double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const {
+    throw NotValidException(
+        "Called HighEnergyHighScaleCoefficientFunction::NLL with NLL_=false!",
+        __PRETTY_FUNCTION__, __LINE__
+    );
 }
 
 //==========================================================================================//

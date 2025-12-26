@@ -181,15 +181,16 @@ Value AsymptoticCoefficientFunction::ModifiedMultiplicativeMatching1(
 ) const {
 
     double highenergy_ll = highenergy_->LL(m2Q2, m2mu2),
-                           highenergyhighscale_ll = highenergyhighscale_->LL(m2Q2, m2mu2);
-    double highenergy_ll_A = C_highenergy_lim(highenergy_ll, highenergyhighscale_ll, a_fact_);
+           highenergyhighscale_ll = highenergyhighscale_->LL(m2Q2, m2mu2);
+    double highenergy_ll_A =
+        C_highenergy_lim(highenergy_ll, highenergyhighscale_ll, a_fact_);
 
     return (highscale_->fxBand(x, m2Q2, m2mu2, nf)
             + (highenergy_->NLL(m2Q2, m2mu2, nf)
                - highenergyhighscale_->NLL(m2Q2, m2mu2, nf))
                   / x
             + (highenergy_ll_A - highenergyhighscale_ll) * log(x) / x)
-            * highenergy_ll / highenergy_ll_A;
+           * highenergy_ll / highenergy_ll_A;
 }
 
 //==========================================================================================//
@@ -202,15 +203,16 @@ Value AsymptoticCoefficientFunction::ModifiedMultiplicativeMatching2(
 ) const {
 
     double highenergy_ll = highenergy_->LL(m2Q2, m2mu2),
-                           highenergyhighscale_ll = highenergyhighscale_->LL(m2Q2, m2mu2);
-    double highenergy_ll_A = C_highenergy_lim(highenergy_ll, highenergyhighscale_ll, a_fact_);
+           highenergyhighscale_ll = highenergyhighscale_->LL(m2Q2, m2mu2);
+    double highenergy_ll_A =
+        C_highenergy_lim(highenergy_ll, highenergyhighscale_ll, a_fact_);
 
     return (highscale_->fxBand(x, m2Q2, m2mu2, nf)
             + (highenergy_ll_A - highenergyhighscale_ll) * log(x) / x)
-            * highenergy_ll / highenergy_ll_A
-            + (highenergy_->NLL(m2Q2, m2mu2, nf)
-               - highenergyhighscale_->NLL(m2Q2, m2mu2, nf))
-                  / x;
+               * highenergy_ll / highenergy_ll_A
+           + (highenergy_->NLL(m2Q2, m2mu2, nf)
+              - highenergyhighscale_->NLL(m2Q2, m2mu2, nf))
+                 / x;
 }
 
 //==========================================================================================//
@@ -283,9 +285,17 @@ double AsymptoticCoefficientFunction::C_highenergy_lim(
     double highenergy_ll, double highscalehighenergy_ll, double a_fact
 ) const {
 
-    if (highscalehighenergy_ll / highenergy_ll < 0.) return highenergy_ll/a_fact;
+    if (highscalehighenergy_ll / highenergy_ll < 0.)
+        return highenergy_ll / a_fact;
 
-    return highenergy_ll * exp( log(a_fact) * 2./M_PI * atan( M_PI/2.* log(highscalehighenergy_ll/highenergy_ll)/log(a_fact) ) );
+    return highenergy_ll
+           * exp(
+               log(a_fact) * 2. / M_PI
+               * atan(
+                   M_PI / 2. * log(highscalehighenergy_ll / highenergy_ll)
+                   / log(a_fact)
+               )
+           );
 }
 
 //==========================================================================================//
@@ -325,17 +335,22 @@ Value AsymptoticCoefficientFunction::Delta3(
 }
 
 //==========================================================================================//
-//  AsymptoticCoefficientFunction: compute Damp function for the Delta2 and Delta3 functions
+//  AsymptoticCoefficientFunction: compute Damp function for the Delta2 and
+//  Delta3 functions
 //------------------------------------------------------------------------------------------//
 
-double AsymptoticCoefficientFunction::ComputeDampDelta(double m2Q2, double m2mu2) const {
+double AsymptoticCoefficientFunction::ComputeDampDelta(
+    double m2Q2, double m2mu2
+) const {
     double tmp;
-    double ratio = highenergy_->LL(m2Q2, m2mu2) / highenergyhighscale_->LL(m2Q2, m2mu2);
+    double ratio =
+        highenergy_->LL(m2Q2, m2mu2) / highenergyhighscale_->LL(m2Q2, m2mu2);
 
-    if(ratio >= 0) tmp = std::abs(log(ratio));
+    if (ratio >= 0)
+        tmp = std::abs(log(ratio));
     else {
         double logr = log(-ratio);
-        tmp = sqrt( logr * logr + M_PI * M_PI );
+        tmp = sqrt(logr * logr + M_PI * M_PI);
     }
 
     return 1. / (1. + 2 * tmp);

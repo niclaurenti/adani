@@ -136,6 +136,9 @@ class HighEnergyCoefficientFunction
             double m2Q2, double m2mu2, double a11, double a10, double a21,
             double beta0
         ) const;
+
+        Value
+            ThrowException(double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const;
 };
 
 //==========================================================================================//
@@ -214,6 +217,9 @@ class HighEnergyHighScaleCoefficientFunction
             double m2Q2, double m2mu2, double a11, double a10, double a21,
             double beta0
         ) const;
+
+        Value
+            ThrowException(double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const;
 };
 
 #endif
