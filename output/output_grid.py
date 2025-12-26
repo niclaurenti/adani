@@ -22,20 +22,13 @@ m = runcard["m"]
 nf = runcard["nf"]
 mufrac = runcard["mufrac"]
 
-hs_version = "exact" if runcard["channel"][1] == "q" else "abmp"
 appr = adani.ApproximateCoefficientFunction(
     3,
     runcard["channel"][0],
     runcard["channel"][1],
     True,
-    hs_version,
-    1e-3,
-    1e-3,
-    1000,
-    "analytical",
-    25000,
+    adani.Exact
 )
-
 
 def function_to_exe_in_parallel(pair):
     x, q = pair
