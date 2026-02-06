@@ -331,7 +331,9 @@ double ThresholdCoefficientFunction::BetaIndependentTerms(
 double
     ThresholdCoefficientFunction::C2_g1_threshold(double x, double m2Q2) const {
 
-    double beta = sqrt(1. - 4. * m2Q2 * x / (1. - x));
+    double beta2 = 1. - 4. * m2Q2 * x / (1. - x);
+    if (beta2 < 0.) beta2 = 0.;
+    double beta = sqrt(beta2);
     double xi = 1. / m2Q2;
 
     return xi * TR * beta / (1. + xi / 4.) / x;
@@ -348,7 +350,9 @@ double
 double
     ThresholdCoefficientFunction::CL_g1_threshold(double x, double m2Q2) const {
 
-    double beta = sqrt(1. - 4. * m2Q2 * x / (1. - x));
+    double beta2 = 1. - 4. * m2Q2 * x / (1. - x);
+    if (beta2 < 0.) beta2 = 0.;
+    double beta = sqrt(beta2);
     double beta3 = beta * beta * beta;
 
     double xi = 1. / m2Q2;
@@ -368,7 +372,10 @@ double ThresholdCoefficientFunction::C2_g2_threshold_expansion(
     double x, double m2Q2, double m2mu2, int /*nf*/
 ) const {
 
-    double beta = sqrt(1. - 4. * m2Q2 * x / (1. - x));
+    double beta2 = 1. - 4. * m2Q2 * x / (1. - x);
+    if (beta2 < 0.) beta2 = 0.;
+    double beta = sqrt(beta2);
+    if (beta == 0.) return 0.;
 
     double logb = log(beta);
     double log2b = logb * logb;
@@ -388,7 +395,10 @@ double ThresholdCoefficientFunction::CL_g2_threshold_expansion(
     double x, double m2Q2, double m2mu2, int /*nf*/
 ) const {
 
-    double beta = sqrt(1. - 4. * m2Q2 * x / (1. - x));
+    double beta2 = 1. - 4. * m2Q2 * x / (1. - x);
+    if (beta2 < 0.) beta2 = 0.;
+    double beta = sqrt(beta2);
+    if (beta == 0.) return 0.;
 
     double logb = log(beta);
     double log2b = logb * logb;
@@ -449,7 +459,10 @@ double ThresholdCoefficientFunction::C2_g3_threshold_expansion(
 ) const {
 
     double xi = 1. / m2Q2;
-    double beta = sqrt(1. - 4. * m2Q2 * x / (1. - x));
+    double beta2 = 1. - 4. * m2Q2 * x / (1. - x);
+    if (beta2 < 0.) beta2 = 0.;
+    double beta = sqrt(beta2);
+    if (beta == 0.) return 0.;
 
     double Lm = log(m2mu2);
     double Lm2 = Lm * Lm;
@@ -539,7 +552,10 @@ double ThresholdCoefficientFunction::C2_g3_threshold_expansion_const(
 double ThresholdCoefficientFunction::CL_g3_threshold_expansion(
     double x, double m2Q2, double m2mu2, int nf
 ) const {
-    double beta = sqrt(1. - 4. * m2Q2 * x / (1. - x));
+    double beta2 = 1. - 4. * m2Q2 * x / (1. - x);
+    if (beta2 < 0.) beta2 = 0.;
+    double beta = sqrt(beta2);
+    if (beta == 0.) return 0.;
 
     double rhoq = -4. * m2Q2;
     double betaq = sqrt(1. - rhoq);

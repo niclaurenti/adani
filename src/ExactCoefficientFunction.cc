@@ -436,6 +436,12 @@ double ExactCoefficientFunction::fx(
 double ExactCoefficientFunction::MuIndependentTerms(
     double x, double m2Q2, int nf
 ) const {
+    // The coefficient function vanishes at x = xmax due to a constrained phase-space. We need
+    // to avoid x >= xmax to prevent sqrt of a negative number due to floating-point rounding
+    // in the beta computation: the expression 1 - 4*m2Q2*x/(1-x), which should be 0 at x = xmax,
+    // can become slightly negative (~-1e-9) in floating point.
+    if (x >= xMax(m2Q2)) return 0.;
+
     try {
         return (this->*mu_indep_)(x, m2Q2, nf);
     } catch (NotValidException &e) {
@@ -454,8 +460,7 @@ double ExactCoefficientFunction::MuDependentTerms(
     double x, double m2Q2, double m2mu2, int nf
 ) const {
 
-    if (x <= 0 || x > xMax(m2Q2))
-        return 0.;
+    if (x <= 0 || x >= xMax(m2Q2)) return 0.;
 
     return (this->*mu_dep_)(x, m2Q2, m2mu2, nf);
 }
@@ -480,7 +485,9 @@ Value ExactCoefficientFunction::fxBand(
 double ExactCoefficientFunction::C2_g1(double x, double m2Q2, int /*nf*/)
     const { // m2Q2=m^2/Q^2
 
-    double beta = sqrt(1. - 4. * m2Q2 * x / (1 - x));
+    double beta2 = 1. - 4. * m2Q2 * x / (1. - x);
+    if (beta2 < 0.) beta2 = 0.;
+    double beta = sqrt(beta2);
     double x2 = x * x;
     double m4Q4 = m2Q2 * m2Q2;
     double L = log((1. + beta) / (1. - beta));
@@ -501,7 +508,9 @@ double ExactCoefficientFunction::C2_g1(double x, double m2Q2, int /*nf*/)
 double
     ExactCoefficientFunction::CL_g1(double x, double m2Q2, int /*nf*/) const {
 
-    double beta = sqrt(1. - 4. * m2Q2 * x / (1. - x));
+    double beta2 = 1. - 4. * m2Q2 * x / (1. - x);
+    if (beta2 < 0.) beta2 = 0.;
+    double beta = sqrt(beta2);
     double x2 = x * x;
     double L = log((1. + beta) / (1. - beta));
 

@@ -126,6 +126,12 @@ double Convolution::regular_integrand(double z, void *p) {
     double x = (params->x);
     int nf = (params->nf);
 
+    // When the integration interval [x, x_max] is very small, a quadrature node can round to
+    // z = x in double precision, giving x/z = 1 exactly. Some splitting functions (e.g. Pgg1reg)
+    // produce NaN at x/z = 1 due to 0*inf in harmonic polylogarithms. And given that the true
+    // integrand is finite there, we can simply return 0.
+    if (x / z >= 1.) return 0.;
+
     return (params->conv)->GetCoeffFunc()->MuIndependentTerms(z, m2Q2, nf)
            * (params->conv)->GetSplitFunc()->Regular(x / z, nf) / z;
 }
@@ -197,6 +203,12 @@ double Convolution::singular_integrand(double z, void *p) {
     double m2Q2 = (params->m2Q2);
     double x = (params->x);
     int nf = (params->nf);
+
+    // When the integration interval [x/x_max, 1] is very small, a quadrature node can round to
+    // z = 1 in double precision. At z = 1 the plus-distribution subtraction (f(x/z)/z - f(x))
+    // vanishes while Singular(z) = 1/(1-z) diverges, producing inf * 0 = NaN.  Given that the
+    // true limit is finite, we can simply return 0.
+    if (z >= 1.) return 0.;
 
     return (params->conv)->GetSplitFunc()->Singular(z, nf)
            * ((params->conv)
@@ -468,6 +480,9 @@ double
 
     double z1 = z[0], z2 = z[1];
 
+    // Guard against x/z1 or z1/z2 rounding to 1 (see `regular_integrand`).
+    if (x / z1 >= 1. || z1 / z2 >= 1.) return 0.;
+
     if (z2 > z1) {
         return 1. / (z1 * z2)
                * (params->conv)->GetSplitFunc()->Regular(x / z1, nf)
@@ -493,6 +508,9 @@ double
     int nf = (params->nf);
 
     double z1 = z[0], z2 = z[1];
+
+    // Guard against x/z1 rounding to 1 or z1/z2 rounding to 1.
+    if (x / z1 >= 1. || z1 / z2 >= 1.) return 0.;
 
     if (z2 > z1) {
         return 1. / (z1 * z2)
@@ -521,6 +539,9 @@ double DoubleConvolution::regular3_integrand(double z, void *p) {
     double m2Q2 = (params->m2Q2);
     double x = (params->x);
     int nf = (params->nf);
+
+    // Guard against x/z rounding to 1.
+    if (x / z >= 1.) return 0.;
 
     double x_max = CoefficientFunction::xMax(m2Q2);
 
@@ -599,6 +620,11 @@ double DoubleConvolution::singular1_integrand(
 
     double z1 = z[0], z2 = z[1];
 
+    // At z1 = 1 the plus-distribution subtraction vanishes while Singular diverges,
+    // producing inf * 0 = NaN. Given that the true integrand is finite, we can simply
+    // return 0.
+    if (z1 >= 1.) return 0.;
+
     double tmp;
     if (z2 > x / z1) {
         tmp = (params->conv)->GetSplitFunc()->Regular(x / (z1 * z2), nf) / z1;
@@ -629,6 +655,10 @@ double DoubleConvolution::singular2_integrand(
     double x_max = CoefficientFunction::xMax(m2Q2);
 
     double z1 = z[0], z2 = z[1];
+
+    // At z1 = 1 or z2 = 1 the plus-distribution subtraction vanishes while Singular diverges,
+    // producing inf * 0 = NaN.
+    if (z1 >= 1. || z2 >= 1.) return 0.;
 
     double tmp;
     if (z2 > x / (x_max * z1)) {
@@ -667,6 +697,10 @@ double DoubleConvolution::singular3_integrand(double z, void *p) {
     double m2Q2 = (params->m2Q2);
     double x = (params->x);
     int nf = (params->nf);
+
+    // Guard: at z = 1 the plus-distribution subtraction vanishes while Singular diverges,
+    // producing inf * 0 = NaN.
+    if (z >= 1.) return 0.;
 
     double x_max = CoefficientFunction::xMax(m2Q2);
 
