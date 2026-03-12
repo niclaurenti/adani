@@ -258,7 +258,7 @@ void HighEnergyHighScaleCoefficientFunction::SetFunctions() {
         NLL_ = nullptr;
         break;
     case 2:
-        NLL_ = nullptr;
+        NLL_ = &HighEnergyHighScaleCoefficientFunction::ZeroFunction;
         switch (GetKind()) {
         case '2':
             switch (GetChannel()) {
