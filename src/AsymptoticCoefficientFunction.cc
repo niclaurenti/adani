@@ -57,11 +57,9 @@ void AsymptoticCoefficientFunction::SetFunctions() {
         switch (GetKind()) {
         case '2':
             fx_ = &AsymptoticCoefficientFunction::C2_2_asymptotic;
-            a_fact_ = 1.2;
             break;
         case 'L':
             fx_ = &AsymptoticCoefficientFunction::CL_2_asymptotic;
-            a_fact_ = 1.5;
             break;
         default:
             throw UnexpectedException(
@@ -72,12 +70,20 @@ void AsymptoticCoefficientFunction::SetFunctions() {
     case 3:
         switch (GetKind()) {
         case '2':
-            fx_ = &AsymptoticCoefficientFunction::C2_3_asymptotic;
-            a_fact_ = 1.2;
+            if (GetNLL()) {
+                fx_ = &AsymptoticCoefficientFunction::C2_3_asymptotic;
+                a_fact_ = 1.2;
+            } else {
+                fx_ = &AsymptoticCoefficientFunction::C2_2_asymptotic;
+            }
             break;
         case 'L':
-            fx_ = &AsymptoticCoefficientFunction::CL_3_asymptotic;
-            a_fact_ = 1.5;
+            if (GetNLL()) {
+                a_fact_ = 1.5;
+                fx_ = &AsymptoticCoefficientFunction::CL_3_asymptotic;
+            } else {
+                fx_ = &AsymptoticCoefficientFunction::CL_2_asymptotic;
+            }
             break;
         default:
             throw UnexpectedException(
@@ -219,7 +225,7 @@ Value AsymptoticCoefficientFunction::C2_2_asymptotic(
 ) const {
 
     Value central = PlainAdditiveMatching(x, m2Q2, m2mu2, nf);
-    Value variation = ModifiedMultiplicativeMatching1(x, m2Q2, m2mu2, nf);
+    Value variation = PlainMultiplicativeMatching(x, m2Q2, m2mu2, nf);
 
     return Delta2(central, variation);
 }
@@ -233,7 +239,7 @@ Value AsymptoticCoefficientFunction::CL_2_asymptotic(
     double x, double m2Q2, double m2mu2, int nf
 ) const {
 
-    Value central = ModifiedMultiplicativeMatching1(x, m2Q2, m2mu2, nf);
+    Value central = PlainMultiplicativeMatching(x, m2Q2, m2mu2, nf);
     Value variation = PlainAdditiveMatching(x, m2Q2, m2mu2, nf);
 
     return Delta2(central, variation);
