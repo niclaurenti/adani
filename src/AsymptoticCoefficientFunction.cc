@@ -56,9 +56,11 @@ void AsymptoticCoefficientFunction::SetFunctions() {
     case 2:
         switch (GetKind()) {
         case '2':
+            a_fact_ = 1.2;
             fx_ = &AsymptoticCoefficientFunction::C2_2_asymptotic;
             break;
         case 'L':
+            a_fact_ = 1.01;
             fx_ = &AsymptoticCoefficientFunction::CL_2_asymptotic;
             break;
         default:
@@ -78,12 +80,12 @@ void AsymptoticCoefficientFunction::SetFunctions() {
             }
             break;
         case 'L':
-            if (GetNLL()) {
+            //if (GetNLL()) {
                 a_fact_ = 1.5;
                 fx_ = &AsymptoticCoefficientFunction::CL_3_asymptotic;
-            } else {
-                fx_ = &AsymptoticCoefficientFunction::CL_2_asymptotic;
-            }
+            //} else {
+            //    fx_ = &AsymptoticCoefficientFunction::CL_2_asymptotic;
+            //}
             break;
         default:
             throw UnexpectedException(
@@ -176,20 +178,38 @@ Value AsymptoticCoefficientFunction::PlainMultiplicativeMatching(
 //  NLL (version 1)
 //------------------------------------------------------------------------------------------//
 
+Value AsymptoticCoefficientFunction::ModifiedMultiplicativeMatching(
+    double x, double m2Q2, double m2mu2, int nf
+) const {
+
+  //return highscale_->fxBand(x, m2Q2, m2mu2, nf) * highenergy_->LL(m2Q2, m2mu2) / highenergyhighscale_->LL(m2Q2, m2mu2);
+
+    double highenergy_ll = highenergy_->LL(m2Q2, m2mu2);
+    double highenergyhighscale_ll = highenergyhighscale_->LL(m2Q2, m2mu2);
+    double highenergy_ll_A = C_highenergy_lim(highenergy_ll, highenergyhighscale_ll, a_fact_);
+    //std::cout << highenergy_ll << "  " << highenergy_ll_A << "  " << highenergyhighscale_ll << std::endl;
+
+    return (highscale_->fxBand(x, m2Q2, m2mu2, nf)
+            + (highenergy_ll_A - highenergyhighscale_ll) / x
+           )
+           * highenergy_ll / highenergy_ll_A;
+}
+
 Value AsymptoticCoefficientFunction::ModifiedMultiplicativeMatching1(
     double x, double m2Q2, double m2mu2, int nf
 ) const {
 
-    double highenergy_ll = highenergy_->LL(m2Q2, m2mu2),
-           highenergyhighscale_ll = highenergyhighscale_->LL(m2Q2, m2mu2);
-    double highenergy_ll_A =
-        C_highenergy_lim(highenergy_ll, highenergyhighscale_ll, a_fact_);
+  //return highscale_->fxBand(x, m2Q2, m2mu2, nf) * highenergy_->LL(m2Q2, m2mu2) / highenergyhighscale_->LL(m2Q2, m2mu2);
+
+    double highenergy_ll = highenergy_->LL(m2Q2, m2mu2);
+    double highenergyhighscale_ll = highenergyhighscale_->LL(m2Q2, m2mu2);
+    double highenergy_ll_A = C_highenergy_lim(highenergy_ll, highenergyhighscale_ll, a_fact_);
+    //std::cout << highenergy_ll << "  " << highenergy_ll_A << "  " << highenergyhighscale_ll << std::endl;
 
     return (highscale_->fxBand(x, m2Q2, m2mu2, nf)
-            + (highenergy_->NLL(m2Q2, m2mu2, nf)
-               - highenergyhighscale_->NLL(m2Q2, m2mu2, nf))
-                  / x
-            + (highenergy_ll_A - highenergyhighscale_ll) * log(x) / x)
+            + (highenergy_->NLL(m2Q2, m2mu2, nf) - highenergyhighscale_->NLL(m2Q2, m2mu2, nf)) / x
+            + (highenergy_ll_A - highenergyhighscale_ll) * log(x) / x
+           )
            * highenergy_ll / highenergy_ll_A;
 }
 
@@ -239,7 +259,9 @@ Value AsymptoticCoefficientFunction::CL_2_asymptotic(
     double x, double m2Q2, double m2mu2, int nf
 ) const {
 
-    Value central = PlainMultiplicativeMatching(x, m2Q2, m2mu2, nf);
+    //Value central = PlainMultiplicativeMatching(x, m2Q2, m2mu2, nf);
+    //Value central = PlainAdditiveMatching(x, m2Q2, m2mu2, nf);
+    Value central = ModifiedMultiplicativeMatching(x, m2Q2, m2mu2, nf);
     Value variation = PlainAdditiveMatching(x, m2Q2, m2mu2, nf);
 
     return Delta2(central, variation);
@@ -270,6 +292,7 @@ Value AsymptoticCoefficientFunction::CL_3_asymptotic(
     double x, double m2Q2, double m2mu2, int nf
 ) const {
 
+    //Value central = PlainMultiplicativeMatching(x, m2Q2, m2mu2, nf);
     Value central = ModifiedMultiplicativeMatching1(x, m2Q2, m2mu2, nf);
     Value variation1 = PlainAdditiveMatching(x, m2Q2, m2mu2, nf);
     Value variation2 = ModifiedMultiplicativeMatching2(x, m2Q2, m2mu2, nf);
@@ -282,18 +305,25 @@ Value AsymptoticCoefficientFunction::CL_3_asymptotic(
 //------------------------------------------------------------------------------------------//
 
 double AsymptoticCoefficientFunction::C_highenergy_lim(
-    double highenergy_ll, double highscalehighenergy_ll, double a_fact
+    double highenergy_ll, double highscalehighenergy_ll, double A
 ) const {
+    highscalehighenergy_ll = sqrt(highscalehighenergy_ll*highscalehighenergy_ll + 16*16);
+    double r = highscalehighenergy_ll / highenergy_ll;
+    if(r>=1) return highenergy_ll * r;
+    if(fabs(r)>=1/A) return highenergy_ll * fabs(r);
+    return 1/A;
+    //return highenergy_ll * exp(r-1);
+    return highenergy_ll * (1.+(A-1.)/A*(exp(A*(r-1.)/(A-1.))-1.));
 
     if (highscalehighenergy_ll / highenergy_ll < 0.)
-        return highenergy_ll / a_fact;
+        return highenergy_ll / A;
 
     return highenergy_ll
            * exp(
-               log(a_fact) * 2. / M_PI
+               log(A) * 2. / M_PI
                * atan(
                    M_PI / 2. * log(highscalehighenergy_ll / highenergy_ll)
-                   / log(a_fact)
+                   / log(A)
                )
            );
 }

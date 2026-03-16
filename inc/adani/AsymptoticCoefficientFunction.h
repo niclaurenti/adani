@@ -68,6 +68,9 @@ class AsymptoticCoefficientFunction : public CoefficientFunction {
         Value PlainMultiplicativeMatching(
             double x, double m2Q2, double m2mu2, int nf
         ) const;
+        Value ModifiedMultiplicativeMatching(
+            double x, double m2Q2, double m2mu2, int nf
+        ) const;
         Value ModifiedMultiplicativeMatching1(
             double x, double m2Q2, double m2mu2, int nf
         ) const;

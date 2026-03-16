@@ -137,6 +137,21 @@ class HighEnergyCoefficientFunction
             double beta0
         ) const;
 
+        //==========================================================================================//
+        //                      Off-shell coefficient functions
+        //------------------------------------------------------------------------------------------//
+
+        double Coff2_0(double m2Q2) const;
+        double Coff2_1(double m2Q2) const;
+        double Coff2_2(double m2Q2) const;
+        double CoffL_0(double m2Q2) const;
+        double CoffL_1(double m2Q2) const;
+        double CoffL_2(double m2Q2) const;
+        double Coff2_1(double m2Q2, double m2mu2) const;
+        double Coff2_2(double m2Q2, double m2mu2) const;
+        double CoffL_1(double m2Q2, double m2mu2) const;
+        double CoffL_2(double m2Q2, double m2mu2) const;
+
         Value
             ThrowException(double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const;
 };
@@ -217,6 +232,21 @@ class HighEnergyHighScaleCoefficientFunction
             double m2Q2, double m2mu2, double a11, double a10, double a21,
             double beta0
         ) const;
+
+        //==========================================================================================//
+        //                      Off-shell coefficient functions
+        //------------------------------------------------------------------------------------------//
+
+        double Coff2_0(double m2Q2) const;
+        double Coff2_1(double m2Q2) const;
+        double Coff2_2(double m2Q2) const;
+        double CoffL_0() const;
+        double CoffL_1(double m2Q2) const;
+        double CoffL_2(double m2Q2) const;
+        double Coff2_1(double m2Q2, double m2mu2) const;
+        double Coff2_2(double m2Q2, double m2mu2) const;
+        double CoffL_1(double m2Q2, double m2mu2) const;
+        double CoffL_2(double m2Q2, double m2mu2) const;
 
         Value
             ThrowException(double /*m2Q2*/, double /*m2mu2*/, int /*nf*/) const;
