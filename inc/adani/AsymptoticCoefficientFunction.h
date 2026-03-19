@@ -62,34 +62,32 @@ class AsymptoticCoefficientFunction : public CoefficientFunction {
 
         void SetFunctions();
 
-        Value PlainAdditiveMatching(
+        Value C2_2_asymptotic(double x, double m2Q2, double m2mu2, int nf) const;
+        Value CL_2_asymptotic(double x, double m2Q2, double m2mu2, int nf) const;
+        Value C2_3_asymptotic(double x, double m2Q2, double m2mu2, int nf) const;
+        Value CL_3_asymptotic(double x, double m2Q2, double m2mu2, int nf) const;
+
+        Value AdditiveMatching(
             double x, double m2Q2, double m2mu2, int nf
         ) const;
-        Value PlainMultiplicativeMatching(
-            double x, double m2Q2, double m2mu2, int nf
+        // Value MultiplicativeMatchingLL(
+        //     double x, double m2Q2, double m2mu2, int nf
+        // ) const;
+        Value MixedMatching(
+            double x, Value HigsScaleTerm, Value ooxTerm, double logxoxTerm, double rescalingFactor
         ) const;
-        Value ModifiedMultiplicativeMatching(
-            double x, double m2Q2, double m2mu2, int nf
-        ) const;
-        Value ModifiedMultiplicativeMatching1(
-            double x, double m2Q2, double m2mu2, int nf
-        ) const;
-        Value ModifiedMultiplicativeMatching2(
-            double x, double m2Q2, double m2mu2, int nf
-        ) const;
-        Value
-            C2_2_asymptotic(double x, double m2Q2, double m2mu2, int nf) const;
-        Value
-            CL_2_asymptotic(double x, double m2Q2, double m2mu2, int nf) const;
-        Value
-            C2_3_asymptotic(double x, double m2Q2, double m2mu2, int nf) const;
-        Value
-            CL_3_asymptotic(double x, double m2Q2, double m2mu2, int nf) const;
-        Value Delta2(Value central, Value variation) const;
-        Value Delta3(Value central, Value variation1, Value variation2) const;
-        double C_highenergy_lim(
+        Value MixedMatching_C2_2(double x, double m2Q2, double m2mu2, int nf) const;
+        Value MixedMatching_CL_2(double x, double m2Q2, double m2mu2, int nf, double factor) const;
+        Value MixedMatching_C2_3(double x, double m2Q2, double m2mu2, int nf, bool NLL) const;
+        Value MixedMatching_CL_3(double x, double m2Q2, double m2mu2, int nf, bool NLL) const;
+        double RescalingFactorC2(
             double highenergy_ll, double highscalehighenergy_ll, double a_fact
         ) const;
+        double RescalingFactorCL(
+            double highenergy_ll, double highscalehighenergy_ll, double a_fact
+        ) const;
+        Value Delta2(Value central, Value variation) const;
+        Value Delta3(Value central, Value variation1, Value variation2) const;
         double ComputeDampDelta(double m2Q2, double m2mu2) const;
 };
 
