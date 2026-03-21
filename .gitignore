@@ -30,3 +30,5 @@ bin/oldadani.pc
 inc/oldadani.egg-info/
 inc/oldadani/
 oldadani.egg-info/
+
+CMakeUserPresets.json
