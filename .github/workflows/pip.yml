@@ -55,6 +55,10 @@ jobs:
             make install &&
             cd ..
           CIBW_BEFORE_ALL_MACOS: >
+            export HOMEBREW_PREFIX="/opt/homebrew" &&
+            export PATH="$HOMEBREW_PREFIX/bin:$PATH" &&
+            export LDFLAGS="-L$HOMEBREW_PREFIX/lib" &&
+            export CPPFLAGS="-I$HOMEBREW_PREFIX/include" &&
             brew reinstall gcc &&
             brew install gsl
       - name: Verify clean directory
