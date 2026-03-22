@@ -34,20 +34,20 @@ jobs:
         include:
           - os: ubuntu-latest
 
-          - os: macos-26
-            macos_target: "26.0"
-          - os: macos-26-intel
-            macos_target: "26.0"
+          # - os: macos-26
+          #   macos_target: "26.0"
+          # - os: macos-26-intel
+          #   macos_target: "26.0"
 
-          - os: macos-15
-            macos_target: "15.0"
-          - os: macos-15-intel
-            macos_target: "15.0"
+          # - os: macos-15
+          #   macos_target: "15.0"
+          # - os: macos-15-intel
+          #   macos_target: "15.0"
 
           - os: macos-14
-            macos_target: "14.0"
-          - os: macos-14-intel
-            macos_target: "14.0"
+          #   macos_target: "14.0"
+          # - os: macos-14-intel
+          #   macos_target: "14.0"
 
     steps:
       - uses: actions/checkout@v4
@@ -56,7 +56,8 @@ jobs:
       - uses: pypa/cibuildwheel@v3.4.0
         env:
           CIBW_SKIP: pp* cp36-* *-musllinux_x86_64 *_i686
-          CIBW_ENVIRONMENT_MACOS: "MACOSX_DEPLOYMENT_TARGET=${{ matrix.macos_target }}"
+          CIBW_ARCHS_MACOS: "universal2"
+          CIBW_ENVIRONMENT_MACOS: "MACOSX_DEPLOYMENT_TARGET=11.0"
           CIBW_BEFORE_ALL_LINUX: >
             yum -y install wget &&
             yum -y install tar &&
