@@ -46,7 +46,7 @@ jobs:
 
           - os: macos-14
           #   macos_target: "14.0"
-          # - os: macos-14-intel
+          - os: macos-14-intel
           #   macos_target: "14.0"
 
     steps:
@@ -56,7 +56,6 @@ jobs:
       - uses: pypa/cibuildwheel@v3.4.0
         env:
           CIBW_SKIP: pp* cp36-* *-musllinux_x86_64 *_i686
-          CIBW_ARCHS_MACOS: "x86_64 arm64"
           CIBW_ENVIRONMENT_MACOS: "MACOSX_DEPLOYMENT_TARGET=11.0"
           CIBW_BEFORE_ALL_LINUX: >
             yum -y install wget &&
