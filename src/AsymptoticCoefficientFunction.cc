@@ -302,8 +302,9 @@ double AsymptoticCoefficientFunction::RescalingFactorC2(
     double highenergy_ll, double highscalehighenergy_ll, double A
 ) const {
     double r = highscalehighenergy_ll / highenergy_ll;
-    if(r>=1) return 1./r;
-    return 1./(1.+(A-1.)/A*(exp(A*(r-1.)/(A-1.))-1.)); // write it in a better way...
+    return exp( -2*log(A)/M_PI * atan(M_PI*(r-1)/2./log(A)) );
+    //if(r>=1) return 1./r;
+    //return 1./(1.+(A-1.)/A*(exp(A*(r-1.)/(A-1.))-1.)); // write it in a better way...
 }
 
 double AsymptoticCoefficientFunction::RescalingFactorCL(
