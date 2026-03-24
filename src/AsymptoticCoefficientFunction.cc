@@ -60,7 +60,7 @@ void AsymptoticCoefficientFunction::SetFunctions() {
             fx_ = &AsymptoticCoefficientFunction::C2_2_asymptotic;
             break;
         case 'L':
-            a_fact_ = 16;
+            a_fact_ = 4;
             fx_ = &AsymptoticCoefficientFunction::CL_2_asymptotic;
             break;
         default:
@@ -76,7 +76,7 @@ void AsymptoticCoefficientFunction::SetFunctions() {
             fx_ = &AsymptoticCoefficientFunction::C2_3_asymptotic;
             break;
         case 'L':
-            a_fact_ = 16;
+            a_fact_ = 0;
             fx_ = &AsymptoticCoefficientFunction::CL_3_asymptotic;
             break;
         default:
@@ -164,7 +164,7 @@ Value AsymptoticCoefficientFunction::CL_2_asymptotic(
 ) const {
 
     Value central   = MixedMatching_CL_2(x, m2Q2, m2mu2, nf, 1);
-    Value variation = MixedMatching_CL_2(x, m2Q2, m2mu2, nf, 4);
+    Value variation = MixedMatching_CL_2(x, m2Q2, m2mu2, nf, 8);
 
     return Delta2(central, variation);
 }
