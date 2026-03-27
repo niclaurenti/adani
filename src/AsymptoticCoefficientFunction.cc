@@ -258,6 +258,7 @@ Value AsymptoticCoefficientFunction::MixedMatching_C2_2(
 Value AsymptoticCoefficientFunction::MixedMatching_CL_2(
     double x, double m2Q2, double m2mu2, int nf, double factor
 ) const {
+    //factor *= 1./pow(1.+1./sqrt(m2Q2),0.25);
     Value HighScaleTerm = highscale_->fxBand(x, m2Q2, m2mu2, nf);
     double highenergy_ll          = highenergy_->LL(m2Q2, m2mu2);
     double highenergyhighscale_ll = highenergyhighscale_->LL(m2Q2, m2mu2);
