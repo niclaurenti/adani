@@ -77,7 +77,7 @@ If you want to report a (possible) bug or want to ask for a new feature, please 
 
 ## Contacts
 
-Contact me at niclaurenti@gmail.com.
+Contact me at niclaurenti@gmail.com (please don't).
 
 ## Words of our prophet
 
