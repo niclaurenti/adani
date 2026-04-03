@@ -39,3 +39,4 @@ class AdaniConan(ConanFile):
 
     def package_info(self):
         self.cpp_info.libs = ["adani"]
+        self.cpp_info.requires = ["gsl::gsl"]
