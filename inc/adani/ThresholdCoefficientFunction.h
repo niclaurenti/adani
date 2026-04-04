@@ -41,8 +41,8 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
         ThresholdCoefficientFunction(const ThresholdCoefficientFunction &obj);
         ~ThresholdCoefficientFunction() override = default;
 
-        bool IsLegacyThreshold() const { return legacy_threshold_; };
-        void SetLegacyThreshold(const bool &legacy_threshold);
+        bool IsPlainThreshold() const { return plain_threshold_; };
+        void SetPlainThreshold(const bool &plain_threshold);
 
         double fx(double x, double m2Q2, double m2mu2, int nf) const override;
         Value
@@ -51,7 +51,7 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
         double BetaIndependentTerms(double x, double m2Q2, double m2mu2) const;
 
     private:
-        bool legacy_threshold_;
+        bool plain_threshold_;
 
         double (ThresholdCoefficientFunction::*expansion_beta_)(
             double, double, double, int
