@@ -23,7 +23,7 @@ ThresholdCoefficientFunction::ThresholdCoefficientFunction(
 
     try {
         SetFunctions();
-        legacy_threshold_ = false;
+        plain_threshold_ = false;
     } catch (UnexpectedException &e) {
         e.runtime_error();
     }
@@ -39,7 +39,7 @@ ThresholdCoefficientFunction::ThresholdCoefficientFunction(
     : ThresholdCoefficientFunction(
           obj.GetOrder(), obj.GetKind(), obj.GetChannel()
       ) {
-    SetLegacyThreshold(obj.IsLegacyThreshold());
+    SetPlainThreshold(obj.IsPlainThreshold());
 }
 
 //==========================================================================================//
@@ -126,25 +126,25 @@ void ThresholdCoefficientFunction::SetFunctions() {
 }
 
 //==========================================================================================//
-//  ThresholdCoefficientFunction: function that sets the legacy behavior for the
+//  ThresholdCoefficientFunction: function that sets the plain behavior for the
 //  threshold
 //------------------------------------------------------------------------------------------//
 
-void ThresholdCoefficientFunction::SetLegacyThreshold(
-    const bool &legacy_threshold
+void ThresholdCoefficientFunction::SetPlainThreshold(
+    const bool &plain_threshold
 ) {
     try {
-        if (legacy_threshold == legacy_threshold_) {
+        if (plain_threshold == plain_threshold_) {
             throw NotValidException(
-                "Setting legacy threshold identical to its previous value!",
+                "Setting plain threshold identical to its previous value!",
                 __PRETTY_FUNCTION__, __LINE__
             );
         }
 
-        legacy_threshold_ = legacy_threshold;
+        plain_threshold_ = plain_threshold;
 
         if (GetOrder() > 1 && GetChannel() == 'g') {
-            if (legacy_threshold) {
+            if (plain_threshold) {
                 fx_ = &ThresholdCoefficientFunction::PlainThreshold;
                 if (GetKind() == 'L') {
                     switch (GetOrder()) {

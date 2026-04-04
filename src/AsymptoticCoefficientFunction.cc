@@ -10,7 +10,7 @@ AsymptoticCoefficientFunction::AsymptoticCoefficientFunction(
     const int &order, const char &kind, const char &channel, const bool &NLL,
     const HighScaleVersion &highscale_version
 )
-    : CoefficientFunction(order, kind, channel), legacy_pt_(false) {
+    : CoefficientFunction(order, kind, channel) {
 
     try {
         highscale_ = std::make_unique<HighScaleCoefficientFunction>(
@@ -40,9 +40,7 @@ AsymptoticCoefficientFunction::AsymptoticCoefficientFunction(
     : AsymptoticCoefficientFunction(
           obj.GetOrder(), obj.GetKind(), obj.GetChannel(), obj.GetNLL(),
           obj.GetHighScaleVersion()
-      ) {
-    SetLegacyPowerTerms(obj.IsLegacyPowerTerms());
-}
+      ) {}
 
 //==========================================================================================//
 //  AsymptoticCoefficientFunction: SetFunctions
@@ -89,43 +87,6 @@ void AsymptoticCoefficientFunction::SetFunctions() {
         throw UnexpectedException(
             "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
         );
-    }
-}
-
-//==========================================================================================//
-//  AsymptoticCoefficientFunction: restore legacy behavior for power terms
-//------------------------------------------------------------------------------------------//
-
-void AsymptoticCoefficientFunction::SetLegacyPowerTerms(const bool &legacy_pt) {
-    try {
-        if (legacy_pt == legacy_pt_) {
-            throw NotValidException(
-                "Setting legacy power terms identical to its previous value!",
-                __PRETTY_FUNCTION__, __LINE__
-            );
-        }
-        legacy_pt_ = legacy_pt;
-        switch (GetOrder()) {
-        case 1:
-            throw NotPresentException(
-                "For order='1' legacy power terms are identical to the "
-                "current ones!",
-                __PRETTY_FUNCTION__, __LINE__
-            );
-            break;
-        default:
-            if (legacy_pt) {
-                fx_ = &AsymptoticCoefficientFunction::AdditiveMatching;
-            } else {
-                SetFunctions();
-            }
-        }
-    } catch (const NotPresentException &e) {
-        e.warning();
-    } catch (const NotValidException &e) {
-        e.warning();
-    } catch (UnexpectedException &e) {
-        e.runtime_error();
     }
 }
 

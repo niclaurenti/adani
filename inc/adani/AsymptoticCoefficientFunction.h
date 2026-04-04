@@ -42,14 +42,10 @@ class AsymptoticCoefficientFunction : public CoefficientFunction {
             return highscale_->GetHighScaleVersion();
         };
 
-        bool IsLegacyPowerTerms() const { return legacy_pt_; };
-        void SetLegacyPowerTerms(const bool &legacy_pt);
-
         Value
             fxBand(double x, double m2Q2, double m2mu2, int nf) const override;
 
     private:
-        bool legacy_pt_;
         double a_fact_;
         std::unique_ptr<HighScaleCoefficientFunction> highscale_;
         std::unique_ptr<HighEnergyCoefficientFunction> highenergy_;
