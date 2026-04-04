@@ -113,16 +113,6 @@ void ThresholdCoefficientFunction::SetFunctions() {
             "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
         );
     }
-
-    if (GetKind() == '2') {
-        threshold_as1_ = &ThresholdCoefficientFunction::C2_g1_threshold;
-    } else if (GetKind() == 'L') {
-        threshold_as1_ = &ThresholdCoefficientFunction::CL_g1_threshold;
-    } else {
-        throw UnexpectedException(
-            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
-        );
-    }
 }
 
 //==========================================================================================//
@@ -248,11 +238,28 @@ Value ThresholdCoefficientFunction::fxBand(
 //  ThresholdCoefficientFunction: first order
 //------------------------------------------------------------------------------------------//
 
-Value ThresholdCoefficientFunction::Order1(
-    double x, double m2Q2, double /*m2mu2*/, int /*nf*/
+double ThresholdCoefficientFunction::Order1(
+    double x, double m2Q2
 ) const {
-
-    return Value((this->*threshold_as1_)(x, m2Q2));
+    switch (GetChannel()) {
+        case 'q':
+            return 0.;
+        case 'g':
+            switch (GetKind()) {
+            case '2':
+                return C2_g1_threshold(x, m2Q2);
+            case 'L':
+                return CL_g1_threshold(x, m2Q2);
+            default:
+                throw UnexpectedException(
+                    "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+                );
+            }
+        default:
+            throw UnexpectedException(
+                "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+            );
+    }
 }
 
 //==========================================================================================//

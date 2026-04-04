@@ -53,22 +53,9 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
     private:
         bool plain_threshold_;
 
-        double (ThresholdCoefficientFunction::*expansion_beta_)(
-            double, double, double, int
-        ) const;
-        double (ThresholdCoefficientFunction::*expansion_no_beta_)(
-            double, double
-        ) const;
-        double (ThresholdCoefficientFunction::*threshold_as1_)(
-            double, double
-        ) const;
-        Value (ThresholdCoefficientFunction::*fx_)(
-            double, double, double, int
-        ) const;
-
         std::unique_ptr<ExactCoefficientFunction> exact_as1_;
 
-        Value Order1(double x, double m2Q2, double /*m2mu2*/, int /*nf*/) const;
+        double Order1(double x, double m2Q2) const;
         Value PlainThreshold(double x, double m2Q2, double m2mu2, int nf) const;
         Value ModifiedThreshold2(
             double x, double m2Q2, double m2mu2, int nf
@@ -125,15 +112,6 @@ class ThresholdCoefficientFunction : public CoefficientFunction {
         double aL_10_QED(double m2Q2) const;
         double aL_10_OK(double m2Q2) const;
 
-        //==========================================================================================//
-        //  Function needed to make fx_ point to a zero function
-        //------------------------------------------------------------------------------------------//
-
-        Value ZeroFunction(
-            double /*x*/, double /*m2Q2*/, double /*m2mu2*/, int /*nf*/
-        ) const {
-            return Value(0.);
-        };
 };
 
 #endif

@@ -88,8 +88,6 @@ class ApproximateCoefficientFunction : public AbstractApproximate {
         std::unique_ptr<ThresholdCoefficientFunction> threshold_;
         std::unique_ptr<AsymptoticCoefficientFunction> asymptotic_;
 
-        Value (ApproximateCoefficientFunction::*fx_)(double, double, int) const;
-
         std::unique_ptr<approximation_parameters> approximation_;
         std::unique_ptr<variation_parameters> variation_;
 
@@ -130,10 +128,6 @@ class ApproximateCoefficientFunctionKLMV : public AbstractApproximate {
         std::unique_ptr<HighScaleCoefficientFunction> highscale_;
         std::unique_ptr<HighEnergyCoefficientFunction> highenergy_;
 
-        Value (ApproximateCoefficientFunctionKLMV::*fx_)(
-            double, double, int
-        ) const;
-
         std::unique_ptr<klmv_params> params_A_;
         std::unique_ptr<klmv_params> params_B_;
 
@@ -144,7 +138,7 @@ class ApproximateCoefficientFunctionKLMV : public AbstractApproximate {
 
         Value ApproximateNLL(double x, double m2Q2) const;
 
-        void SetFunctions();
+        void SetParameters();
 };
 
 #endif

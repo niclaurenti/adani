@@ -107,8 +107,6 @@ ApproximateCoefficientFunction::ApproximateCoefficientFunction(
         order, kind, channel, NLL, highscale_version
     );
 
-    fx_ = &ApproximateCoefficientFunction::Approximation;
-
     approximation_ = nullptr;
     variation_ = nullptr;
 }
@@ -133,7 +131,7 @@ ApproximateCoefficientFunction::ApproximateCoefficientFunction(
 Value ApproximateCoefficientFunction::MuIndependentTermsBand(
     double x, double m2Q2, int nf
 ) const {
-    return (this->*fx_)(x, m2Q2, nf);
+    return this->Approximation(x, m2Q2, nf);
 }
 
 //==========================================================================================//
@@ -204,7 +202,7 @@ ApproximateCoefficientFunctionKLMV::ApproximateCoefficientFunctionKLMV(
             );
         }
 
-        SetFunctions();
+        SetParameters();
     } catch (const NotImplementedException &e) {
         e.runtime_error();
     } catch (UnexpectedException &e) {
@@ -264,10 +262,9 @@ void ApproximateCoefficientFunctionKLMV::SetLowXi(const bool &lowxi) {
 //  ApproximateCoefficientFunctionKLMV: set function to be used
 //------------------------------------------------------------------------------------------//
 
-void ApproximateCoefficientFunctionKLMV::SetFunctions() {
+void ApproximateCoefficientFunctionKLMV::SetParameters() {
     switch (GetOrder()) {
     case 2:
-        fx_ = &ApproximateCoefficientFunctionKLMV::Order2;
         switch (GetChannel()) {
         case 'g':
             params_A_ = std::make_unique<klmv_params>(klmv_C2g2A);
@@ -284,7 +281,6 @@ void ApproximateCoefficientFunctionKLMV::SetFunctions() {
         }
         break;
     case 3:
-        fx_ = &ApproximateCoefficientFunctionKLMV::Order3;
         switch (GetChannel()) {
         case 'g':
             params_A_ = std::make_unique<klmv_params>(klmv_C2g3A);
@@ -317,8 +313,16 @@ void ApproximateCoefficientFunctionKLMV::SetFunctions() {
 Value ApproximateCoefficientFunctionKLMV::MuIndependentTermsBand(
     double x, double m2Q2, int nf
 ) const {
-
-    return (this->*fx_)(x, m2Q2, nf);
+    switch (GetOrder()) {
+    case 2:
+        return this->Order2(x, m2Q2, nf);
+    case 3:
+        return this->Order3(x, m2Q2, nf);
+    default:
+        throw UnexpectedException(
+            "Unexpected exception!", __PRETTY_FUNCTION__, __LINE__
+        );
+    }
 }
 
 //==========================================================================================//
