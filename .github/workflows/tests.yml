@@ -34,6 +34,7 @@ jobs:
           pip install scipy
           pip install mpmath
           pip install versioneer
+          pip install .
       - name: Lint with flake8
         run: |
           # stop the build if there are Python syntax errors or undefined names
