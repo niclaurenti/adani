@@ -55,4 +55,3 @@ class AdaniConan(ConanFile):
         self.cpp_info.set_property("cmake_target_name", "adani::adani")
         self.cpp_info.libs = ["adani"]
         self.cpp_info.include_dirs = ["include", "include/adani"]
-        # self.cpp_info.requires = ["gsl::gsl"]
