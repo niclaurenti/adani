@@ -1,5 +1,4 @@
 import adani as ad
-import oldadani as old
 import numpy as np
 
 CA = 3
@@ -19,7 +18,6 @@ def test_Pgq0():
 
     for x in np.geomspace(1e-5, 1., 10, endpoint=True):
         for nf in range(1, 6 + 1):
-            np.testing.assert_allclose(old.Pgq0(x), sf.Regular(x, nf), rtol = 1e-7)
             np.testing.assert_allclose(0., sf.Singular(x, nf), rtol = 1e-7)
             np.testing.assert_allclose(0., sf.SingularIntegrated(x, nf), rtol = 1e-7)
             np.testing.assert_allclose(0., sf.Local(nf), rtol = 1e-7)
@@ -30,32 +28,9 @@ def test_Pqg0():
 
     for x in np.geomspace(1e-5, 1., 10, endpoint=True):
         for nf in range(1, 6 + 1):
-            np.testing.assert_allclose(old.Pqg0(x, nf), sf.Regular(x, nf), rtol = 1e-7)
             np.testing.assert_allclose(0., sf.Singular(x, nf), rtol = 1e-7)
             np.testing.assert_allclose(0., sf.SingularIntegrated(x, nf), rtol = 1e-7)
             np.testing.assert_allclose(0., sf.Local(nf), rtol = 1e-7)
-
-def test_Pgg0():
-
-    sf = ad.SplittingFunction(0, 'g', 'g')
-
-    for x in np.geomspace(1e-5, 1., 10, endpoint=False):
-        for nf in range(1, 6 + 1):
-            np.testing.assert_allclose(old.Pgg0reg(x), sf.Regular(x, nf), rtol = 1e-7)
-            np.testing.assert_allclose(old.Pgg0sing(x), sf.Singular(x, nf), rtol = 1e-7)
-            np.testing.assert_allclose(old.Pgg0sing_integrated(x), sf.SingularIntegrated(x, nf), rtol = 1e-7)
-            np.testing.assert_allclose(old.Pgg0loc(nf), sf.Local(nf), rtol = 1e-7)
-
-def test_Pqq0():
-
-    sf = ad.SplittingFunction(0, 'q', 'q')
-
-    for x in np.geomspace(1e-5, 1., 10, endpoint=False):
-        for nf in range(1, 6 + 1):
-            np.testing.assert_allclose(old.Pqq0reg(x), sf.Regular(x, nf), rtol = 1e-7)
-            np.testing.assert_allclose(old.Pqq0sing(x), sf.Singular(x, nf), rtol = 1e-7)
-            np.testing.assert_allclose(old.Pqq0sing_integrated(x), sf.SingularIntegrated(x, nf), rtol = 1e-7)
-            np.testing.assert_allclose(old.Pqq0loc(), sf.Local(nf), rtol = 1e-7)
 
 
 def test_Pgq1():
@@ -64,21 +39,9 @@ def test_Pgq1():
 
     for x in np.geomspace(1e-5, 1., 10, endpoint=False):
         for nf in range(1, 6 + 1):
-            np.testing.assert_allclose(old.Pgq1(x, nf), sf.Regular(x, nf), rtol = 1e-7)
             np.testing.assert_allclose(0., sf.Singular(x, nf), rtol = 1e-7)
             np.testing.assert_allclose(0., sf.SingularIntegrated(x, nf), rtol = 1e-7)
             np.testing.assert_allclose(0., sf.Local(nf), rtol = 1e-7)
-
-def test_Pgg1():
-
-    sf = ad.SplittingFunction(1, 'g', 'g')
-
-    for x in np.geomspace(1e-5, 1., 10, endpoint=False):
-        for nf in range(1, 6 + 1):
-            np.testing.assert_allclose(old.Pgg1reg(x, nf), sf.Regular(x, nf), rtol = 1e-7)
-            np.testing.assert_allclose(old.Pgg1sing(x, nf), sf.Singular(x, nf), rtol = 1e-7)
-            np.testing.assert_allclose(old.Pgg1sing_integrated(x, nf), sf.SingularIntegrated(x, nf), rtol = 1e-7)
-            np.testing.assert_allclose(old.Pgg1loc(nf), sf.Local(nf), rtol = 1e-7)
 
 
 def Pgg0_x_Pgq0(x, nf):

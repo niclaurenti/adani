@@ -80,18 +80,6 @@ class ApproximateCoefficientFunction : public AbstractApproximate {
             return asymptotic_->GetHighScaleVersion();
         };
 
-        bool IsLegacyThreshold() const {
-            return threshold_->IsLegacyThreshold();
-        };
-        bool IsLegacyPowerTerms() const {
-            return asymptotic_->IsLegacyPowerTerms();
-        };
-        bool IsLegacyApproximation() const { return legacy_appr_; };
-
-        void SetLegacyThreshold(const bool &legacy_threshold);
-        void SetLegacyPowerTerms(const bool &legacy_pt);
-        void SetLegacyApproximation(const bool &legacy_appr);
-
         Value MuIndependentTermsBand(
             double x, double m2Q2, int nf
         ) const override;
@@ -102,20 +90,11 @@ class ApproximateCoefficientFunction : public AbstractApproximate {
 
         Value (ApproximateCoefficientFunction::*fx_)(double, double, int) const;
 
-        bool legacy_appr_;
-
         std::unique_ptr<approximation_parameters> approximation_;
         std::unique_ptr<variation_parameters> variation_;
 
-        double ApproximationLegacyForm(
-            double x, double m2Q2, double asy, double thresh, double A,
-            double B, double C, double D
-        ) const;
-
         Value Approximation(double x, double m2Q2, int nf) const;
-        Value ApproximationLegacy(double x, double m2Q2, int nf) const;
 
-        void SetLegacyParameters();
 };
 
 //==========================================================================================//
