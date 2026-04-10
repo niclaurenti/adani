@@ -11,7 +11,6 @@ class TestConan(ConanFile):
     exports_sources = "CMakeLists.txt", "test.cpp"
 
     def requirements(self):
-        # Your test depends on the adani library
         self.requires("adani/" + self.get_commit(), transitive_headers=True, transitive_libs=True)
 
     def layout(self):
