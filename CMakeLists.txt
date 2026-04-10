@@ -7,79 +7,66 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-# Conan will inject include paths, so no manual include_directories()
-# include_directories(inc)  <-- REMOVE THIS
+file(GLOB_RECURSE SOURCES src/*.cc src/*.f src/*.f90)
 
-# --- Dependencies ------------------------------------------------------------
+option(PYTHON_BUILD "Compiles only for python." OFF)
 
-find_package(gsl REQUIRED)   # Conan package name is lowercase "gsl"
+# pybind11
+if(PYTHON_BUILD)
+    include_directories(inc)
+    find_package(GSL REQUIRED)
+    # --- Python Package ----------------------------------------------------------------
+    if(SKBUILD)
+    message("Found skbuild")
+        execute_process(
+            COMMAND "${PYTHON_EXECUTABLE}" -c
+                    "import pybind11; print(pybind11.get_cmake_dir())"
+        OUTPUT_VARIABLE _tmp_dir
+        OUTPUT_STRIP_TRAILING_WHITESPACE COMMAND_ECHO STDOUT)
+        list(APPEND CMAKE_PREFIX_PATH "${_tmp_dir}")
+    endif(SKBUILD)
+    find_package(pybind11 CONFIG REQUIRED)
+    pybind11_add_module(
+        _core MODULE
+        pywrap/pywrap.cc
+        ${SOURCES}
+    )
+    target_link_libraries(_core PRIVATE GSL::gsl)
+    target_compile_definitions(_core PRIVATE VERSION_INFO=${PROJECT_VERSION})
+    install(TARGETS _core DESTINATION .)
 
-# --- Library ----------------------------------------------------------------
+else(PYTHON_BUILD)
+    if(DEFINED CONAN_TOOLCHAIN_FILE) # Check if we're being built by Conan
+        find_package(gsl REQUIRED)   # Conan package name is lowercase "gsl"
+    else() # Assume we're being built by CMake directly, so use the system package
+        option(BUILD_SHARED_LIBS "Build shared instead of static" ON)
+        find_package(GSL REQUIRED)   # System package name is uppercase "GSL"
+    endif()
+    # --- C++ Library ----------------------------------------------------------------
+    add_library(adani
+        ${SOURCES}
+    )
 
-add_library(adani SHARED
-    src/ApproximateCoefficientFunction.cc
-    src/AQg3mod.f90
-    src/AQg3red.f
-    src/AsymptoticCoefficientFunction.cc
-    src/CoefficientFunction.cc
-    src/CommonTypes.cc
-    src/Convolution.cc
-    src/ExactCoefficientFunction.cc
-    src/Exceptions.cc
-    src/HighEnergyCoefficientFunction.cc
-    src/HighScaleCoefficientFunction.cc
-    src/HighScaleSplitLogs.cc
-    src/hplog.f
-    src/hqcoef.f
-    src/MasslessCoefficientFunction.cc
-    src/MatchingCondition.cc
-    src/SpecialFunctions.cc
-    src/SplittingFunction.cc
-    src/ThresholdCoefficientFunction.cc
-    src/Value.cc
-)
+    # PUBLIC so consumers inherit GSL include dirs + libs
+    target_link_libraries(adani PUBLIC GSL::gsl)
 
-# PUBLIC so consumers inherit GSL include dirs + libs
-target_link_libraries(adani PUBLIC gsl::gsl)
+    # PUBLIC include directory for consumers
+    target_include_directories(adani PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/inc>
+        $<INSTALL_INTERFACE:include>
+    )
 
-# PUBLIC include directory for consumers
-target_include_directories(adani PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/inc>
-    $<INSTALL_INTERFACE:include>
-)
+    # --- Install headers ---------------------------------------------------------
 
-# --- Install headers ---------------------------------------------------------
+    install(DIRECTORY inc/adani DESTINATION include)
 
-install(DIRECTORY inc/adani DESTINATION include)
+    # --- Export CMake targets ----------------------------------------------------
 
-# --- Export CMake targets ----------------------------------------------------
+    install(
+        TARGETS adani
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+        RUNTIME DESTINATION bin
+    )
 
-install(
-    TARGETS adani
-    EXPORT adaniTargets
-    LIBRARY DESTINATION lib
-    ARCHIVE DESTINATION lib
-    RUNTIME DESTINATION bin
-)
-
-install(
-    EXPORT adaniTargets
-    FILE adaniTargets.cmake
-    NAMESPACE adani::
-    DESTINATION lib/cmake/adani
-)
-
-# --- Config file -------------------------------------------------------------
-
-include(CMakePackageConfigHelpers)
-
-configure_package_config_file(
-    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/adaniConfig.cmake.in
-    ${CMAKE_CURRENT_BINARY_DIR}/adaniConfig.cmake
-    INSTALL_DESTINATION lib/cmake/adani
-)
-
-install(
-    FILES ${CMAKE_CURRENT_BINARY_DIR}/adaniConfig.cmake
-    DESTINATION lib/cmake/adani
-)
+endif (PYTHON_BUILD)

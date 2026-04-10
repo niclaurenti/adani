@@ -27,7 +27,7 @@ setup(
     packages=find_packages(where="inc"),
     package_dir={"": "inc"},
     cmake_install_dir="inc/adani",
-    cmake_args=['-DPYTHON_ONLY:BOOL=ON'],
+    cmake_args=['-DPYTHON_BUILD:BOOL=ON'],
     python_requires=">=3.8",
     long_description=long_description,
     long_description_content_type="text/markdown",
