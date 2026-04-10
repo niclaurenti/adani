@@ -27,12 +27,16 @@ class AdaniConan(ConanFile):
 
     def set_version(self):
         try:
-            self.version = subprocess.check_output(
+            version = subprocess.check_output(
                 ["git", "describe", "--tags", "--dirty", "--always"],
                 text=True
             ).strip()
+            if version.startswith("v"):
+                version = version[1:]
+
         except Exception:
-            self.version = "0.0.0"
+            version = "0.0.0"
+        self.version = version
 
     def build(self):
         cmake = CMake(self)

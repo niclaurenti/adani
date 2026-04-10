@@ -1,5 +1,6 @@
 from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeToolchain, CMakeDeps, cmake_layout
+import subprocess
 
 class TestConan(ConanFile):
     name = "test"
@@ -11,7 +12,7 @@ class TestConan(ConanFile):
 
     def requirements(self):
         # Your test depends on the adani library
-        self.requires("adani/v1.0.6-8-gaafc7cb-dirty", transitive_headers=True, transitive_libs=True)
+        self.requires("adani/" + self.get_commit(), transitive_headers=True, transitive_libs=True)
 
     def layout(self):
         cmake_layout(self)
@@ -34,3 +35,15 @@ class TestConan(ConanFile):
 
     def package_info(self):
         self.cpp_info.libs = ["test"]
+
+    def get_commit(self):
+        try:
+            version = subprocess.check_output(
+                ["git", "describe", "--tags", "--dirty", "--always"],
+                text=True
+            ).strip()
+            if version.startswith("v"):
+                version = version[1:]
+            return version
+        except Exception:
+            return "0.0.0"
