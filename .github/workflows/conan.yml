@@ -1,0 +1,47 @@
+name: Build and Publish Conan Package (GitHub Packages)
+
+on:
+  push:
+    # tags:
+    #   - "v*"
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-15-intel, macos-15]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # required for git describe
+
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Conan
+        run: |
+          pip install conan==2.*
+
+      - name: Detect Conan profile
+        run: conan profile detect --force
+
+      - name: Configure GitHub Packages remote
+        run: |
+          conan remote add github "https://conan.pkg.github.com/${{ github.repository }}" --force
+          conan remote login github ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create package
+        run: |
+          conan create . --build=missing -o adani:PYTHON_BUILD=False
+
+      - name: Upload package
+        run: |
+          conan upload "adani/*" --all -r=github --confirm
