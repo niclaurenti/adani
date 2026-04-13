@@ -11,7 +11,7 @@ class TestConan(ConanFile):
     exports_sources = "CMakeLists.txt", "test.cpp"
 
     def requirements(self):
-        self.requires("adani/" + self.get_commit(), transitive_headers=True, transitive_libs=True)
+        self.requires("adani/" + self.get_commit())
 
     def layout(self):
         cmake_layout(self)

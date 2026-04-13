@@ -25,9 +25,6 @@
 #include "adani/SplittingFunction.h"
 
 #include <gsl/gsl_errno.h>
-#include <gsl/gsl_integration.h>
-#include <gsl/gsl_monte.h>
-#include <gsl/gsl_monte_vegas.h>
 
 #include <memory>
 
