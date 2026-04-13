@@ -36,11 +36,9 @@ if(PYTHON_BUILD)
     install(TARGETS _core DESTINATION .)
 
 else(PYTHON_BUILD)
-    if(DEFINED CONAN_TOOLCHAIN_FILE) # Check if we're being built by Conan
-        find_package(GSL REQUIRED)   # Conan package name is lowercase "gsl"
-    else() # Assume we're being built by CMake directly, so use the system package
+    find_package(GSL REQUIRED)
+    if(NOT DEFINED CONAN_TOOLCHAIN_FILE) # Check if we're being built by Conan
         option(BUILD_SHARED_LIBS "Build shared instead of static" ON)
-        find_package(GSL REQUIRED)   # System package name is uppercase "GSL"
     endif()
     # --- C++ Library ----------------------------------------------------------------
     add_library(adani
