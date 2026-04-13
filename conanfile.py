@@ -19,7 +19,7 @@ class AdaniConan(ConanFile):
                 version = version[1:]
         except Exception:
             version = "0.0.0"
-        self.version = "0.0.0"
+        self.version = version
 
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False], "fPIC": [True, False], "PYTHON_BUILD": [False]}
