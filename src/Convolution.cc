@@ -1,4 +1,7 @@
 #include "adani/Convolution.h"
+#include <gsl/gsl_integration.h>
+#include <gsl/gsl_monte.h>
+#include <gsl/gsl_monte_vegas.h>
 
 #include <cmath>
 
