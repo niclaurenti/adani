@@ -411,24 +411,7 @@ Value HighEnergyHighScaleCoefficientFunction::
 double HighEnergyCoefficientFunction::C2_g2_highenergyLL(
     double m2Q2, double m2mu2
 ) const {
-
-    double z = sqrt(1. / (1. + 4. * m2Q2));
-
-    double L = log((1. + z) / (1. - z));
-
-    double Hmp = H_11(z) + H_1m1(z) - H_m11(z) - H_m1m1(z);
-
-    double I = 4. * z * Hmp;
-    double J = 4. * z * L;
-
-    double Lmu = log(m2mu2);
-
-    double c_const =
-        10. / 3. + (1. - m2Q2) * I + (13. / 6. - 5. / 3. * m2Q2) * J;
-
-    double c_Lmu = 2. + (1. - m2Q2) * J;
-
-    return 4. / 3. * CA * (c_const + c_Lmu * Lmu);
+    return a_11() * Coff2_1(m2Q2,m2mu2);
 }
 
 //==========================================================================================//
@@ -451,28 +434,7 @@ double HighEnergyCoefficientFunction::C2_ps2_highenergyLL(
 double HighEnergyCoefficientFunction::CL_g2_highenergyLL(
     double m2Q2, double m2mu2
 ) const {
-
-    double z = sqrt(1. / (1. + 4. * m2Q2));
-
-    double L = log((1. + z) / (1. - z));
-
-    double Hmp = H_11(z) + H_1m1(z) - H_m11(z) - H_m1m1(z);
-
-    double I = 4. * z * Hmp;
-    double J = 4. * z * L;
-
-    double Lmu = log(1. / m2mu2);
-
-    double c_const = (4. * (-1. + 12. * m2Q2) / (3. + 12. * m2Q2)
-                      + (5. - 12. * m2Q2 + 1. / (1. + 4. * m2Q2)) * J / 6.
-                      - 4. * m2Q2 * (1. + 3. * m2Q2) / (1. + 4. * m2Q2) * I)
-                     / 3.;
-
-    double c_Lmu = (-4. * (1. + 6. * m2Q2) / (1. + 4. * m2Q2)
-                    + 4. * m2Q2 * (1. + 3. * m2Q2) / (1. + 4. * m2Q2) * J)
-                   / 3.;
-
-    return 8 * CA * TR * (c_const + c_Lmu * Lmu);
+    return a_11() * CoffL_1(m2Q2,m2mu2);
 }
 
 //==========================================================================================//
@@ -496,15 +458,7 @@ double HighEnergyCoefficientFunction::CL_ps2_highenergyLL(
 double HighEnergyHighScaleCoefficientFunction::C2_g2_highenergy_highscaleLL(
     double m2Q2, double m2mu2
 ) const {
-
-    double LQ = log(1. / m2Q2);
-    double L2Q = LQ * LQ;
-
-    double Lm = log(m2mu2);
-
-    return CA
-           * (8. / 3. * L2Q + 104. / 9. * LQ + 40. / 9. - 16. / 3. * zeta2
-              + (16. / 3. * LQ + 8. / 3.) * Lm);
+    return a_11() * Coff2_1(m2Q2,m2mu2);
 }
 
 //==========================================================================================//
@@ -529,16 +483,7 @@ double HighEnergyHighScaleCoefficientFunction::C2_ps2_highenergy_highscaleLL(
 double HighEnergyHighScaleCoefficientFunction::CL_g2_highenergy_highscaleLL(
     double m2Q2, double m2mu2
 ) const {
-
-    double LQ = log(1. / m2Q2);
-
-    double Lm = log(1. / m2mu2);
-
-    double c_const = -2. / 9. * (1. - 3. * LQ);
-
-    double c_log = -2. / 3.;
-
-    return 16 * CA * TR * (c_const + c_log * Lm);
+    return a_11() * CoffL_1(m2Q2,m2mu2);
 }
 
 //==========================================================================================//
@@ -563,37 +508,7 @@ double HighEnergyHighScaleCoefficientFunction::CL_ps2_highenergy_highscaleLL(
 double HighEnergyCoefficientFunction::C2_g3_highenergyLL(
     double m2Q2, double m2mu2
 ) const {
-
-    double z = sqrt(1. / (1. + 4. * m2Q2));
-
-    double L = log((1. + z) / (1. - z));
-
-    double Hmp = H_11(z) + H_1m1(z) - H_m11(z) - H_m1m1(z);
-
-    double Hmpm = H_111(z) - H_11m1(z) + H_1m11(z) - H_1m1m1(z) - H_m111(z)
-                  + H_m11m1(z) - H_m1m11(z) + H_m1m1m1(z);
-
-    double I = 4 * z * Hmp;
-    double J = 4 * z * L;
-    double K = 4 * z * Hmpm;
-
-    double Logxi = log(1. + 1. / (4. * m2Q2));
-
-    double Lmu = log(m2mu2);
-    double Lmu2 = Lmu * Lmu;
-
-    double a11 = a_11();
-
-    return a11 * a11
-           * (-1472. / 27 - 8. / 3 * K * (-1. + m2Q2)
-              + 8. / 27 * J * (-71. + 92. * m2Q2)
-              + I
-                    * (8. / 3 * Logxi * (-1. + m2Q2)
-                       + 8. / 9 * (-13. + 10. * m2Q2))
-              + (-160. / 9 + 16. / 3 * I * (-1. + m2Q2)
-                 + 8. / 9 * J * (-13. + 10. * m2Q2))
-                    * Lmu
-              + (-16. / 3 + 8. / 3 * J * (-1. + m2Q2)) * Lmu2);
+    return -a_11()*a_11() * Coff2_2(m2Q2,m2mu2);
 }
 
 //==========================================================================================//
@@ -633,56 +548,10 @@ Value HighEnergyCoefficientFunction::C2_g3_highenergyNLL(
 //------------------------------------------------------------------------------------------//
 
 double HighEnergyCoefficientFunction::C2_g3_highenergyNLL(
-    double m2Q2, double m2mu2, double a11, double a10, double a21, double beta0
+    double m2Q2, double m2mu2, double a11, double a10, double a21, double b0
 ) const {
-
-    double z = sqrt(1. / (1. + 4. * m2Q2));
-
-    double L = log((1. + z) / (1. - z));
-
-    double Hmp = H_11(z) + H_1m1(z) - H_m11(z) - H_m1m1(z);
-
-    double Hmpm = H_111(z) - H_11m1(z) + H_1m11(z) - H_1m1m1(z) - H_m111(z)
-                  + H_m11m1(z) - H_m1m11(z) + H_m1m1m1(z);
-
-    double II = 4 * z * Hmp;
-    double J = 4 * z * L;
-    double K = 4 * z * Hmpm;
-
-    double Lmu = log(m2mu2);
-    double Lmu2 = Lmu * Lmu;
-
-    double Logxi = log(1. + 1. / (4. * m2Q2));
-
-    double res =
-        (a21
-             * (160. / 9 - 16. / 3 * II * (-1. + m2Q2)
-                - 8. / 9 * J * (-13. + 10. * m2Q2))
-         + a10 * a11
-               * (2944. / 27 + 16. / 3 * K * (-1. + m2Q2)
-                  - 16. / 27 * J * (-71. + 92. * m2Q2)
-                  + II
-                        * (-16. / 3 * Logxi * (-1. + m2Q2)
-                           - 16. / 9 * (-13. + 10. * m2Q2)))
-         + a11 * beta0
-               * (-1472. / 27 - 8. / 3 * K * (-1. + m2Q2)
-                  + 8. / 27 * J * (-71. + 92. * m2Q2)
-                  + II
-                        * (8. / 3 * Logxi * (-1. + m2Q2)
-                           + 8. / 9 * (-13. + 10. * m2Q2)))
-         + (a21 * (32. / 3 - 16. / 3 * J * (-1. + m2Q2))
-            + a10 * a11
-                  * (320. / 9 - 32. / 3 * II * (-1. + m2Q2)
-                     - 16. / 9 * J * (-13. + 10. * m2Q2))
-            + a11 * beta0
-                  * (-160. / 9 + 16. / 3 * II * (-1. + m2Q2)
-                     + 8. / 9 * J * (-13. + 10. * m2Q2)))
-               * Lmu
-         + (a10 * a11 * (32. / 3 - 16. / 3 * J * (-1. + m2Q2))
-            + a11 * beta0 * (-16. / 3 + 8. / 3 * J * (-1. + m2Q2)))
-               * Lmu2);
-
-    return res;
+    //return 0;
+    return (2*a11*a10 - a11*b0) * Coff2_2(m2Q2,m2mu2) + a21 * Coff2_1(m2Q2,m2mu2);
 }
 
 //==========================================================================================//
@@ -717,44 +586,7 @@ Value HighEnergyCoefficientFunction::C2_ps3_highenergyNLL(
 double HighEnergyCoefficientFunction::CL_g3_highenergyLL(
     double m2Q2, double m2mu2
 ) const {
-
-    double m4Q4 = m2Q2 * m2Q2;
-
-    double z = sqrt(1. / (1. + 4. * m2Q2));
-
-    double L = log((1. + z) / (1. - z));
-
-    double Hmp = H_11(z) + H_1m1(z) - H_m11(z) - H_m1m1(z);
-
-    double Hmpm = H_111(z) - H_11m1(z) + H_1m11(z) - H_1m1m1(z) - H_m111(z)
-                  + H_m11m1(z) - H_m1m11(z) + H_m1m1m1(z);
-
-    double II = 4 * z * Hmp;
-    double J = 4 * z * L;
-    double K = 4 * z * Hmpm;
-
-    double a11 = CA;
-
-    double Lmu = log(m2mu2);
-    double Lmu2 = Lmu * Lmu;
-
-    double Logxi = log(1 + 1. / (4 * m2Q2));
-
-    return a11 * a11
-           * (-32. / 3 * K * m2Q2 * (1. + 3. * m2Q2)
-              - 128. / 27 * (17. + 120. * m2Q2)
-              + 16. / 27 * J * (3. + 136. * m2Q2 + 480. * m4Q4)
-              + II
-                    * (32. / 3 * Logxi * m2Q2 * (1. + 3. * m2Q2)
-                       + 16. / 9 * (-3. - 4. * m2Q2 + 24. * m4Q4))
-              + (64. / 3 * II * m2Q2 * (1. + 3. * m2Q2)
-                 - 64. / 9 * (-1. + 12 * m2Q2)
-                 + 16. / 9 * J * (-3. - 4. * m2Q2 + 24. * m4Q4))
-                    * Lmu
-              + (32. / 3 * J * m2Q2 * (1. + 3. * m2Q2)
-                 - 32. / 3 * (1. + 6. * m2Q2))
-                    * Lmu2)
-           / (1. + 4. * m2Q2);
+    return -a_11()*a_11() * CoffL_2(m2Q2,m2mu2);
 }
 
 //==========================================================================================//
@@ -790,69 +622,10 @@ Value HighEnergyCoefficientFunction::CL_g3_highenergyNLL(
 //------------------------------------------------------------------------------------------//
 
 double HighEnergyCoefficientFunction::CL_g3_highenergyNLL(
-    double m2Q2, double m2mu2, double a11, double a10, double a21, double beta0
+    double m2Q2, double m2mu2, double a11, double a10, double a21, double b0
 ) const {
-
-    double m4Q4 = m2Q2 * m2Q2;
-
-    double z = sqrt(1. / (1. + 4. * m2Q2));
-
-    double L = log((1. + z) / (1. - z));
-
-    double Hmp = H_11(z) + H_1m1(z) - H_m11(z) - H_m1m1(z);
-
-    double Hmpm = H_111(z) - H_11m1(z) + H_1m11(z) - H_1m1m1(z) - H_m111(z)
-                  + H_m11m1(z) - H_m1m11(z) + H_m1m1m1(z);
-
-    double II = 4 * z * Hmp;
-    double J = 4 * z * L;
-    double K = 4 * z * Hmpm;
-
-    double Lmu = log(m2mu2);
-    double Lmu2 = Lmu * Lmu;
-
-    double Logxi = log(1. + 1. / (4. * m2Q2));
-
-    double res = (a21
-                      * (-64. / 3 * II * m2Q2 * (1. + 3. * m2Q2)
-                         + 64. / 9 * (-1. + 12. * m2Q2)
-                         - 16. / 9 * J * (-3. - 4. * m2Q2 + 24. * m4Q4))
-                  + a10 * a11
-                        * (64. / 3 * K * m2Q2 * (1. + 3. * m2Q2)
-                           + 256. / 27 * (17. + 120. * m2Q2)
-                           - 32. / 27 * J * (3. + 136. * m2Q2 + 480. * m4Q4)
-                           + II
-                                 * (-64. / 3 * Logxi * m2Q2 * (1. + 3. * m2Q2)
-                                    - 32. / 9 * (-3. - 4. * m2Q2 + 24. * m4Q4)))
-                  + a11 * beta0
-                        * (-32. / 3 * K * m2Q2 * (1. + 3. * m2Q2)
-                           - 128. / 27 * (17. + 120. * m2Q2)
-                           + 16. / 27 * J * (3. + 136. * m2Q2 + 480. * m4Q4)
-                           + II
-                                 * (32. / 3 * Logxi * m2Q2 * (1. + 3. * m2Q2)
-                                    + 16. / 9 * (-3. - 4. * m2Q2 + 24. * m4Q4)))
-                  + (a21
-                         * (-64. / 3 * J * m2Q2 * (1. + 3. * m2Q2)
-                            + 64. / 3 * (1. + 6. * m2Q2))
-                     + a10 * a11
-                           * (-128. / 3 * II * m2Q2 * (1. + 3. * m2Q2)
-                              + 128. / 9 * (-1. + 12. * m2Q2)
-                              - 32. / 9 * J * (-3. - 4. * m2Q2 + 24. * m4Q4))
-                     + a11 * beta0
-                           * (64. / 3 * II * m2Q2 * (1. + 3. * m2Q2)
-                              - 64. / 9 * (-1. + 12. * m2Q2)
-                              + 16. / 9 * J * (-3. - 4. * m2Q2 + 24. * m4Q4)))
-                        * Lmu
-                  + (a11 * beta0
-                         * (32. / 3 * J * m2Q2 * (1. + 3. * m2Q2)
-                            - 32. / 3 * (1. + 6. * m2Q2))
-                     + a10 * a11
-                           * (-64. / 3 * J * m2Q2 * (1. + 3. * m2Q2)
-                              + 64. / 3 * (1. + 6. * m2Q2)))
-                        * Lmu2)
-                 / (1. + 4. * m2Q2);
-
-    return res;
+    //return 0;
+    return (2*a11*a10 - a11*b0) * CoffL_2(m2Q2,m2mu2) + a21 * CoffL_1(m2Q2,m2mu2);
 }
 
 //==========================================================================================//
@@ -889,23 +662,7 @@ Value HighEnergyCoefficientFunction::CL_ps3_highenergyNLL(
 double HighEnergyHighScaleCoefficientFunction::C2_g3_highenergy_highscaleLL(
     double m2Q2, double m2mu2
 ) const {
-
-    double LQ = log(m2Q2);
-    double LQ2 = LQ * LQ;
-    double LQ3 = LQ * LQ2;
-
-    double Lmu = log(m2mu2);
-    double Lmu2 = Lmu * Lmu;
-
-    double a11 = a_11();
-
-    return a11 * a11
-           * (-32. / 27 * (-71. + 18 * zeta2) * LQ - 208. / 9 * LQ2
-              + 32. / 9 * LQ3 + Lmu2 * (-16. / 3 + 32. / 3 * LQ)
-              + Lmu
-                    * (32. / 9 * (-5. + 6 * zeta2) + 416. / 9 * LQ
-                       - 32. / 3 * LQ2)
-              + 16. / 27 * (-92. + 78. * zeta2 - 72. * zeta3));
+    return -a_11()*a_11() * Coff2_2(m2Q2,m2mu2);
 }
 
 //==========================================================================================//
@@ -942,39 +699,10 @@ Value HighEnergyHighScaleCoefficientFunction::C2_g3_highenergy_highscaleNLL(
 //------------------------------------------------------------------------------------------//
 
 double HighEnergyHighScaleCoefficientFunction::C2_g3_highenergy_highscaleNLL(
-    double m2Q2, double m2mu2, double a11, double a10, double a21, double beta0
+    double m2Q2, double m2mu2, double a11, double a10, double a21, double b0
 ) const {
-
-    double Lmu = log(m2mu2);
-    double Lmu2 = Lmu * Lmu;
-
-    double pi2 = M_PI * M_PI;
-
-    double LQ = log(m2Q2);
-    double LQ2 = LQ * LQ;
-    double LQ3 = LQ2 * LQ;
-
-    double res =
-        -32. / 9 * a21 * (-5. + pi2)
-        + (-416. * a21 / 9 + 64. / 27 * a10 * a11 * (-71. + 3. * pi2)
-           - 32. / 27 * a11 * beta0 * (-71. + 3. * pi2))
-              * LQ
-        + (416. * a10 * a11 / 9 + 32. * a21 / 3 - 208. * a11 * beta0 / 9) * LQ2
-        + (-64. * a10 * a11 / 9 + 32. * a11 * beta0 / 9) * LQ3
-        + Lmu2
-              * (32. * a10 * a11 / 3 - 16. * a11 * beta0 / 3
-                 + (-64 * a10 * a11 / 3 + 32. * a11 * beta0 / 3) * LQ)
-        + Lmu
-              * (32. * a21 / 3 - 64. / 9 * a10 * a11 * (-5. + pi2)
-                 + 32. / 9 * a11 * beta0 * (-5. + pi2)
-                 + (-832. * a10 * a11 / 9 - 64 * a21 / 3
-                    + 416. * a11 * beta0 / 9)
-                       * LQ
-                 + (64. * a10 * a11 / 3 - 32. * a11 * beta0 / 3) * LQ2)
-        - 32. / 27 * a10 * a11 * (-92. + 13. * pi2 - 72. * zeta3)
-        + 16. / 27 * a11 * beta0 * (-92. + 13. * pi2 - 72. * zeta3);
-
-    return res;
+    //return 0;
+    return (2*a11*a10 - a11*b0) * Coff2_2(m2Q2,m2mu2) + a21 * Coff2_1(m2Q2,m2mu2);
 }
 
 //==========================================================================================//
@@ -1009,16 +737,7 @@ Value HighEnergyHighScaleCoefficientFunction::C2_ps3_highenergy_highscaleNLL(
 double HighEnergyHighScaleCoefficientFunction::CL_g3_highenergy_highscaleLL(
     double m2Q2, double m2mu2
 ) const {
-
-    double Lmu = log(m2mu2);
-    double Lmu2 = Lmu * Lmu;
-
-    double LQ = log(m2Q2);
-    double LQ2 = LQ * LQ;
-
-    return CA * CA
-           * (32. / 27 * (-68. + 18. * zeta2) - 32. / 3 * Lmu2 - 64. / 9 * LQ
-              - 32. / 3 * LQ2 + Lmu * (64. / 9 + 64. / 3 * LQ));
+    return -a_11()*a_11() * CoffL_2(m2Q2,m2mu2);
 }
 
 //==========================================================================================//
@@ -1055,28 +774,10 @@ Value HighEnergyHighScaleCoefficientFunction::CL_g3_highenergy_highscaleNLL(
 //------------------------------------------------------------------------------------------//
 
 double HighEnergyHighScaleCoefficientFunction::CL_g3_highenergy_highscaleNLL(
-    double m2Q2, double m2mu2, double a11, double a10, double a21, double beta0
+    double m2Q2, double m2mu2, double a11, double a10, double a21, double b0
 ) const {
-
-    double Lmu = log(m2mu2);
-    double Lmu2 = Lmu * Lmu;
-
-    double pi2 = M_PI * M_PI;
-
-    double LQ = log(m2Q2);
-    double LQ2 = LQ * LQ;
-
-    double res =
-        (-64. * a21 / 9 - 64. / 27 * a10 * a11 * (-68. + 3 * pi2)
-         + 32. / 27 * a11 * beta0 * (-68. + 3 * pi2)
-         + (64. * a10 * a11 / 3 - 32. * a11 * beta0 / 3) * Lmu2
-         + (128. * a10 * a11 / 9 - 64. * a21 / 3 - 64. * a11 * beta0 / 9) * LQ
-         + (64. * a10 * a11 / 3 - 32. * a11 * beta0 / 3) * LQ2
-         + Lmu
-               * (-128. * a10 * a11 / 9 + 64. * a21 / 3 + 64. * a11 * beta0 / 9
-                  + (-128. * a10 * a11 / 3 + 64. * a11 * beta0 / 3) * LQ));
-
-    return res;
+    //return 0;
+    return (2*a11*a10 - a11*b0) * CoffL_2(m2Q2,m2mu2) + a21 * CoffL_1(m2Q2,m2mu2);
 }
 
 //==========================================================================================//
@@ -1107,17 +808,127 @@ Value HighEnergyHighScaleCoefficientFunction::CL_ps3_highenergy_highscaleNLL(
 //                  Color factors O(as^3)
 //------------------------------------------------------------------------------------------//
 
-double AbstractHighEnergyCoefficientFunction::a_10(int nf) const {
-
-    return -(11. * CA + 2. * nf * (1. - 2. * CF / CA)) / 12.;
+// eq D.11-D.13 of our paper, normalized to as/4/pi
+double AbstractHighEnergyCoefficientFunction::a_11() const {
+    return 4*CA;
 }
 
-double AbstractHighEnergyCoefficientFunction::a_11() const { return CA; }
+double AbstractHighEnergyCoefficientFunction::a_10(int nf) const {
+    return -(11. * CA + 2. * nf * (1. - 2. * CF / CA)) / 3.;
+}
 
 double AbstractHighEnergyCoefficientFunction::a_21(int nf) const {
-    return nf * (26. * CF - 23. * CA) / 36.;
+    return nf * (26. * CF - 23. * CA) / 9. * 4.;
 }
 
 double AbstractHighEnergyCoefficientFunction::a_21_new(int nf) const {
     return beta0(nf) * a_11() * (21. / 8 * zeta3 - 4 * ln2);
+}
+
+
+
+// eq D.20-D.25 of our paper, normalized to as/4/pi
+double HighEnergyCoefficientFunction::Coff2_0(double m2Q2) const {
+  double z = sqrt(1. / (1. + 4. * m2Q2));
+  double L = log((1. + z) / (1. - z));
+  double J = 4 * z * L;
+  return (2 + (1-m2Q2)*J) /3.;
+}
+double HighEnergyCoefficientFunction::Coff2_1(double m2Q2) const {
+  double z = sqrt(1. / (1. + 4. * m2Q2));
+  double L = log((1. + z) / (1. - z));
+  double Hmp = H_11(z) + H_1m1(z) - H_m11(z) - H_m1m1(z);
+  double II = 4 * z * Hmp;
+  double J  = 4 * z * L;
+  return 2./3. * (5./3. + (1-m2Q2)/2.*II + (13-10*m2Q2)/12.*J);
+}
+double HighEnergyCoefficientFunction::Coff2_2(double m2Q2) const {
+  double z = sqrt(1. / (1. + 4. * m2Q2));
+  double L = log((1. + z) / (1. - z));
+  double Hmp = H_11(z) + H_1m1(z) - H_m11(z) - H_m1m1(z);
+  double Hmpm = H_111(z) - H_11m1(z) + H_1m11(z) - H_1m1m1(z) - H_m111(z) + H_m11m1(z) - H_m1m11(z) + H_m1m1m1(z);
+  double II = 4 * z * Hmp;
+  double J  = 4 * z * L;
+  double K  = 4 * z * Hmpm;
+  return 2./3. * (46./9. - (1-m2Q2)/4.*K + ((13-10*m2Q2)/12.-(1-m2Q2)/4.*log(4.*m2Q2/(1+4*m2Q2)))*II + (71-92*m2Q2)/36.*J);
+}
+double HighEnergyCoefficientFunction::CoffL_0(double m2Q2) const {
+  double z = sqrt(1. / (1. + 4. * m2Q2));
+  double L = log((1. + z) / (1. - z));
+  double J = 4 * z * L;
+  return 4./3. * (1+6*m2Q2 - (1+3*m2Q2)*m2Q2*J) / (1+4*m2Q2);
+}
+double HighEnergyCoefficientFunction::CoffL_1(double m2Q2) const {
+  double z = sqrt(1. / (1. + 4. * m2Q2));
+  double L = log((1. + z) / (1. - z));
+  double Hmp = H_11(z) + H_1m1(z) - H_m11(z) - H_m1m1(z);
+  double II = 4 * z * Hmp;
+  double J  = 4 * z * L;
+  return 2./3. * (-2./3.+8*m2Q2 - 2*(1+3*m2Q2)*m2Q2*II + (1./2.+2./3.*m2Q2-4*m2Q2*m2Q2)*J) / (1+4*m2Q2);
+}
+double HighEnergyCoefficientFunction::CoffL_2(double m2Q2) const {
+  double z = sqrt(1. / (1. + 4. * m2Q2));
+  double L = log((1. + z) / (1. - z));
+  double Hmp = H_11(z) + H_1m1(z) - H_m11(z) - H_m1m1(z);
+  double Hmpm = H_111(z) - H_11m1(z) + H_1m11(z) - H_1m1m1(z) - H_m111(z) + H_m11m1(z) - H_m1m11(z) + H_m1m1m1(z);
+  double II = 4 * z * Hmp;
+  double J  = 4 * z * L;
+  double K  = 4 * z * Hmpm;
+  return 2./3. * (68./9.+160./3.*m2Q2 + (1+3*m2Q2)*m2Q2*K + (1./2.+2./3.*m2Q2-4*m2Q2*m2Q2+(1+3*m2Q2)*m2Q2*log(4.*m2Q2/(1+4*m2Q2)))*II - (1./6.+68./9.*m2Q2+80./3.*m2Q2*m2Q2)*J) / (1+4*m2Q2);
+}
+double HighEnergyCoefficientFunction::Coff2_1(double m2Q2, double m2mu2) const {
+  double Lmu = log(m2mu2);
+  return Coff2_1(m2Q2) + Coff2_0(m2Q2)*Lmu;
+}
+double HighEnergyCoefficientFunction::Coff2_2(double m2Q2, double m2mu2) const {
+  double Lmu = log(m2mu2);
+  return Coff2_2(m2Q2) + Coff2_1(m2Q2)*Lmu + Coff2_0(m2Q2)*Lmu*Lmu/2.;
+}
+double HighEnergyCoefficientFunction::CoffL_1(double m2Q2, double m2mu2) const {
+  double Lmu = log(m2mu2);
+  return CoffL_1(m2Q2) + CoffL_0(m2Q2)*Lmu;
+}
+double HighEnergyCoefficientFunction::CoffL_2(double m2Q2, double m2mu2) const {
+  double Lmu = log(m2mu2);
+  return CoffL_2(m2Q2) + CoffL_1(m2Q2)*Lmu + CoffL_0(m2Q2)*Lmu*Lmu/2.;
+}
+
+
+// eq D.29-D.34 of our paper, normalized to as/4/pi
+double HighEnergyHighScaleCoefficientFunction::Coff2_0(double m2Q2) const {
+  return 2./3. * (1 - 2*log(m2Q2));
+}
+double HighEnergyHighScaleCoefficientFunction::Coff2_1(double m2Q2) const {
+  double L = log(m2Q2);
+  return 2./3. * (5./3. - 2*zeta2 - 13./3.*L + L*L);
+}
+double HighEnergyHighScaleCoefficientFunction::Coff2_2(double m2Q2) const {
+  double L = log(m2Q2);
+  return 2./3. * (46./9. - 13./3.*zeta2 + 4*zeta3 + (-71./9.+2*zeta2)*L + 13./6.*L*L - L*L*L/3.);
+}
+double HighEnergyHighScaleCoefficientFunction::CoffL_0() const {
+  return 4./3.;
+}
+double HighEnergyHighScaleCoefficientFunction::CoffL_1(double m2Q2) const {
+  return 2./3. * (-2./3. - 2*log(m2Q2));
+}
+double HighEnergyHighScaleCoefficientFunction::CoffL_2(double m2Q2) const {
+  double L = log(m2Q2);
+  return 2./3. * (68./9. - 2*zeta2 + 2./3.*L + L*L);
+}
+double HighEnergyHighScaleCoefficientFunction::Coff2_1(double m2Q2, double m2mu2) const {
+  double Lmu = log(m2mu2);
+  return Coff2_1(m2Q2) + Coff2_0(m2Q2)*Lmu;
+}
+double HighEnergyHighScaleCoefficientFunction::Coff2_2(double m2Q2, double m2mu2) const {
+  double Lmu = log(m2mu2);
+  return Coff2_2(m2Q2) + Coff2_1(m2Q2)*Lmu + Coff2_0(m2Q2)*Lmu*Lmu/2.;
+}
+double HighEnergyHighScaleCoefficientFunction::CoffL_1(double m2Q2, double m2mu2) const {
+  double Lmu = log(m2mu2);
+  return CoffL_1(m2Q2) + CoffL_0()*Lmu;
+}
+double HighEnergyHighScaleCoefficientFunction::CoffL_2(double m2Q2, double m2mu2) const {
+  double Lmu = log(m2mu2);
+  return CoffL_2(m2Q2) + CoffL_1(m2Q2)*Lmu + CoffL_0()*Lmu*Lmu/2.;
 }

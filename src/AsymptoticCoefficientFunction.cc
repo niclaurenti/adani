@@ -10,7 +10,7 @@ AsymptoticCoefficientFunction::AsymptoticCoefficientFunction(
     const int &order, const char &kind, const char &channel, const bool &NLL,
     const HighScaleVersion &highscale_version
 )
-    : CoefficientFunction(order, kind, channel), legacy_pt_(false) {
+    : CoefficientFunction(order, kind, channel) {
 
     try {
         highscale_ = std::make_unique<HighScaleCoefficientFunction>(
@@ -40,9 +40,7 @@ AsymptoticCoefficientFunction::AsymptoticCoefficientFunction(
     : AsymptoticCoefficientFunction(
           obj.GetOrder(), obj.GetKind(), obj.GetChannel(), obj.GetNLL(),
           obj.GetHighScaleVersion()
-      ) {
-    SetLegacyPowerTerms(obj.IsLegacyPowerTerms());
-}
+      ) {}
 
 //==========================================================================================//
 //  AsymptoticCoefficientFunction: SetFunctions
@@ -51,14 +49,16 @@ AsymptoticCoefficientFunction::AsymptoticCoefficientFunction(
 void AsymptoticCoefficientFunction::SetFunctions() {
     switch (GetOrder()) {
     case 1:
-        fx_ = &AsymptoticCoefficientFunction::PlainAdditiveMatching;
+        fx_ = &AsymptoticCoefficientFunction::AdditiveMatching;
         break;
     case 2:
         switch (GetKind()) {
         case '2':
+            a_fact_ = 1.2;
             fx_ = &AsymptoticCoefficientFunction::C2_2_asymptotic;
             break;
         case 'L':
+            a_fact_ = 4;
             fx_ = &AsymptoticCoefficientFunction::CL_2_asymptotic;
             break;
         default:
@@ -70,20 +70,12 @@ void AsymptoticCoefficientFunction::SetFunctions() {
     case 3:
         switch (GetKind()) {
         case '2':
-            if (GetNLL()) {
-                fx_ = &AsymptoticCoefficientFunction::C2_3_asymptotic;
-                a_fact_ = 1.2;
-            } else {
-                fx_ = &AsymptoticCoefficientFunction::C2_2_asymptotic;
-            }
+            a_fact_ = 1.2;
+            fx_ = &AsymptoticCoefficientFunction::C2_3_asymptotic;
             break;
         case 'L':
-            if (GetNLL()) {
-                a_fact_ = 1.5;
-                fx_ = &AsymptoticCoefficientFunction::CL_3_asymptotic;
-            } else {
-                fx_ = &AsymptoticCoefficientFunction::CL_2_asymptotic;
-            }
+            a_fact_ = 0;
+            fx_ = &AsymptoticCoefficientFunction::CL_3_asymptotic;
             break;
         default:
             throw UnexpectedException(
@@ -99,43 +91,6 @@ void AsymptoticCoefficientFunction::SetFunctions() {
 }
 
 //==========================================================================================//
-//  AsymptoticCoefficientFunction: restore legacy behavior for power terms
-//------------------------------------------------------------------------------------------//
-
-void AsymptoticCoefficientFunction::SetLegacyPowerTerms(const bool &legacy_pt) {
-    try {
-        if (legacy_pt == legacy_pt_) {
-            throw NotValidException(
-                "Setting legacy power terms identical to its previous value!",
-                __PRETTY_FUNCTION__, __LINE__
-            );
-        }
-        legacy_pt_ = legacy_pt;
-        switch (GetOrder()) {
-        case 1:
-            throw NotPresentException(
-                "For order='1' legacy power terms are identical to the "
-                "current ones!",
-                __PRETTY_FUNCTION__, __LINE__
-            );
-            break;
-        default:
-            if (legacy_pt) {
-                fx_ = &AsymptoticCoefficientFunction::PlainAdditiveMatching;
-            } else {
-                SetFunctions();
-            }
-        }
-    } catch (const NotPresentException &e) {
-        e.warning();
-    } catch (const NotValidException &e) {
-        e.warning();
-    } catch (UnexpectedException &e) {
-        e.runtime_error();
-    }
-}
-
-//==========================================================================================//
 //  AsymptoticCoefficientFunction: band of fx
 //------------------------------------------------------------------------------------------//
 
@@ -143,76 +98,6 @@ Value AsymptoticCoefficientFunction::fxBand(
     double x, double m2Q2, double m2mu2, int nf
 ) const {
     return (this->*fx_)(x, m2Q2, m2mu2, nf);
-}
-
-//==========================================================================================//
-//  AsymptoticCoefficientFunction: band of fx with additive matching
-//------------------------------------------------------------------------------------------//
-
-Value AsymptoticCoefficientFunction::PlainAdditiveMatching(
-    double x, double m2Q2, double m2mu2, int nf
-) const {
-
-    return highscale_->fxBand(x, m2Q2, m2mu2, nf)
-           + (highenergy_->fxBand(x, m2Q2, m2mu2, nf)
-              - highenergyhighscale_->fxBand(x, m2Q2, m2mu2, nf));
-}
-
-//==========================================================================================//
-//  AsymptoticCoefficientFunction: band of fx with pure LL multiplicative
-//  matching
-//------------------------------------------------------------------------------------------//
-
-Value AsymptoticCoefficientFunction::PlainMultiplicativeMatching(
-    double x, double m2Q2, double m2mu2, int nf
-) const {
-
-    return highscale_->fxBand(x, m2Q2, m2mu2, nf) * highenergy_->LL(m2Q2, m2mu2)
-           / highenergyhighscale_->LL(m2Q2, m2mu2);
-}
-
-//==========================================================================================//
-//  AsymptoticCoefficientFunction: band of fx with multiplicative matching at
-//  NLL (version 1)
-//------------------------------------------------------------------------------------------//
-
-Value AsymptoticCoefficientFunction::ModifiedMultiplicativeMatching1(
-    double x, double m2Q2, double m2mu2, int nf
-) const {
-
-    double highenergy_ll = highenergy_->LL(m2Q2, m2mu2),
-           highenergyhighscale_ll = highenergyhighscale_->LL(m2Q2, m2mu2);
-    double highenergy_ll_A =
-        C_highenergy_lim(highenergy_ll, highenergyhighscale_ll, a_fact_);
-
-    return (highscale_->fxBand(x, m2Q2, m2mu2, nf)
-            + (highenergy_->NLL(m2Q2, m2mu2, nf)
-               - highenergyhighscale_->NLL(m2Q2, m2mu2, nf))
-                  / x
-            + (highenergy_ll_A - highenergyhighscale_ll) * log(x) / x)
-           * highenergy_ll / highenergy_ll_A;
-}
-
-//==========================================================================================//
-//  AsymptoticCoefficientFunction: band of fx with multiplicative matching at
-//  NLL (version 2)
-//------------------------------------------------------------------------------------------//
-
-Value AsymptoticCoefficientFunction::ModifiedMultiplicativeMatching2(
-    double x, double m2Q2, double m2mu2, int nf
-) const {
-
-    double highenergy_ll = highenergy_->LL(m2Q2, m2mu2),
-           highenergyhighscale_ll = highenergyhighscale_->LL(m2Q2, m2mu2);
-    double highenergy_ll_A =
-        C_highenergy_lim(highenergy_ll, highenergyhighscale_ll, a_fact_);
-
-    return (highscale_->fxBand(x, m2Q2, m2mu2, nf)
-            + (highenergy_ll_A - highenergyhighscale_ll) * log(x) / x)
-               * highenergy_ll / highenergy_ll_A
-           + (highenergy_->NLL(m2Q2, m2mu2, nf)
-              - highenergyhighscale_->NLL(m2Q2, m2mu2, nf))
-                 / x;
 }
 
 //==========================================================================================//
@@ -224,8 +109,8 @@ Value AsymptoticCoefficientFunction::C2_2_asymptotic(
     double x, double m2Q2, double m2mu2, int nf
 ) const {
 
-    Value central = PlainAdditiveMatching(x, m2Q2, m2mu2, nf);
-    Value variation = PlainMultiplicativeMatching(x, m2Q2, m2mu2, nf);
+    Value central   = AdditiveMatching  (x, m2Q2, m2mu2, nf);
+    Value variation = MixedMatching_C2_2(x, m2Q2, m2mu2, nf);
 
     return Delta2(central, variation);
 }
@@ -239,8 +124,8 @@ Value AsymptoticCoefficientFunction::CL_2_asymptotic(
     double x, double m2Q2, double m2mu2, int nf
 ) const {
 
-    Value central = PlainMultiplicativeMatching(x, m2Q2, m2mu2, nf);
-    Value variation = PlainAdditiveMatching(x, m2Q2, m2mu2, nf);
+    Value central   = MixedMatching_CL_2(x, m2Q2, m2mu2, nf, 1);
+    Value variation = MixedMatching_CL_2(x, m2Q2, m2mu2, nf, 8);
 
     return Delta2(central, variation);
 }
@@ -254,9 +139,9 @@ Value AsymptoticCoefficientFunction::C2_3_asymptotic(
     double x, double m2Q2, double m2mu2, int nf
 ) const {
 
-    Value central = PlainAdditiveMatching(x, m2Q2, m2mu2, nf);
-    Value variation1 = ModifiedMultiplicativeMatching1(x, m2Q2, m2mu2, nf);
-    Value variation2 = ModifiedMultiplicativeMatching2(x, m2Q2, m2mu2, nf);
+    Value central    = AdditiveMatching  (x, m2Q2, m2mu2, nf);
+    Value variation1 = MixedMatching_C2_3(x, m2Q2, m2mu2, nf, true);
+    Value variation2 = MixedMatching_C2_3(x, m2Q2, m2mu2, nf, false);
 
     return Delta3(central, variation1, variation2);
 }
@@ -270,32 +155,125 @@ Value AsymptoticCoefficientFunction::CL_3_asymptotic(
     double x, double m2Q2, double m2mu2, int nf
 ) const {
 
-    Value central = ModifiedMultiplicativeMatching1(x, m2Q2, m2mu2, nf);
-    Value variation1 = PlainAdditiveMatching(x, m2Q2, m2mu2, nf);
-    Value variation2 = ModifiedMultiplicativeMatching2(x, m2Q2, m2mu2, nf);
+    //Value central = MultiplicativeMatchingLL(x, m2Q2, m2mu2, nf);
+    Value central    = MixedMatching_CL_3(x, m2Q2, m2mu2, nf, true);
+    Value variation1 = MixedMatching_CL_3(x, m2Q2, m2mu2, nf, false);
+    //Value variation2 = AdditiveMatching  (x, m2Q2, m2mu2, nf);
 
-    return Delta3(central, variation1, variation2);
+    //return Delta3(central, variation1, variation2);
+    return Delta2(central, variation1);
 }
+
+//==========================================================================================//
+//  AsymptoticCoefficientFunction: band of fx with additive matching
+//------------------------------------------------------------------------------------------//
+
+Value AsymptoticCoefficientFunction::AdditiveMatching(
+    double x, double m2Q2, double m2mu2, int nf
+) const {
+
+    return highscale_->fxBand(x, m2Q2, m2mu2, nf)
+           + (highenergy_->fxBand(x, m2Q2, m2mu2, nf)
+              - highenergyhighscale_->fxBand(x, m2Q2, m2mu2, nf));
+}
+
+//==========================================================================================//
+//  AsymptoticCoefficientFunction: band of fx with pure LL multiplicative
+//  matching
+//------------------------------------------------------------------------------------------//
+
+// Value AsymptoticCoefficientFunction::MultiplicativeMatchingLL(
+//     double x, double m2Q2, double m2mu2, int nf
+// ) const {
+
+//     return highscale_->fxBand(x, m2Q2, m2mu2, nf) * highenergy_->LL(m2Q2, m2mu2)
+//            / highenergyhighscale_->LL(m2Q2, m2mu2);
+// }
+
+//==========================================================================================//
+//  AsymptoticCoefficientFunction: Generic Mixed Additive+Multiplicative Matching
+//------------------------------------------------------------------------------------------//
+
+Value AsymptoticCoefficientFunction::MixedMatching(
+    double x, Value HigsScaleTerm, Value ooxTerm, double logxoxTerm, double rescalingFactor
+) const {
+    return (HigsScaleTerm + ooxTerm/x + logxoxTerm*log(x)/x) * rescalingFactor;
+}
+
+//==========================================================================================//
+//  AsymptoticCoefficientFunction: band of fx with multiplicative matching at
+//  NLL (version 1)
+//------------------------------------------------------------------------------------------//
+
+Value AsymptoticCoefficientFunction::MixedMatching_C2_2(
+    double x, double m2Q2, double m2mu2, int nf
+) const {
+    Value HighScaleTerm = highscale_->fxBand(x, m2Q2, m2mu2, nf);
+    double highenergy_ll          = highenergy_->LL(m2Q2, m2mu2);
+    double highenergyhighscale_ll = highenergyhighscale_->LL(m2Q2, m2mu2);
+    double rescaling_factor       = RescalingFactorC2(highenergy_ll, highenergyhighscale_ll, a_fact_);
+    //std::cout << highenergy_ll << "  " << highenergy_ll_A << "  " << highenergyhighscale_ll << std::endl;
+    double deltaLL = highenergy_ll/rescaling_factor - highenergyhighscale_ll;
+    return MixedMatching(x, HighScaleTerm, Value(deltaLL), 0, rescaling_factor);
+}
+Value AsymptoticCoefficientFunction::MixedMatching_CL_2(
+    double x, double m2Q2, double m2mu2, int nf, double factor
+) const {
+    //factor *= 1./pow(1.+1./sqrt(m2Q2),0.25);
+    Value HighScaleTerm = highscale_->fxBand(x, m2Q2, m2mu2, nf);
+    double highenergy_ll          = highenergy_->LL(m2Q2, m2mu2);
+    double highenergyhighscale_ll = highenergyhighscale_->LL(m2Q2, m2mu2);
+    double rescaling_factor       = RescalingFactorCL(highenergy_ll, highenergyhighscale_ll, a_fact_*factor);
+    //std::cout << highenergy_ll << "  " << highenergy_ll_A << "  " << highenergyhighscale_ll << std::endl;
+    double deltaLL = highenergy_ll/rescaling_factor - highenergyhighscale_ll;
+    return MixedMatching(x, HighScaleTerm, Value(deltaLL), 0, rescaling_factor);
+}
+Value AsymptoticCoefficientFunction::MixedMatching_C2_3(
+    double x, double m2Q2, double m2mu2, int nf, bool NLL
+) const {
+    Value HighScaleTerm = highscale_->fxBand(x, m2Q2, m2mu2, nf);
+    double highenergy_ll          = highenergy_->LL(m2Q2, m2mu2);
+    double highenergyhighscale_ll = highenergyhighscale_->LL(m2Q2, m2mu2);
+    double rescaling_factor       = RescalingFactorC2(highenergy_ll, highenergyhighscale_ll, a_fact_);
+    //std::cout << highenergy_ll << "  " << highenergy_ll_A << "  " << highenergyhighscale_ll << std::endl;
+    double deltaLL = highenergy_ll/rescaling_factor - highenergyhighscale_ll;
+    Value deltaNLL = Value(0);
+    if(NLL) deltaNLL = highenergy_->NLL(m2Q2, m2mu2, nf) - highenergyhighscale_->NLL(m2Q2, m2mu2, nf);
+    return MixedMatching(x, HighScaleTerm, deltaNLL, deltaLL, rescaling_factor);
+}
+Value AsymptoticCoefficientFunction::MixedMatching_CL_3(
+    double x, double m2Q2, double m2mu2, int nf, bool NLL
+) const {
+    Value HighScaleTerm = highscale_->fxBand(x, m2Q2, m2mu2, nf);
+    double highenergy_ll          = highenergy_->LL(m2Q2, m2mu2);
+    double highenergyhighscale_ll = highenergyhighscale_->LL(m2Q2, m2mu2);
+    double rescaling_factor       = RescalingFactorCL(highenergy_ll, highenergyhighscale_ll, a_fact_);
+    //std::cout << highenergy_ll << "  " << highenergy_ll_A << "  " << highenergyhighscale_ll << std::endl;
+    double deltaLL = highenergy_ll/rescaling_factor - highenergyhighscale_ll;
+    Value deltaNLL = Value(0);
+    if(NLL) deltaNLL = highenergy_->NLL(m2Q2, m2mu2, nf) - highenergyhighscale_->NLL(m2Q2, m2mu2, nf);
+    return MixedMatching(x, HighScaleTerm, deltaNLL, deltaLL, rescaling_factor);
+}
+
 
 //==========================================================================================//
 //  AsymptoticCoefficientFunction: TBA
 //------------------------------------------------------------------------------------------//
 
-double AsymptoticCoefficientFunction::C_highenergy_lim(
-    double highenergy_ll, double highscalehighenergy_ll, double a_fact
+double AsymptoticCoefficientFunction::RescalingFactorC2(
+    double highenergy_ll, double highscalehighenergy_ll, double A
 ) const {
+    double r = highscalehighenergy_ll / highenergy_ll;
+    return exp( -2*log(A)/M_PI * atan(M_PI*(r-1)/2./log(A)) );
+    //if(r>=1) return 1./r;
+    //return 1./(1.+(A-1.)/A*(exp(A*(r-1.)/(A-1.))-1.)); // write it in a better way...
+}
 
-    if (highscalehighenergy_ll / highenergy_ll < 0.)
-        return highenergy_ll / a_fact;
-
-    return highenergy_ll
-           * exp(
-               log(a_fact) * 2. / M_PI
-               * atan(
-                   M_PI / 2. * log(highscalehighenergy_ll / highenergy_ll)
-                   / log(a_fact)
-               )
-           );
+double AsymptoticCoefficientFunction::RescalingFactorCL(
+    double highenergy_ll, double highscalehighenergy_ll, double A
+) const {
+    highscalehighenergy_ll = sqrt(highscalehighenergy_ll*highscalehighenergy_ll + A*A); // smoothened absolute value
+    return fabs(highenergy_ll) / highscalehighenergy_ll;
 }
 
 //==========================================================================================//

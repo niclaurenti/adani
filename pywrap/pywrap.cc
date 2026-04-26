@@ -115,21 +115,6 @@ PYBIND11_MODULE(_core, m) {
             py::arg("highscale_version") = HighScaleVersion::Exact,
             py::arg("abserr") = 1e-3, py::arg("relerr") = 1e-3,
             py::arg("dim") = 1000
-        )
-        .def(
-            "SetLegacyThreshold",
-            &ApproximateCoefficientFunction::SetLegacyThreshold,
-            py::arg("legacy_threshold")
-        )
-        .def(
-            "SetLegacyPowerTerms",
-            &ApproximateCoefficientFunction::SetLegacyPowerTerms,
-            py::arg("legacy_pt")
-        )
-        .def(
-            "SetLegacyApproximation",
-            &ApproximateCoefficientFunction::SetLegacyApproximation,
-            py::arg("legacy_appr")
         );
 
     // ApproximateCoefficientFunctionKLMV
@@ -162,10 +147,6 @@ PYBIND11_MODULE(_core, m) {
             py::arg("order"), py::arg("kind"), py::arg("channel"),
             py::arg("NLL") = true,
             py::arg("highscale_version") = HighScaleVersion::Exact
-        )
-        .def(
-            "SetLegacyPowerTerms",
-            &AsymptoticCoefficientFunction::SetLegacyPowerTerms
         );
 
     // ExactCoefficientFunction
@@ -345,9 +326,9 @@ PYBIND11_MODULE(_core, m) {
             py::arg("m2Q2"), py::arg("m2mu2")
         )
         .def(
-            "SetLegacyThreshold",
-            &ThresholdCoefficientFunction::SetLegacyThreshold,
-            py::arg("legacy_threshold")
+            "SetPlainThreshold",
+            &ThresholdCoefficientFunction::SetPlainThreshold,
+            py::arg("plain_threshold")
         );
 
     // MatchingCondition
