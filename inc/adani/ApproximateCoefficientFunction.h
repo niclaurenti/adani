@@ -88,8 +88,6 @@ class ApproximateCoefficientFunction : public AbstractApproximate {
         std::unique_ptr<ThresholdCoefficientFunction> threshold_;
         std::unique_ptr<AsymptoticCoefficientFunction> asymptotic_;
 
-        Value (ApproximateCoefficientFunction::*fx_)(double, double, int) const;
-
         std::unique_ptr<approximation_parameters> approximation_;
         std::unique_ptr<variation_parameters> variation_;
 

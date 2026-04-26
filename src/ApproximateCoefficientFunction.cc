@@ -107,8 +107,6 @@ ApproximateCoefficientFunction::ApproximateCoefficientFunction(
         order, kind, channel, NLL, highscale_version
     );
 
-    fx_ = &ApproximateCoefficientFunction::Approximation;
-
     approximation_ = nullptr;
     variation_ = nullptr;
 }
@@ -133,7 +131,7 @@ ApproximateCoefficientFunction::ApproximateCoefficientFunction(
 Value ApproximateCoefficientFunction::MuIndependentTermsBand(
     double x, double m2Q2, int nf
 ) const {
-    return (this->*fx_)(x, m2Q2, nf);
+    return Approximation(x, m2Q2, nf);
 }
 
 //==========================================================================================//
@@ -158,7 +156,7 @@ Value ApproximateCoefficientFunction::Approximation(
     double damp_thr = 1. / (1. + pow(eta / eta0, rho));
     double damp_asy = 1. - damp_thr;
 
-    return asy * damp_asy + thresh * damp_thr;
+    return (asy * damp_asy + thresh * damp_thr) / (1. + m2Q2);
 }
 
 //==========================================================================================//
