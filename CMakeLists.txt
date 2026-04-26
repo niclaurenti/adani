@@ -1,63 +1,21 @@
-# BASIC DEFINITIONS ========================================================================
+cmake_minimum_required(VERSION 3.15)
+project(adani LANGUAGES CXX Fortran)
 
-# define minimum version of cmake
-cmake_minimum_required (VERSION 3.15)
+# --- Build settings ----------------------------------------------------------
 
-if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
-    message(STATUS "Setting build type to 'Release' as none was specified.")
-    set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE)
-    # Set the possible values of build type for cmake-gui
-    set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release"
-        "MinSizeRel" "RelWithDebInfo")
-endif()
-
-# define project name and its language
-project(adani)
-
-# define c++ standard and issue all the warning demanded by this standard
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -fPIC")
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-enable_language(Fortran)
-set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fPIC")
+file(GLOB_RECURSE SOURCES src/*.cc src/*.f src/*.f90)
 
-if (NOT DEFINED CMAKE_MACOSX_RPATH)
-    set(CMAKE_MACOSX_RPATH 0)
-endif()
-
-# Configuration script
-set(prefix ${CMAKE_INSTALL_PREFIX})
-set(exec_prefix "${prefix}")
-set(includedir "${prefix}/include")
-set(libdir "${prefix}/lib")
-
-# export version to file
-configure_file(
-    "${PROJECT_SOURCE_DIR}/inc/adani/version.h.in"
-    "${PROJECT_SOURCE_DIR}/inc/adani/version.h"
-)
-
-configure_file(
-    "${PROJECT_SOURCE_DIR}/bin/adani-config.in"
-    "${PROJECT_SOURCE_DIR}/bin/adani-config"
-)
-configure_file(
-    "${PROJECT_SOURCE_DIR}/bin/adani.pc.in"
-    "${PROJECT_SOURCE_DIR}/bin/adani.pc"
-)
-
-include_directories(inc)
-
-# find gsl
-find_package(GSL REQUIRED)
-
-# FINALIZE ==================================================================================
-
-option(PYTHON_ONLY "Compiles only for python." OFF)
+option(PYTHON_BUILD "Compiles only for python." OFF)
 
 # pybind11
-if(PYTHON_ONLY)
+if(PYTHON_BUILD)
+    include_directories(inc)
+    find_package(GSL REQUIRED)
+    # --- Python Package ----------------------------------------------------------------
     if(SKBUILD)
     message("Found skbuild")
         execute_process(
@@ -71,64 +29,45 @@ if(PYTHON_ONLY)
     pybind11_add_module(
         _core MODULE
         pywrap/pywrap.cc
-        src/ApproximateCoefficientFunction.cc
-        src/AQg3mod.f90
-        src/AQg3red.f
-        src/AsymptoticCoefficientFunction.cc
-        src/CoefficientFunction.cc
-        src/CommonTypes.cc
-        src/Convolution.cc
-        src/ExactCoefficientFunction.cc
-        src/Exceptions.cc
-        src/HighEnergyCoefficientFunction.cc
-        src/HighScaleCoefficientFunction.cc
-        src/HighScaleSplitLogs.cc
-        src/hplog.f
-        src/hqcoef.f
-        src/MasslessCoefficientFunction.cc
-        src/MatchingCondition.cc
-        src/SpecialFunctions.cc
-        src/SplittingFunction.cc
-        src/ThresholdCoefficientFunction.cc
-        src/Value.cc
+        ${SOURCES}
     )
     target_link_libraries(_core PRIVATE GSL::gsl)
     target_compile_definitions(_core PRIVATE VERSION_INFO=${PROJECT_VERSION})
     install(TARGETS _core DESTINATION .)
 
-else(PYTHON_ONLY)
-    add_library(
-        adani SHARED
-        src/ApproximateCoefficientFunction.cc
-        src/AQg3mod.f90
-        src/AQg3red.f
-        src/AsymptoticCoefficientFunction.cc
-        src/CoefficientFunction.cc
-        src/CommonTypes.cc
-        src/Convolution.cc
-        src/ExactCoefficientFunction.cc
-        src/Exceptions.cc
-        src/HighEnergyCoefficientFunction.cc
-        src/HighScaleCoefficientFunction.cc
-        src/HighScaleSplitLogs.cc
-        src/hplog.f
-        src/hqcoef.f
-        src/MasslessCoefficientFunction.cc
-        src/MatchingCondition.cc
-        src/SpecialFunctions.cc
-        src/SplittingFunction.cc
-        src/ThresholdCoefficientFunction.cc
-        src/Value.cc
+else(PYTHON_BUILD)
+    find_package(GSL REQUIRED)
+    if(NOT DEFINED CONAN_TOOLCHAIN_FILE) # Check if we're being built by Conan
+        option(BUILD_SHARED_LIBS "Build shared instead of static" ON)
+    endif()
+    # --- C++ Library ----------------------------------------------------------------
+    add_library(adani
+        ${SOURCES}
     )
 
-    # define libraries to be linked
-    target_link_libraries(adani GSL::gsl)
+    # PUBLIC so consumers inherit GSL include dirs + libs
+    target_link_libraries(adani PUBLIC GSL::gsl)
 
-    # install
-    install(FILES ${PROJECT_SOURCE_DIR}/bin/adani-config
-    DESTINATION bin PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
-    install(FILES ${PROJECT_SOURCE_DIR}/bin/adani.pc DESTINATION lib/pkgconfig)
-    install(DIRECTORY inc/adani DESTINATION include)
-    install(TARGETS adani DESTINATION lib)
+    # PUBLIC include directory for consumers
+    target_include_directories(adani PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/inc>
+        $<INSTALL_INTERFACE:include>
+    )
 
-endif (PYTHON_ONLY)
+    # --- Install headers ---------------------------------------------------------
+
+    install(DIRECTORY inc/adani/
+        DESTINATION include/adani
+        FILES_MATCHING PATTERN "*.h")
+
+
+    # --- Export CMake targets ----------------------------------------------------
+
+    install(
+        TARGETS adani
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+        RUNTIME DESTINATION bin
+    )
+
+endif (PYTHON_BUILD)

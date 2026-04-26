@@ -62,6 +62,13 @@ For MacOS users: add the flags ```-std=c++17 -stdlib=libc++``` and run also
 export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:/your/installation/path/lib
 ```
 
+The installation with conan2 is also available:
+after running ```conan export .``` in the project root folder, run
+```bash
+cd examples
+conan build . --build missing
+```
+
 ## Import the Python module
 
 In order to use the Python module add
