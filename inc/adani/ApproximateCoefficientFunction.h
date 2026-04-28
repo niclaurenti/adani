@@ -66,7 +66,7 @@ class ApproximateCoefficientFunction : public AbstractApproximate {
     public:
         ApproximateCoefficientFunction(
             const int &order, const char &kind, const char &channel,
-            const bool &NLL = true,
+            const int &damp_power = 1, const bool &NLL = true,
             const HighScaleVersion &highscale_version = HighScaleVersion::Exact,
             const double &abserr = 1e-3, const double &relerr = 1e-3,
             const int &dim = 1000
@@ -79,12 +79,15 @@ class ApproximateCoefficientFunction : public AbstractApproximate {
         HighScaleVersion GetHighScaleVersion() const {
             return asymptotic_->GetHighScaleVersion();
         };
+        int GetDampPower() const { return damp_power_; }
+        void SetDampPower(const int &damp_power) { damp_power_ = damp_power; }
 
         Value MuIndependentTermsBand(
             double x, double m2Q2, int nf
         ) const override;
 
     private:
+        int damp_power_;
         std::unique_ptr<ThresholdCoefficientFunction> threshold_;
         std::unique_ptr<AsymptoticCoefficientFunction> asymptotic_;
 

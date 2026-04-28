@@ -95,7 +95,7 @@ Value AbstractApproximate::fxBand(
 //------------------------------------------------------------------------------------------//
 
 ApproximateCoefficientFunction::ApproximateCoefficientFunction(
-    const int &order, const char &kind, const char &channel, const bool &NLL,
+    const int &order, const char &kind, const char &channel, const int &damp_power, const bool &NLL,
     const HighScaleVersion &highscale_version, const double &abserr,
     const double &relerr, const int &dim
 )
@@ -119,7 +119,7 @@ ApproximateCoefficientFunction::ApproximateCoefficientFunction(
     const ApproximateCoefficientFunction &obj
 )
     : ApproximateCoefficientFunction(
-          obj.GetOrder(), obj.GetKind(), obj.GetChannel(), obj.GetNLL(),
+          obj.GetOrder(), obj.GetKind(), obj.GetChannel(), obj.GetDampPower(), obj.GetNLL(),
           obj.GetHighScaleVersion(), obj.GetAbsErr(), obj.GetRelErr(),
           obj.GetDim()
       ) {}
@@ -156,7 +156,7 @@ Value ApproximateCoefficientFunction::Approximation(
     double damp_thr = 1. / (1. + pow(eta / eta0, rho));
     double damp_asy = 1. - damp_thr;
 
-    return (asy * damp_asy + thresh * damp_thr) / (1. + m2Q2);
+    return (asy * damp_asy + thresh * damp_thr) / std::pow(1. + m2Q2, damp_power_);
 }
 
 //==========================================================================================//
