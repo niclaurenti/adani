@@ -25,7 +25,7 @@ def test_mudependent_terms():
                                 hscale = KLMV if order == 3 else Exact
                                 relerr = abserr
                                 massive = ad.ExactCoefficientFunction(order, kind, channel, abserr, relerr, dim)
-                                app = ad.ApproximateCoefficientFunction(order, kind, channel, True, hscale, abserr, relerr, dim)
+                                app = ad.ApproximateCoefficientFunction(order, kind, channel, 1.0, True, hscale, abserr, relerr, dim)
                                 if mf in [DoubleNumerical, MonteCarlo]:
                                     massive.SetDoubleIntegralMethod(mf, abserr, relerr, dim, MCcalls)
                                     app.SetDoubleIntegralMethod(mf, abserr, relerr, dim, MCcalls)

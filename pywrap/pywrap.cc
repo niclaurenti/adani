@@ -107,11 +107,11 @@ PYBIND11_MODULE(_core, m) {
     )
         .def(
             py::init<
-                const int &, const char &, const char &, const int &, const bool &,
+                const int &, const char &, const char &, const double &, const bool &,
                 const HighScaleVersion &, const double &, const double &,
                 const int &>(),
             py::arg("order"), py::arg("kind"), py::arg("channel"),
-            py::arg("damp_power") = 1, py::arg("NLL") = true,
+            py::arg("damp_power") = 1.0, py::arg("NLL") = true,
             py::arg("highscale_version") = HighScaleVersion::Exact,
             py::arg("abserr") = 1e-3, py::arg("relerr") = 1e-3,
             py::arg("dim") = 1000

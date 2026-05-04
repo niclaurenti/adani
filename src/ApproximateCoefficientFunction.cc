@@ -95,7 +95,7 @@ Value AbstractApproximate::fxBand(
 //------------------------------------------------------------------------------------------//
 
 ApproximateCoefficientFunction::ApproximateCoefficientFunction(
-    const int &order, const char &kind, const char &channel, const int &damp_power, const bool &NLL,
+    const int &order, const char &kind, const char &channel, const double &damp_power, const bool &NLL,
     const HighScaleVersion &highscale_version, const double &abserr,
     const double &relerr, const int &dim
 )
