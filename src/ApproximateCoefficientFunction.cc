@@ -109,6 +109,7 @@ ApproximateCoefficientFunction::ApproximateCoefficientFunction(
 
     approximation_ = nullptr;
     variation_ = nullptr;
+    damp_power_ = damp_power;
 }
 
 //==========================================================================================//
