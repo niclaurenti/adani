@@ -252,6 +252,29 @@ double MasslessCoefficientFunction::CL_g1_massless(double x, int nf) const {
 }
 
 //==========================================================================================//
+//  Massless heavy quark coefficient functions for F2 at
+//  O(as) for mu=Q.
+//
+//  Eq. (4.3) of Ref. [hep-ph/0504242v1]
+//------------------------------------------------------------------------------------------//
+
+double MasslessCoefficientFunction::C2_ns1_massless(double x, int nf) const {
+
+    return CF * (- 2*(1+x)*log((1-x)/x) - 4*log(x)/(1-x) +6 +4*x ) /4.;
+}
+
+//==========================================================================================//
+//  Massless heavy quark coefficient functions for FL at
+//  O(as) for mu=Q.
+//
+// Eq. (3) of Ref. [arXiv:hep-ph/0411112v2]
+//------------------------------------------------------------------------------------------//
+
+double MasslessCoefficientFunction::CL_ns1_massless(double x, int nf) const {
+    return CF * x;
+}
+
+//==========================================================================================//
 //  Massless gluon coefficient functions for F2 at
 //  O(as^2) for mu=Q.
 //
