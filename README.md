@@ -9,7 +9,7 @@ and [![arXiv](https://img.shields.io/badge/arXiv-2406.01779-b31b1b?labelColor=22
 
 ## Citation Policy
 
-When using this code please cite [![arXiv](https://img.shields.io/badge/arXiv-2401.12139-b31b1b?labelColor=222222)](https://arxiv.org/abs/2401.12139)
+When using this code please cite [![arXiv](https://img.shields.io/badge/arXiv-2401.12139-b31b1b?labelColor=222222)](https://arxiv.org/abs/2401.12139) and [![arXiv](https://img.shields.io/badge/arXiv-2606.25498-b31b1b?labelColor=222222)](https://arxiv.org/abs/2606.25498)
 
 ## Dependencies
 
