@@ -346,6 +346,9 @@ PYBIND11_MODULE(_core, m) {
             py::arg("order"), py::arg("entry1"), py::arg("entry2"),
             py::arg("version") = HighScaleVersion::Exact
         )
+        .def("Regular", &MatchingCondition::Regular, py::arg("x"), py::arg("m2mu2"))
+        .def("Singular", &MatchingCondition::Singular, py::arg("x"), py::arg("m2mu2"))
+        .def("Local", &MatchingCondition::Local, py::arg("x"), py::arg("m2mu2"))
         .def(
             "MuIndependentNfIndependentTerm",
             &MatchingCondition::MuIndependentNfIndependentTerm, py::arg("x")

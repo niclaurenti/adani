@@ -74,6 +74,9 @@ class MasslessCoefficientFunction : public CoefficientFunction {
         double C2_g1_massless(double x, int nf) const;
         double CL_g1_massless(double x, int nf) const;
 
+        double C2_ns1_massless(double x, int nf) const;
+        double CL_ns1_massless(double x, int nf) const;
+
         //==========================================================================================//
         //                      Massless coefficient functions
         //                      O(as^2)
@@ -83,6 +86,12 @@ class MasslessCoefficientFunction : public CoefficientFunction {
         double C2_ps2_massless(double x, int nf) const;
         double CL_g2_massless(double x, int nf) const;
         double CL_ps2_massless(double x, int nf) const;
+        double C2_ns2_massless_reg(double x, int nf) const;
+        double CL_ns2_massless_reg(double x, int nf) const;
+        double C2_ns2_massless_sing(double x, int nf) const;
+        double CL_ns2_massless_sing(double x, int nf) const;
+        double C2_ns2_massless_loc(double x, int nf) const;
+        double CL_ns2_massless_loc(double x, int nf) const;
 
         //==========================================================================================//
         //                      Massless coefficient functions

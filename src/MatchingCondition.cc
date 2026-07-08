@@ -19,40 +19,51 @@ MatchingCondition::MatchingCondition(
         CheckEntry(entry1);
         CheckEntry(entry2);
 
-        if (order != 3) {
+        if (order < 1 || order > 3) {
             throw NotImplementedException(
-                "only order = 3 is implemented. Got order=" + to_string(order),
+                "only order = 1, 2 and 3 are implemented. Got order=" + to_string(order),
                 __PRETTY_FUNCTION__, __LINE__
             );
         }
 
-        // check entry1
-        if (entry1 != 'Q') {
+        if (order != 3 && version != HighScaleVersion::Exact) {
             throw NotImplementedException(
-                "only entry1 = 'Q' is implemented. Got " + string(1, entry1),
-                __PRETTY_FUNCTION__, __LINE__
-            );
-        }
-
-        // check entry2
-        if (entry2 == 'Q') {
-            throw NotImplementedException(
-                "entry2 = 'Q' is not implemented!", __PRETTY_FUNCTION__,
-                __LINE__
-            );
-        }
-
-        if (entry2 == 'q'
-            && (version == HighScaleVersion::ABMP
-                || version == HighScaleVersion::GM)) {
-            throw NotImplementedException(
-                "aQq channel doesn't have 'abmp' or 'gm' version! Got '"
+                "at order " + to_string(order) + " only exact version is implemented. Got '"
                     + to_string(version) + "'",
                 __PRETTY_FUNCTION__, __LINE__
             );
         }
 
-        SetFunctions();
+        if (order == 3) {
+
+            // check entry1
+            if (entry1 != 'Q') {
+                throw NotImplementedException(
+                    "at order 3 only entry1 = 'Q' is implemented. Got " + string(1, entry1),
+                    __PRETTY_FUNCTION__, __LINE__
+                );
+            }
+
+            // check entry2
+            if (entry2 == 'Q') {
+                throw NotImplementedException(
+                    "at order 3 entry2 = 'Q' is not implemented.",
+                    __PRETTY_FUNCTION__, __LINE__
+                );
+            }
+
+            if (entry2 == 'q'
+                && (version == HighScaleVersion::ABMP
+                    || version == HighScaleVersion::GM)) {
+                throw NotImplementedException(
+                    "a3Qq channel doesn't have 'abmp' or 'gm' version! Got '"
+                        + to_string(version) + "'",
+                    __PRETTY_FUNCTION__, __LINE__
+                );
+            }
+
+            SetFunctions();
+        }
 
     } catch (NotImplementedException &e) {
         e.runtime_error();
@@ -138,6 +149,225 @@ void MatchingCondition::CheckEntry(char entry) const {
 }
 
 //==========================================================================================//
+//  MatchingCondition: Regular
+//------------------------------------------------------------------------------------------//
+
+double MatchingCondition::Regular(double x, double m2mu2) const {
+    switch (GetOrder()) {
+    case 1:
+        switch (GetEntry1()) {
+        case 'Q':
+            switch (GetEntry2()) {
+            case 'g':
+                return K_Qg1_regular(x, m2mu2);
+            default:
+                throw NotImplementedException(
+                    "Regular term for K" + string(GetOrder(), GetEntry1()) + GetEntry2() + " is not implemented!",
+                    __PRETTY_FUNCTION__, __LINE__
+                );
+            }
+        case 'g':
+            switch (GetEntry2()) {
+            case 'g':
+                return 0.;
+            default:
+                throw NotImplementedException(
+                    "Regular term for K" + string(GetOrder(), GetEntry1()) + GetEntry2() + " is not implemented!",
+                    __PRETTY_FUNCTION__, __LINE__
+                );
+            }
+        default:
+            throw NotImplementedException(
+                "Regular term for K" + string(GetOrder(), GetEntry1()) + GetEntry2() + " is not implemented!",
+                __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+    case 2:
+        switch (GetEntry1()) {
+        case 'Q':
+            switch (GetEntry2()) {
+            case 'g':
+                return K_Qg2_regular(x, m2mu2);
+            default:
+                throw NotImplementedException(
+                    "Regular term for K" + string(GetOrder(), GetEntry1()) + GetEntry2() + " is not implemented!",
+                    __PRETTY_FUNCTION__, __LINE__
+                );
+            }
+        case 'g':
+            switch (GetEntry2()) {
+            case 'g':
+                return K_gg2_regular(x, m2mu2);
+            case 'q':
+                return K_gq2_regular(x, m2mu2);
+            default:
+                throw NotImplementedException(
+                    "Regular term for K" + string(GetOrder(), GetEntry1()) + GetEntry2() + " is not implemented!",
+                    __PRETTY_FUNCTION__, __LINE__
+                );
+            }
+        default:
+            throw NotImplementedException(
+                "Regular term for K" + string(GetOrder(), GetEntry1()) + GetEntry2() + " is not implemented!",
+                __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+    default:
+        throw NotImplementedException(
+            "only order = 1 and 2 are implemented for Regular term. Got order="
+                + to_string(GetOrder()),
+            __PRETTY_FUNCTION__, __LINE__
+        );
+    }
+}
+
+//==========================================================================================//
+//  MatchingCondition: Singular
+//------------------------------------------------------------------------------------------//
+
+double MatchingCondition::Singular(double x, double m2mu2) const {
+    switch (GetOrder()) {
+    case 1:
+        switch (GetEntry1()) {
+        case 'Q':
+            switch (GetEntry2()) {
+            case 'g':
+                return 0.;
+            default:
+                throw NotImplementedException(
+                    "Singular term for K" + string(GetOrder(), GetEntry1()) + GetEntry2() + " is not implemented!",
+                    __PRETTY_FUNCTION__, __LINE__
+                );
+            }
+        case 'g':
+            switch (GetEntry2()) {
+            case 'g':
+                return 0.;
+            default:
+                throw NotImplementedException(
+                    "Singular term for K" + string(GetOrder(), GetEntry1()) + GetEntry2() + " is not implemented!",
+                    __PRETTY_FUNCTION__, __LINE__
+                );
+            }
+        default:
+            throw NotImplementedException(
+                "Singular term for K" + string(GetOrder(), GetEntry1()) + GetEntry2() + " is not implemented!",
+                __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+    case 2:
+        switch (GetEntry1()) {
+        case 'Q':
+            switch (GetEntry2()) {
+            case 'g':
+                return 0.;
+            default:
+                throw NotImplementedException(
+                    "Singular term for K" + string(GetOrder(), GetEntry1()) + GetEntry2() + " is not implemented!",
+                    __PRETTY_FUNCTION__, __LINE__
+                );
+            }
+        case 'g':
+            switch (GetEntry2()) {
+            case 'g':
+                return K_gg2_singular(x, m2mu2);
+            case 'q':
+                return 0.;
+            default:
+                throw NotImplementedException(
+                    "Singular term for K" + string(GetOrder(), GetEntry1()) + GetEntry2() + " is not implemented!",
+                    __PRETTY_FUNCTION__, __LINE__
+                );
+            }
+        default:
+            throw NotImplementedException(
+                "Singular term for K" + string(GetOrder(), GetEntry1()) + GetEntry2() + " is not implemented!",
+                __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+    default:
+        throw NotImplementedException(
+            "only order = 1 and 2 are implemented for Singular term. Got order="
+                + to_string(GetOrder()),
+            __PRETTY_FUNCTION__, __LINE__
+        );
+    }
+}
+
+//==========================================================================================//
+//  MatchingCondition: Local
+//------------------------------------------------------------------------------------------//
+
+double MatchingCondition::Local(double x, double m2mu2) const {
+    switch (GetOrder()) {
+    case 1:
+        switch (GetEntry1()) {
+        case 'Q':
+            switch (GetEntry2()) {
+            case 'g':
+                return 0.;
+            default:
+                throw NotImplementedException(
+                    "Local term for K" + string(GetOrder(), GetEntry1()) + GetEntry2() + " is not implemented!",
+                    __PRETTY_FUNCTION__, __LINE__
+                );
+            }
+        case 'g':
+            switch (GetEntry2()) {
+            case 'g':
+                return K_gg1_local(x, m2mu2);
+            default:
+                throw NotImplementedException(
+                    "Local term for K" + string(GetOrder(), GetEntry1()) + GetEntry2() + " is not implemented!",
+                    __PRETTY_FUNCTION__, __LINE__
+                );
+            }
+        default:
+            throw NotImplementedException(
+                "Local term for K" + string(GetOrder(), GetEntry1()) + GetEntry2() + " is not implemented!",
+                __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+    case 2:
+        switch (GetEntry1()) {
+        case 'Q':
+            switch (GetEntry2()) {
+            case 'g':
+                return 0.;
+            default:
+                throw NotImplementedException(
+                    "Local term for K" + string(GetOrder(), GetEntry1()) + GetEntry2() + " is not implemented!",
+                    __PRETTY_FUNCTION__, __LINE__
+                );
+            }
+        case 'g':
+            switch (GetEntry2()) {
+            case 'g':
+                return K_gg2_local(x, m2mu2);
+            case 'q':
+                return 0.;
+            default:
+                throw NotImplementedException(
+                    "Local term for K" + string(GetOrder(), GetEntry1()) + GetEntry2() + " is not implemented!",
+                    __PRETTY_FUNCTION__, __LINE__
+                );
+            }
+        default:
+            throw NotImplementedException(
+                "Local term for K" + string(GetOrder(), GetEntry1()) + GetEntry2() + " is not implemented!",
+                __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+    default:
+        throw NotImplementedException(
+            "only order = 1 and 2 are implemented for Local term. Got order="
+                + to_string(GetOrder()),
+            __PRETTY_FUNCTION__, __LINE__
+        );
+    }
+}
+
+//==========================================================================================//
 //  MatchingCondition: Total a_Qi (i=q,g) term.
 //  a_Qi is the mu independent part of the unrenormalized OMA
 //------------------------------------------------------------------------------------------//
@@ -202,10 +432,10 @@ array<double, 3> MatchingCondition::NotOrdered(double x) const {
 //  Eq. (B.2) from Ref. [arXiv:hep-ph/9612398v1]
 //------------------------------------------------------------------------------------------//
 
-// double MatchingCondition::K_Qg1(double x, double m2mu2) const {
+double MatchingCondition::K_Qg1_regular(double x, double m2mu2) const {
 
-//     return 2 * TR * (x * x + (x - 1) * (x - 1)) * log(1. / m2mu2);
-// }
+    return 2 * TR * (x * x + (x - 1) * (x - 1)) * log(1. / m2mu2);
+}
 
 //==========================================================================================//
 //  Local part of the matching condition gg O(as)
@@ -213,8 +443,9 @@ array<double, 3> MatchingCondition::NotOrdered(double x) const {
 //  Eq. (B.6) from Ref. [arXiv:hep-ph/9612398v1]
 //------------------------------------------------------------------------------------------//
 
-// double MatchingCondition::K_gg1_local(double m2mu2) const { return -4. / 3. *
-// TR * log(1. / m2mu2); }
+double MatchingCondition::K_gg1_local(double x, double m2mu2) const {
+    return -4. / 3. * TR * log(1. / m2mu2);
+}
 
 //==========================================================================================//
 //  Matching condition Qg O(as^2)
@@ -222,98 +453,206 @@ array<double, 3> MatchingCondition::NotOrdered(double x) const {
 //  Eq. (B.3) from Ref. [arXiv:hep-ph/9612398v1]
 //------------------------------------------------------------------------------------------//
 
-// double MatchingCondition::K_Qg2(double x, double m2mu2) const {
+double MatchingCondition::K_Qg2_regular(double x, double m2mu2) const {
 
-//     double x2 = x * x;
+    double x2 = x * x;
 
-//     double L = log(x);
-//     double L2 = L * L;
-//     double L3 = L2 * L;
+    double L = log(x);
+    double L2 = L * L;
+    double L3 = L2 * L;
 
-//     double Lm = log(1. - x);
-//     double Lm2 = Lm * Lm;
-//     double Lm3 = Lm2 * Lm;
+    double Lm = log(1. - x);
+    double Lm2 = Lm * Lm;
+    double Lm3 = Lm2 * Lm;
 
-//     double Lp = log(1. + x);
-//     double Lp2 = Lp * Lp;
+    double Lp = log(1. + x);
+    double Lp2 = Lp * Lp;
 
-//     double Li2xm = Li2(1. - x);
-//     double Li3xm = Li3(1. - x);
-//     double Li2minus = Li2(-x);
-//     double Li3minus = Li3(-x);
-//     double S12xm = S12(1. - x);
-//     double S12minus = S12(-x);
+    double Li2xm = Li2(1. - x);
+    double Li3xm = Li3(1. - x);
+    double Li2minus = Li2(-x);
+    double Li3minus = Li3(-x);
+    double S12xm = S12(1. - x);
+    double S12minus = S12(-x);
 
-//     double Lmu = log(m2mu2);
-//     double Lmu2 = Lmu * Lmu;
+    double Lmu = log(m2mu2);
+    double Lmu2 = Lmu * Lmu;
 
-//     double logmu2_CFTR =
-//         (Lm * (8. - 16. * x + 16 * x2) - L * (4. - 8. * x + 16. * x2)
-//          - (2. - 8. * x));
+    double logmu2_CFTR =
+        (Lm * (8. - 16. * x + 16 * x2) - L * (4. - 8. * x + 16. * x2)
+         - (2. - 8. * x));
 
-//     double logmu2_CATR =
-//         (-Lm * (8. - 16. * x + 16. * x2) - (8. + 32. * x) * L - 16. / 3. / x
-//          - 4. - 32. * x + 124. / 3. * x2);
+    double logmu2_CATR =
+        (-Lm * (8. - 16. * x + 16. * x2) - (8. + 32. * x) * L - 16. / 3. / x
+         - 4. - 32. * x + 124. / 3. * x2);
 
-//     double logmu2_TR2 = -16. / 3. * (2. * x2 - 2. * x + 1.);
+    double logmu2_TR2 = -16. / 3. * (2. * x2 - 2. * x + 1.);
 
-//     double logmu2 =
-//         CF * TR * logmu2_CFTR + CA * TR * logmu2_CATR + TR * TR * logmu2_TR2;
+    double logmu2 =
+        CF * TR * logmu2_CFTR + CA * TR * logmu2_CATR + TR * TR * logmu2_TR2;
 
-//     double logmu_CFTR =
-//         ((8. - 16. * x + 16. * x2) * (2. * L * Lm - Lm2 + 2. * zeta2)
-//          - (4. - 8. * x + 16. * x2) * L2 - 32. * x * (1. - x) * Lm
-//          - (12. - 16. * x + 32. * x2) * L - 56. + 116. * x - 80. * x2);
+    double logmu_CFTR =
+        ((8. - 16. * x + 16. * x2) * (2. * L * Lm - Lm2 + 2. * zeta2)
+         - (4. - 8. * x + 16. * x2) * L2 - 32. * x * (1. - x) * Lm
+         - (12. - 16. * x + 32. * x2) * L - 56. + 116. * x - 80. * x2);
 
-//     double logmu_CATR =
-//         ((16. + 32. * x + 32. * x2) * (Li2minus + L * Lp)
-//          + (8. - 16. * x + 16. * x2) * Lm2 + (8. + 16. * x) * L2
-//          + 32. * x * zeta2 + 32. * x * (1. - x) * Lm
-//          - (8. + 64. * x + 352. / 3. * x2) * L - 160. / 9. / x + 16. - 200. *
-//          x
-//          + 1744. / 9. * x2);
+    double logmu_CATR =
+        ((16. + 32. * x + 32. * x2) * (Li2minus + L * Lp)
+         + (8. - 16. * x + 16. * x2) * Lm2 + (8. + 16. * x) * L2
+         + 32. * x * zeta2 + 32. * x * (1. - x) * Lm
+         - (8. + 64. * x + 352. / 3. * x2) * L - 160. / 9. / x + 16. - 200. *
+         x
+         + 1744. / 9. * x2);
 
-//     double logmu = CF * TR * logmu_CFTR + CA * TR * logmu_CATR;
+    double logmu = CF * TR * logmu_CFTR + CA * TR * logmu_CATR;
 
-//     double const_CFTR =
-//         ((1. - 2. * x + 2. * x2)
-//              * (8. * zeta3 + 4. / 3. * Lm3 - 8. * Lm * Li2xm + 8. * zeta2 * L
-//                 - 4. * L * Lm2 + 2. / 3. * L3 - 8. * L * Li2xm + 8. * Li3xm
-//                 - 24. * S12xm)
-//          + x2 * (-16. * zeta2 * L + 4. / 3. * L3 + 16 * L * Li2xm + 32 *
-//          S12xm)
-//          - (4. + 96. * x - 64. * x2) * Li2xm - (4. - 48. * x + 40. * x2) *
-//          zeta2
-//          - (8. + 48. * x - 24. * x2) * L * Lm + (4. + 8. * x - 12. * x2) *
-//          Lm2
-//          - (1. + 12. * x - 20. * x2) * L2 - (52. * x - 48. * x2) * Lm
-//          - (16. + 18. * x + 48. * x2) * L + 26. - 82. * x + 80. * x2);
+    double const_CFTR =
+        ((1. - 2. * x + 2. * x2)
+             * (8. * zeta3 + 4. / 3. * Lm3 - 8. * Lm * Li2xm + 8. * zeta2 * L
+                - 4. * L * Lm2 + 2. / 3. * L3 - 8. * L * Li2xm + 8. * Li3xm
+                - 24. * S12xm)
+         + x2 * (-16. * zeta2 * L + 4. / 3. * L3 + 16 * L * Li2xm + 32 *
+         S12xm)
+         - (4. + 96. * x - 64. * x2) * Li2xm - (4. - 48. * x + 40. * x2) *
+         zeta2
+         - (8. + 48. * x - 24. * x2) * L * Lm + (4. + 8. * x - 12. * x2) *
+         Lm2
+         - (1. + 12. * x - 20. * x2) * L2 - (52. * x - 48. * x2) * Lm
+         - (16. + 18. * x + 48. * x2) * L + 26. - 82. * x + 80. * x2);
 
-//     double const_CATR =
-//         ((1. - 2. * x + 2. * x2) * (-4. / 3. * Lm3 + 8 * Lm * Li2xm - 8 *
-//         Li3xm)
-//          + (1. + 2. * x + 2. * x2)
-//                * (-8. * zeta2 * Lp - 16 * Lp * Li2minus - 8 * L * Lp2
-//                   + 4 * L2 * Lp + 8 * L * Li2minus - 8 * Li3minus
-//                   - 16 * S12minus)
-//          + (16. + 64. * x) * (2. * S12xm + L * Li2xm)
-//          - (4. / 3. + 8. / 3. * x) * L3 + (8. - 32. * x + 16. * x2) * zeta3
-//          - (16. + 64. * x) * zeta2 * L
-//          + (16. * x + 16. * x2) * (Li2minus + L * Lp)
-//          // there is a typo here in the e-Print (16+16*x2 -> 16*x+16*x2)
-//          + (32. / 3. / x + 12. + 64. * x - 272. / 3. * x2) * Li2xm
-//          - (12 + 48 * x - 260. / 3. * x2 + 32. / 3. / x) * zeta2
-//          - 4 * x2 * L * Lm - (2 + 8 * x - 10 * x2) * Lm2
-//          + (2 + 8 * x + 46. / 3. * x2) * L2 + (4 + 16 * x - 16 * x2) * Lm
-//          - (56. / 3. + 172. / 3. * x + 1600. / 9. * x2) * L - 448. / 27. / x
-//          - 4. / 3. - 628. / 3. * x + 6352. / 27. * x2);
+    double const_CATR =
+        ((1. - 2. * x + 2. * x2) * (-4. / 3. * Lm3 + 8 * Lm * Li2xm - 8 *
+        Li3xm)
+         + (1. + 2. * x + 2. * x2)
+               * (-8. * zeta2 * Lp - 16 * Lp * Li2minus - 8 * L * Lp2
+                  + 4 * L2 * Lp + 8 * L * Li2minus - 8 * Li3minus
+                  - 16 * S12minus)
+         + (16. + 64. * x) * (2. * S12xm + L * Li2xm)
+         - (4. / 3. + 8. / 3. * x) * L3 + (8. - 32. * x + 16. * x2) * zeta3
+         - (16. + 64. * x) * zeta2 * L
+         + (16. * x + 16. * x2) * (Li2minus + L * Lp)
+         // there is a typo here in the e-Print (16+16*x2 -> 16*x+16*x2)
+         + (32. / 3. / x + 12. + 64. * x - 272. / 3. * x2) * Li2xm
+         - (12 + 48 * x - 260. / 3. * x2 + 32. / 3. / x) * zeta2
+         - 4 * x2 * L * Lm - (2 + 8 * x - 10 * x2) * Lm2
+         + (2 + 8 * x + 46. / 3. * x2) * L2 + (4 + 16 * x - 16 * x2) * Lm
+         - (56. / 3. + 172. / 3. * x + 1600. / 9. * x2) * L - 448. / 27. / x
+         - 4. / 3. - 628. / 3. * x + 6352. / 27. * x2);
 
-//     double const_tot = CF * TR * const_CFTR + CA * TR * const_CATR;
+    double const_tot = CF * TR * const_CFTR + CA * TR * const_CATR;
 
-//     double tmp = const_tot + logmu * Lmu + logmu2 * Lmu2;
+    double tmp = const_tot + logmu * Lmu + logmu2 * Lmu2;
 
-//     return 0.5 * tmp;
-// }
+    return 0.5 * tmp;
+}
+
+//==========================================================================================//
+
+//------------------------------------------------------------------------------------------//
+
+double MatchingCondition::K_gg2_regular(double z, double m2mu2) const {
+    double L = -2*log(m2mu2);
+    double z2 = z*z;
+    double lnz = log(z);
+    double lnz2 = lnz*lnz;
+    double A01 = (
+        4.0 * (1.0 + z) * lnz*lnz2 / 3.0
+        + (6.0 + 10.0 * z) * lnz2
+        + (32.0 + 48.0 * z) * lnz
+        - 8.0 / z
+        + 80.0
+        - 48.0 * z
+        - 24 * z2
+    );
+    double A02 = (
+            4.0 * (1.0 + z) * lnz2 / 3.0
+            + (52.0 + 88.0 * z) * lnz / 9.0
+            - 4.0 * z * log(1.-z) / 3.0
+            + (556.0 / z - 628.0 + 548.0 * z - 700.0 * z2) / 27.0
+        );
+    double AS2ggH_R = TR * (CF * A01 + CA * A02);
+    double omeL1 = -(
+            CF
+            * TR
+            * (
+                8.0 * (1.0 + z) * lnz2
+                + (24.0 + 40.0 * z) * lnz
+                - 16.0 / 3.0 / z
+                + 64.0
+                - 32.0 * z
+                - 80.0 * z2 / 3.0
+            )
+            + CA
+            * TR
+            * (
+                16.0 * (1.0 + z) * lnz / 3.0
+                + 184.0 / 9.0 / z
+                - 232.0 / 9.0
+                + 152.0 * z / 9.0
+                - 184.0 * z2 / 9.0
+            )
+        );
+    double omeL2 = CF * TR * (
+            8.0 * (1.0 + z) * lnz + 16.0 / 3.0 / z + 4.0 - 4.0 * z - 16.0 * z2 / 3.0
+        ) + CA * TR * (8.0 / 3.0 / z - 16.0 / 3.0 + 8.0 * z / 3.0 - 8.0 * z2 / 3.0);
+    return (AS2ggH_R + L * omeL1 + L*L * omeL2) /16.;
+}
+
+//==========================================================================================//
+
+//------------------------------------------------------------------------------------------//
+
+double MatchingCondition::K_gg2_singular(double z, double m2mu2) const {
+    double L = -2*log(m2mu2);
+    double AS2ggH_S = 224.0 / 27.0;
+    double omeL1 = -80.0 / 9.0;
+    double omeL2 = 8.0 / 3.0;
+    return CA * TR * (AS2ggH_S + L*L * omeL2 + L * omeL1) / (1.-z) /16.;
+}
+
+//==========================================================================================//
+
+//------------------------------------------------------------------------------------------//
+
+double MatchingCondition::K_gg2_local(double z, double m2mu2) const {
+    double L = -2*log(m2mu2);
+    double lm1 = log(1 - z);
+    double AS2ggH_L = TR * (-CF * 15.0 + CA * (10.0 / 9.0 + 224. * lm1 / 27.));
+    double omeL1 = -TR * (CF * 4.0 + CA * (16.0 / 3.0 + 80. * lm1 / 9.));
+    double omeL2 = TR*TR * 16.0 / 9.0 + CA * TR * 8. * lm1 / 3.;
+    return (AS2ggH_L + L * omeL1 + L*L * omeL2) /16.;
+}
+
+//==========================================================================================//
+
+//------------------------------------------------------------------------------------------//
+
+double MatchingCondition::K_gq2_regular(double z, double m2mu2) const {
+    double L = -2*log(m2mu2);
+    double z1 = 1 - z;
+    double L1 = log(z1);
+    return (
+            CF
+            * TR
+            * (
+                ((16.0 / (3 * z)) - (16.0 / 3.0) + z * (8.0 / 3.0)) * (L*L)
+                - (
+                    (160.0 / (9 * z))
+                    - (160.0 / 9.0)
+                    + z * (128.0 / 9.0)
+                    + L1 * ((32.0 / (3 * z)) - (32.0 / 3.0) + z * (16.0 / 3.0))
+                )
+                * L
+                + (4.0 / 3.0) * ((2.0 / z) - 2 + z) * (L1*L1)
+                + (8.0 / 9.0) * ((10.0 / z) - 10 + 8 * z) * L1
+                + (1.0 / 27.0) * ((448.0 / z) - 448 + 344 * z)
+            )
+        ) /16.;
+}
+
+//==========================================================================================//
+
+//------------------------------------------------------------------------------------------//
 
 extern "C" {
     double aQg3(double *x);

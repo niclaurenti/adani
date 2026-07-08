@@ -48,6 +48,10 @@ class MatchingCondition {
         Value MuIndependentTerm(double x, int nf) const;
         array<double, 3> NotOrdered(double x) const;
 
+        double Regular(double x, double m2mu2) const;
+        double Singular(double x, double m2mu2) const;
+        double Local(double x, double m2mu2) const;
+
     private:
         const int order_;
         const char entry1_;
@@ -77,6 +81,16 @@ class MatchingCondition {
         //==========================================================================================//
         //  Matching conditions O(as^3)
         //------------------------------------------------------------------------------------------//
+
+        double K_Qg1_regular(double x, double m2mu2) const;
+        double K_Qg2_regular(double x, double m2mu2) const;
+
+        double K_gg1_local(double x, double m2mu2) const;
+        double K_gg2_regular(double z, double m2mu2) const;
+        double K_gg2_singular(double z, double m2mu2) const;
+        double K_gg2_local(double z, double m2mu2) const;
+
+        double K_gq2_regular(double z, double m2mu2) const;
 
         array<double, 3> a_Qg_30_exact(double x) const;
         array<double, 3> a_Qg_30_gm(double x) const;
