@@ -12,7 +12,7 @@ HighScaleCoefficientFunction::HighScaleCoefficientFunction(
     const int &order, const char &kind, const char &channel,
     const HighScaleVersion &version
 )
-    : CoefficientFunction(order, kind, channel) {
+    : CoefficientFunction(order, kind, channel), version_(version) {
     massless_as1_ = nullptr;
     massless_as2_ = nullptr;
     massless_as3_ = nullptr;
@@ -32,16 +32,23 @@ HighScaleCoefficientFunction::HighScaleCoefficientFunction(
             3, GetKind(), GetChannel()
         );
 
-    if (GetOrder() == 3 && GetKind() == '2') {
+    if (GetOrder() == 3 && GetKind() == '2' && version_ != HighScaleVersion::Parametrized) {
         a_muindep_ =
             std::make_unique<MatchingCondition>(3, 'Q', GetChannel(), version);
     }
 
     try {
-        if (GetOrder() < 3 && version != HighScaleVersion::Exact) {
+        if (GetOrder() < 3 && !(version == HighScaleVersion::Exact || version == HighScaleVersion::Parametrized)) {
             throw NotValidException(
                 "HighScaleCoefficientFunction at orders 1 and 2 are only "
-                "'exact'!",
+                "'exact' or 'parametrized'!",
+                __PRETTY_FUNCTION__, __LINE__
+            );
+        }
+        if (version == HighScaleVersion::Parametrized && GetKind() != '2') {
+            throw NotValidException(
+                "HighScaleCoefficientFunction with 'parametrized' version is "
+                "only implemented for F2g!",
                 __PRETTY_FUNCTION__, __LINE__
             );
         }
@@ -91,7 +98,14 @@ void HighScaleCoefficientFunction::SetFunctions() {
         case 'g':
             switch (GetKind()) {
             case '2':
-                fx_ = &HighScaleCoefficientFunction::C2_g1_highscale;
+                switch (version_) {
+                case HighScaleVersion::Exact:
+                    fx_ = &HighScaleCoefficientFunction::C2_g1_highscale;
+                    break;
+                case HighScaleVersion::Parametrized:
+                    fx_ = &HighScaleCoefficientFunction::C2_g1_highscale_parametrized;
+                    break;
+                }
                 break;
             case 'L':
                 fx_ = &HighScaleCoefficientFunction::CL_g1_highscale;
@@ -109,10 +123,24 @@ void HighScaleCoefficientFunction::SetFunctions() {
         case '2':
             switch (GetChannel()) {
             case 'g':
-                fx_ = &HighScaleCoefficientFunction::C2_g2_highscale;
+                switch (version_) {
+                case HighScaleVersion::Exact:
+                    fx_ = &HighScaleCoefficientFunction::C2_g2_highscale;
+                    break;
+                case HighScaleVersion::Parametrized:
+                    fx_ = &HighScaleCoefficientFunction::C2_g2_highscale_parametrized;
+                    break;
+                }
                 break;
             case 'q':
-                fx_ = &HighScaleCoefficientFunction::C2_ps2_highscale;
+                switch (version_) {
+                case HighScaleVersion::Exact:
+                    fx_ = &HighScaleCoefficientFunction::C2_ps2_highscale;
+                    break;
+                case HighScaleVersion::Parametrized:
+                    fx_ = &HighScaleCoefficientFunction::C2_ps2_highscale_parametrized;
+                    break;
+                }
                 break;
             default:
                 throw UnexpectedException(
@@ -145,10 +173,24 @@ void HighScaleCoefficientFunction::SetFunctions() {
         case '2':
             switch (GetChannel()) {
             case 'g':
-                fx_ = &HighScaleCoefficientFunction::C2_g3_highscale;
+                switch (version_) {
+                case HighScaleVersion::Exact:
+                    fx_ = &HighScaleCoefficientFunction::C2_g3_highscale;
+                    break;
+                case HighScaleVersion::Parametrized:
+                    fx_ = &HighScaleCoefficientFunction::C2_g3_highscale_parametrized;
+                    break;
+                }
                 break;
             case 'q':
-                fx_ = &HighScaleCoefficientFunction::C2_ps3_highscale;
+                switch (version_) {
+                case HighScaleVersion::Exact:
+                    fx_ = &HighScaleCoefficientFunction::C2_ps3_highscale;
+                    break;
+                case HighScaleVersion::Parametrized:
+                    fx_ = &HighScaleCoefficientFunction::C2_ps3_highscale_parametrized;
+                    break;
+                }
                 break;
             default:
                 throw UnexpectedException(
@@ -612,7 +654,6 @@ Value HighScaleCoefficientFunction::C2_g3_highscale(
 
     double Lmu = log(m2mu2);
     double L2mu = Lmu * Lmu;
-
     return D2_g3_highscale(x, m2Q2, m2mu2, nf)
            - 4. / 3 * Lmu * D2_g2_highscale(x, m2Q2, m2mu2)
            - ((16. / 9 * CA - 15. / 2 * CF) + (10. / 3 * CA + 2 * CF) * Lmu
@@ -4082,4 +4123,83 @@ Value HighScaleCoefficientFunction::D2_ps3_highscale(
                     + 32. / 9 * H1 * x2 - 16. / 3 * H01 - 16. / 3 * H01 * x)
            + a_muindep_->MuIndependentNfIndependentTerm(x)
            + 1. / (1 + nf) * massless_as3_->MuIndependentTerms(x, 1 + nf);
+}
+
+extern "C" {
+    double regh2gs_(int* IO, double* z, double* as,
+                    double* LM, double* LQ, double* NF, double* flav);
+    double regh2qps_(int* IO, double* z, double* as,
+                    double* LM, double* LQ, double* NF, double* flav);
+}
+
+Value HighScaleCoefficientFunction::C2_g1_highscale_parametrized(double x, double m2Q2, double m2mu2, int nf) const {
+    int IO = 1;
+    double as = 1.0;
+    double L_M = log(m2mu2);
+    double L_Q = log(1. / m2Q2) + L_M;
+    double NF = nf;
+    double flav = 0.0;
+
+    double result = regh2gs_(&IO, &x, &as, &L_M, &L_Q, &NF, &flav);
+    return Value(result);
+}
+
+Value HighScaleCoefficientFunction::C2_g2_highscale_parametrized(double x, double m2Q2, double m2mu2, int nf) const {
+    int IO = 2;
+    double as = 1.0;
+    double L_M = log(m2mu2);
+    double L_Q = log(1. / m2Q2) + L_M;
+    double NF = nf;
+    double flav = 0.0;
+
+    double result = regh2gs_(&IO, &x, &as, &L_M, &L_Q, &NF, &flav);
+    return Value(result);
+}
+
+Value HighScaleCoefficientFunction::C2_g3_highscale_parametrized(double x, double m2Q2, double m2mu2, int nf) const {
+    int IO = 3;
+    double as = 1.0;
+    double L_M = log(m2mu2);
+    double L_Q = log(1. / m2Q2) + L_M;
+    double NF = nf;
+    double flav = 0.0;
+
+    double result = regh2gs_(&IO, &x, &as, &L_M, &L_Q, &NF, &flav);
+    return Value(result);
+}
+
+Value HighScaleCoefficientFunction::C2_ps1_highscale_parametrized(double x, double m2Q2, double m2mu2, int nf) const {
+    int IO = 1;
+    double as = 1.0;
+    double L_M = log(m2mu2);
+    double L_Q = log(1. / m2Q2) + L_M;
+    double NF = nf;
+    double flav = 0.0;
+
+    double result = regh2qps_(&IO, &x, &as, &L_M, &L_Q, &NF, &flav);
+    return Value(result);
+}
+
+Value HighScaleCoefficientFunction::C2_ps2_highscale_parametrized(double x, double m2Q2, double m2mu2, int nf) const {
+    int IO = 2;
+    double as = 1.0;
+    double L_M = log(m2mu2);
+    double L_Q = log(1. / m2Q2) + L_M;
+    double NF = nf;
+    double flav = 0.0;
+
+    double result = regh2qps_(&IO, &x, &as, &L_M, &L_Q, &NF, &flav);
+    return Value(result);
+}
+
+Value HighScaleCoefficientFunction::C2_ps3_highscale_parametrized(double x, double m2Q2, double m2mu2, int nf) const {
+    int IO = 3;
+    double as = 1.0;
+    double L_M = log(m2mu2);
+    double L_Q = log(1. / m2Q2) + L_M;
+    double NF = nf;
+    double flav = 0.0;
+
+    double result = regh2qps_(&IO, &x, &as, &L_M, &L_Q, &NF, &flav);
+    return Value(result);
 }

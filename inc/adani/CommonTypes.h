@@ -32,7 +32,7 @@ enum class DoubleIntegralMethod : uint8_t {
 //  version of aQg30
 //------------------------------------------------------------------------------------------//
 
-enum class HighScaleVersion : uint8_t { Exact, GM, ABMP, KLMV };
+enum class HighScaleVersion : uint8_t { Exact, GM, ABMP, KLMV, Parametrized };
 
 std::string to_string(HighScaleVersion hs_version);
 

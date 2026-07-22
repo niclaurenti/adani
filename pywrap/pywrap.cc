@@ -24,6 +24,7 @@ PYBIND11_MODULE(_core, m) {
         .value("GM", HighScaleVersion::GM)
         .value("ABMP", HighScaleVersion::ABMP)
         .value("KLMV", HighScaleVersion::KLMV)
+        .value("Parametrized", HighScaleVersion::Parametrized)
         .export_values();
 
     // Value

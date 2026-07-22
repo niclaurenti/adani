@@ -58,6 +58,7 @@ class HighScaleCoefficientFunction : public CoefficientFunction {
         ) const;
 
     private:
+        const HighScaleVersion version_;
         Value (HighScaleCoefficientFunction::*fx_)(
             double, double, double, int
         ) const;
@@ -129,6 +130,13 @@ class HighScaleCoefficientFunction : public CoefficientFunction {
             D2_g3_highscale(double x, double m2Q2, double m2mu2, int nf) const;
         Value
             D2_ps3_highscale(double x, double m2Q2, double m2mu2, int nf) const;
+
+        Value C2_g1_highscale_parametrized(double x, double m2Q2, double m2mu2, int nf) const;
+        Value C2_g2_highscale_parametrized(double x, double m2Q2, double m2mu2, int nf) const;
+        Value C2_g3_highscale_parametrized(double x, double m2Q2, double m2mu2, int nf) const;
+        Value C2_ps1_highscale_parametrized(double x, double m2Q2, double m2mu2, int nf) const;
+        Value C2_ps2_highscale_parametrized(double x, double m2Q2, double m2mu2, int nf) const;
+        Value C2_ps3_highscale_parametrized(double x, double m2Q2, double m2mu2, int nf) const;
 };
 
 #endif
