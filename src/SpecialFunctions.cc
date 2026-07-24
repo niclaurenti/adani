@@ -1,5 +1,6 @@
 #include "adani/SpecialFunctions.h"
 #include "adani/Constants.h"
+#include "adani/Exceptions.h"
 #include <cmath>
 
 #define Li2_1_2 0.5822405265
@@ -14,6 +15,25 @@ double beta0(int nf) { return (11. / 3 * CA - 2. / 3 * nf); }
 double beta1(int nf) {
     return (34. / 3. * CA * CA)
            + ((-20. / 3. * CA * TR) + (-4. * CF * TR)) * nf;
+}
+
+//==========================================================================================//
+//  Charge of the heavy quark.
+//------------------------------------------------------------------------------------------//
+
+double heavy_quark_charge(int nf) {
+    switch (nf) {
+        case 3:
+        case 5:
+            return 2. / 3.;
+        case 4:
+            return -1. / 3.;
+        default:
+            throw NotImplementedException(
+                "heavy_quark_charge(nf) is only implemented for nf=3,4,5",
+                __PRETTY_FUNCTION__, __LINE__
+            );
+    }
 }
 
 //==========================================================================================//

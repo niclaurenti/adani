@@ -4,6 +4,11 @@
 
 #include <cmath>
 
+extern "C" {
+    void dath2gs_();
+    void dath2qps_();
+}
+
 //==========================================================================================//
 //  HighScaleCoefficientFunction: constructor
 //------------------------------------------------------------------------------------------//
@@ -53,6 +58,23 @@ HighScaleCoefficientFunction::HighScaleCoefficientFunction(
             );
         }
 
+        if (version == HighScaleVersion::Parametrized) {
+            switch (GetChannel()) {
+            case 'g':
+                dath2gs_();
+                  break;
+            case 'q':
+                dath2qps_();
+                break;
+            default:
+                throw NotValidException(
+                    "HighScaleCoefficientFunction with 'parametrized' version is "
+                    "only implemented for C2g and C2ps!",
+                    __PRETTY_FUNCTION__, __LINE__
+                );
+            }
+        }
+
         SetFunctions();
     } catch (NotPresentException &e) {
         e.runtime_error();
@@ -99,11 +121,11 @@ void HighScaleCoefficientFunction::SetFunctions() {
             switch (GetKind()) {
             case '2':
                 switch (version_) {
-                case HighScaleVersion::Exact:
-                    fx_ = &HighScaleCoefficientFunction::C2_g1_highscale;
-                    break;
                 case HighScaleVersion::Parametrized:
-                    fx_ = &HighScaleCoefficientFunction::C2_g1_highscale_parametrized;
+                	fx_ = &HighScaleCoefficientFunction::C2_g1_highscale_parametrized;
+                    break;
+                default:
+                    fx_ = &HighScaleCoefficientFunction::C2_g1_highscale;
                     break;
                 }
                 break;
@@ -124,21 +146,21 @@ void HighScaleCoefficientFunction::SetFunctions() {
             switch (GetChannel()) {
             case 'g':
                 switch (version_) {
-                case HighScaleVersion::Exact:
-                    fx_ = &HighScaleCoefficientFunction::C2_g2_highscale;
-                    break;
                 case HighScaleVersion::Parametrized:
-                    fx_ = &HighScaleCoefficientFunction::C2_g2_highscale_parametrized;
+                	fx_ = &HighScaleCoefficientFunction::C2_g2_highscale_parametrized;
+                    break;
+                default:
+                    fx_ = &HighScaleCoefficientFunction::C2_g2_highscale;
                     break;
                 }
                 break;
             case 'q':
                 switch (version_) {
-                case HighScaleVersion::Exact:
-                    fx_ = &HighScaleCoefficientFunction::C2_ps2_highscale;
-                    break;
                 case HighScaleVersion::Parametrized:
-                    fx_ = &HighScaleCoefficientFunction::C2_ps2_highscale_parametrized;
+                	fx_ = &HighScaleCoefficientFunction::C2_ps2_highscale_parametrized;
+                    break;
+                default:
+                    fx_ = &HighScaleCoefficientFunction::C2_ps2_highscale;
                     break;
                 }
                 break;
@@ -174,21 +196,21 @@ void HighScaleCoefficientFunction::SetFunctions() {
             switch (GetChannel()) {
             case 'g':
                 switch (version_) {
-                case HighScaleVersion::Exact:
-                    fx_ = &HighScaleCoefficientFunction::C2_g3_highscale;
-                    break;
                 case HighScaleVersion::Parametrized:
-                    fx_ = &HighScaleCoefficientFunction::C2_g3_highscale_parametrized;
+                	fx_ = &HighScaleCoefficientFunction::C2_g3_highscale_parametrized;
+                    break;
+                default:
+                    fx_ = &HighScaleCoefficientFunction::C2_g3_highscale;
                     break;
                 }
                 break;
             case 'q':
                 switch (version_) {
-                case HighScaleVersion::Exact:
-                    fx_ = &HighScaleCoefficientFunction::C2_ps3_highscale;
-                    break;
                 case HighScaleVersion::Parametrized:
-                    fx_ = &HighScaleCoefficientFunction::C2_ps3_highscale_parametrized;
+                	fx_ = &HighScaleCoefficientFunction::C2_ps3_highscale_parametrized;
+                    break;
+                default:
+                    fx_ = &HighScaleCoefficientFunction::C2_ps3_highscale;
                     break;
                 }
                 break;
@@ -4157,24 +4179,26 @@ Value HighScaleCoefficientFunction::C2_g2_highscale_parametrized(double x, doubl
 }
 
 Value HighScaleCoefficientFunction::C2_g3_highscale_parametrized(double x, double m2Q2, double m2mu2, int nf) const {
-    int IO = 3;
-    double as = 1.0;
-    double L_M = log(m2mu2);
-    double L_Q = log(1. / m2Q2) + L_M;
-    double NF = nf;
-    double flav = 0.0;
+      int IO = 3;
+      double as = 1.0;
+      double L_M = log(m2mu2);
+      double L_Q = log(1. / m2Q2) + L_M;
+      double NF = nf;
+      double eQ = heavy_quark_charge(nf);
+      double flav = 3 * eQ * eQ / (2 + 3. * eQ * eQ);
+    //   double flav = 0.0;
 
-    double result = regh2gs_(&IO, &x, &as, &L_M, &L_Q, &NF, &flav);
-    return Value(result);
+      double result = regh2gs_(&IO, &x, &as, &L_M, &L_Q, &NF, &flav);
+      return Value(result);
 }
 
 Value HighScaleCoefficientFunction::C2_ps1_highscale_parametrized(double x, double m2Q2, double m2mu2, int nf) const {
-    int IO = 1;
-    double as = 1.0;
-    double L_M = log(m2mu2);
-    double L_Q = log(1. / m2Q2) + L_M;
-    double NF = nf;
-    double flav = 0.0;
+      int IO = 1;
+      double as = 1.0;
+      double L_M = log(m2mu2);
+      double L_Q = log(1. / m2Q2) + L_M;
+      double NF = nf;
+      double flav = 0.0;
 
     double result = regh2qps_(&IO, &x, &as, &L_M, &L_Q, &NF, &flav);
     return Value(result);
@@ -4198,7 +4222,9 @@ Value HighScaleCoefficientFunction::C2_ps3_highscale_parametrized(double x, doub
     double L_M = log(m2mu2);
     double L_Q = log(1. / m2Q2) + L_M;
     double NF = nf;
-    double flav = 0.0;
+    double eQ = heavy_quark_charge(nf);
+    double flav = - 3 * eQ * (2 - eQ + 3 * eQ * eQ) / (2 + 3. * eQ * eQ) / 4;
+    // double flav = 0;
 
     double result = regh2qps_(&IO, &x, &as, &L_M, &L_Q, &NF, &flav);
     return Value(result);

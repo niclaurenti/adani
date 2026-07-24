@@ -3,11 +3,11 @@ project(adani LANGUAGES CXX Fortran)
 
 # --- Build settings ----------------------------------------------------------
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-file(GLOB_RECURSE SOURCES src/*.cc src/*.f src/*.f90)
+file(GLOB_RECURSE SOURCES src/*.cc src/*.f src/BLUM/*.f src/*.f90)
 
 option(PYTHON_BUILD "Compiles only for python." OFF)
 
